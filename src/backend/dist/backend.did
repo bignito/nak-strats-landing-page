@@ -1,0 +1,281 @@
+type Value = 
+ variant {
+   "bool": bool;
+   float: float64;
+   "int": int;
+   "nat": nat;
+   "null";
+   "text": text;
+ };
+type TransformationOutput = 
+ record {
+   body: blob;
+   headers: vec HttpHeader;
+   status: nat;
+ };
+type TransformationInput = 
+ record {
+   context: blob;
+   response: HttpRequestResult;
+ };
+type Token = 
+ variant {
+   ICP;
+   ckUSDC;
+ };
+type ShippingAddress = 
+ record {
+   city: text;
+   country: text;
+   line1: text;
+   line2: opt text;
+   postal_code: text;
+   region: text;
+ };
+type Result__1 = 
+ record {
+   hasMore: bool;
+   rows: vec vec Cell;
+ };
+type Result_6 = 
+ variant {
+   err: PaymentError;
+   ok: CheckoutSession;
+ };
+type Result_5 = 
+ variant {
+   err: OrderError;
+   ok: Order;
+ };
+type Result_4 = 
+ variant {
+   err: CryptoPaymentError;
+   ok: DepositInfo;
+ };
+type Result_3 = 
+ variant {
+   err: CryptoPaymentError;
+   ok: CryptoPaymentStatus;
+ };
+type Result_2 = 
+ variant {
+   err: PaymentError;
+   ok;
+ };
+type Result_1 = 
+ variant {
+   err: CryptoPaymentError;
+   ok: nat;
+ };
+type Result = 
+ variant {
+   err: CryptoPaymentError;
+   ok;
+ };
+type ProductVariant = 
+ record {
+   id: text;
+   inventory: nat;
+   name: text;
+   price: nat;
+   size: text;
+ };
+type ProductId = nat;
+type Product = 
+ record {
+   active: bool;
+   category: text;
+   created_at: int;
+   currency: text;
+   description: text;
+   id: ProductId;
+   images: vec text;
+   inventory: nat;
+   name: text;
+   price: nat;
+   slug: text;
+   updated_at: int;
+   variants: vec ProductVariant;
+ };
+type PaymentStatus = 
+ variant {
+   cancelled;
+   expired;
+   paid;
+   pending;
+ };
+type PaymentMethod = 
+ variant {
+   card_stripe;
+   crypto_ckusdc;
+   crypto_icp;
+   manual;
+ };
+type PaymentError = 
+ variant {
+   invalidOrder;
+   paymentFailed: text;
+ };
+type OrderItem = 
+ record {
+   name: text;
+   product_id: ProductId;
+   quantity: nat;
+   unit_amount: nat;
+   variant_id: text;
+ };
+type OrderError = 
+ variant {
+   emptyOrder;
+   invalidQuantity;
+   outOfStock: record {
+                 ProductId;
+                 text;
+               };
+   paymentFailed: text;
+   productInactive: ProductId;
+   unknownProduct: ProductId;
+   unknownVariant: record {
+                     ProductId;
+                     text;
+                   };
+ };
+type Order = 
+ record {
+   created_at: int;
+   currency: text;
+   customer_email: text;
+   customer_name: text;
+   id: nat;
+   items: vec OrderItem;
+   payment_method: PaymentMethod;
+   payment_reference: opt text;
+   payment_status: PaymentStatus;
+   reference: text;
+   shipping: nat;
+   shipping_address: ShippingAddress;
+   subtotal: nat;
+   tax: nat;
+   total: nat;
+   updated_at: int;
+ };
+type LedgerConfig = 
+ record {
+   canisterId: principal;
+   decimals: nat8;
+   fee: nat;
+ };
+type HttpRequestResult = 
+ record {
+   body: blob;
+   headers: vec HttpHeader;
+   status: nat;
+ };
+type HttpHeader = 
+ record {
+   name: text;
+   value: text;
+ };
+type DepositInfo = 
+ record {
+   address: principal;
+   amountDue: nat;
+   decimals: nat8;
+   expiresAt: int;
+   qrPayload: text;
+   reference: text;
+   subaccount: blob;
+   token: Token;
+ };
+type CryptoPaymentStatus = 
+ variant {
+   awaiting_payment;
+   expired;
+   overpayment: record {
+                  expected: nat;
+                  received: nat;
+                };
+   paid: record {blockIndex: nat;};
+   underpayment: record {
+                   expected: nat;
+                   received: nat;
+                 };
+ };
+type CryptoPaymentError = 
+ variant {
+   alreadyPaid;
+   expired;
+   invalidConfig: text;
+   ledgerError: text;
+   notCryptoOrder;
+   notFound;
+   overpayment: record {
+                  expected: nat;
+                  received: nat;
+                };
+   sweepFailed: text;
+   unauthorized;
+   underpayment: record {
+                   expected: nat;
+                   received: nat;
+                 };
+ };
+type CryptoConfigView = 
+ record {
+   ckUSDC: LedgerConfig;
+   icp: LedgerConfig;
+   treasuryPrincipal: principal;
+   treasurySubaccount: opt blob;
+ };
+type CreateOrderItem = 
+ record {
+   product_id: ProductId;
+   quantity: nat;
+   variant_id: text;
+ };
+type CreateOrderInput = 
+ record {
+   customer_email: text;
+   customer_name: text;
+   items: vec CreateOrderItem;
+   payment_method: PaymentMethod;
+   shipping_address: ShippingAddress;
+ };
+type CheckoutSession = 
+ record {
+   reference: text;
+   url: opt text;
+ };
+type Cell = 
+ record {
+   name: text;
+   value: Value;
+ };
+service : {
+  checkCryptoPayment: (reference: text) -> (Result_3);
+  confirmCryptoPayment: (reference: text) -> (Result_3);
+  createCheckoutSession: (order: Order) -> (Result_6);
+  createOrder: (input: CreateOrderInput) -> (Result_5);
+  execute: (qJson: text) -> (Result__1) query;
+  getApiDoc: () -> (text) query;
+  getCryptoConfig: () -> (CryptoConfigView) query;
+  getCryptoDepositInfo: (reference: text) -> (Result_4) query;
+  getCryptoPaymentStatus: (reference: text) -> (Result_3) query;
+  getDashboardData: () -> (text);
+  getNAKPrice: () -> (text);
+  getOrderStatus: (reference: text) -> (opt Order) query;
+  getPaymentStatus: (reference: text) -> (PaymentStatus);
+  getProduct: (slugOrId: text) -> (opt Product) query;
+  getTokenImage: (chainId: text, tokenAddress: text) -> (text);
+  getTokenProfile: (chainId: text, tokenAddress: text) -> (text);
+  getTreasuryTokens: () -> (text);
+  handlePaymentConfirmation: (payload: text) -> (Result_2);
+  listProducts: () -> (vec Product) query;
+  releaseExpiredOrders: () -> (nat);
+  schema: () -> (text) query;
+  sweepCryptoToTreasury: (reference: text) -> (Result_1);
+  transform: (input: TransformationInput) -> (TransformationOutput) query;
+  updateLedgerConfig: (token: Token, canisterId: principal, decimals: 
+   nat8, fee: nat) -> (Result);
+  updateTreasury: ("principal": principal, subaccount: opt blob) -> (Result);
+}

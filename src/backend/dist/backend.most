@@ -1,0 +1,229 @@
+// Version: 4.0.0
+type CryptoConfig__840332871 =
+  {
+    var ckUSDC : LedgerConfig__22772081;
+    var icp : LedgerConfig__22772081;
+    var treasuryPrincipal : Principal;
+    var treasurySubaccount : ?Blob
+  };
+type CryptoPaymentStatus__534760421 =
+  {
+    #awaiting_payment;
+    #expired;
+    #overpayment : {expected : Nat; received : Nat};
+    #paid : {blockIndex : Nat};
+    #underpayment : {expected : Nat; received : Nat}
+  };
+type CryptoPaymentStatus__692924966 =
+  {
+    #awaiting_payment;
+    #expired;
+    #overpayment : {expected : Nat; received : Nat};
+    #paid : {blockIndex : Nat};
+    #underpayment : {expected : Nat; received : Nat}
+  };
+type CryptoPayment__509112777 =
+  {
+    amountDue : Nat;
+    confirmedBlockIndex : ?Nat;
+    createdAt : Int;
+    expiresAt : Int;
+    orderId : Nat;
+    reference : Text;
+    status : CryptoPaymentStatus__692924966;
+    subaccount : Blob;
+    token : Token__796771584;
+    updatedAt : Int
+  };
+type CryptoPayment__939263613 =
+  {
+    amountDue : Nat;
+    confirmedBlockIndex : ?Nat;
+    createdAt : Int;
+    expiresAt : Int;
+    orderId : Nat;
+    reference : Text;
+    status : CryptoPaymentStatus__534760421;
+    subaccount : Blob;
+    token : Token__2027932;
+    updatedAt : Int
+  };
+type Data__265875254<K, V> = {var count : Nat__58649523; kvs : [var ?(K, V)]};
+type Internal__161573640<K, V> =
+  {children : [var ?Node__430031793<K, V>]; data : Data__265875254<K, V>};
+type Leaf__1045638083<K, V> = {data : Data__265875254<K, V>};
+type LedgerConfig__22772081 =
+  {canisterId : Principal; decimals : Nat8; fee : Nat};
+type LedgerConfig__644064518 =
+  {canisterId : Principal; decimals : Nat8; fee : Nat};
+type List__1004628775<T> =
+  {
+    var blockIndex : Nat__58649523;
+    var blocks : [var [var ?T]];
+    var elementIndex : Nat__58649523
+  };
+type List__89170296<T> = List__1004628775<T>;
+type Map__13625999<K, V> =
+  {var root : Node__430031793<K, V>; var size : Nat__58649523};
+type Map__386906547<K, V> = Map__670138087<K, V>;
+type Map__670138087<K, V> = Map__13625999<K, V>;
+type Nat__58649523 = Nat__920180692;
+type Nat__920180692 = Nat;
+type NewActor__342108653 =
+  {
+    cryptoConfig : CryptoConfig__840332871;
+    cryptoPayments : Map__386906547<Text, CryptoPayment__939263613>;
+    orders : List__89170296<Order__988369937>;
+    products : List__89170296<Product__766750194>;
+    state : {var nextOrderId : Nat}
+  };
+type Node__430031793<K, V> =
+  {#internal : Internal__161573640<K, V>; #leaf : Leaf__1045638083<K, V>};
+type OldActor__737923730 = {};
+type OrderItem__476998221 =
+  {
+    name : Text;
+    product_id : Nat;
+    quantity : Nat;
+    unit_amount : Nat;
+    variant_id : Text
+  };
+type OrderItem__942383872 =
+  {
+    name : Text;
+    product_id : ProductId__564050111;
+    quantity : Nat;
+    unit_amount : Nat;
+    variant_id : Text
+  };
+type Order__329293681 =
+  {
+    created_at : Int;
+    currency : Text;
+    customer_email : Text;
+    customer_name : Text;
+    id : Nat;
+    items : [OrderItem__942383872];
+    payment_method : PaymentMethod__771633736;
+    payment_reference : ?Text;
+    payment_status : PaymentStatus__622475758;
+    reference : Text;
+    shipping : Nat;
+    shipping_address : ShippingAddress__1045127265;
+    subtotal : Nat;
+    tax : Nat;
+    total : Nat;
+    updated_at : Int
+  };
+type Order__988369937 =
+  {
+    created_at : Int;
+    currency : Text;
+    customer_email : Text;
+    customer_name : Text;
+    id : Nat;
+    items : [OrderItem__476998221];
+    payment_method : PaymentMethod__332552422;
+    payment_reference : ?Text;
+    payment_status : PaymentStatus__815182682;
+    reference : Text;
+    shipping : Nat;
+    shipping_address : ShippingAddress__643020747;
+    subtotal : Nat;
+    tax : Nat;
+    total : Nat;
+    updated_at : Int
+  };
+type PaymentMethod__332552422 =
+  {#card_stripe; #crypto_ckusdc; #crypto_icp; #manual};
+type PaymentMethod__771633736 =
+  {#card_stripe; #crypto_ckusdc; #crypto_icp; #manual};
+type PaymentStatus__622475758 = {#cancelled; #expired; #paid; #pending};
+type PaymentStatus__815182682 = {#cancelled; #expired; #paid; #pending};
+type ProductId__564050111 = Nat;
+type ProductVariant__707504129 =
+  {id : Text; inventory : Nat; name : Text; price : Nat; size : Text};
+type ProductVariant__865525155 =
+  {id : Text; inventory : Nat; name : Text; price : Nat; size : Text};
+type Product__766750194 =
+  {
+    active : Bool;
+    category : Text;
+    created_at : Int;
+    currency : Text;
+    description : Text;
+    id : Nat;
+    images : [Text];
+    inventory : Nat;
+    name : Text;
+    price : Nat;
+    slug : Text;
+    updated_at : Int;
+    variants : [ProductVariant__707504129]
+  };
+type Product__896422531 =
+  {
+    active : Bool;
+    category : Text;
+    created_at : Int;
+    currency : Text;
+    description : Text;
+    id : ProductId__564050111;
+    images : [Text];
+    inventory : Nat;
+    name : Text;
+    price : Nat;
+    slug : Text;
+    updated_at : Int;
+    variants : [ProductVariant__865525155]
+  };
+type ShippingAddress__1045127265 =
+  {
+    city : Text;
+    country : Text;
+    line1 : Text;
+    line2 : ?Text;
+    postal_code : Text;
+    region : Text
+  };
+type ShippingAddress__643020747 =
+  {
+    city : Text;
+    country : Text;
+    line1 : Text;
+    line2 : ?Text;
+    postal_code : Text;
+    region : Text
+  };
+type Token__2027932 = {#ICP; #ckUSDC};
+type Token__796771584 = {#ICP; #ckUSDC};
+{
+  "20260830_030000" : (old : OldActor__737923730) -> NewActor__342108653
+}
+actor  {
+  stable cryptoConfig :
+    {
+      var ckUSDC : LedgerConfig__644064518;
+      var icp : LedgerConfig__644064518;
+      var treasuryPrincipal : Principal;
+      var treasurySubaccount : ?Blob
+    };
+  stable cryptoPayments :
+    {
+      var root : Node__430031793<Text, CryptoPayment__509112777>;
+      var size : Nat__58649523
+    };
+  stable orders :
+    {
+      var blockIndex : Nat__58649523;
+      var blocks : [var [var ?Order__329293681]];
+      var elementIndex : Nat__58649523
+    };
+  stable products :
+    {
+      var blockIndex : Nat__58649523;
+      var blocks : [var [var ?Product__896422531]];
+      var elementIndex : Nat__58649523
+    };
+  stable state : {var nextOrderId : Nat}
+};

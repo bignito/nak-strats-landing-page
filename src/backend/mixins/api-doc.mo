@@ -46,6 +46,29 @@ treasury/dashboard data from external services.
   — update. Delegates to the payment adapter to process a payment
   confirmation. The default adapter always returns `#ok()`.
 
+### Admin access control
+
+The backend has a principal-based admin allowlist stored in stable state. The
+allowlist starts empty; the first admin claims it via `claimInitialAdmin`, and
+further admins are added with `addAdmin`. Every privileged method binds its
+caller at the top of the function (before any await), explicitly rejects the
+anonymous principal, and traps when the caller is not in the allowlist.
+
+- `claimInitialAdmin() : async Bool` — update. One-time bootstrap: sets the
+  caller as the first admin, callable ONLY while the allowlist is empty, and
+  permanently dead once an admin exists. Rejects the anonymous principal.
+- `addAdmin(p : Principal) : async Bool` — update. Admin-only. Adds a principal
+  to the admin allowlist.
+- `removeAdmin(p : Principal) : async Bool` — update. Admin-only. Removes a
+  principal from the allowlist. The last remaining admin cannot remove
+  themselves, so the allowlist can never become empty.
+- `listAdmins() : async [Principal]` — update. Admin-only. Lists all admin
+  principals. The allowlist is sensitive and is NOT exposed through OQL — it is
+  only readable through this admin-only method.
+- `isAdmin() : async Bool` — query. Public. Reports only on the caller:
+  returns `true` when the caller is a non-anonymous member of the allowlist,
+  `false` otherwise.
+
 ### Crypto checkout (ckUSDC via ICRC-1)
 
 - `getCryptoConfig() : async CryptoConfigView` — query. Returns the current
@@ -83,14 +106,56 @@ treasury/dashboard data from external services.
   Never transfers more than `balance - fee`, so the sweep cannot fail on
   insufficient funds and never leaves the subaccount unable to cover the fee.
 - `updateTreasury(principal : Principal, subaccount : ?Blob) : async
-  Result<(), CryptoPaymentError>` — update. Admin-only (controller). Updates
-  the treasury principal and optional subaccount that confirmed funds are swept
-  to. Returns `#err(#unauthorized)` for a non-controller caller.
+  Result<(), CryptoPaymentError>` — update. Admin-only. Updates the treasury
+  principal and optional subaccount that confirmed funds are swept to. Traps
+  for a caller that is not a non-anonymous member of the admin allowlist.
 - `updateLedgerConfig(token : Token, canisterId : Principal, decimals : Nat8,
-  fee : Nat) : async Result<(), CryptoPaymentError>` — update. Admin-only
-  (controller). Updates the ledger configuration (canister id, decimals,
-  transfer fee) for the given token. Returns `#err(#unauthorized)` for a
-  non-controller caller.
+  fee : Nat) : async Result<(), CryptoPaymentError>` — update. Admin-only.
+  Updates the ledger configuration (canister id, decimals, transfer fee) for
+  the given token. Traps for a caller that is not a non-anonymous member of the
+  admin allowlist.
+
+### Card checkout (Stripe via external payment service)
+
+- `getPaymentServiceConfig() : async PaymentServiceConfigView` — query.
+  Returns the payment service configuration view: the configured
+  `PAYMENT_SERVICE_URL` and a `tokenSet : Bool` flag indicating whether the
+  `PAYMENT_SERVICE_TOKEN` has been set. The token value itself is write-only
+  and is NEVER returned — only the boolean flag, so the frontend can decide
+  whether to offer card checkout.
+- `updatePaymentServiceUrl(url : Text) : async Result<(), PaymentServiceError>`
+  — update. Admin-only. Sets the payment service base URL. Traps for a caller
+  that is not a non-anonymous member of the admin allowlist.
+- `updatePaymentServiceToken(token : Text) : async Result<(), PaymentServiceError>`
+  — update. Admin-only. Sets the shared bearer token used to
+  authenticate HTTPS outcalls to the payment service. The token is stored but
+  never returned to any caller (write-only). Traps for a caller that is not a
+  non-anonymous member of the admin allowlist.
+- `createCardCheckoutSession(reference : Text, successUrl : Text, cancelUrl :
+  Text) : async Result<CheckoutSession, PaymentServiceError>` — update. For a
+  pending `#card_stripe` order, makes an HTTPS outcall POST to
+  `{PAYMENT_SERVICE_URL}/create-checkout-session` with the authoritative
+  server-side order total and line items, and returns the Stripe-hosted
+  `checkoutUrl` to redirect the customer to. Returns `#err(#notConfigured)`
+  when the URL or token is unset, and `#err(#outcallFailed)` when the payment
+  service is unreachable — the order is left `#pending`, never marked paid.
+- `confirmCardPayment(reference : Text) : async Result<PaymentStatus,
+  PaymentServiceError>` — update. Makes an HTTPS outcall GET to
+  `{PAYMENT_SERVICE_URL}/order-status/{reference}` and marks the order `#paid`
+  ONLY when the server-side status is `\"paid\"`. Records the returned
+  `paymentReference` as the order's `payment_reference` and decrements
+  inventory. Idempotent: confirming an already-paid order does not
+  double-decrement inventory or duplicate the order. Returns
+  `#err(#outcallFailed)` when the payment service is unreachable, leaving the
+  order `#pending`.
+- `cancelCardOrder(reference : Text) : async Result<(), PaymentServiceError>` —
+  update. Cancels a pending `#card_stripe` order and releases its reserved
+  inventory. Returns `#err(#notFound)` for an unknown reference.
+- `paymentServiceTransform(input : TransformationInput) : async
+  TransformationOutput` — query. The HTTP outcall response transform for the
+  payment service: strips every response header (Date, request IDs, Stripe
+  trace headers) so responses are identical across replicas, returning only the
+  stable JSON body.
 
 ### HTTP outcall helpers
 
@@ -112,8 +177,8 @@ treasury/dashboard data from external services.
 ### OQL query layer
 
 - `schema() : async Text` — query. Returns a JSON catalogue of the queryable
-  entities (`product`, `order`, `cryptoPayment`, `cryptoConfig`), their primary
-  keys, fields, and edges.
+  entities (`product`, `order`, `cryptoPayment`, `cryptoConfig`,
+  `paymentServiceConfig`), their primary keys, fields, and edges.
 - `execute(qJson : Text) : async Result` — query. Runs a JSON-encoded OQL query
   and returns matching rows. See the OQL documentation for the query grammar.
 
@@ -130,19 +195,49 @@ The storefront does not gate its public methods on a signed-in caller:
   `getCryptoPaymentStatus`, `checkCryptoPayment`, `confirmCryptoPayment`,
   `sweepCryptoToTreasury`) are callable by any caller, including anonymous
   callers.
+- `isAdmin() : async Bool` is a public query that reports only on the caller:
+  it returns `true` when the caller is a non-anonymous member of the admin
+  allowlist, and `false` otherwise. It never reveals the allowlist contents.
 
-Two crypto configuration methods are admin-only and require a controller
-caller:
+### Admin allowlist
 
-- `updateTreasury` and `updateLedgerConfig` check `Principal.isController(caller)`
-  and return `#err(#unauthorized)` for any non-controller caller. Only the
-  canister controller may change the treasury destination or the ledger
-  configuration.
+Privileged configuration methods are gated by a principal-based admin allowlist
+stored in stable state (survives upgrades). The allowlist starts empty; the
+first admin claims it via `claimInitialAdmin()`. Every privileged method binds
+its caller at the top of the function (before any await), explicitly rejects the
+anonymous principal (`2vxsx-fae`), and traps when the caller is not a
+non-anonymous member of the allowlist.
 
-There is no registration gate and no role model in this backend: no method
-requires a signed-in (non-anonymous) caller, and no method distinguishes owner,
-admin, or anonymous callers beyond the controller check on the two config
-methods above. Any caller may invoke any other public method.
+Admin management methods:
+
+- `claimInitialAdmin() : async Bool` — one-time bootstrap. Sets the caller as
+  the first admin, callable ONLY while the allowlist is empty. Returns `false`
+  (and does nothing) when the allowlist is already non-empty, so it is
+  permanently dead once an admin exists. Rejects the anonymous principal by
+  returning `false`.
+- `addAdmin(p : Principal) : async Bool` — admin-only. Adds `p` to the
+  allowlist. Returns `false` when `p` is the anonymous principal. Traps for a
+  non-admin caller.
+- `removeAdmin(p : Principal) : async Bool` — admin-only. Removes `p` from the
+  allowlist. Returns `false` (and does nothing) when the allowlist has only one
+  member, so the last remaining admin can never remove themselves and lock the
+  canister out. Traps for a non-admin caller.
+- `listAdmins() : async [Principal]` — admin-only. Returns the current admin
+  principals. Traps for a non-admin caller.
+
+Admin-gated privileged methods (trap for a non-admin or anonymous caller):
+
+- `updateTreasury` and `updateLedgerConfig` require a non-anonymous admin
+  caller to change the treasury destination or the ledger configuration.
+- `updatePaymentServiceUrl` and `updatePaymentServiceToken` require a
+  non-anonymous admin caller to set the payment service URL or the shared
+  bearer token. The token is write-only: it is stored but never returned to any
+  caller.
+
+There is no registration gate and no role model beyond the admin allowlist: no
+method requires a signed-in (non-anonymous) caller for the public storefront
+methods, and the only privileged role is admin allowlist membership on the
+configuration methods above. Any caller may invoke any other public method.
 
 The app's frontend pins an Internet Identity derivation origin, published at
 `/.well-known/ii-derivation-origin` when available. An agent already holding
@@ -167,12 +262,18 @@ OQL authorization is per entity and is enforced against the live caller on both
 - `cryptoConfig` — `#controllerOnly`: only the canister controller reads the
   single crypto configuration row (treasury destination and ledger configs).
   It is never exposed to end users.
+- `paymentServiceConfig` — `#controllerOnly`: only the canister controller
+  reads the single payment service configuration row. It exposes only the URL
+  and a `token_set` boolean — the token value itself is never exposed through
+  OQL.
 
 ## Units and Encodings
 
 - **Money**: `price`, `subtotal`, `tax`, `shipping`, `total`, and
   `unit_amount` are `Nat` values in the smallest currency unit (cents for USD).
-  `currency` is a `Text` ISO code, currently `\"USD\"`.
+  `currency` is a `Text` ISO code, currently `\"USD\"`. For card checkout, the
+  `unitAmount` sent to the payment service is an INTEGER in cents (e.g. $35.00
+  = 3500) and `quantity` is a positive integer.
 - **Timestamps**: `created_at` and `updated_at` are `Int` values in
   nanoseconds since the Unix epoch (`Time.now()`).
 - **Identifiers**: `Product.id` and `Order.id` are `Nat`. `Order.reference` is
@@ -212,6 +313,10 @@ OQL authorization is per entity and is enforced against the live caller on both
   `Text` (or `\"\"` when unset), and each ledger is flattened into
   `<token>_canister_id` (`Text`), `<token>_decimals` (`Nat`), and
   `<token>_fee` (`Nat`) columns for `ckusdc` and `icp`.
+- **OQL payment service encoding**: In the OQL `paymentServiceConfig` entity (a
+  single row), `url` is the configured payment service URL `Text` and
+  `token_set` is a `Bool` indicating whether the write-only token has been set.
+  The token value itself is never exposed.
 
 ## Lifecycle and Polling
 
@@ -238,6 +343,27 @@ For a crypto order (`#crypto_ckusdc`), the lifecycle is:
 5. If the deposit window expires without confirmation,
    `releaseInventoryOnExpiry` restores the reserved inventory and marks the
    order and payment `#expired`.
+
+For a card order (`#card_stripe`), the lifecycle is:
+
+1. `createOrder` creates the order with `payment_status = #pending` and
+   `payment_method = #card_stripe`. Inventory is reserved (decremented) at
+   order creation.
+2. `createCardCheckoutSession(reference, successUrl, cancelUrl)` makes an HTTPS
+   outcall POST to `{PAYMENT_SERVICE_URL}/create-checkout-session` with the
+   authoritative server-side order total and line items, and returns the
+   Stripe-hosted `checkoutUrl` to redirect the customer to.
+3. Stripe returns the customer to `successUrl` or `cancelUrl` (with the order
+   reference). The success page MUST NOT mark the order paid — it polls the
+   canister.
+4. The frontend polls `confirmCardPayment(reference)`, which makes an HTTPS
+   outcall GET to `{PAYMENT_SERVICE_URL}/order-status/{reference}`. Only when
+   the server-side status is `\"paid\"` is the order marked `#paid`, the returned
+   `paymentReference` recorded as `payment_reference`, and inventory
+   decremented.
+5. On the cancelled path, `cancelCardOrder(reference)` releases the reserved
+   inventory and marks the order `#cancelled`, and the customer is offered a
+   return to the cart.
 
 To check an order's status, poll `getOrderStatus(reference)` (a query) or
 `getPaymentStatus(reference)`. Polling is safe and idempotent — these methods
@@ -267,6 +393,14 @@ drives polling, and a backend timer check can call `checkCryptoPayment` /
   adapter is a no-op.
 - `createCheckoutSession` and `getPaymentStatus` are read/forwarding methods
   with no destructive effect in the default adapter.
+- `confirmCardPayment` is idempotent: confirming an already-paid order returns
+  the existing `#paid` status without re-decrementing inventory or duplicating
+  the order. Inventory is reserved once at order creation and only released on
+  cancellation or expiry.
+- `cancelCardOrder` is idempotent: cancelling an already-cancelled or
+  already-paid order is a no-op and does not double-release inventory.
+- `createCardCheckoutSession` is safe to retry: it only creates a Stripe
+  checkout session and never marks the order paid or mutates inventory.
 
 ## Errors, Traps, Limits, and Gotchas
 
@@ -281,6 +415,14 @@ drives polling, and a backend timer check can call `checkCryptoPayment` /
   caller-correctable problems: `#notFound`, `#expired`, `#underpayment`,
   `#overpayment`, `#unauthorized`, `#invalidConfig`, `#ledgerError`,
   `#sweepFailed`, and `#notCryptoOrder`. They do not trap on these.
+- The admin-gated configuration methods (`updateTreasury`, `updateLedgerConfig`,
+  `updatePaymentServiceUrl`, `updatePaymentServiceToken`, `addAdmin`,
+  `removeAdmin`, `listAdmins`) TRAP for a caller that is not a non-anonymous
+  member of the admin allowlist, and for the anonymous principal. This is an
+  authorization failure, not a caller-correctable error, so it reaches the
+  caller as a reject rather than a `Result` error. `claimInitialAdmin` returns
+  `false` (rather than trapping) when the allowlist is already non-empty or the
+  caller is anonymous.
 - `checkCryptoPayment` and `confirmCryptoPayment` return `#err(#expired)` once
   the deposit window has passed; they never mark a payment paid from a
   frontend claim — only an on-ledger balance at least the amount due counts.
@@ -296,6 +438,33 @@ drives polling, and a backend timer check can call `checkCryptoPayment` /
 - The payment adapter is `transient` and recreated on every restart; the
   default `cryptoAdapter` performs real ckUSDC payment creation and ledger
   sweeps. Configure a real adapter before relying on payment confirmation.
+- The card payment methods return a `PaymentServiceError` variant for
+  caller-correctable problems: `#notFound`, `#notConfigured(msg)`,
+  `#outcallFailed(msg)`, `#invalidResponse(msg)`, `#unauthorized`, and
+  `#alreadyPaid`. They do not trap on these.
+- `createCardCheckoutSession` returns `#err(#notConfigured)` when
+  `PAYMENT_SERVICE_URL` or `PAYMENT_SERVICE_TOKEN` is unset, and
+  `#err(#outcallFailed)` when the payment service is unreachable. In both cases
+  the order is left `#pending` — never silently marked paid.
+- `confirmCardPayment` returns `#err(#outcallFailed)` when the payment service
+  is unreachable, leaving the order `#pending`. It never marks an order paid
+  from a frontend claim — only a server-side `order-status` of `\"paid\"` counts.
+- **No Stripe secret key exists anywhere in the codebase.** Canister state is
+  replicated across independent node providers and is not confidential storage.
+  Stripe credentials live only in the external payment service, reached over
+  HTTPS outcall. The canister authenticates to that service with the shared
+  bearer token.
+- `PAYMENT_SERVICE_URL` and `PAYMENT_SERVICE_TOKEN` are admin-configurable at
+  runtime via `updatePaymentServiceUrl` / `updatePaymentServiceToken` and are
+  never hardcoded in source. The token is write-only: it is stored but never
+  returned to any caller (including through OQL, which exposes only the URL and
+  a `token_set` boolean).
+- HTTPS outcalls cost cycles. The outcall is configured with an appropriate
+  cycles amount; if an outcall fails due to insufficient cycles, the card
+  methods return a clear `#err(#outcallFailed)` error rather than crashing.
+- The card checkout transform (`paymentServiceTransform`) strips every response
+  header (Date, request IDs, Stripe trace headers) so outcall responses are
+  identical across replicas — required for IC consensus.
 "
   };
 };

@@ -1,4 +1,5 @@
 import type {
+  CheckoutSession,
   CryptoConfigView,
   CryptoPaymentError,
   CryptoPaymentStatus,
@@ -6,12 +7,15 @@ import type {
   LedgerConfig,
   Order,
   PaymentMethod,
+  PaymentServiceConfigView,
+  PaymentServiceError,
   PaymentStatus,
   Product,
   Token,
 } from "@/backend";
 
 export type {
+  CheckoutSession,
   CryptoConfigView,
   CryptoPaymentError,
   CryptoPaymentStatus,
@@ -19,6 +23,8 @@ export type {
   LedgerConfig,
   Order,
   PaymentMethod,
+  PaymentServiceConfigView,
+  PaymentServiceError,
   PaymentStatus,
   Product,
   Token,

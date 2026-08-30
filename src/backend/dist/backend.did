@@ -37,35 +37,50 @@ type Result__1 =
    hasMore: bool;
    rows: vec vec Cell;
  };
-type Result_6 = 
+type Result_9 = 
+ variant {
+   err: PaymentServiceError;
+   ok: PaymentStatus;
+ };
+type Result_8 = 
+ variant {
+   err: PaymentServiceError;
+   ok: CheckoutSession;
+ };
+type Result_7 = 
  variant {
    err: PaymentError;
    ok: CheckoutSession;
  };
-type Result_5 = 
+type Result_6 = 
  variant {
    err: OrderError;
    ok: Order;
  };
-type Result_4 = 
+type Result_5 = 
  variant {
    err: CryptoPaymentError;
    ok: DepositInfo;
  };
-type Result_3 = 
+type Result_4 = 
  variant {
    err: CryptoPaymentError;
    ok: CryptoPaymentStatus;
  };
-type Result_2 = 
+type Result_3 = 
  variant {
    err: PaymentError;
    ok;
  };
-type Result_1 = 
+type Result_2 = 
  variant {
    err: CryptoPaymentError;
    ok: nat;
+ };
+type Result_1 = 
+ variant {
+   err: PaymentServiceError;
+   ok;
  };
 type Result = 
  variant {
@@ -103,6 +118,20 @@ type PaymentStatus =
    expired;
    paid;
    pending;
+ };
+type PaymentServiceError = 
+ variant {
+   alreadyPaid;
+   invalidResponse: text;
+   notConfigured: text;
+   notFound;
+   outcallFailed: text;
+   unauthorized;
+ };
+type PaymentServiceConfigView = 
+ record {
+   tokenSet: bool;
+   url: text;
  };
 type PaymentMethod = 
  variant {
@@ -252,30 +281,44 @@ type Cell =
    value: Value;
  };
 service : {
-  checkCryptoPayment: (reference: text) -> (Result_3);
-  confirmCryptoPayment: (reference: text) -> (Result_3);
-  createCheckoutSession: (order: Order) -> (Result_6);
-  createOrder: (input: CreateOrderInput) -> (Result_5);
+  addAdmin: (p: principal) -> (bool);
+  cancelCardOrder: (reference: text) -> (Result_1);
+  checkCryptoPayment: (reference: text) -> (Result_4);
+  claimInitialAdmin: () -> (bool);
+  confirmCardPayment: (reference: text) -> (Result_9);
+  confirmCryptoPayment: (reference: text) -> (Result_4);
+  createCardCheckoutSession: (reference: text, successUrl: text, cancelUrl:
+   text) -> (Result_8);
+  createCheckoutSession: (order: Order) -> (Result_7);
+  createOrder: (input: CreateOrderInput) -> (Result_6);
   execute: (qJson: text) -> (Result__1) query;
   getApiDoc: () -> (text) query;
   getCryptoConfig: () -> (CryptoConfigView) query;
-  getCryptoDepositInfo: (reference: text) -> (Result_4) query;
-  getCryptoPaymentStatus: (reference: text) -> (Result_3) query;
+  getCryptoDepositInfo: (reference: text) -> (Result_5) query;
+  getCryptoPaymentStatus: (reference: text) -> (Result_4) query;
   getDashboardData: () -> (text);
   getNAKPrice: () -> (text);
   getOrderStatus: (reference: text) -> (opt Order) query;
+  getPaymentServiceConfig: () -> (PaymentServiceConfigView) query;
   getPaymentStatus: (reference: text) -> (PaymentStatus);
   getProduct: (slugOrId: text) -> (opt Product) query;
   getTokenImage: (chainId: text, tokenAddress: text) -> (text);
   getTokenProfile: (chainId: text, tokenAddress: text) -> (text);
   getTreasuryTokens: () -> (text);
-  handlePaymentConfirmation: (payload: text) -> (Result_2);
+  handlePaymentConfirmation: (payload: text) -> (Result_3);
+  isAdmin: () -> (bool) query;
+  listAdmins: () -> (vec principal);
   listProducts: () -> (vec Product) query;
+  paymentServiceTransform: (input: TransformationInput) ->
+   (TransformationOutput) query;
   releaseExpiredOrders: () -> (nat);
+  removeAdmin: (p: principal) -> (bool);
   schema: () -> (text) query;
-  sweepCryptoToTreasury: (reference: text) -> (Result_1);
+  sweepCryptoToTreasury: (reference: text) -> (Result_2);
   transform: (input: TransformationInput) -> (TransformationOutput) query;
   updateLedgerConfig: (token: Token, canisterId: principal, decimals: 
    nat8, fee: nat) -> (Result);
+  updatePaymentServiceToken: (token: text) -> (Result_1);
+  updatePaymentServiceUrl: (url: text) -> (Result_1);
   updateTreasury: ("principal": principal, subaccount: opt blob) -> (Result);
 }

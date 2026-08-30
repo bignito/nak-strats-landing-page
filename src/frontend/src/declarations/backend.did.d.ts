@@ -106,6 +106,16 @@ export type PaymentMethod = { 'crypto_icp' : null } |
   { 'card_stripe' : null } |
   { 'crypto_ckusdc' : null } |
   { 'manual' : null };
+export interface PaymentServiceConfigView {
+  'url' : string,
+  'tokenSet' : boolean,
+}
+export type PaymentServiceError = { 'alreadyPaid' : null } |
+  { 'notConfigured' : string } |
+  { 'notFound' : null } |
+  { 'outcallFailed' : string } |
+  { 'unauthorized' : null } |
+  { 'invalidResponse' : string };
 export type PaymentStatus = { 'cancelled' : null } |
   { 'expired' : null } |
   { 'pending' : null } |
@@ -135,18 +145,24 @@ export interface ProductVariant {
 }
 export type Result = { 'ok' : null } |
   { 'err' : CryptoPaymentError };
-export type Result_1 = { 'ok' : bigint } |
+export type Result_1 = { 'ok' : null } |
+  { 'err' : PaymentServiceError };
+export type Result_2 = { 'ok' : bigint } |
   { 'err' : CryptoPaymentError };
-export type Result_2 = { 'ok' : null } |
+export type Result_3 = { 'ok' : null } |
   { 'err' : PaymentError };
-export type Result_3 = { 'ok' : CryptoPaymentStatus } |
+export type Result_4 = { 'ok' : CryptoPaymentStatus } |
   { 'err' : CryptoPaymentError };
-export type Result_4 = { 'ok' : DepositInfo } |
+export type Result_5 = { 'ok' : DepositInfo } |
   { 'err' : CryptoPaymentError };
-export type Result_5 = { 'ok' : Order } |
+export type Result_6 = { 'ok' : Order } |
   { 'err' : OrderError };
-export type Result_6 = { 'ok' : CheckoutSession } |
+export type Result_7 = { 'ok' : CheckoutSession } |
   { 'err' : PaymentError };
+export type Result_8 = { 'ok' : CheckoutSession } |
+  { 'err' : PaymentServiceError };
+export type Result_9 = { 'ok' : PaymentStatus } |
+  { 'err' : PaymentServiceError };
 export interface Result__1 { 'hasMore' : boolean, 'rows' : Array<Array<Cell>> }
 export interface ShippingAddress {
   'region' : string,
@@ -174,33 +190,48 @@ export type Value = { 'int' : bigint } |
   { 'null' : null } |
   { 'text' : string };
 export interface _SERVICE {
-  'checkCryptoPayment' : ActorMethod<[string], Result_3>,
-  'confirmCryptoPayment' : ActorMethod<[string], Result_3>,
-  'createCheckoutSession' : ActorMethod<[Order], Result_6>,
-  'createOrder' : ActorMethod<[CreateOrderInput], Result_5>,
+  'addAdmin' : ActorMethod<[Principal], boolean>,
+  'cancelCardOrder' : ActorMethod<[string], Result_1>,
+  'checkCryptoPayment' : ActorMethod<[string], Result_4>,
+  'claimInitialAdmin' : ActorMethod<[], boolean>,
+  'confirmCardPayment' : ActorMethod<[string], Result_9>,
+  'confirmCryptoPayment' : ActorMethod<[string], Result_4>,
+  'createCardCheckoutSession' : ActorMethod<[string, string, string], Result_8>,
+  'createCheckoutSession' : ActorMethod<[Order], Result_7>,
+  'createOrder' : ActorMethod<[CreateOrderInput], Result_6>,
   'execute' : ActorMethod<[string], Result__1>,
   'getApiDoc' : ActorMethod<[], string>,
   'getCryptoConfig' : ActorMethod<[], CryptoConfigView>,
-  'getCryptoDepositInfo' : ActorMethod<[string], Result_4>,
-  'getCryptoPaymentStatus' : ActorMethod<[string], Result_3>,
+  'getCryptoDepositInfo' : ActorMethod<[string], Result_5>,
+  'getCryptoPaymentStatus' : ActorMethod<[string], Result_4>,
   'getDashboardData' : ActorMethod<[], string>,
   'getNAKPrice' : ActorMethod<[], string>,
   'getOrderStatus' : ActorMethod<[string], [] | [Order]>,
+  'getPaymentServiceConfig' : ActorMethod<[], PaymentServiceConfigView>,
   'getPaymentStatus' : ActorMethod<[string], PaymentStatus>,
   'getProduct' : ActorMethod<[string], [] | [Product]>,
   'getTokenImage' : ActorMethod<[string, string], string>,
   'getTokenProfile' : ActorMethod<[string, string], string>,
   'getTreasuryTokens' : ActorMethod<[], string>,
-  'handlePaymentConfirmation' : ActorMethod<[string], Result_2>,
+  'handlePaymentConfirmation' : ActorMethod<[string], Result_3>,
+  'isAdmin' : ActorMethod<[], boolean>,
+  'listAdmins' : ActorMethod<[], Array<Principal>>,
   'listProducts' : ActorMethod<[], Array<Product>>,
+  'paymentServiceTransform' : ActorMethod<
+    [TransformationInput],
+    TransformationOutput
+  >,
   'releaseExpiredOrders' : ActorMethod<[], bigint>,
+  'removeAdmin' : ActorMethod<[Principal], boolean>,
   'schema' : ActorMethod<[], string>,
-  'sweepCryptoToTreasury' : ActorMethod<[string], Result_1>,
+  'sweepCryptoToTreasury' : ActorMethod<[string], Result_2>,
   'transform' : ActorMethod<[TransformationInput], TransformationOutput>,
   'updateLedgerConfig' : ActorMethod<
     [Token, Principal, number, bigint],
     Result
   >,
+  'updatePaymentServiceToken' : ActorMethod<[string], Result_1>,
+  'updatePaymentServiceUrl' : ActorMethod<[string], Result_1>,
   'updateTreasury' : ActorMethod<[Principal, [] | [Uint8Array]], Result>,
 }
 export declare const idlService: IDL.ServiceClass;

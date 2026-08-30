@@ -1,4 +1,4 @@
-import { ArrowDown, Shield, Sparkles, Zap } from "lucide-react";
+import { ArrowDown } from "lucide-react";
 import type React from "react";
 
 const MainContent: React.FC = () => {
@@ -14,6 +14,16 @@ const MainContent: React.FC = () => {
 
           {/* Main Title */}
           <div className="relative">
+            {/* Pixel-art shell mascot with purple radial glow + slow drift */}
+            <div className="shell-glow shell-drift flex items-center justify-center mb-6">
+              <img
+                src="/assets/images/nak-shell.png"
+                alt="NAK STRATS pixel-art shell mascot"
+                className="pixel-art object-contain"
+                style={{ width: "160px", height: "160px" }}
+              />
+            </div>
+
             <h1
               className="mb-6 animate-title-entrance"
               style={{
@@ -23,26 +33,6 @@ const MainContent: React.FC = () => {
             >
               NAK STRATS
             </h1>
-
-            {/* Floating accent elements - smaller */}
-            <div
-              className="absolute -top-8 -left-8 animate-float opacity-30"
-              style={{ animationDelay: "1s" }}
-            >
-              <Sparkles className="w-6 h-6 text-purple-400" />
-            </div>
-            <div
-              className="absolute -top-6 -right-12 animate-float opacity-30"
-              style={{ animationDelay: "2s" }}
-            >
-              <Zap className="w-5 h-5 text-pink-400" />
-            </div>
-            <div
-              className="absolute -bottom-6 left-16 animate-float opacity-30"
-              style={{ animationDelay: "0.5s" }}
-            >
-              <Shield className="w-5 h-5 text-teal-400" />
-            </div>
           </div>
         </div>
 

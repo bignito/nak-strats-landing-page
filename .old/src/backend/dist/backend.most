@@ -1,4 +1,11 @@
 // Version: 4.0.0
+type CryptoConfig__638530895 =
+  {
+    var ckUSDC : LedgerConfig__406562678;
+    var icp : LedgerConfig__406562678;
+    var treasuryPrincipal : Principal;
+    var treasurySubaccount : ?Blob
+  };
 type CryptoConfig__840332871 =
   {
     var ckUSDC : LedgerConfig__22772081;
@@ -6,7 +13,30 @@ type CryptoConfig__840332871 =
     var treasuryPrincipal : Principal;
     var treasurySubaccount : ?Blob
   };
+type CryptoConfig__916531603 =
+  {
+    var ckUSDC : LedgerConfig__784393959;
+    var icp : LedgerConfig__784393959;
+    var treasuryPrincipal : Principal;
+    var treasurySubaccount : ?Blob
+  };
+type CryptoPaymentStatus__289725263 =
+  {
+    #awaiting_payment;
+    #expired;
+    #overpayment : {expected : Nat; received : Nat};
+    #paid : {blockIndex : Nat};
+    #underpayment : {expected : Nat; received : Nat}
+  };
 type CryptoPaymentStatus__534760421 =
+  {
+    #awaiting_payment;
+    #expired;
+    #overpayment : {expected : Nat; received : Nat};
+    #paid : {blockIndex : Nat};
+    #underpayment : {expected : Nat; received : Nat}
+  };
+type CryptoPaymentStatus__61384626 =
   {
     #awaiting_payment;
     #expired;
@@ -21,6 +51,32 @@ type CryptoPaymentStatus__692924966 =
     #overpayment : {expected : Nat; received : Nat};
     #paid : {blockIndex : Nat};
     #underpayment : {expected : Nat; received : Nat}
+  };
+type CryptoPayment__130783087 =
+  {
+    amountDue : Nat;
+    confirmedBlockIndex : ?Nat;
+    createdAt : Int;
+    expiresAt : Int;
+    orderId : Nat;
+    reference : Text;
+    status : CryptoPaymentStatus__289725263;
+    subaccount : Blob;
+    token : Token__398296748;
+    updatedAt : Int
+  };
+type CryptoPayment__303881699 =
+  {
+    amountDue : Nat;
+    confirmedBlockIndex : ?Nat;
+    createdAt : Int;
+    expiresAt : Int;
+    orderId : Nat;
+    reference : Text;
+    status : CryptoPaymentStatus__61384626;
+    subaccount : Blob;
+    token : Token__529220404;
+    updatedAt : Int
   };
 type CryptoPayment__509112777 =
   {
@@ -49,12 +105,20 @@ type CryptoPayment__939263613 =
     updatedAt : Int
   };
 type Data__265875254<K, V> = {var count : Nat__58649523; kvs : [var ?(K, V)]};
+type Data__859131645<T> = {var count : Nat__58649523; elements : [var ?T]};
 type Internal__161573640<K, V> =
   {children : [var ?Node__430031793<K, V>]; data : Data__265875254<K, V>};
+type Internal__778364379<T> =
+  {children : [var ?Node__1045371124<T>]; data : Data__859131645<T>};
 type Leaf__1045638083<K, V> = {data : Data__265875254<K, V>};
+type Leaf__776840865<T> = {data : Data__859131645<T>};
 type LedgerConfig__22772081 =
   {canisterId : Principal; decimals : Nat8; fee : Nat};
+type LedgerConfig__406562678 =
+  {canisterId : Principal; decimals : Nat8; fee : Nat};
 type LedgerConfig__644064518 =
+  {canisterId : Principal; decimals : Nat8; fee : Nat};
+type LedgerConfig__784393959 =
   {canisterId : Principal; decimals : Nat8; fee : Nat};
 type List__1004628775<T> =
   {
@@ -77,10 +141,64 @@ type NewActor__342108653 =
     products : List__89170296<Product__766750194>;
     state : {var nextOrderId : Nat}
   };
+type NewActor__482031018 =
+  {
+    cryptoConfig : CryptoConfig__638530895;
+    cryptoPayments : Map__386906547<Text, CryptoPayment__303881699>;
+    orders : List__89170296<Order__754661737>;
+    paymentServiceConfig : {var token : Text; var url : Text};
+    products : List__89170296<Product__108024356>;
+    state : {var nextOrderId : Nat}
+  };
+type NewActor__961379408 =
+  {
+    adminAllowlist : Set__195681557<Principal>;
+    cryptoConfig : CryptoConfig__916531603;
+    cryptoPayments : Map__386906547<Text, CryptoPayment__130783087>;
+    orders : List__89170296<Order__485945001>;
+    paymentServiceConfig : {var token : Text; var url : Text};
+    products : List__89170296<Product__112684435>;
+    state : {var nextOrderId : Nat}
+  };
+type Node__1045371124<T> =
+  {#internal : Internal__778364379<T>; #leaf : Leaf__776840865<T>};
 type Node__430031793<K, V> =
   {#internal : Internal__161573640<K, V>; #leaf : Leaf__1045638083<K, V>};
+type OldActor__24094659 =
+  {
+    cryptoConfig : CryptoConfig__638530895;
+    cryptoPayments : Map__386906547<Text, CryptoPayment__303881699>;
+    orders : List__89170296<Order__754661737>;
+    products : List__89170296<Product__108024356>;
+    state : {var nextOrderId : Nat}
+  };
+type OldActor__390574271 =
+  {
+    cryptoConfig : CryptoConfig__916531603;
+    cryptoPayments : Map__386906547<Text, CryptoPayment__130783087>;
+    orders : List__89170296<Order__485945001>;
+    paymentServiceConfig : {var token : Text; var url : Text};
+    products : List__89170296<Product__112684435>;
+    state : {var nextOrderId : Nat}
+  };
 type OldActor__737923730 = {};
+type OrderItem__274844834 =
+  {
+    name : Text;
+    product_id : Nat;
+    quantity : Nat;
+    unit_amount : Nat;
+    variant_id : Text
+  };
 type OrderItem__476998221 =
+  {
+    name : Text;
+    product_id : Nat;
+    quantity : Nat;
+    unit_amount : Nat;
+    variant_id : Text
+  };
+type OrderItem__507216989 =
   {
     name : Text;
     product_id : Nat;
@@ -115,6 +233,44 @@ type Order__329293681 =
     total : Nat;
     updated_at : Int
   };
+type Order__485945001 =
+  {
+    created_at : Int;
+    currency : Text;
+    customer_email : Text;
+    customer_name : Text;
+    id : Nat;
+    items : [OrderItem__507216989];
+    payment_method : PaymentMethod__279598433;
+    payment_reference : ?Text;
+    payment_status : PaymentStatus__27467324;
+    reference : Text;
+    shipping : Nat;
+    shipping_address : ShippingAddress__747472943;
+    subtotal : Nat;
+    tax : Nat;
+    total : Nat;
+    updated_at : Int
+  };
+type Order__754661737 =
+  {
+    created_at : Int;
+    currency : Text;
+    customer_email : Text;
+    customer_name : Text;
+    id : Nat;
+    items : [OrderItem__274844834];
+    payment_method : PaymentMethod__898957814;
+    payment_reference : ?Text;
+    payment_status : PaymentStatus__704747783;
+    reference : Text;
+    shipping : Nat;
+    shipping_address : ShippingAddress__71207961;
+    subtotal : Nat;
+    tax : Nat;
+    total : Nat;
+    updated_at : Int
+  };
 type Order__988369937 =
   {
     created_at : Int;
@@ -134,17 +290,59 @@ type Order__988369937 =
     total : Nat;
     updated_at : Int
   };
+type PaymentMethod__279598433 =
+  {#card_stripe; #crypto_ckusdc; #crypto_icp; #manual};
 type PaymentMethod__332552422 =
   {#card_stripe; #crypto_ckusdc; #crypto_icp; #manual};
 type PaymentMethod__771633736 =
   {#card_stripe; #crypto_ckusdc; #crypto_icp; #manual};
+type PaymentMethod__898957814 =
+  {#card_stripe; #crypto_ckusdc; #crypto_icp; #manual};
+type PaymentStatus__27467324 = {#cancelled; #expired; #paid; #pending};
 type PaymentStatus__622475758 = {#cancelled; #expired; #paid; #pending};
+type PaymentStatus__704747783 = {#cancelled; #expired; #paid; #pending};
 type PaymentStatus__815182682 = {#cancelled; #expired; #paid; #pending};
 type ProductId__564050111 = Nat;
+type ProductVariant__2753824 =
+  {id : Text; inventory : Nat; name : Text; price : Nat; size : Text};
+type ProductVariant__590594803 =
+  {id : Text; inventory : Nat; name : Text; price : Nat; size : Text};
 type ProductVariant__707504129 =
   {id : Text; inventory : Nat; name : Text; price : Nat; size : Text};
 type ProductVariant__865525155 =
   {id : Text; inventory : Nat; name : Text; price : Nat; size : Text};
+type Product__108024356 =
+  {
+    active : Bool;
+    category : Text;
+    created_at : Int;
+    currency : Text;
+    description : Text;
+    id : Nat;
+    images : [Text];
+    inventory : Nat;
+    name : Text;
+    price : Nat;
+    slug : Text;
+    updated_at : Int;
+    variants : [ProductVariant__590594803]
+  };
+type Product__112684435 =
+  {
+    active : Bool;
+    category : Text;
+    created_at : Int;
+    currency : Text;
+    description : Text;
+    id : Nat;
+    images : [Text];
+    inventory : Nat;
+    name : Text;
+    price : Nat;
+    slug : Text;
+    updated_at : Int;
+    variants : [ProductVariant__2753824]
+  };
 type Product__766750194 =
   {
     active : Bool;
@@ -177,6 +375,9 @@ type Product__896422531 =
     updated_at : Int;
     variants : [ProductVariant__865525155]
   };
+type Set__195681557<T> = Set__29061695<T>;
+type Set__29061695<T> =
+  {var root : Node__1045371124<T>; var size : Nat__58649523};
 type ShippingAddress__1045127265 =
   {
     city : Text;
@@ -195,12 +396,36 @@ type ShippingAddress__643020747 =
     postal_code : Text;
     region : Text
   };
+type ShippingAddress__71207961 =
+  {
+    city : Text;
+    country : Text;
+    line1 : Text;
+    line2 : ?Text;
+    postal_code : Text;
+    region : Text
+  };
+type ShippingAddress__747472943 =
+  {
+    city : Text;
+    country : Text;
+    line1 : Text;
+    line2 : ?Text;
+    postal_code : Text;
+    region : Text
+  };
 type Token__2027932 = {#ICP; #ckUSDC};
+type Token__398296748 = {#ICP; #ckUSDC};
+type Token__529220404 = {#ICP; #ckUSDC};
 type Token__796771584 = {#ICP; #ckUSDC};
 {
-  "20260830_030000" : (old : OldActor__737923730) -> NewActor__342108653
+  "20260830_030000" : (old : OldActor__737923730) -> NewActor__342108653;
+  "20260830_040000" : (old : OldActor__24094659) -> NewActor__482031018;
+  "20260830_050000" : (old : OldActor__390574271) -> NewActor__961379408
 }
 actor  {
+  stable adminAllowlist :
+    {var root : Node__1045371124<Principal>; var size : Nat__58649523};
   stable cryptoConfig :
     {
       var ckUSDC : LedgerConfig__644064518;
@@ -219,6 +444,7 @@ actor  {
       var blocks : [var [var ?Order__329293681]];
       var elementIndex : Nat__58649523
     };
+  stable paymentServiceConfig : {var token : Text; var url : Text};
   stable products :
     {
       var blockIndex : Nat__58649523;

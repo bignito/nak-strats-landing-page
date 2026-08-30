@@ -27532,11 +27532,33 @@ const createLucideIcon = (iconName, iconNode) => {
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$$ = [
+const __iconNode$11 = [
   ["path", { d: "M12 5v14", key: "s699le" }],
   ["path", { d: "m19 12-7 7-7-7", key: "1idqje" }]
 ];
-const ArrowDown = createLucideIcon("arrow-down", __iconNode$$);
+const ArrowDown = createLucideIcon("arrow-down", __iconNode$11);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$10 = [
+  ["path", { d: "m12 19-7-7 7-7", key: "1l729n" }],
+  ["path", { d: "M19 12H5", key: "x3x0zl" }]
+];
+const ArrowLeft = createLucideIcon("arrow-left", __iconNode$10);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$$ = [
+  ["path", { d: "M5 12h14", key: "1ays0h" }],
+  ["path", { d: "m12 5 7 7-7 7", key: "xquz4c" }]
+];
+const ArrowRight = createLucideIcon("arrow-right", __iconNode$$);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -27544,10 +27566,10 @@ const ArrowDown = createLucideIcon("arrow-down", __iconNode$$);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$_ = [
-  ["path", { d: "m12 19-7-7 7-7", key: "1l729n" }],
-  ["path", { d: "M19 12H5", key: "x3x0zl" }]
+  ["path", { d: "M7 7h10v10", key: "1tivn9" }],
+  ["path", { d: "M7 17 17 7", key: "1vkiza" }]
 ];
-const ArrowLeft = createLucideIcon("arrow-left", __iconNode$_);
+const ArrowUpRight = createLucideIcon("arrow-up-right", __iconNode$_);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -27555,28 +27577,6 @@ const ArrowLeft = createLucideIcon("arrow-left", __iconNode$_);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$Z = [
-  ["path", { d: "M5 12h14", key: "1ays0h" }],
-  ["path", { d: "m12 5 7 7-7 7", key: "xquz4c" }]
-];
-const ArrowRight = createLucideIcon("arrow-right", __iconNode$Z);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$Y = [
-  ["path", { d: "M7 7h10v10", key: "1tivn9" }],
-  ["path", { d: "M7 17 17 7", key: "1vkiza" }]
-];
-const ArrowUpRight = createLucideIcon("arrow-up-right", __iconNode$Y);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$X = [
   [
     "path",
     {
@@ -27586,44 +27586,67 @@ const __iconNode$X = [
   ],
   ["path", { d: "m9 12 2 2 4-4", key: "dzmm74" }]
 ];
-const BadgeCheck = createLucideIcon("badge-check", __iconNode$X);
+const BadgeCheck = createLucideIcon("badge-check", __iconNode$Z);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$W = [
+const __iconNode$Y = [
   ["path", { d: "M3 3v16a2 2 0 0 0 2 2h16", key: "c24i48" }],
   ["path", { d: "M18 17V9", key: "2bz60n" }],
   ["path", { d: "M13 17V5", key: "1frdt8" }],
   ["path", { d: "M8 17v-3", key: "17ska0" }]
 ];
-const ChartColumn = createLucideIcon("chart-column", __iconNode$W);
+const ChartColumn = createLucideIcon("chart-column", __iconNode$Y);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$V = [["path", { d: "M20 6 9 17l-5-5", key: "1gmf2c" }]];
-const Check = createLucideIcon("check", __iconNode$V);
+const __iconNode$X = [["path", { d: "M20 6 9 17l-5-5", key: "1gmf2c" }]];
+const Check = createLucideIcon("check", __iconNode$X);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$U = [["path", { d: "m6 9 6 6 6-6", key: "qrunsl" }]];
-const ChevronDown = createLucideIcon("chevron-down", __iconNode$U);
+const __iconNode$W = [["path", { d: "m6 9 6 6 6-6", key: "qrunsl" }]];
+const ChevronDown = createLucideIcon("chevron-down", __iconNode$W);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$T = [["path", { d: "m9 18 6-6-6-6", key: "mthhwq" }]];
-const ChevronRight = createLucideIcon("chevron-right", __iconNode$T);
+const __iconNode$V = [["path", { d: "m9 18 6-6-6-6", key: "mthhwq" }]];
+const ChevronRight = createLucideIcon("chevron-right", __iconNode$V);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$U = [
+  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
+  ["path", { d: "m9 12 2 2 4-4", key: "dzmm74" }]
+];
+const CircleCheck = createLucideIcon("circle-check", __iconNode$U);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$T = [
+  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
+  ["path", { d: "m15 9-6 6", key: "1uzhvr" }],
+  ["path", { d: "m9 9 6 6", key: "z0biqf" }]
+];
+const CircleX = createLucideIcon("circle-x", __iconNode$T);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -27632,9 +27655,9 @@ const ChevronRight = createLucideIcon("chevron-right", __iconNode$T);
  */
 const __iconNode$S = [
   ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
-  ["path", { d: "m9 12 2 2 4-4", key: "dzmm74" }]
+  ["polyline", { points: "12 6 12 12 16 14", key: "68esgv" }]
 ];
-const CircleCheck = createLucideIcon("circle-check", __iconNode$S);
+const Clock = createLucideIcon("clock", __iconNode$S);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -27642,11 +27665,12 @@ const CircleCheck = createLucideIcon("circle-check", __iconNode$S);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$R = [
-  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
-  ["path", { d: "m15 9-6 6", key: "1uzhvr" }],
-  ["path", { d: "m9 9 6 6", key: "z0biqf" }]
+  ["circle", { cx: "8", cy: "8", r: "6", key: "3yglwk" }],
+  ["path", { d: "M18.09 10.37A6 6 0 1 1 10.34 18", key: "t5s6rm" }],
+  ["path", { d: "M7 6h1v4", key: "1obek4" }],
+  ["path", { d: "m16.71 13.88.7.71-2.82 2.82", key: "1rbuyh" }]
 ];
-const CircleX = createLucideIcon("circle-x", __iconNode$R);
+const Coins = createLucideIcon("coins", __iconNode$R);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -27654,10 +27678,10 @@ const CircleX = createLucideIcon("circle-x", __iconNode$R);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$Q = [
-  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
-  ["polyline", { points: "12 6 12 12 16 14", key: "68esgv" }]
+  ["rect", { width: "14", height: "14", x: "8", y: "8", rx: "2", ry: "2", key: "17jyea" }],
+  ["path", { d: "M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2", key: "zix9uf" }]
 ];
-const Clock = createLucideIcon("clock", __iconNode$Q);
+const Copy = createLucideIcon("copy", __iconNode$Q);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -27665,12 +27689,10 @@ const Clock = createLucideIcon("clock", __iconNode$Q);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$P = [
-  ["circle", { cx: "8", cy: "8", r: "6", key: "3yglwk" }],
-  ["path", { d: "M18.09 10.37A6 6 0 1 1 10.34 18", key: "t5s6rm" }],
-  ["path", { d: "M7 6h1v4", key: "1obek4" }],
-  ["path", { d: "m16.71 13.88.7.71-2.82 2.82", key: "1rbuyh" }]
+  ["rect", { width: "20", height: "14", x: "2", y: "5", rx: "2", key: "ynyp8z" }],
+  ["line", { x1: "2", x2: "22", y1: "10", y2: "10", key: "1b3vmo" }]
 ];
-const Coins = createLucideIcon("coins", __iconNode$P);
+const CreditCard = createLucideIcon("credit-card", __iconNode$P);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -27678,10 +27700,10 @@ const Coins = createLucideIcon("coins", __iconNode$P);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$O = [
-  ["rect", { width: "14", height: "14", x: "8", y: "8", rx: "2", ry: "2", key: "17jyea" }],
-  ["path", { d: "M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2", key: "zix9uf" }]
+  ["line", { x1: "12", x2: "12", y1: "2", y2: "22", key: "7eqyqh" }],
+  ["path", { d: "M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6", key: "1b0p4s" }]
 ];
-const Copy = createLucideIcon("copy", __iconNode$O);
+const DollarSign = createLucideIcon("dollar-sign", __iconNode$O);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -27689,10 +27711,11 @@ const Copy = createLucideIcon("copy", __iconNode$O);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$N = [
-  ["rect", { width: "20", height: "14", x: "2", y: "5", rx: "2", key: "ynyp8z" }],
-  ["line", { x1: "2", x2: "22", y1: "10", y2: "10", key: "1b3vmo" }]
+  ["path", { d: "M15 3h6v6", key: "1q9fwt" }],
+  ["path", { d: "M10 14 21 3", key: "gplh6r" }],
+  ["path", { d: "M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6", key: "a6xqqp" }]
 ];
-const CreditCard = createLucideIcon("credit-card", __iconNode$N);
+const ExternalLink = createLucideIcon("external-link", __iconNode$N);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -27700,29 +27723,6 @@ const CreditCard = createLucideIcon("credit-card", __iconNode$N);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$M = [
-  ["line", { x1: "12", x2: "12", y1: "2", y2: "22", key: "7eqyqh" }],
-  ["path", { d: "M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6", key: "1b0p4s" }]
-];
-const DollarSign = createLucideIcon("dollar-sign", __iconNode$M);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$L = [
-  ["path", { d: "M15 3h6v6", key: "1q9fwt" }],
-  ["path", { d: "M10 14 21 3", key: "gplh6r" }],
-  ["path", { d: "M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6", key: "a6xqqp" }]
-];
-const ExternalLink = createLucideIcon("external-link", __iconNode$L);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$K = [
   ["rect", { width: "18", height: "18", x: "3", y: "3", rx: "2", key: "afitv7" }],
   ["path", { d: "M7 3v18", key: "bbkbws" }],
   ["path", { d: "M3 7.5h4", key: "zfgn84" }],
@@ -27732,14 +27732,14 @@ const __iconNode$K = [
   ["path", { d: "M17 7.5h4", key: "myr1c1" }],
   ["path", { d: "M17 16.5h4", key: "go4c1d" }]
 ];
-const Film = createLucideIcon("film", __iconNode$K);
+const Film = createLucideIcon("film", __iconNode$M);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$J = [
+const __iconNode$L = [
   ["rect", { x: "3", y: "8", width: "18", height: "4", rx: "1", key: "bkv52" }],
   ["path", { d: "M12 8v13", key: "1c76mn" }],
   ["path", { d: "M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7", key: "6wjy6b" }],
@@ -27751,26 +27751,26 @@ const __iconNode$J = [
     }
   ]
 ];
-const Gift = createLucideIcon("gift", __iconNode$J);
+const Gift = createLucideIcon("gift", __iconNode$L);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$I = [
+const __iconNode$K = [
   ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
   ["path", { d: "M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20", key: "13o1zl" }],
   ["path", { d: "M2 12h20", key: "9i4pu4" }]
 ];
-const Globe = createLucideIcon("globe", __iconNode$I);
+const Globe = createLucideIcon("globe", __iconNode$K);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$H = [
+const __iconNode$J = [
   [
     "path",
     {
@@ -27779,14 +27779,14 @@ const __iconNode$H = [
     }
   ]
 ];
-const Heart = createLucideIcon("heart", __iconNode$H);
+const Heart = createLucideIcon("heart", __iconNode$J);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$G = [
+const __iconNode$I = [
   ["path", { d: "M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8", key: "5wwlr5" }],
   [
     "path",
@@ -27796,26 +27796,26 @@ const __iconNode$G = [
     }
   ]
 ];
-const House = createLucideIcon("house", __iconNode$G);
+const House = createLucideIcon("house", __iconNode$I);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$F = [
+const __iconNode$H = [
   ["rect", { width: "18", height: "18", x: "3", y: "3", rx: "2", ry: "2", key: "1m3agn" }],
   ["circle", { cx: "9", cy: "9", r: "2", key: "af1f0g" }],
   ["path", { d: "m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21", key: "1xmnt7" }]
 ];
-const Image = createLucideIcon("image", __iconNode$F);
+const Image = createLucideIcon("image", __iconNode$H);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$E = [
+const __iconNode$G = [
   ["path", { d: "M10 18v-7", key: "wt116b" }],
   [
     "path",
@@ -27829,15 +27829,38 @@ const __iconNode$E = [
   ["path", { d: "M3 22h18", key: "8prr45" }],
   ["path", { d: "M6 18v-7", key: "1ivflk" }]
 ];
-const Landmark = createLucideIcon("landmark", __iconNode$E);
+const Landmark = createLucideIcon("landmark", __iconNode$G);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$D = [["path", { d: "M21 12a9 9 0 1 1-6.219-8.56", key: "13zald" }]];
-const LoaderCircle = createLucideIcon("loader-circle", __iconNode$D);
+const __iconNode$F = [["path", { d: "M21 12a9 9 0 1 1-6.219-8.56", key: "13zald" }]];
+const LoaderCircle = createLucideIcon("loader-circle", __iconNode$F);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$E = [
+  ["rect", { width: "18", height: "11", x: "3", y: "11", rx: "2", ry: "2", key: "1w4ew1" }],
+  ["path", { d: "M7 11V7a5 5 0 0 1 10 0v4", key: "fwvmzm" }]
+];
+const Lock = createLucideIcon("lock", __iconNode$E);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$D = [
+  ["path", { d: "m10 17 5-5-5-5", key: "1bsop3" }],
+  ["path", { d: "M15 12H3", key: "6jk70r" }],
+  ["path", { d: "M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4", key: "u53s6r" }]
+];
+const LogIn = createLucideIcon("log-in", __iconNode$D);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -27845,10 +27868,11 @@ const LoaderCircle = createLucideIcon("loader-circle", __iconNode$D);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$C = [
-  ["rect", { width: "18", height: "11", x: "3", y: "11", rx: "2", ry: "2", key: "1w4ew1" }],
-  ["path", { d: "M7 11V7a5 5 0 0 1 10 0v4", key: "fwvmzm" }]
+  ["path", { d: "m16 17 5-5-5-5", key: "1bji2h" }],
+  ["path", { d: "M21 12H9", key: "dn1m92" }],
+  ["path", { d: "M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4", key: "1uf3rs" }]
 ];
-const Lock = createLucideIcon("lock", __iconNode$C);
+const LogOut = createLucideIcon("log-out", __iconNode$C);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -27984,27 +28008,6 @@ const Plus = createLucideIcon("plus", __iconNode$s);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$r = [
-  ["rect", { width: "5", height: "5", x: "3", y: "3", rx: "1", key: "1tu5fj" }],
-  ["rect", { width: "5", height: "5", x: "16", y: "3", rx: "1", key: "1v8r4q" }],
-  ["rect", { width: "5", height: "5", x: "3", y: "16", rx: "1", key: "1x03jg" }],
-  ["path", { d: "M21 16h-3a2 2 0 0 0-2 2v3", key: "177gqh" }],
-  ["path", { d: "M21 21v.01", key: "ents32" }],
-  ["path", { d: "M12 7v3a2 2 0 0 1-2 2H7", key: "8crl2c" }],
-  ["path", { d: "M3 12h.01", key: "nlz23k" }],
-  ["path", { d: "M12 3h.01", key: "n36tog" }],
-  ["path", { d: "M12 16v.01", key: "133mhm" }],
-  ["path", { d: "M16 12h1", key: "1slzba" }],
-  ["path", { d: "M21 12v.01", key: "1lwtk9" }],
-  ["path", { d: "M12 21v-1", key: "1880an" }]
-];
-const QrCode = createLucideIcon("qr-code", __iconNode$r);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$q = [
   [
     "path",
     { d: "M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z", key: "q3az6g" }
@@ -28013,7 +28016,20 @@ const __iconNode$q = [
   ["path", { d: "M16 12H8", key: "1fr5h0" }],
   ["path", { d: "M13 16H8", key: "wsln4y" }]
 ];
-const ReceiptText = createLucideIcon("receipt-text", __iconNode$q);
+const ReceiptText = createLucideIcon("receipt-text", __iconNode$r);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$q = [
+  ["path", { d: "M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8", key: "v9h5vc" }],
+  ["path", { d: "M21 3v5h-5", key: "1q7to0" }],
+  ["path", { d: "M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16", key: "3uifl3" }],
+  ["path", { d: "M8 16H3v5", key: "1cv678" }]
+];
+const RefreshCw = createLucideIcon("refresh-cw", __iconNode$q);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -28021,19 +28037,6 @@ const ReceiptText = createLucideIcon("receipt-text", __iconNode$q);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$p = [
-  ["path", { d: "M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8", key: "v9h5vc" }],
-  ["path", { d: "M21 3v5h-5", key: "1q7to0" }],
-  ["path", { d: "M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16", key: "3uifl3" }],
-  ["path", { d: "M8 16H3v5", key: "1cv678" }]
-];
-const RefreshCw = createLucideIcon("refresh-cw", __iconNode$p);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$o = [
   [
     "path",
     {
@@ -28044,7 +28047,18 @@ const __iconNode$o = [
   ["path", { d: "M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7", key: "1ydtos" }],
   ["path", { d: "M7 3v4a1 1 0 0 0 1 1h7", key: "t51u73" }]
 ];
-const Save = createLucideIcon("save", __iconNode$o);
+const Save = createLucideIcon("save", __iconNode$p);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$o = [
+  ["path", { d: "m21 21-4.34-4.34", key: "14j7rj" }],
+  ["circle", { cx: "11", cy: "11", r: "8", key: "4ej97u" }]
+];
+const Search = createLucideIcon("search", __iconNode$o);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -28052,10 +28066,16 @@ const Save = createLucideIcon("save", __iconNode$o);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$n = [
-  ["path", { d: "m21 21-4.34-4.34", key: "14j7rj" }],
-  ["circle", { cx: "11", cy: "11", r: "8", key: "4ej97u" }]
+  [
+    "path",
+    {
+      d: "M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z",
+      key: "1ffxy3"
+    }
+  ],
+  ["path", { d: "m21.854 2.147-10.94 10.939", key: "12cjpa" }]
 ];
-const Search = createLucideIcon("search", __iconNode$n);
+const Send = createLucideIcon("send", __iconNode$n);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -28066,13 +28086,13 @@ const __iconNode$m = [
   [
     "path",
     {
-      d: "M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z",
-      key: "1ffxy3"
+      d: "M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z",
+      key: "1qme2f"
     }
   ],
-  ["path", { d: "m21.854 2.147-10.94 10.939", key: "12cjpa" }]
+  ["circle", { cx: "12", cy: "12", r: "3", key: "1v7zrd" }]
 ];
-const Send = createLucideIcon("send", __iconNode$m);
+const Settings = createLucideIcon("settings", __iconNode$m);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -28083,13 +28103,14 @@ const __iconNode$l = [
   [
     "path",
     {
-      d: "M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z",
-      key: "1qme2f"
+      d: "M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z",
+      key: "oel41y"
     }
   ],
-  ["circle", { cx: "12", cy: "12", r: "3", key: "1v7zrd" }]
+  ["path", { d: "M12 8v4", key: "1got3b" }],
+  ["path", { d: "M12 16h.01", key: "1drbdi" }]
 ];
-const Settings = createLucideIcon("settings", __iconNode$l);
+const ShieldAlert = createLucideIcon("shield-alert", __iconNode$l);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -28104,10 +28125,9 @@ const __iconNode$k = [
       key: "oel41y"
     }
   ],
-  ["path", { d: "M12 8v4", key: "1got3b" }],
-  ["path", { d: "M12 16h.01", key: "1drbdi" }]
+  ["path", { d: "m9 12 2 2 4-4", key: "dzmm74" }]
 ];
-const ShieldAlert = createLucideIcon("shield-alert", __iconNode$k);
+const ShieldCheck = createLucideIcon("shield-check", __iconNode$k);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -28115,16 +28135,11 @@ const ShieldAlert = createLucideIcon("shield-alert", __iconNode$k);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$j = [
-  [
-    "path",
-    {
-      d: "M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z",
-      key: "oel41y"
-    }
-  ],
-  ["path", { d: "m9 12 2 2 4-4", key: "dzmm74" }]
+  ["path", { d: "M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z", key: "hou9p0" }],
+  ["path", { d: "M3 6h18", key: "d0wm0j" }],
+  ["path", { d: "M16 10a4 4 0 0 1-8 0", key: "1ltviw" }]
 ];
-const ShieldCheck = createLucideIcon("shield-check", __iconNode$j);
+const ShoppingBag = createLucideIcon("shopping-bag", __iconNode$j);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -28132,34 +28147,6 @@ const ShieldCheck = createLucideIcon("shield-check", __iconNode$j);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$i = [
-  [
-    "path",
-    {
-      d: "M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z",
-      key: "oel41y"
-    }
-  ]
-];
-const Shield = createLucideIcon("shield", __iconNode$i);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$h = [
-  ["path", { d: "M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z", key: "hou9p0" }],
-  ["path", { d: "M3 6h18", key: "d0wm0j" }],
-  ["path", { d: "M16 10a4 4 0 0 1-8 0", key: "1ltviw" }]
-];
-const ShoppingBag = createLucideIcon("shopping-bag", __iconNode$h);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$g = [
   ["circle", { cx: "8", cy: "21", r: "1", key: "jimo8o" }],
   ["circle", { cx: "19", cy: "21", r: "1", key: "13723u" }],
   [
@@ -28170,14 +28157,14 @@ const __iconNode$g = [
     }
   ]
 ];
-const ShoppingCart = createLucideIcon("shopping-cart", __iconNode$g);
+const ShoppingCart = createLucideIcon("shopping-cart", __iconNode$i);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$f = [
+const __iconNode$h = [
   [
     "path",
     {
@@ -28190,26 +28177,26 @@ const __iconNode$f = [
   ["path", { d: "M4 17v2", key: "vumght" }],
   ["path", { d: "M5 18H3", key: "zchphs" }]
 ];
-const Sparkles = createLucideIcon("sparkles", __iconNode$f);
+const Sparkles = createLucideIcon("sparkles", __iconNode$h);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$e = [
+const __iconNode$g = [
   ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
   ["circle", { cx: "12", cy: "12", r: "6", key: "1vlfrh" }],
   ["circle", { cx: "12", cy: "12", r: "2", key: "1c9p78" }]
 ];
-const Target = createLucideIcon("target", __iconNode$e);
+const Target = createLucideIcon("target", __iconNode$g);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$d = [
+const __iconNode$f = [
   ["path", { d: "M2 10s3-3 3-8", key: "3xiif0" }],
   ["path", { d: "M22 10s-3-3-3-8", key: "ioaa5q" }],
   ["path", { d: "M10 2c0 4.4-3.6 8-8 8", key: "16fkpi" }],
@@ -28220,7 +28207,32 @@ const __iconNode$d = [
   ["path", { d: "M2 22v-1a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1", key: "1vsc2m" }],
   ["path", { d: "M14 22v-1a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1", key: "hrha4u" }]
 ];
-const Theater = createLucideIcon("theater", __iconNode$d);
+const Theater = createLucideIcon("theater", __iconNode$f);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$e = [
+  ["path", { d: "M3 6h18", key: "d0wm0j" }],
+  ["path", { d: "M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6", key: "4alrt4" }],
+  ["path", { d: "M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2", key: "v07s0e" }],
+  ["line", { x1: "10", x2: "10", y1: "11", y2: "17", key: "1uufr5" }],
+  ["line", { x1: "14", x2: "14", y1: "11", y2: "17", key: "xtxkd" }]
+];
+const Trash2 = createLucideIcon("trash-2", __iconNode$e);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$d = [
+  ["path", { d: "M16 17h6v-6", key: "t6n2it" }],
+  ["path", { d: "m22 17-8.5-8.5-5 5L2 7", key: "x473p" }]
+];
+const TrendingDown = createLucideIcon("trending-down", __iconNode$d);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -28228,13 +28240,10 @@ const Theater = createLucideIcon("theater", __iconNode$d);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$c = [
-  ["path", { d: "M3 6h18", key: "d0wm0j" }],
-  ["path", { d: "M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6", key: "4alrt4" }],
-  ["path", { d: "M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2", key: "v07s0e" }],
-  ["line", { x1: "10", x2: "10", y1: "11", y2: "17", key: "1uufr5" }],
-  ["line", { x1: "14", x2: "14", y1: "11", y2: "17", key: "xtxkd" }]
+  ["path", { d: "M16 7h6v6", key: "box55l" }],
+  ["path", { d: "m22 7-8.5 8.5-5-5L2 17", key: "1t1m79" }]
 ];
-const Trash2 = createLucideIcon("trash-2", __iconNode$c);
+const TrendingUp = createLucideIcon("trending-up", __iconNode$c);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -28242,28 +28251,6 @@ const Trash2 = createLucideIcon("trash-2", __iconNode$c);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$b = [
-  ["path", { d: "M16 17h6v-6", key: "t6n2it" }],
-  ["path", { d: "m22 17-8.5-8.5-5 5L2 7", key: "x473p" }]
-];
-const TrendingDown = createLucideIcon("trending-down", __iconNode$b);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$a = [
-  ["path", { d: "M16 7h6v6", key: "box55l" }],
-  ["path", { d: "m22 7-8.5 8.5-5-5L2 17", key: "1t1m79" }]
-];
-const TrendingUp = createLucideIcon("trending-up", __iconNode$a);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$9 = [
   [
     "path",
     {
@@ -28274,14 +28261,14 @@ const __iconNode$9 = [
   ["path", { d: "M12 9v4", key: "juzpu7" }],
   ["path", { d: "M12 17h.01", key: "p32p05" }]
 ];
-const TriangleAlert = createLucideIcon("triangle-alert", __iconNode$9);
+const TriangleAlert = createLucideIcon("triangle-alert", __iconNode$b);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$8 = [
+const __iconNode$a = [
   [
     "path",
     {
@@ -28290,7 +28277,33 @@ const __iconNode$8 = [
     }
   ]
 ];
-const Twitter = createLucideIcon("twitter", __iconNode$8);
+const Twitter = createLucideIcon("twitter", __iconNode$a);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$9 = [
+  ["path", { d: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2", key: "1yyitq" }],
+  ["circle", { cx: "9", cy: "7", r: "4", key: "nufk8" }],
+  ["line", { x1: "19", x2: "19", y1: "8", y2: "14", key: "1bvyxn" }],
+  ["line", { x1: "22", x2: "16", y1: "11", y2: "11", key: "1shjgl" }]
+];
+const UserPlus = createLucideIcon("user-plus", __iconNode$9);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$8 = [
+  ["path", { d: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2", key: "1yyitq" }],
+  ["circle", { cx: "9", cy: "7", r: "4", key: "nufk8" }],
+  ["line", { x1: "17", x2: "22", y1: "8", y2: "13", key: "3nzzx3" }],
+  ["line", { x1: "22", x2: "17", y1: "8", y2: "13", key: "1swrse" }]
+];
+const UserX = createLucideIcon("user-x", __iconNode$8);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -28412,6 +28425,18 @@ const __iconNode = [
   ]
 ];
 const Zap = createLucideIcon("zap", __iconNode);
+const PaymentServiceError = Variant({
+  "alreadyPaid": Null,
+  "notConfigured": Text,
+  "notFound": Null,
+  "outcallFailed": Text,
+  "unauthorized": Null,
+  "invalidResponse": Text
+});
+const Result_1 = Variant({
+  "ok": Null,
+  "err": PaymentServiceError
+});
 const CryptoPaymentStatus = Variant({
   "overpayment": Record({ "expected": Nat, "received": Nat }),
   "expired": Null,
@@ -28431,9 +28456,27 @@ const CryptoPaymentError = Variant({
   "unauthorized": Null,
   "invalidConfig": Text
 });
-const Result_3 = Variant({
+const Result_4 = Variant({
   "ok": CryptoPaymentStatus,
   "err": CryptoPaymentError
+});
+const PaymentStatus = Variant({
+  "cancelled": Null,
+  "expired": Null,
+  "pending": Null,
+  "paid": Null
+});
+const Result_9 = Variant({
+  "ok": PaymentStatus,
+  "err": PaymentServiceError
+});
+const CheckoutSession = Record({
+  "url": Opt(Text),
+  "reference": Text
+});
+const Result_8 = Variant({
+  "ok": CheckoutSession,
+  "err": PaymentServiceError
 });
 const ShippingAddress = Record({
   "region": Text,
@@ -28442,12 +28485,6 @@ const ShippingAddress = Record({
   "postal_code": Text,
   "line1": Text,
   "line2": Opt(Text)
-});
-const PaymentStatus = Variant({
-  "cancelled": Null,
-  "expired": Null,
-  "pending": Null,
-  "paid": Null
 });
 const PaymentMethod$1 = Variant({
   "crypto_icp": Null,
@@ -28481,15 +28518,11 @@ const Order = Record({
   "payment_reference": Opt(Text),
   "subtotal": Nat
 });
-const CheckoutSession = Record({
-  "url": Opt(Text),
-  "reference": Text
-});
 const PaymentError = Variant({
   "invalidOrder": Null,
   "paymentFailed": Text
 });
-const Result_6 = Variant({
+const Result_7 = Variant({
   "ok": CheckoutSession,
   "err": PaymentError
 });
@@ -28514,7 +28547,7 @@ const OrderError = Variant({
   "paymentFailed": Text,
   "invalidQuantity": Null
 });
-const Result_5 = Variant({ "ok": Order, "err": OrderError });
+const Result_6 = Variant({ "ok": Order, "err": OrderError });
 const Value = Variant({
   "int": Int,
   "nat": Nat,
@@ -28550,9 +28583,13 @@ const DepositInfo = Record({
   "address": Principal2,
   "amountDue": Nat
 });
-const Result_4 = Variant({
+const Result_5 = Variant({
   "ok": DepositInfo,
   "err": CryptoPaymentError
+});
+const PaymentServiceConfigView = Record({
+  "url": Text,
+  "tokenSet": Bool
 });
 const ProductVariant = Record({
   "id": Text,
@@ -28576,11 +28613,7 @@ const Product = Record({
   "price": Nat,
   "images": Vec(Text)
 });
-const Result_2 = Variant({ "ok": Null, "err": PaymentError });
-const Result_1 = Variant({
-  "ok": Nat,
-  "err": CryptoPaymentError
-});
+const Result_3 = Variant({ "ok": Null, "err": PaymentError });
 const HttpHeader = Record({ "value": Text, "name": Text });
 const HttpRequestResult = Record({
   "status": Nat,
@@ -28596,33 +28629,59 @@ const TransformationOutput = Record({
   "body": Vec(Nat8),
   "headers": Vec(HttpHeader)
 });
+const Result_2 = Variant({
+  "ok": Nat,
+  "err": CryptoPaymentError
+});
 const Result = Variant({
   "ok": Null,
   "err": CryptoPaymentError
 });
 Service({
-  "checkCryptoPayment": Func([Text], [Result_3], []),
-  "confirmCryptoPayment": Func([Text], [Result_3], []),
-  "createCheckoutSession": Func([Order], [Result_6], []),
-  "createOrder": Func([CreateOrderInput], [Result_5], []),
+  "addAdmin": Func([Principal2], [Bool], []),
+  "cancelCardOrder": Func([Text], [Result_1], []),
+  "checkCryptoPayment": Func([Text], [Result_4], []),
+  "claimInitialAdmin": Func([], [Bool], []),
+  "confirmCardPayment": Func([Text], [Result_9], []),
+  "confirmCryptoPayment": Func([Text], [Result_4], []),
+  "createCardCheckoutSession": Func(
+    [Text, Text, Text],
+    [Result_8],
+    []
+  ),
+  "createCheckoutSession": Func([Order], [Result_7], []),
+  "createOrder": Func([CreateOrderInput], [Result_6], []),
   "execute": Func([Text], [Result__1], ["query"]),
   "getApiDoc": Func([], [Text], ["query"]),
   "getCryptoConfig": Func([], [CryptoConfigView], ["query"]),
-  "getCryptoDepositInfo": Func([Text], [Result_4], ["query"]),
-  "getCryptoPaymentStatus": Func([Text], [Result_3], ["query"]),
+  "getCryptoDepositInfo": Func([Text], [Result_5], ["query"]),
+  "getCryptoPaymentStatus": Func([Text], [Result_4], ["query"]),
   "getDashboardData": Func([], [Text], []),
   "getNAKPrice": Func([], [Text], []),
   "getOrderStatus": Func([Text], [Opt(Order)], ["query"]),
+  "getPaymentServiceConfig": Func(
+    [],
+    [PaymentServiceConfigView],
+    ["query"]
+  ),
   "getPaymentStatus": Func([Text], [PaymentStatus], []),
   "getProduct": Func([Text], [Opt(Product)], ["query"]),
   "getTokenImage": Func([Text, Text], [Text], []),
   "getTokenProfile": Func([Text, Text], [Text], []),
   "getTreasuryTokens": Func([], [Text], []),
-  "handlePaymentConfirmation": Func([Text], [Result_2], []),
+  "handlePaymentConfirmation": Func([Text], [Result_3], []),
+  "isAdmin": Func([], [Bool], ["query"]),
+  "listAdmins": Func([], [Vec(Principal2)], []),
   "listProducts": Func([], [Vec(Product)], ["query"]),
+  "paymentServiceTransform": Func(
+    [TransformationInput],
+    [TransformationOutput],
+    ["query"]
+  ),
   "releaseExpiredOrders": Func([], [Nat], []),
+  "removeAdmin": Func([Principal2], [Bool], []),
   "schema": Func([], [Text], ["query"]),
-  "sweepCryptoToTreasury": Func([Text], [Result_1], []),
+  "sweepCryptoToTreasury": Func([Text], [Result_2], []),
   "transform": Func(
     [TransformationInput],
     [TransformationOutput],
@@ -28633,6 +28692,8 @@ Service({
     [Result],
     []
   ),
+  "updatePaymentServiceToken": Func([Text], [Result_1], []),
+  "updatePaymentServiceUrl": Func([Text], [Result_1], []),
   "updateTreasury": Func(
     [Principal2, Opt(Vec(Nat8))],
     [Result],
@@ -28640,6 +28701,18 @@ Service({
   )
 });
 const idlFactory = ({ IDL: IDL2 }) => {
+  const PaymentServiceError2 = IDL2.Variant({
+    "alreadyPaid": IDL2.Null,
+    "notConfigured": IDL2.Text,
+    "notFound": IDL2.Null,
+    "outcallFailed": IDL2.Text,
+    "unauthorized": IDL2.Null,
+    "invalidResponse": IDL2.Text
+  });
+  const Result_12 = IDL2.Variant({
+    "ok": IDL2.Null,
+    "err": PaymentServiceError2
+  });
   const CryptoPaymentStatus2 = IDL2.Variant({
     "overpayment": IDL2.Record({ "expected": IDL2.Nat, "received": IDL2.Nat }),
     "expired": IDL2.Null,
@@ -28659,9 +28732,27 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "unauthorized": IDL2.Null,
     "invalidConfig": IDL2.Text
   });
-  const Result_32 = IDL2.Variant({
+  const Result_42 = IDL2.Variant({
     "ok": CryptoPaymentStatus2,
     "err": CryptoPaymentError2
+  });
+  const PaymentStatus2 = IDL2.Variant({
+    "cancelled": IDL2.Null,
+    "expired": IDL2.Null,
+    "pending": IDL2.Null,
+    "paid": IDL2.Null
+  });
+  const Result_92 = IDL2.Variant({
+    "ok": PaymentStatus2,
+    "err": PaymentServiceError2
+  });
+  const CheckoutSession2 = IDL2.Record({
+    "url": IDL2.Opt(IDL2.Text),
+    "reference": IDL2.Text
+  });
+  const Result_82 = IDL2.Variant({
+    "ok": CheckoutSession2,
+    "err": PaymentServiceError2
   });
   const ShippingAddress2 = IDL2.Record({
     "region": IDL2.Text,
@@ -28670,12 +28761,6 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "postal_code": IDL2.Text,
     "line1": IDL2.Text,
     "line2": IDL2.Opt(IDL2.Text)
-  });
-  const PaymentStatus2 = IDL2.Variant({
-    "cancelled": IDL2.Null,
-    "expired": IDL2.Null,
-    "pending": IDL2.Null,
-    "paid": IDL2.Null
   });
   const PaymentMethod2 = IDL2.Variant({
     "crypto_icp": IDL2.Null,
@@ -28709,15 +28794,11 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "payment_reference": IDL2.Opt(IDL2.Text),
     "subtotal": IDL2.Nat
   });
-  const CheckoutSession2 = IDL2.Record({
-    "url": IDL2.Opt(IDL2.Text),
-    "reference": IDL2.Text
-  });
   const PaymentError2 = IDL2.Variant({
     "invalidOrder": IDL2.Null,
     "paymentFailed": IDL2.Text
   });
-  const Result_62 = IDL2.Variant({
+  const Result_72 = IDL2.Variant({
     "ok": CheckoutSession2,
     "err": PaymentError2
   });
@@ -28742,7 +28823,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "paymentFailed": IDL2.Text,
     "invalidQuantity": IDL2.Null
   });
-  const Result_52 = IDL2.Variant({ "ok": Order2, "err": OrderError2 });
+  const Result_62 = IDL2.Variant({ "ok": Order2, "err": OrderError2 });
   const Value2 = IDL2.Variant({
     "int": IDL2.Int,
     "nat": IDL2.Nat,
@@ -28778,9 +28859,13 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "address": IDL2.Principal,
     "amountDue": IDL2.Nat
   });
-  const Result_42 = IDL2.Variant({
+  const Result_52 = IDL2.Variant({
     "ok": DepositInfo2,
     "err": CryptoPaymentError2
+  });
+  const PaymentServiceConfigView2 = IDL2.Record({
+    "url": IDL2.Text,
+    "tokenSet": IDL2.Bool
   });
   const ProductVariant2 = IDL2.Record({
     "id": IDL2.Text,
@@ -28804,8 +28889,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "price": IDL2.Nat,
     "images": IDL2.Vec(IDL2.Text)
   });
-  const Result_22 = IDL2.Variant({ "ok": IDL2.Null, "err": PaymentError2 });
-  const Result_12 = IDL2.Variant({ "ok": IDL2.Nat, "err": CryptoPaymentError2 });
+  const Result_32 = IDL2.Variant({ "ok": IDL2.Null, "err": PaymentError2 });
   const HttpHeader2 = IDL2.Record({ "value": IDL2.Text, "name": IDL2.Text });
   const HttpRequestResult2 = IDL2.Record({
     "status": IDL2.Nat,
@@ -28821,30 +28905,53 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "body": IDL2.Vec(IDL2.Nat8),
     "headers": IDL2.Vec(HttpHeader2)
   });
+  const Result_22 = IDL2.Variant({ "ok": IDL2.Nat, "err": CryptoPaymentError2 });
   const Result2 = IDL2.Variant({ "ok": IDL2.Null, "err": CryptoPaymentError2 });
   return IDL2.Service({
-    "checkCryptoPayment": IDL2.Func([IDL2.Text], [Result_32], []),
-    "confirmCryptoPayment": IDL2.Func([IDL2.Text], [Result_32], []),
-    "createCheckoutSession": IDL2.Func([Order2], [Result_62], []),
-    "createOrder": IDL2.Func([CreateOrderInput2], [Result_52], []),
+    "addAdmin": IDL2.Func([IDL2.Principal], [IDL2.Bool], []),
+    "cancelCardOrder": IDL2.Func([IDL2.Text], [Result_12], []),
+    "checkCryptoPayment": IDL2.Func([IDL2.Text], [Result_42], []),
+    "claimInitialAdmin": IDL2.Func([], [IDL2.Bool], []),
+    "confirmCardPayment": IDL2.Func([IDL2.Text], [Result_92], []),
+    "confirmCryptoPayment": IDL2.Func([IDL2.Text], [Result_42], []),
+    "createCardCheckoutSession": IDL2.Func(
+      [IDL2.Text, IDL2.Text, IDL2.Text],
+      [Result_82],
+      []
+    ),
+    "createCheckoutSession": IDL2.Func([Order2], [Result_72], []),
+    "createOrder": IDL2.Func([CreateOrderInput2], [Result_62], []),
     "execute": IDL2.Func([IDL2.Text], [Result__12], ["query"]),
     "getApiDoc": IDL2.Func([], [IDL2.Text], ["query"]),
     "getCryptoConfig": IDL2.Func([], [CryptoConfigView2], ["query"]),
-    "getCryptoDepositInfo": IDL2.Func([IDL2.Text], [Result_42], ["query"]),
-    "getCryptoPaymentStatus": IDL2.Func([IDL2.Text], [Result_32], ["query"]),
+    "getCryptoDepositInfo": IDL2.Func([IDL2.Text], [Result_52], ["query"]),
+    "getCryptoPaymentStatus": IDL2.Func([IDL2.Text], [Result_42], ["query"]),
     "getDashboardData": IDL2.Func([], [IDL2.Text], []),
     "getNAKPrice": IDL2.Func([], [IDL2.Text], []),
     "getOrderStatus": IDL2.Func([IDL2.Text], [IDL2.Opt(Order2)], ["query"]),
+    "getPaymentServiceConfig": IDL2.Func(
+      [],
+      [PaymentServiceConfigView2],
+      ["query"]
+    ),
     "getPaymentStatus": IDL2.Func([IDL2.Text], [PaymentStatus2], []),
     "getProduct": IDL2.Func([IDL2.Text], [IDL2.Opt(Product2)], ["query"]),
     "getTokenImage": IDL2.Func([IDL2.Text, IDL2.Text], [IDL2.Text], []),
     "getTokenProfile": IDL2.Func([IDL2.Text, IDL2.Text], [IDL2.Text], []),
     "getTreasuryTokens": IDL2.Func([], [IDL2.Text], []),
-    "handlePaymentConfirmation": IDL2.Func([IDL2.Text], [Result_22], []),
+    "handlePaymentConfirmation": IDL2.Func([IDL2.Text], [Result_32], []),
+    "isAdmin": IDL2.Func([], [IDL2.Bool], ["query"]),
+    "listAdmins": IDL2.Func([], [IDL2.Vec(IDL2.Principal)], []),
     "listProducts": IDL2.Func([], [IDL2.Vec(Product2)], ["query"]),
+    "paymentServiceTransform": IDL2.Func(
+      [TransformationInput2],
+      [TransformationOutput2],
+      ["query"]
+    ),
     "releaseExpiredOrders": IDL2.Func([], [IDL2.Nat], []),
+    "removeAdmin": IDL2.Func([IDL2.Principal], [IDL2.Bool], []),
     "schema": IDL2.Func([], [IDL2.Text], ["query"]),
-    "sweepCryptoToTreasury": IDL2.Func([IDL2.Text], [Result_12], []),
+    "sweepCryptoToTreasury": IDL2.Func([IDL2.Text], [Result_22], []),
     "transform": IDL2.Func(
       [TransformationInput2],
       [TransformationOutput2],
@@ -28855,6 +28962,8 @@ const idlFactory = ({ IDL: IDL2 }) => {
       [Result2],
       []
     ),
+    "updatePaymentServiceToken": IDL2.Func([IDL2.Text], [Result_12], []),
+    "updatePaymentServiceUrl": IDL2.Func([IDL2.Text], [Result_12], []),
     "updateTreasury": IDL2.Func(
       [IDL2.Principal, IDL2.Opt(IDL2.Vec(IDL2.Nat8))],
       [Result2],
@@ -28895,74 +29004,144 @@ class Backend {
     this._downloadFile = _downloadFile;
     this.processError = processError2;
   }
+  async addAdmin(arg0) {
+    if (this.processError) {
+      try {
+        const result = await this.actor.addAdmin(arg0);
+        return result;
+      } catch (e) {
+        this.processError(e);
+        throw new Error("unreachable");
+      }
+    } else {
+      const result = await this.actor.addAdmin(arg0);
+      return result;
+    }
+  }
+  async cancelCardOrder(arg0) {
+    if (this.processError) {
+      try {
+        const result = await this.actor.cancelCardOrder(arg0);
+        return from_candid_Result_1_n1(this._uploadFile, this._downloadFile, result);
+      } catch (e) {
+        this.processError(e);
+        throw new Error("unreachable");
+      }
+    } else {
+      const result = await this.actor.cancelCardOrder(arg0);
+      return from_candid_Result_1_n1(this._uploadFile, this._downloadFile, result);
+    }
+  }
   async checkCryptoPayment(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.checkCryptoPayment(arg0);
-        return from_candid_Result_3_n1(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_4_n5(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.checkCryptoPayment(arg0);
-      return from_candid_Result_3_n1(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_4_n5(this._uploadFile, this._downloadFile, result);
+    }
+  }
+  async claimInitialAdmin() {
+    if (this.processError) {
+      try {
+        const result = await this.actor.claimInitialAdmin();
+        return result;
+      } catch (e) {
+        this.processError(e);
+        throw new Error("unreachable");
+      }
+    } else {
+      const result = await this.actor.claimInitialAdmin();
+      return result;
+    }
+  }
+  async confirmCardPayment(arg0) {
+    if (this.processError) {
+      try {
+        const result = await this.actor.confirmCardPayment(arg0);
+        return from_candid_Result_9_n11(this._uploadFile, this._downloadFile, result);
+      } catch (e) {
+        this.processError(e);
+        throw new Error("unreachable");
+      }
+    } else {
+      const result = await this.actor.confirmCardPayment(arg0);
+      return from_candid_Result_9_n11(this._uploadFile, this._downloadFile, result);
     }
   }
   async confirmCryptoPayment(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.confirmCryptoPayment(arg0);
-        return from_candid_Result_3_n1(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_4_n5(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.confirmCryptoPayment(arg0);
-      return from_candid_Result_3_n1(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_4_n5(this._uploadFile, this._downloadFile, result);
+    }
+  }
+  async createCardCheckoutSession(arg0, arg1, arg2) {
+    if (this.processError) {
+      try {
+        const result = await this.actor.createCardCheckoutSession(arg0, arg1, arg2);
+        return from_candid_Result_8_n15(this._uploadFile, this._downloadFile, result);
+      } catch (e) {
+        this.processError(e);
+        throw new Error("unreachable");
+      }
+    } else {
+      const result = await this.actor.createCardCheckoutSession(arg0, arg1, arg2);
+      return from_candid_Result_8_n15(this._uploadFile, this._downloadFile, result);
     }
   }
   async createCheckoutSession(arg0) {
     if (this.processError) {
       try {
-        const result = await this.actor.createCheckoutSession(to_candid_Order_n7(this._uploadFile, this._downloadFile, arg0));
-        return from_candid_Result_6_n15(this._uploadFile, this._downloadFile, result);
+        const result = await this.actor.createCheckoutSession(to_candid_Order_n20(this._uploadFile, this._downloadFile, arg0));
+        return from_candid_Result_7_n28(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
-      const result = await this.actor.createCheckoutSession(to_candid_Order_n7(this._uploadFile, this._downloadFile, arg0));
-      return from_candid_Result_6_n15(this._uploadFile, this._downloadFile, result);
+      const result = await this.actor.createCheckoutSession(to_candid_Order_n20(this._uploadFile, this._downloadFile, arg0));
+      return from_candid_Result_7_n28(this._uploadFile, this._downloadFile, result);
     }
   }
   async createOrder(arg0) {
     if (this.processError) {
       try {
-        const result = await this.actor.createOrder(to_candid_CreateOrderInput_n22(this._uploadFile, this._downloadFile, arg0));
-        return from_candid_Result_5_n24(this._uploadFile, this._downloadFile, result);
+        const result = await this.actor.createOrder(to_candid_CreateOrderInput_n32(this._uploadFile, this._downloadFile, arg0));
+        return from_candid_Result_6_n34(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
-      const result = await this.actor.createOrder(to_candid_CreateOrderInput_n22(this._uploadFile, this._downloadFile, arg0));
-      return from_candid_Result_5_n24(this._uploadFile, this._downloadFile, result);
+      const result = await this.actor.createOrder(to_candid_CreateOrderInput_n32(this._uploadFile, this._downloadFile, arg0));
+      return from_candid_Result_6_n34(this._uploadFile, this._downloadFile, result);
     }
   }
   async execute(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.execute(arg0);
-        return from_candid_Result__1_n36(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result__1_n44(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.execute(arg0);
-      return from_candid_Result__1_n36(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result__1_n44(this._uploadFile, this._downloadFile, result);
     }
   }
   async getApiDoc() {
@@ -28983,42 +29162,42 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.getCryptoConfig();
-        return from_candid_CryptoConfigView_n44(this._uploadFile, this._downloadFile, result);
+        return from_candid_CryptoConfigView_n52(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getCryptoConfig();
-      return from_candid_CryptoConfigView_n44(this._uploadFile, this._downloadFile, result);
+      return from_candid_CryptoConfigView_n52(this._uploadFile, this._downloadFile, result);
     }
   }
   async getCryptoDepositInfo(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.getCryptoDepositInfo(arg0);
-        return from_candid_Result_4_n47(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_5_n55(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getCryptoDepositInfo(arg0);
-      return from_candid_Result_4_n47(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_5_n55(this._uploadFile, this._downloadFile, result);
     }
   }
   async getCryptoPaymentStatus(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.getCryptoPaymentStatus(arg0);
-        return from_candid_Result_3_n1(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_4_n5(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getCryptoPaymentStatus(arg0);
-      return from_candid_Result_3_n1(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_4_n5(this._uploadFile, this._downloadFile, result);
     }
   }
   async getDashboardData() {
@@ -29053,42 +29232,56 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.getOrderStatus(arg0);
-        return from_candid_opt_n53(this._uploadFile, this._downloadFile, result);
+        return from_candid_opt_n61(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getOrderStatus(arg0);
-      return from_candid_opt_n53(this._uploadFile, this._downloadFile, result);
+      return from_candid_opt_n61(this._uploadFile, this._downloadFile, result);
+    }
+  }
+  async getPaymentServiceConfig() {
+    if (this.processError) {
+      try {
+        const result = await this.actor.getPaymentServiceConfig();
+        return result;
+      } catch (e) {
+        this.processError(e);
+        throw new Error("unreachable");
+      }
+    } else {
+      const result = await this.actor.getPaymentServiceConfig();
+      return result;
     }
   }
   async getPaymentStatus(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.getPaymentStatus(arg0);
-        return from_candid_PaymentStatus_n30(this._uploadFile, this._downloadFile, result);
+        return from_candid_PaymentStatus_n13(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getPaymentStatus(arg0);
-      return from_candid_PaymentStatus_n30(this._uploadFile, this._downloadFile, result);
+      return from_candid_PaymentStatus_n13(this._uploadFile, this._downloadFile, result);
     }
   }
   async getProduct(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.getProduct(arg0);
-        return from_candid_opt_n54(this._uploadFile, this._downloadFile, result);
+        return from_candid_opt_n62(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getProduct(arg0);
-      return from_candid_opt_n54(this._uploadFile, this._downloadFile, result);
+      return from_candid_opt_n62(this._uploadFile, this._downloadFile, result);
     }
   }
   async getTokenImage(arg0, arg1) {
@@ -29137,14 +29330,42 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.handlePaymentConfirmation(arg0);
-        return from_candid_Result_2_n55(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_3_n63(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.handlePaymentConfirmation(arg0);
-      return from_candid_Result_2_n55(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_3_n63(this._uploadFile, this._downloadFile, result);
+    }
+  }
+  async isAdmin() {
+    if (this.processError) {
+      try {
+        const result = await this.actor.isAdmin();
+        return result;
+      } catch (e) {
+        this.processError(e);
+        throw new Error("unreachable");
+      }
+    } else {
+      const result = await this.actor.isAdmin();
+      return result;
+    }
+  }
+  async listAdmins() {
+    if (this.processError) {
+      try {
+        const result = await this.actor.listAdmins();
+        return result;
+      } catch (e) {
+        this.processError(e);
+        throw new Error("unreachable");
+      }
+    } else {
+      const result = await this.actor.listAdmins();
+      return result;
     }
   }
   async listProducts() {
@@ -29161,6 +29382,20 @@ class Backend {
       return result;
     }
   }
+  async paymentServiceTransform(arg0) {
+    if (this.processError) {
+      try {
+        const result = await this.actor.paymentServiceTransform(arg0);
+        return result;
+      } catch (e) {
+        this.processError(e);
+        throw new Error("unreachable");
+      }
+    } else {
+      const result = await this.actor.paymentServiceTransform(arg0);
+      return result;
+    }
+  }
   async releaseExpiredOrders() {
     if (this.processError) {
       try {
@@ -29172,6 +29407,20 @@ class Backend {
       }
     } else {
       const result = await this.actor.releaseExpiredOrders();
+      return result;
+    }
+  }
+  async removeAdmin(arg0) {
+    if (this.processError) {
+      try {
+        const result = await this.actor.removeAdmin(arg0);
+        return result;
+      } catch (e) {
+        this.processError(e);
+        throw new Error("unreachable");
+      }
+    } else {
+      const result = await this.actor.removeAdmin(arg0);
       return result;
     }
   }
@@ -29193,14 +29442,14 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.sweepCryptoToTreasury(arg0);
-        return from_candid_Result_1_n57(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_2_n65(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.sweepCryptoToTreasury(arg0);
-      return from_candid_Result_1_n57(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_2_n65(this._uploadFile, this._downloadFile, result);
     }
   }
   async transform(arg0) {
@@ -29220,108 +29469,148 @@ class Backend {
   async updateLedgerConfig(arg0, arg1, arg2, arg3) {
     if (this.processError) {
       try {
-        const result = await this.actor.updateLedgerConfig(to_candid_Token_n59(this._uploadFile, this._downloadFile, arg0), arg1, arg2, arg3);
-        return from_candid_Result_n61(this._uploadFile, this._downloadFile, result);
+        const result = await this.actor.updateLedgerConfig(to_candid_Token_n67(this._uploadFile, this._downloadFile, arg0), arg1, arg2, arg3);
+        return from_candid_Result_n69(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
-      const result = await this.actor.updateLedgerConfig(to_candid_Token_n59(this._uploadFile, this._downloadFile, arg0), arg1, arg2, arg3);
-      return from_candid_Result_n61(this._uploadFile, this._downloadFile, result);
+      const result = await this.actor.updateLedgerConfig(to_candid_Token_n67(this._uploadFile, this._downloadFile, arg0), arg1, arg2, arg3);
+      return from_candid_Result_n69(this._uploadFile, this._downloadFile, result);
+    }
+  }
+  async updatePaymentServiceToken(arg0) {
+    if (this.processError) {
+      try {
+        const result = await this.actor.updatePaymentServiceToken(arg0);
+        return from_candid_Result_1_n1(this._uploadFile, this._downloadFile, result);
+      } catch (e) {
+        this.processError(e);
+        throw new Error("unreachable");
+      }
+    } else {
+      const result = await this.actor.updatePaymentServiceToken(arg0);
+      return from_candid_Result_1_n1(this._uploadFile, this._downloadFile, result);
+    }
+  }
+  async updatePaymentServiceUrl(arg0) {
+    if (this.processError) {
+      try {
+        const result = await this.actor.updatePaymentServiceUrl(arg0);
+        return from_candid_Result_1_n1(this._uploadFile, this._downloadFile, result);
+      } catch (e) {
+        this.processError(e);
+        throw new Error("unreachable");
+      }
+    } else {
+      const result = await this.actor.updatePaymentServiceUrl(arg0);
+      return from_candid_Result_1_n1(this._uploadFile, this._downloadFile, result);
     }
   }
   async updateTreasury(arg0, arg1) {
     if (this.processError) {
       try {
-        const result = await this.actor.updateTreasury(arg0, to_candid_opt_n63(this._uploadFile, this._downloadFile, arg1));
-        return from_candid_Result_n61(this._uploadFile, this._downloadFile, result);
+        const result = await this.actor.updateTreasury(arg0, to_candid_opt_n71(this._uploadFile, this._downloadFile, arg1));
+        return from_candid_Result_n69(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
-      const result = await this.actor.updateTreasury(arg0, to_candid_opt_n63(this._uploadFile, this._downloadFile, arg1));
-      return from_candid_Result_n61(this._uploadFile, this._downloadFile, result);
+      const result = await this.actor.updateTreasury(arg0, to_candid_opt_n71(this._uploadFile, this._downloadFile, arg1));
+      return from_candid_Result_n69(this._uploadFile, this._downloadFile, result);
     }
   }
 }
-function from_candid_Cell_n40(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n41(_uploadFile, _downloadFile, value);
+function from_candid_Cell_n48(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n49(_uploadFile, _downloadFile, value);
 }
 function from_candid_CheckoutSession_n17(_uploadFile, _downloadFile, value) {
   return from_candid_record_n18(_uploadFile, _downloadFile, value);
 }
-function from_candid_CryptoConfigView_n44(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n45(_uploadFile, _downloadFile, value);
+function from_candid_CryptoConfigView_n52(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n53(_uploadFile, _downloadFile, value);
 }
-function from_candid_CryptoPaymentError_n5(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n6(_uploadFile, _downloadFile, value);
+function from_candid_CryptoPaymentError_n9(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n10(_uploadFile, _downloadFile, value);
 }
-function from_candid_CryptoPaymentStatus_n3(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n4(_uploadFile, _downloadFile, value);
+function from_candid_CryptoPaymentStatus_n7(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n8(_uploadFile, _downloadFile, value);
 }
-function from_candid_DepositInfo_n49(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n50(_uploadFile, _downloadFile, value);
+function from_candid_DepositInfo_n57(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n58(_uploadFile, _downloadFile, value);
 }
-function from_candid_OrderError_n34(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n35(_uploadFile, _downloadFile, value);
+function from_candid_OrderError_n42(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n43(_uploadFile, _downloadFile, value);
 }
-function from_candid_Order_n26(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n27(_uploadFile, _downloadFile, value);
-}
-function from_candid_PaymentError_n20(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n21(_uploadFile, _downloadFile, value);
-}
-function from_candid_PaymentMethod_n32(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n33(_uploadFile, _downloadFile, value);
-}
-function from_candid_PaymentStatus_n30(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n31(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_1_n57(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n58(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_2_n55(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n56(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_3_n1(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n2(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_4_n47(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n48(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_5_n24(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n25(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_6_n15(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n16(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result__1_n36(_uploadFile, _downloadFile, value) {
+function from_candid_Order_n36(_uploadFile, _downloadFile, value) {
   return from_candid_record_n37(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_n61(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n62(_uploadFile, _downloadFile, value);
+function from_candid_PaymentError_n30(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n31(_uploadFile, _downloadFile, value);
 }
-function from_candid_ShippingAddress_n28(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n29(_uploadFile, _downloadFile, value);
+function from_candid_PaymentMethod_n40(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n41(_uploadFile, _downloadFile, value);
 }
-function from_candid_Token_n51(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n52(_uploadFile, _downloadFile, value);
+function from_candid_PaymentServiceError_n3(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n4(_uploadFile, _downloadFile, value);
 }
-function from_candid_Value_n42(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n43(_uploadFile, _downloadFile, value);
+function from_candid_PaymentStatus_n13(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n14(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_1_n1(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n2(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_2_n65(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n66(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_3_n63(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n64(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_4_n5(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n6(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_5_n55(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n56(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_6_n34(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n35(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_7_n28(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n29(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_8_n15(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n16(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_9_n11(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n12(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result__1_n44(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n45(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_n69(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n70(_uploadFile, _downloadFile, value);
+}
+function from_candid_ShippingAddress_n38(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n39(_uploadFile, _downloadFile, value);
+}
+function from_candid_Token_n59(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n60(_uploadFile, _downloadFile, value);
+}
+function from_candid_Value_n50(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n51(_uploadFile, _downloadFile, value);
 }
 function from_candid_opt_n19(_uploadFile, _downloadFile, value) {
   return value.length === 0 ? null : value[0];
 }
-function from_candid_opt_n46(_uploadFile, _downloadFile, value) {
+function from_candid_opt_n54(_uploadFile, _downloadFile, value) {
   return value.length === 0 ? null : value[0];
 }
-function from_candid_opt_n53(_uploadFile, _downloadFile, value) {
-  return value.length === 0 ? null : from_candid_Order_n26(_uploadFile, _downloadFile, value[0]);
+function from_candid_opt_n61(_uploadFile, _downloadFile, value) {
+  return value.length === 0 ? null : from_candid_Order_n36(_uploadFile, _downloadFile, value[0]);
 }
-function from_candid_opt_n54(_uploadFile, _downloadFile, value) {
+function from_candid_opt_n62(_uploadFile, _downloadFile, value) {
   return value.length === 0 ? null : value[0];
 }
 function from_candid_record_n18(_uploadFile, _downloadFile, value) {
@@ -29330,18 +29619,18 @@ function from_candid_record_n18(_uploadFile, _downloadFile, value) {
     reference: value.reference
   };
 }
-function from_candid_record_n27(_uploadFile, _downloadFile, value) {
+function from_candid_record_n37(_uploadFile, _downloadFile, value) {
   return {
     id: value.id,
     tax: value.tax,
     updated_at: value.updated_at,
     total: value.total,
-    shipping_address: from_candid_ShippingAddress_n28(_uploadFile, _downloadFile, value.shipping_address),
+    shipping_address: from_candid_ShippingAddress_n38(_uploadFile, _downloadFile, value.shipping_address),
     shipping: value.shipping,
     reference: value.reference,
     created_at: value.created_at,
-    payment_status: from_candid_PaymentStatus_n30(_uploadFile, _downloadFile, value.payment_status),
-    payment_method: from_candid_PaymentMethod_n32(_uploadFile, _downloadFile, value.payment_method),
+    payment_status: from_candid_PaymentStatus_n13(_uploadFile, _downloadFile, value.payment_status),
+    payment_method: from_candid_PaymentMethod_n40(_uploadFile, _downloadFile, value.payment_method),
     currency: value.currency,
     items: value.items,
     customer_email: value.customer_email,
@@ -29350,7 +29639,7 @@ function from_candid_record_n27(_uploadFile, _downloadFile, value) {
     subtotal: value.subtotal
   };
 }
-function from_candid_record_n29(_uploadFile, _downloadFile, value) {
+function from_candid_record_n39(_uploadFile, _downloadFile, value) {
   return {
     region: value.region,
     country: value.country,
@@ -29360,30 +29649,30 @@ function from_candid_record_n29(_uploadFile, _downloadFile, value) {
     line2: record_opt_to_undefined(from_candid_opt_n19(_uploadFile, _downloadFile, value.line2))
   };
 }
-function from_candid_record_n37(_uploadFile, _downloadFile, value) {
+function from_candid_record_n45(_uploadFile, _downloadFile, value) {
   return {
     hasMore: value.hasMore,
-    rows: from_candid_vec_n38(_uploadFile, _downloadFile, value.rows)
+    rows: from_candid_vec_n46(_uploadFile, _downloadFile, value.rows)
   };
 }
-function from_candid_record_n41(_uploadFile, _downloadFile, value) {
+function from_candid_record_n49(_uploadFile, _downloadFile, value) {
   return {
-    value: from_candid_Value_n42(_uploadFile, _downloadFile, value.value),
+    value: from_candid_Value_n50(_uploadFile, _downloadFile, value.value),
     name: value.name
   };
 }
-function from_candid_record_n45(_uploadFile, _downloadFile, value) {
+function from_candid_record_n53(_uploadFile, _downloadFile, value) {
   return {
     icp: value.icp,
     ckUSDC: value.ckUSDC,
-    treasurySubaccount: record_opt_to_undefined(from_candid_opt_n46(_uploadFile, _downloadFile, value.treasurySubaccount)),
+    treasurySubaccount: record_opt_to_undefined(from_candid_opt_n54(_uploadFile, _downloadFile, value.treasurySubaccount)),
     treasuryPrincipal: value.treasuryPrincipal
   };
 }
-function from_candid_record_n50(_uploadFile, _downloadFile, value) {
+function from_candid_record_n58(_uploadFile, _downloadFile, value) {
   return {
     decimals: value.decimals,
-    token: from_candid_Token_n51(_uploadFile, _downloadFile, value.token),
+    token: from_candid_Token_n59(_uploadFile, _downloadFile, value.token),
     expiresAt: value.expiresAt,
     qrPayload: value.qrPayload,
     subaccount: value.subaccount,
@@ -29392,142 +29681,7 @@ function from_candid_record_n50(_uploadFile, _downloadFile, value) {
     amountDue: value.amountDue
   };
 }
-function from_candid_variant_n16(_uploadFile, _downloadFile, value) {
-  return "ok" in value ? {
-    __kind__: "ok",
-    ok: from_candid_CheckoutSession_n17(_uploadFile, _downloadFile, value.ok)
-  } : "err" in value ? {
-    __kind__: "err",
-    err: from_candid_PaymentError_n20(_uploadFile, _downloadFile, value.err)
-  } : value;
-}
-function from_candid_variant_n2(_uploadFile, _downloadFile, value) {
-  return "ok" in value ? {
-    __kind__: "ok",
-    ok: from_candid_CryptoPaymentStatus_n3(_uploadFile, _downloadFile, value.ok)
-  } : "err" in value ? {
-    __kind__: "err",
-    err: from_candid_CryptoPaymentError_n5(_uploadFile, _downloadFile, value.err)
-  } : value;
-}
-function from_candid_variant_n21(_uploadFile, _downloadFile, value) {
-  return "invalidOrder" in value ? {
-    __kind__: "invalidOrder",
-    invalidOrder: value.invalidOrder
-  } : "paymentFailed" in value ? {
-    __kind__: "paymentFailed",
-    paymentFailed: value.paymentFailed
-  } : value;
-}
-function from_candid_variant_n25(_uploadFile, _downloadFile, value) {
-  return "ok" in value ? {
-    __kind__: "ok",
-    ok: from_candid_Order_n26(_uploadFile, _downloadFile, value.ok)
-  } : "err" in value ? {
-    __kind__: "err",
-    err: from_candid_OrderError_n34(_uploadFile, _downloadFile, value.err)
-  } : value;
-}
-function from_candid_variant_n31(_uploadFile, _downloadFile, value) {
-  return "cancelled" in value ? "cancelled" : "expired" in value ? "expired" : "pending" in value ? "pending" : "paid" in value ? "paid" : value;
-}
-function from_candid_variant_n33(_uploadFile, _downloadFile, value) {
-  return "crypto_icp" in value ? "crypto_icp" : "card_stripe" in value ? "card_stripe" : "crypto_ckusdc" in value ? "crypto_ckusdc" : "manual" in value ? "manual" : value;
-}
-function from_candid_variant_n35(_uploadFile, _downloadFile, value) {
-  return "outOfStock" in value ? {
-    __kind__: "outOfStock",
-    outOfStock: value.outOfStock
-  } : "unknownVariant" in value ? {
-    __kind__: "unknownVariant",
-    unknownVariant: value.unknownVariant
-  } : "unknownProduct" in value ? {
-    __kind__: "unknownProduct",
-    unknownProduct: value.unknownProduct
-  } : "emptyOrder" in value ? {
-    __kind__: "emptyOrder",
-    emptyOrder: value.emptyOrder
-  } : "productInactive" in value ? {
-    __kind__: "productInactive",
-    productInactive: value.productInactive
-  } : "paymentFailed" in value ? {
-    __kind__: "paymentFailed",
-    paymentFailed: value.paymentFailed
-  } : "invalidQuantity" in value ? {
-    __kind__: "invalidQuantity",
-    invalidQuantity: value.invalidQuantity
-  } : value;
-}
-function from_candid_variant_n4(_uploadFile, _downloadFile, value) {
-  return "overpayment" in value ? {
-    __kind__: "overpayment",
-    overpayment: value.overpayment
-  } : "expired" in value ? {
-    __kind__: "expired",
-    expired: value.expired
-  } : "underpayment" in value ? {
-    __kind__: "underpayment",
-    underpayment: value.underpayment
-  } : "paid" in value ? {
-    __kind__: "paid",
-    paid: value.paid
-  } : "awaiting_payment" in value ? {
-    __kind__: "awaiting_payment",
-    awaiting_payment: value.awaiting_payment
-  } : value;
-}
-function from_candid_variant_n43(_uploadFile, _downloadFile, value) {
-  return "int" in value ? {
-    __kind__: "int",
-    int: value.int
-  } : "nat" in value ? {
-    __kind__: "nat",
-    nat: value.nat
-  } : "float" in value ? {
-    __kind__: "float",
-    float: value.float
-  } : "bool" in value ? {
-    __kind__: "bool",
-    bool: value.bool
-  } : "null" in value ? {
-    __kind__: "null",
-    null: value.null
-  } : "text" in value ? {
-    __kind__: "text",
-    text: value.text
-  } : value;
-}
-function from_candid_variant_n48(_uploadFile, _downloadFile, value) {
-  return "ok" in value ? {
-    __kind__: "ok",
-    ok: from_candid_DepositInfo_n49(_uploadFile, _downloadFile, value.ok)
-  } : "err" in value ? {
-    __kind__: "err",
-    err: from_candid_CryptoPaymentError_n5(_uploadFile, _downloadFile, value.err)
-  } : value;
-}
-function from_candid_variant_n52(_uploadFile, _downloadFile, value) {
-  return "ICP" in value ? "ICP" : "ckUSDC" in value ? "ckUSDC" : value;
-}
-function from_candid_variant_n56(_uploadFile, _downloadFile, value) {
-  return "ok" in value ? {
-    __kind__: "ok",
-    ok: value.ok
-  } : "err" in value ? {
-    __kind__: "err",
-    err: from_candid_PaymentError_n20(_uploadFile, _downloadFile, value.err)
-  } : value;
-}
-function from_candid_variant_n58(_uploadFile, _downloadFile, value) {
-  return "ok" in value ? {
-    __kind__: "ok",
-    ok: value.ok
-  } : "err" in value ? {
-    __kind__: "err",
-    err: from_candid_CryptoPaymentError_n5(_uploadFile, _downloadFile, value.err)
-  } : value;
-}
-function from_candid_variant_n6(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n10(_uploadFile, _downloadFile, value) {
   return "alreadyPaid" in value ? {
     __kind__: "alreadyPaid",
     alreadyPaid: value.alreadyPaid
@@ -29560,43 +29714,246 @@ function from_candid_variant_n6(_uploadFile, _downloadFile, value) {
     invalidConfig: value.invalidConfig
   } : value;
 }
-function from_candid_variant_n62(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n12(_uploadFile, _downloadFile, value) {
+  return "ok" in value ? {
+    __kind__: "ok",
+    ok: from_candid_PaymentStatus_n13(_uploadFile, _downloadFile, value.ok)
+  } : "err" in value ? {
+    __kind__: "err",
+    err: from_candid_PaymentServiceError_n3(_uploadFile, _downloadFile, value.err)
+  } : value;
+}
+function from_candid_variant_n14(_uploadFile, _downloadFile, value) {
+  return "cancelled" in value ? "cancelled" : "expired" in value ? "expired" : "pending" in value ? "pending" : "paid" in value ? "paid" : value;
+}
+function from_candid_variant_n16(_uploadFile, _downloadFile, value) {
+  return "ok" in value ? {
+    __kind__: "ok",
+    ok: from_candid_CheckoutSession_n17(_uploadFile, _downloadFile, value.ok)
+  } : "err" in value ? {
+    __kind__: "err",
+    err: from_candid_PaymentServiceError_n3(_uploadFile, _downloadFile, value.err)
+  } : value;
+}
+function from_candid_variant_n2(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
     ok: value.ok
   } : "err" in value ? {
     __kind__: "err",
-    err: from_candid_CryptoPaymentError_n5(_uploadFile, _downloadFile, value.err)
+    err: from_candid_PaymentServiceError_n3(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function from_candid_vec_n38(_uploadFile, _downloadFile, value) {
-  return value.map((x2) => from_candid_vec_n39(_uploadFile, _downloadFile, x2));
+function from_candid_variant_n29(_uploadFile, _downloadFile, value) {
+  return "ok" in value ? {
+    __kind__: "ok",
+    ok: from_candid_CheckoutSession_n17(_uploadFile, _downloadFile, value.ok)
+  } : "err" in value ? {
+    __kind__: "err",
+    err: from_candid_PaymentError_n30(_uploadFile, _downloadFile, value.err)
+  } : value;
 }
-function from_candid_vec_n39(_uploadFile, _downloadFile, value) {
-  return value.map((x2) => from_candid_Cell_n40(_uploadFile, _downloadFile, x2));
+function from_candid_variant_n31(_uploadFile, _downloadFile, value) {
+  return "invalidOrder" in value ? {
+    __kind__: "invalidOrder",
+    invalidOrder: value.invalidOrder
+  } : "paymentFailed" in value ? {
+    __kind__: "paymentFailed",
+    paymentFailed: value.paymentFailed
+  } : value;
 }
-function to_candid_CreateOrderInput_n22(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n35(_uploadFile, _downloadFile, value) {
+  return "ok" in value ? {
+    __kind__: "ok",
+    ok: from_candid_Order_n36(_uploadFile, _downloadFile, value.ok)
+  } : "err" in value ? {
+    __kind__: "err",
+    err: from_candid_OrderError_n42(_uploadFile, _downloadFile, value.err)
+  } : value;
+}
+function from_candid_variant_n4(_uploadFile, _downloadFile, value) {
+  return "alreadyPaid" in value ? {
+    __kind__: "alreadyPaid",
+    alreadyPaid: value.alreadyPaid
+  } : "notConfigured" in value ? {
+    __kind__: "notConfigured",
+    notConfigured: value.notConfigured
+  } : "notFound" in value ? {
+    __kind__: "notFound",
+    notFound: value.notFound
+  } : "outcallFailed" in value ? {
+    __kind__: "outcallFailed",
+    outcallFailed: value.outcallFailed
+  } : "unauthorized" in value ? {
+    __kind__: "unauthorized",
+    unauthorized: value.unauthorized
+  } : "invalidResponse" in value ? {
+    __kind__: "invalidResponse",
+    invalidResponse: value.invalidResponse
+  } : value;
+}
+function from_candid_variant_n41(_uploadFile, _downloadFile, value) {
+  return "crypto_icp" in value ? "crypto_icp" : "card_stripe" in value ? "card_stripe" : "crypto_ckusdc" in value ? "crypto_ckusdc" : "manual" in value ? "manual" : value;
+}
+function from_candid_variant_n43(_uploadFile, _downloadFile, value) {
+  return "outOfStock" in value ? {
+    __kind__: "outOfStock",
+    outOfStock: value.outOfStock
+  } : "unknownVariant" in value ? {
+    __kind__: "unknownVariant",
+    unknownVariant: value.unknownVariant
+  } : "unknownProduct" in value ? {
+    __kind__: "unknownProduct",
+    unknownProduct: value.unknownProduct
+  } : "emptyOrder" in value ? {
+    __kind__: "emptyOrder",
+    emptyOrder: value.emptyOrder
+  } : "productInactive" in value ? {
+    __kind__: "productInactive",
+    productInactive: value.productInactive
+  } : "paymentFailed" in value ? {
+    __kind__: "paymentFailed",
+    paymentFailed: value.paymentFailed
+  } : "invalidQuantity" in value ? {
+    __kind__: "invalidQuantity",
+    invalidQuantity: value.invalidQuantity
+  } : value;
+}
+function from_candid_variant_n51(_uploadFile, _downloadFile, value) {
+  return "int" in value ? {
+    __kind__: "int",
+    int: value.int
+  } : "nat" in value ? {
+    __kind__: "nat",
+    nat: value.nat
+  } : "float" in value ? {
+    __kind__: "float",
+    float: value.float
+  } : "bool" in value ? {
+    __kind__: "bool",
+    bool: value.bool
+  } : "null" in value ? {
+    __kind__: "null",
+    null: value.null
+  } : "text" in value ? {
+    __kind__: "text",
+    text: value.text
+  } : value;
+}
+function from_candid_variant_n56(_uploadFile, _downloadFile, value) {
+  return "ok" in value ? {
+    __kind__: "ok",
+    ok: from_candid_DepositInfo_n57(_uploadFile, _downloadFile, value.ok)
+  } : "err" in value ? {
+    __kind__: "err",
+    err: from_candid_CryptoPaymentError_n9(_uploadFile, _downloadFile, value.err)
+  } : value;
+}
+function from_candid_variant_n6(_uploadFile, _downloadFile, value) {
+  return "ok" in value ? {
+    __kind__: "ok",
+    ok: from_candid_CryptoPaymentStatus_n7(_uploadFile, _downloadFile, value.ok)
+  } : "err" in value ? {
+    __kind__: "err",
+    err: from_candid_CryptoPaymentError_n9(_uploadFile, _downloadFile, value.err)
+  } : value;
+}
+function from_candid_variant_n60(_uploadFile, _downloadFile, value) {
+  return "ICP" in value ? "ICP" : "ckUSDC" in value ? "ckUSDC" : value;
+}
+function from_candid_variant_n64(_uploadFile, _downloadFile, value) {
+  return "ok" in value ? {
+    __kind__: "ok",
+    ok: value.ok
+  } : "err" in value ? {
+    __kind__: "err",
+    err: from_candid_PaymentError_n30(_uploadFile, _downloadFile, value.err)
+  } : value;
+}
+function from_candid_variant_n66(_uploadFile, _downloadFile, value) {
+  return "ok" in value ? {
+    __kind__: "ok",
+    ok: value.ok
+  } : "err" in value ? {
+    __kind__: "err",
+    err: from_candid_CryptoPaymentError_n9(_uploadFile, _downloadFile, value.err)
+  } : value;
+}
+function from_candid_variant_n70(_uploadFile, _downloadFile, value) {
+  return "ok" in value ? {
+    __kind__: "ok",
+    ok: value.ok
+  } : "err" in value ? {
+    __kind__: "err",
+    err: from_candid_CryptoPaymentError_n9(_uploadFile, _downloadFile, value.err)
+  } : value;
+}
+function from_candid_variant_n8(_uploadFile, _downloadFile, value) {
+  return "overpayment" in value ? {
+    __kind__: "overpayment",
+    overpayment: value.overpayment
+  } : "expired" in value ? {
+    __kind__: "expired",
+    expired: value.expired
+  } : "underpayment" in value ? {
+    __kind__: "underpayment",
+    underpayment: value.underpayment
+  } : "paid" in value ? {
+    __kind__: "paid",
+    paid: value.paid
+  } : "awaiting_payment" in value ? {
+    __kind__: "awaiting_payment",
+    awaiting_payment: value.awaiting_payment
+  } : value;
+}
+function from_candid_vec_n46(_uploadFile, _downloadFile, value) {
+  return value.map((x2) => from_candid_vec_n47(_uploadFile, _downloadFile, x2));
+}
+function from_candid_vec_n47(_uploadFile, _downloadFile, value) {
+  return value.map((x2) => from_candid_Cell_n48(_uploadFile, _downloadFile, x2));
+}
+function to_candid_CreateOrderInput_n32(_uploadFile, _downloadFile, value) {
+  return to_candid_record_n33(_uploadFile, _downloadFile, value);
+}
+function to_candid_Order_n20(_uploadFile, _downloadFile, value) {
+  return to_candid_record_n21(_uploadFile, _downloadFile, value);
+}
+function to_candid_PaymentMethod_n26(_uploadFile, _downloadFile, value) {
+  return to_candid_variant_n27(_uploadFile, _downloadFile, value);
+}
+function to_candid_PaymentStatus_n24(_uploadFile, _downloadFile, value) {
+  return to_candid_variant_n25(_uploadFile, _downloadFile, value);
+}
+function to_candid_ShippingAddress_n22(_uploadFile, _downloadFile, value) {
   return to_candid_record_n23(_uploadFile, _downloadFile, value);
 }
-function to_candid_Order_n7(_uploadFile, _downloadFile, value) {
-  return to_candid_record_n8(_uploadFile, _downloadFile, value);
+function to_candid_Token_n67(_uploadFile, _downloadFile, value) {
+  return to_candid_variant_n68(_uploadFile, _downloadFile, value);
 }
-function to_candid_PaymentMethod_n13(_uploadFile, _downloadFile, value) {
-  return to_candid_variant_n14(_uploadFile, _downloadFile, value);
-}
-function to_candid_PaymentStatus_n11(_uploadFile, _downloadFile, value) {
-  return to_candid_variant_n12(_uploadFile, _downloadFile, value);
-}
-function to_candid_ShippingAddress_n9(_uploadFile, _downloadFile, value) {
-  return to_candid_record_n10(_uploadFile, _downloadFile, value);
-}
-function to_candid_Token_n59(_uploadFile, _downloadFile, value) {
-  return to_candid_variant_n60(_uploadFile, _downloadFile, value);
-}
-function to_candid_opt_n63(_uploadFile, _downloadFile, value) {
+function to_candid_opt_n71(_uploadFile, _downloadFile, value) {
   return value === null ? candid_none() : candid_some(value);
 }
-function to_candid_record_n10(_uploadFile, _downloadFile, value) {
+function to_candid_record_n21(_uploadFile, _downloadFile, value) {
+  return {
+    id: value.id,
+    tax: value.tax,
+    updated_at: value.updated_at,
+    total: value.total,
+    shipping_address: to_candid_ShippingAddress_n22(_uploadFile, _downloadFile, value.shipping_address),
+    shipping: value.shipping,
+    reference: value.reference,
+    created_at: value.created_at,
+    payment_status: to_candid_PaymentStatus_n24(_uploadFile, _downloadFile, value.payment_status),
+    payment_method: to_candid_PaymentMethod_n26(_uploadFile, _downloadFile, value.payment_method),
+    currency: value.currency,
+    items: value.items,
+    customer_email: value.customer_email,
+    customer_name: value.customer_name,
+    payment_reference: value.payment_reference ? candid_some(value.payment_reference) : candid_none(),
+    subtotal: value.subtotal
+  };
+}
+function to_candid_record_n23(_uploadFile, _downloadFile, value) {
   return {
     region: value.region,
     country: value.country,
@@ -29606,36 +29963,16 @@ function to_candid_record_n10(_uploadFile, _downloadFile, value) {
     line2: value.line2 ? candid_some(value.line2) : candid_none()
   };
 }
-function to_candid_record_n23(_uploadFile, _downloadFile, value) {
+function to_candid_record_n33(_uploadFile, _downloadFile, value) {
   return {
-    shipping_address: to_candid_ShippingAddress_n9(_uploadFile, _downloadFile, value.shipping_address),
-    payment_method: to_candid_PaymentMethod_n13(_uploadFile, _downloadFile, value.payment_method),
+    shipping_address: to_candid_ShippingAddress_n22(_uploadFile, _downloadFile, value.shipping_address),
+    payment_method: to_candid_PaymentMethod_n26(_uploadFile, _downloadFile, value.payment_method),
     items: value.items,
     customer_email: value.customer_email,
     customer_name: value.customer_name
   };
 }
-function to_candid_record_n8(_uploadFile, _downloadFile, value) {
-  return {
-    id: value.id,
-    tax: value.tax,
-    updated_at: value.updated_at,
-    total: value.total,
-    shipping_address: to_candid_ShippingAddress_n9(_uploadFile, _downloadFile, value.shipping_address),
-    shipping: value.shipping,
-    reference: value.reference,
-    created_at: value.created_at,
-    payment_status: to_candid_PaymentStatus_n11(_uploadFile, _downloadFile, value.payment_status),
-    payment_method: to_candid_PaymentMethod_n13(_uploadFile, _downloadFile, value.payment_method),
-    currency: value.currency,
-    items: value.items,
-    customer_email: value.customer_email,
-    customer_name: value.customer_name,
-    payment_reference: value.payment_reference ? candid_some(value.payment_reference) : candid_none(),
-    subtotal: value.subtotal
-  };
-}
-function to_candid_variant_n12(_uploadFile, _downloadFile, value) {
+function to_candid_variant_n25(_uploadFile, _downloadFile, value) {
   return value == "cancelled" ? {
     cancelled: null
   } : value == "expired" ? {
@@ -29646,7 +29983,7 @@ function to_candid_variant_n12(_uploadFile, _downloadFile, value) {
     paid: null
   } : value;
 }
-function to_candid_variant_n14(_uploadFile, _downloadFile, value) {
+function to_candid_variant_n27(_uploadFile, _downloadFile, value) {
   return value == "crypto_icp" ? {
     crypto_icp: null
   } : value == "card_stripe" ? {
@@ -29657,7 +29994,7 @@ function to_candid_variant_n14(_uploadFile, _downloadFile, value) {
     manual: null
   } : value;
 }
-function to_candid_variant_n60(_uploadFile, _downloadFile, value) {
+function to_candid_variant_n68(_uploadFile, _downloadFile, value) {
   return value == "ICP" ? {
     ICP: null
   } : value == "ckUSDC" ? {
@@ -29711,6 +30048,17 @@ function useCreateOrder() {
     onSuccess: () => {
       void queryClient2.invalidateQueries({ queryKey: ["products"] });
     }
+  });
+}
+function useOrderStatus(reference) {
+  const { actor, isFetching } = useActor(createActor);
+  return useQuery({
+    queryKey: ["orderStatus", reference],
+    queryFn: async () => {
+      if (!actor || !reference) return null;
+      return actor.getOrderStatus(reference);
+    },
+    enabled: !!actor && !isFetching && !!reference
   });
 }
 function useCryptoConfig() {
@@ -29839,6 +30187,153 @@ function useReleaseExpiredOrders(intervalMs = 6e4) {
   }, [actor, intervalMs, mutation]);
   return mutation;
 }
+function usePaymentServiceConfig() {
+  const { actor, isFetching } = useActor(createActor);
+  return useQuery({
+    queryKey: ["paymentServiceConfig"],
+    queryFn: async () => {
+      if (!actor) return null;
+      return actor.getPaymentServiceConfig();
+    },
+    enabled: !!actor && !isFetching
+  });
+}
+function useUpdatePaymentServiceUrl() {
+  const { actor } = useActor(createActor);
+  const queryClient2 = useQueryClient();
+  return useMutation({
+    mutationFn: async (url) => {
+      if (!actor) throw new Error("Backend is not ready");
+      return actor.updatePaymentServiceUrl(url);
+    },
+    onSuccess: () => {
+      void queryClient2.invalidateQueries({
+        queryKey: ["paymentServiceConfig"]
+      });
+    }
+  });
+}
+function useUpdatePaymentServiceToken() {
+  const { actor } = useActor(createActor);
+  const queryClient2 = useQueryClient();
+  return useMutation({
+    mutationFn: async (token) => {
+      if (!actor) throw new Error("Backend is not ready");
+      return actor.updatePaymentServiceToken(token);
+    },
+    onSuccess: () => {
+      void queryClient2.invalidateQueries({
+        queryKey: ["paymentServiceConfig"]
+      });
+    }
+  });
+}
+function useCreateCardCheckoutSession() {
+  const { actor } = useActor(createActor);
+  return useMutation({
+    mutationFn: async (args) => {
+      if (!actor) throw new Error("Backend is not ready");
+      return actor.createCardCheckoutSession(
+        args.reference,
+        args.successUrl,
+        args.cancelUrl
+      );
+    }
+  });
+}
+function useConfirmCardPayment() {
+  const { actor } = useActor(createActor);
+  const queryClient2 = useQueryClient();
+  return useMutation({
+    mutationFn: async (reference) => {
+      if (!actor) throw new Error("Backend is not ready");
+      return actor.confirmCardPayment(reference);
+    },
+    onSuccess: (_data, reference) => {
+      void queryClient2.invalidateQueries({
+        queryKey: ["orderStatus", reference]
+      });
+    }
+  });
+}
+function useCancelCardOrder() {
+  const { actor } = useActor(createActor);
+  const queryClient2 = useQueryClient();
+  return useMutation({
+    mutationFn: async (reference) => {
+      if (!actor) throw new Error("Backend is not ready");
+      return actor.cancelCardOrder(reference);
+    },
+    onSuccess: (_data, reference) => {
+      void queryClient2.invalidateQueries({
+        queryKey: ["orderStatus", reference]
+      });
+    }
+  });
+}
+function useIsAdmin() {
+  const { actor, isFetching } = useActor(createActor);
+  return useQuery({
+    queryKey: ["isAdmin"],
+    queryFn: async () => {
+      if (!actor) return false;
+      return actor.isAdmin();
+    },
+    enabled: !!actor && !isFetching
+  });
+}
+function useClaimInitialAdmin() {
+  const { actor } = useActor(createActor);
+  const queryClient2 = useQueryClient();
+  return useMutation({
+    mutationFn: async () => {
+      if (!actor) throw new Error("Backend is not ready");
+      return actor.claimInitialAdmin();
+    },
+    onSuccess: () => {
+      void queryClient2.invalidateQueries({ queryKey: ["isAdmin"] });
+      void queryClient2.invalidateQueries({ queryKey: ["admins"] });
+    }
+  });
+}
+function useAddAdmin() {
+  const { actor } = useActor(createActor);
+  const queryClient2 = useQueryClient();
+  return useMutation({
+    mutationFn: async (principal) => {
+      if (!actor) throw new Error("Backend is not ready");
+      return actor.addAdmin(principal);
+    },
+    onSuccess: () => {
+      void queryClient2.invalidateQueries({ queryKey: ["admins"] });
+    }
+  });
+}
+function useRemoveAdmin() {
+  const { actor } = useActor(createActor);
+  const queryClient2 = useQueryClient();
+  return useMutation({
+    mutationFn: async (principal) => {
+      if (!actor) throw new Error("Backend is not ready");
+      return actor.removeAdmin(principal);
+    },
+    onSuccess: () => {
+      void queryClient2.invalidateQueries({ queryKey: ["admins"] });
+      void queryClient2.invalidateQueries({ queryKey: ["isAdmin"] });
+    }
+  });
+}
+function useListAdmins() {
+  const { actor, isFetching } = useActor(createActor);
+  return useQuery({
+    queryKey: ["admins"],
+    queryFn: async () => {
+      if (!actor) return [];
+      return actor.listAdmins();
+    },
+    enabled: !!actor && !isFetching
+  });
+}
 const DEFAULT_TREASURY_PRINCIPAL = "ttfax-iely3-bkfh4-tb7o3-dso2i-acf6j-yh6w5-jclgp-7mnhg-lxbzi-qae";
 function bytesToHex(bytes) {
   return Array.from(bytes).map((b2) => b2.toString(16).padStart(2, "0")).join("");
@@ -29879,13 +30374,102 @@ function formatCryptoError(err) {
       return "An unknown error occurred.";
   }
 }
+function formatPaymentServiceError(err) {
+  switch (err.__kind__) {
+    case "unauthorized":
+      return "You are not authorized to change this setting. Admin access is required.";
+    case "notConfigured":
+      return `Payment service not configured: ${err.notConfigured}`;
+    case "notFound":
+      return "Payment service configuration not found.";
+    case "outcallFailed":
+      return `Payment service call failed: ${err.outcallFailed}`;
+    case "invalidResponse":
+      return `Invalid payment service response: ${err.invalidResponse}`;
+    case "alreadyPaid":
+      return "Already paid.";
+    default:
+      return "An unknown error occurred.";
+  }
+}
 const AdminSettingsPage = ({
   onNavigateToMain
 }) => {
-  var _a3, _b3, _c2, _d2;
+  var _a3, _b3, _c2, _d2, _e2, _f2, _g2, _h2;
+  const {
+    identity,
+    login,
+    clear,
+    isAuthenticated,
+    isLoggingIn,
+    isInitializing
+  } = useInternetIdentity();
+  const { data: isAdmin, isLoading: isAdminLoading } = useIsAdmin();
+  const claimInitialAdmin = useClaimInitialAdmin();
+  const addAdmin = useAddAdmin();
+  const removeAdmin = useRemoveAdmin();
+  const { data: admins } = useListAdmins();
   const { data: config, isLoading } = useCryptoConfig();
   const updateTreasury = useUpdateTreasury();
   const updateLedger = useUpdateLedgerConfig();
+  const { data: paymentConfig } = usePaymentServiceConfig();
+  const updatePaymentUrl = useUpdatePaymentServiceUrl();
+  const updatePaymentToken = useUpdatePaymentServiceToken();
+  const [addAdminText, setAddAdminText] = reactExports.useState("");
+  const [addAdminError, setAddAdminError] = reactExports.useState(null);
+  const [addAdminSuccess, setAddAdminSuccess] = reactExports.useState(false);
+  const [removeAdminError, setRemoveAdminError] = reactExports.useState(null);
+  const [principalCopied, setPrincipalCopied] = reactExports.useState(false);
+  const [claimError, setClaimError] = reactExports.useState(null);
+  const userPrincipalText = (identity == null ? void 0 : identity.getPrincipal().toText()) ?? "";
+  const handleCopyPrincipal = async () => {
+    try {
+      await navigator.clipboard.writeText(userPrincipalText);
+      setPrincipalCopied(true);
+      setTimeout(() => setPrincipalCopied(false), 2e3);
+    } catch {
+      setPrincipalCopied(false);
+    }
+  };
+  const handleClaimInitialAdmin = () => {
+    setClaimError(null);
+    claimInitialAdmin.mutate(void 0, {
+      onError: () => setClaimError("Failed to claim initial admin.")
+    });
+  };
+  const handleAddAdmin = () => {
+    const text = addAdminText.trim();
+    if (!text) {
+      setAddAdminError("Enter a principal to add.");
+      return;
+    }
+    let principal;
+    try {
+      principal = Principal$1.fromText(text);
+    } catch {
+      setAddAdminError("Invalid principal. Check the format and try again.");
+      return;
+    }
+    setAddAdminError(null);
+    setAddAdminSuccess(false);
+    addAdmin.mutate(principal, {
+      onSuccess: (ok) => {
+        if (ok) {
+          setAddAdminText("");
+          setAddAdminSuccess(true);
+        } else {
+          setAddAdminError("Could not add that principal as an admin.");
+        }
+      },
+      onError: () => setAddAdminError("Failed to add admin.")
+    });
+  };
+  const handleRemoveAdmin = (principal) => {
+    setRemoveAdminError(null);
+    removeAdmin.mutate(principal, {
+      onError: () => setRemoveAdminError("Failed to remove admin.")
+    });
+  };
   const [treasuryPrincipalText, setTreasuryPrincipalText] = reactExports.useState("");
   const [subaccountText, setSubaccountText] = reactExports.useState("");
   const [treasuryInit, setTreasuryInit] = reactExports.useState(false);
@@ -29896,6 +30480,12 @@ const AdminSettingsPage = ({
   const [ledgerInit, setLedgerInit] = reactExports.useState(false);
   const [icpError, setIcpError] = reactExports.useState(null);
   const [ckUsdcError, setCkUsdcError] = reactExports.useState(null);
+  const [paymentUrlText, setPaymentUrlText] = reactExports.useState("");
+  const [paymentTokenText, setPaymentTokenText] = reactExports.useState("");
+  const [paymentUrlError, setPaymentUrlError] = reactExports.useState(null);
+  const [paymentTokenError, setPaymentTokenError] = reactExports.useState(
+    null
+  );
   reactExports.useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -29921,10 +30511,17 @@ const AdminSettingsPage = ({
   const icpUnset = !config || config.icp.canisterId.isAnonymous();
   const ckUsdcUnset = !config || config.ckUSDC.canisterId.isAnonymous();
   const hasWarnings = treasuryUnset || icpUnset || ckUsdcUnset;
+  const paymentUrlUnset = !paymentConfig || !paymentConfig.url;
+  const paymentTokenUnset = !paymentConfig || !paymentConfig.tokenSet;
+  const hasPaymentWarnings = paymentUrlUnset || paymentTokenUnset;
   const treasuryMutationError = ((_a3 = updateTreasury.data) == null ? void 0 : _a3.__kind__) === "err" ? formatCryptoError(updateTreasury.data.err) : null;
   const treasurySaved = ((_b3 = updateTreasury.data) == null ? void 0 : _b3.__kind__) === "ok";
   const icpMutationError = ((_c2 = updateLedger.data) == null ? void 0 : _c2.__kind__) === "err" ? formatCryptoError(updateLedger.data.err) : null;
   const icpSaved = ((_d2 = updateLedger.data) == null ? void 0 : _d2.__kind__) === "ok";
+  const paymentUrlMutationError = ((_e2 = updatePaymentUrl.data) == null ? void 0 : _e2.__kind__) === "err" ? formatPaymentServiceError(updatePaymentUrl.data.err) : null;
+  const paymentUrlSaved = ((_f2 = updatePaymentUrl.data) == null ? void 0 : _f2.__kind__) === "ok";
+  const paymentTokenMutationError = ((_g2 = updatePaymentToken.data) == null ? void 0 : _g2.__kind__) === "err" ? formatPaymentServiceError(updatePaymentToken.data.err) : null;
+  const paymentTokenSaved = ((_h2 = updatePaymentToken.data) == null ? void 0 : _h2.__kind__) === "ok";
   const handleCopyTreasury = async () => {
     try {
       await navigator.clipboard.writeText(treasuryPrincipalText);
@@ -29984,6 +30581,24 @@ const AdminSettingsPage = ({
       fee: (config == null ? void 0 : config.ckUSDC.fee) ?? 10000n
     });
   };
+  const handleSavePaymentUrl = () => {
+    const url = paymentUrlText.trim();
+    if (!url) {
+      setPaymentUrlError("Enter the payment service URL.");
+      return;
+    }
+    setPaymentUrlError(null);
+    updatePaymentUrl.mutate(url);
+  };
+  const handleSavePaymentToken = () => {
+    const token = paymentTokenText.trim();
+    if (!token) {
+      setPaymentTokenError("Enter the payment service token.");
+      return;
+    }
+    setPaymentTokenError(null);
+    updatePaymentToken.mutate(token);
+  };
   const inputClass = "w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-purple-500/50 focus:ring-2 focus:ring-purple-500/20 font-mono-nak";
   return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "pt-24 sm:pt-32 pb-12 sm:pb-20 px-4 sm:px-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-7xl mx-auto", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center mb-10 sm:mb-14 px-2", children: [
@@ -30016,52 +30631,214 @@ const AdminSettingsPage = ({
         }
       )
     ] }),
-    hasWarnings && /* @__PURE__ */ jsxRuntimeExports.jsx(
+    isInitializing ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
       "div",
       {
-        className: "max-w-4xl mx-auto mb-8",
-        "data-ocid": "admin.warning_banner",
-        children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-warning-soft border border-yellow-500/30 rounded-2xl p-5 flex items-start gap-4", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(TriangleAlert, { className: "w-6 h-6 text-warning shrink-0 mt-0.5" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "h3",
-              {
-                className: "text-lg font-semibold text-warning",
-                style: { fontFamily: "var(--font-heading)" },
-                children: "Configuration Incomplete"
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("ul", { className: "mt-2 space-y-1 text-sm text-gray-300", children: [
-              treasuryUnset && /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: "• Treasury principal is not set." }),
-              icpUnset && /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: "• ICP ledger canister ID is not set." }),
-              ckUsdcUnset && /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: "• ckUSDC ledger canister ID is not set." })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-2 text-sm text-gray-400", children: "Crypto deposits will not work until these critical values are configured." })
-          ] })
-        ] })
-      }
-    ),
-    isLoading ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
-      "div",
-      {
-        className: "max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6",
-        "data-ocid": "admin.loading_state",
+        className: "max-w-4xl mx-auto flex items-center justify-center gap-3 text-gray-300",
+        "data-ocid": "admin.auth_loading",
         children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "card glass-card p-6 sm:p-8 loading-shimmer h-72" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "card glass-card p-6 sm:p-8 loading-shimmer h-72" })
+          /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-5 h-5 animate-spin" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Checking authentication…" })
         ]
       }
-    ) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-6xl mx-auto", children: [
+    ) : !isAuthenticated ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      "div",
+      {
+        className: "max-w-4xl mx-auto card glass-card p-8 sm:p-12 text-center",
+        "data-ocid": "admin.sign_in_state",
+        children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-4 mb-6", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Lock, { className: "w-10 h-10 text-purple-400" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 rounded-full bg-purple-400/20 blur-xl animate-pulse" })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "h2",
+              {
+                className: "text-2xl sm:text-3xl font-semibold text-white",
+                style: { fontFamily: "var(--font-heading)" },
+                children: "Sign in required"
+              }
+            )
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm sm:text-base text-gray-300 max-w-xl mx-auto mb-8", children: "Admin settings are restricted. Sign in with Internet Identity to verify your principal before accessing this page." }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              type: "button",
+              onClick: login,
+              disabled: isLoggingIn,
+              "data-ocid": "admin.sign_in_button",
+              className: "btn px-8 py-3 text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed",
+              children: isLoggingIn ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-4 h-4 animate-spin" }),
+                "Signing in…"
+              ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(LogIn, { className: "w-4 h-4" }),
+                "Sign in with Internet Identity"
+              ] })
+            }
+          )
+        ]
+      }
+    ) : isAdminLoading ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      "div",
+      {
+        className: "max-w-4xl mx-auto flex items-center justify-center gap-3 text-gray-300",
+        "data-ocid": "admin.auth_loading",
+        children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-5 h-5 animate-spin" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Checking admin authorization…" })
+        ]
+      }
+    ) : !isAdmin ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      "div",
+      {
+        className: "max-w-4xl mx-auto card glass-card p-8 sm:p-12 text-center",
+        "data-ocid": "admin.not_authorized_state",
+        children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-4 mb-6", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(ShieldAlert, { className: "w-10 h-10 text-warning" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 rounded-full bg-yellow-500/20 blur-xl animate-pulse" })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "h2",
+              {
+                className: "text-2xl sm:text-3xl font-semibold text-white",
+                style: { fontFamily: "var(--font-heading)" },
+                children: "Not authorized"
+              }
+            )
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm sm:text-base text-gray-300 max-w-xl mx-auto mb-6", children: "Your principal is not an admin, so you cannot view or change these settings." }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-xl mx-auto mb-8", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs uppercase tracking-wider text-gray-400 mb-2", children: "Your Principal" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 bg-black/30 px-4 py-3 rounded-xl border border-white/10", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("code", { className: "font-mono-nak text-sm flex-1 break-all text-teal-300", children: userPrincipalText }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                "button",
+                {
+                  type: "button",
+                  onClick: handleCopyPrincipal,
+                  "data-ocid": "admin.copy_principal_button",
+                  className: "btn flex items-center gap-2 px-3 py-2 text-xs",
+                  title: "Copy your principal",
+                  children: [
+                    principalCopied ? /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Copy, { className: "w-4 h-4" }),
+                    principalCopied ? "Copied" : "Copy"
+                  ]
+                }
+              )
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-xl mx-auto border-t border-white/10 pt-6", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-300 mb-4", children: "If this is the first deployment, claim the initial admin role to bootstrap access." }),
+            claimError && /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "p",
+              {
+                className: "text-sm text-destructive mb-3",
+                "data-ocid": "admin.claim_error",
+                children: claimError
+              }
+            ),
+            claimInitialAdmin.isSuccess && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "p",
+              {
+                className: "text-sm text-success flex items-center justify-center gap-2 mb-3",
+                "data-ocid": "admin.claim_success",
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4" }),
+                  "Initial admin claimed successfully."
+                ]
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                type: "button",
+                onClick: handleClaimInitialAdmin,
+                disabled: claimInitialAdmin.isPending,
+                "data-ocid": "admin.claim_admin_button",
+                className: "btn px-6 py-3 text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed",
+                children: claimInitialAdmin.isPending ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-4 h-4 animate-spin" }),
+                  "Claiming…"
+                ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(ShieldCheck, { className: "w-4 h-4" }),
+                  "Claim Initial Admin"
+                ] })
+              }
+            )
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "button",
+            {
+              type: "button",
+              onClick: clear,
+              "data-ocid": "admin.sign_out_button",
+              className: "btn mt-8 px-6 py-3 text-sm font-semibold",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(LogOut, { className: "w-4 h-4" }),
+                "Sign out"
+              ]
+            }
+          )
+        ]
+      }
+    ) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "div",
+        {
+          className: "max-w-6xl mx-auto mb-8 card glass-card p-5",
+          "data-ocid": "admin.identity_bar",
+          children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col sm:flex-row sm:items-center gap-4", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 min-w-0", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs uppercase tracking-wider text-gray-400 mb-2", children: "Signed in as" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 bg-black/30 px-4 py-3 rounded-xl border border-white/10", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(ShieldCheck, { className: "w-4 h-4 text-success shrink-0" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("code", { className: "font-mono-nak text-sm flex-1 break-all text-teal-300", children: userPrincipalText }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                  "button",
+                  {
+                    type: "button",
+                    onClick: handleCopyPrincipal,
+                    "data-ocid": "admin.copy_principal_button",
+                    className: "btn flex items-center gap-2 px-3 py-2 text-xs",
+                    title: "Copy your principal",
+                    children: [
+                      principalCopied ? /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Copy, { className: "w-4 h-4" }),
+                      principalCopied ? "Copied" : "Copy"
+                    ]
+                  }
+                )
+              ] })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "button",
+              {
+                type: "button",
+                onClick: clear,
+                "data-ocid": "admin.sign_out_button",
+                className: "btn px-5 py-2.5 text-sm font-semibold shrink-0",
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(LogOut, { className: "w-4 h-4" }),
+                  "Sign out"
+                ]
+              }
+            )
+          ] })
+        }
+      ),
       /* @__PURE__ */ jsxRuntimeExports.jsxs(
         "div",
         {
-          className: "card glass-card p-6 sm:p-8",
-          "data-ocid": "admin.treasury_panel",
+          className: "max-w-6xl mx-auto mb-8 card glass-card p-6 sm:p-8",
+          "data-ocid": "admin.admins_panel",
           children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 mb-6", children: [
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Wallet, { className: "w-8 h-8 text-purple-400" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(ShieldCheck, { className: "w-8 h-8 text-purple-400" }),
                 /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 rounded-full bg-purple-400/20 blur-xl animate-pulse" })
               ] }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
@@ -30070,265 +30847,638 @@ const AdminSettingsPage = ({
                   {
                     className: "text-2xl font-semibold text-white",
                     style: { fontFamily: "var(--font-heading)" },
-                    children: "Treasury"
+                    children: "Admin Access"
                   }
                 ),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-400", children: "Where crypto deposits are swept" })
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-400", children: "Manage who can change these settings" })
               ] })
             ] }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs uppercase tracking-wider text-gray-400 mb-2", children: "Current Treasury Principal" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 bg-black/30 px-4 py-3 rounded-xl border border-white/10", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("code", { className: "font-mono-nak text-sm flex-1 break-all text-teal-300", children: (config == null ? void 0 : config.treasuryPrincipal.isAnonymous()) ? "Not set" : config == null ? void 0 : config.treasuryPrincipal.toText() }),
-                config && !config.treasuryPrincipal.isAnonymous() && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "label",
+                {
+                  htmlFor: "add-admin-principal",
+                  className: "block text-sm text-gray-300 mb-2",
+                  children: "Add an Admin"
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col sm:flex-row gap-3", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "input",
+                  {
+                    id: "add-admin-principal",
+                    type: "text",
+                    value: addAdminText,
+                    onChange: (e) => setAddAdminText(e.target.value),
+                    placeholder: "Enter a principal to grant admin access",
+                    "data-ocid": "admin.add_admin_input",
+                    className: inputClass
+                  }
+                ),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
                   "button",
                   {
                     type: "button",
-                    onClick: handleCopyTreasury,
-                    "data-ocid": "admin.copy_treasury_button",
-                    className: "btn flex items-center gap-2 px-3 py-2 text-xs",
-                    title: "Copy treasury principal",
-                    children: [
-                      copied ? /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Copy, { className: "w-4 h-4" }),
-                      copied ? "Copied" : "Copy"
-                    ]
-                  }
-                )
-              ] })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "label",
-                  {
-                    htmlFor: "treasury-principal",
-                    className: "block text-sm text-gray-300 mb-2",
-                    children: "Treasury Principal"
-                  }
-                ),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "input",
-                  {
-                    id: "treasury-principal",
-                    type: "text",
-                    value: treasuryPrincipalText,
-                    onChange: (e) => setTreasuryPrincipalText(e.target.value),
-                    placeholder: DEFAULT_TREASURY_PRINCIPAL,
-                    "data-ocid": "admin.treasury_principal_input",
-                    className: inputClass
+                    onClick: handleAddAdmin,
+                    disabled: addAdmin.isPending,
+                    "data-ocid": "admin.add_admin_button",
+                    className: "btn px-6 py-3 text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed shrink-0",
+                    children: addAdmin.isPending ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-4 h-4 animate-spin" }),
+                      "Adding…"
+                    ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(UserPlus, { className: "w-4 h-4" }),
+                      "Add Admin"
+                    ] })
                   }
                 )
               ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                  "label",
-                  {
-                    htmlFor: "treasury-subaccount",
-                    className: "block text-sm text-gray-300 mb-2",
-                    children: [
-                      "Treasury Subaccount",
-                      " ",
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-gray-500", children: "(optional, hex)" })
-                    ]
-                  }
-                ),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "input",
-                  {
-                    id: "treasury-subaccount",
-                    type: "text",
-                    value: subaccountText,
-                    onChange: (e) => setSubaccountText(e.target.value),
-                    placeholder: "Leave blank for the default subaccount",
-                    "data-ocid": "admin.subaccount_input",
-                    className: inputClass
-                  }
-                )
-              ] }),
-              treasuryError && /* @__PURE__ */ jsxRuntimeExports.jsx(
+              addAdminError && /* @__PURE__ */ jsxRuntimeExports.jsx(
                 "p",
                 {
-                  className: "text-sm text-destructive",
-                  "data-ocid": "admin.treasury_error",
-                  children: treasuryError
+                  className: "text-sm text-destructive mt-2",
+                  "data-ocid": "admin.add_admin_error",
+                  children: addAdminError
                 }
               ),
-              treasuryMutationError && /* @__PURE__ */ jsxRuntimeExports.jsx(
+              addAdminSuccess && /* @__PURE__ */ jsxRuntimeExports.jsxs(
                 "p",
                 {
-                  className: "text-sm text-destructive",
-                  "data-ocid": "admin.treasury_error",
-                  children: treasuryMutationError
-                }
-              ),
-              treasurySaved && /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                "p",
-                {
-                  className: "text-sm text-success flex items-center gap-2",
-                  "data-ocid": "admin.treasury_success",
+                  className: "text-sm text-success flex items-center gap-2 mt-2",
+                  "data-ocid": "admin.add_admin_success",
                   children: [
                     /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4" }),
-                    "Treasury updated successfully."
+                    "Admin added successfully."
                   ]
                 }
-              ),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "button",
+              )
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs uppercase tracking-wider text-gray-400 mb-2", children: "Current Admins" }),
+              removeAdminError && /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "p",
                 {
-                  type: "button",
-                  onClick: handleSaveTreasury,
-                  disabled: updateTreasury.isPending,
-                  "data-ocid": "admin.save_treasury_button",
-                  className: "btn w-full px-6 py-3 text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed",
-                  children: updateTreasury.isPending ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-4 h-4 animate-spin" }),
-                    "Saving…"
-                  ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(Save, { className: "w-4 h-4" }),
-                    "Save Treasury"
-                  ] })
+                  className: "text-sm text-destructive mb-2",
+                  "data-ocid": "admin.remove_admin_error",
+                  children: removeAdminError
+                }
+              ),
+              admins && admins.length > 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("ul", { className: "space-y-2", children: admins.map((admin, index2) => {
+                const isSelf = admin.toText() === userPrincipalText;
+                return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                  "li",
+                  {
+                    "data-ocid": `admin.admin_item.${index2 + 1}`,
+                    className: "flex items-center gap-3 bg-black/30 px-4 py-3 rounded-xl border border-white/10",
+                    children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx("code", { className: "font-mono-nak text-sm flex-1 break-all text-teal-300", children: admin.toText() }),
+                      isSelf && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-success shrink-0", children: "you" }),
+                      !isSelf && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                        "button",
+                        {
+                          type: "button",
+                          onClick: () => handleRemoveAdmin(admin),
+                          disabled: removeAdmin.isPending,
+                          "data-ocid": `admin.remove_admin_button.${index2 + 1}`,
+                          className: "btn flex items-center gap-2 px-3 py-2 text-xs disabled:opacity-50 disabled:cursor-not-allowed shrink-0",
+                          title: "Remove this admin",
+                          children: [
+                            /* @__PURE__ */ jsxRuntimeExports.jsx(UserX, { className: "w-4 h-4" }),
+                            "Remove"
+                          ]
+                        }
+                      )
+                    ]
+                  },
+                  admin.toText()
+                );
+              }) }) : /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "p",
+                {
+                  className: "text-sm text-gray-400",
+                  "data-ocid": "admin.admins_empty",
+                  children: "No admins configured yet."
                 }
               )
             ] })
           ]
         }
       ),
+      hasWarnings && /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "div",
+        {
+          className: "max-w-4xl mx-auto mb-8",
+          "data-ocid": "admin.warning_banner",
+          children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-warning-soft border border-yellow-500/30 rounded-2xl p-5 flex items-start gap-4", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(TriangleAlert, { className: "w-6 h-6 text-warning shrink-0 mt-0.5" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "h3",
+                {
+                  className: "text-lg font-semibold text-warning",
+                  style: { fontFamily: "var(--font-heading)" },
+                  children: "Configuration Incomplete"
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("ul", { className: "mt-2 space-y-1 text-sm text-gray-300", children: [
+                treasuryUnset && /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: "• Treasury principal is not set." }),
+                icpUnset && /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: "• ICP ledger canister ID is not set." }),
+                ckUsdcUnset && /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: "• ckUSDC ledger canister ID is not set." })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-2 text-sm text-gray-400", children: "Crypto deposits will not work until these critical values are configured." })
+            ] })
+          ] })
+        }
+      ),
+      hasPaymentWarnings && /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "div",
+        {
+          className: "max-w-4xl mx-auto mb-8",
+          "data-ocid": "admin.payment_warning_banner",
+          children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-warning-soft border border-yellow-500/30 rounded-2xl p-5 flex items-start gap-4", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(TriangleAlert, { className: "w-6 h-6 text-warning shrink-0 mt-0.5" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "h3",
+                {
+                  className: "text-lg font-semibold text-warning",
+                  style: { fontFamily: "var(--font-heading)" },
+                  children: "Payment Service Incomplete"
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("ul", { className: "mt-2 space-y-1 text-sm text-gray-300", children: [
+                paymentUrlUnset && /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: "• Payment service URL is not set." }),
+                paymentTokenUnset && /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: "• Payment service token is not set." })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-2 text-sm text-gray-400", children: "Card checkout will not work until the payment service URL and token are configured." })
+            ] })
+          ] })
+        }
+      ),
+      isLoading ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "div",
+        {
+          className: "max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6",
+          "data-ocid": "admin.loading_state",
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "card glass-card p-6 sm:p-8 loading-shimmer h-72" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "card glass-card p-6 sm:p-8 loading-shimmer h-72" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "card glass-card p-6 sm:p-8 loading-shimmer h-72" })
+          ]
+        }
+      ) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-6xl mx-auto", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "div",
+          {
+            className: "card glass-card p-6 sm:p-8",
+            "data-ocid": "admin.treasury_panel",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 mb-6", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(Wallet, { className: "w-8 h-8 text-purple-400" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 rounded-full bg-purple-400/20 blur-xl animate-pulse" })
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "h3",
+                    {
+                      className: "text-2xl font-semibold text-white",
+                      style: { fontFamily: "var(--font-heading)" },
+                      children: "Treasury"
+                    }
+                  ),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-400", children: "Where crypto deposits are swept" })
+                ] })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs uppercase tracking-wider text-gray-400 mb-2", children: "Current Treasury Principal" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 bg-black/30 px-4 py-3 rounded-xl border border-white/10", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("code", { className: "font-mono-nak text-sm flex-1 break-all text-teal-300", children: (config == null ? void 0 : config.treasuryPrincipal.isAnonymous()) ? "Not set" : config == null ? void 0 : config.treasuryPrincipal.toText() }),
+                  config && !config.treasuryPrincipal.isAnonymous() && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                    "button",
+                    {
+                      type: "button",
+                      onClick: handleCopyTreasury,
+                      "data-ocid": "admin.copy_treasury_button",
+                      className: "btn flex items-center gap-2 px-3 py-2 text-xs",
+                      title: "Copy treasury principal",
+                      children: [
+                        copied ? /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Copy, { className: "w-4 h-4" }),
+                        copied ? "Copied" : "Copy"
+                      ]
+                    }
+                  )
+                ] })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "label",
+                    {
+                      htmlFor: "treasury-principal",
+                      className: "block text-sm text-gray-300 mb-2",
+                      children: "Treasury Principal"
+                    }
+                  ),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "input",
+                    {
+                      id: "treasury-principal",
+                      type: "text",
+                      value: treasuryPrincipalText,
+                      onChange: (e) => setTreasuryPrincipalText(e.target.value),
+                      placeholder: DEFAULT_TREASURY_PRINCIPAL,
+                      "data-ocid": "admin.treasury_principal_input",
+                      className: inputClass
+                    }
+                  )
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                    "label",
+                    {
+                      htmlFor: "treasury-subaccount",
+                      className: "block text-sm text-gray-300 mb-2",
+                      children: [
+                        "Treasury Subaccount",
+                        " ",
+                        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-gray-500", children: "(optional, hex)" })
+                      ]
+                    }
+                  ),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "input",
+                    {
+                      id: "treasury-subaccount",
+                      type: "text",
+                      value: subaccountText,
+                      onChange: (e) => setSubaccountText(e.target.value),
+                      placeholder: "Leave blank for the default subaccount",
+                      "data-ocid": "admin.subaccount_input",
+                      className: inputClass
+                    }
+                  )
+                ] }),
+                treasuryError && /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "p",
+                  {
+                    className: "text-sm text-destructive",
+                    "data-ocid": "admin.treasury_error",
+                    children: treasuryError
+                  }
+                ),
+                treasuryMutationError && /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "p",
+                  {
+                    className: "text-sm text-destructive",
+                    "data-ocid": "admin.treasury_error",
+                    children: treasuryMutationError
+                  }
+                ),
+                treasurySaved && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                  "p",
+                  {
+                    className: "text-sm text-success flex items-center gap-2",
+                    "data-ocid": "admin.treasury_success",
+                    children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4" }),
+                      "Treasury updated successfully."
+                    ]
+                  }
+                ),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "button",
+                  {
+                    type: "button",
+                    onClick: handleSaveTreasury,
+                    disabled: updateTreasury.isPending,
+                    "data-ocid": "admin.save_treasury_button",
+                    className: "btn w-full px-6 py-3 text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed",
+                    children: updateTreasury.isPending ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-4 h-4 animate-spin" }),
+                      "Saving…"
+                    ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(Save, { className: "w-4 h-4" }),
+                      "Save Treasury"
+                    ] })
+                  }
+                )
+              ] })
+            ]
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "div",
+          {
+            className: "card glass-card p-6 sm:p-8",
+            "data-ocid": "admin.ledger_panel",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 mb-6", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(Landmark, { className: "w-8 h-8 text-teal-400" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 rounded-full bg-teal-400/20 blur-xl animate-pulse" })
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "h3",
+                    {
+                      className: "text-2xl font-semibold text-white",
+                      style: { fontFamily: "var(--font-heading)" },
+                      children: "Ledger Canisters"
+                    }
+                  ),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-400", children: "Token ledger canister IDs" })
+                ] })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 mb-2", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm font-semibold text-white", children: "ICP" }),
+                  icpUnset && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-warning", children: "not set" })
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "bg-black/30 px-4 py-3 rounded-xl border border-white/10 mb-3", children: /* @__PURE__ */ jsxRuntimeExports.jsx("code", { className: "font-mono-nak text-sm break-all text-teal-300", children: (config == null ? void 0 : config.icp.canisterId.isAnonymous()) ? "Not set" : config == null ? void 0 : config.icp.canisterId.toText() }) }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "input",
+                  {
+                    type: "text",
+                    value: icpCanisterText,
+                    onChange: (e) => setIcpCanisterText(e.target.value),
+                    placeholder: "ICP ledger canister ID",
+                    "data-ocid": "admin.icp_canister_input",
+                    className: inputClass
+                  }
+                ),
+                icpError && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-destructive mt-2", children: icpError }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "button",
+                  {
+                    type: "button",
+                    onClick: handleSaveIcp,
+                    disabled: updateLedger.isPending,
+                    "data-ocid": "admin.save_icp_button",
+                    className: "btn w-full mt-3 px-6 py-3 text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed",
+                    children: updateLedger.isPending ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-4 h-4 animate-spin" }),
+                      "Saving…"
+                    ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(Save, { className: "w-4 h-4" }),
+                      "Save ICP Ledger"
+                    ] })
+                  }
+                )
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 mb-2", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm font-semibold text-white", children: "ckUSDC" }),
+                  ckUsdcUnset && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-warning", children: "not set" })
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "bg-black/30 px-4 py-3 rounded-xl border border-white/10 mb-3", children: /* @__PURE__ */ jsxRuntimeExports.jsx("code", { className: "font-mono-nak text-sm break-all text-teal-300", children: (config == null ? void 0 : config.ckUSDC.canisterId.isAnonymous()) ? "Not set" : config == null ? void 0 : config.ckUSDC.canisterId.toText() }) }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "input",
+                  {
+                    type: "text",
+                    value: ckUsdcCanisterText,
+                    onChange: (e) => setCkUsdcCanisterText(e.target.value),
+                    placeholder: "ckUSDC ledger canister ID",
+                    "data-ocid": "admin.ckusdc_canister_input",
+                    className: inputClass
+                  }
+                ),
+                ckUsdcError && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-destructive mt-2", children: ckUsdcError }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "button",
+                  {
+                    type: "button",
+                    onClick: handleSaveCkUsdc,
+                    disabled: updateLedger.isPending,
+                    "data-ocid": "admin.save_ckusdc_button",
+                    className: "btn w-full mt-3 px-6 py-3 text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed",
+                    children: updateLedger.isPending ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-4 h-4 animate-spin" }),
+                      "Saving…"
+                    ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(Save, { className: "w-4 h-4" }),
+                      "Save ckUSDC Ledger"
+                    ] })
+                  }
+                )
+              ] }),
+              icpMutationError && /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "p",
+                {
+                  className: "text-sm text-destructive",
+                  "data-ocid": "admin.ledger_error",
+                  children: icpMutationError
+                }
+              ),
+              icpSaved && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                "p",
+                {
+                  className: "text-sm text-success flex items-center gap-2",
+                  "data-ocid": "admin.ledger_success",
+                  children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4" }),
+                    "Ledger configuration updated successfully."
+                  ]
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-warning-soft border border-yellow-500/30 rounded-xl p-4 flex items-start gap-3", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(ShieldAlert, { className: "w-5 h-5 text-warning shrink-0 mt-0.5" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm font-semibold text-warning", children: "ICP payments disabled" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-300 mt-1", children: "ICP deposits require a rate oracle to convert amounts. ICP is disabled until a rate oracle is configured. ckUSDC deposits remain available." })
+                ] })
+              ] })
+            ]
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "div",
+          {
+            className: "card glass-card p-6 sm:p-8",
+            "data-ocid": "admin.payment_service_panel",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 mb-6", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(CreditCard, { className: "w-8 h-8 text-pink-400" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 rounded-full bg-pink-400/20 blur-xl animate-pulse" })
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "h3",
+                    {
+                      className: "text-2xl font-semibold text-white",
+                      style: { fontFamily: "var(--font-heading)" },
+                      children: "Payment Service"
+                    }
+                  ),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-400", children: "Card checkout endpoint and auth token" })
+                ] })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs uppercase tracking-wider text-gray-400 mb-2", children: "Current Payment Service URL" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center gap-3 bg-black/30 px-4 py-3 rounded-xl border border-white/10", children: /* @__PURE__ */ jsxRuntimeExports.jsx("code", { className: "font-mono-nak text-sm flex-1 break-all text-teal-300", children: (paymentConfig == null ? void 0 : paymentConfig.url) ? paymentConfig.url : "Not set" }) })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4 mb-6", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "label",
+                    {
+                      htmlFor: "payment-service-url",
+                      className: "block text-sm text-gray-300 mb-2",
+                      children: "PAYMENT_SERVICE_URL"
+                    }
+                  ),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "input",
+                    {
+                      id: "payment-service-url",
+                      type: "text",
+                      value: paymentUrlText,
+                      onChange: (e) => setPaymentUrlText(e.target.value),
+                      placeholder: "https://payment.example.com",
+                      "data-ocid": "admin.payment_url_input",
+                      className: inputClass
+                    }
+                  )
+                ] }),
+                paymentUrlError && /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "p",
+                  {
+                    className: "text-sm text-destructive",
+                    "data-ocid": "admin.payment_url_error",
+                    children: paymentUrlError
+                  }
+                ),
+                paymentUrlMutationError && /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "p",
+                  {
+                    className: "text-sm text-destructive",
+                    "data-ocid": "admin.payment_url_error",
+                    children: paymentUrlMutationError
+                  }
+                ),
+                paymentUrlSaved && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                  "p",
+                  {
+                    className: "text-sm text-success flex items-center gap-2",
+                    "data-ocid": "admin.payment_url_success",
+                    children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4" }),
+                      "Payment service URL updated successfully."
+                    ]
+                  }
+                ),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "button",
+                  {
+                    type: "button",
+                    onClick: handleSavePaymentUrl,
+                    disabled: updatePaymentUrl.isPending,
+                    "data-ocid": "admin.save_payment_url_button",
+                    className: "btn w-full px-6 py-3 text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed",
+                    children: updatePaymentUrl.isPending ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-4 h-4 animate-spin" }),
+                      "Saving…"
+                    ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(Save, { className: "w-4 h-4" }),
+                      "Save Payment Service URL"
+                    ] })
+                  }
+                )
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs uppercase tracking-wider text-gray-400 mb-2", children: "Payment Service Token" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 bg-black/30 px-4 py-3 rounded-xl border border-white/10", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(Lock, { className: "w-4 h-4 text-gray-400 shrink-0" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm text-gray-300", children: (paymentConfig == null ? void 0 : paymentConfig.tokenSet) ? /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-success", children: "set" }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-warning", children: "not set" }) })
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500 mt-2", children: "The token value is write-only and is never displayed. Enter a new value to replace it." })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "label",
+                    {
+                      htmlFor: "payment-service-token",
+                      className: "block text-sm text-gray-300 mb-2",
+                      children: "PAYMENT_SERVICE_TOKEN"
+                    }
+                  ),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "input",
+                    {
+                      id: "payment-service-token",
+                      type: "password",
+                      value: paymentTokenText,
+                      onChange: (e) => setPaymentTokenText(e.target.value),
+                      placeholder: "Enter a new token",
+                      autoComplete: "new-password",
+                      "data-ocid": "admin.payment_token_input",
+                      className: inputClass
+                    }
+                  )
+                ] }),
+                paymentTokenError && /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "p",
+                  {
+                    className: "text-sm text-destructive",
+                    "data-ocid": "admin.payment_token_error",
+                    children: paymentTokenError
+                  }
+                ),
+                paymentTokenMutationError && /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "p",
+                  {
+                    className: "text-sm text-destructive",
+                    "data-ocid": "admin.payment_token_error",
+                    children: paymentTokenMutationError
+                  }
+                ),
+                paymentTokenSaved && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                  "p",
+                  {
+                    className: "text-sm text-success flex items-center gap-2",
+                    "data-ocid": "admin.payment_token_success",
+                    children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4" }),
+                      "Payment service token updated successfully."
+                    ]
+                  }
+                ),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "button",
+                  {
+                    type: "button",
+                    onClick: handleSavePaymentToken,
+                    disabled: updatePaymentToken.isPending,
+                    "data-ocid": "admin.save_payment_token_button",
+                    className: "btn w-full px-6 py-3 text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed",
+                    children: updatePaymentToken.isPending ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-4 h-4 animate-spin" }),
+                      "Saving…"
+                    ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(Save, { className: "w-4 h-4" }),
+                      "Save Payment Service Token"
+                    ] })
+                  }
+                )
+              ] })
+            ]
+          }
+        )
+      ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs(
         "div",
         {
-          className: "card glass-card p-6 sm:p-8",
-          "data-ocid": "admin.ledger_panel",
+          className: "max-w-6xl mx-auto mt-8 flex items-center justify-center gap-2 text-sm text-gray-400",
+          "data-ocid": "admin.auth_note",
           children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 mb-6", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Landmark, { className: "w-8 h-8 text-teal-400" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 rounded-full bg-teal-400/20 blur-xl animate-pulse" })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "h3",
-                  {
-                    className: "text-2xl font-semibold text-white",
-                    style: { fontFamily: "var(--font-heading)" },
-                    children: "Ledger Canisters"
-                  }
-                ),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-400", children: "Token ledger canister IDs" })
-              ] })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 mb-2", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm font-semibold text-white", children: "ICP" }),
-                icpUnset && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-warning", children: "not set" })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "bg-black/30 px-4 py-3 rounded-xl border border-white/10 mb-3", children: /* @__PURE__ */ jsxRuntimeExports.jsx("code", { className: "font-mono-nak text-sm break-all text-teal-300", children: (config == null ? void 0 : config.icp.canisterId.isAnonymous()) ? "Not set" : config == null ? void 0 : config.icp.canisterId.toText() }) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "input",
-                {
-                  type: "text",
-                  value: icpCanisterText,
-                  onChange: (e) => setIcpCanisterText(e.target.value),
-                  placeholder: "ICP ledger canister ID",
-                  "data-ocid": "admin.icp_canister_input",
-                  className: inputClass
-                }
-              ),
-              icpError && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-destructive mt-2", children: icpError }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "button",
-                {
-                  type: "button",
-                  onClick: handleSaveIcp,
-                  disabled: updateLedger.isPending,
-                  "data-ocid": "admin.save_icp_button",
-                  className: "btn w-full mt-3 px-6 py-3 text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed",
-                  children: updateLedger.isPending ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-4 h-4 animate-spin" }),
-                    "Saving…"
-                  ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(Save, { className: "w-4 h-4" }),
-                    "Save ICP Ledger"
-                  ] })
-                }
-              )
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 mb-2", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm font-semibold text-white", children: "ckUSDC" }),
-                ckUsdcUnset && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-warning", children: "not set" })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "bg-black/30 px-4 py-3 rounded-xl border border-white/10 mb-3", children: /* @__PURE__ */ jsxRuntimeExports.jsx("code", { className: "font-mono-nak text-sm break-all text-teal-300", children: (config == null ? void 0 : config.ckUSDC.canisterId.isAnonymous()) ? "Not set" : config == null ? void 0 : config.ckUSDC.canisterId.toText() }) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "input",
-                {
-                  type: "text",
-                  value: ckUsdcCanisterText,
-                  onChange: (e) => setCkUsdcCanisterText(e.target.value),
-                  placeholder: "ckUSDC ledger canister ID",
-                  "data-ocid": "admin.ckusdc_canister_input",
-                  className: inputClass
-                }
-              ),
-              ckUsdcError && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-destructive mt-2", children: ckUsdcError }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "button",
-                {
-                  type: "button",
-                  onClick: handleSaveCkUsdc,
-                  disabled: updateLedger.isPending,
-                  "data-ocid": "admin.save_ckusdc_button",
-                  className: "btn w-full mt-3 px-6 py-3 text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed",
-                  children: updateLedger.isPending ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-4 h-4 animate-spin" }),
-                    "Saving…"
-                  ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(Save, { className: "w-4 h-4" }),
-                    "Save ckUSDC Ledger"
-                  ] })
-                }
-              )
-            ] }),
-            icpMutationError && /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "p",
-              {
-                className: "text-sm text-destructive",
-                "data-ocid": "admin.ledger_error",
-                children: icpMutationError
-              }
-            ),
-            icpSaved && /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "p",
-              {
-                className: "text-sm text-success flex items-center gap-2",
-                "data-ocid": "admin.ledger_success",
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4" }),
-                  "Ledger configuration updated successfully."
-                ]
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-warning-soft border border-yellow-500/30 rounded-xl p-4 flex items-start gap-3", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(ShieldAlert, { className: "w-5 h-5 text-warning shrink-0 mt-0.5" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm font-semibold text-warning", children: "ICP payments disabled" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-300 mt-1", children: "ICP deposits require a rate oracle to convert amounts. ICP is disabled until a rate oracle is configured. ckUSDC deposits remain available." })
-              ] })
-            ] })
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Lock, { className: "w-4 h-4" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "These settings are admin-only. Unauthorized changes are rejected." })
           ]
         }
       )
-    ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs(
-      "div",
-      {
-        className: "max-w-6xl mx-auto mt-8 flex items-center justify-center gap-2 text-sm text-gray-400",
-        "data-ocid": "admin.auth_note",
-        children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Lock, { className: "w-4 h-4" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "These settings are admin-only. Unauthorized changes are rejected." })
-        ]
-      }
-    )
+    ] })
   ] }) });
 };
 const SHELL_RAIN_ITEMS = Array.from({ length: 15 }, (_2, i) => ({
@@ -30488,13 +31638,20 @@ const BubbleBackground = () => {
   ] });
 };
 const CancelledPage = ({
+  orderReference,
   onNavigateToMain,
   onNavigateToShop,
   onNavigateToCart
 }) => {
+  const cancelCardOrder = useCancelCardOrder();
   reactExports.useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+  reactExports.useEffect(() => {
+    if (orderReference) {
+      cancelCardOrder.mutate(orderReference);
+    }
+  }, [orderReference, cancelCardOrder.mutate]);
   return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "pt-24 sm:pt-32 pb-12 sm:pb-20 px-4 sm:px-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-7xl mx-auto", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center mb-12 sm:mb-16 px-2", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-4 mb-8", children: [
@@ -30514,7 +31671,7 @@ const CancelledPage = ({
       /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm sm:text-base text-gray-300 max-w-2xl mx-auto", children: "Your checkout was cancelled" })
     ] }),
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative max-w-4xl mx-auto px-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative card glass-card p-6 sm:p-10 text-center", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-gray-300 mb-6", children: "No payment was processed and your cart is still intact. You can return to the shop to keep browsing, or head back to your cart to try the checkout again." }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-gray-300 mb-6", children: "No payment was processed and your cart is still intact. Any reserved inventory has been released. You can return to the shop to keep browsing, or head back to your cart to try the checkout again." }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center justify-center gap-4", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx(
           "button",
@@ -32669,6 +33826,11 @@ var QRCode = /* @__PURE__ */ reactExports.forwardRef(function(_ref, ref) {
 });
 QRCode.displayName = "QRCode";
 QRCode.propTypes = propTypes;
+const STEPS = [
+  { key: "shipping", label: "Shipping" },
+  { key: "review", label: "Review" },
+  { key: "deposit", label: "Payment" }
+];
 function formatCurrency(amount) {
   const whole = amount / 100n;
   const fraction = amount % 100n;
@@ -32711,15 +33873,97 @@ function statusMessage(status) {
       return "Awaiting payment — send the exact amount to the address above.";
   }
 }
+function OrderSummary({
+  order,
+  items,
+  cartSubtotal
+}) {
+  const hasOrder = order !== null;
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative card glass-card p-6", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "mb-4 text-lg uppercase tracking-wide", children: "Order Summary" }),
+    hasOrder ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mb-5 space-y-3", children: order.items.map((item, idx) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "div",
+        {
+          className: "flex items-center justify-between gap-4",
+          "data-ocid": `checkout.summary_item.${idx + 1}`,
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "truncate text-sm font-medium text-white", children: item.name }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-xs text-gray-400", children: [
+                "Qty ",
+                item.quantity.toString()
+              ] })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono-nak text-sm text-gray-200", children: formatCurrency(item.unit_amount * item.quantity) })
+          ]
+        },
+        item.variant_id
+      )) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-2 border-t border-white/10 pt-4 text-sm", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-gray-400", children: "Subtotal" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono-nak text-gray-200", children: formatCurrency(order.subtotal) })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-gray-400", children: "Tax" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono-nak text-gray-200", children: formatCurrency(order.tax) })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-gray-400", children: "Shipping" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono-nak text-gray-200", children: formatCurrency(order.shipping) })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between border-t border-white/10 pt-3 text-base font-semibold", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white", children: "Total" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono-nak text-teal-bright", children: formatCurrency(order.total) })
+        ] })
+      ] })
+    ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mb-5 space-y-3", children: items.map((item, idx) => {
+        const variant = item.product.variants.find(
+          (v2) => v2.id === item.variantId
+        );
+        const unitPrice = variant ? variant.price : item.product.price;
+        return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "div",
+          {
+            className: "flex items-center justify-between gap-4",
+            "data-ocid": `checkout.summary_item.${idx + 1}`,
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "truncate text-sm font-medium text-white", children: item.product.name }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-xs text-gray-400", children: [
+                  "Qty ",
+                  item.quantity
+                ] })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono-nak text-sm text-gray-200", children: formatCurrency(unitPrice * BigInt(item.quantity)) })
+            ]
+          },
+          `${item.product.id}-${item.variantId}`
+        );
+      }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-2 border-t border-white/10 pt-4 text-sm", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-gray-400", children: "Subtotal" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono-nak text-gray-200", children: formatCurrency(BigInt(Math.round(cartSubtotal))) })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "pt-2 text-xs text-gray-500", children: "Tax and shipping are calculated when you place your order." })
+      ] })
+    ] })
+  ] });
+}
 const CheckoutPage = ({
   onNavigateToMain,
   onNavigateToCart,
   onNavigateToSuccess
 }) => {
-  const { items } = useCart();
+  const { items, subtotal } = useCart();
   const [step, setStep] = reactExports.useState("shipping");
   const [order, setOrder] = reactExports.useState(null);
-  const [selectedToken, setSelectedToken] = reactExports.useState(Token.ckUSDC);
+  const [paymentMethod, setPaymentMethod] = reactExports.useState(
+    "crypto"
+  );
   const [orderError, setOrderError] = reactExports.useState(null);
   const [copied, setCopied] = reactExports.useState(false);
   const [paid, setPaid] = reactExports.useState(false);
@@ -32735,8 +33979,14 @@ const CheckoutPage = ({
   const createOrder = useCreateOrder();
   const checkPayment = useCheckCryptoPayment();
   const confirmPayment = useConfirmCryptoPayment();
+  const createCardSession = useCreateCardCheckoutSession();
   const { data: cryptoConfig } = useCryptoConfig();
+  const { data: paymentServiceConfig } = usePaymentServiceConfig();
   useReleaseExpiredOrders();
+  const cardEnabled = reactExports.useMemo(() => {
+    if (!paymentServiceConfig) return false;
+    return paymentServiceConfig.url.trim() !== "" && paymentServiceConfig.tokenSet;
+  }, [paymentServiceConfig]);
   const depositInfo = useCryptoDepositInfo((order == null ? void 0 : order.reference) ?? null);
   const paymentStatus = useCryptoPaymentStatus((order == null ? void 0 : order.reference) ?? null);
   reactExports.useEffect(() => {
@@ -32804,7 +34054,7 @@ const CheckoutPage = ({
         country,
         postal_code: postalCode
       },
-      payment_method: PaymentMethod.crypto_ckusdc,
+      payment_method: paymentMethod === "card" ? PaymentMethod.card_stripe : PaymentMethod.crypto_ckusdc,
       items: items.map((item) => ({
         product_id: item.product.id,
         variant_id: item.variantId,
@@ -32828,16 +34078,44 @@ const CheckoutPage = ({
     try {
       await navigator.clipboard.writeText(address);
       setCopied(true);
-      setTimeout(() => setCopied(false), 2e3);
+      setTimeout(() => setCopied(false), 1800);
     } catch {
+    }
+  };
+  const handlePlaceOrder = () => {
+    if (!(order == null ? void 0 : order.reference)) return;
+    setOrderError(null);
+    if (paymentMethod === "card") {
+      const base = `${window.location.origin}${window.location.pathname}`;
+      createCardSession.mutate(
+        {
+          reference: order.reference,
+          successUrl: `${base}?order_id=${order.reference}`,
+          cancelUrl: `${base}?order_id=${order.reference}&status=cancelled`
+        },
+        {
+          onSuccess: (result) => {
+            if (result.__kind__ === "ok" && result.ok.url) {
+              window.location.href = result.ok.url;
+            } else {
+              setOrderError(
+                result.__kind__ === "err" && result.err.__kind__ === "notConfigured" ? "Card payments are not configured yet." : "We could not start card payment. Please try again."
+              );
+            }
+          }
+        }
+      );
+    } else {
+      setStep("deposit");
     }
   };
   const shippingFormValid = name.trim() !== "" && email.trim() !== "" && line1.trim() !== "" && city.trim() !== "" && region.trim() !== "" && country.trim() !== "" && postalCode.trim() !== "";
   const depositAddress = depositInfo.data ? depositInfo.data.address.toText() : "";
   const amountOwed = depositInfo.data ? formatTokenAmount(depositInfo.data.amountDue, depositInfo.data.decimals) : "";
+  const stepIndex = STEPS.findIndex((s2) => s2.key === step);
   return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "pt-24 sm:pt-32 pb-12 sm:pb-20 px-4 sm:px-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-6xl mx-auto", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center mb-10 sm:mb-14 px-2", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-4 mb-8", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center mb-8 sm:mb-10 px-2", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-4 mb-6", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx(Wallet, { className: "w-12 h-12 text-teal-400" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 rounded-full bg-teal-400/20 blur-xl animate-pulse" })
@@ -32853,29 +34131,31 @@ const CheckoutPage = ({
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm sm:text-base text-gray-300 max-w-2xl mx-auto", children: "Complete your crypto payment" })
     ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center justify-center gap-2 sm:gap-3 mb-8 sm:mb-12", children: ["shipping", "review", "deposit"].map((s2, i) => {
-      const active = step === s2;
-      const done = s2 === "shipping" && step !== "shipping" || s2 === "review" && step === "deposit";
-      return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 sm:gap-3", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "div",
-          {
-            className: `flex items-center gap-2 rounded-full px-3 sm:px-4 py-1.5 text-xs sm:text-sm font-medium uppercase tracking-wide ${active ? "bg-teal-soft text-teal-bright" : done ? "bg-success-soft text-success" : "text-gray-400"}`,
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "span",
-                {
-                  className: `flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-bold ${active ? "bg-teal-bright text-black" : done ? "bg-success text-black" : "bg-white/10"}`,
-                  children: done ? /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "h-3 w-3" }) : i + 1
-                }
-              ),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "hidden sm:inline", children: s2 === "shipping" ? "Shipping" : s2 === "review" ? "Review" : "Deposit" })
-            ]
-          }
-        ),
-        i < 2 && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-px w-6 sm:w-10 bg-white/15" })
-      ] }, s2);
-    }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "div",
+      {
+        className: "flex items-center justify-center gap-3 sm:gap-4 mb-8 sm:mb-12",
+        "data-ocid": "checkout.step_indicator",
+        children: STEPS.map((s2, i) => {
+          const active = step === s2.key;
+          const done = i < stepIndex;
+          return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 sm:gap-4", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "div",
+              {
+                className: `checkout-step ${done ? "checkout-step-done" : active ? "checkout-step-current" : ""}`,
+                "data-ocid": `checkout.step.${i + 1}`,
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "checkout-step-dot", children: done ? /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "h-3.5 w-3.5" }) : i + 1 }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "hidden sm:inline", children: s2.label })
+                ]
+              }
+            ),
+            i < STEPS.length - 1 && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-px w-8 sm:w-12 bg-white/15" })
+          ] }, s2.key);
+        })
+      }
+    ),
     items.length === 0 && step !== "deposit" ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative max-w-2xl mx-auto px-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative card glass-card p-8 sm:p-12 text-center", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingCart, { className: "w-12 h-12 text-teal-400 mx-auto mb-4" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-2xl mb-3", children: "Your cart is empty" }),
@@ -32905,498 +34185,509 @@ const CheckoutPage = ({
           }
         )
       ] })
-    ] }) }) : step === "shipping" ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative max-w-3xl mx-auto px-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative card glass-card p-6 sm:p-10", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-2xl sm:text-3xl mb-2", children: "Shipping Details" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-gray-300 mb-8", children: "Where should we send your order?" }),
-      orderError && /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        "div",
-        {
-          className: "mb-6 flex items-start gap-3 rounded-xl bg-destructive-soft p-4 text-sm text-destructive",
-          "data-ocid": "checkout.order_error",
-          children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(TriangleAlert, { className: "h-5 w-5 shrink-0" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: orderError })
-          ]
-        }
-      ),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("form", { onSubmit: handleShippingSubmit, className: "space-y-5", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 sm:grid-cols-2 gap-5", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "label",
-              {
-                htmlFor: "checkout-name",
-                className: "mb-1.5 block text-sm font-medium text-gray-300",
-                children: "Full name"
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "input",
-              {
-                id: "checkout-name",
-                type: "text",
-                value: name,
-                onChange: (e) => setName(e.target.value),
-                placeholder: "Jane Doe",
-                className: "w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-purple-500/50 focus:outline-none",
-                "data-ocid": "checkout.name_input"
-              }
-            )
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "label",
-              {
-                htmlFor: "checkout-email",
-                className: "mb-1.5 block text-sm font-medium text-gray-300",
-                children: "Email"
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "input",
-              {
-                id: "checkout-email",
-                type: "email",
-                value: email,
-                onChange: (e) => setEmail(e.target.value),
-                placeholder: "jane@example.com",
-                className: "w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-purple-500/50 focus:outline-none",
-                "data-ocid": "checkout.email_input"
-              }
-            )
-          ] })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "label",
-            {
-              htmlFor: "checkout-line1",
-              className: "mb-1.5 block text-sm font-medium text-gray-300",
-              children: "Address line 1"
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "input",
-            {
-              id: "checkout-line1",
-              type: "text",
-              value: line1,
-              onChange: (e) => setLine1(e.target.value),
-              placeholder: "123 Neon Avenue",
-              className: "w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-purple-500/50 focus:outline-none",
-              "data-ocid": "checkout.line1_input"
-            }
-          )
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "label",
-            {
-              htmlFor: "checkout-line2",
-              className: "mb-1.5 block text-sm font-medium text-gray-300",
-              children: [
-                "Address line 2",
-                " ",
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-gray-500", children: "(optional)" })
-              ]
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "input",
-            {
-              id: "checkout-line2",
-              type: "text",
-              value: line2,
-              onChange: (e) => setLine2(e.target.value),
-              placeholder: "Apt, suite, unit",
-              className: "w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-purple-500/50 focus:outline-none",
-              "data-ocid": "checkout.line2_input"
-            }
-          )
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 sm:grid-cols-2 gap-5", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "label",
-              {
-                htmlFor: "checkout-city",
-                className: "mb-1.5 block text-sm font-medium text-gray-300",
-                children: "City"
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "input",
-              {
-                id: "checkout-city",
-                type: "text",
-                value: city,
-                onChange: (e) => setCity(e.target.value),
-                placeholder: "Neo Tokyo",
-                className: "w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-purple-500/50 focus:outline-none",
-                "data-ocid": "checkout.city_input"
-              }
-            )
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "label",
-              {
-                htmlFor: "checkout-region",
-                className: "mb-1.5 block text-sm font-medium text-gray-300",
-                children: "Region / State"
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "input",
-              {
-                id: "checkout-region",
-                type: "text",
-                value: region,
-                onChange: (e) => setRegion(e.target.value),
-                placeholder: "Kanto",
-                className: "w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-purple-500/50 focus:outline-none",
-                "data-ocid": "checkout.region_input"
-              }
-            )
-          ] })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 sm:grid-cols-2 gap-5", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "label",
-              {
-                htmlFor: "checkout-country",
-                className: "mb-1.5 block text-sm font-medium text-gray-300",
-                children: "Country"
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "input",
-              {
-                id: "checkout-country",
-                type: "text",
-                value: country,
-                onChange: (e) => setCountry(e.target.value),
-                placeholder: "Japan",
-                className: "w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-purple-500/50 focus:outline-none",
-                "data-ocid": "checkout.country_input"
-              }
-            )
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "label",
-              {
-                htmlFor: "checkout-postal",
-                className: "mb-1.5 block text-sm font-medium text-gray-300",
-                children: "Postal code"
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "input",
-              {
-                id: "checkout-postal",
-                type: "text",
-                value: postalCode,
-                onChange: (e) => setPostalCode(e.target.value),
-                placeholder: "100-0001",
-                className: "w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-purple-500/50 focus:outline-none",
-                "data-ocid": "checkout.postal_input"
-              }
-            )
-          ] })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center justify-between gap-4 pt-2", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              type: "button",
-              onClick: onNavigateToCart,
-              "data-ocid": "checkout.back_to_cart_button",
-              className: "btn px-6 py-3 text-sm font-semibold",
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
-                "Back to Cart"
-              ]
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
-            {
-              type: "submit",
-              disabled: !shippingFormValid || createOrder.isPending,
-              "data-ocid": "checkout.continue_button",
-              className: "btn px-8 py-4 text-base font-semibold disabled:cursor-not-allowed disabled:opacity-50",
-              children: createOrder.isPending ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "h-5 w-5 animate-spin" }),
-                "Placing Order…"
-              ] }) : "Continue to Review"
-            }
-          )
-        ] })
-      ] })
-    ] }) }) : step === "review" ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative max-w-3xl mx-auto px-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative card glass-card p-6 sm:p-10", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-2xl sm:text-3xl mb-2", children: "Checkout Summary" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-gray-300 mb-8", children: "Review your order and choose a payment token." }),
-      ledgerUnset && /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        "div",
-        {
-          className: "mb-6 flex items-start gap-3 rounded-xl bg-warning-soft p-4 text-sm text-warning",
-          "data-ocid": "checkout.admin_warning",
-          children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(TriangleAlert, { className: "h-5 w-5 shrink-0" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Admin notice: the ckUSDC ledger is not configured. Payment may not be verifiable until it is set." })
-          ]
-        }
-      ),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mb-6 space-y-3", children: order == null ? void 0 : order.items.map((item, idx) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        "div",
-        {
-          className: "flex items-center justify-between gap-4 rounded-xl bg-white/5 px-4 py-3",
-          "data-ocid": `checkout.order_item.${idx + 1}`,
-          children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "truncate text-sm font-medium text-white", children: item.name }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-xs text-gray-400", children: [
-                "Qty ",
-                item.quantity.toString()
-              ] })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono-nak text-sm text-gray-200", children: formatCurrency(item.unit_amount * item.quantity) })
-          ]
-        },
-        item.variant_id
-      )) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-8 space-y-2 border-t border-white/10 pt-4 text-sm", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-gray-400", children: "Subtotal" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono-nak text-gray-200", children: order ? formatCurrency(order.subtotal) : "—" })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-gray-400", children: "Tax" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono-nak text-gray-200", children: order ? formatCurrency(order.tax) : "—" })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-gray-400", children: "Shipping" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono-nak text-gray-200", children: order ? formatCurrency(order.shipping) : "—" })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between border-t border-white/10 pt-3 text-base font-semibold", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white", children: "Total" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono-nak text-teal-bright", children: order ? formatCurrency(order.total) : "—" })
-        ] })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-8", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mb-3 text-sm font-medium text-gray-300", children: "Payment token" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 sm:grid-cols-2 gap-4", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              type: "button",
-              onClick: () => setSelectedToken(Token.ckUSDC),
-              "data-ocid": "checkout.token_ckusdc",
-              className: `token-option flex items-center gap-4 p-4 text-left ${selectedToken === Token.ckUSDC ? "token-option-selected" : ""}`,
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "flex h-10 w-10 items-center justify-center rounded-full bg-teal-soft text-teal-bright", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-lg font-bold", children: "$" }) }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "min-w-0", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block text-sm font-semibold text-white", children: "ckUSDC" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block text-xs text-gray-400", children: "Enabled" })
-                ] }),
-                selectedToken === Token.ckUSDC && /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "ml-auto h-5 w-5 text-teal-bright" })
-              ]
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "div",
-            {
-              className: "token-option token-option-disabled flex items-center gap-4 p-4 text-left",
-              "data-ocid": "checkout.token_icp",
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-gray-400", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-lg font-bold", children: "∞" }) }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "min-w-0", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block text-sm font-semibold text-white", children: "ICP" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block text-xs text-warning", children: "Disabled — rate source required" })
-                ] })
-              ]
-            }
-          )
-        ] })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center justify-between gap-4", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "button",
+    ] }) }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 min-[820px]:grid-cols-[minmax(0,1fr)_340px] gap-6 sm:gap-8 items-start", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative min-w-0 px-2", children: step === "shipping" ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative card glass-card p-6 sm:p-10", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-2xl sm:text-3xl mb-2", children: "Shipping Details" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-gray-300 mb-8", children: "Where should we send your order?" }),
+        orderError && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "div",
           {
-            type: "button",
-            onClick: () => setStep("shipping"),
-            "data-ocid": "checkout.back_to_shipping_button",
-            className: "btn px-6 py-3 text-sm font-semibold",
+            className: "mb-6 flex items-start gap-3 rounded-xl bg-destructive-soft p-4 text-sm text-destructive",
+            "data-ocid": "checkout.order_error",
             children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
-              "Edit Shipping"
+              /* @__PURE__ */ jsxRuntimeExports.jsx(TriangleAlert, { className: "h-5 w-5 shrink-0" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: orderError })
             ]
           }
         ),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "button",
-          {
-            type: "button",
-            onClick: () => setStep("deposit"),
-            "data-ocid": "checkout.place_order_button",
-            className: "btn px-8 py-4 text-base font-semibold",
-            children: "Place Order"
-          }
-        )
-      ] })
-    ] }) }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative max-w-3xl mx-auto px-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative deposit-surface p-6 sm:p-10", children: [
-      paid && /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        "div",
-        {
-          className: "absolute right-5 top-5 flex items-center gap-2 rounded-full bg-success-soft px-4 py-1.5 text-sm font-bold uppercase tracking-wide text-success",
-          "data-ocid": "checkout.paid_badge",
-          children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(ShieldCheck, { className: "h-4 w-4" }),
-            "Paid"
-          ]
-        }
-      ),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-2xl sm:text-3xl mb-2", children: "Crypto Deposit" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-gray-300 mb-8", children: "Send the exact amount to the address below to complete your order." }),
-      expired ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        "div",
-        {
-          className: "flex flex-col items-center gap-4 rounded-xl bg-destructive-soft p-8 text-center",
-          "data-ocid": "checkout.expired_state",
-          children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(TriangleAlert, { className: "h-10 w-10 text-destructive" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("form", { onSubmit: handleShippingSubmit, className: "space-y-5", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 sm:grid-cols-2 gap-5", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-xl font-semibold text-destructive mb-1", children: "Deposit Expired" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-300", children: "This deposit has expired and the reserved inventory has been released. Please place a new order to continue." })
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "label",
+                {
+                  htmlFor: "checkout-name",
+                  className: "mb-1.5 block text-sm font-medium text-gray-300",
+                  children: "Full name"
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "input",
+                {
+                  id: "checkout-name",
+                  type: "text",
+                  value: name,
+                  onChange: (e) => setName(e.target.value),
+                  placeholder: "Jane Doe",
+                  className: "w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-purple-500/50 focus:outline-none",
+                  "data-ocid": "checkout.name_input"
+                }
+              )
             ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "label",
+                {
+                  htmlFor: "checkout-email",
+                  className: "mb-1.5 block text-sm font-medium text-gray-300",
+                  children: "Email"
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "input",
+                {
+                  id: "checkout-email",
+                  type: "email",
+                  value: email,
+                  onChange: (e) => setEmail(e.target.value),
+                  placeholder: "jane@example.com",
+                  className: "w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-purple-500/50 focus:outline-none",
+                  "data-ocid": "checkout.email_input"
+                }
+              )
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "label",
+              {
+                htmlFor: "checkout-line1",
+                className: "mb-1.5 block text-sm font-medium text-gray-300",
+                children: "Address line 1"
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "input",
+              {
+                id: "checkout-line1",
+                type: "text",
+                value: line1,
+                onChange: (e) => setLine1(e.target.value),
+                placeholder: "123 Neon Avenue",
+                className: "w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-purple-500/50 focus:outline-none",
+                "data-ocid": "checkout.line1_input"
+              }
+            )
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "label",
+              {
+                htmlFor: "checkout-line2",
+                className: "mb-1.5 block text-sm font-medium text-gray-300",
+                children: [
+                  "Address line 2",
+                  " ",
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-gray-500", children: "(optional)" })
+                ]
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "input",
+              {
+                id: "checkout-line2",
+                type: "text",
+                value: line2,
+                onChange: (e) => setLine2(e.target.value),
+                placeholder: "Apt, suite, unit",
+                className: "w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-purple-500/50 focus:outline-none",
+                "data-ocid": "checkout.line2_input"
+              }
+            )
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 sm:grid-cols-2 gap-5", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "label",
+                {
+                  htmlFor: "checkout-city",
+                  className: "mb-1.5 block text-sm font-medium text-gray-300",
+                  children: "City"
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "input",
+                {
+                  id: "checkout-city",
+                  type: "text",
+                  value: city,
+                  onChange: (e) => setCity(e.target.value),
+                  placeholder: "Neo Tokyo",
+                  className: "w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-purple-500/50 focus:outline-none",
+                  "data-ocid": "checkout.city_input"
+                }
+              )
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "label",
+                {
+                  htmlFor: "checkout-region",
+                  className: "mb-1.5 block text-sm font-medium text-gray-300",
+                  children: "Region / State"
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "input",
+                {
+                  id: "checkout-region",
+                  type: "text",
+                  value: region,
+                  onChange: (e) => setRegion(e.target.value),
+                  placeholder: "Kanto",
+                  className: "w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-purple-500/50 focus:outline-none",
+                  "data-ocid": "checkout.region_input"
+                }
+              )
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 sm:grid-cols-2 gap-5", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "label",
+                {
+                  htmlFor: "checkout-country",
+                  className: "mb-1.5 block text-sm font-medium text-gray-300",
+                  children: "Country"
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "input",
+                {
+                  id: "checkout-country",
+                  type: "text",
+                  value: country,
+                  onChange: (e) => setCountry(e.target.value),
+                  placeholder: "Japan",
+                  className: "w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-purple-500/50 focus:outline-none",
+                  "data-ocid": "checkout.country_input"
+                }
+              )
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "label",
+                {
+                  htmlFor: "checkout-postal",
+                  className: "mb-1.5 block text-sm font-medium text-gray-300",
+                  children: "Postal code"
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "input",
+                {
+                  id: "checkout-postal",
+                  type: "text",
+                  value: postalCode,
+                  onChange: (e) => setPostalCode(e.target.value),
+                  placeholder: "100-0001",
+                  className: "w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-purple-500/50 focus:outline-none",
+                  "data-ocid": "checkout.postal_input"
+                }
+              )
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center justify-between gap-4 pt-2", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs(
               "button",
               {
                 type: "button",
-                onClick: onNavigateToMain,
-                "data-ocid": "checkout.expired_back_to_main_button",
-                className: "btn px-8 py-4 text-base font-semibold",
+                onClick: onNavigateToCart,
+                "data-ocid": "checkout.back_to_cart_button",
+                className: "btn px-6 py-3 text-sm font-semibold",
                 children: [
                   /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
-                  "Back to Main"
+                  "Back to Cart"
                 ]
-              }
-            )
-          ]
-        }
-      ) : depositInfo.isLoading ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", "data-ocid": "checkout.deposit_loading", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-12 w-full rounded-xl bg-white/5 loading-shimmer" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mx-auto h-40 w-40 rounded-xl bg-white/5 loading-shimmer" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-8 w-40 mx-auto rounded-xl bg-white/5 loading-shimmer" })
-      ] }) : depositInfo.data ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-8", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mb-2 text-sm font-medium text-gray-300", children: "Deposit address" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 rounded-xl bg-black/40 p-3 sm:p-4", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "span",
-              {
-                className: "font-mono-nak min-w-0 flex-1 break-all text-sm text-teal-bright",
-                "data-ocid": "checkout.deposit_address",
-                children: depositAddress
               }
             ),
             /* @__PURE__ */ jsxRuntimeExports.jsx(
               "button",
               {
+                type: "submit",
+                disabled: !shippingFormValid || createOrder.isPending,
+                "data-ocid": "checkout.continue_button",
+                className: "btn px-8 py-4 text-base font-semibold disabled:cursor-not-allowed disabled:opacity-50",
+                children: createOrder.isPending ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "h-5 w-5 animate-spin" }),
+                  "Placing Order…"
+                ] }) : "Continue to Review"
+              }
+            )
+          ] })
+        ] })
+      ] }) : step === "review" ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative card glass-card p-6 sm:p-10", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-2xl sm:text-3xl mb-2", children: "Checkout Summary" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-gray-300 mb-8", children: "Review your order and choose a payment token." }),
+        ledgerUnset && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "div",
+          {
+            className: "mb-6 flex items-start gap-3 rounded-xl bg-warning-soft p-4 text-sm text-warning",
+            "data-ocid": "checkout.admin_warning",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(TriangleAlert, { className: "h-5 w-5 shrink-0" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Admin notice: the ckUSDC ledger is not configured. Payment may not be verifiable until it is set." })
+            ]
+          }
+        ),
+        orderError && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "div",
+          {
+            className: "mb-6 flex items-start gap-3 rounded-xl bg-destructive-soft p-4 text-sm text-destructive",
+            "data-ocid": "checkout.order_error",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(TriangleAlert, { className: "h-5 w-5 shrink-0" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: orderError })
+            ]
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-8", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mb-3 text-sm font-medium text-gray-300", children: "Payment method" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 sm:grid-cols-2 gap-4", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "button",
+              {
                 type: "button",
-                onClick: () => handleCopyAddress(depositAddress),
-                "aria-label": "Copy deposit address",
-                "data-ocid": "checkout.copy_address_button",
-                className: "btn shrink-0 px-3 py-2 text-sm",
-                children: copied ? /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "h-4 w-4 text-success" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Copy, { className: "h-4 w-4" })
+                onClick: () => setPaymentMethod("crypto"),
+                "data-ocid": "checkout.method_crypto",
+                className: `token-option flex items-center gap-4 p-4 text-left ${paymentMethod === "crypto" ? "token-option-selected" : ""}`,
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "flex h-10 w-10 items-center justify-center rounded-full bg-teal-soft text-teal-bright", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Wallet, { className: "h-5 w-5" }) }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "min-w-0", children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block text-sm font-semibold text-white", children: "Pay with crypto" }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block text-xs text-gray-400", children: "ckUSDC deposit" })
+                  ] }),
+                  paymentMethod === "crypto" && /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "ml-auto h-5 w-5 text-teal-bright" })
+                ]
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "button",
+              {
+                type: "button",
+                onClick: () => cardEnabled && setPaymentMethod("card"),
+                disabled: !cardEnabled,
+                "data-ocid": "checkout.method_card",
+                className: `token-option flex items-center gap-4 p-4 text-left ${paymentMethod === "card" ? "token-option-selected" : ""} ${!cardEnabled ? "token-option-disabled" : ""}`,
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "flex h-10 w-10 items-center justify-center rounded-full bg-teal-soft text-teal-bright", children: /* @__PURE__ */ jsxRuntimeExports.jsx(CreditCard, { className: "h-5 w-5" }) }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "min-w-0", children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block text-sm font-semibold text-white", children: "Pay with card" }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block text-xs text-gray-400", children: cardEnabled ? "Stripe checkout" : "Unavailable — not configured" })
+                  ] }),
+                  paymentMethod === "card" && /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "ml-auto h-5 w-5 text-teal-bright" })
+                ]
               }
             )
           ] })
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "mb-2 text-sm font-medium text-gray-300", children: [
-            "Exact amount owed (",
-            depositInfo.data.token,
-            ")"
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "p",
-            {
-              className: "font-mono-nak text-4xl sm:text-5xl font-bold text-white",
-              style: { fontFamily: "var(--font-heading)" },
-              "data-ocid": "checkout.amount_owed",
-              children: [
-                amountOwed,
-                " ",
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-teal-bright", children: depositInfo.data.token })
-              ]
-            }
-          )
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "rounded-2xl bg-white p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-          QRCode,
-          {
-            value: depositInfo.data.qrPayload,
-            size: 168,
-            bgColor: "#ffffff",
-            fgColor: "#000000",
-            "aria-label": "QR code for deposit address"
-          }
-        ) }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-3", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Clock, { className: "h-5 w-5 text-warning" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "span",
-            {
-              className: `font-mono-nak text-3xl sm:text-4xl font-bold ${countdownClass(
-                remainingSec
-              )}`,
-              "data-ocid": "checkout.countdown",
-              children: formatCountdown(remainingSec)
-            }
-          )
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "div",
-          {
-            className: `flex items-start gap-3 rounded-xl p-4 text-sm ${paid ? "bg-success-soft text-success" : "bg-teal-soft text-teal-bright"}`,
-            "data-ocid": "checkout.payment_status",
-            children: [
-              paid ? /* @__PURE__ */ jsxRuntimeExports.jsx(ShieldCheck, { className: "h-5 w-5 shrink-0" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(QrCode, { className: "h-5 w-5 shrink-0" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: paid ? "Payment confirmed. Redirecting to your order summary…" : statusMessage(paymentStatus.data ?? null) })
-            ]
-          }
-        ),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center justify-between gap-4", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs(
             "button",
             {
               type: "button",
-              onClick: onNavigateToMain,
-              "data-ocid": "checkout.back_to_main_button",
+              onClick: () => setStep("shipping"),
+              "data-ocid": "checkout.back_to_shipping_button",
               className: "btn px-6 py-3 text-sm font-semibold",
               children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
-                "Back to Main"
+                "Edit Shipping"
               ]
             }
           ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500", children: "Payment is verified on-ledger automatically." })
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              type: "button",
+              onClick: handlePlaceOrder,
+              disabled: createCardSession.isPending,
+              "data-ocid": "checkout.place_order_button",
+              className: "btn px-8 py-4 text-base font-semibold disabled:cursor-not-allowed disabled:opacity-50",
+              children: createCardSession.isPending ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "h-5 w-5 animate-spin" }),
+                "Redirecting to payment…"
+              ] }) : "Place Order"
+            }
+          )
         ] })
-      ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        "div",
+      ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative deposit-surface p-6 sm:p-10", children: [
+        paid && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "div",
+          {
+            className: "absolute right-5 top-5 flex items-center gap-2 rounded-full bg-success-soft px-4 py-1.5 text-sm font-bold uppercase tracking-wide text-success",
+            "data-ocid": "checkout.paid_badge",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(ShieldCheck, { className: "h-4 w-4" }),
+              "Paid"
+            ]
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6 flex items-start justify-between gap-4", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-2xl sm:text-3xl mb-1", children: "Crypto Deposit" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-gray-300", children: "Send the exact amount to the address below to complete your order." })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex shrink-0 items-center gap-2", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Clock, { className: "h-5 w-5 text-warning" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "span",
+              {
+                className: `font-mono-nak text-2xl sm:text-3xl font-bold ${countdownClass(
+                  remainingSec
+                )}`,
+                "data-ocid": "checkout.countdown",
+                children: formatCountdown(remainingSec)
+              }
+            )
+          ] })
+        ] }),
+        expired ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "div",
+          {
+            className: "flex flex-col items-center gap-4 rounded-xl bg-destructive-soft p-8 text-center",
+            "data-ocid": "checkout.expired_state",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(TriangleAlert, { className: "h-10 w-10 text-destructive" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-xl font-semibold text-destructive mb-1", children: "Deposit Expired" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-300", children: "This deposit has expired and the reserved inventory has been released. Please place a new order to continue." })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                "button",
+                {
+                  type: "button",
+                  onClick: onNavigateToMain,
+                  "data-ocid": "checkout.expired_back_to_main_button",
+                  className: "btn px-8 py-4 text-base font-semibold",
+                  children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
+                    "Back to Main"
+                  ]
+                }
+              )
+            ]
+          }
+        ) : depositInfo.isLoading ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "div",
+          {
+            className: "space-y-4",
+            "data-ocid": "checkout.deposit_loading",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-12 w-full rounded-xl bg-white/5 loading-shimmer" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mx-auto h-40 w-40 rounded-xl bg-white/5 loading-shimmer" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-8 w-40 mx-auto rounded-xl bg-white/5 loading-shimmer" })
+            ]
+          }
+        ) : depositInfo.data ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-8", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "mb-2 text-sm font-medium text-gray-300", children: [
+              "Exact amount owed (",
+              depositInfo.data.token,
+              ")"
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "p",
+              {
+                className: "amount-owed",
+                "data-ocid": "checkout.amount_owed",
+                children: [
+                  amountOwed,
+                  " ",
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-teal-bright", children: depositInfo.data.token })
+                ]
+              }
+            )
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mb-2 text-sm font-medium text-gray-300", children: "Deposit address" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "deposit-address-well flex items-center gap-3", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "span",
+                {
+                  className: "min-w-0 flex-1 break-all",
+                  "data-ocid": "checkout.deposit_address",
+                  children: depositAddress
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "button",
+                {
+                  type: "button",
+                  onClick: () => handleCopyAddress(depositAddress),
+                  "aria-label": "Copy deposit address",
+                  "data-ocid": "checkout.copy_address_button",
+                  className: "btn shrink-0 px-3 py-2 text-sm",
+                  children: copied ? /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "h-4 w-4 text-success" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Copy, { className: "h-4 w-4" })
+                }
+              )
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "rounded-2xl bg-white p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+            QRCode,
+            {
+              value: depositInfo.data.qrPayload,
+              size: 168,
+              bgColor: "#ffffff",
+              fgColor: "#000000",
+              "aria-label": "QR code for deposit address"
+            }
+          ) }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "div",
+            {
+              className: `flex items-center gap-3 rounded-xl p-4 text-sm ${paid ? "bg-success-soft text-success" : "bg-teal-soft text-teal-bright"}`,
+              "data-ocid": "checkout.payment_status",
+              children: [
+                paid ? /* @__PURE__ */ jsxRuntimeExports.jsx(ShieldCheck, { className: "h-5 w-5 shrink-0" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "span",
+                  {
+                    className: "ledger-dot shrink-0",
+                    "aria-hidden": "true"
+                  }
+                ),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: paid ? "Payment confirmed. Redirecting to your order summary…" : `Watching the ledger — ${statusMessage(
+                  paymentStatus.data ?? null
+                )}` })
+              ]
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center justify-between gap-4", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "button",
+              {
+                type: "button",
+                onClick: onNavigateToMain,
+                "data-ocid": "checkout.back_to_main_button",
+                className: "btn px-6 py-3 text-sm font-semibold",
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
+                  "Back to Main"
+                ]
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500", children: "Payment is verified on-ledger automatically." })
+          ] })
+        ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "div",
+          {
+            className: "flex items-start gap-3 rounded-xl bg-destructive-soft p-4 text-sm text-destructive",
+            "data-ocid": "checkout.deposit_error",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(TriangleAlert, { className: "h-5 w-5 shrink-0" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "We could not generate your deposit. Please go back and try again." })
+            ]
+          }
+        )
+      ] }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("aside", { className: "min-w-0 min-[820px]:sticky min-[820px]:top-24", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+        OrderSummary,
         {
-          className: "flex items-start gap-3 rounded-xl bg-destructive-soft p-4 text-sm text-destructive",
-          "data-ocid": "checkout.deposit_error",
-          children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(TriangleAlert, { className: "h-5 w-5 shrink-0" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "We could not generate your deposit. Please go back and try again." })
-          ]
+          order,
+          items,
+          cartSubtotal: subtotal
         }
-      )
-    ] }) })
+      ) })
+    ] })
   ] }) });
 };
 const MainContent = () => {
@@ -33404,6 +34695,15 @@ const MainContent = () => {
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative mb-12", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-[400px] h-[400px] bg-gradient-to-r from-purple-500/8 to-pink-500/8 rounded-full blur-3xl animate-pulse-glow" }) }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "shell-glow shell-drift flex items-center justify-center mb-6", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "img",
+          {
+            src: "/assets/images/nak-shell.png",
+            alt: "NAK STRATS pixel-art shell mascot",
+            className: "pixel-art object-contain",
+            style: { width: "160px", height: "160px" }
+          }
+        ) }),
         /* @__PURE__ */ jsxRuntimeExports.jsx(
           "h1",
           {
@@ -33413,30 +34713,6 @@ const MainContent = () => {
               animationDelay: "0.1s"
             },
             children: "NAK STRATS"
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "div",
-          {
-            className: "absolute -top-8 -left-8 animate-float opacity-30",
-            style: { animationDelay: "1s" },
-            children: /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-6 h-6 text-purple-400" })
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "div",
-          {
-            className: "absolute -top-6 -right-12 animate-float opacity-30",
-            style: { animationDelay: "2s" },
-            children: /* @__PURE__ */ jsxRuntimeExports.jsx(Zap, { className: "w-5 h-5 text-pink-400" })
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "div",
-          {
-            className: "absolute -bottom-6 left-16 animate-float opacity-30",
-            style: { animationDelay: "0.5s" },
-            children: /* @__PURE__ */ jsxRuntimeExports.jsx(Shield, { className: "w-5 h-5 text-teal-400" })
           }
         )
       ] })
@@ -34086,77 +35362,129 @@ const Navigation = ({
   onNavigateToMetaTheatre,
   onNavigateToShop,
   onNavigateToCart,
-  onNavigateToOrderLookup,
-  onNavigateToAdmin
+  onNavigateToOrderLookup
 }) => {
+  const { itemCount } = useCart();
   const [isMenuOpen, setIsMenuOpen] = reactExports.useState(false);
   const [activeSection, setActiveSection] = reactExports.useState("home");
   const [expandedGroups, setExpandedGroups] = reactExports.useState([]);
   const [isWideScreen, setIsWideScreen] = reactExports.useState(false);
+  const [openDropdown, setOpenDropdown] = reactExports.useState(null);
+  const navRef = reactExports.useRef(null);
   reactExports.useEffect(() => {
     const checkScreenWidth = () => {
-      const minWidthForFullMenu = 1200;
+      const minWidthForFullMenu = 900;
       setIsWideScreen(window.innerWidth >= minWidthForFullMenu);
     };
     checkScreenWidth();
     window.addEventListener("resize", checkScreenWidth);
     return () => window.removeEventListener("resize", checkScreenWidth);
   }, []);
-  const navigationItems = reactExports.useMemo(
+  const dropdownGroups = reactExports.useMemo(
     () => [
-      { id: "home", label: "Home", icon: House, group: "main" },
-      { id: "token-info", label: "Token Info", icon: Coins, group: "main" },
       {
-        id: "purchase-nak",
-        label: "Purchase NAK",
-        icon: ShoppingCart,
-        group: "trading"
+        key: "token",
+        label: "Token",
+        items: [
+          {
+            key: "home",
+            kind: "section",
+            id: "home",
+            label: "Home",
+            icon: House
+          },
+          {
+            key: "token-info",
+            kind: "section",
+            id: "token-info",
+            label: "Token Info",
+            icon: Coins
+          },
+          {
+            key: "reserve-treasury",
+            kind: "section",
+            id: "reserve-treasury",
+            label: "Reserve Treasury",
+            icon: Vault
+          },
+          {
+            key: "treasury-dashboard",
+            kind: "external",
+            label: "Treasury Dashboard",
+            icon: ChartColumn,
+            url: "https://nakreserve-p6m.caffeine.xyz/"
+          }
+        ]
       },
       {
-        id: "nak-featured-artist",
-        label: "NAK's Featured Artist",
-        icon: Music,
-        group: "content"
+        key: "trade",
+        label: "Trade",
+        items: [
+          {
+            key: "purchase-nak",
+            kind: "section",
+            id: "purchase-nak",
+            label: "Purchase NAK",
+            icon: ShoppingCart
+          },
+          {
+            key: "houdiniswap",
+            kind: "external",
+            label: "Houdiniswap",
+            icon: ExternalLink,
+            url: "https://app.houdiniswap.com/"
+          }
+        ]
       },
       {
-        id: "reserve-treasury",
-        label: "Reserve Treasury",
-        icon: Vault,
-        group: "treasury"
+        key: "shop",
+        label: "Shop",
+        items: [
+          {
+            key: "browse-products",
+            kind: "page",
+            label: "Browse Products",
+            icon: ShoppingCart,
+            page: "shop"
+          },
+          {
+            key: "track-order",
+            kind: "page",
+            label: "Track an Order",
+            icon: Search,
+            page: "orderlookup"
+          }
+        ]
       },
       {
-        id: "telegram",
-        label: "Telegram",
-        icon: MessageCircle,
-        group: "community"
+        key: "media",
+        label: "Media",
+        items: [
+          {
+            key: "featured-artist",
+            kind: "section",
+            id: "nak-featured-artist",
+            label: "Featured Artist",
+            icon: Music
+          },
+          {
+            key: "metatheatre",
+            kind: "page",
+            label: "MetaTheatre",
+            icon: Theater,
+            page: "metatheatre"
+          },
+          {
+            key: "telegram",
+            kind: "section",
+            id: "telegram",
+            label: "Telegram",
+            icon: MessageCircle
+          }
+        ]
       }
     ],
     []
-  );
-  const menuGroups = reactExports.useMemo(
-    () => ({
-      main: {
-        label: "Main",
-        items: navigationItems.filter((item) => item.group === "main")
-      },
-      trading: {
-        label: "Trading",
-        items: navigationItems.filter((item) => item.group === "trading")
-      },
-      content: {
-        label: "Content",
-        items: navigationItems.filter((item) => item.group === "content")
-      },
-      treasury: {
-        label: "Treasury",
-        items: navigationItems.filter((item) => item.group === "treasury")
-      },
-      community: {
-        label: "Community",
-        items: navigationItems.filter((item) => item.group === "community")
-      }
-    }),
-    [navigationItems]
   );
   const scrollToSection = (sectionId) => {
     if (currentPage !== "main") {
@@ -34178,44 +35506,26 @@ const Navigation = ({
       }
     }
     setIsMenuOpen(false);
+    setOpenDropdown(null);
   };
-  const handleTreasuryDashboardClick = () => {
-    window.open("https://nakreserve-p6m.caffeine.xyz/", "_blank");
+  const handleExternalClick = (url) => {
+    window.open(url, "_blank");
     setIsMenuOpen(false);
+    setOpenDropdown(null);
   };
-  const handleHoudiniswapClick = () => {
-    window.open("https://app.houdiniswap.com/", "_blank");
-    setIsMenuOpen(false);
-  };
-  const handleMetaTheatreClick = () => {
-    if (onNavigateToMetaTheatre) {
+  const handlePageClick = (page) => {
+    if (page === "shop" && onNavigateToShop) onNavigateToShop();
+    if (page === "orderlookup" && onNavigateToOrderLookup)
+      onNavigateToOrderLookup();
+    if (page === "metatheatre" && onNavigateToMetaTheatre)
       onNavigateToMetaTheatre();
-    }
     setIsMenuOpen(false);
-  };
-  const handleShopClick = () => {
-    if (onNavigateToShop) {
-      onNavigateToShop();
-    }
-    setIsMenuOpen(false);
+    setOpenDropdown(null);
   };
   const handleCartClick = () => {
-    if (onNavigateToCart) {
-      onNavigateToCart();
-    }
+    if (onNavigateToCart) onNavigateToCart();
     setIsMenuOpen(false);
-  };
-  const handleOrderLookupClick = () => {
-    if (onNavigateToOrderLookup) {
-      onNavigateToOrderLookup();
-    }
-    setIsMenuOpen(false);
-  };
-  const handleAdminClick = () => {
-    if (onNavigateToAdmin) {
-      onNavigateToAdmin();
-    }
-    setIsMenuOpen(false);
+    setOpenDropdown(null);
   };
   const toggleGroup = (groupKey) => {
     setExpandedGroups(
@@ -34223,9 +35533,30 @@ const Navigation = ({
     );
   };
   reactExports.useEffect(() => {
+    const handlePointerDown = (event) => {
+      if (navRef.current && !navRef.current.contains(event.target)) {
+        setOpenDropdown(null);
+      }
+    };
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        setOpenDropdown(null);
+        setIsMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handlePointerDown);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", handlePointerDown);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+  reactExports.useEffect(() => {
     if (currentPage !== "main") return;
     const handleScroll = () => {
-      const sections = navigationItems.map((item) => item.id);
+      const sections = dropdownGroups.flatMap(
+        (group) => group.items.filter((item) => item.kind === "section").map((item) => item.id)
+      );
       const navHeight = 80;
       for (let i = sections.length - 1; i >= 0; i--) {
         const section = document.getElementById(sections[i]);
@@ -34240,19 +35571,30 @@ const Navigation = ({
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [currentPage, navigationItems]);
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("nav", { className: "nav-sticky", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between h-20", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 flex-shrink-0", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative group", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-10 h-10 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center shadow-lg transition-all duration-300 group-hover:scale-110", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white font-bold text-lg", children: "N" }) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 opacity-0 group-hover:opacity-20 blur-xl transition-all duration-300" })
-        ] }),
+  }, [currentPage, dropdownGroups]);
+  const isSubPage = currentPage === "artist" || currentPage === "metatheatre" || currentPage === "shop" || currentPage === "cart" || currentPage === "checkout" || currentPage === "success" || currentPage === "orderlookup" || currentPage === "admin";
+  const renderItemAction = (item) => {
+    if (item.kind === "section") return () => scrollToSection(item.id);
+    if (item.kind === "external") return () => handleExternalClick(item.url);
+    return () => handlePageClick(item.page);
+  };
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("nav", { className: "nav-sticky", ref: navRef, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between h-20 min-w-0", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 flex-shrink-0 min-w-0", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "img",
+          {
+            src: "/assets/images/nak-shell.png",
+            alt: "NAK STRATS shell mascot",
+            className: "pixel-art h-10 w-10 object-contain",
+            style: { height: "2.5rem", width: "2.5rem" }
+          }
+        ),
         /* @__PURE__ */ jsxRuntimeExports.jsx(
           "button",
           {
             type: "button",
-            className: "text-xl font-semibold text-white cursor-pointer hover:text-purple-300 transition-colors duration-300 bg-transparent border-0 p-0",
+            className: "text-xl font-semibold text-white cursor-pointer hover:text-purple-300 transition-colors duration-300 bg-transparent border-0 p-0 whitespace-nowrap",
             style: { fontFamily: "var(--font-heading)" },
             onClick: () => {
               if (currentPage === "main") {
@@ -34265,260 +35607,78 @@ const Navigation = ({
           }
         )
       ] }),
-      (currentPage === "artist" || currentPage === "metatheatre" || currentPage === "shop" || currentPage === "cart" || currentPage === "checkout" || currentPage === "success" || currentPage === "orderlookup" || currentPage === "admin") && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "hidden lg:flex items-center", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        "button",
-        {
-          type: "button",
-          onClick: onNavigateToMain,
-          className: "flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-300 text-gray-300 hover:text-white hover:bg-white/5 text-sm",
-          style: { fontFamily: "var(--font-body)" },
-          children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Back to Main Page" })
-          ]
-        }
-      ) }),
-      currentPage === "main" && isWideScreen && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "hidden lg:flex items-center space-x-0.5", children: [
-        navigationItems.map((item) => {
-          const IconComponent = item.icon;
-          const isActive = activeSection === item.id;
-          return /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              type: "button",
-              onClick: () => scrollToSection(item.id),
-              className: `relative flex items-center gap-1.5 px-2.5 py-2 rounded-lg font-medium transition-all duration-300 group ${isActive ? "bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-white border border-purple-500/30" : "text-gray-300 hover:text-white hover:bg-white/5"}`,
-              style: {
-                fontFamily: "var(--font-body)",
-                fontSize: "0.7rem"
-              },
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(IconComponent, { className: "w-3 h-3" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "whitespace-nowrap", children: item.label }),
-                isActive && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 rounded-lg bg-gradient-to-r from-purple-500/10 to-pink-500/10 blur-sm" })
-              ]
-            },
-            item.id
-          );
+      isWideScreen && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-end gap-0.5 min-w-0", children: [
+        currentPage === "main" && dropdownGroups.map((group) => {
+          const isOpen = openDropdown === group.key;
+          return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative z-50", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "button",
+              {
+                type: "button",
+                className: "nav-item",
+                "aria-expanded": isOpen,
+                "aria-haspopup": "true",
+                onClick: () => setOpenDropdown(isOpen ? null : group.key),
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: group.label }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    ChevronDown,
+                    {
+                      className: `w-3.5 h-3.5 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`
+                    }
+                  )
+                ]
+              }
+            ),
+            isOpen && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "nav-dropdown", children: group.items.map((item) => {
+              const IconComponent = item.icon;
+              const isActive = item.kind === "section" && activeSection === item.id;
+              return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                "button",
+                {
+                  type: "button",
+                  onClick: renderItemAction(item),
+                  className: `nav-dropdown-item flex items-center gap-2.5 ${isActive ? "text-white" : ""}`,
+                  children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(IconComponent, { className: "w-4 h-4 opacity-70" }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "flex-1", children: item.label }),
+                    item.kind === "external" && /* @__PURE__ */ jsxRuntimeExports.jsx(ExternalLink, { className: "w-3 h-3 opacity-60" })
+                  ]
+                },
+                item.key
+              );
+            }) })
+          ] }, group.key);
         }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs(
           "button",
           {
             type: "button",
-            onClick: handleTreasuryDashboardClick,
-            className: "relative flex items-center gap-1.5 px-2.5 py-2 rounded-lg font-medium transition-all duration-300 group text-gray-300 hover:text-white hover:bg-white/5",
-            style: { fontFamily: "var(--font-body)", fontSize: "0.7rem" },
-            title: "Opens external treasury dashboard",
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(ChartColumn, { className: "w-3 h-3" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "whitespace-nowrap", children: "Dashboard" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(ExternalLink, { className: "w-2 h-2 opacity-60" })
-            ]
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "button",
-          {
-            type: "button",
-            onClick: handleHoudiniswapClick,
-            className: "relative flex items-center gap-1.5 px-2.5 py-2 rounded-lg font-medium transition-all duration-300 group text-gray-300 hover:text-white hover:bg-white/5",
-            style: { fontFamily: "var(--font-body)", fontSize: "0.7rem" },
-            title: "Opens Houdiniswap",
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingCart, { className: "w-3 h-3" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "whitespace-nowrap", children: "Houdiniswap" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(ExternalLink, { className: "w-2 h-2 opacity-60" })
-            ]
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "button",
-          {
-            type: "button",
-            onClick: handleMetaTheatreClick,
-            className: "relative flex items-center gap-1.5 px-2.5 py-2 rounded-lg font-medium transition-all duration-300 group text-gray-300 hover:text-white hover:bg-white/5",
-            style: { fontFamily: "var(--font-body)", fontSize: "0.7rem" },
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Theater, { className: "w-3 h-3" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "whitespace-nowrap", children: "MetaTheatre" })
-            ]
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "button",
-          {
-            type: "button",
-            onClick: handleShopClick,
-            className: "relative flex items-center gap-1.5 px-2.5 py-2 rounded-lg font-medium transition-all duration-300 group text-gray-300 hover:text-white hover:bg-white/5",
-            style: { fontFamily: "var(--font-body)", fontSize: "0.7rem" },
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingCart, { className: "w-3 h-3" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "whitespace-nowrap", children: "Shop" })
-            ]
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "button",
-          {
-            type: "button",
             onClick: handleCartClick,
-            className: "relative flex items-center gap-1.5 px-2.5 py-2 rounded-lg font-medium transition-all duration-300 group text-gray-300 hover:text-white hover:bg-white/5",
-            style: { fontFamily: "var(--font-body)", fontSize: "0.7rem" },
+            className: "nav-item relative",
+            "aria-label": `Cart, ${itemCount} item${itemCount === 1 ? "" : "s"}`,
             children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingCart, { className: "w-3 h-3" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "whitespace-nowrap", children: "Cart" })
-            ]
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "button",
-          {
-            type: "button",
-            onClick: handleOrderLookupClick,
-            className: "relative flex items-center gap-1.5 px-2.5 py-2 rounded-lg font-medium transition-all duration-300 group text-gray-300 hover:text-white hover:bg-white/5",
-            style: { fontFamily: "var(--font-body)", fontSize: "0.7rem" },
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Search, { className: "w-3 h-3" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "whitespace-nowrap", children: "Order Lookup" })
-            ]
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "button",
-          {
-            type: "button",
-            onClick: handleAdminClick,
-            className: "relative flex items-center gap-1.5 px-2.5 py-2 rounded-lg font-medium transition-all duration-300 group text-gray-300 hover:text-white hover:bg-white/5",
-            style: { fontFamily: "var(--font-body)", fontSize: "0.7rem" },
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Settings, { className: "w-3 h-3" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "whitespace-nowrap", children: "Admin" })
+              /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingCart, { className: "w-4 h-4" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "hidden xl:inline", children: "Cart" }),
+              itemCount > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "cart-badge", children: itemCount })
             ]
           }
         )
       ] }),
-      currentPage === "main" && !isWideScreen && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "hidden md:flex lg:hidden items-center space-x-1", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "button",
-          {
-            type: "button",
-            onClick: () => scrollToSection("home"),
-            className: `relative flex items-center gap-1 px-2 py-2 rounded-lg font-medium transition-all duration-300 text-xs ${activeSection === "home" ? "bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-white border border-purple-500/30" : "text-gray-300 hover:text-white hover:bg-white/5"}`,
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(House, { className: "w-3 h-3" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Home" })
-            ]
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "button",
-          {
-            type: "button",
-            onClick: () => scrollToSection("token-info"),
-            className: `relative flex items-center gap-1 px-2 py-2 rounded-lg font-medium transition-all duration-300 text-xs ${activeSection === "token-info" ? "bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-white border border-purple-500/30" : "text-gray-300 hover:text-white hover:bg-white/5"}`,
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Coins, { className: "w-3 h-3" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Token" })
-            ]
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "button",
-          {
-            type: "button",
-            onClick: () => scrollToSection("purchase-nak"),
-            className: `relative flex items-center gap-1 px-2 py-2 rounded-lg font-medium transition-all duration-300 text-xs ${activeSection === "purchase-nak" ? "bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-white border border-purple-500/30" : "text-gray-300 hover:text-white hover:bg-white/5"}`,
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingCart, { className: "w-3 h-3" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Buy" })
-            ]
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "button",
-          {
-            type: "button",
-            onClick: handleMetaTheatreClick,
-            className: "relative flex items-center gap-1 px-2 py-2 rounded-lg font-medium transition-all duration-300 text-xs text-gray-300 hover:text-white hover:bg-white/5",
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Theater, { className: "w-3 h-3" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Theatre" })
-            ]
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "button",
-          {
-            type: "button",
-            onClick: handleShopClick,
-            className: "relative flex items-center gap-1 px-2 py-2 rounded-lg font-medium transition-all duration-300 text-xs text-gray-300 hover:text-white hover:bg-white/5",
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingCart, { className: "w-3 h-3" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Shop" })
-            ]
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "button",
-          {
-            type: "button",
-            onClick: handleCartClick,
-            className: "relative flex items-center gap-1 px-2 py-2 rounded-lg font-medium transition-all duration-300 text-xs text-gray-300 hover:text-white hover:bg-white/5",
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingCart, { className: "w-3 h-3" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Cart" })
-            ]
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "button",
-          {
-            type: "button",
-            onClick: handleOrderLookupClick,
-            className: "relative flex items-center gap-1 px-2 py-2 rounded-lg font-medium transition-all duration-300 text-xs text-gray-300 hover:text-white hover:bg-white/5",
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Search, { className: "w-3 h-3" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Orders" })
-            ]
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "button",
-          {
-            type: "button",
-            onClick: handleAdminClick,
-            className: "relative flex items-center gap-1 px-2 py-2 rounded-lg font-medium transition-all duration-300 text-xs text-gray-300 hover:text-white hover:bg-white/5",
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Settings, { className: "w-3 h-3" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Admin" })
-            ]
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "button",
-          {
-            type: "button",
-            onClick: () => setIsMenuOpen(!isMenuOpen),
-            className: "flex items-center gap-1 px-2 py-2 rounded-lg font-medium transition-all duration-300 text-xs text-gray-300 hover:text-white hover:bg-white/5",
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Menu, { className: "w-3 h-3" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "More" })
-            ]
-          }
-        ) })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
+      !isWideScreen && /* @__PURE__ */ jsxRuntimeExports.jsx(
         "button",
         {
           type: "button",
           onClick: () => setIsMenuOpen(!isMenuOpen),
-          className: "md:flex lg:hidden p-2.5 rounded-xl bg-white/5 text-white hover:bg-white/10 transition-all duration-300 border border-white/10",
+          className: "md:flex p-2.5 rounded-xl bg-white/5 text-white hover:bg-white/10 transition-all duration-300 border border-white/10",
+          "aria-expanded": isMenuOpen,
+          "aria-label": "Toggle navigation menu",
           children: isMenuOpen ? /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-5 h-5" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Menu, { className: "w-5 h-5" })
         }
       )
     ] }),
     isMenuOpen && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "nav-mobile-menu", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-4 py-6 space-y-2", children: [
-      (currentPage === "artist" || currentPage === "metatheatre" || currentPage === "shop" || currentPage === "cart" || currentPage === "checkout" || currentPage === "success" || currentPage === "orderlookup" || currentPage === "admin") && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      isSubPage && /* @__PURE__ */ jsxRuntimeExports.jsxs(
         "button",
         {
           type: "button",
@@ -34535,152 +35695,55 @@ const Navigation = ({
         }
       ),
       currentPage === "main" && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-        Object.entries(menuGroups).map(([groupKey, group]) => /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-1", children: group.items.length > 1 ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+        dropdownGroups.map((group) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs(
             "button",
             {
               type: "button",
-              onClick: () => toggleGroup(groupKey),
+              onClick: () => toggleGroup(group.key),
               className: "w-full flex items-center justify-between px-4 py-3 rounded-xl font-medium transition-all duration-300 text-gray-400 hover:text-white hover:bg-white/5 text-sm",
               style: { fontFamily: "var(--font-body)" },
+              "aria-expanded": expandedGroups.includes(group.key),
               children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: group.label }),
-                expandedGroups.includes(groupKey) ? /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronDown, { className: "w-4 h-4" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronRight, { className: "w-4 h-4" })
+                expandedGroups.includes(group.key) ? /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronDown, { className: "w-4 h-4" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronRight, { className: "w-4 h-4" })
               ]
             }
           ),
-          expandedGroups.includes(groupKey) && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "ml-4 space-y-1", children: group.items.map((item) => {
+          expandedGroups.includes(group.key) && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "ml-4 space-y-1", children: group.items.map((item) => {
             const IconComponent = item.icon;
-            const isActive = activeSection === item.id;
+            const isActive = item.kind === "section" && activeSection === item.id;
             return /* @__PURE__ */ jsxRuntimeExports.jsxs(
               "button",
               {
                 type: "button",
-                onClick: () => scrollToSection(item.id),
+                onClick: renderItemAction(item),
                 className: `w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-300 text-sm ${isActive ? "bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-white border border-purple-500/30" : "text-gray-300 hover:text-white hover:bg-white/5"}`,
                 style: { fontFamily: "var(--font-body)" },
                 children: [
                   /* @__PURE__ */ jsxRuntimeExports.jsx(IconComponent, { className: "w-4 h-4" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: item.label })
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "flex-1", children: item.label }),
+                  item.kind === "external" && /* @__PURE__ */ jsxRuntimeExports.jsx(ExternalLink, { className: "w-3 h-3 opacity-60" })
                 ]
               },
-              item.id
+              item.key
             );
           }) })
-        ] }) : group.items.map((item) => {
-          const IconComponent = item.icon;
-          const isActive = activeSection === item.id;
-          return /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              type: "button",
-              onClick: () => scrollToSection(item.id),
-              className: `w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-300 text-sm ${isActive ? "bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-white border border-purple-500/30" : "text-gray-300 hover:text-white hover:bg-white/5"}`,
-              style: { fontFamily: "var(--font-body)" },
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(IconComponent, { className: "w-4 h-4" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: item.label })
-              ]
-            },
-            item.id
-          );
-        }) }, groupKey)),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "pt-4 border-t border-white/10", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-xs font-medium text-gray-500 px-4 py-2 uppercase tracking-wider", children: "External Links" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              type: "button",
-              onClick: handleTreasuryDashboardClick,
-              className: "w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-300 text-gray-300 hover:text-white hover:bg-white/5 text-sm",
-              style: { fontFamily: "var(--font-body)" },
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(ChartColumn, { className: "w-4 h-4" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Treasury Dashboard" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(ExternalLink, { className: "w-3 h-3 opacity-60 ml-auto" })
-              ]
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              type: "button",
-              onClick: handleHoudiniswapClick,
-              className: "w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-300 text-gray-300 hover:text-white hover:bg-white/5 text-sm",
-              style: { fontFamily: "var(--font-body)" },
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingCart, { className: "w-4 h-4" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Houdiniswap" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(ExternalLink, { className: "w-3 h-3 opacity-60 ml-auto" })
-              ]
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              type: "button",
-              onClick: handleMetaTheatreClick,
-              className: "w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-300 text-gray-300 hover:text-white hover:bg-white/5 text-sm",
-              style: { fontFamily: "var(--font-body)" },
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Theater, { className: "w-4 h-4" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "MetaTheatre" })
-              ]
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              type: "button",
-              onClick: handleShopClick,
-              className: "w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-300 text-gray-300 hover:text-white hover:bg-white/5 text-sm",
-              style: { fontFamily: "var(--font-body)" },
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingCart, { className: "w-4 h-4" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Shop" })
-              ]
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              type: "button",
-              onClick: handleCartClick,
-              className: "w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-300 text-gray-300 hover:text-white hover:bg-white/5 text-sm",
-              style: { fontFamily: "var(--font-body)" },
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingCart, { className: "w-4 h-4" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Cart" })
-              ]
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              type: "button",
-              onClick: handleOrderLookupClick,
-              className: "w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-300 text-gray-300 hover:text-white hover:bg-white/5 text-sm",
-              style: { fontFamily: "var(--font-body)" },
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Search, { className: "w-4 h-4" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Order Lookup" })
-              ]
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              type: "button",
-              onClick: handleAdminClick,
-              className: "w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-300 text-gray-300 hover:text-white hover:bg-white/5 text-sm",
-              style: { fontFamily: "var(--font-body)" },
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Settings, { className: "w-4 h-4" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Admin" })
-              ]
-            }
-          )
-        ] })
+        ] }, group.key)),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "pt-4 border-t border-white/10 space-y-1", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            type: "button",
+            onClick: handleCartClick,
+            className: "w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-300 text-gray-300 hover:text-white hover:bg-white/5 text-sm",
+            style: { fontFamily: "var(--font-body)" },
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingCart, { className: "w-4 h-4" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "flex-1", children: "Cart" }),
+              itemCount > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "cart-badge relative static", children: itemCount })
+            ]
+          }
+        ) })
       ] })
     ] }) })
   ] }) });
@@ -35745,212 +36808,190 @@ const formatPrice = (value) => Number(value).toLocaleString("en-US", {
   currency: "USD",
   maximumFractionDigits: 2
 });
-const accentFor = (index2) => {
-  const accents = [
-    "from-purple-500 to-pink-500",
-    "from-teal-500 to-purple-500",
-    "from-pink-500 to-indigo-500",
-    "from-indigo-500 to-teal-500",
-    "from-purple-500 to-teal-500"
-  ];
-  return accents[index2 % accents.length];
-};
-const ShopPage = ({
-  onNavigateToMain,
-  onNavigateToProduct = () => {
-  }
-}) => {
+const ShopPage = ({ onNavigateToMain }) => {
   const { data: products, isLoading, isError } = useProducts();
+  const { addItem } = useCart();
+  const [addedId, setAddedId] = reactExports.useState(null);
   reactExports.useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-  const handleSelect = (product) => {
-    onNavigateToProduct(product.slug || String(product.id));
+  const handleAddToCart = (product) => {
+    var _a3;
+    const variantId = ((_a3 = product.variants[0]) == null ? void 0 : _a3.id) ?? "";
+    addItem(product, variantId, 1);
+    setAddedId(product.slug || String(product.id));
+    window.setTimeout(() => setAddedId(null), 2e3);
   };
   return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "pt-24 sm:pt-32 pb-12 sm:pb-20 px-4 sm:px-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-7xl mx-auto", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center mb-12 sm:mb-16 px-2", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-4 mb-8", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingCart, { className: "w-12 h-12 text-teal-400" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 rounded-full bg-teal-400/20 blur-xl animate-pulse" })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "h1",
-          {
-            className: "text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold leading-tight",
-            style: { fontFamily: "var(--font-heading)" },
-            children: "Shop"
-          }
-        )
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm sm:text-base text-gray-300 max-w-2xl mx-auto", children: "Official NAK STRATS cologne collection" })
-    ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative max-w-6xl mx-auto mb-12 sm:mb-20 px-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative card glass-card p-6 sm:p-8 lg:p-12", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center mb-8 sm:mb-12", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-2 sm:gap-3 mb-3 sm:mb-4", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-6 h-6 sm:w-8 sm:h-8 text-pink-400" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "h3",
-            {
-              className: "text-2xl sm:text-3xl font-semibold text-white",
-              style: { fontFamily: "var(--font-heading)" },
-              children: "Featured Fragrances"
-            }
-          )
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm sm:text-base text-gray-300", children: "Handcrafted colognes from the NAK STRATS collection" })
-      ] }),
-      isLoading && /* @__PURE__ */ jsxRuntimeExports.jsx(
-        "div",
-        {
-          className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6",
-          "data-ocid": "shop.loading_state",
-          children: ["skeleton-0", "skeleton-1", "skeleton-2"].map((key) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "div",
-            {
-              className: "card glass-card p-6 sm:p-8 text-center",
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "loading-shimmer w-24 h-24 sm:w-28 sm:h-28 rounded-2xl mx-auto mb-4 sm:mb-6" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "loading-shimmer h-6 w-3/4 mx-auto rounded-lg mb-3" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "loading-shimmer h-4 w-full rounded-lg mb-3" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "loading-shimmer h-4 w-2/3 mx-auto rounded-lg" })
-              ]
-            },
-            key
-          ))
-        }
-      ),
-      !isLoading && isError && /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        "div",
-        {
-          className: "card glass-card p-6 sm:p-10 text-center",
-          "data-ocid": "shop.error_state",
-          children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-xl sm:text-2xl mb-3", children: "Couldn't load the collection" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-gray-300 mb-8 max-w-md mx-auto", children: "Something went wrong while fetching the products. Please try again shortly." }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "button",
-              {
-                type: "button",
-                onClick: onNavigateToMain,
-                className: "btn px-8 py-4 text-base font-semibold",
-                "data-ocid": "shop.back_to_main_button",
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
-                  "Back to Main"
-                ]
-              }
-            )
-          ]
-        }
-      ),
-      !isLoading && !isError && (!products || products.length === 0) && /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        "div",
-        {
-          className: "card glass-card p-6 sm:p-10 text-center",
-          "data-ocid": "shop.empty_state",
-          children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative flex items-center justify-center gap-4 mb-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingCart, { className: "w-10 h-10 text-purple-400" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 rounded-full bg-purple-400/20 blur-xl animate-pulse" })
-            ] }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-xl sm:text-2xl mb-3", children: "The collection is being finalized" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-gray-300 mb-8 max-w-md mx-auto", children: "Our cologne lineup is being prepared. Check back soon for availability and pricing." }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "button",
-              {
-                type: "button",
-                onClick: onNavigateToMain,
-                className: "btn px-8 py-4 text-base font-semibold",
-                "data-ocid": "shop.back_to_main_button",
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
-                  "Back to Main"
-                ]
-              }
-            )
-          ]
-        }
-      ),
-      !isLoading && !isError && products && products.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6", children: products.map((product, index2) => {
-        var _a3;
-        const image = (_a3 = product.images) == null ? void 0 : _a3[0];
-        const isSoldOut = product.inventory === 0n;
-        return /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "button",
-          {
-            type: "button",
-            onClick: () => handleSelect(product),
-            className: "group relative text-left animate-fade-in-up",
-            style: { animationDelay: `${(index2 + 1) * 0.1}s` },
-            "data-ocid": `shop.item.${index2 + 1}`,
-            "aria-label": `View ${product.name}`,
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "div",
-                {
-                  className: `absolute inset-0 bg-gradient-to-r ${accentFor(
-                    index2
-                  )} rounded-2xl blur-xl opacity-10 group-hover:opacity-20 transition-all duration-500`
-                }
-              ),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative block card glass-card p-6 sm:p-8 hover:shadow-2xl transition-all duration-500 group-hover:scale-105 text-center h-full", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center justify-center mb-4 sm:mb-6", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "div",
-                  {
-                    className: `w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-gradient-to-br ${accentFor(
-                      index2
-                    )} flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 overflow-hidden`,
-                    children: image ? /* @__PURE__ */ jsxRuntimeExports.jsx(
-                      "img",
-                      {
-                        src: image,
-                        alt: product.name,
-                        className: "w-full h-full object-cover"
-                      }
-                    ) : /* @__PURE__ */ jsxRuntimeExports.jsx(Image, { className: "w-10 h-10 sm:w-12 sm:h-12 text-white/80" })
-                  }
-                ) }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "h4",
-                  {
-                    className: "text-lg sm:text-xl font-semibold mb-2 sm:mb-3 text-white",
-                    style: { fontFamily: "var(--font-heading)" },
-                    children: product.name
-                  }
-                ),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs sm:text-sm text-gray-400 mb-3 sm:mb-4 line-clamp-2", children: product.description }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-2 text-sm text-teal-300 font-medium", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingCart, { className: "w-3 h-3" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: formatPrice(product.price) }),
-                  isSoldOut && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "px-2 py-0.5 rounded-full text-[10px] font-semibold bg-destructive-soft text-destructive", children: "Sold out" })
-                ] })
-              ] })
-            ]
-          },
-          product.slug || String(product.id)
-        );
-      }) })
-    ] }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-center px-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mb-8 sm:mb-10 px-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
       "button",
       {
         type: "button",
         onClick: onNavigateToMain,
-        className: "btn inline-flex items-center gap-3 sm:gap-4 px-8 sm:px-12 py-4 sm:py-6 text-lg sm:text-xl font-semibold rounded-2xl sm:rounded-3xl transition-all duration-300 hover:scale-105 hover:shadow-2xl group relative overflow-hidden",
-        style: {
-          background: "linear-gradient(135deg, var(--nak-teal) 0%, var(--nak-purple) 50%, var(--nak-pink) 100%)",
-          border: "2px solid rgba(6, 182, 212, 0.3)",
-          boxShadow: "0 10px 40px rgba(6, 182, 212, 0.2)"
-        },
-        "data-ocid": "shop.back_to_main_button",
+        className: "back-link",
+        "data-ocid": "shop.back_link",
         children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-5 h-5 sm:w-6 sm:h-6 group-hover:-translate-x-1 transition-transform duration-300" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "relative z-10", children: "Back to Main Page" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" })
+          /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
+          "Back"
         ]
       }
-    ) })
+    ) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center mb-12 sm:mb-16 px-2", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs sm:text-sm uppercase tracking-[0.3em] text-teal-400 mb-3", children: "Fragrance" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "h1",
+        {
+          className: "text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold leading-tight",
+          style: { fontFamily: "var(--font-heading)" },
+          children: "The NAK STRATS Collection"
+        }
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm sm:text-base text-gray-300 max-w-2xl mx-auto mt-4", children: "Handcrafted colognes from the NAK STRATS collection — reserve yours before they sell out." })
+    ] }),
+    isLoading && /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "div",
+      {
+        className: "grid gap-5",
+        style: {
+          gridTemplateColumns: "repeat(auto-fill, minmax(15rem, 1fr))"
+        },
+        "data-ocid": "shop.loading_state",
+        children: ["skeleton-0", "skeleton-1", "skeleton-2"].map((key) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "shop-card p-4", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "shop-well loading-shimmer mb-4" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "loading-shimmer h-6 w-3/4 rounded-lg mb-3" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "loading-shimmer h-4 w-full rounded-lg mb-3" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "loading-shimmer h-4 w-2/3 rounded-lg" })
+        ] }, key))
+      }
+    ),
+    !isLoading && isError && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      "div",
+      {
+        className: "card glass-card p-6 sm:p-10 text-center max-w-4xl mx-auto",
+        "data-ocid": "shop.error_state",
+        children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-xl sm:text-2xl mb-3", children: "Couldn't load the collection" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-gray-300 mb-8 max-w-md mx-auto", children: "Something went wrong while fetching the products. Please try again shortly." }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "button",
+            {
+              type: "button",
+              onClick: onNavigateToMain,
+              className: "btn px-8 py-4 text-base font-semibold",
+              "data-ocid": "shop.back_to_main_button",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
+                "Back to Main"
+              ]
+            }
+          )
+        ]
+      }
+    ),
+    !isLoading && !isError && (!products || products.length === 0) && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      "div",
+      {
+        className: "card glass-card p-6 sm:p-10 text-center max-w-4xl mx-auto",
+        "data-ocid": "shop.empty_state",
+        children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative flex items-center justify-center gap-4 mb-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingCart, { className: "w-10 h-10 text-purple-400" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 rounded-full bg-purple-400/20 blur-xl animate-pulse" })
+          ] }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-xl sm:text-2xl mb-3", children: "The collection is being finalized" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-gray-300 mb-8 max-w-md mx-auto", children: "Our cologne lineup is being prepared. Check back soon for availability and pricing." }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "button",
+            {
+              type: "button",
+              onClick: onNavigateToMain,
+              className: "btn px-8 py-4 text-base font-semibold",
+              "data-ocid": "shop.back_to_main_button",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
+                "Back to Main"
+              ]
+            }
+          )
+        ]
+      }
+    ),
+    !isLoading && !isError && products && products.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "div",
+      {
+        className: "grid gap-5",
+        style: {
+          gridTemplateColumns: "repeat(auto-fill, minmax(15rem, 1fr))"
+        },
+        children: products.map((product, index2) => {
+          var _a3;
+          const image = (_a3 = product.images) == null ? void 0 : _a3[0];
+          const inventory = Number(product.inventory);
+          const isSoldOut = inventory === 0;
+          const isLow = inventory > 0 && inventory <= 10;
+          const isCritical = inventory > 0 && inventory <= 3;
+          const isAdded = addedId === (product.slug || String(product.id));
+          return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "div",
+            {
+              className: `shop-card ${isSoldOut ? "shop-card-soldout" : ""} animate-fade-in-up`,
+              style: { animationDelay: `${(index2 + 1) * 0.1}s` },
+              "data-ocid": `shop.item.${index2 + 1}`,
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-4 pb-0", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "shop-well", children: image ? /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: image, alt: product.name }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Image, { className: "w-12 h-12 text-white/40" }) }) }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-4", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center justify-between gap-2 mb-2", children: isSoldOut ? /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "inventory-pill inventory-pill-soldout", children: "Sold out" }) : isLow ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                    "span",
+                    {
+                      className: `inventory-pill ${isCritical ? "inventory-pill-critical" : "inventory-pill-low"}`,
+                      children: [
+                        inventory,
+                        " left"
+                      ]
+                    }
+                  ) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "inventory-pill inventory-pill-low", children: "In stock" }) }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "h4",
+                    {
+                      className: "text-lg sm:text-xl font-semibold mb-1 text-white",
+                      style: { fontFamily: "var(--font-heading)" },
+                      children: product.name
+                    }
+                  ),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs sm:text-sm text-gray-400 mb-3 line-clamp-2", children: product.description }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "div",
+                    {
+                      className: "text-lg font-semibold text-teal-300 mb-4",
+                      style: { fontFamily: "var(--font-mono)" },
+                      children: formatPrice(product.price)
+                    }
+                  ),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "button",
+                    {
+                      type: "button",
+                      onClick: () => handleAddToCart(product),
+                      disabled: isSoldOut,
+                      className: "add-to-cart",
+                      "data-ocid": `shop.add_to_cart_button.${index2 + 1}`,
+                      children: isAdded ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+                        /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4" }),
+                        "Added"
+                      ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+                        /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingCart, { className: "w-4 h-4" }),
+                        "Add to Cart"
+                      ] })
+                    }
+                  )
+                ] })
+              ]
+            },
+            product.slug || String(product.id)
+          );
+        })
+      }
+    )
   ] }) });
 };
 const SuccessPage = ({
@@ -35959,9 +37000,16 @@ const SuccessPage = ({
   onNavigateToShop
 }) => {
   const [copied, setCopied] = reactExports.useState(false);
+  const confirm = useConfirmCardPayment();
+  const { data: order } = useOrderStatus(orderReference || null);
+  const isCardOrder = (order == null ? void 0 : order.payment_method) === "card_stripe";
   reactExports.useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+  reactExports.useEffect(() => {
+    if (!orderReference || !isCardOrder) return;
+    confirm.mutate(orderReference);
+  }, [orderReference, isCardOrder, confirm.mutate]);
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(orderReference);
@@ -35971,11 +37019,34 @@ const SuccessPage = ({
       setCopied(false);
     }
   };
+  const handleRetry = () => {
+    if (!orderReference || !isCardOrder) return;
+    confirm.mutate(orderReference);
+  };
+  const data = confirm.data;
+  const isConfirmed = !isCardOrder || (data == null ? void 0 : data.__kind__) === "ok" && data.ok === "paid" || (data == null ? void 0 : data.__kind__) === "err" && data.err.__kind__ === "alreadyPaid";
+  const isStillPending = (data == null ? void 0 : data.__kind__) === "ok" && data.ok === "pending";
+  const isError = isCardOrder && (confirm.isError || (data == null ? void 0 : data.__kind__) === "err" && data.err.__kind__ !== "alreadyPaid");
+  const errorMessage = (() => {
+    if ((data == null ? void 0 : data.__kind__) === "err" && data.err.__kind__ !== "alreadyPaid") {
+      if (data.err.__kind__ === "outcallFailed") {
+        return "We could not reach the payment service to confirm your order. Your order is still pending and has not been charged. Please try again in a moment.";
+      }
+      if (data.err.__kind__ === "notFound") {
+        return "We could not find an order matching this reference. Please check the reference and try again.";
+      }
+      if (data.err.__kind__ === "notConfigured") {
+        return "The payment service is not configured yet. Your order is still pending and has not been charged.";
+      }
+      return "We could not confirm your payment right now. Your order is still pending and has not been charged. Please try again.";
+    }
+    return "We could not confirm your payment right now. Your order is still pending and has not been charged. Please try again.";
+  })();
   const nextSteps = [
     {
       icon: Wallet,
       title: "Payment Confirmed",
-      body: "Your crypto payment was received and verified on-chain. Your order is now locked in.",
+      body: "Your payment was received and verified. Your order is now locked in.",
       accent: "text-teal-bright",
       soft: "bg-teal-soft"
     },
@@ -35998,7 +37069,7 @@ const SuccessPage = ({
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center mb-12 sm:mb-16 px-2", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-4 mb-8", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(CircleCheck, { className: "w-12 h-12 text-success" }),
+          isConfirmed ? /* @__PURE__ */ jsxRuntimeExports.jsx(CircleCheck, { className: "w-12 h-12 text-success" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-12 h-12 text-purple-400 animate-spin" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 rounded-full bg-success-soft blur-xl animate-pulse" })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -36006,131 +37077,218 @@ const SuccessPage = ({
           {
             className: "text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold leading-tight",
             style: { fontFamily: "var(--font-heading)" },
-            children: "Order Confirmed"
+            children: isConfirmed ? "Order Confirmed" : "Confirming Your Order"
           }
         )
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm sm:text-base text-gray-300 max-w-2xl mx-auto", children: "Thank you for your purchase. Your crypto payment was successful and your order is confirmed." })
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm sm:text-base text-gray-300 max-w-2xl mx-auto", children: isConfirmed ? "Thank you for your purchase. Your payment was successful and your order is confirmed." : "We are confirming your payment with the payment service. This only takes a moment." })
     ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative max-w-4xl mx-auto px-2", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative card glass-card p-6 sm:p-10 mb-8 sm:mb-12", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center text-center", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative mb-6", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-success-soft flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(BadgeCheck, { className: "w-10 h-10 sm:w-12 sm:h-12 text-success" }) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 rounded-full bg-success-soft blur-2xl animate-pulse" })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "h2",
-          {
-            className: "text-2xl sm:text-3xl font-semibold text-white mb-3",
-            style: { fontFamily: "var(--font-heading)" },
-            children: "Payment Successful"
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm sm:text-base text-gray-300 max-w-xl mx-auto mb-8", children: "Your order has been placed and your crypto payment has been confirmed. A summary of your purchase is below." }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-full max-w-md deposit-surface p-5 sm:p-6 mb-8", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-2 mb-2", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(ReceiptText, { className: "w-4 h-4 text-teal-bright" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs uppercase tracking-widest text-gray-400", children: "Order Reference" })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-3", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono-nak text-lg sm:text-xl text-teal-bright break-all", children: orderReference }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative max-w-4xl mx-auto px-2", children: confirm.isPending || isStillPending ? (
+      /* Confirming state */
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "div",
+        {
+          className: "relative card glass-card p-6 sm:p-10 text-center",
+          "data-ocid": "success.confirming_state",
+          children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative mb-6", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-purple-900/20 flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-10 h-10 sm:w-12 sm:h-12 text-purple-400 animate-spin" }) }) }),
             /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "button",
+              "h2",
               {
-                type: "button",
-                onClick: handleCopy,
-                "aria-label": "Copy order reference",
-                "data-ocid": "success.copy_reference_button",
-                className: "btn p-2.5 rounded-xl",
-                children: /* @__PURE__ */ jsxRuntimeExports.jsx(Copy, { className: "w-4 h-4" })
+                className: "text-2xl sm:text-3xl font-semibold text-white mb-3",
+                style: { fontFamily: "var(--font-heading)" },
+                children: "Confirming Payment"
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm sm:text-base text-gray-300 max-w-xl mx-auto mb-8", children: "We are checking your order status with the payment service. Your order is still pending until this confirmation completes." }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-full max-w-md deposit-surface p-5 sm:p-6", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-2 mb-2", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(ReceiptText, { className: "w-4 h-4 text-teal-bright" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs uppercase tracking-widest text-gray-400", children: "Order Reference" })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono-nak text-lg sm:text-xl text-teal-bright break-all", children: orderReference })
+            ] })
+          ] })
+        }
+      )
+    ) : isError ? (
+      /* Outcall failure / error state — order stays pending */
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "div",
+        {
+          className: "relative card glass-card p-6 sm:p-10 text-center",
+          "data-ocid": "success.error_state",
+          children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative mb-6", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-destructive-soft flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(TriangleAlert, { className: "w-10 h-10 sm:w-12 sm:h-12 text-destructive" }) }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "h2",
+              {
+                className: "text-2xl sm:text-3xl font-semibold text-white mb-3",
+                style: { fontFamily: "var(--font-heading)" },
+                children: "Payment Not Confirmed"
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm sm:text-base text-gray-300 max-w-xl mx-auto mb-8", children: errorMessage }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-full max-w-md deposit-surface p-5 sm:p-6 mb-8", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-2 mb-2", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(ReceiptText, { className: "w-4 h-4 text-teal-bright" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs uppercase tracking-widest text-gray-400", children: "Order Reference" })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono-nak text-lg sm:text-xl text-teal-bright break-all", children: orderReference })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center justify-center gap-4", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                "button",
+                {
+                  type: "button",
+                  onClick: handleRetry,
+                  "data-ocid": "success.retry_button",
+                  className: "btn px-8 py-4 text-base font-semibold",
+                  children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { className: "w-4 h-4" }),
+                    "Try Again"
+                  ]
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                "button",
+                {
+                  type: "button",
+                  onClick: onNavigateToShop,
+                  "data-ocid": "success.continue_shopping_button",
+                  className: "btn px-8 py-4 text-base font-semibold",
+                  children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingBag, { className: "w-4 h-4" }),
+                    "Continue Shopping"
+                  ]
+                }
+              )
+            ] })
+          ] })
+        }
+      )
+    ) : (
+      /* Confirmed state */
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative card glass-card p-6 sm:p-10 mb-8 sm:mb-12", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center text-center", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative mb-6", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-success-soft flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(BadgeCheck, { className: "w-10 h-10 sm:w-12 sm:h-12 text-success" }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 rounded-full bg-success-soft blur-2xl animate-pulse" })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "h2",
+            {
+              className: "text-2xl sm:text-3xl font-semibold text-white mb-3",
+              style: { fontFamily: "var(--font-heading)" },
+              children: "Payment Successful"
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm sm:text-base text-gray-300 max-w-xl mx-auto mb-8", children: "Your order has been placed and your payment has been confirmed. A summary of your purchase is below." }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-full max-w-md deposit-surface p-5 sm:p-6 mb-8", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-2 mb-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(ReceiptText, { className: "w-4 h-4 text-teal-bright" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs uppercase tracking-widest text-gray-400", children: "Order Reference" })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-3", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono-nak text-lg sm:text-xl text-teal-bright break-all", children: orderReference }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "button",
+                {
+                  type: "button",
+                  onClick: handleCopy,
+                  "aria-label": "Copy order reference",
+                  "data-ocid": "success.copy_reference_button",
+                  className: "btn p-2.5 rounded-xl",
+                  children: /* @__PURE__ */ jsxRuntimeExports.jsx(Copy, { className: "w-4 h-4" })
+                }
+              )
+            ] }),
+            copied && /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "p",
+              {
+                className: "mt-2 text-xs text-success",
+                "data-ocid": "success.copy_confirmation",
+                children: "Reference copied to clipboard"
               }
             )
           ] }),
-          copied && /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "p",
-            {
-              className: "mt-2 text-xs text-success",
-              "data-ocid": "success.copy_confirmation",
-              children: "Reference copied to clipboard"
-            }
-          )
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center justify-center gap-4", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              type: "button",
-              onClick: onNavigateToShop,
-              "data-ocid": "success.continue_shopping_button",
-              className: "btn px-8 py-4 text-base font-semibold",
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingBag, { className: "w-4 h-4" }),
-                "Continue Shopping"
-              ]
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              type: "button",
-              onClick: onNavigateToMain,
-              "data-ocid": "success.back_to_main_button",
-              className: "btn px-8 py-4 text-base font-semibold",
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
-                "Back to Main"
-              ]
-            }
-          )
-        ] })
-      ] }) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative card glass-card p-6 sm:p-10", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-2 sm:gap-3 mb-6 sm:mb-8", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Clock, { className: "w-6 h-6 sm:w-7 sm:h-7 text-pink-400" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "h3",
-            {
-              className: "text-2xl sm:text-3xl font-semibold text-white",
-              style: { fontFamily: "var(--font-heading)" },
-              children: "What Happens Next"
-            }
-          )
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6", children: nextSteps.map((step, index2) => {
-          const Icon2 = step.icon;
-          return /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "div",
-            {
-              className: "relative token-option p-5 sm:p-6",
-              "data-ocid": `success.next_step.${index2 + 1}`,
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "div",
-                  {
-                    className: `w-12 h-12 rounded-xl ${step.soft} flex items-center justify-center mb-4`,
-                    children: /* @__PURE__ */ jsxRuntimeExports.jsx(Icon2, { className: `w-6 h-6 ${step.accent}` })
-                  }
-                ),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "h4",
-                  {
-                    className: "text-lg font-semibold text-white mb-2",
-                    style: { fontFamily: "var(--font-heading)" },
-                    children: step.title
-                  }
-                ),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-400", children: step.body })
-              ]
-            },
-            step.title
-          );
-        }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-8 sm:mt-10 flex items-start justify-center gap-3 text-center", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Mail, { className: "w-4 h-4 text-purple-400 mt-0.5 shrink-0" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs sm:text-sm text-gray-400 max-w-xl", children: "Questions about your order? Reach out to our support team and reference your order number so we can help you faster." })
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center justify-center gap-4", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "button",
+              {
+                type: "button",
+                onClick: onNavigateToShop,
+                "data-ocid": "success.continue_shopping_button",
+                className: "btn px-8 py-4 text-base font-semibold",
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingBag, { className: "w-4 h-4" }),
+                  "Continue Shopping"
+                ]
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "button",
+              {
+                type: "button",
+                onClick: onNavigateToMain,
+                "data-ocid": "success.back_to_main_button",
+                className: "btn px-8 py-4 text-base font-semibold",
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
+                  "Back to Main"
+                ]
+              }
+            )
+          ] })
+        ] }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative card glass-card p-6 sm:p-10", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-2 sm:gap-3 mb-6 sm:mb-8", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Clock, { className: "w-6 h-6 sm:w-7 sm:h-7 text-pink-400" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "h3",
+              {
+                className: "text-2xl sm:text-3xl font-semibold text-white",
+                style: { fontFamily: "var(--font-heading)" },
+                children: "What Happens Next"
+              }
+            )
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6", children: nextSteps.map((step, index2) => {
+            const Icon2 = step.icon;
+            return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "div",
+              {
+                className: "relative token-option p-5 sm:p-6",
+                "data-ocid": `success.next_step.${index2 + 1}`,
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "div",
+                    {
+                      className: `w-12 h-12 rounded-xl ${step.soft} flex items-center justify-center mb-4`,
+                      children: /* @__PURE__ */ jsxRuntimeExports.jsx(Icon2, { className: `w-6 h-6 ${step.accent}` })
+                    }
+                  ),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "h4",
+                    {
+                      className: "text-lg font-semibold text-white mb-2",
+                      style: { fontFamily: "var(--font-heading)" },
+                      children: step.title
+                    }
+                  ),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-400", children: step.body })
+                ]
+              },
+              step.title
+            );
+          }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-8 sm:mt-10 flex items-start justify-center gap-3 text-center", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Mail, { className: "w-4 h-4 text-purple-400 mt-0.5 shrink-0" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs sm:text-sm text-gray-400 max-w-xl", children: "Questions about your order? Reach out to our support team and reference your order number so we can help you faster." })
+          ] })
         ] })
       ] })
-    ] })
+    ) })
   ] }) });
 };
 const TelegramSection = () => {
@@ -36563,6 +37721,33 @@ function App() {
   const [currentPage, setCurrentPage] = reactExports.useState("main");
   const [selectedProductSlugOrId, setSelectedProductSlugOrId] = reactExports.useState(null);
   const [successOrderReference, setSuccessOrderReference] = reactExports.useState(null);
+  const [cancelledOrderReference, setCancelledOrderReference] = reactExports.useState(null);
+  reactExports.useEffect(() => {
+    const handleHash = () => {
+      const hash = window.location.hash.replace(/^#\/?/, "").toLowerCase();
+      if (hash === "admin") {
+        setCurrentPage("admin");
+      }
+    };
+    handleHash();
+    window.addEventListener("hashchange", handleHash);
+    return () => window.removeEventListener("hashchange", handleHash);
+  }, []);
+  reactExports.useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const orderId = params.get("order_id");
+    if (!orderId) return;
+    if (params.get("status") === "cancelled") {
+      setCancelledOrderReference(orderId);
+      setCurrentPage("cancelled");
+    } else {
+      setSuccessOrderReference(orderId);
+      setCurrentPage("success");
+    }
+    const url = new URL(window.location.href);
+    url.search = "";
+    window.history.replaceState({}, "", url.toString());
+  }, []);
   const navigateToArtistPage = () => {
     setCurrentPage("artist");
   };
@@ -36589,16 +37774,13 @@ function App() {
   const navigateToOrderLookupPage = () => {
     setCurrentPage("orderlookup");
   };
-  const navigateToAdminPage = () => {
-    setCurrentPage("admin");
-  };
   const navigateToMainPage = () => {
     setCurrentPage("main");
   };
   return /* @__PURE__ */ jsxRuntimeExports.jsx(CartProvider, { children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
     "div",
     {
-      className: "min-h-screen relative overflow-hidden",
+      className: "min-h-screen relative overflow-x-hidden",
       style: { backgroundColor: "var(--nak-deep-black)" },
       children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx(BubbleBackground, {}),
@@ -36610,8 +37792,7 @@ function App() {
             onNavigateToMetaTheatre: navigateToMetaTheatrePage,
             onNavigateToShop: navigateToShopPage,
             onNavigateToCart: navigateToCartPage,
-            onNavigateToOrderLookup: navigateToOrderLookupPage,
-            onNavigateToAdmin: navigateToAdminPage
+            onNavigateToOrderLookup: navigateToOrderLookupPage
           }
         ),
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative z-10", children: currentPage === "main" ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
@@ -36626,25 +37807,36 @@ function App() {
             {
               className: "text-center py-12 px-6 border-t border-purple-500/20",
               style: { color: "var(--text-muted)" },
-              children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "max-w-4xl mx-auto", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm flex items-center justify-center gap-2", children: [
-                "© 2025. Built with",
-                " ",
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Heart, { className: "inline w-4 h-4 text-pink-400 mx-1 animate-pulse" }),
-                " ",
-                "using",
-                " ",
+              children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-4xl mx-auto", children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "a",
+                  "img",
                   {
-                    href: "https://caffeine.ai",
-                    target: "_blank",
-                    rel: "noopener noreferrer",
-                    className: "hover:opacity-80 transition-opacity underline font-medium",
-                    style: { color: "var(--nak-teal)" },
-                    children: "caffeine.ai"
+                    src: "/assets/images/nak-shell.png",
+                    alt: "NAK STRATS shell mascot",
+                    className: "pixel-art footer-shell object-contain mx-auto mb-4",
+                    style: { width: "2.5rem", height: "2.5rem" }
                   }
-                )
-              ] }) })
+                ),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm flex items-center justify-center gap-2", children: [
+                  "© 2025. Built with",
+                  " ",
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(Heart, { className: "inline w-4 h-4 text-pink-400 mx-1 animate-pulse" }),
+                  " ",
+                  "using",
+                  " ",
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "a",
+                    {
+                      href: "https://caffeine.ai",
+                      target: "_blank",
+                      rel: "noopener noreferrer",
+                      className: "hover:opacity-80 transition-opacity underline font-medium",
+                      style: { color: "var(--nak-teal)" },
+                      children: "caffeine.ai"
+                    }
+                  )
+                ] })
+              ] })
             }
           )
         ] }) : currentPage === "artist" ? /* @__PURE__ */ jsxRuntimeExports.jsx(MarsLiveArtistPage, { onNavigateToMain: navigateToMainPage }) : currentPage === "shop" ? /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -36684,6 +37876,7 @@ function App() {
         ) : currentPage === "cancelled" ? /* @__PURE__ */ jsxRuntimeExports.jsx(
           CancelledPage,
           {
+            orderReference: cancelledOrderReference ?? "",
             onNavigateToMain: navigateToMainPage,
             onNavigateToShop: navigateToShopPage,
             onNavigateToCart: navigateToCartPage

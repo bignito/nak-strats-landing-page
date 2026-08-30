@@ -1,21 +1,34 @@
 import { ArrowLeft, ShoppingCart, XCircle } from "lucide-react";
 import type React from "react";
 import { useEffect } from "react";
+import { useCancelCardOrder } from "../hooks/useQueries";
 
 interface CancelledPageProps {
+  orderReference: string;
   onNavigateToMain: () => void;
   onNavigateToShop: () => void;
   onNavigateToCart: () => void;
 }
 
 const CancelledPage: React.FC<CancelledPageProps> = ({
+  orderReference,
   onNavigateToMain,
   onNavigateToShop,
   onNavigateToCart,
 }) => {
+  const cancelCardOrder = useCancelCardOrder();
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  // When a card checkout was cancelled, release the inventory reservation and
+  // mark the order cancelled so the reserved stock is freed for other buyers.
+  useEffect(() => {
+    if (orderReference) {
+      cancelCardOrder.mutate(orderReference);
+    }
+  }, [orderReference, cancelCardOrder.mutate]);
 
   return (
     <div className="pt-24 sm:pt-32 pb-12 sm:pb-20 px-4 sm:px-6">
@@ -41,9 +54,10 @@ const CancelledPage: React.FC<CancelledPageProps> = ({
         <div className="relative max-w-4xl mx-auto px-2">
           <div className="relative card glass-card p-6 sm:p-10 text-center">
             <p className="text-gray-300 mb-6">
-              No payment was processed and your cart is still intact. You can
-              return to the shop to keep browsing, or head back to your cart to
-              try the checkout again.
+              No payment was processed and your cart is still intact. Any
+              reserved inventory has been released. You can return to the shop
+              to keep browsing, or head back to your cart to try the checkout
+              again.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-4">
               <button

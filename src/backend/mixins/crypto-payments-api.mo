@@ -2,10 +2,12 @@ import Result "mo:core/Result";
 import Map "mo:core/Map";
 import List "mo:core/List";
 import Principal "mo:core/Principal";
+import Set "mo:core/Set";
 import Time "mo:core/Time";
 import Types "../types/crypto-payments";
 import StorefrontTypes "../types/storefront";
 import CryptoPaymentsLib "../lib/crypto-payments";
+import AdminLib "../lib/admin-access-control";
 
 mixin (
   orders : List.List<StorefrontTypes.Order>,
@@ -13,6 +15,7 @@ mixin (
   cryptoPayments : Map.Map<Text, Types.CryptoPayment>,
   cryptoConfig : Types.CryptoConfig,
   selfPrincipal : Principal,
+  adminAllowlist : Set.Set<Principal>,
 ) {
   public query func getCryptoConfig() : async Types.CryptoConfigView {
     {
@@ -72,18 +75,14 @@ mixin (
   };
 
   public shared ({ caller }) func updateTreasury(principal : Principal, subaccount : ?Blob) : async Result.Result<(), Types.CryptoPaymentError> {
-    if (not caller.isController()) {
-      return #err(#unauthorized);
-    };
+    AdminLib.requireAdmin(adminAllowlist, caller);
     cryptoConfig.treasuryPrincipal := principal;
     cryptoConfig.treasurySubaccount := subaccount;
     #ok();
   };
 
   public shared ({ caller }) func updateLedgerConfig(token : Types.Token, canisterId : Principal, decimals : Nat8, fee : Nat) : async Result.Result<(), Types.CryptoPaymentError> {
-    if (not caller.isController()) {
-      return #err(#unauthorized);
-    };
+    AdminLib.requireAdmin(adminAllowlist, caller);
     switch token {
       case (#ckUSDC) { cryptoConfig.ckUSDC := { canisterId; decimals; fee } };
       case (#ICP) { cryptoConfig.icp := { canisterId; decimals; fee } };

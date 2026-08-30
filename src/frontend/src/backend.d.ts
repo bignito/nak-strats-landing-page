@@ -9,10 +9,10 @@ export interface None {
 export type Option<T> = Some<T> | None;
 export type Result_2 = {
     __kind__: "ok";
-    ok: null;
+    ok: bigint;
 } | {
     __kind__: "err";
-    err: PaymentError;
+    err: CryptoPaymentError;
 };
 export interface TransformationOutput {
     status: bigint;
@@ -46,6 +46,43 @@ export interface CreateOrderItem {
     variant_id: string;
     quantity: bigint;
 }
+export interface PaymentServiceConfigView {
+    url: string;
+    tokenSet: boolean;
+}
+export type Result_5 = {
+    __kind__: "ok";
+    ok: DepositInfo;
+} | {
+    __kind__: "err";
+    err: CryptoPaymentError;
+};
+export type PaymentServiceError = {
+    __kind__: "alreadyPaid";
+    alreadyPaid: null;
+} | {
+    __kind__: "notConfigured";
+    notConfigured: string;
+} | {
+    __kind__: "notFound";
+    notFound: null;
+} | {
+    __kind__: "outcallFailed";
+    outcallFailed: string;
+} | {
+    __kind__: "unauthorized";
+    unauthorized: null;
+} | {
+    __kind__: "invalidResponse";
+    invalidResponse: string;
+};
+export type Result_1 = {
+    __kind__: "ok";
+    ok: null;
+} | {
+    __kind__: "err";
+    err: PaymentServiceError;
+};
 export type CryptoPaymentStatus = {
     __kind__: "overpayment";
     overpayment: {
@@ -70,23 +107,9 @@ export type CryptoPaymentStatus = {
     __kind__: "awaiting_payment";
     awaiting_payment: null;
 };
-export type Result_5 = {
-    __kind__: "ok";
-    ok: Order;
-} | {
-    __kind__: "err";
-    err: OrderError;
-};
-export type Result_1 = {
-    __kind__: "ok";
-    ok: bigint;
-} | {
-    __kind__: "err";
-    err: CryptoPaymentError;
-};
 export type Result_4 = {
     __kind__: "ok";
-    ok: DepositInfo;
+    ok: CryptoPaymentStatus;
 } | {
     __kind__: "err";
     err: CryptoPaymentError;
@@ -111,6 +134,13 @@ export interface CreateOrderInput {
     customer_email: string;
     customer_name: string;
 }
+export type Result_7 = {
+    __kind__: "ok";
+    ok: CheckoutSession;
+} | {
+    __kind__: "err";
+    err: PaymentError;
+};
 export interface DepositInfo {
     decimals: number;
     token: Token;
@@ -142,10 +172,10 @@ export type Value = {
 };
 export type Result_6 = {
     __kind__: "ok";
-    ok: CheckoutSession;
+    ok: Order;
 } | {
     __kind__: "err";
-    err: PaymentError;
+    err: OrderError;
 };
 export interface ShippingAddress {
     region: string;
@@ -159,6 +189,13 @@ export interface CheckoutSession {
     url?: string;
     reference: string;
 }
+export type Result_9 = {
+    __kind__: "ok";
+    ok: PaymentStatus;
+} | {
+    __kind__: "err";
+    err: PaymentServiceError;
+};
 export interface ProductVariant {
     id: string;
     inventory: bigint;
@@ -197,10 +234,10 @@ export type Result = {
 };
 export type Result_3 = {
     __kind__: "ok";
-    ok: CryptoPaymentStatus;
+    ok: null;
 } | {
     __kind__: "err";
-    err: CryptoPaymentError;
+    err: PaymentError;
 };
 export type PaymentError = {
     __kind__: "invalidOrder";
@@ -209,7 +246,36 @@ export type PaymentError = {
     __kind__: "paymentFailed";
     paymentFailed: string;
 };
+export type Result_8 = {
+    __kind__: "ok";
+    ok: CheckoutSession;
+} | {
+    __kind__: "err";
+    err: PaymentServiceError;
+};
 export type ProductId = bigint;
+export type OrderError = {
+    __kind__: "outOfStock";
+    outOfStock: [ProductId, string];
+} | {
+    __kind__: "unknownVariant";
+    unknownVariant: [ProductId, string];
+} | {
+    __kind__: "unknownProduct";
+    unknownProduct: ProductId;
+} | {
+    __kind__: "emptyOrder";
+    emptyOrder: null;
+} | {
+    __kind__: "productInactive";
+    productInactive: ProductId;
+} | {
+    __kind__: "paymentFailed";
+    paymentFailed: string;
+} | {
+    __kind__: "invalidQuantity";
+    invalidQuantity: null;
+};
 export type CryptoPaymentError = {
     __kind__: "alreadyPaid";
     alreadyPaid: null;
@@ -247,28 +313,6 @@ export type CryptoPaymentError = {
     __kind__: "invalidConfig";
     invalidConfig: string;
 };
-export type OrderError = {
-    __kind__: "outOfStock";
-    outOfStock: [ProductId, string];
-} | {
-    __kind__: "unknownVariant";
-    unknownVariant: [ProductId, string];
-} | {
-    __kind__: "unknownProduct";
-    unknownProduct: ProductId;
-} | {
-    __kind__: "emptyOrder";
-    emptyOrder: null;
-} | {
-    __kind__: "productInactive";
-    productInactive: ProductId;
-} | {
-    __kind__: "paymentFailed";
-    paymentFailed: string;
-} | {
-    __kind__: "invalidQuantity";
-    invalidQuantity: null;
-};
 export interface Product {
     id: ProductId;
     updated_at: bigint;
@@ -301,29 +345,41 @@ export enum Token {
     ckUSDC = "ckUSDC"
 }
 export interface backendInterface {
-    checkCryptoPayment(reference: string): Promise<Result_3>;
-    confirmCryptoPayment(reference: string): Promise<Result_3>;
-    createCheckoutSession(order: Order): Promise<Result_6>;
-    createOrder(input: CreateOrderInput): Promise<Result_5>;
+    addAdmin(p: Principal): Promise<boolean>;
+    cancelCardOrder(reference: string): Promise<Result_1>;
+    checkCryptoPayment(reference: string): Promise<Result_4>;
+    claimInitialAdmin(): Promise<boolean>;
+    confirmCardPayment(reference: string): Promise<Result_9>;
+    confirmCryptoPayment(reference: string): Promise<Result_4>;
+    createCardCheckoutSession(reference: string, successUrl: string, cancelUrl: string): Promise<Result_8>;
+    createCheckoutSession(order: Order): Promise<Result_7>;
+    createOrder(input: CreateOrderInput): Promise<Result_6>;
     execute(qJson: string): Promise<Result__1>;
     getApiDoc(): Promise<string>;
     getCryptoConfig(): Promise<CryptoConfigView>;
-    getCryptoDepositInfo(reference: string): Promise<Result_4>;
-    getCryptoPaymentStatus(reference: string): Promise<Result_3>;
+    getCryptoDepositInfo(reference: string): Promise<Result_5>;
+    getCryptoPaymentStatus(reference: string): Promise<Result_4>;
     getDashboardData(): Promise<string>;
     getNAKPrice(): Promise<string>;
     getOrderStatus(reference: string): Promise<Order | null>;
+    getPaymentServiceConfig(): Promise<PaymentServiceConfigView>;
     getPaymentStatus(reference: string): Promise<PaymentStatus>;
     getProduct(slugOrId: string): Promise<Product | null>;
     getTokenImage(chainId: string, tokenAddress: string): Promise<string>;
     getTokenProfile(chainId: string, tokenAddress: string): Promise<string>;
     getTreasuryTokens(): Promise<string>;
-    handlePaymentConfirmation(payload: string): Promise<Result_2>;
+    handlePaymentConfirmation(payload: string): Promise<Result_3>;
+    isAdmin(): Promise<boolean>;
+    listAdmins(): Promise<Array<Principal>>;
     listProducts(): Promise<Array<Product>>;
+    paymentServiceTransform(input: TransformationInput): Promise<TransformationOutput>;
     releaseExpiredOrders(): Promise<bigint>;
+    removeAdmin(p: Principal): Promise<boolean>;
     schema(): Promise<string>;
-    sweepCryptoToTreasury(reference: string): Promise<Result_1>;
+    sweepCryptoToTreasury(reference: string): Promise<Result_2>;
     transform(input: TransformationInput): Promise<TransformationOutput>;
     updateLedgerConfig(token: Token, canisterId: Principal, decimals: number, fee: bigint): Promise<Result>;
+    updatePaymentServiceToken(token: string): Promise<Result_1>;
+    updatePaymentServiceUrl(url: string): Promise<Result_1>;
     updateTreasury(principal: Principal, subaccount: Uint8Array | null): Promise<Result>;
 }

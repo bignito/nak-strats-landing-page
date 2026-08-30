@@ -1,17 +1,17 @@
 {
-  "overview": "The official NAK STRATS landing page with a store that accepts crypto (ckUSDC) payments for cologne products.",
+  "overview": "The official NAK STRATS landing page and storefront for the NAK token on ICP, with a dark liquid-glass design, a shop with crypto and card checkout, and now principal-based admin access control with Internet Identity sign-in.",
   "features": [
-    "Browse and buy cologne products",
-    "Pay with ckUSDC crypto at checkout",
-    "Track order status by reference",
-    "Admin settings for treasury and ledger"
+    "Admin access control with an admin allowlist and one-time initial admin claim",
+    "Internet Identity sign-in with admin-gated settings page",
+    "Crypto (ckUSDC) and card checkout flows",
+    "Product storefront with cart and order tracking"
   ],
-  "category": "ecommerce",
+  "category": "landing-page",
   "tags": [
     "crypto",
-    "store",
-    "nak",
-    "ecommerce"
+    "storefront",
+    "admin",
+    "security"
   ],
-  "last_updated": "2026-08-30T02:28:11.893Z"
+  "last_updated": "2026-08-30T05:02:56.996Z"
 }

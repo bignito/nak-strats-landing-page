@@ -8,6 +8,18 @@
 
 import { IDL } from '@icp-sdk/core/candid';
 
+export const PaymentServiceError = IDL.Variant({
+  'alreadyPaid' : IDL.Null,
+  'notConfigured' : IDL.Text,
+  'notFound' : IDL.Null,
+  'outcallFailed' : IDL.Text,
+  'unauthorized' : IDL.Null,
+  'invalidResponse' : IDL.Text,
+});
+export const Result_1 = IDL.Variant({
+  'ok' : IDL.Null,
+  'err' : PaymentServiceError,
+});
 export const CryptoPaymentStatus = IDL.Variant({
   'overpayment' : IDL.Record({ 'expected' : IDL.Nat, 'received' : IDL.Nat }),
   'expired' : IDL.Null,
@@ -27,9 +39,27 @@ export const CryptoPaymentError = IDL.Variant({
   'unauthorized' : IDL.Null,
   'invalidConfig' : IDL.Text,
 });
-export const Result_3 = IDL.Variant({
+export const Result_4 = IDL.Variant({
   'ok' : CryptoPaymentStatus,
   'err' : CryptoPaymentError,
+});
+export const PaymentStatus = IDL.Variant({
+  'cancelled' : IDL.Null,
+  'expired' : IDL.Null,
+  'pending' : IDL.Null,
+  'paid' : IDL.Null,
+});
+export const Result_9 = IDL.Variant({
+  'ok' : PaymentStatus,
+  'err' : PaymentServiceError,
+});
+export const CheckoutSession = IDL.Record({
+  'url' : IDL.Opt(IDL.Text),
+  'reference' : IDL.Text,
+});
+export const Result_8 = IDL.Variant({
+  'ok' : CheckoutSession,
+  'err' : PaymentServiceError,
 });
 export const ShippingAddress = IDL.Record({
   'region' : IDL.Text,
@@ -38,12 +68,6 @@ export const ShippingAddress = IDL.Record({
   'postal_code' : IDL.Text,
   'line1' : IDL.Text,
   'line2' : IDL.Opt(IDL.Text),
-});
-export const PaymentStatus = IDL.Variant({
-  'cancelled' : IDL.Null,
-  'expired' : IDL.Null,
-  'pending' : IDL.Null,
-  'paid' : IDL.Null,
 });
 export const PaymentMethod = IDL.Variant({
   'crypto_icp' : IDL.Null,
@@ -77,15 +101,11 @@ export const Order = IDL.Record({
   'payment_reference' : IDL.Opt(IDL.Text),
   'subtotal' : IDL.Nat,
 });
-export const CheckoutSession = IDL.Record({
-  'url' : IDL.Opt(IDL.Text),
-  'reference' : IDL.Text,
-});
 export const PaymentError = IDL.Variant({
   'invalidOrder' : IDL.Null,
   'paymentFailed' : IDL.Text,
 });
-export const Result_6 = IDL.Variant({
+export const Result_7 = IDL.Variant({
   'ok' : CheckoutSession,
   'err' : PaymentError,
 });
@@ -110,7 +130,7 @@ export const OrderError = IDL.Variant({
   'paymentFailed' : IDL.Text,
   'invalidQuantity' : IDL.Null,
 });
-export const Result_5 = IDL.Variant({ 'ok' : Order, 'err' : OrderError });
+export const Result_6 = IDL.Variant({ 'ok' : Order, 'err' : OrderError });
 export const Value = IDL.Variant({
   'int' : IDL.Int,
   'nat' : IDL.Nat,
@@ -146,9 +166,13 @@ export const DepositInfo = IDL.Record({
   'address' : IDL.Principal,
   'amountDue' : IDL.Nat,
 });
-export const Result_4 = IDL.Variant({
+export const Result_5 = IDL.Variant({
   'ok' : DepositInfo,
   'err' : CryptoPaymentError,
+});
+export const PaymentServiceConfigView = IDL.Record({
+  'url' : IDL.Text,
+  'tokenSet' : IDL.Bool,
 });
 export const ProductVariant = IDL.Record({
   'id' : IDL.Text,
@@ -172,11 +196,7 @@ export const Product = IDL.Record({
   'price' : IDL.Nat,
   'images' : IDL.Vec(IDL.Text),
 });
-export const Result_2 = IDL.Variant({ 'ok' : IDL.Null, 'err' : PaymentError });
-export const Result_1 = IDL.Variant({
-  'ok' : IDL.Nat,
-  'err' : CryptoPaymentError,
-});
+export const Result_3 = IDL.Variant({ 'ok' : IDL.Null, 'err' : PaymentError });
 export const HttpHeader = IDL.Record({ 'value' : IDL.Text, 'name' : IDL.Text });
 export const HttpRequestResult = IDL.Record({
   'status' : IDL.Nat,
@@ -192,34 +212,60 @@ export const TransformationOutput = IDL.Record({
   'body' : IDL.Vec(IDL.Nat8),
   'headers' : IDL.Vec(HttpHeader),
 });
+export const Result_2 = IDL.Variant({
+  'ok' : IDL.Nat,
+  'err' : CryptoPaymentError,
+});
 export const Result = IDL.Variant({
   'ok' : IDL.Null,
   'err' : CryptoPaymentError,
 });
 
 export const idlService = IDL.Service({
-  'checkCryptoPayment' : IDL.Func([IDL.Text], [Result_3], []),
-  'confirmCryptoPayment' : IDL.Func([IDL.Text], [Result_3], []),
-  'createCheckoutSession' : IDL.Func([Order], [Result_6], []),
-  'createOrder' : IDL.Func([CreateOrderInput], [Result_5], []),
+  'addAdmin' : IDL.Func([IDL.Principal], [IDL.Bool], []),
+  'cancelCardOrder' : IDL.Func([IDL.Text], [Result_1], []),
+  'checkCryptoPayment' : IDL.Func([IDL.Text], [Result_4], []),
+  'claimInitialAdmin' : IDL.Func([], [IDL.Bool], []),
+  'confirmCardPayment' : IDL.Func([IDL.Text], [Result_9], []),
+  'confirmCryptoPayment' : IDL.Func([IDL.Text], [Result_4], []),
+  'createCardCheckoutSession' : IDL.Func(
+      [IDL.Text, IDL.Text, IDL.Text],
+      [Result_8],
+      [],
+    ),
+  'createCheckoutSession' : IDL.Func([Order], [Result_7], []),
+  'createOrder' : IDL.Func([CreateOrderInput], [Result_6], []),
   'execute' : IDL.Func([IDL.Text], [Result__1], ['query']),
   'getApiDoc' : IDL.Func([], [IDL.Text], ['query']),
   'getCryptoConfig' : IDL.Func([], [CryptoConfigView], ['query']),
-  'getCryptoDepositInfo' : IDL.Func([IDL.Text], [Result_4], ['query']),
-  'getCryptoPaymentStatus' : IDL.Func([IDL.Text], [Result_3], ['query']),
+  'getCryptoDepositInfo' : IDL.Func([IDL.Text], [Result_5], ['query']),
+  'getCryptoPaymentStatus' : IDL.Func([IDL.Text], [Result_4], ['query']),
   'getDashboardData' : IDL.Func([], [IDL.Text], []),
   'getNAKPrice' : IDL.Func([], [IDL.Text], []),
   'getOrderStatus' : IDL.Func([IDL.Text], [IDL.Opt(Order)], ['query']),
+  'getPaymentServiceConfig' : IDL.Func(
+      [],
+      [PaymentServiceConfigView],
+      ['query'],
+    ),
   'getPaymentStatus' : IDL.Func([IDL.Text], [PaymentStatus], []),
   'getProduct' : IDL.Func([IDL.Text], [IDL.Opt(Product)], ['query']),
   'getTokenImage' : IDL.Func([IDL.Text, IDL.Text], [IDL.Text], []),
   'getTokenProfile' : IDL.Func([IDL.Text, IDL.Text], [IDL.Text], []),
   'getTreasuryTokens' : IDL.Func([], [IDL.Text], []),
-  'handlePaymentConfirmation' : IDL.Func([IDL.Text], [Result_2], []),
+  'handlePaymentConfirmation' : IDL.Func([IDL.Text], [Result_3], []),
+  'isAdmin' : IDL.Func([], [IDL.Bool], ['query']),
+  'listAdmins' : IDL.Func([], [IDL.Vec(IDL.Principal)], []),
   'listProducts' : IDL.Func([], [IDL.Vec(Product)], ['query']),
+  'paymentServiceTransform' : IDL.Func(
+      [TransformationInput],
+      [TransformationOutput],
+      ['query'],
+    ),
   'releaseExpiredOrders' : IDL.Func([], [IDL.Nat], []),
+  'removeAdmin' : IDL.Func([IDL.Principal], [IDL.Bool], []),
   'schema' : IDL.Func([], [IDL.Text], ['query']),
-  'sweepCryptoToTreasury' : IDL.Func([IDL.Text], [Result_1], []),
+  'sweepCryptoToTreasury' : IDL.Func([IDL.Text], [Result_2], []),
   'transform' : IDL.Func(
       [TransformationInput],
       [TransformationOutput],
@@ -230,6 +276,8 @@ export const idlService = IDL.Service({
       [Result],
       [],
     ),
+  'updatePaymentServiceToken' : IDL.Func([IDL.Text], [Result_1], []),
+  'updatePaymentServiceUrl' : IDL.Func([IDL.Text], [Result_1], []),
   'updateTreasury' : IDL.Func(
       [IDL.Principal, IDL.Opt(IDL.Vec(IDL.Nat8))],
       [Result],
@@ -240,6 +288,18 @@ export const idlService = IDL.Service({
 export const idlInitArgs = [];
 
 export const idlFactory = ({ IDL }) => {
+  const PaymentServiceError = IDL.Variant({
+    'alreadyPaid' : IDL.Null,
+    'notConfigured' : IDL.Text,
+    'notFound' : IDL.Null,
+    'outcallFailed' : IDL.Text,
+    'unauthorized' : IDL.Null,
+    'invalidResponse' : IDL.Text,
+  });
+  const Result_1 = IDL.Variant({
+    'ok' : IDL.Null,
+    'err' : PaymentServiceError,
+  });
   const CryptoPaymentStatus = IDL.Variant({
     'overpayment' : IDL.Record({ 'expected' : IDL.Nat, 'received' : IDL.Nat }),
     'expired' : IDL.Null,
@@ -259,9 +319,27 @@ export const idlFactory = ({ IDL }) => {
     'unauthorized' : IDL.Null,
     'invalidConfig' : IDL.Text,
   });
-  const Result_3 = IDL.Variant({
+  const Result_4 = IDL.Variant({
     'ok' : CryptoPaymentStatus,
     'err' : CryptoPaymentError,
+  });
+  const PaymentStatus = IDL.Variant({
+    'cancelled' : IDL.Null,
+    'expired' : IDL.Null,
+    'pending' : IDL.Null,
+    'paid' : IDL.Null,
+  });
+  const Result_9 = IDL.Variant({
+    'ok' : PaymentStatus,
+    'err' : PaymentServiceError,
+  });
+  const CheckoutSession = IDL.Record({
+    'url' : IDL.Opt(IDL.Text),
+    'reference' : IDL.Text,
+  });
+  const Result_8 = IDL.Variant({
+    'ok' : CheckoutSession,
+    'err' : PaymentServiceError,
   });
   const ShippingAddress = IDL.Record({
     'region' : IDL.Text,
@@ -270,12 +348,6 @@ export const idlFactory = ({ IDL }) => {
     'postal_code' : IDL.Text,
     'line1' : IDL.Text,
     'line2' : IDL.Opt(IDL.Text),
-  });
-  const PaymentStatus = IDL.Variant({
-    'cancelled' : IDL.Null,
-    'expired' : IDL.Null,
-    'pending' : IDL.Null,
-    'paid' : IDL.Null,
   });
   const PaymentMethod = IDL.Variant({
     'crypto_icp' : IDL.Null,
@@ -309,15 +381,11 @@ export const idlFactory = ({ IDL }) => {
     'payment_reference' : IDL.Opt(IDL.Text),
     'subtotal' : IDL.Nat,
   });
-  const CheckoutSession = IDL.Record({
-    'url' : IDL.Opt(IDL.Text),
-    'reference' : IDL.Text,
-  });
   const PaymentError = IDL.Variant({
     'invalidOrder' : IDL.Null,
     'paymentFailed' : IDL.Text,
   });
-  const Result_6 = IDL.Variant({
+  const Result_7 = IDL.Variant({
     'ok' : CheckoutSession,
     'err' : PaymentError,
   });
@@ -342,7 +410,7 @@ export const idlFactory = ({ IDL }) => {
     'paymentFailed' : IDL.Text,
     'invalidQuantity' : IDL.Null,
   });
-  const Result_5 = IDL.Variant({ 'ok' : Order, 'err' : OrderError });
+  const Result_6 = IDL.Variant({ 'ok' : Order, 'err' : OrderError });
   const Value = IDL.Variant({
     'int' : IDL.Int,
     'nat' : IDL.Nat,
@@ -378,9 +446,13 @@ export const idlFactory = ({ IDL }) => {
     'address' : IDL.Principal,
     'amountDue' : IDL.Nat,
   });
-  const Result_4 = IDL.Variant({
+  const Result_5 = IDL.Variant({
     'ok' : DepositInfo,
     'err' : CryptoPaymentError,
+  });
+  const PaymentServiceConfigView = IDL.Record({
+    'url' : IDL.Text,
+    'tokenSet' : IDL.Bool,
   });
   const ProductVariant = IDL.Record({
     'id' : IDL.Text,
@@ -404,8 +476,7 @@ export const idlFactory = ({ IDL }) => {
     'price' : IDL.Nat,
     'images' : IDL.Vec(IDL.Text),
   });
-  const Result_2 = IDL.Variant({ 'ok' : IDL.Null, 'err' : PaymentError });
-  const Result_1 = IDL.Variant({ 'ok' : IDL.Nat, 'err' : CryptoPaymentError });
+  const Result_3 = IDL.Variant({ 'ok' : IDL.Null, 'err' : PaymentError });
   const HttpHeader = IDL.Record({ 'value' : IDL.Text, 'name' : IDL.Text });
   const HttpRequestResult = IDL.Record({
     'status' : IDL.Nat,
@@ -421,31 +492,54 @@ export const idlFactory = ({ IDL }) => {
     'body' : IDL.Vec(IDL.Nat8),
     'headers' : IDL.Vec(HttpHeader),
   });
+  const Result_2 = IDL.Variant({ 'ok' : IDL.Nat, 'err' : CryptoPaymentError });
   const Result = IDL.Variant({ 'ok' : IDL.Null, 'err' : CryptoPaymentError });
   
   return IDL.Service({
-    'checkCryptoPayment' : IDL.Func([IDL.Text], [Result_3], []),
-    'confirmCryptoPayment' : IDL.Func([IDL.Text], [Result_3], []),
-    'createCheckoutSession' : IDL.Func([Order], [Result_6], []),
-    'createOrder' : IDL.Func([CreateOrderInput], [Result_5], []),
+    'addAdmin' : IDL.Func([IDL.Principal], [IDL.Bool], []),
+    'cancelCardOrder' : IDL.Func([IDL.Text], [Result_1], []),
+    'checkCryptoPayment' : IDL.Func([IDL.Text], [Result_4], []),
+    'claimInitialAdmin' : IDL.Func([], [IDL.Bool], []),
+    'confirmCardPayment' : IDL.Func([IDL.Text], [Result_9], []),
+    'confirmCryptoPayment' : IDL.Func([IDL.Text], [Result_4], []),
+    'createCardCheckoutSession' : IDL.Func(
+        [IDL.Text, IDL.Text, IDL.Text],
+        [Result_8],
+        [],
+      ),
+    'createCheckoutSession' : IDL.Func([Order], [Result_7], []),
+    'createOrder' : IDL.Func([CreateOrderInput], [Result_6], []),
     'execute' : IDL.Func([IDL.Text], [Result__1], ['query']),
     'getApiDoc' : IDL.Func([], [IDL.Text], ['query']),
     'getCryptoConfig' : IDL.Func([], [CryptoConfigView], ['query']),
-    'getCryptoDepositInfo' : IDL.Func([IDL.Text], [Result_4], ['query']),
-    'getCryptoPaymentStatus' : IDL.Func([IDL.Text], [Result_3], ['query']),
+    'getCryptoDepositInfo' : IDL.Func([IDL.Text], [Result_5], ['query']),
+    'getCryptoPaymentStatus' : IDL.Func([IDL.Text], [Result_4], ['query']),
     'getDashboardData' : IDL.Func([], [IDL.Text], []),
     'getNAKPrice' : IDL.Func([], [IDL.Text], []),
     'getOrderStatus' : IDL.Func([IDL.Text], [IDL.Opt(Order)], ['query']),
+    'getPaymentServiceConfig' : IDL.Func(
+        [],
+        [PaymentServiceConfigView],
+        ['query'],
+      ),
     'getPaymentStatus' : IDL.Func([IDL.Text], [PaymentStatus], []),
     'getProduct' : IDL.Func([IDL.Text], [IDL.Opt(Product)], ['query']),
     'getTokenImage' : IDL.Func([IDL.Text, IDL.Text], [IDL.Text], []),
     'getTokenProfile' : IDL.Func([IDL.Text, IDL.Text], [IDL.Text], []),
     'getTreasuryTokens' : IDL.Func([], [IDL.Text], []),
-    'handlePaymentConfirmation' : IDL.Func([IDL.Text], [Result_2], []),
+    'handlePaymentConfirmation' : IDL.Func([IDL.Text], [Result_3], []),
+    'isAdmin' : IDL.Func([], [IDL.Bool], ['query']),
+    'listAdmins' : IDL.Func([], [IDL.Vec(IDL.Principal)], []),
     'listProducts' : IDL.Func([], [IDL.Vec(Product)], ['query']),
+    'paymentServiceTransform' : IDL.Func(
+        [TransformationInput],
+        [TransformationOutput],
+        ['query'],
+      ),
     'releaseExpiredOrders' : IDL.Func([], [IDL.Nat], []),
+    'removeAdmin' : IDL.Func([IDL.Principal], [IDL.Bool], []),
     'schema' : IDL.Func([], [IDL.Text], ['query']),
-    'sweepCryptoToTreasury' : IDL.Func([IDL.Text], [Result_1], []),
+    'sweepCryptoToTreasury' : IDL.Func([IDL.Text], [Result_2], []),
     'transform' : IDL.Func(
         [TransformationInput],
         [TransformationOutput],
@@ -456,6 +550,8 @@ export const idlFactory = ({ IDL }) => {
         [Result],
         [],
       ),
+    'updatePaymentServiceToken' : IDL.Func([IDL.Text], [Result_1], []),
+    'updatePaymentServiceUrl' : IDL.Func([IDL.Text], [Result_1], []),
     'updateTreasury' : IDL.Func(
         [IDL.Principal, IDL.Opt(IDL.Vec(IDL.Nat8))],
         [Result],

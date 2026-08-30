@@ -10,14 +10,14 @@ import {
   MessageCircle,
   Music,
   Search,
-  Settings,
   ShoppingCart,
   Theater,
   Vault,
   X,
 } from "lucide-react";
 import type React from "react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useCart } from "../hooks/useCart";
 
 interface NavigationProps {
   currentPage:
@@ -35,7 +35,35 @@ interface NavigationProps {
   onNavigateToShop?: () => void;
   onNavigateToCart?: () => void;
   onNavigateToOrderLookup?: () => void;
-  onNavigateToAdmin?: () => void;
+}
+
+type NavItem =
+  | {
+      key: string;
+      kind: "section";
+      id: string;
+      label: string;
+      icon: typeof Home;
+    }
+  | {
+      key: string;
+      kind: "external";
+      label: string;
+      icon: typeof Home;
+      url: string;
+    }
+  | {
+      key: string;
+      kind: "page";
+      label: string;
+      icon: typeof Home;
+      page: "shop" | "orderlookup" | "metatheatre";
+    };
+
+interface NavGroup {
+  key: string;
+  label: string;
+  items: NavItem[];
 }
 
 const Navigation: React.FC<NavigationProps> = ({
@@ -45,17 +73,19 @@ const Navigation: React.FC<NavigationProps> = ({
   onNavigateToShop,
   onNavigateToCart,
   onNavigateToOrderLookup,
-  onNavigateToAdmin,
 }) => {
+  const { itemCount } = useCart();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
   const [expandedGroups, setExpandedGroups] = useState<string[]>([]);
   const [isWideScreen, setIsWideScreen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const navRef = useRef<HTMLElement>(null);
 
-  // Check screen width and update layout accordingly
+  // Check screen width and update layout accordingly (collapse at 900px)
   useEffect(() => {
     const checkScreenWidth = () => {
-      const minWidthForFullMenu = 1200;
+      const minWidthForFullMenu = 900;
       setIsWideScreen(window.innerWidth >= minWidthForFullMenu);
     };
 
@@ -64,62 +94,111 @@ const Navigation: React.FC<NavigationProps> = ({
     return () => window.removeEventListener("resize", checkScreenWidth);
   }, []);
 
-  const navigationItems = useMemo(
+  const dropdownGroups = useMemo<NavGroup[]>(
     () => [
-      { id: "home", label: "Home", icon: Home, group: "main" },
-      { id: "token-info", label: "Token Info", icon: Coins, group: "main" },
       {
-        id: "purchase-nak",
-        label: "Purchase NAK",
-        icon: ShoppingCart,
-        group: "trading",
+        key: "token",
+        label: "Token",
+        items: [
+          {
+            key: "home",
+            kind: "section",
+            id: "home",
+            label: "Home",
+            icon: Home,
+          },
+          {
+            key: "token-info",
+            kind: "section",
+            id: "token-info",
+            label: "Token Info",
+            icon: Coins,
+          },
+          {
+            key: "reserve-treasury",
+            kind: "section",
+            id: "reserve-treasury",
+            label: "Reserve Treasury",
+            icon: Vault,
+          },
+          {
+            key: "treasury-dashboard",
+            kind: "external",
+            label: "Treasury Dashboard",
+            icon: BarChart3,
+            url: "https://nakreserve-p6m.caffeine.xyz/",
+          },
+        ],
       },
       {
-        id: "nak-featured-artist",
-        label: "NAK's Featured Artist",
-        icon: Music,
-        group: "content",
+        key: "trade",
+        label: "Trade",
+        items: [
+          {
+            key: "purchase-nak",
+            kind: "section",
+            id: "purchase-nak",
+            label: "Purchase NAK",
+            icon: ShoppingCart,
+          },
+          {
+            key: "houdiniswap",
+            kind: "external",
+            label: "Houdiniswap",
+            icon: ExternalLink,
+            url: "https://app.houdiniswap.com/",
+          },
+        ],
       },
       {
-        id: "reserve-treasury",
-        label: "Reserve Treasury",
-        icon: Vault,
-        group: "treasury",
+        key: "shop",
+        label: "Shop",
+        items: [
+          {
+            key: "browse-products",
+            kind: "page",
+            label: "Browse Products",
+            icon: ShoppingCart,
+            page: "shop",
+          },
+          {
+            key: "track-order",
+            kind: "page",
+            label: "Track an Order",
+            icon: Search,
+            page: "orderlookup",
+          },
+        ],
       },
       {
-        id: "telegram",
-        label: "Telegram",
-        icon: MessageCircle,
-        group: "community",
+        key: "media",
+        label: "Media",
+        items: [
+          {
+            key: "featured-artist",
+            kind: "section",
+            id: "nak-featured-artist",
+            label: "Featured Artist",
+            icon: Music,
+          },
+          {
+            key: "metatheatre",
+            kind: "page",
+            label: "MetaTheatre",
+            icon: Theater,
+            page: "metatheatre",
+          },
+          {
+            key: "telegram",
+            kind: "section",
+            id: "telegram",
+            label: "Telegram",
+            icon: MessageCircle,
+          },
+        ],
       },
     ],
     [],
-  );
-
-  const menuGroups = useMemo(
-    () => ({
-      main: {
-        label: "Main",
-        items: navigationItems.filter((item) => item.group === "main"),
-      },
-      trading: {
-        label: "Trading",
-        items: navigationItems.filter((item) => item.group === "trading"),
-      },
-      content: {
-        label: "Content",
-        items: navigationItems.filter((item) => item.group === "content"),
-      },
-      treasury: {
-        label: "Treasury",
-        items: navigationItems.filter((item) => item.group === "treasury"),
-      },
-      community: {
-        label: "Community",
-        items: navigationItems.filter((item) => item.group === "community"),
-      },
-    }),
-    [navigationItems],
   );
 
   const scrollToSection = (sectionId: string) => {
@@ -142,51 +221,29 @@ const Navigation: React.FC<NavigationProps> = ({
       }
     }
     setIsMenuOpen(false);
+    setOpenDropdown(null);
   };
 
-  const handleTreasuryDashboardClick = () => {
-    window.open("https://nakreserve-p6m.caffeine.xyz/", "_blank");
+  const handleExternalClick = (url: string) => {
+    window.open(url, "_blank");
     setIsMenuOpen(false);
+    setOpenDropdown(null);
   };
 
-  const handleHoudiniswapClick = () => {
-    window.open("https://app.houdiniswap.com/", "_blank");
-    setIsMenuOpen(false);
-  };
-
-  const handleMetaTheatreClick = () => {
-    if (onNavigateToMetaTheatre) {
+  const handlePageClick = (page: "shop" | "orderlookup" | "metatheatre") => {
+    if (page === "shop" && onNavigateToShop) onNavigateToShop();
+    if (page === "orderlookup" && onNavigateToOrderLookup)
+      onNavigateToOrderLookup();
+    if (page === "metatheatre" && onNavigateToMetaTheatre)
       onNavigateToMetaTheatre();
-    }
     setIsMenuOpen(false);
-  };
-
-  const handleShopClick = () => {
-    if (onNavigateToShop) {
-      onNavigateToShop();
-    }
-    setIsMenuOpen(false);
+    setOpenDropdown(null);
   };
 
   const handleCartClick = () => {
-    if (onNavigateToCart) {
-      onNavigateToCart();
-    }
+    if (onNavigateToCart) onNavigateToCart();
     setIsMenuOpen(false);
-  };
-
-  const handleOrderLookupClick = () => {
-    if (onNavigateToOrderLookup) {
-      onNavigateToOrderLookup();
-    }
-    setIsMenuOpen(false);
-  };
-
-  const handleAdminClick = () => {
-    if (onNavigateToAdmin) {
-      onNavigateToAdmin();
-    }
-    setIsMenuOpen(false);
+    setOpenDropdown(null);
   };
 
   const toggleGroup = (groupKey: string) => {
@@ -197,11 +254,36 @@ const Navigation: React.FC<NavigationProps> = ({
     );
   };
 
+  // Close dropdowns on outside click and Escape
+  useEffect(() => {
+    const handlePointerDown = (event: MouseEvent) => {
+      if (navRef.current && !navRef.current.contains(event.target as Node)) {
+        setOpenDropdown(null);
+      }
+    };
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setOpenDropdown(null);
+        setIsMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handlePointerDown);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", handlePointerDown);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
   useEffect(() => {
     if (currentPage !== "main") return;
 
     const handleScroll = () => {
-      const sections = navigationItems.map((item) => item.id);
+      const sections = dropdownGroups.flatMap((group) =>
+        group.items
+          .filter((item) => item.kind === "section")
+          .map((item) => (item as { id: string }).id),
+      );
       const navHeight = 80;
 
       for (let i = sections.length - 1; i >= 0; i--) {
@@ -218,23 +300,39 @@ const Navigation: React.FC<NavigationProps> = ({
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [currentPage, navigationItems]);
+  }, [currentPage, dropdownGroups]);
+
+  const isSubPage =
+    currentPage === "artist" ||
+    currentPage === "metatheatre" ||
+    currentPage === "shop" ||
+    currentPage === "cart" ||
+    currentPage === "checkout" ||
+    currentPage === "success" ||
+    currentPage === "orderlookup" ||
+    currentPage === "admin";
+
+  const renderItemAction = (item: NavItem) => {
+    if (item.kind === "section") return () => scrollToSection(item.id);
+    if (item.kind === "external") return () => handleExternalClick(item.url);
+    return () => handlePageClick(item.page);
+  };
 
   return (
-    <nav className="nav-sticky">
+    <nav className="nav-sticky" ref={navRef}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="flex items-center justify-between h-20">
-          {/* Modern Logo/Brand */}
-          <div className="flex items-center gap-3 flex-shrink-0">
-            <div className="relative group">
-              <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center shadow-lg transition-all duration-300 group-hover:scale-110">
-                <span className="text-white font-bold text-lg">N</span>
-              </div>
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 opacity-0 group-hover:opacity-20 blur-xl transition-all duration-300" />
-            </div>
+        <div className="flex items-center justify-between h-20 min-w-0">
+          {/* Brand mark — pixel-art shell mascot beside the wordmark */}
+          <div className="flex items-center gap-3 flex-shrink-0 min-w-0">
+            <img
+              src="/assets/images/nak-shell.png"
+              alt="NAK STRATS shell mascot"
+              className="pixel-art h-10 w-10 object-contain"
+              style={{ height: "2.5rem", width: "2.5rem" }}
+            />
             <button
               type="button"
-              className="text-xl font-semibold text-white cursor-pointer hover:text-purple-300 transition-colors duration-300 bg-transparent border-0 p-0"
+              className="text-xl font-semibold text-white cursor-pointer hover:text-purple-300 transition-colors duration-300 bg-transparent border-0 p-0 whitespace-nowrap"
               style={{ fontFamily: "var(--font-heading)" }}
               onClick={() => {
                 if (currentPage === "main") {
@@ -248,260 +346,100 @@ const Navigation: React.FC<NavigationProps> = ({
             </button>
           </div>
 
-          {/* Artist/MetaTheatre Page Back Button */}
-          {(currentPage === "artist" ||
-            currentPage === "metatheatre" ||
-            currentPage === "shop" ||
-            currentPage === "cart" ||
-            currentPage === "checkout" ||
-            currentPage === "success" ||
-            currentPage === "orderlookup" ||
-            currentPage === "admin") && (
-            <div className="hidden lg:flex items-center">
-              <button
-                type="button"
-                onClick={onNavigateToMain}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-300 text-gray-300 hover:text-white hover:bg-white/5 text-sm"
-                style={{ fontFamily: "var(--font-body)" }}
-              >
-                <ArrowLeft className="w-4 h-4" />
-                <span>Back to Main Page</span>
-              </button>
-            </div>
-          )}
+          {/* Wide Screen Navigation — dropdown groups + cart + admin */}
+          {isWideScreen && (
+            <div className="flex items-center justify-end gap-0.5 min-w-0">
+              {currentPage === "main" &&
+                dropdownGroups.map((group) => {
+                  const isOpen = openDropdown === group.key;
+                  return (
+                    <div key={group.key} className="relative z-50">
+                      <button
+                        type="button"
+                        className="nav-item"
+                        aria-expanded={isOpen}
+                        aria-haspopup="true"
+                        onClick={() =>
+                          setOpenDropdown(isOpen ? null : group.key)
+                        }
+                      >
+                        <span>{group.label}</span>
+                        <ChevronDown
+                          className={`w-3.5 h-3.5 transition-transform duration-200 ${
+                            isOpen ? "rotate-180" : ""
+                          }`}
+                        />
+                      </button>
 
-          {/* Wide Screen Navigation - Optimized Compact Layout */}
-          {currentPage === "main" && isWideScreen && (
-            <div className="hidden lg:flex items-center space-x-0.5">
-              {navigationItems.map((item) => {
-                const IconComponent = item.icon;
-                const isActive = activeSection === item.id;
-                return (
-                  <button
-                    type="button"
-                    key={item.id}
-                    onClick={() => scrollToSection(item.id)}
-                    className={`relative flex items-center gap-1.5 px-2.5 py-2 rounded-lg font-medium transition-all duration-300 group ${
-                      isActive
-                        ? "bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-white border border-purple-500/30"
-                        : "text-gray-300 hover:text-white hover:bg-white/5"
-                    }`}
-                    style={{
-                      fontFamily: "var(--font-body)",
-                      fontSize: "0.7rem",
-                    }}
-                  >
-                    <IconComponent className="w-3 h-3" />
-                    <span className="whitespace-nowrap">{item.label}</span>
-                    {isActive && (
-                      <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-purple-500/10 to-pink-500/10 blur-sm" />
-                    )}
-                  </button>
-                );
-              })}
+                      {isOpen && (
+                        <div className="nav-dropdown">
+                          {group.items.map((item) => {
+                            const IconComponent = item.icon;
+                            const isActive =
+                              item.kind === "section" &&
+                              activeSection === item.id;
+                            return (
+                              <button
+                                type="button"
+                                key={item.key}
+                                onClick={renderItemAction(item)}
+                                className={`nav-dropdown-item flex items-center gap-2.5 ${
+                                  isActive ? "text-white" : ""
+                                }`}
+                              >
+                                <IconComponent className="w-4 h-4 opacity-70" />
+                                <span className="flex-1">{item.label}</span>
+                                {item.kind === "external" && (
+                                  <ExternalLink className="w-3 h-3 opacity-60" />
+                                )}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
 
-              <button
-                type="button"
-                onClick={handleTreasuryDashboardClick}
-                className="relative flex items-center gap-1.5 px-2.5 py-2 rounded-lg font-medium transition-all duration-300 group text-gray-300 hover:text-white hover:bg-white/5"
-                style={{ fontFamily: "var(--font-body)", fontSize: "0.7rem" }}
-                title="Opens external treasury dashboard"
-              >
-                <BarChart3 className="w-3 h-3" />
-                <span className="whitespace-nowrap">Dashboard</span>
-                <ExternalLink className="w-2 h-2 opacity-60" />
-              </button>
-
-              <button
-                type="button"
-                onClick={handleHoudiniswapClick}
-                className="relative flex items-center gap-1.5 px-2.5 py-2 rounded-lg font-medium transition-all duration-300 group text-gray-300 hover:text-white hover:bg-white/5"
-                style={{ fontFamily: "var(--font-body)", fontSize: "0.7rem" }}
-                title="Opens Houdiniswap"
-              >
-                <ShoppingCart className="w-3 h-3" />
-                <span className="whitespace-nowrap">Houdiniswap</span>
-                <ExternalLink className="w-2 h-2 opacity-60" />
-              </button>
-
-              <button
-                type="button"
-                onClick={handleMetaTheatreClick}
-                className="relative flex items-center gap-1.5 px-2.5 py-2 rounded-lg font-medium transition-all duration-300 group text-gray-300 hover:text-white hover:bg-white/5"
-                style={{ fontFamily: "var(--font-body)", fontSize: "0.7rem" }}
-              >
-                <Theater className="w-3 h-3" />
-                <span className="whitespace-nowrap">MetaTheatre</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={handleShopClick}
-                className="relative flex items-center gap-1.5 px-2.5 py-2 rounded-lg font-medium transition-all duration-300 group text-gray-300 hover:text-white hover:bg-white/5"
-                style={{ fontFamily: "var(--font-body)", fontSize: "0.7rem" }}
-              >
-                <ShoppingCart className="w-3 h-3" />
-                <span className="whitespace-nowrap">Shop</span>
-              </button>
-
+              {/* Cart button with live pink badge */}
               <button
                 type="button"
                 onClick={handleCartClick}
-                className="relative flex items-center gap-1.5 px-2.5 py-2 rounded-lg font-medium transition-all duration-300 group text-gray-300 hover:text-white hover:bg-white/5"
-                style={{ fontFamily: "var(--font-body)", fontSize: "0.7rem" }}
+                className="nav-item relative"
+                aria-label={`Cart, ${itemCount} item${itemCount === 1 ? "" : "s"}`}
               >
-                <ShoppingCart className="w-3 h-3" />
-                <span className="whitespace-nowrap">Cart</span>
+                <ShoppingCart className="w-4 h-4" />
+                <span className="hidden xl:inline">Cart</span>
+                {itemCount > 0 && (
+                  <span className="cart-badge">{itemCount}</span>
+                )}
               </button>
-
-              <button
-                type="button"
-                onClick={handleOrderLookupClick}
-                className="relative flex items-center gap-1.5 px-2.5 py-2 rounded-lg font-medium transition-all duration-300 group text-gray-300 hover:text-white hover:bg-white/5"
-                style={{ fontFamily: "var(--font-body)", fontSize: "0.7rem" }}
-              >
-                <Search className="w-3 h-3" />
-                <span className="whitespace-nowrap">Order Lookup</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={handleAdminClick}
-                className="relative flex items-center gap-1.5 px-2.5 py-2 rounded-lg font-medium transition-all duration-300 group text-gray-300 hover:text-white hover:bg-white/5"
-                style={{ fontFamily: "var(--font-body)", fontSize: "0.7rem" }}
-              >
-                <Settings className="w-3 h-3" />
-                <span className="whitespace-nowrap">Admin</span>
-              </button>
-            </div>
-          )}
-
-          {/* Compact Navigation for Medium Screens */}
-          {currentPage === "main" && !isWideScreen && (
-            <div className="hidden md:flex lg:hidden items-center space-x-1">
-              <button
-                type="button"
-                onClick={() => scrollToSection("home")}
-                className={`relative flex items-center gap-1 px-2 py-2 rounded-lg font-medium transition-all duration-300 text-xs ${
-                  activeSection === "home"
-                    ? "bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-white border border-purple-500/30"
-                    : "text-gray-300 hover:text-white hover:bg-white/5"
-                }`}
-              >
-                <Home className="w-3 h-3" />
-                <span>Home</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => scrollToSection("token-info")}
-                className={`relative flex items-center gap-1 px-2 py-2 rounded-lg font-medium transition-all duration-300 text-xs ${
-                  activeSection === "token-info"
-                    ? "bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-white border border-purple-500/30"
-                    : "text-gray-300 hover:text-white hover:bg-white/5"
-                }`}
-              >
-                <Coins className="w-3 h-3" />
-                <span>Token</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => scrollToSection("purchase-nak")}
-                className={`relative flex items-center gap-1 px-2 py-2 rounded-lg font-medium transition-all duration-300 text-xs ${
-                  activeSection === "purchase-nak"
-                    ? "bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-white border border-purple-500/30"
-                    : "text-gray-300 hover:text-white hover:bg-white/5"
-                }`}
-              >
-                <ShoppingCart className="w-3 h-3" />
-                <span>Buy</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={handleMetaTheatreClick}
-                className="relative flex items-center gap-1 px-2 py-2 rounded-lg font-medium transition-all duration-300 text-xs text-gray-300 hover:text-white hover:bg-white/5"
-              >
-                <Theater className="w-3 h-3" />
-                <span>Theatre</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={handleShopClick}
-                className="relative flex items-center gap-1 px-2 py-2 rounded-lg font-medium transition-all duration-300 text-xs text-gray-300 hover:text-white hover:bg-white/5"
-              >
-                <ShoppingCart className="w-3 h-3" />
-                <span>Shop</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={handleCartClick}
-                className="relative flex items-center gap-1 px-2 py-2 rounded-lg font-medium transition-all duration-300 text-xs text-gray-300 hover:text-white hover:bg-white/5"
-              >
-                <ShoppingCart className="w-3 h-3" />
-                <span>Cart</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={handleOrderLookupClick}
-                className="relative flex items-center gap-1 px-2 py-2 rounded-lg font-medium transition-all duration-300 text-xs text-gray-300 hover:text-white hover:bg-white/5"
-              >
-                <Search className="w-3 h-3" />
-                <span>Orders</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={handleAdminClick}
-                className="relative flex items-center gap-1 px-2 py-2 rounded-lg font-medium transition-all duration-300 text-xs text-gray-300 hover:text-white hover:bg-white/5"
-              >
-                <Settings className="w-3 h-3" />
-                <span>Admin</span>
-              </button>
-
-              <div className="relative">
-                <button
-                  type="button"
-                  onClick={() => setIsMenuOpen(!isMenuOpen)}
-                  className="flex items-center gap-1 px-2 py-2 rounded-lg font-medium transition-all duration-300 text-xs text-gray-300 hover:text-white hover:bg-white/5"
-                >
-                  <Menu className="w-3 h-3" />
-                  <span>More</span>
-                </button>
-              </div>
             </div>
           )}
 
           {/* Mobile Menu Button */}
-          <button
-            type="button"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:flex lg:hidden p-2.5 rounded-xl bg-white/5 text-white hover:bg-white/10 transition-all duration-300 border border-white/10"
-          >
-            {isMenuOpen ? (
-              <X className="w-5 h-5" />
-            ) : (
-              <Menu className="w-5 h-5" />
-            )}
-          </button>
+          {!isWideScreen && (
+            <button
+              type="button"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="md:flex p-2.5 rounded-xl bg-white/5 text-white hover:bg-white/10 transition-all duration-300 border border-white/10"
+              aria-expanded={isMenuOpen}
+              aria-label="Toggle navigation menu"
+            >
+              {isMenuOpen ? (
+                <X className="w-5 h-5" />
+              ) : (
+                <Menu className="w-5 h-5" />
+              )}
+            </button>
+          )}
         </div>
 
         {/* Collapsible Mobile/Tablet Navigation Menu */}
         {isMenuOpen && (
           <div className="nav-mobile-menu">
             <div className="px-4 py-6 space-y-2">
-              {(currentPage === "artist" ||
-                currentPage === "metatheatre" ||
-                currentPage === "shop" ||
-                currentPage === "cart" ||
-                currentPage === "checkout" ||
-                currentPage === "success" ||
-                currentPage === "orderlookup" ||
-                currentPage === "admin") && (
+              {isSubPage && (
                 <button
                   type="button"
                   onClick={() => {
@@ -518,121 +456,56 @@ const Navigation: React.FC<NavigationProps> = ({
 
               {currentPage === "main" && (
                 <>
-                  {Object.entries(menuGroups).map(([groupKey, group]) => (
-                    <div key={groupKey} className="space-y-1">
-                      {group.items.length > 1 ? (
-                        <>
-                          <button
-                            type="button"
-                            onClick={() => toggleGroup(groupKey)}
-                            className="w-full flex items-center justify-between px-4 py-3 rounded-xl font-medium transition-all duration-300 text-gray-400 hover:text-white hover:bg-white/5 text-sm"
-                            style={{ fontFamily: "var(--font-body)" }}
-                          >
-                            <span>{group.label}</span>
-                            {expandedGroups.includes(groupKey) ? (
-                              <ChevronDown className="w-4 h-4" />
-                            ) : (
-                              <ChevronRight className="w-4 h-4" />
-                            )}
-                          </button>
+                  {dropdownGroups.map((group) => (
+                    <div key={group.key} className="space-y-1">
+                      <button
+                        type="button"
+                        onClick={() => toggleGroup(group.key)}
+                        className="w-full flex items-center justify-between px-4 py-3 rounded-xl font-medium transition-all duration-300 text-gray-400 hover:text-white hover:bg-white/5 text-sm"
+                        style={{ fontFamily: "var(--font-body)" }}
+                        aria-expanded={expandedGroups.includes(group.key)}
+                      >
+                        <span>{group.label}</span>
+                        {expandedGroups.includes(group.key) ? (
+                          <ChevronDown className="w-4 h-4" />
+                        ) : (
+                          <ChevronRight className="w-4 h-4" />
+                        )}
+                      </button>
 
-                          {expandedGroups.includes(groupKey) && (
-                            <div className="ml-4 space-y-1">
-                              {group.items.map((item) => {
-                                const IconComponent = item.icon;
-                                const isActive = activeSection === item.id;
-                                return (
-                                  <button
-                                    type="button"
-                                    key={item.id}
-                                    onClick={() => scrollToSection(item.id)}
-                                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-300 text-sm ${
-                                      isActive
-                                        ? "bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-white border border-purple-500/30"
-                                        : "text-gray-300 hover:text-white hover:bg-white/5"
-                                    }`}
-                                    style={{ fontFamily: "var(--font-body)" }}
-                                  >
-                                    <IconComponent className="w-4 h-4" />
-                                    <span>{item.label}</span>
-                                  </button>
-                                );
-                              })}
-                            </div>
-                          )}
-                        </>
-                      ) : (
-                        group.items.map((item) => {
-                          const IconComponent = item.icon;
-                          const isActive = activeSection === item.id;
-                          return (
-                            <button
-                              type="button"
-                              key={item.id}
-                              onClick={() => scrollToSection(item.id)}
-                              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-300 text-sm ${
-                                isActive
-                                  ? "bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-white border border-purple-500/30"
-                                  : "text-gray-300 hover:text-white hover:bg-white/5"
-                              }`}
-                              style={{ fontFamily: "var(--font-body)" }}
-                            >
-                              <IconComponent className="w-4 h-4" />
-                              <span>{item.label}</span>
-                            </button>
-                          );
-                        })
+                      {expandedGroups.includes(group.key) && (
+                        <div className="ml-4 space-y-1">
+                          {group.items.map((item) => {
+                            const IconComponent = item.icon;
+                            const isActive =
+                              item.kind === "section" &&
+                              activeSection === item.id;
+                            return (
+                              <button
+                                type="button"
+                                key={item.key}
+                                onClick={renderItemAction(item)}
+                                className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-300 text-sm ${
+                                  isActive
+                                    ? "bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-white border border-purple-500/30"
+                                    : "text-gray-300 hover:text-white hover:bg-white/5"
+                                }`}
+                                style={{ fontFamily: "var(--font-body)" }}
+                              >
+                                <IconComponent className="w-4 h-4" />
+                                <span className="flex-1">{item.label}</span>
+                                {item.kind === "external" && (
+                                  <ExternalLink className="w-3 h-3 opacity-60" />
+                                )}
+                              </button>
+                            );
+                          })}
+                        </div>
                       )}
                     </div>
                   ))}
 
-                  <div className="pt-4 border-t border-white/10">
-                    <div className="text-xs font-medium text-gray-500 px-4 py-2 uppercase tracking-wider">
-                      External Links
-                    </div>
-
-                    <button
-                      type="button"
-                      onClick={handleTreasuryDashboardClick}
-                      className="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-300 text-gray-300 hover:text-white hover:bg-white/5 text-sm"
-                      style={{ fontFamily: "var(--font-body)" }}
-                    >
-                      <BarChart3 className="w-4 h-4" />
-                      <span>Treasury Dashboard</span>
-                      <ExternalLink className="w-3 h-3 opacity-60 ml-auto" />
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={handleHoudiniswapClick}
-                      className="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-300 text-gray-300 hover:text-white hover:bg-white/5 text-sm"
-                      style={{ fontFamily: "var(--font-body)" }}
-                    >
-                      <ShoppingCart className="w-4 h-4" />
-                      <span>Houdiniswap</span>
-                      <ExternalLink className="w-3 h-3 opacity-60 ml-auto" />
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={handleMetaTheatreClick}
-                      className="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-300 text-gray-300 hover:text-white hover:bg-white/5 text-sm"
-                      style={{ fontFamily: "var(--font-body)" }}
-                    >
-                      <Theater className="w-4 h-4" />
-                      <span>MetaTheatre</span>
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={handleShopClick}
-                      className="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-300 text-gray-300 hover:text-white hover:bg-white/5 text-sm"
-                      style={{ fontFamily: "var(--font-body)" }}
-                    >
-                      <ShoppingCart className="w-4 h-4" />
-                      <span>Shop</span>
-                    </button>
-
+                  <div className="pt-4 border-t border-white/10 space-y-1">
                     <button
                       type="button"
                       onClick={handleCartClick}
@@ -640,27 +513,12 @@ const Navigation: React.FC<NavigationProps> = ({
                       style={{ fontFamily: "var(--font-body)" }}
                     >
                       <ShoppingCart className="w-4 h-4" />
-                      <span>Cart</span>
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={handleOrderLookupClick}
-                      className="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-300 text-gray-300 hover:text-white hover:bg-white/5 text-sm"
-                      style={{ fontFamily: "var(--font-body)" }}
-                    >
-                      <Search className="w-4 h-4" />
-                      <span>Order Lookup</span>
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={handleAdminClick}
-                      className="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-300 text-gray-300 hover:text-white hover:bg-white/5 text-sm"
-                      style={{ fontFamily: "var(--font-body)" }}
-                    >
-                      <Settings className="w-4 h-4" />
-                      <span>Admin</span>
+                      <span className="flex-1">Cart</span>
+                      {itemCount > 0 && (
+                        <span className="cart-badge relative static">
+                          {itemCount}
+                        </span>
+                      )}
                     </button>
                   </div>
                 </>

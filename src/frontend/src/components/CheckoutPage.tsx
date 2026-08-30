@@ -1,4 +1,4 @@
-import { PaymentMethod, Token } from "@/backend";
+import { PaymentMethod } from "@/backend";
 import type { CreateOrderInput } from "@/backend";
 import {
   AlertTriangle,
@@ -6,8 +6,8 @@ import {
   Check,
   Clock,
   Copy,
+  CreditCard,
   Loader2,
-  QrCode,
   ShieldCheck,
   ShoppingCart,
   Wallet,
@@ -19,13 +19,15 @@ import { useCart } from "../hooks/useCart";
 import {
   useCheckCryptoPayment,
   useConfirmCryptoPayment,
+  useCreateCardCheckoutSession,
   useCreateOrder,
   useCryptoConfig,
   useCryptoDepositInfo,
   useCryptoPaymentStatus,
+  usePaymentServiceConfig,
   useReleaseExpiredOrders,
 } from "../hooks/useQueries";
-import type { CryptoPaymentStatus, Order } from "../types/storefront";
+import type { CartItem, CryptoPaymentStatus, Order } from "../types/storefront";
 
 interface CheckoutPageProps {
   onNavigateToMain: () => void;
@@ -34,6 +36,12 @@ interface CheckoutPageProps {
 }
 
 type Step = "shipping" | "review" | "deposit";
+
+const STEPS: { key: Step; label: string }[] = [
+  { key: "shipping", label: "Shipping" },
+  { key: "review", label: "Review" },
+  { key: "deposit", label: "Payment" },
+];
 
 function formatCurrency(amount: bigint): string {
   const whole = amount / 100n;
@@ -85,15 +93,129 @@ function statusMessage(status: CryptoPaymentStatus | null): string {
   }
 }
 
+/** Sticky order summary shown in the right column on desktop. */
+function OrderSummary({
+  order,
+  items,
+  cartSubtotal,
+}: {
+  order: Order | null;
+  items: CartItem[];
+  cartSubtotal: number;
+}) {
+  const hasOrder = order !== null;
+
+  return (
+    <div className="relative card glass-card p-6">
+      <h3 className="mb-4 text-lg uppercase tracking-wide">Order Summary</h3>
+
+      {hasOrder ? (
+        <>
+          <div className="mb-5 space-y-3">
+            {order.items.map((item, idx) => (
+              <div
+                key={item.variant_id}
+                className="flex items-center justify-between gap-4"
+                data-ocid={`checkout.summary_item.${idx + 1}`}
+              >
+                <div className="min-w-0">
+                  <p className="truncate text-sm font-medium text-white">
+                    {item.name}
+                  </p>
+                  <p className="text-xs text-gray-400">
+                    Qty {item.quantity.toString()}
+                  </p>
+                </div>
+                <span className="font-mono-nak text-sm text-gray-200">
+                  {formatCurrency(item.unit_amount * item.quantity)}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          <div className="space-y-2 border-t border-white/10 pt-4 text-sm">
+            <div className="flex items-center justify-between">
+              <span className="text-gray-400">Subtotal</span>
+              <span className="font-mono-nak text-gray-200">
+                {formatCurrency(order.subtotal)}
+              </span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-gray-400">Tax</span>
+              <span className="font-mono-nak text-gray-200">
+                {formatCurrency(order.tax)}
+              </span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-gray-400">Shipping</span>
+              <span className="font-mono-nak text-gray-200">
+                {formatCurrency(order.shipping)}
+              </span>
+            </div>
+            <div className="flex items-center justify-between border-t border-white/10 pt-3 text-base font-semibold">
+              <span className="text-white">Total</span>
+              <span className="font-mono-nak text-teal-bright">
+                {formatCurrency(order.total)}
+              </span>
+            </div>
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="mb-5 space-y-3">
+            {items.map((item, idx) => {
+              const variant = item.product.variants.find(
+                (v) => v.id === item.variantId,
+              );
+              const unitPrice = variant ? variant.price : item.product.price;
+              return (
+                <div
+                  key={`${item.product.id}-${item.variantId}`}
+                  className="flex items-center justify-between gap-4"
+                  data-ocid={`checkout.summary_item.${idx + 1}`}
+                >
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-medium text-white">
+                      {item.product.name}
+                    </p>
+                    <p className="text-xs text-gray-400">Qty {item.quantity}</p>
+                  </div>
+                  <span className="font-mono-nak text-sm text-gray-200">
+                    {formatCurrency(unitPrice * BigInt(item.quantity))}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="space-y-2 border-t border-white/10 pt-4 text-sm">
+            <div className="flex items-center justify-between">
+              <span className="text-gray-400">Subtotal</span>
+              <span className="font-mono-nak text-gray-200">
+                {formatCurrency(BigInt(Math.round(cartSubtotal)))}
+              </span>
+            </div>
+            <p className="pt-2 text-xs text-gray-500">
+              Tax and shipping are calculated when you place your order.
+            </p>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
 const CheckoutPage: React.FC<CheckoutPageProps> = ({
   onNavigateToMain,
   onNavigateToCart,
   onNavigateToSuccess,
 }) => {
-  const { items } = useCart();
+  const { items, subtotal } = useCart();
   const [step, setStep] = useState<Step>("shipping");
   const [order, setOrder] = useState<Order | null>(null);
-  const [selectedToken, setSelectedToken] = useState<Token>(Token.ckUSDC);
+  const [paymentMethod, setPaymentMethod] = useState<"crypto" | "card">(
+    "crypto",
+  );
   const [orderError, setOrderError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [paid, setPaid] = useState(false);
@@ -112,8 +234,19 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
   const createOrder = useCreateOrder();
   const checkPayment = useCheckCryptoPayment();
   const confirmPayment = useConfirmCryptoPayment();
+  const createCardSession = useCreateCardCheckoutSession();
   const { data: cryptoConfig } = useCryptoConfig();
+  const { data: paymentServiceConfig } = usePaymentServiceConfig();
   useReleaseExpiredOrders();
+
+  // Card payments are only offered when the payment service URL and token are
+  // both configured (the token value itself is never exposed — only tokenSet).
+  const cardEnabled = useMemo(() => {
+    if (!paymentServiceConfig) return false;
+    return (
+      paymentServiceConfig.url.trim() !== "" && paymentServiceConfig.tokenSet
+    );
+  }, [paymentServiceConfig]);
 
   const depositInfo = useCryptoDepositInfo(order?.reference ?? null);
   const paymentStatus = useCryptoPaymentStatus(order?.reference ?? null);
@@ -204,7 +337,10 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
         country,
         postal_code: postalCode,
       },
-      payment_method: PaymentMethod.crypto_ckusdc,
+      payment_method:
+        paymentMethod === "card"
+          ? PaymentMethod.card_stripe
+          : PaymentMethod.crypto_ckusdc,
       items: items.map((item) => ({
         product_id: item.product.id,
         variant_id: item.variantId,
@@ -233,9 +369,42 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
     try {
       await navigator.clipboard.writeText(address);
       setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      setTimeout(() => setCopied(false), 1800);
     } catch {
       // Clipboard unavailable — ignore.
+    }
+  };
+
+  // Place the order: crypto advances to the deposit screen (existing flow),
+  // card creates a Stripe checkout session and redirects the customer.
+  const handlePlaceOrder = () => {
+    if (!order?.reference) return;
+    setOrderError(null);
+    if (paymentMethod === "card") {
+      const base = `${window.location.origin}${window.location.pathname}`;
+      createCardSession.mutate(
+        {
+          reference: order.reference,
+          successUrl: `${base}?order_id=${order.reference}`,
+          cancelUrl: `${base}?order_id=${order.reference}&status=cancelled`,
+        },
+        {
+          onSuccess: (result) => {
+            if (result.__kind__ === "ok" && result.ok.url) {
+              window.location.href = result.ok.url;
+            } else {
+              setOrderError(
+                result.__kind__ === "err" &&
+                  result.err.__kind__ === "notConfigured"
+                  ? "Card payments are not configured yet."
+                  : "We could not start card payment. Please try again.",
+              );
+            }
+          },
+        },
+      );
+    } else {
+      setStep("deposit");
     }
   };
 
@@ -255,11 +424,13 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
     ? formatTokenAmount(depositInfo.data.amountDue, depositInfo.data.decimals)
     : "";
 
+  const stepIndex = STEPS.findIndex((s) => s.key === step);
+
   return (
     <div className="pt-24 sm:pt-32 pb-12 sm:pb-20 px-4 sm:px-6">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-10 sm:mb-14 px-2">
-          <div className="flex items-center justify-center gap-4 mb-8">
+        <div className="text-center mb-8 sm:mb-10 px-2">
+          <div className="flex items-center justify-center gap-4 mb-6">
             <div className="relative">
               <Wallet className="w-12 h-12 text-teal-400" />
               <div className="absolute inset-0 rounded-full bg-teal-400/20 blur-xl animate-pulse" />
@@ -276,44 +447,34 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
           </p>
         </div>
 
-        {/* Step indicator */}
-        <div className="flex items-center justify-center gap-2 sm:gap-3 mb-8 sm:mb-12">
-          {(["shipping", "review", "deposit"] as Step[]).map((s, i) => {
-            const active = step === s;
-            const done =
-              (s === "shipping" && step !== "shipping") ||
-              (s === "review" && step === "deposit");
+        {/* 3-step progress indicator */}
+        <div
+          className="flex items-center justify-center gap-3 sm:gap-4 mb-8 sm:mb-12"
+          data-ocid="checkout.step_indicator"
+        >
+          {STEPS.map((s, i) => {
+            const active = step === s.key;
+            const done = i < stepIndex;
             return (
-              <div key={s} className="flex items-center gap-2 sm:gap-3">
+              <div key={s.key} className="flex items-center gap-3 sm:gap-4">
                 <div
-                  className={`flex items-center gap-2 rounded-full px-3 sm:px-4 py-1.5 text-xs sm:text-sm font-medium uppercase tracking-wide ${
-                    active
-                      ? "bg-teal-soft text-teal-bright"
-                      : done
-                        ? "bg-success-soft text-success"
-                        : "text-gray-400"
+                  className={`checkout-step ${
+                    done
+                      ? "checkout-step-done"
+                      : active
+                        ? "checkout-step-current"
+                        : ""
                   }`}
+                  data-ocid={`checkout.step.${i + 1}`}
                 >
-                  <span
-                    className={`flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-bold ${
-                      active
-                        ? "bg-teal-bright text-black"
-                        : done
-                          ? "bg-success text-black"
-                          : "bg-white/10"
-                    }`}
-                  >
-                    {done ? <Check className="h-3 w-3" /> : i + 1}
+                  <span className="checkout-step-dot">
+                    {done ? <Check className="h-3.5 w-3.5" /> : i + 1}
                   </span>
-                  <span className="hidden sm:inline">
-                    {s === "shipping"
-                      ? "Shipping"
-                      : s === "review"
-                        ? "Review"
-                        : "Deposit"}
-                  </span>
+                  <span className="hidden sm:inline">{s.label}</span>
                 </div>
-                {i < 2 && <div className="h-px w-6 sm:w-10 bg-white/15" />}
+                {i < STEPS.length - 1 && (
+                  <div className="h-px w-8 sm:w-12 bg-white/15" />
+                )}
               </div>
             );
           })}
@@ -348,519 +509,525 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
               </div>
             </div>
           </div>
-        ) : step === "shipping" ? (
-          <div className="relative max-w-3xl mx-auto px-2">
-            <div className="relative card glass-card p-6 sm:p-10">
-              <h2 className="text-2xl sm:text-3xl mb-2">Shipping Details</h2>
-              <p className="text-gray-300 mb-8">
-                Where should we send your order?
-              </p>
-
-              {orderError && (
-                <div
-                  className="mb-6 flex items-start gap-3 rounded-xl bg-destructive-soft p-4 text-sm text-destructive"
-                  data-ocid="checkout.order_error"
-                >
-                  <AlertTriangle className="h-5 w-5 shrink-0" />
-                  <span>{orderError}</span>
-                </div>
-              )}
-
-              <form onSubmit={handleShippingSubmit} className="space-y-5">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                  <div>
-                    <label
-                      htmlFor="checkout-name"
-                      className="mb-1.5 block text-sm font-medium text-gray-300"
-                    >
-                      Full name
-                    </label>
-                    <input
-                      id="checkout-name"
-                      type="text"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      placeholder="Jane Doe"
-                      className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-purple-500/50 focus:outline-none"
-                      data-ocid="checkout.name_input"
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="checkout-email"
-                      className="mb-1.5 block text-sm font-medium text-gray-300"
-                    >
-                      Email
-                    </label>
-                    <input
-                      id="checkout-email"
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="jane@example.com"
-                      className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-purple-500/50 focus:outline-none"
-                      data-ocid="checkout.email_input"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="checkout-line1"
-                    className="mb-1.5 block text-sm font-medium text-gray-300"
-                  >
-                    Address line 1
-                  </label>
-                  <input
-                    id="checkout-line1"
-                    type="text"
-                    value={line1}
-                    onChange={(e) => setLine1(e.target.value)}
-                    placeholder="123 Neon Avenue"
-                    className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-purple-500/50 focus:outline-none"
-                    data-ocid="checkout.line1_input"
-                  />
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="checkout-line2"
-                    className="mb-1.5 block text-sm font-medium text-gray-300"
-                  >
-                    Address line 2{" "}
-                    <span className="text-gray-500">(optional)</span>
-                  </label>
-                  <input
-                    id="checkout-line2"
-                    type="text"
-                    value={line2}
-                    onChange={(e) => setLine2(e.target.value)}
-                    placeholder="Apt, suite, unit"
-                    className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-purple-500/50 focus:outline-none"
-                    data-ocid="checkout.line2_input"
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                  <div>
-                    <label
-                      htmlFor="checkout-city"
-                      className="mb-1.5 block text-sm font-medium text-gray-300"
-                    >
-                      City
-                    </label>
-                    <input
-                      id="checkout-city"
-                      type="text"
-                      value={city}
-                      onChange={(e) => setCity(e.target.value)}
-                      placeholder="Neo Tokyo"
-                      className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-purple-500/50 focus:outline-none"
-                      data-ocid="checkout.city_input"
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="checkout-region"
-                      className="mb-1.5 block text-sm font-medium text-gray-300"
-                    >
-                      Region / State
-                    </label>
-                    <input
-                      id="checkout-region"
-                      type="text"
-                      value={region}
-                      onChange={(e) => setRegion(e.target.value)}
-                      placeholder="Kanto"
-                      className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-purple-500/50 focus:outline-none"
-                      data-ocid="checkout.region_input"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                  <div>
-                    <label
-                      htmlFor="checkout-country"
-                      className="mb-1.5 block text-sm font-medium text-gray-300"
-                    >
-                      Country
-                    </label>
-                    <input
-                      id="checkout-country"
-                      type="text"
-                      value={country}
-                      onChange={(e) => setCountry(e.target.value)}
-                      placeholder="Japan"
-                      className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-purple-500/50 focus:outline-none"
-                      data-ocid="checkout.country_input"
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="checkout-postal"
-                      className="mb-1.5 block text-sm font-medium text-gray-300"
-                    >
-                      Postal code
-                    </label>
-                    <input
-                      id="checkout-postal"
-                      type="text"
-                      value={postalCode}
-                      onChange={(e) => setPostalCode(e.target.value)}
-                      placeholder="100-0001"
-                      className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-purple-500/50 focus:outline-none"
-                      data-ocid="checkout.postal_input"
-                    />
-                  </div>
-                </div>
-
-                <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
-                  <button
-                    type="button"
-                    onClick={onNavigateToCart}
-                    data-ocid="checkout.back_to_cart_button"
-                    className="btn px-6 py-3 text-sm font-semibold"
-                  >
-                    <ArrowLeft className="w-4 h-4" />
-                    Back to Cart
-                  </button>
-                  <button
-                    type="submit"
-                    disabled={!shippingFormValid || createOrder.isPending}
-                    data-ocid="checkout.continue_button"
-                    className="btn px-8 py-4 text-base font-semibold disabled:cursor-not-allowed disabled:opacity-50"
-                  >
-                    {createOrder.isPending ? (
-                      <>
-                        <Loader2 className="h-5 w-5 animate-spin" />
-                        Placing Order…
-                      </>
-                    ) : (
-                      "Continue to Review"
-                    )}
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        ) : step === "review" ? (
-          <div className="relative max-w-3xl mx-auto px-2">
-            <div className="relative card glass-card p-6 sm:p-10">
-              <h2 className="text-2xl sm:text-3xl mb-2">Checkout Summary</h2>
-              <p className="text-gray-300 mb-8">
-                Review your order and choose a payment token.
-              </p>
-
-              {ledgerUnset && (
-                <div
-                  className="mb-6 flex items-start gap-3 rounded-xl bg-warning-soft p-4 text-sm text-warning"
-                  data-ocid="checkout.admin_warning"
-                >
-                  <AlertTriangle className="h-5 w-5 shrink-0" />
-                  <span>
-                    Admin notice: the ckUSDC ledger is not configured. Payment
-                    may not be verifiable until it is set.
-                  </span>
-                </div>
-              )}
-
-              {/* Order line items */}
-              <div className="mb-6 space-y-3">
-                {order?.items.map((item, idx) => (
-                  <div
-                    key={item.variant_id}
-                    className="flex items-center justify-between gap-4 rounded-xl bg-white/5 px-4 py-3"
-                    data-ocid={`checkout.order_item.${idx + 1}`}
-                  >
-                    <div className="min-w-0">
-                      <p className="truncate text-sm font-medium text-white">
-                        {item.name}
-                      </p>
-                      <p className="text-xs text-gray-400">
-                        Qty {item.quantity.toString()}
-                      </p>
-                    </div>
-                    <span className="font-mono-nak text-sm text-gray-200">
-                      {formatCurrency(item.unit_amount * item.quantity)}
-                    </span>
-                  </div>
-                ))}
-              </div>
-
-              {/* Server-authoritative totals */}
-              <div className="mb-8 space-y-2 border-t border-white/10 pt-4 text-sm">
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-400">Subtotal</span>
-                  <span className="font-mono-nak text-gray-200">
-                    {order ? formatCurrency(order.subtotal) : "—"}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-400">Tax</span>
-                  <span className="font-mono-nak text-gray-200">
-                    {order ? formatCurrency(order.tax) : "—"}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-400">Shipping</span>
-                  <span className="font-mono-nak text-gray-200">
-                    {order ? formatCurrency(order.shipping) : "—"}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between border-t border-white/10 pt-3 text-base font-semibold">
-                  <span className="text-white">Total</span>
-                  <span className="font-mono-nak text-teal-bright">
-                    {order ? formatCurrency(order.total) : "—"}
-                  </span>
-                </div>
-              </div>
-
-              {/* Token selection */}
-              <div className="mb-8">
-                <p className="mb-3 text-sm font-medium text-gray-300">
-                  Payment token
-                </p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <button
-                    type="button"
-                    onClick={() => setSelectedToken(Token.ckUSDC)}
-                    data-ocid="checkout.token_ckusdc"
-                    className={`token-option flex items-center gap-4 p-4 text-left ${
-                      selectedToken === Token.ckUSDC
-                        ? "token-option-selected"
-                        : ""
-                    }`}
-                  >
-                    <span className="flex h-10 w-10 items-center justify-center rounded-full bg-teal-soft text-teal-bright">
-                      <span className="text-lg font-bold">$</span>
-                    </span>
-                    <span className="min-w-0">
-                      <span className="block text-sm font-semibold text-white">
-                        ckUSDC
-                      </span>
-                      <span className="block text-xs text-gray-400">
-                        Enabled
-                      </span>
-                    </span>
-                    {selectedToken === Token.ckUSDC && (
-                      <Check className="ml-auto h-5 w-5 text-teal-bright" />
-                    )}
-                  </button>
-
-                  <div
-                    className="token-option token-option-disabled flex items-center gap-4 p-4 text-left"
-                    data-ocid="checkout.token_icp"
-                  >
-                    <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-gray-400">
-                      <span className="text-lg font-bold">∞</span>
-                    </span>
-                    <span className="min-w-0">
-                      <span className="block text-sm font-semibold text-white">
-                        ICP
-                      </span>
-                      <span className="block text-xs text-warning">
-                        Disabled — rate source required
-                      </span>
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex flex-wrap items-center justify-between gap-4">
-                <button
-                  type="button"
-                  onClick={() => setStep("shipping")}
-                  data-ocid="checkout.back_to_shipping_button"
-                  className="btn px-6 py-3 text-sm font-semibold"
-                >
-                  <ArrowLeft className="w-4 h-4" />
-                  Edit Shipping
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setStep("deposit")}
-                  data-ocid="checkout.place_order_button"
-                  className="btn px-8 py-4 text-base font-semibold"
-                >
-                  Place Order
-                </button>
-              </div>
-            </div>
-          </div>
         ) : (
-          <div className="relative max-w-3xl mx-auto px-2">
-            <div className="relative deposit-surface p-6 sm:p-10">
-              {/* PAID badge */}
-              {paid && (
-                <div
-                  className="absolute right-5 top-5 flex items-center gap-2 rounded-full bg-success-soft px-4 py-1.5 text-sm font-bold uppercase tracking-wide text-success"
-                  data-ocid="checkout.paid_badge"
-                >
-                  <ShieldCheck className="h-4 w-4" />
-                  Paid
-                </div>
-              )}
+          <div className="grid grid-cols-1 min-[820px]:grid-cols-[minmax(0,1fr)_340px] gap-6 sm:gap-8 items-start">
+            {/* Left column — active step content */}
+            <div className="relative min-w-0 px-2">
+              {step === "shipping" ? (
+                <div className="relative card glass-card p-6 sm:p-10">
+                  <h2 className="text-2xl sm:text-3xl mb-2">
+                    Shipping Details
+                  </h2>
+                  <p className="text-gray-300 mb-8">
+                    Where should we send your order?
+                  </p>
 
-              <h2 className="text-2xl sm:text-3xl mb-2">Crypto Deposit</h2>
-              <p className="text-gray-300 mb-8">
-                Send the exact amount to the address below to complete your
-                order.
-              </p>
+                  {orderError && (
+                    <div
+                      className="mb-6 flex items-start gap-3 rounded-xl bg-destructive-soft p-4 text-sm text-destructive"
+                      data-ocid="checkout.order_error"
+                    >
+                      <AlertTriangle className="h-5 w-5 shrink-0" />
+                      <span>{orderError}</span>
+                    </div>
+                  )}
 
-              {expired ? (
-                <div
-                  className="flex flex-col items-center gap-4 rounded-xl bg-destructive-soft p-8 text-center"
-                  data-ocid="checkout.expired_state"
-                >
-                  <AlertTriangle className="h-10 w-10 text-destructive" />
-                  <div>
-                    <h3 className="text-xl font-semibold text-destructive mb-1">
-                      Deposit Expired
-                    </h3>
-                    <p className="text-sm text-gray-300">
-                      This deposit has expired and the reserved inventory has
-                      been released. Please place a new order to continue.
-                    </p>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={onNavigateToMain}
-                    data-ocid="checkout.expired_back_to_main_button"
-                    className="btn px-8 py-4 text-base font-semibold"
-                  >
-                    <ArrowLeft className="w-4 h-4" />
-                    Back to Main
-                  </button>
-                </div>
-              ) : depositInfo.isLoading ? (
-                <div className="space-y-4" data-ocid="checkout.deposit_loading">
-                  <div className="h-12 w-full rounded-xl bg-white/5 loading-shimmer" />
-                  <div className="mx-auto h-40 w-40 rounded-xl bg-white/5 loading-shimmer" />
-                  <div className="h-8 w-40 mx-auto rounded-xl bg-white/5 loading-shimmer" />
-                </div>
-              ) : depositInfo.data ? (
-                <div className="space-y-8">
-                  {/* Deposit address */}
-                  <div>
-                    <p className="mb-2 text-sm font-medium text-gray-300">
-                      Deposit address
-                    </p>
-                    <div className="flex items-center gap-3 rounded-xl bg-black/40 p-3 sm:p-4">
-                      <span
-                        className="font-mono-nak min-w-0 flex-1 break-all text-sm text-teal-bright"
-                        data-ocid="checkout.deposit_address"
+                  <form onSubmit={handleShippingSubmit} className="space-y-5">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                      <div>
+                        <label
+                          htmlFor="checkout-name"
+                          className="mb-1.5 block text-sm font-medium text-gray-300"
+                        >
+                          Full name
+                        </label>
+                        <input
+                          id="checkout-name"
+                          type="text"
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
+                          placeholder="Jane Doe"
+                          className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-purple-500/50 focus:outline-none"
+                          data-ocid="checkout.name_input"
+                        />
+                      </div>
+                      <div>
+                        <label
+                          htmlFor="checkout-email"
+                          className="mb-1.5 block text-sm font-medium text-gray-300"
+                        >
+                          Email
+                        </label>
+                        <input
+                          id="checkout-email"
+                          type="email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          placeholder="jane@example.com"
+                          className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-purple-500/50 focus:outline-none"
+                          data-ocid="checkout.email_input"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label
+                        htmlFor="checkout-line1"
+                        className="mb-1.5 block text-sm font-medium text-gray-300"
                       >
-                        {depositAddress}
-                      </span>
+                        Address line 1
+                      </label>
+                      <input
+                        id="checkout-line1"
+                        type="text"
+                        value={line1}
+                        onChange={(e) => setLine1(e.target.value)}
+                        placeholder="123 Neon Avenue"
+                        className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-purple-500/50 focus:outline-none"
+                        data-ocid="checkout.line1_input"
+                      />
+                    </div>
+
+                    <div>
+                      <label
+                        htmlFor="checkout-line2"
+                        className="mb-1.5 block text-sm font-medium text-gray-300"
+                      >
+                        Address line 2{" "}
+                        <span className="text-gray-500">(optional)</span>
+                      </label>
+                      <input
+                        id="checkout-line2"
+                        type="text"
+                        value={line2}
+                        onChange={(e) => setLine2(e.target.value)}
+                        placeholder="Apt, suite, unit"
+                        className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-purple-500/50 focus:outline-none"
+                        data-ocid="checkout.line2_input"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                      <div>
+                        <label
+                          htmlFor="checkout-city"
+                          className="mb-1.5 block text-sm font-medium text-gray-300"
+                        >
+                          City
+                        </label>
+                        <input
+                          id="checkout-city"
+                          type="text"
+                          value={city}
+                          onChange={(e) => setCity(e.target.value)}
+                          placeholder="Neo Tokyo"
+                          className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-purple-500/50 focus:outline-none"
+                          data-ocid="checkout.city_input"
+                        />
+                      </div>
+                      <div>
+                        <label
+                          htmlFor="checkout-region"
+                          className="mb-1.5 block text-sm font-medium text-gray-300"
+                        >
+                          Region / State
+                        </label>
+                        <input
+                          id="checkout-region"
+                          type="text"
+                          value={region}
+                          onChange={(e) => setRegion(e.target.value)}
+                          placeholder="Kanto"
+                          className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-purple-500/50 focus:outline-none"
+                          data-ocid="checkout.region_input"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                      <div>
+                        <label
+                          htmlFor="checkout-country"
+                          className="mb-1.5 block text-sm font-medium text-gray-300"
+                        >
+                          Country
+                        </label>
+                        <input
+                          id="checkout-country"
+                          type="text"
+                          value={country}
+                          onChange={(e) => setCountry(e.target.value)}
+                          placeholder="Japan"
+                          className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-purple-500/50 focus:outline-none"
+                          data-ocid="checkout.country_input"
+                        />
+                      </div>
+                      <div>
+                        <label
+                          htmlFor="checkout-postal"
+                          className="mb-1.5 block text-sm font-medium text-gray-300"
+                        >
+                          Postal code
+                        </label>
+                        <input
+                          id="checkout-postal"
+                          type="text"
+                          value={postalCode}
+                          onChange={(e) => setPostalCode(e.target.value)}
+                          placeholder="100-0001"
+                          className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-purple-500/50 focus:outline-none"
+                          data-ocid="checkout.postal_input"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
                       <button
                         type="button"
-                        onClick={() => handleCopyAddress(depositAddress)}
-                        aria-label="Copy deposit address"
-                        data-ocid="checkout.copy_address_button"
-                        className="btn shrink-0 px-3 py-2 text-sm"
+                        onClick={onNavigateToCart}
+                        data-ocid="checkout.back_to_cart_button"
+                        className="btn px-6 py-3 text-sm font-semibold"
                       >
-                        {copied ? (
-                          <Check className="h-4 w-4 text-success" />
+                        <ArrowLeft className="w-4 h-4" />
+                        Back to Cart
+                      </button>
+                      <button
+                        type="submit"
+                        disabled={!shippingFormValid || createOrder.isPending}
+                        data-ocid="checkout.continue_button"
+                        className="btn px-8 py-4 text-base font-semibold disabled:cursor-not-allowed disabled:opacity-50"
+                      >
+                        {createOrder.isPending ? (
+                          <>
+                            <Loader2 className="h-5 w-5 animate-spin" />
+                            Placing Order…
+                          </>
                         ) : (
-                          <Copy className="h-4 w-4" />
+                          "Continue to Review"
+                        )}
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              ) : step === "review" ? (
+                <div className="relative card glass-card p-6 sm:p-10">
+                  <h2 className="text-2xl sm:text-3xl mb-2">
+                    Checkout Summary
+                  </h2>
+                  <p className="text-gray-300 mb-8">
+                    Review your order and choose a payment token.
+                  </p>
+
+                  {ledgerUnset && (
+                    <div
+                      className="mb-6 flex items-start gap-3 rounded-xl bg-warning-soft p-4 text-sm text-warning"
+                      data-ocid="checkout.admin_warning"
+                    >
+                      <AlertTriangle className="h-5 w-5 shrink-0" />
+                      <span>
+                        Admin notice: the ckUSDC ledger is not configured.
+                        Payment may not be verifiable until it is set.
+                      </span>
+                    </div>
+                  )}
+
+                  {orderError && (
+                    <div
+                      className="mb-6 flex items-start gap-3 rounded-xl bg-destructive-soft p-4 text-sm text-destructive"
+                      data-ocid="checkout.order_error"
+                    >
+                      <AlertTriangle className="h-5 w-5 shrink-0" />
+                      <span>{orderError}</span>
+                    </div>
+                  )}
+
+                  {/* Payment method selection — crypto (ckUSDC) and card (Stripe) */}
+                  <div className="mb-8">
+                    <p className="mb-3 text-sm font-medium text-gray-300">
+                      Payment method
+                    </p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <button
+                        type="button"
+                        onClick={() => setPaymentMethod("crypto")}
+                        data-ocid="checkout.method_crypto"
+                        className={`token-option flex items-center gap-4 p-4 text-left ${
+                          paymentMethod === "crypto"
+                            ? "token-option-selected"
+                            : ""
+                        }`}
+                      >
+                        <span className="flex h-10 w-10 items-center justify-center rounded-full bg-teal-soft text-teal-bright">
+                          <Wallet className="h-5 w-5" />
+                        </span>
+                        <span className="min-w-0">
+                          <span className="block text-sm font-semibold text-white">
+                            Pay with crypto
+                          </span>
+                          <span className="block text-xs text-gray-400">
+                            ckUSDC deposit
+                          </span>
+                        </span>
+                        {paymentMethod === "crypto" && (
+                          <Check className="ml-auto h-5 w-5 text-teal-bright" />
+                        )}
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => cardEnabled && setPaymentMethod("card")}
+                        disabled={!cardEnabled}
+                        data-ocid="checkout.method_card"
+                        className={`token-option flex items-center gap-4 p-4 text-left ${
+                          paymentMethod === "card"
+                            ? "token-option-selected"
+                            : ""
+                        } ${!cardEnabled ? "token-option-disabled" : ""}`}
+                      >
+                        <span className="flex h-10 w-10 items-center justify-center rounded-full bg-teal-soft text-teal-bright">
+                          <CreditCard className="h-5 w-5" />
+                        </span>
+                        <span className="min-w-0">
+                          <span className="block text-sm font-semibold text-white">
+                            Pay with card
+                          </span>
+                          <span className="block text-xs text-gray-400">
+                            {cardEnabled
+                              ? "Stripe checkout"
+                              : "Unavailable — not configured"}
+                          </span>
+                        </span>
+                        {paymentMethod === "card" && (
+                          <Check className="ml-auto h-5 w-5 text-teal-bright" />
                         )}
                       </button>
                     </div>
                   </div>
 
-                  {/* Amount owed */}
-                  <div className="text-center">
-                    <p className="mb-2 text-sm font-medium text-gray-300">
-                      Exact amount owed ({depositInfo.data.token})
-                    </p>
-                    <p
-                      className="font-mono-nak text-4xl sm:text-5xl font-bold text-white"
-                      style={{ fontFamily: "var(--font-heading)" }}
-                      data-ocid="checkout.amount_owed"
-                    >
-                      {amountOwed}{" "}
-                      <span className="text-teal-bright">
-                        {depositInfo.data.token}
-                      </span>
-                    </p>
-                  </div>
-
-                  {/* QR code */}
-                  <div className="flex justify-center">
-                    <div className="rounded-2xl bg-white p-4">
-                      <QRCode
-                        value={depositInfo.data.qrPayload}
-                        size={168}
-                        bgColor="#ffffff"
-                        fgColor="#000000"
-                        aria-label="QR code for deposit address"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Countdown */}
-                  <div className="flex items-center justify-center gap-3">
-                    <Clock className="h-5 w-5 text-warning" />
-                    <span
-                      className={`font-mono-nak text-3xl sm:text-4xl font-bold ${countdownClass(
-                        remainingSec,
-                      )}`}
-                      data-ocid="checkout.countdown"
-                    >
-                      {formatCountdown(remainingSec)}
-                    </span>
-                  </div>
-
-                  {/* Status */}
-                  <div
-                    className={`flex items-start gap-3 rounded-xl p-4 text-sm ${
-                      paid
-                        ? "bg-success-soft text-success"
-                        : "bg-teal-soft text-teal-bright"
-                    }`}
-                    data-ocid="checkout.payment_status"
-                  >
-                    {paid ? (
-                      <ShieldCheck className="h-5 w-5 shrink-0" />
-                    ) : (
-                      <QrCode className="h-5 w-5 shrink-0" />
-                    )}
-                    <span>
-                      {paid
-                        ? "Payment confirmed. Redirecting to your order summary…"
-                        : statusMessage(paymentStatus.data ?? null)}
-                    </span>
-                  </div>
-
                   <div className="flex flex-wrap items-center justify-between gap-4">
                     <button
                       type="button"
-                      onClick={onNavigateToMain}
-                      data-ocid="checkout.back_to_main_button"
+                      onClick={() => setStep("shipping")}
+                      data-ocid="checkout.back_to_shipping_button"
                       className="btn px-6 py-3 text-sm font-semibold"
                     >
                       <ArrowLeft className="w-4 h-4" />
-                      Back to Main
+                      Edit Shipping
                     </button>
-                    <p className="text-xs text-gray-500">
-                      Payment is verified on-ledger automatically.
-                    </p>
+                    <button
+                      type="button"
+                      onClick={handlePlaceOrder}
+                      disabled={createCardSession.isPending}
+                      data-ocid="checkout.place_order_button"
+                      className="btn px-8 py-4 text-base font-semibold disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      {createCardSession.isPending ? (
+                        <>
+                          <Loader2 className="h-5 w-5 animate-spin" />
+                          Redirecting to payment…
+                        </>
+                      ) : (
+                        "Place Order"
+                      )}
+                    </button>
                   </div>
                 </div>
               ) : (
-                <div
-                  className="flex items-start gap-3 rounded-xl bg-destructive-soft p-4 text-sm text-destructive"
-                  data-ocid="checkout.deposit_error"
-                >
-                  <AlertTriangle className="h-5 w-5 shrink-0" />
-                  <span>
-                    We could not generate your deposit. Please go back and try
-                    again.
-                  </span>
+                <div className="relative deposit-surface p-6 sm:p-10">
+                  {/* PAID badge */}
+                  {paid && (
+                    <div
+                      className="absolute right-5 top-5 flex items-center gap-2 rounded-full bg-success-soft px-4 py-1.5 text-sm font-bold uppercase tracking-wide text-success"
+                      data-ocid="checkout.paid_badge"
+                    >
+                      <ShieldCheck className="h-4 w-4" />
+                      Paid
+                    </div>
+                  )}
+
+                  {/* Header row — title left, countdown top-right */}
+                  <div className="mb-6 flex items-start justify-between gap-4">
+                    <div>
+                      <h2 className="text-2xl sm:text-3xl mb-1">
+                        Crypto Deposit
+                      </h2>
+                      <p className="text-gray-300">
+                        Send the exact amount to the address below to complete
+                        your order.
+                      </p>
+                    </div>
+                    <div className="flex shrink-0 items-center gap-2">
+                      <Clock className="h-5 w-5 text-warning" />
+                      <span
+                        className={`font-mono-nak text-2xl sm:text-3xl font-bold ${countdownClass(
+                          remainingSec,
+                        )}`}
+                        data-ocid="checkout.countdown"
+                      >
+                        {formatCountdown(remainingSec)}
+                      </span>
+                    </div>
+                  </div>
+
+                  {expired ? (
+                    <div
+                      className="flex flex-col items-center gap-4 rounded-xl bg-destructive-soft p-8 text-center"
+                      data-ocid="checkout.expired_state"
+                    >
+                      <AlertTriangle className="h-10 w-10 text-destructive" />
+                      <div>
+                        <h3 className="text-xl font-semibold text-destructive mb-1">
+                          Deposit Expired
+                        </h3>
+                        <p className="text-sm text-gray-300">
+                          This deposit has expired and the reserved inventory
+                          has been released. Please place a new order to
+                          continue.
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={onNavigateToMain}
+                        data-ocid="checkout.expired_back_to_main_button"
+                        className="btn px-8 py-4 text-base font-semibold"
+                      >
+                        <ArrowLeft className="w-4 h-4" />
+                        Back to Main
+                      </button>
+                    </div>
+                  ) : depositInfo.isLoading ? (
+                    <div
+                      className="space-y-4"
+                      data-ocid="checkout.deposit_loading"
+                    >
+                      <div className="h-12 w-full rounded-xl bg-white/5 loading-shimmer" />
+                      <div className="mx-auto h-40 w-40 rounded-xl bg-white/5 loading-shimmer" />
+                      <div className="h-8 w-40 mx-auto rounded-xl bg-white/5 loading-shimmer" />
+                    </div>
+                  ) : depositInfo.data ? (
+                    <div className="space-y-8">
+                      {/* Amount owed — largest element */}
+                      <div className="text-center">
+                        <p className="mb-2 text-sm font-medium text-gray-300">
+                          Exact amount owed ({depositInfo.data.token})
+                        </p>
+                        <p
+                          className="amount-owed"
+                          data-ocid="checkout.amount_owed"
+                        >
+                          {amountOwed}{" "}
+                          <span className="text-teal-bright">
+                            {depositInfo.data.token}
+                          </span>
+                        </p>
+                      </div>
+
+                      {/* Deposit address — dark inset well */}
+                      <div>
+                        <p className="mb-2 text-sm font-medium text-gray-300">
+                          Deposit address
+                        </p>
+                        <div className="deposit-address-well flex items-center gap-3">
+                          <span
+                            className="min-w-0 flex-1 break-all"
+                            data-ocid="checkout.deposit_address"
+                          >
+                            {depositAddress}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => handleCopyAddress(depositAddress)}
+                            aria-label="Copy deposit address"
+                            data-ocid="checkout.copy_address_button"
+                            className="btn shrink-0 px-3 py-2 text-sm"
+                          >
+                            {copied ? (
+                              <Check className="h-4 w-4 text-success" />
+                            ) : (
+                              <Copy className="h-4 w-4" />
+                            )}
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* QR code */}
+                      <div className="flex justify-center">
+                        <div className="rounded-2xl bg-white p-4">
+                          <QRCode
+                            value={depositInfo.data.qrPayload}
+                            size={168}
+                            bgColor="#ffffff"
+                            fgColor="#000000"
+                            aria-label="QR code for deposit address"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Status — 'watching the ledger' with pulsing amber dot */}
+                      <div
+                        className={`flex items-center gap-3 rounded-xl p-4 text-sm ${
+                          paid
+                            ? "bg-success-soft text-success"
+                            : "bg-teal-soft text-teal-bright"
+                        }`}
+                        data-ocid="checkout.payment_status"
+                      >
+                        {paid ? (
+                          <ShieldCheck className="h-5 w-5 shrink-0" />
+                        ) : (
+                          <span
+                            className="ledger-dot shrink-0"
+                            aria-hidden="true"
+                          />
+                        )}
+                        <span>
+                          {paid
+                            ? "Payment confirmed. Redirecting to your order summary…"
+                            : `Watching the ledger — ${statusMessage(
+                                paymentStatus.data ?? null,
+                              )}`}
+                        </span>
+                      </div>
+
+                      <div className="flex flex-wrap items-center justify-between gap-4">
+                        <button
+                          type="button"
+                          onClick={onNavigateToMain}
+                          data-ocid="checkout.back_to_main_button"
+                          className="btn px-6 py-3 text-sm font-semibold"
+                        >
+                          <ArrowLeft className="w-4 h-4" />
+                          Back to Main
+                        </button>
+                        <p className="text-xs text-gray-500">
+                          Payment is verified on-ledger automatically.
+                        </p>
+                      </div>
+                    </div>
+                  ) : (
+                    <div
+                      className="flex items-start gap-3 rounded-xl bg-destructive-soft p-4 text-sm text-destructive"
+                      data-ocid="checkout.deposit_error"
+                    >
+                      <AlertTriangle className="h-5 w-5 shrink-0" />
+                      <span>
+                        We could not generate your deposit. Please go back and
+                        try again.
+                      </span>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
+
+            {/* Right column — sticky order summary */}
+            <aside className="min-w-0 min-[820px]:sticky min-[820px]:top-24">
+              <OrderSummary
+                order={order}
+                items={items}
+                cartSubtotal={subtotal}
+              />
+            </aside>
           </div>
         )}
       </div>

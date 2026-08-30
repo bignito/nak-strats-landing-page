@@ -2,12 +2,16 @@ import OutCall "mo:caffeineai-http-outcalls/outcall";
 import List "mo:core/List";
 import Map "mo:core/Map";
 import Principal "mo:core/Principal";
+import Set "mo:core/Set";
 import Types "types/storefront";
 import CryptoTypes "types/crypto-payments";
 import StorefrontApi "mixins/storefront-api";
 import PaymentAdapterApi "mixins/payment-adapter-api";
 import CryptoPaymentsApi "mixins/crypto-payments-api";
 import CryptoPaymentsLib "lib/crypto-payments";
+import PaymentServiceTypes "types/payment-service";
+import PaymentServiceApi "mixins/payment-service-api";
+import AdminApi "mixins/admin-api";
 import OQL "mo:caffeineai-oql";
 import Expose "mo:caffeineai-oql/Expose";
 import ListEntity "mo:caffeineai-oql/ListEntity";
@@ -159,6 +163,15 @@ persistent actor Self {
       .concat(ledgerRow("icp", c.icp));
     };
 
+    // Payment service config row. The token is write-only and is NEVER exposed
+    // through OQL — only the URL and a boolean "is it set" flag.
+    func paymentServiceConfigRow(c : PaymentServiceTypes.PaymentServiceConfig) : OQL.Entity.Row {
+      [
+        ("url", #text(c.url)),
+        ("token_set", #bool(c.token != "")),
+      ]
+    };
+
     public query func transform(input : OutCall.TransformationInput) : async OutCall.TransformationOutput {
         OutCall.transform(input);
     };
@@ -199,13 +212,23 @@ persistent actor Self {
     let cryptoPayments : Map.Map<Text, CryptoTypes.CryptoPayment>;
     let cryptoConfig : CryptoTypes.CryptoConfig;
 
+    // Payment service config (stable, seeded by the migration chain). The token
+    // is write-only: it is stored here but never returned to any caller.
+    let paymentServiceConfig : PaymentServiceTypes.PaymentServiceConfig;
+
+    // Admin allowlist (stable, seeded by the migration chain). Starts empty;
+    // the first admin claims it via claimInitialAdmin().
+    let adminAllowlist : Set.Set<Principal>;
+
     // Payment adapter (transient — recreated on restart, not persisted)
     transient let selfPrincipal = Principal.fromActor(Self);
     transient let paymentAdapter = CryptoPaymentsLib.cryptoAdapter(orders, products, cryptoPayments, cryptoConfig);
 
     include StorefrontApi(products, orders, state, paymentAdapter);
     include PaymentAdapterApi(paymentAdapter);
-    include CryptoPaymentsApi(orders, products, cryptoPayments, cryptoConfig, selfPrincipal);
+    include CryptoPaymentsApi(orders, products, cryptoPayments, cryptoConfig, selfPrincipal, adminAllowlist);
+    include PaymentServiceApi(paymentServiceConfig, orders, products, adminAllowlist);
+    include AdminApi(adminAllowlist);
 
     // OQL — expose persisted storefront data as queryable entities.
     // Products are a public catalogue; orders are private (controller-only).
@@ -289,8 +312,24 @@ persistent actor Self {
         var icp = { canisterId = Principal.fromText("aaaaa-aa"); decimals = 8 : Nat8; fee = 10_000 };
       }
     )));
+    // The payment service configuration (URL + write-only token flag) is a
+    // single private row, controller-only. The token value itself is never
+    // exposed — only the URL and whether the token is set.
+    transient let paymentServiceConfigEntity = OQL.Entity.build(OQL.Entity.controllerOnly(OQL.Entity.sample(
+      OQL.Entity.new<PaymentServiceTypes.PaymentServiceConfig>(
+        "paymentServiceConfig",
+        func () = [paymentServiceConfig].values(),
+        "PaymentServiceConfig",
+        "url",
+        paymentServiceConfigRow,
+      ),
+      {
+        var url = "";
+        var token = "";
+      }
+    )));
     include Expose({
-      entities = [productEntity, orderEntity, cryptoPaymentEntity, cryptoConfigEntity];
+      entities = [productEntity, orderEntity, cryptoPaymentEntity, cryptoConfigEntity, paymentServiceConfigEntity];
     });
 
     include ApiDocMixin();

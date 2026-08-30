@@ -128,4 +128,64 @@ module {
 
     #ok(order);
   };
+
+  // Restore inventory that was reserved (decremented) at order creation. Used
+  // when an order is cancelled or expires so the stock is released back.
+  public func releaseInventory(products : List.List<Types.Product>, order : Types.Order) {
+    for (item in order.items.values()) {
+      switch (products.find(func p = p.id == item.product_id)) {
+        case (?product) {
+          let newVariants = product.variants.map(func v =
+            if (v.id == item.variant_id) { { v with inventory = v.inventory + item.quantity } } else { v }
+          );
+          let updated = { product with variants = newVariants; inventory = product.inventory + item.quantity; updated_at = Time.now() };
+          let snapshot = products.toArray();
+          products.clear();
+          for (p in snapshot.values()) {
+            if (p.id == updated.id) { products.add(updated) } else { products.add(p) };
+          };
+        };
+        case null {};
+      };
+    };
+  };
+
+  // Update an order's payment status and payment reference in place. Returns
+  // true when the order was found and updated, false otherwise.
+  public func updateOrderStatus(
+    orders : List.List<Types.Order>,
+    reference : Text,
+    status : Types.PaymentStatus,
+    paymentReference : ?Text,
+  ) : Bool {
+    switch (orders.find(func o = o.reference == reference)) {
+      case (?order) {
+        let updated : Types.Order = {
+          id = order.id;
+          reference = order.reference;
+          items = order.items;
+          subtotal = order.subtotal;
+          tax = order.tax;
+          shipping = order.shipping;
+          total = order.total;
+          currency = order.currency;
+          customer_email = order.customer_email;
+          customer_name = order.customer_name;
+          shipping_address = order.shipping_address;
+          payment_method = order.payment_method;
+          payment_status = status;
+          payment_reference = paymentReference;
+          created_at = order.created_at;
+          updated_at = Time.now();
+        };
+        let snapshot = orders.toArray();
+        orders.clear();
+        for (o in snapshot.values()) {
+          if (o.reference == reference) { orders.add(updated) } else { orders.add(o) };
+        };
+        true;
+      };
+      case null { false };
+    };
+  };
 };

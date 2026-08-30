@@ -5,6 +5,7 @@ import type {
   CryptoPaymentStatus,
   DepositInfo,
   Order,
+  PaymentServiceConfigView,
   PaymentStatus,
   Product,
   Token,
@@ -245,4 +246,170 @@ export function useReleaseExpiredOrders(intervalMs = 60_000) {
   }, [actor, intervalMs, mutation]);
 
   return mutation;
+}
+
+/**
+ * Reads the payment service config view (url + tokenSet boolean). The token
+ * value itself is write-only on the backend and is never exposed here.
+ */
+export function usePaymentServiceConfig() {
+  const { actor, isFetching } = useActor(createActor);
+  return useQuery({
+    queryKey: ["paymentServiceConfig"],
+    queryFn: async (): Promise<PaymentServiceConfigView | null> => {
+      if (!actor) return null;
+      return actor.getPaymentServiceConfig();
+    },
+    enabled: !!actor && !isFetching,
+  });
+}
+
+export function useUpdatePaymentServiceUrl() {
+  const { actor } = useActor(createActor);
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (url: string) => {
+      if (!actor) throw new Error("Backend is not ready");
+      return actor.updatePaymentServiceUrl(url);
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({
+        queryKey: ["paymentServiceConfig"],
+      });
+    },
+  });
+}
+
+export function useUpdatePaymentServiceToken() {
+  const { actor } = useActor(createActor);
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (token: string) => {
+      if (!actor) throw new Error("Backend is not ready");
+      return actor.updatePaymentServiceToken(token);
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({
+        queryKey: ["paymentServiceConfig"],
+      });
+    },
+  });
+}
+
+export function useCreateCardCheckoutSession() {
+  const { actor } = useActor(createActor);
+  return useMutation({
+    mutationFn: async (args: {
+      reference: string;
+      successUrl: string;
+      cancelUrl: string;
+    }) => {
+      if (!actor) throw new Error("Backend is not ready");
+      return actor.createCardCheckoutSession(
+        args.reference,
+        args.successUrl,
+        args.cancelUrl,
+      );
+    },
+  });
+}
+
+export function useConfirmCardPayment() {
+  const { actor } = useActor(createActor);
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (reference: string) => {
+      if (!actor) throw new Error("Backend is not ready");
+      return actor.confirmCardPayment(reference);
+    },
+    onSuccess: (_data, reference) => {
+      void queryClient.invalidateQueries({
+        queryKey: ["orderStatus", reference],
+      });
+    },
+  });
+}
+
+export function useCancelCardOrder() {
+  const { actor } = useActor(createActor);
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (reference: string) => {
+      if (!actor) throw new Error("Backend is not ready");
+      return actor.cancelCardOrder(reference);
+    },
+    onSuccess: (_data, reference) => {
+      void queryClient.invalidateQueries({
+        queryKey: ["orderStatus", reference],
+      });
+    },
+  });
+}
+
+export function useIsAdmin() {
+  const { actor, isFetching } = useActor(createActor);
+  return useQuery({
+    queryKey: ["isAdmin"],
+    queryFn: async (): Promise<boolean> => {
+      if (!actor) return false;
+      return actor.isAdmin();
+    },
+    enabled: !!actor && !isFetching,
+  });
+}
+
+export function useClaimInitialAdmin() {
+  const { actor } = useActor(createActor);
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (): Promise<boolean> => {
+      if (!actor) throw new Error("Backend is not ready");
+      return actor.claimInitialAdmin();
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["isAdmin"] });
+      void queryClient.invalidateQueries({ queryKey: ["admins"] });
+    },
+  });
+}
+
+export function useAddAdmin() {
+  const { actor } = useActor(createActor);
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (principal: Principal): Promise<boolean> => {
+      if (!actor) throw new Error("Backend is not ready");
+      return actor.addAdmin(principal);
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["admins"] });
+    },
+  });
+}
+
+export function useRemoveAdmin() {
+  const { actor } = useActor(createActor);
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (principal: Principal): Promise<boolean> => {
+      if (!actor) throw new Error("Backend is not ready");
+      return actor.removeAdmin(principal);
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["admins"] });
+      void queryClient.invalidateQueries({ queryKey: ["isAdmin"] });
+    },
+  });
+}
+
+export function useListAdmins() {
+  const { actor, isFetching } = useActor(createActor);
+  return useQuery({
+    queryKey: ["admins"],
+    queryFn: async (): Promise<Principal[]> => {
+      if (!actor) return [];
+      return actor.listAdmins();
+    },
+    enabled: !!actor && !isFetching,
+  });
 }

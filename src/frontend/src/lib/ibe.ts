@@ -241,10 +241,15 @@ export async function decryptShipping(
 }
 
 /**
- * Fetch the current admin principal list from the backend.
+ * Fetch the current encryption-recipient principal list from the backend.
+ *
+ * Uses the public `getEncryptionRecipients` query (returns only OWNER/ADMIN
+ * principals) instead of the admin-only `listAdmins`, so anonymous guests can
+ * encrypt shipping details during checkout without trapping on an
+ * authorization check.
  */
 export async function fetchAdminPrincipals(
   backend: Backend,
 ): Promise<Principal[]> {
-  return backend.listAdmins();
+  return backend.getEncryptionRecipients();
 }

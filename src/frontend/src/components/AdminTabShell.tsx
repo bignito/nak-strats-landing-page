@@ -12,6 +12,7 @@ import {
   useActorReady,
   useClaimInitialAdmin,
   useGetCanisterId,
+  useGetEncryptionRecipients,
   useGetMyRole,
 } from "@/hooks/useQueries";
 import type {
@@ -81,6 +82,7 @@ export function AdminTabShell({ onNavigateToMain }: AdminTabShellProps) {
   const { isActorReady, isAuthenticated, identity } = useActorReady();
   const { data: role, isLoading: roleLoading } = useGetMyRole();
   const { data: canisterId } = useGetCanisterId();
+  const { data: encryptionRecipients } = useGetEncryptionRecipients();
   const claimAdmin = useClaimInitialAdmin();
   const queryClient = useQueryClient();
   const { clear, isLoggingIn } = useInternetIdentity();
@@ -196,6 +198,45 @@ export function AdminTabShell({ onNavigateToMain }: AdminTabShellProps) {
           initialised with your identity.
         </div>
       )}
+
+      {/* No encryption recipients — the store cannot take orders. Shown to
+          every admin role (public query) as soon as the panel opens, not
+          hidden behind a sub-tab. */}
+      {isAuthenticated &&
+        role &&
+        encryptionRecipients !== undefined &&
+        encryptionRecipients.length === 0 && (
+          <div
+            className="flex items-start gap-3 px-6 py-3"
+            style={{
+              background: "var(--nak-warning-soft)",
+              borderBottom: "1px solid oklch(var(--admin-band-warning) / 0.45)",
+            }}
+            role="alert"
+            data-ocid="admin.encryption_recipients_warning"
+          >
+            <ShieldAlert
+              className="w-5 h-5 shrink-0 mt-0.5"
+              style={{ color: "var(--nak-warning)" }}
+            />
+            <div className="flex flex-col gap-0.5 min-w-0">
+              <p
+                className="text-sm font-semibold"
+                style={{ color: "var(--foreground)" }}
+              >
+                Store not accepting orders
+              </p>
+              <p
+                className="text-sm"
+                style={{ color: "var(--muted-foreground)" }}
+              >
+                No encryption recipients are configured, so the store cannot
+                take orders. Checkout is blocked for customers until at least
+                one encryption recipient is configured.
+              </p>
+            </div>
+          </div>
+        )}
 
       {/* Tab bar */}
       <nav

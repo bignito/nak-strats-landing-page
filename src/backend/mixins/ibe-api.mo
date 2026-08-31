@@ -1,5 +1,6 @@
 import Principal "mo:core/Principal";
 import Text "mo:core/Text";
+import List "mo:core/List";
 import ManagementCanister "mo:ic-vetkeys/ManagementCanister";
 import AdminLib "../lib/admin-access-control";
 import AdminTypes "../types/admin-access-control";
@@ -12,6 +13,25 @@ mixin (adminUsers : AdminTypes.AdminUsers, ibeKeyName : Text) {
   // an inter-canister call to the management canister.
   public shared func getIbePublicKey() : async Blob {
     await ManagementCanister.vetKdPublicKey(null, IbeLib.DOMAIN_SEPARATOR.encodeUtf8(), IbeLib.keyId(ibeKeyName));
+  };
+
+  // Public query: returns the principals that shipping details should be
+  // IBE-encrypted to — those holding OWNER or ADMIN (the fulfilment tier).
+  // Callable by anyone, including the anonymous principal: these are public
+  // encryption targets, and knowing them does not enable decryption (key
+  // derivation stays gated via getMyEncryptedIbeKey). Returns principals only
+  // — never roles, grant timestamps, or any other user metadata. A query (no
+  // inter-canister calls) so it is cheap and callable by guests.
+  public query func getEncryptionRecipients() : async [Principal] {
+    let recipients = List.empty<Principal>();
+    for ((p, u) in adminUsers.entries()) {
+      switch (u.role) {
+        case (#owner) { recipients.add(p) };
+        case (#admin) { recipients.add(p) };
+        case (#staff) {};
+      };
+    };
+    recipients.toArray();
   };
 
   // Admin-only: derives the caller's encrypted IBE vetKey. Binds the caller at

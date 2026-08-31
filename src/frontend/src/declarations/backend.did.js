@@ -466,6 +466,7 @@ export const idlService = IDL.Service({
   'getCycleBalance' : IDL.Func([], [IDL.Nat], ['query']),
   'getDashboardData' : IDL.Func([], [IDL.Text], []),
   'getDefaultSubaccountBalance' : IDL.Func([], [Result_12], []),
+  'getEncryptionRecipients' : IDL.Func([], [IDL.Vec(IDL.Principal)], ['query']),
   'getIbePublicKey' : IDL.Func([], [IDL.Vec(IDL.Nat8)], []),
   'getMinimumOrder' : IDL.Func([], [IDL.Nat], ['query']),
   'getMyEncryptedIbeKey' : IDL.Func(
@@ -994,6 +995,11 @@ export const idlFactory = ({ IDL }) => {
     'getCycleBalance' : IDL.Func([], [IDL.Nat], ['query']),
     'getDashboardData' : IDL.Func([], [IDL.Text], []),
     'getDefaultSubaccountBalance' : IDL.Func([], [Result_12], []),
+    'getEncryptionRecipients' : IDL.Func(
+        [],
+        [IDL.Vec(IDL.Principal)],
+        ['query'],
+      ),
     'getIbePublicKey' : IDL.Func([], [IDL.Vec(IDL.Nat8)], []),
     'getMinimumOrder' : IDL.Func([], [IDL.Nat], ['query']),
     'getMyEncryptedIbeKey' : IDL.Func(

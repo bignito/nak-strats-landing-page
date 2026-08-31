@@ -671,6 +671,7 @@ export interface backendInterface {
     getCycleBalance(): Promise<bigint>;
     getDashboardData(): Promise<string>;
     getDefaultSubaccountBalance(): Promise<Result_12>;
+    getEncryptionRecipients(): Promise<Array<Principal>>;
     getIbePublicKey(): Promise<Uint8Array>;
     getMinimumOrder(): Promise<bigint>;
     getMyEncryptedIbeKey(transportPublicKey: Uint8Array): Promise<Uint8Array>;

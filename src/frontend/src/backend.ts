@@ -717,6 +717,7 @@ export interface backendInterface {
     getCycleBalance(): Promise<bigint>;
     getDashboardData(): Promise<string>;
     getDefaultSubaccountBalance(): Promise<Result_12>;
+    getEncryptionRecipients(): Promise<Array<Principal>>;
     getIbePublicKey(): Promise<Uint8Array>;
     getMinimumOrder(): Promise<bigint>;
     getMyEncryptedIbeKey(transportPublicKey: Uint8Array): Promise<Uint8Array>;
@@ -1145,6 +1146,20 @@ export class Backend implements backendInterface {
         } else {
             const result = await this.actor.getDefaultSubaccountBalance();
             return from_candid_Result_12_n85(this._uploadFile, this._downloadFile, result);
+        }
+    }
+    async getEncryptionRecipients(): Promise<Array<Principal>> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getEncryptionRecipients();
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getEncryptionRecipients();
+            return result;
         }
     }
     async getIbePublicKey(): Promise<Uint8Array> {

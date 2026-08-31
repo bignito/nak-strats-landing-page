@@ -427,14 +427,30 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
     try {
       if (!actor) throw new Error("Backend is not ready");
       const adminPrincipals = await fetchAdminPrincipals(actor);
+      // No encryption recipients configured — the store cannot receive
+      // shipping details. Block checkout explicitly instead of failing with a
+      // generic error or silently storing plaintext.
+      if (adminPrincipals.length === 0) {
+        console.warn(
+          "[checkout] No admin encryption recipients configured (ERR-CHK-002)",
+        );
+        setOrderError(
+          "This store is not accepting orders right now. Please try again later. (ERR-CHK-002)",
+        );
+        return;
+      }
       encryptedShipping = await encryptShippingToAdmins(
         serialized,
         adminPrincipals.map((p) => p.toText()),
         actor,
       );
-    } catch {
+    } catch (error) {
+      console.error(
+        "[checkout] Failed to secure shipping details (ERR-CHK-001)",
+        error,
+      );
       setOrderError(
-        "We could not secure your shipping details. Please try again.",
+        "We could not secure your shipping details. Please try again. (ERR-CHK-001)",
       );
       return;
     }

@@ -370,6 +370,7 @@ export const mockBackend: backendInterface = {
   getCycleBalance: async () => 1_250_000_000_000n,
   getDashboardData: async () => "{}",
   getDefaultSubaccountBalance: async () => ({ __kind__: "ok", ok: 1_250_000_000n }),
+  getEncryptionRecipients: async () => [],
   getIbePublicKey: async () => new Uint8Array(0),
   getConsentListCsv: async () => ({
     __kind__: "ok",

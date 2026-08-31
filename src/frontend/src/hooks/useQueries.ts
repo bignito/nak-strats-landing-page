@@ -25,24 +25,18 @@ import type {
   Token,
   UserRecord,
 } from "@/backend";
-import {
-  type createActorFunction,
-  useActor,
-  useInternetIdentity,
-} from "@caffeineai/core-infrastructure";
+import { useActor, useInternetIdentity } from "@caffeineai/core-infrastructure";
 import type { Principal } from "@icp-sdk/core/principal";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 
 /**
- * The generated `createActor` (backend.ts) builds its agent from
- * `@icp-sdk/core/agent`, while `@caffeineai/core-infrastructure`'s
- * `createActorFunction` is typed against `@dfinity/agent`. The runtime agent
- * shapes are compatible; only the static types diverge. We re-type the
- * generated factory to the core-infrastructure contract so every
- * `useActor(createActor)` call site aligns on the `@icp-sdk/core` Agent type.
+ * The generated `createActor` (backend.ts) and `@caffeineai/core-infrastructure`'s
+ * `createActorFunction` both build their agent from `@icp-sdk/core/agent`, so
+ * the generated factory already satisfies the `useActor(createActor)` contract
+ * directly. No re-typing bridge is needed.
  */
-const createActor = createActorImpl as unknown as createActorFunction<Backend>;
+const createActor = createActorImpl;
 
 /**
  * True when the backend actor is fully ready for an authenticated call: the
@@ -789,6 +783,25 @@ export function useListAdmins() {
     queryFn: async (): Promise<Principal[]> => {
       if (!actor) return [];
       return actor.listAdmins();
+    },
+    enabled: !!actor && !isFetching,
+  });
+}
+
+/**
+ * Reads the configured encryption recipients (public query — returns only
+ * OWNER/ADMIN principals and is callable by anyone, including anonymous
+ * guests). The admin shell uses it to warn when no recipients are configured,
+ * which means the store cannot take orders. Unlike `useListAdmins` this works
+ * for every admin role including STAFF.
+ */
+export function useGetEncryptionRecipients() {
+  const { actor, isFetching } = useActor(createActor);
+  return useQuery({
+    queryKey: ["encryptionRecipients"],
+    queryFn: async (): Promise<Principal[]> => {
+      if (!actor) return [];
+      return actor.getEncryptionRecipients();
     },
     enabled: !!actor && !isFetching,
   });

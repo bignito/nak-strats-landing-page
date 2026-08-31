@@ -126,7 +126,7 @@ const MyOrdersPage: React.FC<MyOrdersPageProps> = ({ onNavigateToMain }) => {
             </p>
             <button
               type="button"
-              onClick={login}
+              onClick={() => login()}
               disabled={isLoggingIn}
               data-ocid="myorders.sign_in_button"
               className="btn px-8 py-3 text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed"

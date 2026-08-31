@@ -551,6 +551,7 @@ service : {
   getCycleBalance: () -> (nat) query;
   getDashboardData: () -> (text);
   getDefaultSubaccountBalance: () -> (Result_12);
+  getEncryptionRecipients: () -> (vec principal) query;
   getIbePublicKey: () -> (blob);
   getMinimumOrder: () -> (nat) query;
   getMyEncryptedIbeKey: (transportPublicKey: blob) -> (blob);

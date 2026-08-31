@@ -391,6 +391,7 @@ export interface _SERVICE {
   'getCycleBalance' : ActorMethod<[], bigint>,
   'getDashboardData' : ActorMethod<[], string>,
   'getDefaultSubaccountBalance' : ActorMethod<[], Result_12>,
+  'getEncryptionRecipients' : ActorMethod<[], Array<Principal>>,
   'getIbePublicKey' : ActorMethod<[], Uint8Array>,
   'getMinimumOrder' : ActorMethod<[], bigint>,
   'getMyEncryptedIbeKey' : ActorMethod<[Uint8Array], Uint8Array>,

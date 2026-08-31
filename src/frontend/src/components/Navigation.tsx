@@ -266,7 +266,7 @@ const Navigation: React.FC<NavigationProps> = ({
               ) : (
                 <button
                   type="button"
-                  onClick={login}
+                  onClick={() => login()}
                   disabled={isLoggingIn}
                   className="cursor-pointer bg-transparent border-0 p-2 disabled:opacity-50 disabled:cursor-not-allowed"
                   aria-label="Sign in"
@@ -432,7 +432,7 @@ const Navigation: React.FC<NavigationProps> = ({
               ) : (
                 <button
                   type="button"
-                  onClick={login}
+                  onClick={() => login()}
                   disabled={isLoggingIn}
                   className="w-full text-left cursor-pointer bg-transparent border-0 px-3 py-3 flex items-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
                   style={{

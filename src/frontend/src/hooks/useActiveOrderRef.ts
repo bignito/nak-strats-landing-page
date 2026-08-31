@@ -22,7 +22,11 @@ export function useActiveOrderRef() {
     () => {
       try {
         return window.localStorage.getItem(ACTIVE_ORDER_REF_KEY);
-      } catch {
+      } catch (error) {
+        console.error(
+          "[checkout] Failed to read active order reference from storage (ERR-CHK-003)",
+          error,
+        );
         return null;
       }
     },
@@ -36,8 +40,12 @@ export function useActiveOrderRef() {
       } else {
         window.localStorage.removeItem(ACTIVE_ORDER_REF_KEY);
       }
-    } catch {
+    } catch (error) {
       // Storage unavailable — the in-memory value still drives this session.
+      console.error(
+        "[checkout] Failed to persist active order reference to storage (ERR-CHK-004)",
+        error,
+      );
     }
   }, []);
 

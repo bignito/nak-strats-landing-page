@@ -23,8 +23,9 @@ export function CopyButton({ text, label, className }: CopyButtonProps) {
       setCopied(true);
       if (timerRef.current) clearTimeout(timerRef.current);
       timerRef.current = setTimeout(() => setCopied(false), 1800);
-    } catch {
+    } catch (error) {
       // Clipboard unavailable — leave the button in its default state.
+      console.error("[copy] Clipboard write failed (ERR-CHK-005)", error);
     }
   };
 

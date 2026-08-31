@@ -1,6 +1,5 @@
 import Result "mo:core/Result";
 import List "mo:core/List";
-import Set "mo:core/Set";
 import Principal "mo:core/Principal";
 import Types "../types/storefront";
 import PaymentServiceTypes "../types/payment-service";
@@ -8,6 +7,7 @@ import StorefrontLib "../lib/storefront";
 import PaymentAdapterLib "../lib/payment-adapter";
 import EmailLib "../lib/email";
 import AdminLib "../lib/admin-access-control";
+import AdminTypes "../types/admin-access-control";
 import OutCall "mo:caffeineai-http-outcalls/outcall";
 
 mixin (
@@ -15,7 +15,7 @@ mixin (
   orders : List.List<Types.Order>,
   state : { var nextOrderId : Nat },
   paymentAdapter : PaymentAdapterLib.PaymentAdapter,
-  adminAllowlist : Set.Set<Principal>,
+  adminUsers : AdminTypes.AdminUsers,
   minimumOrderState : { var minimumOrder : Nat },
   emailConfig : PaymentServiceTypes.PaymentServiceConfig,
   emailTransform : OutCall.Transform,
@@ -30,7 +30,7 @@ mixin (
   // the top, rejects the anonymous principal, and traps for a caller that is
   // not a non-anonymous member of the admin allowlist.
   public shared ({ caller }) func createProduct(product : Types.Product) : async Bool {
-    AdminLib.requireAdmin(adminAllowlist, caller);
+    AdminLib.requireAdminOrOwner(adminUsers, caller);
     StorefrontLib.createProduct(products, product);
     true
   };
@@ -40,7 +40,7 @@ mixin (
   // the top, rejects the anonymous principal, and traps for a caller that is
   // not a non-anonymous member of the admin allowlist.
   public shared ({ caller }) func updateProduct(product : Types.Product) : async Bool {
-    AdminLib.requireAdmin(adminAllowlist, caller);
+    AdminLib.requireAdminOrOwner(adminUsers, caller);
     StorefrontLib.updateProduct(products, product);
     true
   };
@@ -49,7 +49,7 @@ mixin (
   // so an admin can reach and purchase the test product via a direct product
   // URL or an admin-only view. Non-admins never see hidden products.
   public shared query ({ caller }) func getProduct(slugOrId : Text) : async ?Types.Product {
-    StorefrontLib.getProduct(products, slugOrId, AdminLib.isAdmin(adminAllowlist, caller));
+    StorefrontLib.getProduct(products, slugOrId, AdminLib.isAdminOrOwner(adminUsers, caller));
   };
 
   public shared ({ caller }) func createOrder(input : Types.CreateOrderInput) : async Result.Result<Types.Order, Types.OrderError> {

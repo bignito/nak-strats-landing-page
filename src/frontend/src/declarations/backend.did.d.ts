@@ -11,15 +11,16 @@ import type { IDL } from '@icp-sdk/core/candid';
 import type { Principal } from '@icp-sdk/core/principal';
 
 export interface AdminOrderDetail {
-  'customerName' : string,
   'status' : PaymentStatus,
   'paymentMethod' : PaymentMethod,
+  'encryptedShipping' : [] | [Uint8Array],
   'cryptoStatus' : [] | [CryptoPaymentStatus],
   'createdAt' : bigint,
   'reference' : string,
   'amountOwed' : bigint,
   'updatedAt' : bigint,
   'currency' : string,
+  'hasShippingDetails' : boolean,
   'subaccountHex' : string,
   'items' : Array<OrderItem>,
   'sweepNote' : [] | [string],
@@ -49,11 +50,11 @@ export type ConsentError = { 'alreadyUnsubscribed' : null } |
   { 'invalidResponse' : string };
 export interface ConsentListExport { 'csv' : string }
 export interface CreateOrderInput {
-  'shipping_address' : ShippingAddress,
   'payment_method' : PaymentMethod,
+  'has_shipping_details' : boolean,
   'items' : Array<CreateOrderItem>,
   'customer_email' : string,
-  'customer_name' : string,
+  'encrypted_shipping' : [] | [Uint8Array],
   'marketing_consent' : boolean,
 }
 export interface CreateOrderItem {
@@ -137,7 +138,6 @@ export interface Order {
   'updated_at' : bigint,
   'total' : bigint,
   'sweep_note' : [] | [string],
-  'shipping_address' : ShippingAddress,
   'shipping' : bigint,
   'reference' : string,
   'created_at' : bigint,
@@ -147,10 +147,11 @@ export interface Order {
   'currency' : string,
   'marketing_consent_at' : [] | [bigint],
   'shipping_status' : ShippingStatus,
+  'has_shipping_details' : boolean,
   'items' : Array<OrderItem>,
   'customer_email' : string,
+  'encrypted_shipping' : [] | [Uint8Array],
   'customer_principal' : [] | [Principal],
-  'customer_name' : string,
   'shipped_at' : [] | [bigint],
   'marketing_consent' : boolean,
   'payment_reference' : [] | [string],
@@ -286,14 +287,9 @@ export interface ResumeInfo {
   'deposit' : [] | [DepositInfo],
   'remainingNs' : bigint,
 }
-export interface ShippingAddress {
-  'region' : string,
-  'country' : string,
-  'city' : string,
-  'postal_code' : string,
-  'line1' : string,
-  'line2' : [] | [string],
-}
+export type Role = { 'admin' : null } |
+  { 'owner' : null } |
+  { 'staff' : null };
 export type ShippingStatus = { 'shipped' : null } |
   { 'pending' : null };
 export interface SubaccountBalanceResult {
@@ -354,6 +350,7 @@ export interface TransformationOutput {
   'body' : Uint8Array,
   'headers' : Array<HttpHeader>,
 }
+export interface UserRecord { 'grantedAt' : bigint, 'role' : Role }
 export type Value = { 'int' : bigint } |
   { 'nat' : bigint } |
   { 'float' : number } |
@@ -362,8 +359,10 @@ export type Value = { 'int' : bigint } |
   { 'text' : string };
 export interface _SERVICE {
   'addAdmin' : ActorMethod<[Principal], boolean>,
+  'adminCount' : ActorMethod<[], bigint>,
   'adminGetOrderDetail' : ActorMethod<[string], [] | [AdminOrderDetail]>,
   'adminListOrders' : ActorMethod<[string], Array<AdminOrderView>>,
+  'bootstrapOwner' : ActorMethod<[Principal], boolean>,
   'cancelCardOrder' : ActorMethod<[string], Result_1>,
   'checkCryptoPayment' : ActorMethod<[string], Result_13>,
   'claimInitialAdmin' : ActorMethod<[], boolean>,
@@ -392,8 +391,11 @@ export interface _SERVICE {
   'getCycleBalance' : ActorMethod<[], bigint>,
   'getDashboardData' : ActorMethod<[], string>,
   'getDefaultSubaccountBalance' : ActorMethod<[], Result_12>,
+  'getIbePublicKey' : ActorMethod<[], Uint8Array>,
   'getMinimumOrder' : ActorMethod<[], bigint>,
+  'getMyEncryptedIbeKey' : ActorMethod<[Uint8Array], Uint8Array>,
   'getMyOrders' : ActorMethod<[], Array<Order>>,
+  'getMyRole' : ActorMethod<[], [] | [Role]>,
   'getNAKPrice' : ActorMethod<[], string>,
   'getOrderStatus' : ActorMethod<[string], [] | [Order]>,
   'getPaymentServiceConfig' : ActorMethod<[], PaymentServiceConfigView>,
@@ -404,6 +406,7 @@ export interface _SERVICE {
   'getTokenImage' : ActorMethod<[string, string], string>,
   'getTokenProfile' : ActorMethod<[string, string], string>,
   'getTreasuryTokens' : ActorMethod<[], string>,
+  'grantRole' : ActorMethod<[Principal, Role], boolean>,
   'handlePaymentConfirmation' : ActorMethod<[string], Result_9>,
   'isAdmin' : ActorMethod<[], boolean>,
   'listAdmins' : ActorMethod<[], Array<Principal>>,
@@ -411,6 +414,7 @@ export interface _SERVICE {
   'listOrdersForRecovery' : ActorMethod<[], Array<OrderRecoveryView>>,
   'listProducts' : ActorMethod<[], Array<Product>>,
   'listSubmissions' : ActorMethod<[], Result_8>,
+  'listUsers' : ActorMethod<[], Array<[Principal, UserRecord]>>,
   'markLatePaymentReviewed' : ActorMethod<[string], boolean>,
   'markOrderShipped' : ActorMethod<[string, [] | [string]], Result_7>,
   'paymentServiceTransform' : ActorMethod<
@@ -420,6 +424,8 @@ export interface _SERVICE {
   'releaseExpiredOrders' : ActorMethod<[], bigint>,
   'removeAdmin' : ActorMethod<[Principal], boolean>,
   'resendConfirmationEmail' : ActorMethod<[string], Result_7>,
+  'resetAdminForMigration' : ActorMethod<[], boolean>,
+  'revokeRole' : ActorMethod<[Principal], boolean>,
   'schema' : ActorMethod<[], string>,
   'startVerificationTimer' : ActorMethod<[], boolean>,
   'stopVerificationTimer' : ActorMethod<[], boolean>,

@@ -126,11 +126,11 @@ export interface DepositInfo {
     amountDue: bigint;
 }
 export interface CreateOrderInput {
-    shipping_address: ShippingAddress;
     payment_method: PaymentMethod;
+    has_shipping_details: boolean;
     items: Array<CreateOrderItem>;
     customer_email: string;
-    customer_name: string;
+    encrypted_shipping?: Uint8Array;
     marketing_consent: boolean;
 }
 export type RecoveryError = {
@@ -182,14 +182,6 @@ export type Result_6 = {
     __kind__: "err";
     err: SubmissionError;
 };
-export interface ShippingAddress {
-    region: string;
-    country: string;
-    city: string;
-    postal_code: string;
-    line1: string;
-    line2?: string;
-}
 export interface CheckoutSession {
     url?: string;
     reference: string;
@@ -214,7 +206,6 @@ export interface Order {
     updated_at: bigint;
     total: bigint;
     sweep_note?: string;
-    shipping_address: ShippingAddress;
     shipping: bigint;
     reference: string;
     created_at: bigint;
@@ -224,10 +215,11 @@ export interface Order {
     currency: string;
     marketing_consent_at?: bigint;
     shipping_status: ShippingStatus;
+    has_shipping_details: boolean;
     items: Array<OrderItem>;
     customer_email: string;
+    encrypted_shipping?: Uint8Array;
     customer_principal?: Principal;
-    customer_name: string;
     shipped_at?: bigint;
     marketing_consent: boolean;
     payment_reference?: string;
@@ -348,6 +340,17 @@ export type Result_1 = {
     __kind__: "err";
     err: PaymentServiceError;
 };
+export interface UserRecord {
+    grantedAt: bigint;
+    role: Role;
+}
+export type Result_11 = {
+    __kind__: "ok";
+    ok: ResumeInfo;
+} | {
+    __kind__: "err";
+    err: RecoveryError;
+};
 export type PaymentServiceError = {
     __kind__: "alreadyPaid";
     alreadyPaid: null;
@@ -371,13 +374,6 @@ export interface PaymentServiceConfigView {
     url: string;
     tokenSet: boolean;
 }
-export type Result_11 = {
-    __kind__: "ok";
-    ok: ResumeInfo;
-} | {
-    __kind__: "err";
-    err: RecoveryError;
-};
 export interface SubmissionInput {
     discipline: Discipline;
     link: string;
@@ -510,15 +506,16 @@ export type Result_15 = {
     err: ConsentError;
 };
 export interface AdminOrderDetail {
-    customerName: string;
     status: PaymentStatus;
     paymentMethod: PaymentMethod;
+    encryptedShipping?: Uint8Array;
     cryptoStatus?: CryptoPaymentStatus;
     createdAt: bigint;
     reference: string;
     amountOwed: bigint;
     updatedAt: bigint;
     currency: string;
+    hasShippingDetails: boolean;
     subaccountHex: string;
     items: Array<OrderItem>;
     sweepNote?: string;
@@ -633,6 +630,11 @@ export enum PaymentStatus {
     pending = "pending",
     paid = "paid"
 }
+export enum Role {
+    admin = "admin",
+    owner = "owner",
+    staff = "staff"
+}
 export enum ShippingStatus {
     shipped = "shipped",
     pending = "pending"
@@ -643,8 +645,10 @@ export enum Token {
 }
 export interface backendInterface {
     addAdmin(p: Principal): Promise<boolean>;
+    adminCount(): Promise<bigint>;
     adminGetOrderDetail(reference: string): Promise<AdminOrderDetail | null>;
     adminListOrders(filter: string): Promise<Array<AdminOrderView>>;
+    bootstrapOwner(p: Principal): Promise<boolean>;
     cancelCardOrder(reference: string): Promise<Result_1>;
     checkCryptoPayment(reference: string): Promise<Result_13>;
     claimInitialAdmin(): Promise<boolean>;
@@ -667,8 +671,11 @@ export interface backendInterface {
     getCycleBalance(): Promise<bigint>;
     getDashboardData(): Promise<string>;
     getDefaultSubaccountBalance(): Promise<Result_12>;
+    getIbePublicKey(): Promise<Uint8Array>;
     getMinimumOrder(): Promise<bigint>;
+    getMyEncryptedIbeKey(transportPublicKey: Uint8Array): Promise<Uint8Array>;
     getMyOrders(): Promise<Array<Order>>;
+    getMyRole(): Promise<Role | null>;
     getNAKPrice(): Promise<string>;
     getOrderStatus(reference: string): Promise<Order | null>;
     getPaymentServiceConfig(): Promise<PaymentServiceConfigView>;
@@ -679,6 +686,7 @@ export interface backendInterface {
     getTokenImage(chainId: string, tokenAddress: string): Promise<string>;
     getTokenProfile(chainId: string, tokenAddress: string): Promise<string>;
     getTreasuryTokens(): Promise<string>;
+    grantRole(p: Principal, role: Role): Promise<boolean>;
     handlePaymentConfirmation(payload: string): Promise<Result_9>;
     isAdmin(): Promise<boolean>;
     listAdmins(): Promise<Array<Principal>>;
@@ -686,12 +694,15 @@ export interface backendInterface {
     listOrdersForRecovery(): Promise<Array<OrderRecoveryView>>;
     listProducts(): Promise<Array<Product>>;
     listSubmissions(): Promise<Result_8>;
+    listUsers(): Promise<Array<[Principal, UserRecord]>>;
     markLatePaymentReviewed(reference: string): Promise<boolean>;
     markOrderShipped(reference: string, trackingNumber: string | null): Promise<Result_7>;
     paymentServiceTransform(input: TransformationInput): Promise<TransformationOutput>;
     releaseExpiredOrders(): Promise<bigint>;
     removeAdmin(p: Principal): Promise<boolean>;
     resendConfirmationEmail(reference: string): Promise<Result_7>;
+    resetAdminForMigration(): Promise<boolean>;
+    revokeRole(p: Principal): Promise<boolean>;
     schema(): Promise<string>;
     startVerificationTimer(): Promise<boolean>;
     stopVerificationTimer(): Promise<boolean>;

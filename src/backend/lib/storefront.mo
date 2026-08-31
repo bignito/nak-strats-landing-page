@@ -176,8 +176,8 @@ module {
       total;
       currency = "USD";
       customer_email = input.customer_email;
-      customer_name = input.customer_name;
-      shipping_address = input.shipping_address;
+      encrypted_shipping = input.encrypted_shipping;
+      has_shipping_details = input.has_shipping_details;
       payment_method = input.payment_method;
       payment_status = #pending;
       payment_reference = null;
@@ -251,8 +251,8 @@ module {
           total = order.total;
           currency = order.currency;
           customer_email = order.customer_email;
-          customer_name = order.customer_name;
-          shipping_address = order.shipping_address;
+          encrypted_shipping = order.encrypted_shipping;
+          has_shipping_details = order.has_shipping_details;
           payment_method = order.payment_method;
           payment_status = status;
           payment_reference = paymentReference;

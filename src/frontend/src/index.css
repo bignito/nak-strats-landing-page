@@ -250,6 +250,19 @@
   --btn-sweep-border: rgba(248, 113, 113, 0.4);
 }
 
+/* ============================================================
+   Admin ops console tokens (stage 4 — tabbed institutional
+   dashboard). Raw OKLCH L C H values. Green/amber/red cycle
+   balance bands + recessed gauge track. No new hues — the band
+   colours map to the existing positive/warning/negative roles.
+   ============================================================ */
+:root {
+  --admin-band-positive: 0.62 0.13 165; /* #10b981 green */
+  --admin-band-warning: 0.77 0.15 85; /* #fbbf24 amber */
+  --admin-band-negative: 0.62 0.19 25; /* #ef4444 red */
+  --admin-gauge-track: 0.05 0.003 250; /* recessed gauge track */
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -2341,6 +2354,46 @@ body {
     border-color: rgba(239, 68, 68, 0.35);
   }
 
+  /* SHOP — category filter: plain text buttons, 2px purple underline on the
+     active one. No pills, no glows — consistent with the institutional look. */
+  .category-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.75rem;
+  }
+  .category-filter button {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: 0.25rem 0;
+    font-family: var(--font-body);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--muted-foreground);
+    cursor: pointer;
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+  .category-filter button:hover {
+    color: var(--foreground);
+  }
+  .category-filter button.is-active {
+    color: var(--foreground);
+    border-bottom-color: var(--primary);
+  }
+
+  /* SHOP — per-category section heading above each lattice group */
+  .category-section-heading {
+    font-family: var(--font-body);
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-weight: 600;
+    color: var(--muted-foreground);
+  }
+
   /* SHOP — 'Add →' affordance, purple on hover */
   .add-arrow {
     font-family: var(--font-body);
@@ -2712,5 +2765,296 @@ body {
   .copy-btn.is-copied {
     color: var(--positive);
     border-color: rgba(16, 185, 129, 0.4);
+  }
+}
+
+/* ============================================================
+   Admin ops console utilities (stage 4 — tabbed institutional
+   dashboard). Extends the NAK institutional language for density:
+   full-width shell, 8-tab bar with 2px purple underline, stat-card
+   lattice with mono tabular figures, green/amber/red cycle bands,
+   recessed segmented gauge, dense tables. Consumes existing tokens
+   only — no new hues, no glows, no emoji, 0.25rem radius.
+   ============================================================ */
+@layer utilities {
+  /* Full-width ops surface — no max-width, no decorative glass */
+  .admin-shell {
+    min-height: 100vh;
+    background: var(--nak-bg);
+    color: var(--foreground);
+  }
+
+  /* Sticky top bar — title + primary actions */
+  .admin-header {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.875rem 1.5rem;
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .admin-title {
+    font-family: var(--font-heading);
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    color: var(--foreground);
+    font-size: 1.125rem;
+  }
+
+  /* 8-tab bar — sticky under header, horizontally scrollable */
+  .admin-tabs {
+    position: sticky;
+    top: 3.25rem;
+    z-index: 30;
+    display: flex;
+    gap: 1.75rem;
+    padding: 0 1.5rem;
+    overflow-x: auto;
+    background: var(--nak-bg);
+    border-bottom: 1px solid var(--border);
+    scrollbar-width: none;
+  }
+  .admin-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Tab button — uppercase small, 2px purple underline when active */
+  .admin-tab {
+    position: relative;
+    flex: none;
+    background: transparent;
+    border: none;
+    padding: 0.625rem 0;
+    font-family: var(--font-body);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+  .admin-tab:hover {
+    color: var(--foreground);
+  }
+  .admin-tab.is-active {
+    color: var(--foreground);
+  }
+  .admin-tab.is-active::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    background: var(--primary);
+    border-radius: 1px;
+  }
+
+  /* Toolbar — filters / actions row */
+  .admin-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  /* Bordered section panel */
+  .admin-panel {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+  .admin-panel-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.875rem 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .admin-panel-title {
+    font-family: var(--font-heading);
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    color: var(--foreground);
+    font-size: 0.9375rem;
+  }
+  .admin-panel-body {
+    padding: 1rem;
+  }
+
+  /* Stat cards — 1px lattice grid, mono figures, optional band accent */
+  .admin-stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+  .admin-stat-card {
+    position: relative;
+    background: var(--card);
+    padding: 0.875rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-width: 0;
+    transition: background-color 0.2s ease;
+  }
+  .admin-stat-card:hover {
+    background: var(--surface-hover);
+  }
+  .admin-stat-label {
+    font-family: var(--font-body);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+  }
+  .admin-stat-value {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    font-size: 1.25rem;
+    line-height: 1.2;
+    color: var(--foreground);
+  }
+  .admin-stat-delta {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    font-size: 0.6875rem;
+    color: var(--muted-foreground);
+  }
+  .admin-stat-delta.is-positive {
+    color: var(--nak-positive);
+  }
+  .admin-stat-delta.is-negative {
+    color: var(--nak-negative);
+  }
+
+  /* 2px left colour band accent on stat cards */
+  .admin-stat-card.is-positive::before,
+  .admin-stat-card.is-warning::before,
+  .admin-stat-card.is-negative::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+  }
+  .admin-stat-card.is-positive::before {
+    background: oklch(var(--admin-band-positive));
+  }
+  .admin-stat-card.is-warning::before {
+    background: oklch(var(--admin-band-warning));
+  }
+  .admin-stat-card.is-negative::before {
+    background: oklch(var(--admin-band-negative));
+  }
+
+  /* Cycle balance colour bands — legend swatch or left accent */
+  .cycle-band {
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 1px;
+    flex: none;
+  }
+  .cycle-band.is-positive {
+    background: oklch(var(--admin-band-positive));
+  }
+  .cycle-band.is-warning {
+    background: oklch(var(--admin-band-warning));
+  }
+  .cycle-band.is-negative {
+    background: oklch(var(--admin-band-negative));
+  }
+
+  /* Gauge bar — recessed track, colour fill / segments by band */
+  .gauge-bar {
+    display: flex;
+    height: 0.375rem;
+    width: 100%;
+    background: oklch(var(--admin-gauge-track));
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .gauge-fill {
+    height: 100%;
+    border-radius: 1px;
+    background: var(--primary);
+  }
+  .gauge-fill.is-positive {
+    background: oklch(var(--admin-band-positive));
+  }
+  .gauge-fill.is-warning {
+    background: oklch(var(--admin-band-warning));
+  }
+  .gauge-fill.is-negative {
+    background: oklch(var(--admin-band-negative));
+  }
+  .gauge-segment {
+    height: 100%;
+    flex: none;
+  }
+  .gauge-segment.is-positive {
+    background: oklch(var(--admin-band-positive));
+  }
+  .gauge-segment.is-warning {
+    background: oklch(var(--admin-band-warning));
+  }
+  .gauge-segment.is-negative {
+    background: oklch(var(--admin-band-negative));
+  }
+
+  /* Dense admin table — tighter than .admin-table, mono numerics right */
+  .admin-table-dense {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid var(--border);
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+  }
+  .admin-table-dense th,
+  .admin-table-dense td {
+    padding: 0.375rem 0.625rem;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+  .admin-table-dense th {
+    background: var(--admin-th);
+    color: var(--muted-foreground);
+    font-size: 0.625rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .admin-table-dense td {
+    color: var(--secondary-foreground);
+  }
+  .admin-table-dense tbody tr {
+    transition: background-color 0.15s ease;
+  }
+  .admin-table-dense tbody tr:hover {
+    background: var(--admin-row-hover);
+  }
+  .admin-table-dense tr:last-child td {
+    border-bottom: none;
+  }
+  .admin-table-dense .num-col {
+    text-align: right;
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    color: var(--foreground);
   }
 }

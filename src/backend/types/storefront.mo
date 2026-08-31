@@ -37,15 +37,6 @@ module {
     unit_amount : Nat;
   };
 
-  public type ShippingAddress = {
-    line1 : Text;
-    line2 : ?Text;
-    city : Text;
-    region : Text;
-    postal_code : Text;
-    country : Text;
-  };
-
   public type PaymentStatus = {
     #pending;
     #paid;
@@ -75,9 +66,31 @@ module {
     shipping : Nat;
     total : Nat;
     currency : Text;
+    // The customer's email address. This is the ONE documented exception to
+    // the "no plaintext PII in canister state" rule: it must reach the email
+    // service to route the transactional confirmation email. The canister
+    // cannot decrypt the encrypted_shipping blob, so the email is kept in
+    // plaintext solely for that routing purpose. Customer name and the full
+    // shipping address are NEVER stored in plaintext — they live only inside
+    // the IBE ciphertext (encrypted_shipping).
     customer_email : Text;
-    customer_name : Text;
-    shipping_address : ShippingAddress;
+    // The IBE ciphertext of the customer's shipping details (name, email, and
+    // full shipping address), encrypted CLIENT-SIDE in the browser to every
+    // admin principal BEFORE any canister call. The canister only ever receives
+    // and stores this opaque ciphertext — it never sees the plaintext PII and
+    // never decrypts it. Shape decision: a single Blob containing the
+    // concatenation of one IBE ciphertext per admin principal (each prefixed
+    // with the 4-byte big-endian length of that ciphertext), so a single
+    // opaque field covers all admins and the admin frontend can split and
+    // decrypt the slice for its own principal. `null` for orders created
+    // before IBE was introduced (see has_shipping_details).
+    encrypted_shipping : ?Blob;
+    // Operational flag: whether this order carries IBE-encrypted shipping
+    // details. `false` for pre-IBE orders (encrypted_shipping is null) and for
+    // any order where the customer did not provide shipping details. Kept as a
+    // plaintext Bool so the canister can run operational checks (e.g. whether
+    // fulfilment is possible) without touching the ciphertext.
+    has_shipping_details : Bool;
     payment_method : PaymentMethod;
     payment_status : PaymentStatus;
     payment_reference : ?Text;
@@ -118,9 +131,21 @@ module {
 
   public type CreateOrderInput = {
     items : [CreateOrderItem];
+    // The customer's email address — the single documented exception that
+    // reaches the email service for routing the confirmation email. Customer
+    // name and the full shipping address are NEVER sent to the canister in
+    // plaintext; they are IBE-encrypted client-side into encrypted_shipping.
     customer_email : Text;
-    customer_name : Text;
-    shipping_address : ShippingAddress;
+    // The IBE ciphertext of the customer's shipping details, encrypted
+    // CLIENT-SIDE in the browser to every admin principal before this call.
+    // The canister stores it opaquely and never decrypts it. Shape matches
+    // Order.encrypted_shipping: a single Blob of concatenated per-admin
+    // ciphertexts, each prefixed with its 4-byte big-endian length. `null`
+    // when the customer did not provide shipping details.
+    encrypted_shipping : ?Blob;
+    // Whether the customer provided shipping details (and thus
+    // encrypted_shipping is present). Mirrors Order.has_shipping_details.
+    has_shipping_details : Bool;
     payment_method : PaymentMethod;
     // Whether the customer opted in to marketing email. The checkbox is NEVER
     // pre-checked; the frontend sends the customer's explicit choice.

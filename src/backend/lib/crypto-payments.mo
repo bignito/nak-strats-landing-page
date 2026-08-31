@@ -137,8 +137,8 @@ module {
           total = order.total;
           currency = order.currency;
           customer_email = order.customer_email;
-          customer_name = order.customer_name;
-          shipping_address = order.shipping_address;
+          encrypted_shipping = order.encrypted_shipping;
+          has_shipping_details = order.has_shipping_details;
           payment_method = order.payment_method;
           payment_status = order.payment_status;
           payment_reference = order.payment_reference;
@@ -281,7 +281,8 @@ module {
       currency = order.currency;
       items = order.items;
       customerEmail = order.customer_email;
-      customerName = order.customer_name;
+      encryptedShipping = order.encrypted_shipping;
+      hasShippingDetails = order.has_shipping_details;
       subaccountHex;
       depositAccountText;
       sweepNote = order.sweep_note;
@@ -450,8 +451,8 @@ module {
                 total = order.total;
                 currency = order.currency;
                 customer_email = order.customer_email;
-                customer_name = order.customer_name;
-                shipping_address = order.shipping_address;
+                encrypted_shipping = order.encrypted_shipping;
+                has_shipping_details = order.has_shipping_details;
                 payment_method = order.payment_method;
                 payment_status = #paid;
                 payment_reference = ?reference;
@@ -521,8 +522,8 @@ module {
                   total = order.total;
                   currency = order.currency;
                   customer_email = order.customer_email;
-                  customer_name = order.customer_name;
-                  shipping_address = order.shipping_address;
+                  encrypted_shipping = order.encrypted_shipping;
+                  has_shipping_details = order.has_shipping_details;
                   payment_method = order.payment_method;
                   payment_status = #paid;
                   payment_reference = ?reference;
@@ -657,8 +658,8 @@ module {
               total = order.total;
               currency = order.currency;
               customer_email = order.customer_email;
-              customer_name = order.customer_name;
-              shipping_address = order.shipping_address;
+              encrypted_shipping = order.encrypted_shipping;
+              has_shipping_details = order.has_shipping_details;
               payment_method = order.payment_method;
               payment_status = #expired;
               payment_reference = order.payment_reference;

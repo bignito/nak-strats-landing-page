@@ -1,15 +1,15 @@
 import Result "mo:core/Result";
 import Principal "mo:core/Principal";
-import Set "mo:core/Set";
 import Types "../types/submissions";
 import PaymentServiceTypes "../types/payment-service";
 import SubmissionsLib "../lib/submissions";
 import AdminLib "../lib/admin-access-control";
+import AdminTypes "../types/admin-access-control";
 import OutCall "mo:caffeineai-http-outcalls/outcall";
 
 mixin (
   config : PaymentServiceTypes.PaymentServiceConfig,
-  adminAllowlist : Set.Set<Principal>,
+  adminUsers : AdminTypes.AdminUsers,
   rateLimit : Types.RateLimitState,
 ) {
   // Public: submit an artist work for review. The submission is stored
@@ -27,7 +27,7 @@ mixin (
   // not a non-anonymous member of the admin allowlist. The records are PII that
   // lives off-canister; the canister only proxies them through.
   public shared ({ caller }) func listSubmissions() : async Result.Result<[Types.SubmissionRecord], Types.SubmissionError> {
-    AdminLib.requireAdmin(adminAllowlist, caller);
+    AdminLib.requireStaffOrAbove(adminUsers, caller);
     await SubmissionsLib.listSubmissions(config, submissionServiceTransform);
   };
 

@@ -1,15 +1,15 @@
 import Result "mo:core/Result";
 import Principal "mo:core/Principal";
-import Set "mo:core/Set";
 import Types "../types/consent";
 import PaymentServiceTypes "../types/payment-service";
 import ConsentLib "../lib/consent";
 import AdminLib "../lib/admin-access-control";
+import AdminTypes "../types/admin-access-control";
 import OutCall "mo:caffeineai-http-outcalls/outcall";
 
 mixin (
   config : PaymentServiceTypes.PaymentServiceConfig,
-  adminAllowlist : Set.Set<Principal>,
+  adminUsers : AdminTypes.AdminUsers,
 ) {
   // Admin-only: fetch the list of consenting addresses from the external
   // payment service and return it as CSV, so a mailing list can be built
@@ -17,7 +17,7 @@ mixin (
   // addresses are PII that lives off-canister at the payment service; the
   // canister only proxies them through and never persists them.
   public shared ({ caller }) func getConsentListCsv() : async Result.Result<Types.ConsentListExport, Types.ConsentError> {
-    AdminLib.requireAdmin(adminAllowlist, caller);
+    AdminLib.requireAdminOrOwner(adminUsers, caller);
     await ConsentLib.fetchConsentListCsv(config, consentServiceTransform);
   };
 

@@ -19,7 +19,7 @@ chain = "src/backend/migrations"
 check-limit = 1
 
 [toolchain]
-moc = "1.11.2"
+moc = "1.13.0"
 lintoko = "0.11.0"
 
 [lint]
@@ -33,3 +33,4 @@ core = "2.6.1"
 caffeineai-http-outcalls = "0.1.4"
 ic = "4.2.0"
 caffeineai-oql = "0.4.0"
+ic-vetkeys = "0.6.0"

@@ -125,7 +125,16 @@ module {
     currency : Text;
     items : [StorefrontTypes.OrderItem];
     customerEmail : Text;
-    customerName : Text;
+    // The IBE ciphertext of the customer's shipping details (same shape as
+    // Order.encrypted_shipping: a single Blob of concatenated per-admin
+    // ciphertexts, each prefixed with its 4-byte big-endian length). The admin
+    // frontend fetches this and decrypts the slice for its own principal
+    // CLIENT-SIDE to fulfil the order. The canister never decrypts it. `null`
+    // when the order carries no encrypted shipping details.
+    encryptedShipping : ?Blob;
+    // Whether the order carries IBE-encrypted shipping details (mirrors
+    // Order.has_shipping_details). The admin UI warns when this is false.
+    hasShippingDetails : Bool;
     subaccountHex : Text;
     depositAccountText : Text;
     sweepNote : ?Text;

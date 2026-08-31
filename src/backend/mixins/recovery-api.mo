@@ -2,7 +2,6 @@ import Result "mo:core/Result";
 import List "mo:core/List";
 import Map "mo:core/Map";
 import Principal "mo:core/Principal";
-import Set "mo:core/Set";
 import Timer "mo:core/Timer";
 import Cycles "mo:core/Cycles";
 import Types "../types/recovery";
@@ -11,6 +10,7 @@ import CryptoTypes "../types/crypto-payments";
 import PaymentServiceTypes "../types/payment-service";
 import RecoveryLib "../lib/recovery";
 import AdminLib "../lib/admin-access-control";
+import AdminTypes "../types/admin-access-control";
 import OutCall "mo:caffeineai-http-outcalls/outcall";
 
 mixin (
@@ -19,7 +19,7 @@ mixin (
   cryptoPayments : Map.Map<Text, CryptoTypes.CryptoPayment>,
   cryptoConfig : CryptoTypes.CryptoConfig,
   selfPrincipal : Principal,
-  adminAllowlist : Set.Set<Principal>,
+  adminUsers : AdminTypes.AdminUsers,
   feeCache : CryptoTypes.FeeCache,
   latePayments : List.List<Types.LatePayment>,
   timerState : { var timerId : ?Timer.TimerId },
@@ -46,34 +46,34 @@ mixin (
   // the full deposit account (owner + subaccount + text address), and the LIVE
   // on-ledger balance of each crypto order's subaccount.
   public shared ({ caller }) func listOrdersForRecovery() : async [Types.OrderRecoveryView] {
-    AdminLib.requireAdmin(adminAllowlist, caller);
+    AdminLib.requireStaffOrAbove(adminUsers, caller);
     await RecoveryLib.listOrdersForRecovery(orders, cryptoPayments, cryptoConfig, selfPrincipal);
   };
 
   // Forces verification of a single order's payment to run immediately,
   // returning the current balance, status, and any error.
   public shared ({ caller }) func forceRecheckPayment(reference : Text) : async Result.Result<Types.RecheckResult, Types.RecoveryError> {
-    AdminLib.requireAdmin(adminAllowlist, caller);
+    AdminLib.requireStaffOrAbove(adminUsers, caller);
     await RecoveryLib.forceRecheck(cryptoPayments, reference, cryptoConfig, selfPrincipal);
   };
 
   // Forces a sweep of a single order's subaccount to the treasury, returning
   // the exact ledger error on failure (never swallowed).
   public shared ({ caller }) func forceSweepOrder(reference : Text) : async Result.Result<Types.SweepResult, Types.RecoveryError> {
-    AdminLib.requireAdmin(adminAllowlist, caller);
+    AdminLib.requireAdminOrOwner(adminUsers, caller);
     await RecoveryLib.forceSweep(cryptoPayments, orders, reference, cryptoConfig, selfPrincipal, feeCache);
   };
 
   // Returns the canister's DEFAULT subaccount balance on the configured ledger.
   public shared ({ caller }) func getDefaultSubaccountBalance() : async Result.Result<Nat, Types.RecoveryError> {
-    AdminLib.requireAdmin(adminAllowlist, caller);
+    AdminLib.requireStaffOrAbove(adminUsers, caller);
     await RecoveryLib.getDefaultSubaccountBalance(cryptoConfig, selfPrincipal);
   };
 
   // Sweeps the canister's DEFAULT subaccount balance to the treasury, returning
   // the exact ledger error on failure (never swallowed).
   public shared ({ caller }) func sweepDefaultSubaccount() : async Result.Result<Types.SweepResult, Types.RecoveryError> {
-    AdminLib.requireAdmin(adminAllowlist, caller);
+    AdminLib.requireAdminOrOwner(adminUsers, caller);
     await RecoveryLib.sweepDefaultSubaccount(cryptoConfig, selfPrincipal, feeCache);
   };
 
@@ -83,7 +83,7 @@ mixin (
   // init/post-upgrade (see main.mo), so verification runs even if no admin ever
   // calls this.
   public shared ({ caller }) func startVerificationTimer() : async Bool {
-    AdminLib.requireAdmin(adminAllowlist, caller);
+    AdminLib.requireStaffOrAbove(adminUsers, caller);
     switch (timerState.timerId) {
       case (?id) { Timer.cancelTimer(id) };
       case null {};
@@ -97,7 +97,7 @@ mixin (
   // Cancels the recurring verification timer. Returns true when a timer was
   // running and was cancelled.
   public shared ({ caller }) func stopVerificationTimer() : async Bool {
-    AdminLib.requireAdmin(adminAllowlist, caller);
+    AdminLib.requireStaffOrAbove(adminUsers, caller);
     switch (timerState.timerId) {
       case (?id) { Timer.cancelTimer(id); timerState.timerId := null; true };
       case null { false };
@@ -116,13 +116,13 @@ mixin (
   // Admin-only. Lists all recorded late payments (received after expiry, flagged
   // for admin review, never discarded).
   public shared ({ caller }) func listLatePayments() : async [Types.LatePayment] {
-    AdminLib.requireAdmin(adminAllowlist, caller);
+    AdminLib.requireStaffOrAbove(adminUsers, caller);
     RecoveryLib.listLatePayments(latePayments);
   };
 
   // Admin-only. Marks a late payment as reviewed. Returns true when found.
   public shared ({ caller }) func markLatePaymentReviewed(reference : Text) : async Bool {
-    AdminLib.requireAdmin(adminAllowlist, caller);
+    AdminLib.requireStaffOrAbove(adminUsers, caller);
     RecoveryLib.markLatePaymentReviewed(latePayments, reference);
   };
 };

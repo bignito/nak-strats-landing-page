@@ -36,15 +36,16 @@ export const OrderItem = IDL.Record({
   'quantity' : IDL.Nat,
 });
 export const AdminOrderDetail = IDL.Record({
-  'customerName' : IDL.Text,
   'status' : PaymentStatus,
   'paymentMethod' : PaymentMethod,
+  'encryptedShipping' : IDL.Opt(IDL.Vec(IDL.Nat8)),
   'cryptoStatus' : IDL.Opt(CryptoPaymentStatus),
   'createdAt' : IDL.Int,
   'reference' : IDL.Text,
   'amountOwed' : IDL.Nat,
   'updatedAt' : IDL.Int,
   'currency' : IDL.Text,
+  'hasShippingDetails' : IDL.Bool,
   'subaccountHex' : IDL.Text,
   'items' : IDL.Vec(OrderItem),
   'sweepNote' : IDL.Opt(IDL.Text),
@@ -120,14 +121,6 @@ export const Result_19 = IDL.Variant({
   'ok' : CheckoutSession,
   'err' : PaymentServiceError,
 });
-export const ShippingAddress = IDL.Record({
-  'region' : IDL.Text,
-  'country' : IDL.Text,
-  'city' : IDL.Text,
-  'postal_code' : IDL.Text,
-  'line1' : IDL.Text,
-  'line2' : IDL.Opt(IDL.Text),
-});
 export const ShippingStatus = IDL.Variant({
   'shipped' : IDL.Null,
   'pending' : IDL.Null,
@@ -138,7 +131,6 @@ export const Order = IDL.Record({
   'updated_at' : IDL.Int,
   'total' : IDL.Nat,
   'sweep_note' : IDL.Opt(IDL.Text),
-  'shipping_address' : ShippingAddress,
   'shipping' : IDL.Nat,
   'reference' : IDL.Text,
   'created_at' : IDL.Int,
@@ -148,10 +140,11 @@ export const Order = IDL.Record({
   'currency' : IDL.Text,
   'marketing_consent_at' : IDL.Opt(IDL.Int),
   'shipping_status' : ShippingStatus,
+  'has_shipping_details' : IDL.Bool,
   'items' : IDL.Vec(OrderItem),
   'customer_email' : IDL.Text,
+  'encrypted_shipping' : IDL.Opt(IDL.Vec(IDL.Nat8)),
   'customer_principal' : IDL.Opt(IDL.Principal),
-  'customer_name' : IDL.Text,
   'shipped_at' : IDL.Opt(IDL.Int),
   'marketing_consent' : IDL.Bool,
   'payment_reference' : IDL.Opt(IDL.Text),
@@ -171,11 +164,11 @@ export const CreateOrderItem = IDL.Record({
   'quantity' : IDL.Nat,
 });
 export const CreateOrderInput = IDL.Record({
-  'shipping_address' : ShippingAddress,
   'payment_method' : PaymentMethod,
+  'has_shipping_details' : IDL.Bool,
   'items' : IDL.Vec(CreateOrderItem),
   'customer_email' : IDL.Text,
-  'customer_name' : IDL.Text,
+  'encrypted_shipping' : IDL.Opt(IDL.Vec(IDL.Nat8)),
   'marketing_consent' : IDL.Bool,
 });
 export const OrderError = IDL.Variant({
@@ -293,6 +286,11 @@ export const Result_14 = IDL.Variant({
   'err' : CryptoPaymentError,
 });
 export const Result_12 = IDL.Variant({ 'ok' : IDL.Nat, 'err' : RecoveryError });
+export const Role = IDL.Variant({
+  'admin' : IDL.Null,
+  'owner' : IDL.Null,
+  'staff' : IDL.Null,
+});
 export const PaymentServiceConfigView = IDL.Record({
   'url' : IDL.Text,
   'tokenSet' : IDL.Bool,
@@ -376,6 +374,7 @@ export const Result_8 = IDL.Variant({
   'ok' : IDL.Vec(SubmissionRecord),
   'err' : SubmissionError,
 });
+export const UserRecord = IDL.Record({ 'grantedAt' : IDL.Int, 'role' : Role });
 export const EmailError = IDL.Variant({
   'notConfigured' : IDL.Text,
   'notShippable' : IDL.Null,
@@ -421,6 +420,7 @@ export const Result = IDL.Variant({
 
 export const idlService = IDL.Service({
   'addAdmin' : IDL.Func([IDL.Principal], [IDL.Bool], []),
+  'adminCount' : IDL.Func([], [IDL.Nat], ['query']),
   'adminGetOrderDetail' : IDL.Func(
       [IDL.Text],
       [IDL.Opt(AdminOrderDetail)],
@@ -431,6 +431,7 @@ export const idlService = IDL.Service({
       [IDL.Vec(AdminOrderView)],
       ['query'],
     ),
+  'bootstrapOwner' : IDL.Func([IDL.Principal], [IDL.Bool], []),
   'cancelCardOrder' : IDL.Func([IDL.Text], [Result_1], []),
   'checkCryptoPayment' : IDL.Func([IDL.Text], [Result_13], []),
   'claimInitialAdmin' : IDL.Func([], [IDL.Bool], []),
@@ -465,8 +466,15 @@ export const idlService = IDL.Service({
   'getCycleBalance' : IDL.Func([], [IDL.Nat], ['query']),
   'getDashboardData' : IDL.Func([], [IDL.Text], []),
   'getDefaultSubaccountBalance' : IDL.Func([], [Result_12], []),
+  'getIbePublicKey' : IDL.Func([], [IDL.Vec(IDL.Nat8)], []),
   'getMinimumOrder' : IDL.Func([], [IDL.Nat], ['query']),
+  'getMyEncryptedIbeKey' : IDL.Func(
+      [IDL.Vec(IDL.Nat8)],
+      [IDL.Vec(IDL.Nat8)],
+      [],
+    ),
   'getMyOrders' : IDL.Func([], [IDL.Vec(Order)], ['query']),
+  'getMyRole' : IDL.Func([], [IDL.Opt(Role)], ['query']),
   'getNAKPrice' : IDL.Func([], [IDL.Text], []),
   'getOrderStatus' : IDL.Func([IDL.Text], [IDL.Opt(Order)], ['query']),
   'getPaymentServiceConfig' : IDL.Func(
@@ -481,6 +489,7 @@ export const idlService = IDL.Service({
   'getTokenImage' : IDL.Func([IDL.Text, IDL.Text], [IDL.Text], []),
   'getTokenProfile' : IDL.Func([IDL.Text, IDL.Text], [IDL.Text], []),
   'getTreasuryTokens' : IDL.Func([], [IDL.Text], []),
+  'grantRole' : IDL.Func([IDL.Principal, Role], [IDL.Bool], []),
   'handlePaymentConfirmation' : IDL.Func([IDL.Text], [Result_9], []),
   'isAdmin' : IDL.Func([], [IDL.Bool], ['query']),
   'listAdmins' : IDL.Func([], [IDL.Vec(IDL.Principal)], []),
@@ -488,6 +497,11 @@ export const idlService = IDL.Service({
   'listOrdersForRecovery' : IDL.Func([], [IDL.Vec(OrderRecoveryView)], []),
   'listProducts' : IDL.Func([], [IDL.Vec(Product)], ['query']),
   'listSubmissions' : IDL.Func([], [Result_8], []),
+  'listUsers' : IDL.Func(
+      [],
+      [IDL.Vec(IDL.Tuple(IDL.Principal, UserRecord))],
+      [],
+    ),
   'markLatePaymentReviewed' : IDL.Func([IDL.Text], [IDL.Bool], []),
   'markOrderShipped' : IDL.Func([IDL.Text, IDL.Opt(IDL.Text)], [Result_7], []),
   'paymentServiceTransform' : IDL.Func(
@@ -498,6 +512,8 @@ export const idlService = IDL.Service({
   'releaseExpiredOrders' : IDL.Func([], [IDL.Nat], []),
   'removeAdmin' : IDL.Func([IDL.Principal], [IDL.Bool], []),
   'resendConfirmationEmail' : IDL.Func([IDL.Text], [Result_7], []),
+  'resetAdminForMigration' : IDL.Func([], [IDL.Bool], []),
+  'revokeRole' : IDL.Func([IDL.Principal], [IDL.Bool], []),
   'schema' : IDL.Func([], [IDL.Text], ['query']),
   'startVerificationTimer' : IDL.Func([], [IDL.Bool], []),
   'stopVerificationTimer' : IDL.Func([], [IDL.Bool], []),
@@ -563,15 +579,16 @@ export const idlFactory = ({ IDL }) => {
     'quantity' : IDL.Nat,
   });
   const AdminOrderDetail = IDL.Record({
-    'customerName' : IDL.Text,
     'status' : PaymentStatus,
     'paymentMethod' : PaymentMethod,
+    'encryptedShipping' : IDL.Opt(IDL.Vec(IDL.Nat8)),
     'cryptoStatus' : IDL.Opt(CryptoPaymentStatus),
     'createdAt' : IDL.Int,
     'reference' : IDL.Text,
     'amountOwed' : IDL.Nat,
     'updatedAt' : IDL.Int,
     'currency' : IDL.Text,
+    'hasShippingDetails' : IDL.Bool,
     'subaccountHex' : IDL.Text,
     'items' : IDL.Vec(OrderItem),
     'sweepNote' : IDL.Opt(IDL.Text),
@@ -647,14 +664,6 @@ export const idlFactory = ({ IDL }) => {
     'ok' : CheckoutSession,
     'err' : PaymentServiceError,
   });
-  const ShippingAddress = IDL.Record({
-    'region' : IDL.Text,
-    'country' : IDL.Text,
-    'city' : IDL.Text,
-    'postal_code' : IDL.Text,
-    'line1' : IDL.Text,
-    'line2' : IDL.Opt(IDL.Text),
-  });
   const ShippingStatus = IDL.Variant({
     'shipped' : IDL.Null,
     'pending' : IDL.Null,
@@ -665,7 +674,6 @@ export const idlFactory = ({ IDL }) => {
     'updated_at' : IDL.Int,
     'total' : IDL.Nat,
     'sweep_note' : IDL.Opt(IDL.Text),
-    'shipping_address' : ShippingAddress,
     'shipping' : IDL.Nat,
     'reference' : IDL.Text,
     'created_at' : IDL.Int,
@@ -675,10 +683,11 @@ export const idlFactory = ({ IDL }) => {
     'currency' : IDL.Text,
     'marketing_consent_at' : IDL.Opt(IDL.Int),
     'shipping_status' : ShippingStatus,
+    'has_shipping_details' : IDL.Bool,
     'items' : IDL.Vec(OrderItem),
     'customer_email' : IDL.Text,
+    'encrypted_shipping' : IDL.Opt(IDL.Vec(IDL.Nat8)),
     'customer_principal' : IDL.Opt(IDL.Principal),
-    'customer_name' : IDL.Text,
     'shipped_at' : IDL.Opt(IDL.Int),
     'marketing_consent' : IDL.Bool,
     'payment_reference' : IDL.Opt(IDL.Text),
@@ -698,11 +707,11 @@ export const idlFactory = ({ IDL }) => {
     'quantity' : IDL.Nat,
   });
   const CreateOrderInput = IDL.Record({
-    'shipping_address' : ShippingAddress,
     'payment_method' : PaymentMethod,
+    'has_shipping_details' : IDL.Bool,
     'items' : IDL.Vec(CreateOrderItem),
     'customer_email' : IDL.Text,
-    'customer_name' : IDL.Text,
+    'encrypted_shipping' : IDL.Opt(IDL.Vec(IDL.Nat8)),
     'marketing_consent' : IDL.Bool,
   });
   const OrderError = IDL.Variant({
@@ -817,6 +826,11 @@ export const idlFactory = ({ IDL }) => {
     'err' : CryptoPaymentError,
   });
   const Result_12 = IDL.Variant({ 'ok' : IDL.Nat, 'err' : RecoveryError });
+  const Role = IDL.Variant({
+    'admin' : IDL.Null,
+    'owner' : IDL.Null,
+    'staff' : IDL.Null,
+  });
   const PaymentServiceConfigView = IDL.Record({
     'url' : IDL.Text,
     'tokenSet' : IDL.Bool,
@@ -897,6 +911,7 @@ export const idlFactory = ({ IDL }) => {
     'ok' : IDL.Vec(SubmissionRecord),
     'err' : SubmissionError,
   });
+  const UserRecord = IDL.Record({ 'grantedAt' : IDL.Int, 'role' : Role });
   const EmailError = IDL.Variant({
     'notConfigured' : IDL.Text,
     'notShippable' : IDL.Null,
@@ -933,6 +948,7 @@ export const idlFactory = ({ IDL }) => {
   
   return IDL.Service({
     'addAdmin' : IDL.Func([IDL.Principal], [IDL.Bool], []),
+    'adminCount' : IDL.Func([], [IDL.Nat], ['query']),
     'adminGetOrderDetail' : IDL.Func(
         [IDL.Text],
         [IDL.Opt(AdminOrderDetail)],
@@ -943,6 +959,7 @@ export const idlFactory = ({ IDL }) => {
         [IDL.Vec(AdminOrderView)],
         ['query'],
       ),
+    'bootstrapOwner' : IDL.Func([IDL.Principal], [IDL.Bool], []),
     'cancelCardOrder' : IDL.Func([IDL.Text], [Result_1], []),
     'checkCryptoPayment' : IDL.Func([IDL.Text], [Result_13], []),
     'claimInitialAdmin' : IDL.Func([], [IDL.Bool], []),
@@ -977,8 +994,15 @@ export const idlFactory = ({ IDL }) => {
     'getCycleBalance' : IDL.Func([], [IDL.Nat], ['query']),
     'getDashboardData' : IDL.Func([], [IDL.Text], []),
     'getDefaultSubaccountBalance' : IDL.Func([], [Result_12], []),
+    'getIbePublicKey' : IDL.Func([], [IDL.Vec(IDL.Nat8)], []),
     'getMinimumOrder' : IDL.Func([], [IDL.Nat], ['query']),
+    'getMyEncryptedIbeKey' : IDL.Func(
+        [IDL.Vec(IDL.Nat8)],
+        [IDL.Vec(IDL.Nat8)],
+        [],
+      ),
     'getMyOrders' : IDL.Func([], [IDL.Vec(Order)], ['query']),
+    'getMyRole' : IDL.Func([], [IDL.Opt(Role)], ['query']),
     'getNAKPrice' : IDL.Func([], [IDL.Text], []),
     'getOrderStatus' : IDL.Func([IDL.Text], [IDL.Opt(Order)], ['query']),
     'getPaymentServiceConfig' : IDL.Func(
@@ -993,6 +1017,7 @@ export const idlFactory = ({ IDL }) => {
     'getTokenImage' : IDL.Func([IDL.Text, IDL.Text], [IDL.Text], []),
     'getTokenProfile' : IDL.Func([IDL.Text, IDL.Text], [IDL.Text], []),
     'getTreasuryTokens' : IDL.Func([], [IDL.Text], []),
+    'grantRole' : IDL.Func([IDL.Principal, Role], [IDL.Bool], []),
     'handlePaymentConfirmation' : IDL.Func([IDL.Text], [Result_9], []),
     'isAdmin' : IDL.Func([], [IDL.Bool], ['query']),
     'listAdmins' : IDL.Func([], [IDL.Vec(IDL.Principal)], []),
@@ -1000,6 +1025,11 @@ export const idlFactory = ({ IDL }) => {
     'listOrdersForRecovery' : IDL.Func([], [IDL.Vec(OrderRecoveryView)], []),
     'listProducts' : IDL.Func([], [IDL.Vec(Product)], ['query']),
     'listSubmissions' : IDL.Func([], [Result_8], []),
+    'listUsers' : IDL.Func(
+        [],
+        [IDL.Vec(IDL.Tuple(IDL.Principal, UserRecord))],
+        [],
+      ),
     'markLatePaymentReviewed' : IDL.Func([IDL.Text], [IDL.Bool], []),
     'markOrderShipped' : IDL.Func(
         [IDL.Text, IDL.Opt(IDL.Text)],
@@ -1014,6 +1044,8 @@ export const idlFactory = ({ IDL }) => {
     'releaseExpiredOrders' : IDL.Func([], [IDL.Nat], []),
     'removeAdmin' : IDL.Func([IDL.Principal], [IDL.Bool], []),
     'resendConfirmationEmail' : IDL.Func([IDL.Text], [Result_7], []),
+    'resetAdminForMigration' : IDL.Func([], [IDL.Bool], []),
+    'revokeRole' : IDL.Func([IDL.Principal], [IDL.Bool], []),
     'schema' : IDL.Func([], [IDL.Text], ['query']),
     'startVerificationTimer' : IDL.Func([], [IDL.Bool], []),
     'stopVerificationTimer' : IDL.Func([], [IDL.Bool], []),

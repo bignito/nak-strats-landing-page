@@ -32,8 +32,13 @@ module {
   };
 
   // Build the JSON body for POST /emails/order-confirmation. Carries the order
-  // reference, line items (quantities and prices), totals, shipping address,
-  // and payment method. Transactional — sends regardless of marketing consent.
+  // reference, line items (quantities and prices), totals, the customer email
+  // (the ONE field that must reach the email service to route the confirmation
+  // email), and payment method. The plaintext shipping address and customer
+  // name are NEVER sent — they live only inside the IBE ciphertext
+  // (encrypted_shipping) and are decrypted by an admin in the browser, never
+  // by the canister or the email service. Transactional — sends regardless of
+  // marketing consent.
   func buildOrderConfirmationBody(order : StorefrontTypes.Order) : Text {
     var itemsJson = "[";
     var first = true;
@@ -47,11 +52,6 @@ module {
       first := false;
     };
     itemsJson := itemsJson # "]";
-    let addr = order.shipping_address;
-    let line2 = switch (addr.line2) {
-      case (?l2) { "\"" # l2 # "\"" };
-      case null { "null" };
-    };
     let method = switch (order.payment_method) {
       case (#manual) { "manual" };
       case (#card_stripe) { "card_stripe" };
@@ -67,15 +67,6 @@ module {
       # "\"total\":" # order.total.toText() # ","
       # "\"currency\":\"" # order.currency # "\","
       # "\"customerEmail\":\"" # order.customer_email # "\","
-      # "\"customerName\":\"" # order.customer_name # "\","
-      # "\"shippingAddress\":{"
-      #   "\"line1\":\"" # addr.line1 # "\","
-      #   "\"line2\":" # line2 # ","
-      #   "\"city\":\"" # addr.city # "\","
-      #   "\"region\":\"" # addr.region # "\","
-      #   "\"postal_code\":\"" # addr.postal_code # "\","
-      #   "\"country\":\"" # addr.country # "\""
-      # "},"
       # "\"paymentMethod\":\"" # method # "\""
       # "}"
   };
@@ -136,8 +127,7 @@ module {
       case (?order) {
         let body = "{"
           # "\"reference\":\"" # order.reference # "\","
-          # "\"customerEmail\":\"" # order.customer_email # "\","
-          # "\"customerName\":\"" # order.customer_name # "\""
+          # "\"customerEmail\":\"" # order.customer_email # "\""
           # "}";
         let headers = [
           { name = "Content-Type"; value = "application/json" },
@@ -181,7 +171,6 @@ module {
         let body = "{"
           # "\"reference\":\"" # order.reference # "\","
           # "\"customerEmail\":\"" # order.customer_email # "\","
-          # "\"customerName\":\"" # order.customer_name # "\","
           # "\"trackingNumber\":" # tracking
           # "}";
         let headers = [
@@ -228,8 +217,8 @@ module {
           total = order.total;
           currency = order.currency;
           customer_email = order.customer_email;
-          customer_name = order.customer_name;
-          shipping_address = order.shipping_address;
+          encrypted_shipping = order.encrypted_shipping;
+          has_shipping_details = order.has_shipping_details;
           payment_method = order.payment_method;
           payment_status = order.payment_status;
           payment_reference = order.payment_reference;

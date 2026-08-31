@@ -482,25 +482,54 @@ const OrderLookupPage: React.FC<OrderLookupPageProps> = ({
                   </div>
                 </div>
 
-                {/* Shipping */}
+                {/* Shipping — operational status only. The full shipping
+                    address is stored as IBE ciphertext and is not displayed on
+                    this customer-facing page. */}
                 <div className="surface p-6 sm:p-8">
                   <h3 className="section-heading text-base mb-4 flex items-center gap-2">
                     <MapPin className="w-4 h-4 text-[var(--primary)]" />
                     Shipping
                   </h3>
-                  <p className="text-sm text-[var(--secondary-foreground)]">
-                    {order.customer_name} · {order.customer_email}
-                  </p>
-                  <p className="text-sm text-[var(--muted-foreground)] mt-2">
-                    {order.shipping_address.line1}
-                    {order.shipping_address.line2
-                      ? `, ${order.shipping_address.line2}`
-                      : ""}
-                    , {order.shipping_address.city},{" "}
-                    {order.shipping_address.region},{" "}
-                    {order.shipping_address.country}{" "}
-                    {order.shipping_address.postal_code}
-                  </p>
+                  <div className="space-y-3 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-[var(--muted-foreground)]">
+                        Status
+                      </span>
+                      <span className="text-[var(--foreground)]">
+                        {order.shipping_status === "shipped"
+                          ? "Shipped"
+                          : "Pending"}
+                      </span>
+                    </div>
+                    {order.tracking_number && (
+                      <div className="flex justify-between">
+                        <span className="text-[var(--muted-foreground)]">
+                          Tracking
+                        </span>
+                        <span className="mono-num text-[var(--foreground)]">
+                          {order.tracking_number}
+                        </span>
+                      </div>
+                    )}
+                    {order.shipped_at && (
+                      <div className="flex justify-between">
+                        <span className="text-[var(--muted-foreground)]">
+                          Shipped
+                        </span>
+                        <span className="text-[var(--secondary-foreground)]">
+                          {formatTimestamp(order.shipped_at)}
+                        </span>
+                      </div>
+                    )}
+                    <div className="flex justify-between">
+                      <span className="text-[var(--muted-foreground)]">
+                        Contact
+                      </span>
+                      <span className="text-[var(--foreground)]">
+                        {order.customer_email}
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
             )}

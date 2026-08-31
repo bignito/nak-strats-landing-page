@@ -1,6 +1,16 @@
+import { createActor as createActorImpl } from "@/backend";
 import { PaymentMethod } from "@/backend";
-import type { CreateOrderInput } from "@/backend";
+import type { Backend, CreateOrderInput } from "@/backend";
 import { formatPrice } from "@/lib/currency";
+import {
+  encryptShippingToAdmins,
+  fetchAdminPrincipals,
+  serializeShipping,
+} from "@/lib/ibe";
+import {
+  type createActorFunction,
+  useActor,
+} from "@caffeineai/core-infrastructure";
 import {
   AlertTriangle,
   ArrowLeft,
@@ -32,6 +42,11 @@ import {
 import type { CartItem, CryptoPaymentStatus, Order } from "../types/storefront";
 import { depositAccountString } from "../types/storefront";
 import { CopyButton } from "./CopyButton";
+
+// Re-type the generated actor factory so useActor(createActor) resolves the
+// correct Backend agent type. The generated createActorImpl has a generic
+// signature that does not match createActorFunction<Backend> directly.
+const createActor = createActorImpl as unknown as createActorFunction<Backend>;
 
 interface CheckoutPageProps {
   onNavigateToMain: () => void;
@@ -237,6 +252,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
   const [country, setCountry] = useState("");
   const [postalCode, setPostalCode] = useState("");
 
+  const { actor } = useActor(createActor);
   const createOrder = useCreateOrder();
   const checkPayment = useCheckCryptoPayment();
   const confirmPayment = useConfirmCryptoPayment();
@@ -385,21 +401,49 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
     return cryptoConfig.ckUSDC.canisterId.toText() === "aaaaa-aa";
   }, [cryptoConfig]);
 
-  const handleShippingSubmit = (e: React.FormEvent) => {
+  const handleShippingSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setOrderError(null);
+
+    // Build the plaintext shipping payload (name, email, full address) and
+    // IBE-encrypt it to EVERY admin principal client-side BEFORE any canister
+    // call. The canister only ever sees the ciphertext blob plus the plaintext
+    // customer email (the one field needed to route the confirmation email).
+    // This path has no identity dependency, so anonymous guests can check out
+    // without signing in.
+    const shippingPayload = {
+      name,
+      email,
+      line1,
+      line2: line2 || undefined,
+      city,
+      region,
+      country,
+      postal_code: postalCode,
+    };
+    const serialized = serializeShipping(shippingPayload);
+
+    let encryptedShipping: Uint8Array | undefined;
+    try {
+      if (!actor) throw new Error("Backend is not ready");
+      const adminPrincipals = await fetchAdminPrincipals(actor);
+      encryptedShipping = await encryptShippingToAdmins(
+        serialized,
+        adminPrincipals.map((p) => p.toText()),
+        actor,
+      );
+    } catch {
+      setOrderError(
+        "We could not secure your shipping details. Please try again.",
+      );
+      return;
+    }
+
     const input: CreateOrderInput = {
-      customer_name: name,
       customer_email: email,
       marketing_consent: marketingConsent,
-      shipping_address: {
-        line1,
-        line2: line2 || undefined,
-        city,
-        region,
-        country,
-        postal_code: postalCode,
-      },
+      has_shipping_details: true,
+      encrypted_shipping: encryptedShipping,
       payment_method:
         paymentMethod === "card"
           ? PaymentMethod.card_stripe

@@ -1,18 +1,18 @@
 import Result "mo:core/Result";
 import List "mo:core/List";
 import Principal "mo:core/Principal";
-import Set "mo:core/Set";
 import Types "../types/payment-service";
 import StorefrontTypes "../types/storefront";
 import PaymentServiceLib "../lib/payment-service";
 import AdminLib "../lib/admin-access-control";
+import AdminTypes "../types/admin-access-control";
 import OutCall "mo:caffeineai-http-outcalls/outcall";
 
 mixin (
   config : Types.PaymentServiceConfig,
   orders : List.List<StorefrontTypes.Order>,
   products : List.List<StorefrontTypes.Product>,
-  adminAllowlist : Set.Set<Principal>,
+  adminUsers : AdminTypes.AdminUsers,
 ) {
   // Public view of the payment service config. The token is write-only and is
   // never returned — only a boolean "is it set" flag.
@@ -21,13 +21,13 @@ mixin (
   };
 
   public shared ({ caller }) func updatePaymentServiceUrl(url : Text) : async Result.Result<(), Types.PaymentServiceError> {
-    AdminLib.requireAdmin(adminAllowlist, caller);
+    AdminLib.requireAdminOrOwner(adminUsers, caller);
     config.url := url;
     #ok();
   };
 
   public shared ({ caller }) func updatePaymentServiceToken(token : Text) : async Result.Result<(), Types.PaymentServiceError> {
-    AdminLib.requireAdmin(adminAllowlist, caller);
+    AdminLib.requireAdminOrOwner(adminUsers, caller);
     config.token := token;
     #ok();
   };

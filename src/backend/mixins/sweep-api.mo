@@ -1,15 +1,15 @@
 import Result "mo:core/Result";
 import Principal "mo:core/Principal";
-import Set "mo:core/Set";
 import Types "../types/sweep";
 import CryptoTypes "../types/crypto-payments";
 import SweepLib "../lib/sweep";
 import AdminLib "../lib/admin-access-control";
+import AdminTypes "../types/admin-access-control";
 
 mixin (
   cryptoConfig : CryptoTypes.CryptoConfig,
   selfPrincipal : Principal,
-  adminAllowlist : Set.Set<Principal>,
+  adminUsers : AdminTypes.AdminUsers,
   feeCache : CryptoTypes.FeeCache,
 ) {
   // Admin-only: queries the on-ledger balance of the subaccount at the given
@@ -18,7 +18,7 @@ mixin (
   // displayed deposit address. Requires a non-anonymous admin caller (rejected
   // by AdminLib.requireAdmin).
   public shared ({ caller }) func getSubaccountBalance(subaccountIndex : Nat) : async Result.Result<Types.SubaccountBalanceResult, Types.SweepError> {
-    AdminLib.requireAdmin(adminAllowlist, caller);
+    AdminLib.requireStaffOrAbove(adminUsers, caller);
     await SweepLib.getSubaccountBalance(cryptoConfig, selfPrincipal, subaccountIndex);
   };
 
@@ -28,7 +28,7 @@ mixin (
   // encoding as the displayed deposit address. Requires a non-anonymous admin
   // caller (rejected by AdminLib.requireAdmin).
   public shared ({ caller }) func sweepSubaccount(subaccountIndex : Nat) : async Result.Result<Types.SweepSubaccountResult, Types.SweepError> {
-    AdminLib.requireAdmin(adminAllowlist, caller);
+    AdminLib.requireAdminOrOwner(adminUsers, caller);
     await SweepLib.sweepSubaccount(cryptoConfig, selfPrincipal, feeCache, subaccountIndex);
   };
 };

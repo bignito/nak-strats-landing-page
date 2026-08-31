@@ -7,6 +7,11 @@ type Value =
    "null";
    "text": text;
  };
+type UserRecord = 
+ record {
+   grantedAt: int;
+   role: Role;
+ };
 type TransformationOutput = 
  record {
    body: blob;
@@ -86,14 +91,11 @@ type ShippingStatus =
    pending;
    shipped;
  };
-type ShippingAddress = 
- record {
-   city: text;
-   country: text;
-   line1: text;
-   line2: opt text;
-   postal_code: text;
-   region: text;
+type Role = 
+ variant {
+   admin;
+   owner;
+   staff;
  };
 type ResumeInfo = 
  record {
@@ -328,8 +330,9 @@ type Order =
    created_at: int;
    currency: text;
    customer_email: text;
-   customer_name: text;
    customer_principal: opt principal;
+   encrypted_shipping: opt blob;
+   has_shipping_details: bool;
    id: nat;
    items: vec OrderItem;
    marketing_consent: bool;
@@ -340,7 +343,6 @@ type Order =
    reference: text;
    shipped_at: opt int;
    shipping: nat;
-   shipping_address: ShippingAddress;
    shipping_status: ShippingStatus;
    subtotal: nat;
    sweep_note: opt text;
@@ -460,11 +462,11 @@ type CreateOrderItem =
 type CreateOrderInput = 
  record {
    customer_email: text;
-   customer_name: text;
+   encrypted_shipping: opt blob;
+   has_shipping_details: bool;
    items: vec CreateOrderItem;
    marketing_consent: bool;
    payment_method: PaymentMethod;
-   shipping_address: ShippingAddress;
  };
 type ConsentListExport = record {csv: text;};
 type ConsentError = 
@@ -507,8 +509,9 @@ type AdminOrderDetail =
    cryptoStatus: opt CryptoPaymentStatus;
    currency: text;
    customerEmail: text;
-   customerName: text;
    depositAccountText: text;
+   encryptedShipping: opt blob;
+   hasShippingDetails: bool;
    items: vec OrderItem;
    paymentMethod: PaymentMethod;
    reference: text;
@@ -519,8 +522,10 @@ type AdminOrderDetail =
  };
 service : {
   addAdmin: (p: principal) -> (bool);
+  adminCount: () -> (nat) query;
   adminGetOrderDetail: (reference: text) -> (opt AdminOrderDetail) query;
   adminListOrders: (filter: text) -> (vec AdminOrderView) query;
+  bootstrapOwner: (p: principal) -> (bool);
   cancelCardOrder: (reference: text) -> (Result_1);
   checkCryptoPayment: (reference: text) -> (Result_13);
   claimInitialAdmin: () -> (bool);
@@ -546,8 +551,11 @@ service : {
   getCycleBalance: () -> (nat) query;
   getDashboardData: () -> (text);
   getDefaultSubaccountBalance: () -> (Result_12);
+  getIbePublicKey: () -> (blob);
   getMinimumOrder: () -> (nat) query;
+  getMyEncryptedIbeKey: (transportPublicKey: blob) -> (blob);
   getMyOrders: () -> (vec Order) query;
+  getMyRole: () -> (opt Role) query;
   getNAKPrice: () -> (text);
   getOrderStatus: (reference: text) -> (opt Order) query;
   getPaymentServiceConfig: () -> (PaymentServiceConfigView) query;
@@ -558,6 +566,7 @@ service : {
   getTokenImage: (chainId: text, tokenAddress: text) -> (text);
   getTokenProfile: (chainId: text, tokenAddress: text) -> (text);
   getTreasuryTokens: () -> (text);
+  grantRole: (p: principal, role: Role) -> (bool);
   handlePaymentConfirmation: (payload: text) -> (Result_9);
   isAdmin: () -> (bool) query;
   listAdmins: () -> (vec principal);
@@ -565,6 +574,10 @@ service : {
   listOrdersForRecovery: () -> (vec OrderRecoveryView);
   listProducts: () -> (vec Product) query;
   listSubmissions: () -> (Result_8);
+  listUsers: () -> (vec record {
+                          principal;
+                          UserRecord;
+                        });
   markLatePaymentReviewed: (reference: text) -> (bool);
   markOrderShipped: (reference: text, trackingNumber: opt text) -> (Result_7);
   paymentServiceTransform: (input: TransformationInput) ->
@@ -572,6 +585,8 @@ service : {
   releaseExpiredOrders: () -> (nat);
   removeAdmin: (p: principal) -> (bool);
   resendConfirmationEmail: (reference: text) -> (Result_7);
+  resetAdminForMigration: () -> (bool);
+  revokeRole: (p: principal) -> (bool);
   schema: () -> (text) query;
   startVerificationTimer: () -> (bool);
   stopVerificationTimer: () -> (bool);

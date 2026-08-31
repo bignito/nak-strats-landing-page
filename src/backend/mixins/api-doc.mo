@@ -25,19 +25,19 @@ treasury/dashboard data from external services.
   returned ONLY to an authenticated admin caller (via a direct product URL or
   an admin-only view); non-admin and anonymous callers get `null` for it, so
   hidden products remain purchasable by an admin but never leak to customers.
-- `createProduct(product : Product) : async Bool` — update. ADMIN-ONLY. Appends
-  a new product to the catalogue. The caller supplies the full `Product`
-  record; every price field (`price`, and each `variant.price`) is an integer
-  in cents (never a float) — the frontend converts dollar input to cents before
-  calling. Binds the caller at the top of the function, rejects the anonymous
-  principal, and traps for a caller that is not a non-anonymous member of the
-  admin allowlist. Returns `true` on success.
-- `updateProduct(product : Product) : async Bool` — update. ADMIN-ONLY.
+- `createProduct(product : Product) : async Bool` — update. ADMIN-OR-OWNER.
+  Appends a new product to the catalogue. The caller supplies the full
+  `Product` record; every price field (`price`, and each `variant.price`) is an
+  integer in cents (never a float) — the frontend converts dollar input to
+  cents before calling. Binds the caller at the top of the function, rejects
+  the anonymous principal, and traps for a caller that is not a non-anonymous
+  ADMIN or OWNER. Returns `true` on success.
+- `updateProduct(product : Product) : async Bool` — update. ADMIN-OR-OWNER.
   Replaces the existing product whose `id` matches the supplied record (a
   no-op when no product with that id exists). Prices are integer cents. Binds
   the caller at the top of the function, rejects the anonymous principal, and
-  traps for a caller that is not a non-anonymous member of the admin allowlist.
-  Returns `true` on success.
+  traps for a caller that is not a non-anonymous ADMIN or OWNER. Returns `true`
+  on success.
 - `createOrder(input : CreateOrderInput) : async Result<Order, OrderError>` —
   update. Validates the order server-side (product exists and is active,
   variant exists, quantity is at least 1, stock is sufficient), computes the
@@ -81,26 +81,110 @@ treasury/dashboard data from external services.
 
 ### Admin access control
 
-The backend has a principal-based admin allowlist stored in stable state. The
-allowlist starts empty; the first admin claims it via `claimInitialAdmin`, and
-further admins are added with `addAdmin`. Every privileged method binds its
-caller at the top of the function (before any await), explicitly rejects the
-anonymous principal, and traps when the caller is not in the allowlist.
+The backend has a role-based admin model stored in stable state. Each principal
+holds one of three roles — `#owner` (full access, manages owners/admins/staff
+and roles), `#admin` (everything except managing owners), or `#staff`
+(fulfilment only: view orders/shipping, mark shipped, add tracking; CANNOT
+change prices, treasury config, payment settings, sweep funds, or manage
+users). The roles map starts empty; the first principal claims ownership via
+`claimInitialAdmin`. Every privileged method binds its caller at the top of the
+function (before any await), explicitly rejects the anonymous principal, and
+traps when the caller lacks the required role. There is always at least one
+OWNER: the last owner cannot be demoted or revoked.
 
 - `claimInitialAdmin() : async Bool` — update. One-time bootstrap: sets the
-  caller as the first admin, callable ONLY while the allowlist is empty, and
-  permanently dead once an admin exists. Rejects the anonymous principal.
-- `addAdmin(p : Principal) : async Bool` — update. Admin-only. Adds a principal
-  to the admin allowlist.
-- `removeAdmin(p : Principal) : async Bool` — update. Admin-only. Removes a
-  principal from the allowlist. The last remaining admin cannot remove
-  themselves, so the allowlist can never become empty.
-- `listAdmins() : async [Principal]` — update. Admin-only. Lists all admin
-  principals. The allowlist is sensitive and is NOT exposed through OQL — it is
-  only readable through this admin-only method.
+  caller as the first OWNER (the highest role). Gated on the persistent
+  `initialAdminClaimed` flag being `false` (NOT merely on the roles map being
+  empty), so an emptied map can never silently reopen ownership. Permanently
+  dead once the flag is `true`. Rejects the anonymous principal (returns
+  `false`).
+- `bootstrapOwner(p : Principal) : async Bool` — update. Controller-only live
+  bootstrap: sets `p` as OWNER and marks `initialAdminClaimed` true WITHOUT
+  ever opening the public claim path. Only the canister's controller (verified
+  against the IC management canister) may invoke it; any other caller gets
+  `false`. This is the distinct, documented live bootstrap the deploy pipeline
+  calls once at publish time with the deployer's principal — live never exposes
+  an open claim.
+- `getMyRole() : async ?Role` — query. Public. Reports only the caller's role
+  (`#owner`/`#admin`/`#staff`), or `null` when the caller is unregistered or
+  anonymous. Never reveals other principals.
+- `adminCount() : async Nat` — query. Public. Returns only the NUMBER of
+  principals holding any role, never the principals themselves. This is the
+  safe public signal the admin UI uses to decide whether the \"Claim Initial
+  Admin\" door is still open (when it returns 0) without leaking who the users
+  are.
+- `listUsers() : async [(Principal, UserRecord)]` — update. OWNER/ADMIN only.
+  Lists every user as a `(principal, { role; grantedAt })` pair. Traps for a
+  caller that is not OWNER or ADMIN.
+- `listAdmins() : async [Principal]` — update. OWNER/ADMIN only. Lists the
+  principals holding OWNER or ADMIN (the \"admin\" tier). Backward-compatible
+  with the old listAdmins semantics. Traps for a caller that is not OWNER or
+  ADMIN.
+- `grantRole(p : Principal, role : Role) : async Bool` — update. Grants (or
+  re-grants) a role. `#owner` and `#admin` grants require OWNER; `#staff`
+  grants require ADMIN or OWNER. The last owner cannot demote themselves (or
+  any owner) below OWNER. Returns `false` for the anonymous target principal.
+- `revokeRole(p : Principal) : async Bool` — update. Revokes any role. OWNER
+  may revoke owner/admin; ADMIN may revoke STAFF only. The last owner cannot
+  revoke themselves. Returns `false` when `p` holds no role.
+- `addAdmin(p : Principal) : async Bool` — update. Backward-compatible wrapper
+  granting the ADMIN role. Requires OWNER (only the owner may create admins).
+  Returns `false` for the anonymous principal.
+- `removeAdmin(p : Principal) : async Bool` — update. Backward-compatible
+  wrapper revoking any role. Requires OWNER. The last owner cannot remove
+  themselves.
 - `isAdmin() : async Bool` — query. Public. Reports only on the caller:
-  returns `true` when the caller is a non-anonymous member of the allowlist,
-  `false` otherwise.
+  returns `true` when the caller holds OWNER or ADMIN (the \"admin\" tier);
+  STAFF reports `false`.
+- `resetAdminForMigration() : async Bool` — update. Controller-only. Clears the
+  roles map and reopens the one-time claim path (`initialAdminClaimed :=
+  false`). This is the safe mechanism for the DRAFT reset: only the canister's
+  controller (verified against the IC management canister) may invoke it, so an
+  emptied map can never be exploited by a non-controller. The deploy pipeline
+  calls it on the DRAFT only; live never invokes it. Returns `false` for any
+  non-controller caller.
+
+### IBE shipping-details encryption (vetKD)
+
+Customer shipping details (name, email, and full shipping address) are
+encrypted CLIENT-SIDE in the browser using identity-based encryption (IBE) to
+every admin principal BEFORE they are ever sent to the canister. The canister
+only ever receives and stores the opaque ciphertext (`encrypted_shipping :
+?Blob` on the order) and NEVER sees or decrypts the plaintext PII. Decryption
+happens only in an authenticated admin's browser, to fulfil an order.
+
+The ONE exception to \"the canister never sees plaintext PII\" is the customer
+email address, which must reach the email service for routing the confirmation
+email. The confirmation email is sent by the external payment service, so the
+customer email is the single field that is sent in plaintext to that service
+for routing; the customer name and full shipping address are encrypted and are
+NEVER stored or sent in plaintext. The confirmation email itself omits the
+plaintext shipping address.
+
+- `getIbePublicKey() : async Blob` — update. PUBLIC. Returns the IBE public
+  key for the app's domain separator (`nak_strats_ibe_shipping_v1`), which the
+  frontend uses to IBE-encrypt shipping details to admin principals. It is a
+  public key, so any caller (including anonymous guests) may fetch it. It is an
+  update (not a query) because it makes an inter-canister call to the
+  management canister. `vetkd_public_key` costs no cycles.
+- `getMyEncryptedIbeKey(transportPublicKey : Blob) : async Blob` — update.
+  STAFF-OR-ABOVE. Derives the caller's encrypted IBE vetKey for the app's
+  domain separator. Binds the caller at the top of the function, rejects the
+  anonymous principal, and traps for a caller that is not a non-anonymous STAFF
+  or above. The derivation input is the caller's own principal, so a user can
+  only ever derive the key for themselves. The returned blob is the
+  ENCRYPTED vetKey (under the caller-supplied transport key) — the canister
+  relays it and never sees the raw key. This call costs cycles:
+  `vetkd_derive_key` is 26,153,846,153 cycles for `key_1` and 10,000,000,000
+  for `test_key_1` (the same locally and on mainnet); the Motoko helper
+  attaches the amount and refunds any excess. The admin frontend should derive
+  this key ONCE per admin session and cache it client-side, rather than per
+  order row, to avoid burning cycles on every row of the orders table.
+
+The domain separator and the derivation input (the admin principal) must be
+byte-identical across `getIbePublicKey`, `getMyEncryptedIbeKey`, and the
+frontend's `decryptAndVerify` / `IbeCiphertext.decrypt` calls, or the derived
+keys will not match.
 
 ### Crypto checkout (ckUSDC via ICRC-1)
 
@@ -116,9 +200,9 @@ anonymous principal, and traps when the caller is not in the allowlist.
   because they cannot be swept to the treasury after the ledger transfer fee is
   deducted.
 - `updateMinimumOrder(minimum : Nat) : async Result<(), CryptoPaymentError>` —
-  update. Admin-only. Sets the minimum order total (in USD cents) required for
-  crypto checkout. Traps for a caller that is not a non-anonymous member of the
-  admin allowlist.
+  update. ADMIN-OR-OWNER. Sets the minimum order total (in USD cents) required
+  for crypto checkout. Traps for a caller that is not a non-anonymous ADMIN or
+  OWNER.
 - `getCryptoDepositInfo(reference : Text) : async Result<DepositInfo,
   CryptoPaymentError>` — query. Returns the deposit details for an order's
   crypto payment: the deposit address (this canister's own principal), the
@@ -140,7 +224,7 @@ anonymous principal, and traps when the caller is not in the allowlist.
   only triggers an on-ledger re-check and can never mark an order paid on its
   own.
 - `sweepCryptoToTreasury(reference : Text) : async Result<Nat,
-  CryptoPaymentError>` — update. ADMIN-ONLY. Transfers the subaccount balance
+  CryptoPaymentError>` — update. ADMIN-OR-OWNER. Transfers the subaccount balance
   minus the ledger transfer fee to the treasury and returns the on-ledger block
   index. Never transfers more than `balance - fee`, so the sweep cannot fail on
   insufficient funds and never leaves the subaccount unable to cover the fee.
@@ -152,21 +236,20 @@ anonymous principal, and traps when the caller is not in the allowlist.
   repeatedly. Sweep failures — including low cycles — are recorded as a clear
   note on the order (`sweep_note`) rather than failing silently or trapping.
   Binds the caller at the top of the function, rejects the anonymous principal,
-  and traps for a caller that is not a non-anonymous member of the admin
-  allowlist.
+  and traps for a caller that is not a non-anonymous ADMIN or OWNER.
 - `updateTreasury(principal : Principal, subaccount : ?Blob) : async
-  Result<(), CryptoPaymentError>` — update. Admin-only. Updates the treasury
-  principal and optional subaccount that confirmed funds are swept to. Traps
-  for a caller that is not a non-anonymous member of the admin allowlist.
+  Result<(), CryptoPaymentError>` — update. ADMIN-OR-OWNER. Updates the
+  treasury principal and optional subaccount that confirmed funds are swept
+  to. Traps for a caller that is not a non-anonymous ADMIN or OWNER.
 - `updateLedgerConfig(token : Token, canisterId : Principal, decimals : Nat8,
-  fee : Nat) : async Result<(), CryptoPaymentError>` — update. Admin-only.
+  fee : Nat) : async Result<(), CryptoPaymentError>` — update. ADMIN-OR-OWNER.
   Updates the ledger configuration (canister id, decimals, transfer fee) for
-  the given token. Traps for a caller that is not a non-anonymous member of the
-  admin allowlist.
+  the given token. Traps for a caller that is not a non-anonymous ADMIN or
+  OWNER.
 - `adminListOrders(filter : Text) : async [AdminOrderView]` — update.
-  ADMIN-ONLY. Enumerates orders for the admin UI. Binds the caller at the top
-  of the function, rejects the anonymous principal, and traps for a caller that
-  is not a non-anonymous member of the admin allowlist. Each returned view
+  ADMIN-OR-OWNER. Enumerates orders for the admin UI. Binds the caller at the
+  top of the function, rejects the anonymous principal, and traps for a caller
+  that is not a non-anonymous ADMIN or OWNER. Each returned view
   carries the order `reference`, `created_at`, `status`, `payment_method`,
   amount owed, `currency`, item count, the per-order ICRC-1 subaccount as
   lowercase hex, and the full ICRC-1 deposit account text. The `filter` argument
@@ -179,10 +262,10 @@ anonymous principal, and traps when the caller is not in the allowlist.
   - `needs_review` — orders that need admin attention: paid-but-not-swept,
     expired-but-funded, underpaid, overpaid, and sweep-failed.
 - `adminGetOrderDetail(reference : Text) : async ?AdminOrderDetail` — update.
-  ADMIN-ONLY. Returns the full detail of a single
+  ADMIN-OR-OWNER. Returns the full detail of a single
   order, including its line items, for the admin UI. Binds the caller at the top
   of the function, rejects the anonymous principal, and traps for a caller that
-  is not a non-anonymous member of the admin allowlist. Returns
+  is not a non-anonymous ADMIN or OWNER. Returns
   `null` for an unknown reference.
 
 ### Card checkout (Stripe via external payment service)
@@ -194,13 +277,13 @@ anonymous principal, and traps when the caller is not in the allowlist.
   and is NEVER returned — only the boolean flag, so the frontend can decide
   whether to offer card checkout.
 - `updatePaymentServiceUrl(url : Text) : async Result<(), PaymentServiceError>`
-  — update. Admin-only. Sets the payment service base URL. Traps for a caller
-  that is not a non-anonymous member of the admin allowlist.
+  — update. ADMIN-OR-OWNER. Sets the payment service base URL. Traps for a
+  caller that is not a non-anonymous ADMIN or OWNER.
 - `updatePaymentServiceToken(token : Text) : async Result<(), PaymentServiceError>`
-  — update. Admin-only. Sets the shared bearer token used to
+  — update. ADMIN-OR-OWNER. Sets the shared bearer token used to
   authenticate HTTPS outcalls to the payment service. The token is stored but
   never returned to any caller (write-only). Traps for a caller that is not a
-  non-anonymous member of the admin allowlist.
+  non-anonymous ADMIN or OWNER.
 - `createCardCheckoutSession(reference : Text, successUrl : Text, cancelUrl :
   Text) : async Result<CheckoutSession, PaymentServiceError>` — update. For a
   pending `#card_stripe` order, makes an HTTPS outcall POST to
@@ -233,11 +316,12 @@ These endpoints let an admin query and sweep a SPECIFIC ICRC-1 subaccount by its
 integer index on the configured ckUSDC ledger. The subaccount is derived with
 the SAME big-endian encoding used to build the displayed deposit address (31
 zero bytes followed by the big-endian 32-byte encoding of the integer), so the
-subaccount queried/swept here is exactly the one a customer paid into. Both are
-admin-only and surface the exact ledger error on failure (never swallowed).
+subaccount queried/swept here is exactly the one a customer paid into. The
+balance query requires STAFF or above; the sweep requires ADMIN or OWNER. Both
+surface the exact ledger error on failure (never swallowed).
 
-- `getSubaccountBalance(subaccountIndex : Nat) : async Result<SubaccountBalanceResult, SweepError>` — update. ADMIN-ONLY. Queries `icrc1_balance_of` on the configured ckUSDC ledger for owner = this canister, subaccount = the big-endian 32-byte encoding of `subaccountIndex`, and returns the exact unit count. Binds the caller at the top, rejects the anonymous principal, and traps for a caller that is not a non-anonymous member of the admin allowlist.
-- `sweepSubaccount(subaccountIndex : Nat) : async Result<SweepSubaccountResult, SweepError>` — update. ADMIN-ONLY. Sweeps the subaccount at `subaccountIndex` to the treasury principal, returning the exact ledger error (icrc1_transfer error variant) on failure. Binds the caller at the top, rejects the anonymous principal, and traps for a caller that is not a non-anonymous member of the admin allowlist.
+- `getSubaccountBalance(subaccountIndex : Nat) : async Result<SubaccountBalanceResult, SweepError>` — update. STAFF-OR-ABOVE. Queries `icrc1_balance_of` on the configured ckUSDC ledger for owner = this canister, subaccount = the big-endian 32-byte encoding of `subaccountIndex`, and returns the exact unit count. Binds the caller at the top, rejects the anonymous principal, and traps for a caller that is not a non-anonymous STAFF or above.
+- `sweepSubaccount(subaccountIndex : Nat) : async Result<SweepSubaccountResult, SweepError>` — update. ADMIN-OR-OWNER. Sweeps the subaccount at `subaccountIndex` to the treasury principal, returning the exact ledger error (icrc1_transfer error variant) on failure. Binds the caller at the top, rejects the anonymous principal, and traps for a caller that is not a non-anonymous ADMIN or OWNER.
 
 ### Transactional email (order confirmation, payment pending, shipping)
 
@@ -249,21 +333,24 @@ via HTTPS outcall to `{PAYMENT_SERVICE_URL}/emails/...` authenticated with the
 shared bearer token. All transactional emails are EXEMPT from marketing consent
 and send regardless of the checkbox.
 
-- `markOrderShipped(reference : Text, trackingNumber : ?Text) : async Result<(), EmailError>` — update. ADMIN-ONLY. Marks the order shipped (sets `shipping_status = #shipped`, `shipped_at` to now, and `tracking_number` when provided) and triggers the shipping notification email, including the tracking number when present. Transactional — sends regardless of marketing consent. Binds the caller at the top, rejects the anonymous principal, and traps for a caller that is not a non-anonymous member of the admin allowlist.
-- `resendConfirmationEmail(reference : Text) : async Result<(), EmailError>` — update. ADMIN-ONLY. Re-sends the order confirmation email for an order. Transactional — sends regardless of marketing consent. Binds the caller at the top, rejects the anonymous principal, and traps for a caller that is not a non-anonymous member of the admin allowlist.
+- `markOrderShipped(reference : Text, trackingNumber : ?Text) : async Result<(), EmailError>` — update. ADMIN-OR-OWNER. Marks the order shipped (sets `shipping_status = #shipped`, `shipped_at` to now, and `tracking_number` when provided) and triggers the shipping notification email, including the tracking number when present. Transactional — sends regardless of marketing consent. Binds the caller at the top, rejects the anonymous principal, and traps for a caller that is not a non-anonymous ADMIN or OWNER.
+- `resendConfirmationEmail(reference : Text) : async Result<(), EmailError>` — update. ADMIN-OR-OWNER. Re-sends the order confirmation email for an order. Transactional — sends regardless of marketing consent. Binds the caller at the top, rejects the anonymous principal, and traps for a caller that is not a non-anonymous ADMIN or OWNER.
 - `emailTransform(input : TransformationInput) : async TransformationOutput` — query. The HTTP outcall response transform for the payment service email endpoints: strips every response header so responses are identical across replicas.
 
 Order confirmation emails are sent automatically when a payment is confirmed,
 for BOTH crypto and card orders, and carry the order reference, line items
-(quantities and prices), totals, shipping address, and payment method. A
-payment-pending email is sent when a crypto order is created, carrying the order
-reference and a link back to the order lookup page. These sends are triggered by
-the backend (via the verification timer and the payment confirmation paths) and
-are transactional — never gated on marketing consent.
+(quantities and prices), totals, and payment method. The confirmation email
+OMITS the plaintext shipping address and customer name — those are encrypted
+and never stored or sent in plaintext; only the customer email reaches the
+email service, for routing. A payment-pending email is sent when a crypto order
+is created, carrying the order reference and a link back to the order lookup
+page. These sends are triggered by the backend (via the verification timer and
+the payment confirmation paths) and are transactional — never gated on
+marketing consent.
 
 ### Marketing consent (opt-in list and unsubscribe)
 
-- `getConsentListCsv() : async Result<ConsentListExport, ConsentError>` — update. ADMIN-ONLY. Fetches the list of addresses WITH marketing consent from the external payment service and returns it as CSV, so a mailing list can be built without accidentally including customers who did not opt in. The addresses are PII that lives off-canister at the payment service; the canister only proxies them through and never persists them. Binds the caller at the top, rejects the anonymous principal, and traps for a caller that is not a non-anonymous member of the admin allowlist.
+- `getConsentListCsv() : async Result<ConsentListExport, ConsentError>` — update. ADMIN-OR-OWNER. Fetches the list of addresses WITH marketing consent from the external payment service and returns it as CSV, so a mailing list can be built without accidentally including customers who did not opt in. The addresses are PII that lives off-canister at the payment service; the canister only proxies them through and never persists them. Binds the caller at the top, rejects the anonymous principal, and traps for a caller that is not a non-anonymous ADMIN or OWNER.
 - `unsubscribe(token : Text) : async Result<(), ConsentError>` — update. PUBLIC. Token-based unsubscribe. The token is minted by the payment service and embedded in the unsubscribe link of marketing emails; the canister forwards it to the payment service, which adds the address to its stored suppression list. Suppressed addresses are never sent marketing email; transactional emails remain exempt. The suppression list lives at the payment service.
 - `consentServiceTransform(input : TransformationInput) : async TransformationOutput` — query. The HTTP outcall response transform for the payment service consent endpoints: strips every response header so responses are identical across replicas.
 
@@ -283,7 +370,7 @@ added to any marketing list; the optional consent checkbox is stored separately
 (consent + timestamp) only when ticked.
 
 - `submitSubmission(input : SubmissionInput) : async Result<(), SubmissionError>` — update. PUBLIC. Submits an artist work for review. The `SubmissionInput` carries `name`, `email`, `discipline` (one of `#music`, `#visualArt`, `#video`, `#writing`, `#other`), `link`, an optional `message` (max 1000 characters), an optional `marketingConsent` flag with a `marketingConsentAt` timestamp (the checkbox is UNTICKED by default; the frontend sends the submitter's explicit choice), and a `honeypot` field. A submission whose `honeypot` field is filled is rejected with `#err(#honeypot)` BEFORE any outcall is made — it is a bot trap hidden from real users. Submissions are rate-limited per caller principal (the canister cannot see client IPs, so this complements the payment service's per-IP limit): a caller that exceeds the limit within the window receives `#err(#rateLimited)`. The input is validated server-side (`#err(#invalidInput)` for a missing name, malformed email, non-URL link, or a message over 1000 characters). On success the submission is forwarded to `{PAYMENT_SERVICE_URL}/submissions` and `#ok()` is returned; the payment service stores it and sends the acknowledgement email. Returns `#err(#notConfigured)` when the URL or token is unset, and `#err(#outcallFailed)` when the payment service is unreachable.
-- `listSubmissions() : async Result<[SubmissionRecord], SubmissionError>` — update. ADMIN-ONLY. Lists submissions for the admin review view, newest first. Binds the caller at the top, rejects the anonymous principal, and traps for a caller that is not a non-anonymous member of the admin allowlist. Each `SubmissionRecord` carries `id`, `name`, `email`, `discipline`, `link`, `message`, `marketingConsent`, `marketingConsentAt`, and `submittedAt`. The records are PII that lives off-canister; the canister only proxies them through and never persists them. Returns `#err(#notConfigured)` when the URL or token is unset, and `#err(#outcallFailed)` when the payment service is unreachable.
+- `listSubmissions() : async Result<[SubmissionRecord], SubmissionError>` — update. STAFF-OR-ABOVE. Lists submissions for the admin review view, newest first. Binds the caller at the top, rejects the anonymous principal, and traps for a caller that is not a non-anonymous STAFF or above. Each `SubmissionRecord` carries `id`, `name`, `email`, `discipline`, `link`, `message`, `marketingConsent`, `marketingConsentAt`, and `submittedAt`. The records are PII that lives off-canister; the canister only proxies them through and never persists them. Returns `#err(#notConfigured)` when the URL or token is unset, and `#err(#outcallFailed)` when the payment service is unreachable.
 - `submissionServiceTransform(input : TransformationInput) : async TransformationOutput` — query. The HTTP outcall response transform for the payment service submission endpoints: strips every response header so responses are identical across replicas.
 
 ### HTTP outcall helpers
@@ -306,11 +393,12 @@ added to any marketing list; the optional consent checkbox is stored separately
 ### Recovery (admin-only diagnosis and fund recovery)
 
 These endpoints exist to diagnose and recover real funds held in the canister's
-ICRC-1 subaccounts. Every one of them is admin-only (guarded by the principal
-allowlist) except `getResumeInfo` and `getCycleBalance`, which are public
-queries used to resume an in-progress deposit screen and to render the cycle
-gauge. Ledger errors are NEVER swallowed — they are returned verbatim in the
-`error` field of the result so an admin can act on the exact ledger failure.
+ICRC-1 subaccounts. Every one of them is role-gated (STAFF or above for the
+read/diagnostic methods, ADMIN or OWNER for the sweep/mutating methods) except
+`getResumeInfo` and `getCycleBalance`, which are public queries used to resume
+an in-progress deposit screen and to render the cycle gauge. Ledger errors are
+NEVER swallowed — they are returned verbatim in the `error` field of the result
+so an admin can act on the exact ledger failure.
 
 - `getCycleBalance() : async Nat` — query. PUBLIC. Returns the canister's
   current cycle balance via `Cycles.balance()`. Low cycles can cause
@@ -320,30 +408,30 @@ gauge. Ledger errors are NEVER swallowed — they are returned verbatim in the
 - `getCanisterId() : async Principal` — query. PUBLIC. Returns the canister's
   own principal via `Principal.fromActor(Self)`. Used by the admin UI to
   display the canister's identity and to build deposit addresses.
-- `listOrdersForRecovery() : async [OrderRecoveryView]` — update. Admin-only.
+- `listOrdersForRecovery() : async [OrderRecoveryView]` — update. STAFF-OR-ABOVE.
   Lists every order with its reference, status, payment method, amount owed,
   the full deposit account (owner + subaccount + text address), and the LIVE
   on-ledger balance of each crypto order's subaccount.
 - `forceRecheckPayment(reference : Text) : async Result<RecheckResult,
-  RecoveryError>` — update. Admin-only. Forces verification of a single
+  RecoveryError>` — update. STAFF-OR-ABOVE. Forces verification of a single
   order's payment to run immediately, returning the current balance, status,
   and any error.
 - `forceSweepOrder(reference : Text) : async Result<SweepResult,
-  RecoveryError>` — update. Admin-only. Forces a sweep of a single order's
+  RecoveryError>` — update. ADMIN-OR-OWNER. Forces a sweep of a single order's
   subaccount to the treasury, returning the exact ledger error on failure
   (never swallowed).
 - `getDefaultSubaccountBalance() : async Result<Nat, RecoveryError>` — update.
-  Admin-only. Returns the canister's DEFAULT subaccount balance on the
+  STAFF-OR-ABOVE. Returns the canister's DEFAULT subaccount balance on the
   configured ledger.
 - `sweepDefaultSubaccount() : async Result<SweepResult, RecoveryError>` —
-  update. Admin-only. Sweeps the canister's DEFAULT subaccount balance to the
+  update. ADMIN-OR-OWNER. Sweeps the canister's DEFAULT subaccount balance to the
   treasury, returning the exact ledger error on failure (never swallowed).
-- `startVerificationTimer() : async Bool` — update. Admin-only. Registers the
+- `startVerificationTimer() : async Bool` — update. STAFF-OR-ABOVE. Registers the
   recurring backend payment-verification timer (every 30 seconds). Returns
   `true` when the timer was (re)started. The timer is also auto-registered on
   canister init and post-upgrade, so verification runs even if no admin ever
   calls this.
-- `stopVerificationTimer() : async Bool` — update. Admin-only. Cancels the
+- `stopVerificationTimer() : async Bool` — update. STAFF-OR-ABOVE. Cancels the
   recurring verification timer. Returns `true` when a timer was running and was
   cancelled, `false` when none was running.
 - `getResumeInfo(reference : Text) : async Result<ResumeInfo, RecoveryError>` —
@@ -351,11 +439,11 @@ gauge. Ledger errors are NEVER swallowed — they are returned verbatim in the
   remaining time, status) for resuming an in-progress deposit screen. Remaining
   time is computed server-side from the stored expiry timestamp, never from a
   client timer that resets on reload.
-- `listLatePayments() : async [LatePayment]` — update. Admin-only. Lists all
+- `listLatePayments() : async [LatePayment]` — update. STAFF-OR-ABOVE. Lists all
   recorded late payments (received after the deposit window expired, flagged
   for admin review, never discarded).
 - `markLatePaymentReviewed(reference : Text) : async Bool` — update.
-  Admin-only. Marks a late payment as reviewed. Returns `true` when found.
+  STAFF-OR-ABOVE. Marks a late payment as reviewed. Returns `true` when found.
 
 ### OQL query layer
 
@@ -372,7 +460,9 @@ The storefront does not gate its public methods on a signed-in caller:
 
 - `listProducts`, `getProduct`, `getOrderStatus`, `getMyOrders`, `schema`,
   `execute`, and the HTTP outcall helpers are callable by any caller, including
-  anonymous callers.
+  anonymous callers. `schema()` and `execute()` enforce per-entity
+  authorization against the live caller (see \"OQL per-entity authorization\"
+  below): private entities are readable only by the canister controller.
 - `createOrder`, `createCheckoutSession`, `getPaymentStatus`, and
   `handlePaymentConfirmation` are update methods and are likewise not
   restricted to a specific principal in the current source.
@@ -387,13 +477,13 @@ The storefront does not gate its public methods on a signed-in caller:
   on-ledger balance is at least the amount due. `sweepCryptoToTreasury` is
   ADMIN-ONLY (see below). `updateMinimumOrder` is admin-gated (see below).
 - `isAdmin() : async Bool` is a public query that reports only on the caller:
-  it returns `true` when the caller is a non-anonymous member of the admin
-  allowlist, and `false` otherwise. It never reveals the allowlist contents.
+  it returns `true` when the caller holds OWNER or ADMIN (the \"admin\" tier),
+  and `false` otherwise (including STAFF). It never reveals other principals.
 
 ### Optional customer sign-in (order history)
 
 Signing in with Internet Identity is OPTIONAL and is entirely separate from the
-admin allowlist. It is never required to browse, add to cart, check out, or pay
+admin roles map. It is never required to browse, add to cart, check out, or pay
 — by crypto or by card. Anonymous guest checkout remains the default path.
 
 - When a customer is signed in (a non-anonymous caller) at the moment
@@ -409,90 +499,176 @@ admin allowlist. It is never required to browse, add to cart, check out, or pay
   so `getMyOrders()` returns an empty list for them. Their only way back to an
   order's status is the guest lookup `getOrderStatus(reference)` using the
   reference shown at checkout.
-- Customer sign-in grants NO admin capability. The admin allowlist is a
-  separate, principal-based allowlist; signing in as a customer never adds the
-  caller to it and never unlocks any admin-gated method.
+- Customer sign-in grants NO admin capability. The admin roles map is a
+  separate, principal-based registry; signing in as a customer never grants the
+  caller a role and never unlocks any role-gated method.
 
-### Admin allowlist
+### Admin roles
 
-Privileged configuration methods are gated by a principal-based admin allowlist
-stored in stable state (survives upgrades). The allowlist starts empty; the
-first admin claims it via `claimInitialAdmin()`. Every privileged method binds
-its caller at the top of the function (before any await), explicitly rejects the
-anonymous principal (`2vxsx-fae`), and traps when the caller is not a
-non-anonymous member of the allowlist.
+Privileged configuration methods are gated by a role-based admin model stored
+in stable state (survives upgrades). Each principal holds one of three roles:
+`#owner` (full access, manages owners/admins/staff and roles), `#admin`
+(everything except managing owners), or `#staff` (fulfilment only). The roles
+map starts empty; the first principal claims ownership via
+`claimInitialAdmin()`. Every privileged method binds its caller at the top of
+the function (before any await), explicitly rejects the anonymous principal
+(`2vxsx-fae`), and traps when the caller lacks the required role. There is
+always at least one OWNER: the last owner cannot be demoted or revoked.
 
 Admin management methods:
 
 - `claimInitialAdmin() : async Bool` — one-time bootstrap. Sets the caller as
-  the first admin, callable ONLY while the allowlist is empty. Returns `false`
-  (and does nothing) when the allowlist is already non-empty, so it is
-  permanently dead once an admin exists. Rejects the anonymous principal by
-  returning `false`.
-- `addAdmin(p : Principal) : async Bool` — admin-only. Adds `p` to the
-  allowlist. Returns `false` when `p` is the anonymous principal. Traps for a
-  non-admin caller.
-- `removeAdmin(p : Principal) : async Bool` — admin-only. Removes `p` from the
-  allowlist. Returns `false` (and does nothing) when the allowlist has only one
-  member, so the last remaining admin can never remove themselves and lock the
-  canister out. Traps for a non-admin caller.
-- `listAdmins() : async [Principal]` — admin-only. Returns the current admin
-  principals. Traps for a non-admin caller.
-
-Admin-gated privileged methods (trap for a non-admin or anonymous caller):
-
-- `updateTreasury` and `updateLedgerConfig` require a non-anonymous admin
-  caller to change the treasury destination or the ledger configuration.
-- `createProduct` and `updateProduct` require a non-anonymous admin caller to
-  create or edit a product in the catalogue. Prices are integer cents — never
-  floats.
-- `updateMinimumOrder` requires a non-anonymous admin caller to set the minimum
-  order total (in USD cents) required for crypto checkout.
-- `updatePaymentServiceUrl` and `updatePaymentServiceToken` require a
-  non-anonymous admin caller to set the payment service URL or the shared
-  bearer token. The token is write-only: it is stored but never returned to any
+  the first OWNER (the highest role). Gated on the persistent
+  `initialAdminClaimed` flag being `false` — NOT merely on the roles map being
+  empty — so the one-time claim door stays permanently closed after first use
+  even if the map is ever emptied. Returns `false` (and does nothing) when the
+  flag is already `true` or the caller is anonymous. While the flag is still
+  `false`, this is the recovery path for a locked-out draft admin: whoever
+  signs in first (with a non-anonymous principal) can claim initial ownership
+  again.
+- `bootstrapOwner(p : Principal) : async Bool` — controller-only live
+  bootstrap. Sets `p` as OWNER and marks `initialAdminClaimed` true WITHOUT
+  ever opening the public claim path. Only the canister's controller (verified
+  against the IC management canister) may invoke it; any other caller gets
+  `false`. This is the distinct, documented live bootstrap the deploy pipeline
+  calls once at publish time with the deployer's principal — live never exposes
+  an open claim.
+- `getMyRole() : async ?Role` — query. Public. Reports only the caller's role
+  (`#owner`/`#admin`/`#staff`), or `null` when the caller is unregistered or
+  anonymous. Never reveals other principals.
+- `adminCount() : async Nat` — query. Public. Returns only the number of
+  principals holding any role, never the principals themselves. A caller can
+  use it to learn whether the claim door is open (count 0) without learning who
+  the users are.
+- `listUsers() : async [(Principal, UserRecord)]` — update. OWNER/ADMIN only.
+  Lists every user as a `(principal, { role; grantedAt })` pair. Traps for a
+  caller that is not OWNER or ADMIN.
+- `listAdmins() : async [Principal]` — update. OWNER/ADMIN only. Returns the
+  principals holding OWNER or ADMIN (the \"admin\" tier). Backward-compatible
+  with the old listAdmins semantics. Traps for a caller that is not OWNER or
+  ADMIN.
+- `grantRole(p : Principal, role : Role) : async Bool` — update. Grants (or
+  re-grants) a role. `#owner` and `#admin` grants require OWNER; `#staff`
+  grants require ADMIN or OWNER. The last owner cannot demote themselves (or
+  any owner) below OWNER. Returns `false` for the anonymous target principal.
+- `revokeRole(p : Principal) : async Bool` — update. Revokes any role. OWNER
+  may revoke owner/admin; ADMIN may revoke STAFF only. The last owner cannot
+  revoke themselves. Returns `false` when `p` holds no role.
+- `addAdmin(p : Principal) : async Bool` — update. Backward-compatible wrapper
+  granting the ADMIN role. Requires OWNER (only the owner may create admins).
+  Returns `false` when `p` is the anonymous principal. Traps for a non-owner
   caller.
-- `sweepCryptoToTreasury` and `releaseExpiredOrders` require a non-anonymous
-  admin caller. `sweepCryptoToTreasury` moves a subaccount's funds to the
-  treasury, and `releaseExpiredOrders` advances expired payments — both are
-  spend/state-mutating operations that must never be reachable by an arbitrary
-  caller who merely knows or guesses an order reference.
-- `adminListOrders` and `adminGetOrderDetail` require a non-anonymous admin
-  caller. They enumerate orders and return full order detail (including line
-  items and deposit accounts) for the admin UI, so they are gated to admins.
-- The recovery methods (`listOrdersForRecovery`, `forceRecheckPayment`,
-  `forceSweepOrder`, `getDefaultSubaccountBalance`, `sweepDefaultSubaccount`,
-  `startVerificationTimer`, `stopVerificationTimer`, `listLatePayments`,
-  `markLatePaymentReviewed`) all require a non-anonymous admin caller.
-  `getResumeInfo` and `getCycleBalance` are the recovery methods that are public
-  queries and require no admin caller.
-- The subaccount sweep methods (`getSubaccountBalance`, `sweepSubaccount`)
-  require a non-anonymous admin caller. They query and move funds held in a
-  specific ICRC-1 subaccount, so they must never be reachable by an arbitrary
-  caller who merely knows or guesses a subaccount index.
-- The email methods (`markOrderShipped`, `resendConfirmationEmail`) require a
-  non-anonymous admin caller. They mutate order shipping state and trigger
-  transactional email sends.
-- `getConsentListCsv` requires a non-anonymous admin caller: it exports the
-  consenting-address mailing list (PII), so it is gated to admins.
-  `unsubscribe` is PUBLIC — it is the token-based unsubscribe link embedded in
-  marketing emails and requires no admin caller.
-- `listSubmissions` requires a non-anonymous admin caller: it lists artist
-  submissions (PII) for the admin review view, so it is gated to admins.
-  `submitSubmission` is PUBLIC — it is the artist submission form and requires
-  no admin caller.
+- `removeAdmin(p : Principal) : async Bool` — update. Backward-compatible
+  wrapper revoking any role. Requires OWNER. Returns `false` (and does nothing)
+  when the last owner would remove themselves, so the canister can never be
+  locked out. Traps for a non-owner caller.
+- `isAdmin() : async Bool` — query. Public. Reports only on the caller:
+  returns `true` when the caller holds OWNER or ADMIN (the \"admin\" tier);
+  STAFF reports `false`.
+- `resetAdminForMigration() : async Bool` — update. Controller-only. Clears the
+  roles map and reopens the one-time claim path (`initialAdminClaimed :=
+  false`). This is the safe mechanism for the DRAFT reset: only the canister's
+  controller (verified against the IC management canister) may invoke it, so an
+  emptied map can never be exploited by a non-controller. The deploy pipeline
+  calls it on the DRAFT only; live never invokes it. Returns `false` for any
+  non-controller caller.
 
-There is no registration gate and no role model beyond the admin allowlist: no
-method requires a signed-in (non-anonymous) caller for the public storefront
-methods, and the only privileged role is admin allowlist membership on the
-configuration methods above. Any caller may invoke any other public method.
+### Permission matrix
 
-The app's frontend pins an Internet Identity derivation origin, published at
-`/.well-known/ii-derivation-origin` when available. An agent already holding
-the user's Internet Identity authorization derives the correct per-app
-principal against that origin (for example `icp identity link web <name>
---app <host>`). Such a delegation acts with the user's full authority in this
-app until it expires.
+Every privileged method binds its caller at the top of the function (before any
+await), explicitly rejects the anonymous principal (`2vxsx-fae`), and traps
+when the caller lacks the required role. The tiers are OWNER (full access),
+ADMIN (everything except managing owners), and STAFF (fulfilment and
+diagnostics only). STAFF can never change prices, treasury config, payment
+settings, sweep funds, or manage users.
+
+OWNER-only (managing owners and roles):
+
+- `grantRole(p, #owner)` and `grantRole(p, #admin)` — granting or re-granting
+  an owner or admin role requires OWNER.
+- `revokeRole(p)` when `p` holds OWNER or ADMIN — revoking an owner or admin
+  requires OWNER.
+- `addAdmin(p)` and `removeAdmin(p)` — the backward-compatible admin wrappers
+  require OWNER.
+- Last-owner protection: when only one OWNER remains, `grantRole` (demoting an
+  owner), `revokeRole`, and `removeAdmin` return `false` rather than removing
+  the last owner, so the canister can never be locked out.
+
+ADMIN or OWNER (financial, configuration, and order-management tier — STAFF is
+never admitted):
+
+- `createProduct`, `updateProduct` — catalogue edits; prices are integer cents.
+- `updateMinimumOrder` — minimum crypto order total (USD cents).
+- `updateTreasury`, `updateLedgerConfig` — treasury destination and ledger
+  configuration.
+- `updatePaymentServiceUrl`, `updatePaymentServiceToken` — payment service
+  configuration; the token is write-only and never returned.
+- `sweepCryptoToTreasury`, `releaseExpiredOrders`, `forceSweepOrder`,
+  `sweepDefaultSubaccount`, `sweepSubaccount` — every fund-moving operation.
+- `adminListOrders`, `adminGetOrderDetail` — order enumeration and full order
+  detail for the admin UI.
+- `markOrderShipped`, `resendConfirmationEmail` — shipping state mutation and
+  transactional email triggers.
+- `getConsentListCsv` — exports the consenting-address mailing list (PII).
+- `listUsers`, `listAdmins` — user enumeration.
+- `grantRole(p, #staff)` and `revokeRole(p)` on a STAFF target — ADMIN may
+  grant and revoke STAFF only.
+
+STAFF or above (fulfilment and diagnostics — the lowest tier):
+
+- `getSubaccountBalance`, `getDefaultSubaccountBalance` — read-only on-ledger
+  balance queries.
+- `listOrdersForRecovery`, `forceRecheckPayment` — read-only order diagnosis.
+- `listLatePayments`, `markLatePaymentReviewed` — late-payment review.
+- `startVerificationTimer`, `stopVerificationTimer` — verification timer
+  control.
+- `listSubmissions` — artist submission review (PII).
+- `getMyEncryptedIbeKey` — derives the caller's own IBE decryption key.
+
+Public (no role required):
+
+- `claimInitialAdmin` (one-time, gated on `initialAdminClaimed = false`),
+  `getMyRole`, `adminCount`, `isAdmin`, `getResumeInfo`, `getCycleBalance`,
+  `getCanisterId`, `getIbePublicKey`, `unsubscribe`, `submitSubmission`, the
+  storefront read methods, the crypto read methods, and the HTTP outcall
+  helpers.
+
+There is no registration gate for the public storefront methods: no method
+requires a signed-in (non-anonymous) caller for the public storefront methods,
+and any caller may invoke any other public method. The admin surface is the one
+place a role is required: the privileged configuration methods above require
+OWNER or ADMIN (never STAFF), and the fulfilment methods require STAFF or
+above. A caller is unregistered (holds no role) until it claims initial
+ownership or an OWNER/ADMIN grants it a role; a principal that never did so is
+unregistered even when it belongs to the app's owner, and a signed-in caller
+derived against a different origin is a different principal than the one the
+frontend registered.
+
+The app's frontend pins an Internet Identity derivation origin so one II anchor
+yields the SAME principal across the draft, live, and custom domains. The
+frontend serves `/.well-known/ii-alternative-origins` from public assets,
+listing the draft, live, and custom origins so II shares principals across
+them. The canonical derivation origin is the deploy-time `env.json`
+`ii_derivation_origin` value. An agent already holding the user's Internet
+Identity authorization derives the correct per-app principal against that
+origin (for example `icp identity link web <name> --app <host>`). Such a
+delegation acts with the user's full authority in this app until it expires.
+
+### Migration chain (stable state)
+
+The canister uses the mops-managed enhanced migration chain in
+`src/backend/migrations/`. Every stable field — including the `adminUsers`
+roles map (`Map<Principal, UserRecord>`, one entry per principal holding a
+role) and the persistent `initialAdminClaimed` flag — is declared type-only in
+`main.mo` and seeded by the chain, which replays in lexicographic order on
+fresh install and only the not-yet-applied files on upgrade. Every migration
+carries `adminUsers` and `initialAdminClaimed` forward unchanged: both are part
+of the stable signature, so an upgrade can never reset the roles map or reopen
+the one-time claim path. Publishing to live can therefore never reset the live
+roles map or reopen the claim door — the DRAFT reset is the separate,
+controller-only `resetAdminForMigration` operation the deploy pipeline invokes
+on the DRAFT only. The flag is what keeps the one-time `claimInitialAdmin` door
+permanently closed after first use, even if the roles map is ever emptied.
 
 ### OQL per-entity authorization
 
@@ -519,9 +695,10 @@ OQL authorization is per entity and is enforced against the live caller on both
   expected amounts, the received timestamp, and the review flag. It is never
   exposed to end users.
 - `admin` — `#controllerOnly`: only the canister controller reads the admin
-  allowlist rows (one row per admin principal). It is never exposed to end
-  users; the admin allowlist remains readable only through the admin-only
-  `listAdmins()` method.
+  rows (one row per principal holding a role, keyed by the principal). Each row
+  exposes the principal, its role (`owner`/`admin`/`staff`), and when the role
+  was granted. It is never exposed to end users; role data is readable only
+  through the role-gated `listUsers()` and `listAdmins()` methods (OWNER/ADMIN).
 
 ## Units and Encodings
 
@@ -568,7 +745,10 @@ OQL authorization is per entity and is enforced against the live caller on both
   `Text` of the image URLs, `variants` is the `Nat` count of variants, and
   `admin_only` is a `Bool` flag indicating whether the product is hidden from
   the public /shop grid. In the OQL `order` entity, `items` is the `Nat` count
-  of line items, `shipping_address` is a comma-joined `Text`, `payment_method`
+  of line items, `encrypted_shipping` is the IBE ciphertext blob as lowercase
+  hex `Text` (or `\"\"` when the order has no encrypted shipping details),
+  `has_shipping_details` is a `Bool` indicating whether the order carries
+  encrypted shipping details, `payment_method`
   and `payment_status` are their tag names as `Text`, `payment_reference` is
   the reference `Text` or `\"\"` when unset, `sweep_note` is the most recent
   sweep outcome `Text` or `\"\"` when no sweep has been attempted or the last
@@ -599,9 +779,10 @@ OQL authorization is per entity and is enforced against the live caller on both
   `Nat` values in the token's smallest units, `received_at` is an `Int`
   timestamp in nanoseconds since the Unix epoch, and `reviewed` is a `Bool`
   flag indicating whether an admin has reviewed the late payment.
-- **OQL admin encoding**: In the OQL `admin` entity, each row has a single
-  `principal` field — the admin principal as canonical `Text` (the primary
-  key).
+- **OQL admin encoding**: In the OQL `admin` entity, each row exposes the
+  principal key as `principal` (`Text`), the role tag name as `role` (`Text`,
+  `owner`/`admin`/`staff`), and `granted_at` (`Int` nanoseconds since the Unix
+  epoch — when the role was granted).
 
 ## Lifecycle and Polling
 
@@ -748,19 +929,20 @@ are never silently lost and are always flagged for admin recovery.
   `SweepResult` / `RecheckResult` put any ledger error in the result's `error`
   field rather than trapping.
 - All recovery methods except `getResumeInfo` and `getCycleBalance` are
-  admin-only and TRAP for a caller that is not a non-anonymous member of the
-  admin allowlist (and for the anonymous principal). `getResumeInfo` and
-  `getCycleBalance` are public queries and do not require an admin caller.
+  role-gated and TRAP for a caller that is not a non-anonymous STAFF or above
+  (ADMIN or OWNER for the sweep/mutating methods) and for the anonymous
+  principal. `getResumeInfo` and `getCycleBalance` are public queries and do
+  not require a role.
 - The admin-gated methods (`updateTreasury`, `updateLedgerConfig`,
   `updatePaymentServiceUrl`, `updatePaymentServiceToken`, `addAdmin`,
   `removeAdmin`, `listAdmins`, `sweepCryptoToTreasury`, `releaseExpiredOrders`,
   `adminListOrders`, `adminGetOrderDetail`, `createProduct`, `updateProduct`)
-  TRAP for a caller that is not a
-  non-anonymous member of the admin allowlist, and for the anonymous principal.
-  This is an authorization failure, not a caller-correctable error, so it
-  reaches the caller as a reject rather than a `Result` error.
-  `claimInitialAdmin` returns `false` (rather than trapping) when the allowlist
-  is already non-empty or the caller is anonymous.
+  TRAP for a caller that is not a non-anonymous ADMIN or OWNER, and for the
+  anonymous principal. This is an authorization failure, not a
+  caller-correctable error, so it reaches the caller as a reject rather than a
+  `Result` error. `claimInitialAdmin` returns `false` (rather than trapping)
+  when the persistent `initialAdminClaimed` flag is already `true` or the
+  caller is anonymous.
 - `checkCryptoPayment` returns `#err(#expired)` once the deposit window has
   passed; it never marks a payment paid from a frontend claim — only an
   on-ledger balance at least the amount due counts. `checkCryptoPayment` is
@@ -821,9 +1003,9 @@ are never silently lost and are always flagged for admin recovery.
   the honeypot field is filled (a bot), `#err(#rateLimited)` when the caller
   exceeds the per-principal rate limit, and `#err(#invalidInput)` for a missing
   name, malformed email, non-URL link, or a message over 1000 characters.
-  `listSubmissions` is admin-only and TRAPS for a caller that is not a
-  non-anonymous member of the admin allowlist (and for the anonymous principal)
-  — an authorization failure, not a caller-correctable error.
+  `listSubmissions` is role-gated and TRAPS for a caller that is not a
+  non-anonymous STAFF or above (and for the anonymous principal) — an
+  authorization failure, not a caller-correctable error.
 - Submission timestamps (`submittedAt`, `marketingConsentAt`) are `Int` values
   in nanoseconds since the Unix epoch (`Time.now()`), parsed from the payment
   service's ISO-8601 UTC timestamps. `marketingConsentAt` is `null` when the

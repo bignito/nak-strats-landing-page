@@ -2,12 +2,12 @@ import Result "mo:core/Result";
 import Map "mo:core/Map";
 import List "mo:core/List";
 import Principal "mo:core/Principal";
-import Set "mo:core/Set";
 import Time "mo:core/Time";
 import Types "../types/crypto-payments";
 import StorefrontTypes "../types/storefront";
 import CryptoPaymentsLib "../lib/crypto-payments";
 import AdminLib "../lib/admin-access-control";
+import AdminTypes "../types/admin-access-control";
 
 mixin (
   orders : List.List<StorefrontTypes.Order>,
@@ -15,7 +15,7 @@ mixin (
   cryptoPayments : Map.Map<Text, Types.CryptoPayment>,
   cryptoConfig : Types.CryptoConfig,
   selfPrincipal : Principal,
-  adminAllowlist : Set.Set<Principal>,
+  adminUsers : AdminTypes.AdminUsers,
   minimumOrderState : { var minimumOrder : Nat },
   feeCache : Types.FeeCache,
 ) {
@@ -39,7 +39,7 @@ mixin (
   // checkout. Crypto orders below this are rejected server-side because they
   // cannot be swept to the treasury after the ledger transfer fee is deducted.
   public shared ({ caller }) func updateMinimumOrder(minimum : Nat) : async Result.Result<(), Types.CryptoPaymentError> {
-    AdminLib.requireAdmin(adminAllowlist, caller);
+    AdminLib.requireAdminOrOwner(adminUsers, caller);
     minimumOrderState.minimumOrder := minimum;
     #ok();
   };
@@ -71,7 +71,7 @@ mixin (
   // non-anonymous admin caller. The anonymous principal is rejected by
   // AdminLib.requireAdmin.
   public shared ({ caller }) func sweepCryptoToTreasury(reference : Text) : async Result.Result<Nat, Types.CryptoPaymentError> {
-    AdminLib.requireAdmin(adminAllowlist, caller);
+    AdminLib.requireAdminOrOwner(adminUsers, caller);
     await CryptoPaymentsLib.sweepToTreasury(cryptoPayments, orders, reference, cryptoConfig, selfPrincipal, feeCache);
   };
 
@@ -79,7 +79,7 @@ mixin (
   // reserved inventory, marking them expired. Requires a non-anonymous admin
   // caller. The anonymous principal is rejected by AdminLib.requireAdmin.
   public shared ({ caller }) func releaseExpiredOrders() : async Nat {
-    AdminLib.requireAdmin(adminAllowlist, caller);
+    AdminLib.requireAdminOrOwner(adminUsers, caller);
     var released = 0;
     for ((reference, payment) in cryptoPayments.entries()) {
       let st = payment.status;
@@ -104,7 +104,7 @@ mixin (
   // non-anonymous admin caller. The anonymous principal is rejected by
   // AdminLib.requireAdmin.
   public shared query ({ caller }) func adminListOrders(filter : Text) : async [Types.AdminOrderView] {
-    AdminLib.requireAdmin(adminAllowlist, caller);
+    AdminLib.requireAdminOrOwner(adminUsers, caller);
     let views = List.empty<Types.AdminOrderView>();
     for (order in orders.toArray().values()) {
       let payment = cryptoPayments.get(order.reference);
@@ -120,7 +120,7 @@ mixin (
   // non-anonymous admin caller. The anonymous principal is rejected by
   // AdminLib.requireAdmin.
   public shared query ({ caller }) func adminGetOrderDetail(reference : Text) : async ?Types.AdminOrderDetail {
-    AdminLib.requireAdmin(adminAllowlist, caller);
+    AdminLib.requireAdminOrOwner(adminUsers, caller);
     switch (orders.find(func o = o.reference == reference)) {
       case (?order) {
         let payment = cryptoPayments.get(order.reference);
@@ -131,14 +131,14 @@ mixin (
   };
 
   public shared ({ caller }) func updateTreasury(principal : Principal, subaccount : ?Blob) : async Result.Result<(), Types.CryptoPaymentError> {
-    AdminLib.requireAdmin(adminAllowlist, caller);
+    AdminLib.requireAdminOrOwner(adminUsers, caller);
     cryptoConfig.treasuryPrincipal := principal;
     cryptoConfig.treasurySubaccount := subaccount;
     #ok();
   };
 
   public shared ({ caller }) func updateLedgerConfig(token : Types.Token, canisterId : Principal, decimals : Nat8, fee : Nat) : async Result.Result<(), Types.CryptoPaymentError> {
-    AdminLib.requireAdmin(adminAllowlist, caller);
+    AdminLib.requireAdminOrOwner(adminUsers, caller);
     switch token {
       case (#ckUSDC) { cryptoConfig.ckUSDC := { canisterId; decimals; fee } };
       case (#ICP) { cryptoConfig.icp := { canisterId; decimals; fee } };

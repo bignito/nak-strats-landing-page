@@ -1,7 +1,8 @@
-import { createActor } from "@/backend";
+import { createActor as createActorImpl } from "@/backend";
 import type {
   AdminOrderDetail,
   AdminOrderView,
+  Backend,
   ConsentListExport,
   CreateOrderInput,
   CryptoConfigView,
@@ -15,17 +16,83 @@ import type {
   Product,
   RecheckResult,
   ResumeInfo,
+  Role,
   SubaccountBalanceResult,
   SubmissionInput,
   SubmissionRecord,
   SweepResult,
   SweepSubaccountResult,
   Token,
+  UserRecord,
 } from "@/backend";
-import { useActor, useInternetIdentity } from "@caffeineai/core-infrastructure";
+import {
+  type createActorFunction,
+  useActor,
+  useInternetIdentity,
+} from "@caffeineai/core-infrastructure";
 import type { Principal } from "@icp-sdk/core/principal";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
+
+/**
+ * The generated `createActor` (backend.ts) builds its agent from
+ * `@icp-sdk/core/agent`, while `@caffeineai/core-infrastructure`'s
+ * `createActorFunction` is typed against `@dfinity/agent`. The runtime agent
+ * shapes are compatible; only the static types diverge. We re-type the
+ * generated factory to the core-infrastructure contract so every
+ * `useActor(createActor)` call site aligns on the `@icp-sdk/core` Agent type.
+ */
+const createActor = createActorImpl as unknown as createActorFunction<Backend>;
+
+/**
+ * True when the backend actor is fully ready for an authenticated call: the
+ * actor exists, is not mid-rebuild, and an Internet Identity is attached.
+ * Admin-gated mutations gate on this so they never fire against an
+ * anonymous-identity actor while auth is still initialising.
+ *
+ * Also exposes the auth context so the admin shell can gate UI on readiness
+ * and on the attached identity.
+ */
+export function useActorReady() {
+  const { actor, isFetching } = useActor(createActor);
+  const { isAuthenticated, identity } = useInternetIdentity();
+  const isActorReady = !!actor && !isFetching && isAuthenticated;
+  return { isActorReady, isAuthenticated, identity };
+}
+
+/**
+ * Maps a backend call failure to a human-readable admin message. When the
+ * failure is an anonymous-caller rejection (the backend's `unauthorized`
+ * variant, or an auth/session error), it returns the specific "session was not
+ * attached" message instead of a generic failure, so the operator knows to
+ * sign in again rather than retry a doomed call.
+ */
+export function adminErrorMessage(error: unknown): string {
+  if (error && typeof error === "object") {
+    const record = error as Record<string, unknown>;
+    if (record.__kind__ === "unauthorized") {
+      return "Your session was not attached — sign in again";
+    }
+    if (
+      record.__kind__ === "ledgerError" ||
+      record.__kind__ === "outcallFailed" ||
+      record.__kind__ === "sweepFailed" ||
+      record.__kind__ === "invalidConfig" ||
+      record.__kind__ === "invalidResponse"
+    ) {
+      const detail = record[record.__kind__ as string];
+      return typeof detail === "string" ? detail : String(record.__kind__);
+    }
+  }
+  if (error instanceof Error) {
+    const message = error.message;
+    if (/anonymous|not attached|session/i.test(message)) {
+      return "Your session was not attached — sign in again";
+    }
+    return message;
+  }
+  return "Operation failed";
+}
 
 export function useProducts() {
   const { actor, isFetching } = useActor(createActor);
@@ -52,11 +119,19 @@ export function useProduct(slugOrId: string | null) {
 }
 
 export function useCreateProduct() {
-  const { actor } = useActor(createActor);
+  const { actor, isFetching } = useActor(createActor);
+  const { isActorReady } = useActorReady();
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (product: Product): Promise<boolean> => {
-      if (!actor) throw new Error("Backend is not ready");
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      if (!isActorReady)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
       return actor.createProduct(product);
     },
     onSuccess: () => {
@@ -66,11 +141,19 @@ export function useCreateProduct() {
 }
 
 export function useUpdateProduct() {
-  const { actor } = useActor(createActor);
+  const { actor, isFetching } = useActor(createActor);
+  const { isActorReady } = useActorReady();
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (product: Product): Promise<boolean> => {
-      if (!actor) throw new Error("Backend is not ready");
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      if (!isActorReady)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
       return actor.updateProduct(product);
     },
     onSuccess: () => {
@@ -80,11 +163,14 @@ export function useUpdateProduct() {
 }
 
 export function useCreateOrder() {
-  const { actor } = useActor(createActor);
+  const { actor, isFetching } = useActor(createActor);
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (input: CreateOrderInput) => {
-      if (!actor) throw new Error("Backend is not ready");
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
       return actor.createOrder(input);
     },
     onSuccess: () => {
@@ -106,10 +192,13 @@ export function useOrderStatus(reference: string | null) {
 }
 
 export function useCreateCheckoutSession() {
-  const { actor } = useActor(createActor);
+  const { actor, isFetching } = useActor(createActor);
   return useMutation({
     mutationFn: async (order: Order) => {
-      if (!actor) throw new Error("Backend is not ready");
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
       return actor.createCheckoutSession(order);
     },
   });
@@ -128,10 +217,13 @@ export function usePaymentStatus(reference: string | null) {
 }
 
 export function useHandlePaymentConfirmation() {
-  const { actor } = useActor(createActor);
+  const { actor, isFetching } = useActor(createActor);
   return useMutation({
     mutationFn: async (payload: string) => {
-      if (!actor) throw new Error("Backend is not ready");
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
       return actor.handlePaymentConfirmation(payload);
     },
   });
@@ -176,21 +268,27 @@ export function useCryptoPaymentStatus(reference: string | null) {
 }
 
 export function useCheckCryptoPayment() {
-  const { actor } = useActor(createActor);
+  const { actor, isFetching } = useActor(createActor);
   return useMutation({
     mutationFn: async (reference: string) => {
-      if (!actor) throw new Error("Backend is not ready");
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
       return actor.checkCryptoPayment(reference);
     },
   });
 }
 
 export function useConfirmCryptoPayment() {
-  const { actor } = useActor(createActor);
+  const { actor, isFetching } = useActor(createActor);
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (reference: string) => {
-      if (!actor) throw new Error("Backend is not ready");
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
       return actor.checkCryptoPayment(reference);
     },
     onSuccess: (_data, reference) => {
@@ -205,14 +303,22 @@ export function useConfirmCryptoPayment() {
 }
 
 export function useUpdateTreasury() {
-  const { actor } = useActor(createActor);
+  const { actor, isFetching } = useActor(createActor);
+  const { isActorReady } = useActorReady();
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (args: {
       principal: Principal;
       subaccount: Uint8Array | null;
     }) => {
-      if (!actor) throw new Error("Backend is not ready");
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      if (!isActorReady)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
       return actor.updateTreasury(args.principal, args.subaccount);
     },
     onSuccess: () => {
@@ -222,7 +328,8 @@ export function useUpdateTreasury() {
 }
 
 export function useUpdateLedgerConfig() {
-  const { actor } = useActor(createActor);
+  const { actor, isFetching } = useActor(createActor);
+  const { isActorReady } = useActorReady();
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (args: {
@@ -231,7 +338,14 @@ export function useUpdateLedgerConfig() {
       decimals: number;
       fee: bigint;
     }) => {
-      if (!actor) throw new Error("Backend is not ready");
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      if (!isActorReady)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
       return actor.updateLedgerConfig(
         args.token,
         args.canisterId,
@@ -281,11 +395,19 @@ export function useMyOrders() {
  * orders confirm/release without a manual refresh.
  */
 export function useReleaseExpiredOrders(intervalMs = 60_000) {
-  const { actor } = useActor(createActor);
+  const { actor, isFetching } = useActor(createActor);
+  const { isActorReady } = useActorReady();
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: async (): Promise<bigint> => {
-      if (!actor) throw new Error("Backend is not ready");
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      if (!isActorReady)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
       return actor.releaseExpiredOrders();
     },
     onSuccess: () => {
@@ -294,14 +416,13 @@ export function useReleaseExpiredOrders(intervalMs = 60_000) {
   });
 
   useEffect(() => {
-    if (!actor) return;
-    // Fire once on mount, then on the interval.
+    if (!isActorReady) return;
     void mutation.mutate();
     const interval = setInterval(() => {
       void mutation.mutate();
     }, intervalMs);
     return () => clearInterval(interval);
-  }, [actor, intervalMs, mutation]);
+  }, [isActorReady, intervalMs, mutation]);
 
   return mutation;
 }
@@ -323,11 +444,19 @@ export function usePaymentServiceConfig() {
 }
 
 export function useUpdatePaymentServiceUrl() {
-  const { actor } = useActor(createActor);
+  const { actor, isFetching } = useActor(createActor);
+  const { isActorReady } = useActorReady();
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (url: string) => {
-      if (!actor) throw new Error("Backend is not ready");
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      if (!isActorReady)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
       return actor.updatePaymentServiceUrl(url);
     },
     onSuccess: () => {
@@ -339,11 +468,19 @@ export function useUpdatePaymentServiceUrl() {
 }
 
 export function useUpdatePaymentServiceToken() {
-  const { actor } = useActor(createActor);
+  const { actor, isFetching } = useActor(createActor);
+  const { isActorReady } = useActorReady();
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (token: string) => {
-      if (!actor) throw new Error("Backend is not ready");
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      if (!isActorReady)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
       return actor.updatePaymentServiceToken(token);
     },
     onSuccess: () => {
@@ -355,14 +492,17 @@ export function useUpdatePaymentServiceToken() {
 }
 
 export function useCreateCardCheckoutSession() {
-  const { actor } = useActor(createActor);
+  const { actor, isFetching } = useActor(createActor);
   return useMutation({
     mutationFn: async (args: {
       reference: string;
       successUrl: string;
       cancelUrl: string;
     }) => {
-      if (!actor) throw new Error("Backend is not ready");
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
       return actor.createCardCheckoutSession(
         args.reference,
         args.successUrl,
@@ -373,11 +513,14 @@ export function useCreateCardCheckoutSession() {
 }
 
 export function useConfirmCardPayment() {
-  const { actor } = useActor(createActor);
+  const { actor, isFetching } = useActor(createActor);
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (reference: string) => {
-      if (!actor) throw new Error("Backend is not ready");
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
       return actor.confirmCardPayment(reference);
     },
     onSuccess: (_data, reference) => {
@@ -389,11 +532,14 @@ export function useConfirmCardPayment() {
 }
 
 export function useCancelCardOrder() {
-  const { actor } = useActor(createActor);
+  const { actor, isFetching } = useActor(createActor);
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (reference: string) => {
-      if (!actor) throw new Error("Backend is not ready");
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
       return actor.cancelCardOrder(reference);
     },
     onSuccess: (_data, reference) => {
@@ -416,46 +562,222 @@ export function useIsAdmin() {
   });
 }
 
+/** Reads the number of configured admin principals (public query). */
+export function useAdminCount() {
+  const { actor, isFetching } = useActor(createActor);
+  return useQuery({
+    queryKey: ["adminCount"],
+    queryFn: async (): Promise<bigint> => {
+      if (!actor) return 0n;
+      return actor.adminCount();
+    },
+    enabled: !!actor && !isFetching,
+  });
+}
+
+/**
+ * Reads the signed-in caller's own role (public query — reports only
+ * `msg.caller`). Returns null when the caller has no role. Gated on an
+ * authenticated actor so a stale anonymous `role:null` is never reused after
+ * an identity change.
+ */
+export function useGetMyRole() {
+  const { actor, isFetching } = useActor(createActor);
+  const { isAuthenticated } = useInternetIdentity();
+  return useQuery({
+    queryKey: ["myRole"],
+    queryFn: async (): Promise<Role | null> => {
+      if (!actor) return null;
+      return actor.getMyRole();
+    },
+    enabled: !!actor && !isFetching && isAuthenticated,
+  });
+}
+
+/** Lists every user and their role (OWNER/ADMIN only). */
+export function useListUsers() {
+  const { actor, isFetching } = useActor(createActor);
+  return useQuery({
+    queryKey: ["users"],
+    queryFn: async (): Promise<Array<[Principal, UserRecord]>> => {
+      if (!actor) return [];
+      return actor.listUsers();
+    },
+    enabled: !!actor && !isFetching,
+  });
+}
+
+/** Grants a role to a principal (OWNER for owner-level, ADMIN for STAFF). */
+export function useGrantRole() {
+  const { actor, isFetching } = useActor(createActor);
+  const { isActorReady } = useActorReady();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (args: { principal: Principal; role: Role }) => {
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      if (!isActorReady)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      return actor.grantRole(args.principal, args.role);
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["users"] });
+      void queryClient.invalidateQueries({ queryKey: ["admins"] });
+      void queryClient.invalidateQueries({ queryKey: ["adminCount"] });
+      void queryClient.invalidateQueries({ queryKey: ["myRole"] });
+    },
+  });
+}
+
+/** Revokes a principal's role (OWNER for owner-level, ADMIN for STAFF). */
+export function useRevokeRole() {
+  const { actor, isFetching } = useActor(createActor);
+  const { isActorReady } = useActorReady();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (principal: Principal) => {
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      if (!isActorReady)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      return actor.revokeRole(principal);
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["users"] });
+      void queryClient.invalidateQueries({ queryKey: ["admins"] });
+      void queryClient.invalidateQueries({ queryKey: ["adminCount"] });
+      void queryClient.invalidateQueries({ queryKey: ["myRole"] });
+    },
+  });
+}
+
+/** Controller-only live bootstrap of the first owner. */
+export function useBootstrapOwner() {
+  const { actor, isFetching } = useActor(createActor);
+  const { isActorReady } = useActorReady();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (principal: Principal) => {
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      if (!isActorReady)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      return actor.bootstrapOwner(principal);
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["users"] });
+      void queryClient.invalidateQueries({ queryKey: ["admins"] });
+      void queryClient.invalidateQueries({ queryKey: ["adminCount"] });
+      void queryClient.invalidateQueries({ queryKey: ["myRole"] });
+    },
+  });
+}
+
+/** Controller-only draft reset of the admin/role state. */
+export function useResetAdminForMigration() {
+  const { actor, isFetching } = useActor(createActor);
+  const { isActorReady } = useActorReady();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async () => {
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      if (!isActorReady)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      return actor.resetAdminForMigration();
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["users"] });
+      void queryClient.invalidateQueries({ queryKey: ["admins"] });
+      void queryClient.invalidateQueries({ queryKey: ["adminCount"] });
+      void queryClient.invalidateQueries({ queryKey: ["myRole"] });
+    },
+  });
+}
+
 export function useClaimInitialAdmin() {
-  const { actor } = useActor(createActor);
+  const { actor, isFetching } = useActor(createActor);
+  const { isActorReady } = useActorReady();
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (): Promise<boolean> => {
-      if (!actor) throw new Error("Backend is not ready");
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      if (!isActorReady)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
       return actor.claimInitialAdmin();
     },
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ["isAdmin"] });
       void queryClient.invalidateQueries({ queryKey: ["admins"] });
+      void queryClient.invalidateQueries({ queryKey: ["adminCount"] });
     },
   });
 }
 
 export function useAddAdmin() {
-  const { actor } = useActor(createActor);
+  const { actor, isFetching } = useActor(createActor);
+  const { isActorReady } = useActorReady();
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (principal: Principal): Promise<boolean> => {
-      if (!actor) throw new Error("Backend is not ready");
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      if (!isActorReady)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
       return actor.addAdmin(principal);
     },
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ["admins"] });
+      void queryClient.invalidateQueries({ queryKey: ["adminCount"] });
     },
   });
 }
 
 export function useRemoveAdmin() {
-  const { actor } = useActor(createActor);
+  const { actor, isFetching } = useActor(createActor);
+  const { isActorReady } = useActorReady();
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (principal: Principal): Promise<boolean> => {
-      if (!actor) throw new Error("Backend is not ready");
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      if (!isActorReady)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
       return actor.removeAdmin(principal);
     },
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ["admins"] });
       void queryClient.invalidateQueries({ queryKey: ["isAdmin"] });
+      void queryClient.invalidateQueries({ queryKey: ["adminCount"] });
     },
   });
 }
@@ -493,11 +815,19 @@ export function useGetMinimumOrder() {
  * (dollars * 100), so callers multiply the entered dollars by 100.
  */
 export function useUpdateMinimumOrder() {
-  const { actor } = useActor(createActor);
+  const { actor, isFetching } = useActor(createActor);
+  const { isActorReady } = useActorReady();
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (minimum: bigint) => {
-      if (!actor) throw new Error("Backend is not ready");
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      if (!isActorReady)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
       return actor.updateMinimumOrder(minimum);
     },
     onSuccess: () => {
@@ -548,11 +878,19 @@ export function useListOrdersForRecovery() {
 
 /** Re-checks a crypto order's payment against the ledger (admin-only). */
 export function useForceRecheckPayment() {
-  const { actor } = useActor(createActor);
+  const { actor, isFetching } = useActor(createActor);
+  const { isActorReady } = useActorReady();
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (reference: string): Promise<RecheckResult> => {
-      if (!actor) throw new Error("Backend is not ready");
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      if (!isActorReady)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
       const result = await actor.forceRecheckPayment(reference);
       if (result.__kind__ === "err") throw result.err;
       return result.ok;
@@ -565,11 +903,19 @@ export function useForceRecheckPayment() {
 
 /** Force-sweeps a crypto order's deposit subaccount to treasury (admin-only). */
 export function useForceSweepOrder() {
-  const { actor } = useActor(createActor);
+  const { actor, isFetching } = useActor(createActor);
+  const { isActorReady } = useActorReady();
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (reference: string): Promise<SweepResult> => {
-      if (!actor) throw new Error("Backend is not ready");
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      if (!isActorReady)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
       const result = await actor.forceSweepOrder(reference);
       if (result.__kind__ === "err") throw result.err;
       return result.ok;
@@ -600,11 +946,19 @@ export function useGetDefaultSubaccountBalance() {
 
 /** Sweeps the default subaccount to treasury (admin-only). */
 export function useSweepDefaultSubaccount() {
-  const { actor } = useActor(createActor);
+  const { actor, isFetching } = useActor(createActor);
+  const { isActorReady } = useActorReady();
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (): Promise<SweepResult> => {
-      if (!actor) throw new Error("Backend is not ready");
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      if (!isActorReady)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
       const result = await actor.sweepDefaultSubaccount();
       if (result.__kind__ === "err") throw result.err;
       return result.ok;
@@ -646,11 +1000,19 @@ export function useListLatePayments() {
 
 /** Marks a late payment as reviewed (admin-only). */
 export function useMarkLatePaymentReviewed() {
-  const { actor } = useActor(createActor);
+  const { actor, isFetching } = useActor(createActor);
+  const { isActorReady } = useActorReady();
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (reference: string): Promise<boolean> => {
-      if (!actor) throw new Error("Backend is not ready");
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      if (!isActorReady)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
       return actor.markLatePaymentReviewed(reference);
     },
     onSuccess: () => {
@@ -742,13 +1104,21 @@ export function useGetSubaccountBalance(subaccountIndex: bigint | null) {
 
 /** Sweeps a specific deposit subaccount to treasury (admin-only). */
 export function useSweepSubaccount() {
-  const { actor } = useActor(createActor);
+  const { actor, isFetching } = useActor(createActor);
+  const { isActorReady } = useActorReady();
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (
       subaccountIndex: bigint,
     ): Promise<SweepSubaccountResult> => {
-      if (!actor) throw new Error("Backend is not ready");
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      if (!isActorReady)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
       const result = await actor.sweepSubaccount(subaccountIndex);
       if (result.__kind__ === "err") throw result.err;
       return result.ok;
@@ -764,14 +1134,22 @@ export function useSweepSubaccount() {
 
 /** Marks an order as shipped with an optional tracking number (admin-only). */
 export function useMarkOrderShipped() {
-  const { actor } = useActor(createActor);
+  const { actor, isFetching } = useActor(createActor);
+  const { isActorReady } = useActorReady();
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (args: {
       reference: string;
       trackingNumber: string | null;
     }): Promise<void> => {
-      if (!actor) throw new Error("Backend is not ready");
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      if (!isActorReady)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
       const result = await actor.markOrderShipped(
         args.reference,
         args.trackingNumber,
@@ -792,10 +1170,18 @@ export function useMarkOrderShipped() {
 
 /** Resends the order confirmation email (admin-only). */
 export function useResendConfirmationEmail() {
-  const { actor } = useActor(createActor);
+  const { actor, isFetching } = useActor(createActor);
+  const { isActorReady } = useActorReady();
   return useMutation({
     mutationFn: async (reference: string): Promise<void> => {
-      if (!actor) throw new Error("Backend is not ready");
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      if (!isActorReady)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
       const result = await actor.resendConfirmationEmail(reference);
       if (result.__kind__ === "err") throw result.err;
     },
@@ -826,10 +1212,13 @@ export function useGetConsentListCsv() {
  * email (transactional emails remain exempt).
  */
 export function useUnsubscribe() {
-  const { actor } = useActor(createActor);
+  const { actor, isFetching } = useActor(createActor);
   return useMutation({
     mutationFn: async (token: string): Promise<void> => {
-      if (!actor) throw new Error("Backend is not ready");
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
       const result = await actor.unsubscribe(token);
       if (result.__kind__ === "err") throw result.err;
     },
@@ -846,10 +1235,13 @@ export function useUnsubscribe() {
  * the SubmissionError on failure so the form can surface a readable message.
  */
 export function useSubmitSubmission() {
-  const { actor } = useActor(createActor);
+  const { actor, isFetching } = useActor(createActor);
   return useMutation({
     mutationFn: async (input: SubmissionInput): Promise<void> => {
-      if (!actor) throw new Error("Backend is not ready");
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
       const result = await actor.submitSubmission(input);
       if (result.__kind__ === "err") throw result.err;
     },

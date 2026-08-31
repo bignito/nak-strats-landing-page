@@ -2,7 +2,6 @@ import OutCall "mo:caffeineai-http-outcalls/outcall";
 import List "mo:core/List";
 import Map "mo:core/Map";
 import Principal "mo:core/Principal";
-import Set "mo:core/Set";
 import Timer "mo:core/Timer";
 import Types "types/storefront";
 import CryptoTypes "types/crypto-payments";
@@ -14,6 +13,7 @@ import CryptoPaymentsLib "lib/crypto-payments";
 import PaymentServiceTypes "types/payment-service";
 import PaymentServiceApi "mixins/payment-service-api";
 import AdminApi "mixins/admin-api";
+import AdminTypes "types/admin-access-control";
 import RecoveryApi "mixins/recovery-api";
 import RecoveryLib "lib/recovery";
 import SweepApi "mixins/sweep-api";
@@ -27,6 +27,8 @@ import SetEntity "mo:caffeineai-oql/SetEntity";
 import ApiDocMixin "mixins/api-doc";
 import SubmissionTypes "types/submissions";
 import SubmissionsApi "mixins/submissions-api";
+import IbeApi "mixins/ibe-api";
+import Runtime "mo:core/Runtime";
 
 persistent actor Self {
     func pmToText(m : Types.PaymentMethod) : Text {
@@ -53,10 +55,6 @@ persistent actor Self {
 
     func optPrincipalToText(o : ?Principal) : Text {
       switch o { case null { "" }; case (?p) { p.toText() } };
-    };
-
-    func addrToText(a : Types.ShippingAddress) : Text {
-      a.line1 # ", " # a.city # ", " # a.region # " " # a.postal_code # ", " # a.country;
     };
 
     func productRow(p : Types.Product) : OQL.Entity.Row {
@@ -89,8 +87,8 @@ persistent actor Self {
         ("total", #nat(o.total)),
         ("currency", #text(o.currency)),
         ("customer_email", #text(o.customer_email)),
-        ("customer_name", #text(o.customer_name)),
-        ("shipping_address", #text(addrToText(o.shipping_address))),
+        ("encrypted_shipping", #text(optBlobToText(o.encrypted_shipping))),
+        ("has_shipping_details", #bool(o.has_shipping_details)),
         ("payment_method", #text(pmToText(o.payment_method))),
         ("payment_status", #text(psToText(o.payment_status))),
         ("payment_reference", #text(optText(o.payment_reference))),
@@ -218,9 +216,24 @@ persistent actor Self {
       ]
     };
 
-    // Admin allowlist row: a single admin principal. Private (controller-only).
-    func adminRow(p : Principal) : OQL.Entity.Row {
-      [("principal", #text(p.toText()))]
+    // Admin user row: the principal key and the role record it holds. Private
+    // (controller-only). The principal is the map key, so the row function
+    // receives the (principal, record) pair from the map entries.
+    func adminRow(pair : (Principal, AdminTypes.UserRecord)) : OQL.Entity.Row {
+      let (p, u) = pair;
+      [
+        ("principal", #text(p.toText())),
+        ("role", #text(roleToText(u.role))),
+        ("granted_at", #int(u.grantedAt)),
+      ];
+    };
+
+    func roleToText(r : AdminTypes.Role) : Text {
+      switch r {
+        case (#owner) "owner";
+        case (#admin) "admin";
+        case (#staff) "staff";
+      };
     };
 
     public query func transform(input : OutCall.TransformationInput) : async OutCall.TransformationOutput {
@@ -267,9 +280,17 @@ persistent actor Self {
     // is write-only: it is stored here but never returned to any caller.
     let paymentServiceConfig : PaymentServiceTypes.PaymentServiceConfig;
 
-    // Admin allowlist (stable, seeded by the migration chain). Starts empty;
-    // the first admin claims it via claimInitialAdmin().
-    let adminAllowlist : Set.Set<Principal>;
+    // Admin users (stable, seeded by the migration chain). Maps a principal to
+    // its role record (OWNER/ADMIN/STAFF). Replaces the flat adminAllowlist
+    // Set. Starts empty; the first principal claims ownership via
+    // claimInitialAdmin().
+    let adminUsers : Map.Map<Principal, AdminTypes.UserRecord>;
+
+    // Persistent one-time-claim flag (stable, seeded by the migration chain).
+    // Set true on the first successful claimInitialAdmin(). claimInitialAdmin
+    // is gated on this flag being false (not merely on the allowlist being
+    // empty), so an emptied allowlist can never silently reopen ownership.
+    let initialAdminClaimed : { var initialAdminClaimed : Bool };
 
     // Minimum order total (in USD cents) required for crypto checkout (stable,
     // seeded by the migration chain, default $0.25). Crypto orders below this
@@ -297,6 +318,14 @@ persistent actor Self {
     transient let selfPrincipal = Principal.fromActor(Self);
     transient let paymentAdapter = CryptoPaymentsLib.cryptoAdapter(orders, products, cryptoPayments, cryptoConfig);
 
+    // The vetKD key name for IBE derivation, read from the VETKD_KEY_NAME
+    // canister environment variable (default "test_key_1"). Read transiently at
+    // every (re)start because a migration module cannot call
+    // Runtime.envVar<system>; the value is captured into the key id used for
+    // every derivation. Changing VETKD_KEY_NAME on a later upgrade has no
+    // effect on already-derived keys.
+    transient let ibeKeyName = Runtime.envVar<system>("VETKD_KEY_NAME") ?? "test_key_1";
+
     // Verification timer handle (transient — a timer id is not stable state and
     // is recreated on restart). Registered/cancelled via the recovery API.
     transient let timerState = { var timerId = null : ?Timer.TimerId };
@@ -312,16 +341,17 @@ persistent actor Self {
       });
     };
 
-    include EmailApi(paymentServiceConfig, orders, adminAllowlist);
-    include ConsentApi(paymentServiceConfig, adminAllowlist);
-    include SweepApi(cryptoConfig, selfPrincipal, adminAllowlist, feeCache);
-    include StorefrontApi(products, orders, state, paymentAdapter, adminAllowlist, minimumOrder, paymentServiceConfig, emailTransform);
+    include EmailApi(paymentServiceConfig, orders, adminUsers);
+    include ConsentApi(paymentServiceConfig, adminUsers);
+    include SweepApi(cryptoConfig, selfPrincipal, adminUsers, feeCache);
+    include StorefrontApi(products, orders, state, paymentAdapter, adminUsers, minimumOrder, paymentServiceConfig, emailTransform);
     include PaymentAdapterApi(paymentAdapter);
-    include CryptoPaymentsApi(orders, products, cryptoPayments, cryptoConfig, selfPrincipal, adminAllowlist, minimumOrder, feeCache);
-    include PaymentServiceApi(paymentServiceConfig, orders, products, adminAllowlist);
-    include AdminApi(adminAllowlist);
-    include RecoveryApi(orders, products, cryptoPayments, cryptoConfig, selfPrincipal, adminAllowlist, feeCache, latePayments, timerState, paymentServiceConfig, emailTransform);
-    include SubmissionsApi(paymentServiceConfig, adminAllowlist, rateLimit);
+    include CryptoPaymentsApi(orders, products, cryptoPayments, cryptoConfig, selfPrincipal, adminUsers, minimumOrder, feeCache);
+    include PaymentServiceApi(paymentServiceConfig, orders, products, adminUsers);
+    include AdminApi(adminUsers, initialAdminClaimed, selfPrincipal);
+    include IbeApi(adminUsers, ibeKeyName);
+    include RecoveryApi(orders, products, cryptoPayments, cryptoConfig, selfPrincipal, adminUsers, feeCache, latePayments, timerState, paymentServiceConfig, emailTransform);
+    include SubmissionsApi(paymentServiceConfig, adminUsers, rateLimit);
 
     // OQL — expose persisted storefront data as queryable entities.
     // Products are a public catalogue; orders are private (controller-only).
@@ -356,15 +386,8 @@ persistent actor Self {
         total = 0;
         currency = "";
         customer_email = "";
-        customer_name = "";
-        shipping_address = {
-          line1 = "";
-          line2 = null;
-          city = "";
-          region = "";
-          postal_code = "";
-          country = "";
-        };
+        encrypted_shipping = null : ?Blob;
+        has_shipping_details = false;
         payment_method = #manual;
         payment_status = #pending;
         payment_reference = null;
@@ -442,11 +465,18 @@ persistent actor Self {
         reviewed = false;
       }
     )));
-    // The admin allowlist is private (controller-only): it lists the admin
-    // principals. It is never exposed to end users through OQL.
+    // The admin users map is private (controller-only): it lists the principals
+    // holding a role and their role. It is never exposed to end users through
+    // OQL.
     transient let adminEntity = OQL.Entity.build(OQL.Entity.controllerOnly(OQL.Entity.sample(
-      adminAllowlist.toEntity("admin", "Admin", "principal", adminRow),
-      Principal.fromText("aaaaa-aa")
+      OQL.Entity.new<(Principal, AdminTypes.UserRecord)>(
+        "admin",
+        func () = adminUsers.entries(),
+        "Admin",
+        "principal",
+        adminRow,
+      ),
+      (Principal.fromText("aaaaa-aa"), { role = #staff; grantedAt = 0 : Int; })
     )));
     include Expose({
       entities = [productEntity, orderEntity, cryptoPaymentEntity, cryptoConfigEntity, paymentServiceConfigEntity, latePaymentEntity, adminEntity];

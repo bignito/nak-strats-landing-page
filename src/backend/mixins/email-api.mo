@@ -1,18 +1,18 @@
 import Result "mo:core/Result";
 import List "mo:core/List";
 import Principal "mo:core/Principal";
-import Set "mo:core/Set";
 import Types "../types/email";
 import StorefrontTypes "../types/storefront";
 import PaymentServiceTypes "../types/payment-service";
 import EmailLib "../lib/email";
 import AdminLib "../lib/admin-access-control";
+import AdminTypes "../types/admin-access-control";
 import OutCall "mo:caffeineai-http-outcalls/outcall";
 
 mixin (
   config : PaymentServiceTypes.PaymentServiceConfig,
   orders : List.List<StorefrontTypes.Order>,
-  adminAllowlist : Set.Set<Principal>,
+  adminUsers : AdminTypes.AdminUsers,
 ) {
   // Admin-only: mark an order as shipped (with an optional tracking number) and
   // trigger the shipping notification email. Transactional — sends regardless of
@@ -20,7 +20,7 @@ mixin (
   // principal, and traps for a caller that is not a non-anonymous member of the
   // admin allowlist.
   public shared ({ caller }) func markOrderShipped(reference : Text, trackingNumber : ?Text) : async Result.Result<(), Types.EmailError> {
-    AdminLib.requireAdmin(adminAllowlist, caller);
+    AdminLib.requireAdminOrOwner(adminUsers, caller);
     switch (EmailLib.markOrderShipped(orders, reference, trackingNumber)) {
       case (#err e) { #err(e) };
       case (#ok()) {
@@ -34,7 +34,7 @@ mixin (
   // rejects the anonymous principal, and traps for a caller that is not a
   // non-anonymous member of the admin allowlist.
   public shared ({ caller }) func resendConfirmationEmail(reference : Text) : async Result.Result<(), Types.EmailError> {
-    AdminLib.requireAdmin(adminAllowlist, caller);
+    AdminLib.requireAdminOrOwner(adminUsers, caller);
     await EmailLib.sendOrderConfirmation(config, orders, reference, emailTransform);
   };
 

@@ -1,6 +1,8 @@
+import { useInternetIdentity } from "@caffeineai/core-infrastructure";
+import { useQueryClient } from "@tanstack/react-query";
 import { ShieldAlert } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import AdminSettingsPage from "./components/AdminSettingsPage";
+import AdminDashboard from "./components/AdminDashboard";
 import BubbleBackground from "./components/BubbleBackground";
 import CancelledPage from "./components/CancelledPage";
 import CartPage from "./components/CartPage";
@@ -46,6 +48,23 @@ function App() {
 
   const { setActiveOrderRef } = useActiveOrderRef();
   const { data: isAdmin } = useIsAdmin();
+
+  const { identity } = useInternetIdentity();
+  const queryClient = useQueryClient();
+  const [lastIdentityKey, setLastIdentityKey] = useState<string | null>(null);
+
+  // Invalidate every react-query cache whenever the Internet Identity changes
+  // (sign-in, sign-out, session restore) so a stale anonymous isAdmin:false is
+  // never reused after auth state changes. The actor query itself is keyed by
+  // principal and rebuilt by useActor; invalidating the rest forces refetches
+  // against the new identity.
+  useEffect(() => {
+    const identityKey = identity?.getPrincipal().toString() ?? "anonymous";
+    if (lastIdentityKey !== null && lastIdentityKey !== identityKey) {
+      void queryClient.invalidateQueries();
+    }
+    setLastIdentityKey(identityKey);
+  }, [identity, lastIdentityKey, queryClient]);
 
   const [selectedProductSlugOrId, setSelectedProductSlugOrId] = useState<
     string | null
@@ -163,8 +182,11 @@ function App() {
         style={{ backgroundColor: "var(--nak-bg)" }}
       >
         {/* Falling emoji rain renders on the sub-pages only — the main page
-            uses the restrained institutional background. */}
-        {currentPage !== "main" && <BubbleBackground />}
+            uses the restrained institutional background. Admin surfaces stay
+            clean: no emoji rain on #/admin or #/admin/recovery. */}
+        {currentPage !== "main" &&
+          currentPage !== "admin" &&
+          currentPage !== "adminrecovery" && <BubbleBackground />}
         <Navigation
           currentPage={
             currentPage as
@@ -291,10 +313,7 @@ function App() {
           ) : currentPage === "myorders" ? (
             <MyOrdersPage onNavigateToMain={navigateToMainPage} />
           ) : currentPage === "admin" ? (
-            <AdminSettingsPage
-              onNavigateToMain={navigateToMainPage}
-              onNavigateToProduct={navigateToProductPage}
-            />
+            <AdminDashboard onNavigateToMain={navigateToMainPage} />
           ) : currentPage === "adminrecovery" ? (
             <RecoveryPage
               onNavigateToAdmin={() => setCurrentPage("admin")}

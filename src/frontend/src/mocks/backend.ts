@@ -1,11 +1,15 @@
-import type { Principal } from "@icp-sdk/core/principal";
+import { Principal } from "@icp-sdk/core/principal";
 import type { backendInterface } from "../backend";
 import {
+  Discipline,
   PaymentMethod,
   PaymentStatus,
+  Role,
   ShippingStatus,
   Token,
   type AdminOrderView,
+  type SubmissionRecord,
+  type UserRecord,
 } from "../backend";
 
 const sampleProduct = {
@@ -33,18 +37,136 @@ const sampleProduct = {
   images: [],
 };
 
+// Real product catalog for the dev mock so the shop category filter can be
+// exercised across both categories (Fragrance and Oils).
+const catalogProducts = [
+  {
+    id: 2n,
+    updated_at: 1700000000000000000n,
+    active: true,
+    inventory: 24n,
+    name: "Ameer Al Oud",
+    slug: "ameer-al-oud",
+    description: "A rich, resinous oud accord with warm amber and spice.",
+    variants: [
+      {
+        id: "v-ameer",
+        inventory: 24n,
+        name: "100ML",
+        size: "100ML",
+        price: 2400n,
+      },
+    ],
+    created_at: 1700000000000000000n,
+    currency: "usd",
+    category: "Fragrance",
+    price: 2400n,
+    admin_only: false,
+    images: [],
+  },
+  {
+    id: 3n,
+    updated_at: 1700000000000000000n,
+    active: true,
+    inventory: 12n,
+    name: "Rosso Ombré",
+    slug: "rosso-ombre",
+    description: "A deep, smoky rose with leather and dark woods.",
+    variants: [
+      {
+        id: "v-rosso",
+        inventory: 12n,
+        name: "100ML",
+        size: "100ML",
+        price: 6000n,
+      },
+    ],
+    created_at: 1700000000000000000n,
+    currency: "usd",
+    category: "Fragrance",
+    price: 6000n,
+    admin_only: false,
+    images: [],
+  },
+  {
+    id: 4n,
+    updated_at: 1700000000000000000n,
+    active: true,
+    inventory: 30n,
+    name: "Diala Oil",
+    slug: "diala-oil",
+    description: "A concentrated perfume oil with oud, saffron, and musk.",
+    variants: [
+      {
+        id: "v-diala",
+        inventory: 30n,
+        name: "60ML",
+        size: "60ML",
+        price: 30000n,
+      },
+    ],
+    created_at: 1700000000000000000n,
+    currency: "usd",
+    category: "Oils",
+    price: 30000n,
+    admin_only: false,
+    images: [],
+  },
+  {
+    id: 5n,
+    updated_at: 1700000000000000000n,
+    active: true,
+    inventory: 18n,
+    name: "Noir Éclat",
+    slug: "noir-eclat",
+    description: "A dark, sparkling blend of bergamot, vetiver, and amber.",
+    variants: [
+      {
+        id: "v-noir",
+        inventory: 18n,
+        name: "100ML",
+        size: "100ML",
+        price: 4800n,
+      },
+    ],
+    created_at: 1700000000000000000n,
+    currency: "usd",
+    category: "Fragrance",
+    price: 4800n,
+    admin_only: false,
+    images: [],
+  },
+  {
+    id: 6n,
+    updated_at: 1700000000000000000n,
+    active: true,
+    inventory: 8n,
+    name: "Saffron Attar",
+    slug: "saffron-attar",
+    description: "A pure attar of saffron, sandalwood, and rose absolute.",
+    variants: [
+      {
+        id: "v-saffron",
+        inventory: 8n,
+        name: "30ML",
+        size: "30ML",
+        price: 15000n,
+      },
+    ],
+    created_at: 1700000000000000000n,
+    currency: "usd",
+    category: "Oils",
+    price: 15000n,
+    admin_only: false,
+    images: [],
+  },
+];
+
 const sampleOrder = {
   id: 1n,
   tax: 0n,
   updated_at: 1700000000000000000n,
   total: 3500n,
-  shipping_address: {
-    region: "Kanto",
-    country: "Japan",
-    city: "Neo Tokyo",
-    postal_code: "100-0001",
-    line1: "123 Neon Avenue",
-  },
   shipping: 0n,
   reference: "NAK-000001",
   created_at: 1700000000000000000n,
@@ -61,9 +183,11 @@ const sampleOrder = {
     },
   ],
   customer_email: "jane@example.com",
-  customer_name: "Jane Doe",
   subtotal: 3500n,
   shipping_status: ShippingStatus.pending,
+  has_shipping_details: true,
+  // Opaque IBE blob; the backend never sees plaintext PII.
+  encrypted_shipping: new Uint8Array([1, 2, 3, 4]),
   marketing_consent: false,
   marketing_consent_at: undefined,
   shipped_at: undefined,
@@ -98,10 +222,52 @@ const sampleAdminOrderPaid: AdminOrderView = {
     "icrc1:ckUSDC:vm5zh-yaaaa-aaaaj-qoaza-cai:0000000000000000000000000000000000000000000000000000000000000005",
 };
 
+// Sample role records so the USERS tab renders a populated table and the
+// single-owner warning.
+const sampleUsers: Array<[Principal, UserRecord]> = [
+  [
+    Principal.fromText("aaaaa-aa"),
+    { role: Role.owner, grantedAt: 1700000000000000000n },
+  ],
+  [
+    Principal.fromText("2vxsx-fae"),
+    { role: Role.admin, grantedAt: 1700000000000000000n },
+  ],
+  [
+    Principal.fromText("ryjl3-tyaaa-aaaaa-aaaba-cai"),
+    { role: Role.staff, grantedAt: 1700000000000000000n },
+  ],
+];
+
+// Sample artist submissions so the SUBMISSIONS tab renders a populated table.
+const sampleSubmissions: SubmissionRecord[] = [
+  {
+    id: "sub-1",
+    name: "Aria Voss",
+    discipline: Discipline.music,
+    link: "https://soundcloud.com/aria-voss/demo",
+    email: "aria@example.com",
+    message: "Electronic ambient demo, 3 tracks.",
+    submittedAt: 1700000000000000000n,
+    marketingConsent: true,
+    marketingConsentAt: 1700000000000000000n,
+  },
+  {
+    id: "sub-2",
+    name: "Kofi Mensah",
+    discipline: Discipline.visualArt,
+    link: "https://kofi.art/portfolio",
+    email: "kofi@example.com",
+    message: undefined,
+    submittedAt: 1700000000000000000n,
+    marketingConsent: false,
+    marketingConsentAt: undefined,
+  },
+];
+
 export const mockBackend: backendInterface = {
   addAdmin: async () => true,
   adminGetOrderDetail: async () => ({
-    customerName: "Jane Doe",
     status: PaymentStatus.pending,
     paymentMethod: PaymentMethod.crypto_ckusdc,
     cryptoStatus: { __kind__: "awaiting_payment", awaiting_payment: null },
@@ -122,17 +288,26 @@ export const mockBackend: backendInterface = {
     ],
     sweepNote: undefined,
     customerEmail: "jane@example.com",
+    hasShippingDetails: true,
+    encryptedShipping: new Uint8Array([1, 2, 3, 4]),
     depositAccountText:
       "icrc1:ckUSDC:vm5zh-yaaaa-aaaaj-qoaza-cai:0000000000000000000000000000000000000000000000000000000000000005",
   }),
   adminListOrders: async () => [sampleAdminOrder, sampleAdminOrderPaid],
+  adminCount: async () => 1n,
+  bootstrapOwner: async () => true,
   cancelCardOrder: async () => ({ __kind__: "ok", ok: null }),
   claimInitialAdmin: async () => true,
+  getMyRole: async () => Role.owner,
+  grantRole: async () => true,
   isAdmin: async () => true,
   listAdmins: async () => [],
   listLatePayments: async () => [],
   listOrdersForRecovery: async () => [],
+  listUsers: async () => [],
   removeAdmin: async () => true,
+  resetAdminForMigration: async () => true,
+  revokeRole: async () => true,
   checkCryptoPayment: async () => ({
     __kind__: "ok",
     ok: { __kind__: "awaiting_payment", awaiting_payment: null },
@@ -192,9 +367,10 @@ export const mockBackend: backendInterface = {
     ok: { __kind__: "awaiting_payment", awaiting_payment: null },
   }),
   getCanisterId: async () => "aaaaa-aa" as unknown as Principal,
-  getCycleBalance: async () => 0n,
+  getCycleBalance: async () => 1_250_000_000_000n,
   getDashboardData: async () => "{}",
-  getDefaultSubaccountBalance: async () => ({ __kind__: "ok", ok: 0n }),
+  getDefaultSubaccountBalance: async () => ({ __kind__: "ok", ok: 1_250_000_000n }),
+  getIbePublicKey: async () => new Uint8Array(0),
   getConsentListCsv: async () => ({
     __kind__: "ok",
     ok: { csv: "email,consented_at\njane@example.com,1700000000000000000" },
@@ -202,13 +378,14 @@ export const mockBackend: backendInterface = {
   getSubaccountBalance: async () => ({
     __kind__: "ok",
     ok: {
-      balance: 0n,
+      balance: 3_500_000_000n,
       subaccountHex:
         "0000000000000000000000000000000000000000000000000000000000000005",
       subaccountIndex: 5n,
     },
   }),
   getMyOrders: async () => [sampleOrder],
+  getMyEncryptedIbeKey: async (transportPublicKey: Uint8Array) => new Uint8Array(0),
   getNAKPrice: async () => "1.00",
   getOrderStatus: async () => sampleOrder,
   getPaymentServiceConfig: async () => ({
@@ -238,9 +415,13 @@ export const mockBackend: backendInterface = {
   }),
   getTokenImage: async () => "",
   getTokenProfile: async () => "",
-  getTreasuryTokens: async () => "[]",
+  getTreasuryTokens: async () =>
+    JSON.stringify([
+      { symbol: "ckUSDC", balance: 12_500_000_000n, decimals: 6 },
+      { symbol: "ICP", balance: 0n, decimals: 8 },
+    ]),
   handlePaymentConfirmation: async () => ({ __kind__: "ok", ok: null }),
-  listProducts: async () => [sampleProduct],
+  listProducts: async () => catalogProducts,
   listSubmissions: async () => ({ __kind__: "ok", ok: [] }),
   markLatePaymentReviewed: async () => true,
   markOrderShipped: async () => ({ __kind__: "ok", ok: null }),

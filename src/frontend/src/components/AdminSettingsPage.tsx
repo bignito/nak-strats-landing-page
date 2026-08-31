@@ -1,47 +1,91 @@
-import { Token } from "@/backend";
+import { PaymentMethod, PaymentStatus, Token } from "@/backend";
+import type {
+  ConsentError,
+  EmailError,
+  Product,
+  ProductVariant,
+  SweepError,
+} from "@/backend";
 import {
   useAddAdmin,
+  useAdminListOrders,
   useClaimInitialAdmin,
+  useCreateProduct,
   useCryptoConfig,
+  useForceRecheckPayment,
+  useForceSweepOrder,
+  useGetCanisterId,
+  useGetConsentListCsv,
+  useGetCycleBalance,
+  useGetDefaultSubaccountBalance,
+  useGetMinimumOrder,
+  useGetSubaccountBalance,
+  useGetTreasuryTokens,
   useIsAdmin,
   useListAdmins,
+  useListOrdersForRecovery,
+  useMarkOrderShipped,
   usePaymentServiceConfig,
+  useProducts,
   useRemoveAdmin,
+  useResendConfirmationEmail,
+  useSweepDefaultSubaccount,
+  useSweepSubaccount,
   useUpdateLedgerConfig,
+  useUpdateMinimumOrder,
   useUpdatePaymentServiceToken,
   useUpdatePaymentServiceUrl,
+  useUpdateProduct,
   useUpdateTreasury,
 } from "@/hooks/useQueries";
+import { dollarsToCents, formatPrice } from "@/lib/currency";
 import type {
+  AdminOrderView,
   CryptoPaymentError,
+  CryptoPaymentStatus,
   PaymentServiceError,
+  RecoveryError,
 } from "@/types/storefront";
 import { useInternetIdentity } from "@caffeineai/core-infrastructure";
 import { Principal } from "@icp-sdk/core/principal";
 import {
+  Activity,
   AlertTriangle,
   ArrowLeft,
+  BadgeDollarSign,
   Check,
+  CheckCircle2,
+  Coins,
   Copy,
   CreditCard,
+  Download,
+  FlaskConical,
+  Gauge,
   Landmark,
   Loader2,
   Lock,
   LogIn,
   LogOut,
+  Mail,
+  Package,
+  RefreshCw,
   Save,
+  Send,
+  Server,
   Settings,
   ShieldAlert,
   ShieldCheck,
+  Truck,
   UserPlus,
   UserX,
   Wallet,
 } from "lucide-react";
 import type React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 interface AdminSettingsPageProps {
   onNavigateToMain: () => void;
+  onNavigateToProduct: (slugOrId: string) => void;
 }
 
 const DEFAULT_TREASURY_PRINCIPAL =
@@ -86,6 +130,10 @@ function formatCryptoError(err: CryptoPaymentError): string {
       return `Sweep failed: ${err.sweepFailed}`;
     case "notCryptoOrder":
       return "Not a crypto order.";
+    case "belowMinimumOrder":
+      return `Orders must be at least $${(
+        Number(err.belowMinimumOrder) / 100
+      ).toFixed(2)} for crypto payment.`;
     default:
       return "An unknown error occurred.";
   }
@@ -110,8 +158,204 @@ function formatPaymentServiceError(err: PaymentServiceError): string {
   }
 }
 
+/** Format a cycle balance as trillions, e.g. 1.24T. */
+function formatCycles(cycles: bigint): string {
+  const t = Number(cycles) / 1e12;
+  return `${t.toFixed(2)}T`;
+}
+
+/** Format a token amount from raw ledger units (default 6 decimals for ckUSDC). */
+function formatTokenAmount(units: bigint, decimals = 6): string {
+  const value = Number(units) / 10 ** decimals;
+  return value.toLocaleString("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: decimals,
+  });
+}
+
+/** Map a RecoveryError to a human-readable message, preserving exact ledger text. */
+function recoveryErrorMessage(err: RecoveryError): string {
+  switch (err.__kind__) {
+    case "unauthorized":
+      return "You are not authorized to perform this action.";
+    case "notFound":
+      return "Order not found.";
+    case "notCryptoOrder":
+      return "This order is not a crypto order.";
+    case "ledgerError":
+      return `Ledger error: ${err.ledgerError}`;
+    case "sweepFailed":
+      return `Sweep failed: ${err.sweepFailed}`;
+    case "invalidConfig":
+      return `Invalid configuration: ${err.invalidConfig}`;
+    default:
+      return "An unknown error occurred.";
+  }
+}
+
+/** Map an EmailError to a human-readable message, preserving exact backend text. */
+function emailErrorMessage(err: EmailError): string {
+  switch (err.__kind__) {
+    case "unauthorized":
+      return "You are not authorized to perform this action.";
+    case "notFound":
+      return "Order not found.";
+    case "notShippable":
+      return "This order cannot be shipped (no shipping address on file).";
+    case "notConfigured":
+      return `Email service not configured: ${err.notConfigured}`;
+    case "outcallFailed":
+      return `Email send failed: ${err.outcallFailed}`;
+    case "invalidResponse":
+      return `Invalid email service response: ${err.invalidResponse}`;
+    default:
+      return "An unknown error occurred.";
+  }
+}
+
+/** Map a ConsentError to a human-readable message, preserving exact backend text. */
+function consentErrorMessage(err: ConsentError): string {
+  switch (err.__kind__) {
+    case "unauthorized":
+      return "You are not authorized to perform this action.";
+    case "alreadyUnsubscribed":
+      return "This address is already unsubscribed.";
+    case "invalidToken":
+      return "The unsubscribe token is invalid or expired.";
+    case "notConfigured":
+      return `Email service not configured: ${err.notConfigured}`;
+    case "outcallFailed":
+      return `Email service call failed: ${err.outcallFailed}`;
+    case "invalidResponse":
+      return `Invalid email service response: ${err.invalidResponse}`;
+    default:
+      return "An unknown error occurred.";
+  }
+}
+
+/** Map a SweepError to a human-readable message, preserving exact ledger text. */
+function sweepErrorMessage(err: SweepError): string {
+  switch (err.__kind__) {
+    case "unauthorized":
+      return "You are not authorized to perform this action.";
+    case "ledgerError":
+      return `Ledger error: ${err.ledgerError}`;
+    case "sweepFailed":
+      return `Sweep failed: ${err.sweepFailed}`;
+    case "invalidConfig":
+      return `Invalid configuration: ${err.invalidConfig}`;
+    default:
+      return "An unknown error occurred.";
+  }
+}
+
+/** Extract a readable message from an unknown thrown value. */
+function errorText(err: unknown): string {
+  if (err instanceof Error) return err.message;
+  if (typeof err === "string") return err;
+  return "An unknown error occurred.";
+}
+
+/** Tailwind text color class for a payment status. */
+function statusTone(status: PaymentStatus): string {
+  switch (status) {
+    case PaymentStatus.paid:
+      return "text-success";
+    case PaymentStatus.pending:
+      return "text-warning";
+    case PaymentStatus.expired:
+      return "text-destructive";
+    case PaymentStatus.cancelled:
+      return "text-gray-400";
+    default:
+      return "text-gray-300";
+  }
+}
+
+/** Human label for a payment method. */
+function paymentMethodLabel(method: PaymentMethod): string {
+  switch (method) {
+    case PaymentMethod.crypto_ckusdc:
+      return "ckUSDC";
+    case PaymentMethod.crypto_icp:
+      return "ICP";
+    case PaymentMethod.card_stripe:
+      return "Card";
+    case PaymentMethod.manual:
+      return "Manual";
+    default:
+      return method;
+  }
+}
+
+/** Human label for a crypto payment status. */
+function cryptoStatusLabel(status: CryptoPaymentStatus): string {
+  switch (status.__kind__) {
+    case "awaiting_payment":
+      return "Awaiting payment";
+    case "paid":
+      return "Paid";
+    case "expired":
+      return "Expired";
+    case "underpayment":
+      return "Underpayment";
+    case "overpayment":
+      return "Overpayment";
+  }
+}
+
+/** Editable product form draft. Prices are held as dollar strings and converted
+ * to integer cents only when saving. Complex fields (variants, images) are
+ * preserved as-is so editing a product never drops them. */
+interface ProductDraft {
+  name: string;
+  slug: string;
+  description: string;
+  category: string;
+  currency: string;
+  priceText: string;
+  inventoryText: string;
+  active: boolean;
+  adminOnly: boolean;
+  images: string[];
+  variants: ProductVariant[];
+}
+
+const EMPTY_PRODUCT_DRAFT: ProductDraft = {
+  name: "",
+  slug: "",
+  description: "",
+  category: "",
+  currency: "USD",
+  priceText: "",
+  inventoryText: "",
+  active: true,
+  adminOnly: false,
+  images: [],
+  variants: [],
+};
+
+/** Convert a stored Product into an editable draft, rendering its cent price
+ * back as a dollar string. */
+function productToDraft(product: Product): ProductDraft {
+  return {
+    name: product.name,
+    slug: product.slug,
+    description: product.description,
+    category: product.category,
+    currency: product.currency,
+    priceText: (Number(product.price) / 100).toFixed(2),
+    inventoryText: product.inventory.toString(),
+    active: product.active,
+    adminOnly: product.admin_only,
+    images: [...product.images],
+    variants: product.variants.map((v) => ({ ...v })),
+  };
+}
+
 const AdminSettingsPage: React.FC<AdminSettingsPageProps> = ({
   onNavigateToMain,
+  onNavigateToProduct,
 }) => {
   const {
     identity,
@@ -133,6 +377,84 @@ const AdminSettingsPage: React.FC<AdminSettingsPageProps> = ({
   const { data: paymentConfig } = usePaymentServiceConfig();
   const updatePaymentUrl = useUpdatePaymentServiceUrl();
   const updatePaymentToken = useUpdatePaymentServiceToken();
+
+  const { data: minimumOrder } = useGetMinimumOrder();
+  const updateMinimumOrder = useUpdateMinimumOrder();
+
+  // Canister health
+  const { data: cycleBalance } = useGetCycleBalance();
+  const { data: canisterId } = useGetCanisterId();
+  const [canisterCopied, setCanisterCopied] = useState(false);
+
+  // Orders
+  const [orderFilter, setOrderFilter] = useState("all");
+  const { data: orders, isLoading: ordersLoading } =
+    useAdminListOrders(orderFilter);
+  const forceRecheck = useForceRecheckPayment();
+  const forceSweep = useForceSweepOrder();
+  const [orderActionError, setOrderActionError] = useState<string | null>(null);
+
+  // Email & shipping actions
+  const markShipped = useMarkOrderShipped();
+  const resendEmail = useResendConfirmationEmail();
+  const [trackingDraft, setTrackingDraft] = useState<Record<string, string>>(
+    {},
+  );
+  const [shippedError, setShippedError] = useState<string | null>(null);
+  const [resendError, setResendError] = useState<string | null>(null);
+  const [resendSuccess, setResendSuccess] = useState<string | null>(null);
+
+  // Consent list export
+  const consentCsv = useGetConsentListCsv();
+  const [consentError, setConsentError] = useState<string | null>(null);
+  const [consentSuccess, setConsentSuccess] = useState(false);
+
+  // Subaccount sweep control
+  const [subaccountIndexText, setSubaccountIndexText] = useState("");
+  const [subaccountIndex, setSubaccountIndex] = useState<bigint | null>(null);
+  const { data: subaccountBalance, error: subaccountBalanceError } =
+    useGetSubaccountBalance(subaccountIndex);
+  const sweepSubaccount = useSweepSubaccount();
+  const [subaccountSweepError, setSubaccountSweepError] = useState<
+    string | null
+  >(null);
+  const [subaccountSweepSuccess, setSubaccountSweepSuccess] = useState<
+    string | null
+  >(null);
+
+  // Funds
+  const { data: defaultSubaccountBalance } = useGetDefaultSubaccountBalance();
+  const sweepDefault = useSweepDefaultSubaccount();
+  const { data: treasuryTokens } = useGetTreasuryTokens();
+  const { data: recoveryOrders } = useListOrdersForRecovery();
+  const [sweepError, setSweepError] = useState<string | null>(null);
+
+  // ckUSDC balance held by the treasury, parsed defensively from the raw JSON
+  // string returned by useGetTreasuryTokens().
+  const treasuryCkUsdcBalance = useMemo(() => {
+    if (!treasuryTokens) return null;
+    try {
+      const parsed: unknown = JSON.parse(treasuryTokens);
+      if (parsed && typeof parsed === "object") {
+        const record = parsed as Record<string, unknown>;
+        const ckUsdc = record.ckUSDC ?? record.ckusdc ?? record.ckUsdc;
+        if (typeof ckUsdc === "number") return ckUsdc;
+        if (typeof ckUsdc === "string") {
+          const n = Number(ckUsdc);
+          if (Number.isFinite(n)) return n;
+        }
+      }
+    } catch {
+      // fall through to null on malformed JSON
+    }
+    return null;
+  }, [treasuryTokens]);
+
+  // Total live on-ledger balance across all crypto orders awaiting recovery.
+  const unsweptTotal = useMemo(() => {
+    if (!recoveryOrders || recoveryOrders.length === 0) return null;
+    return recoveryOrders.reduce((sum, order) => sum + order.liveBalance, 0n);
+  }, [recoveryOrders]);
 
   // Admin management form state
   const [addAdminText, setAddAdminText] = useState("");
@@ -218,6 +540,26 @@ const AdminSettingsPage: React.FC<AdminSettingsPageProps> = ({
     null,
   );
 
+  // Minimum order form state (one-time init from config)
+  const [minimumOrderText, setMinimumOrderText] = useState("");
+  const [minimumOrderInit, setMinimumOrderInit] = useState(false);
+  const [minimumOrderError, setMinimumOrderError] = useState<string | null>(
+    null,
+  );
+
+  // Product create/edit form state
+  const { data: products, isLoading: productsLoading } = useProducts();
+  const createProduct = useCreateProduct();
+  const updateProduct = useUpdateProduct();
+  const [productMode, setProductMode] = useState<"create" | "edit">("create");
+  const [selectedProductId, setSelectedProductId] = useState<bigint | null>(
+    null,
+  );
+  const [productDraft, setProductDraft] =
+    useState<ProductDraft>(EMPTY_PRODUCT_DRAFT);
+  const [productError, setProductError] = useState<string | null>(null);
+  const [productSuccess, setProductSuccess] = useState(false);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -243,6 +585,13 @@ const AdminSettingsPage: React.FC<AdminSettingsPageProps> = ({
       setLedgerInit(true);
     }
   }, [config, ledgerInit]);
+
+  useEffect(() => {
+    if (minimumOrder !== undefined && !minimumOrderInit) {
+      setMinimumOrderText((Number(minimumOrder) / 100).toFixed(2));
+      setMinimumOrderInit(true);
+    }
+  }, [minimumOrder, minimumOrderInit]);
 
   const treasuryUnset = !config || config.treasuryPrincipal.isAnonymous();
   const icpUnset = !config || config.icp.canisterId.isAnonymous();
@@ -358,6 +707,238 @@ const AdminSettingsPage: React.FC<AdminSettingsPageProps> = ({
     }
     setPaymentTokenError(null);
     updatePaymentToken.mutate(token);
+  };
+
+  const minimumOrderMutationError =
+    updateMinimumOrder.data?.__kind__ === "err"
+      ? formatCryptoError(updateMinimumOrder.data.err)
+      : null;
+  const minimumOrderSaved = updateMinimumOrder.data?.__kind__ === "ok";
+
+  const handleSaveMinimumOrder = () => {
+    const dollars = Number(minimumOrderText.trim());
+    if (!minimumOrderText.trim() || Number.isNaN(dollars) || dollars <= 0) {
+      setMinimumOrderError("Enter a positive minimum order amount in dollars.");
+      return;
+    }
+    setMinimumOrderError(null);
+    updateMinimumOrder.mutate(BigInt(Math.round(dollars * 100)));
+  };
+
+  /** Mark an order as shipped, sending the shipping notification email. */
+  const handleMarkShipped = (reference: string) => {
+    setShippedError(null);
+    const tracking = trackingDraft[reference]?.trim() || null;
+    markShipped.mutate(
+      { reference, trackingNumber: tracking },
+      {
+        onError: (err) =>
+          setShippedError(
+            err && typeof err === "object" && "__kind__" in err
+              ? emailErrorMessage(err as unknown as EmailError)
+              : errorText(err),
+          ),
+      },
+    );
+  };
+
+  /** Resend the order confirmation email (admin-only). */
+  const handleResendEmail = (reference: string) => {
+    setResendError(null);
+    setResendSuccess(null);
+    resendEmail.mutate(reference, {
+      onSuccess: () => setResendSuccess(reference),
+      onError: (err) =>
+        setResendError(
+          err && typeof err === "object" && "__kind__" in err
+            ? emailErrorMessage(err as unknown as EmailError)
+            : errorText(err),
+        ),
+    });
+  };
+
+  /** Download the CSV of consenting addresses as a file. */
+  const handleExportConsentCsv = () => {
+    setConsentError(null);
+    setConsentSuccess(false);
+    if (!consentCsv.data) {
+      setConsentError("No consent list is available yet. Try again.");
+      return;
+    }
+    const blob = new Blob([consentCsv.data.csv], {
+      type: "text/csv;charset=utf-8;",
+    });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "nak-consent-list.csv";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    setConsentSuccess(true);
+  };
+
+  /** Query a specific deposit subaccount balance by integer index. */
+  const handleQuerySubaccount = () => {
+    const text = subaccountIndexText.trim();
+    if (!text || !/^\d+$/.test(text)) {
+      setSubaccountSweepError("Enter a non-negative integer subaccount index.");
+      return;
+    }
+    setSubaccountSweepError(null);
+    setSubaccountSweepSuccess(null);
+    setSubaccountIndex(BigInt(text));
+  };
+
+  /** Sweep a specific deposit subaccount to treasury, surfacing exact errors. */
+  const handleSweepSubaccount = () => {
+    if (subaccountIndex === null) {
+      setSubaccountSweepError("Query a subaccount balance first.");
+      return;
+    }
+    setSubaccountSweepError(null);
+    setSubaccountSweepSuccess(null);
+    sweepSubaccount.mutate(subaccountIndex, {
+      onSuccess: (result) => {
+        if (result.error) {
+          setSubaccountSweepError(result.error);
+        } else {
+          setSubaccountSweepSuccess(
+            `Subaccount ${subaccountIndex.toString()} swept to treasury (block ${result.blockIndex?.toString() ?? "n/a"}).`,
+          );
+        }
+      },
+      onError: (err) =>
+        setSubaccountSweepError(
+          err && typeof err === "object" && "__kind__" in err
+            ? sweepErrorMessage(err as unknown as SweepError)
+            : errorText(err),
+        ),
+    });
+  };
+
+  const handleSelectProduct = (id: bigint) => {
+    const product = products?.find((p) => p.id === id);
+    if (!product) return;
+    setSelectedProductId(id);
+    setProductMode("edit");
+    setProductDraft(productToDraft(product));
+    setProductError(null);
+    setProductSuccess(false);
+  };
+
+  const handleCreateNewProduct = () => {
+    setSelectedProductId(null);
+    setProductMode("create");
+    setProductDraft(EMPTY_PRODUCT_DRAFT);
+    setProductError(null);
+    setProductSuccess(false);
+  };
+
+  const handleSaveProduct = () => {
+    const name = productDraft.name.trim();
+    const slug = productDraft.slug.trim();
+    if (!name) {
+      setProductError("Enter a product name.");
+      return;
+    }
+    if (!slug) {
+      setProductError("Enter a product slug.");
+      return;
+    }
+    const priceCents = dollarsToCents(productDraft.priceText);
+    if (priceCents === null) {
+      setProductError(
+        "Enter a valid price in dollars (e.g. 35.00 or 78.54) with no more than 2 decimal places.",
+      );
+      return;
+    }
+    const inventory = Number(productDraft.inventoryText);
+    if (
+      !productDraft.inventoryText.trim() ||
+      !Number.isInteger(inventory) ||
+      inventory < 0
+    ) {
+      setProductError("Enter a valid non-negative whole-number inventory.");
+      return;
+    }
+    setProductError(null);
+    setProductSuccess(false);
+
+    const description = productDraft.description.trim();
+    const category = productDraft.category.trim();
+    const currency = productDraft.currency.trim() || "USD";
+
+    if (productMode === "create") {
+      const maxId =
+        products && products.length > 0
+          ? products.reduce((m, p) => (p.id > m ? p.id : m), 0n)
+          : 0n;
+      const now = BigInt(Date.now()) * 1_000_000n;
+      const product: Product = {
+        id: maxId + 1n,
+        created_at: now,
+        updated_at: now,
+        active: productDraft.active,
+        inventory: BigInt(inventory),
+        name,
+        slug,
+        description,
+        variants: productDraft.variants,
+        currency,
+        admin_only: productDraft.adminOnly,
+        category,
+        price: BigInt(priceCents),
+        images: productDraft.images,
+      };
+      createProduct.mutate(product, {
+        onSuccess: (ok) => {
+          if (ok) {
+            setProductSuccess(true);
+            setProductDraft(EMPTY_PRODUCT_DRAFT);
+          } else {
+            setProductError("Could not create the product.");
+          }
+        },
+        onError: () => setProductError("Failed to create the product."),
+      });
+      return;
+    }
+
+    if (selectedProductId === null) {
+      setProductError("Select a product to edit.");
+      return;
+    }
+    const original = products?.find((p) => p.id === selectedProductId);
+    if (!original) {
+      setProductError("The selected product no longer exists.");
+      return;
+    }
+    const product: Product = {
+      ...original,
+      active: productDraft.active,
+      inventory: BigInt(inventory),
+      name,
+      slug,
+      description,
+      variants: productDraft.variants,
+      currency,
+      admin_only: productDraft.adminOnly,
+      category,
+      price: BigInt(priceCents),
+      images: productDraft.images,
+    };
+    updateProduct.mutate(product, {
+      onSuccess: (ok) => {
+        if (ok) {
+          setProductSuccess(true);
+        } else {
+          setProductError("Could not update the product.");
+        }
+      },
+      onError: () => setProductError("Failed to update the product."),
+    });
   };
 
   const inputClass =
@@ -1300,8 +1881,1264 @@ const AdminSettingsPage: React.FC<AdminSettingsPageProps> = ({
                     </button>
                   </div>
                 </div>
+
+                {/* Minimum Order card */}
+                <div
+                  className="card glass-card p-6 sm:p-8"
+                  data-ocid="admin.minimum_order_panel"
+                >
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="relative">
+                      <BadgeDollarSign className="w-8 h-8 text-teal-400" />
+                      <div className="absolute inset-0 rounded-full bg-teal-400/20 blur-xl animate-pulse" />
+                    </div>
+                    <div>
+                      <h3
+                        className="text-2xl font-semibold text-white"
+                        style={{ fontFamily: "var(--font-heading)" }}
+                      >
+                        Minimum Order
+                      </h3>
+                      <p className="text-sm text-gray-400">
+                        Lowest crypto order total accepted
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Current minimum */}
+                  <div className="mb-6">
+                    <p className="text-xs uppercase tracking-wider text-gray-400 mb-2">
+                      Current Minimum
+                    </p>
+                    <div className="flex items-center gap-3 bg-black/30 px-4 py-3 rounded-xl border border-white/10">
+                      <BadgeDollarSign className="w-5 h-5 text-teal-400 shrink-0" />
+                      <span className="text-sm text-white">
+                        {minimumOrder !== undefined
+                          ? `$${(Number(minimumOrder) / 100).toFixed(2)}`
+                          : "—"}
+                      </span>
+                    </div>
+                    <p className="text-xs text-gray-500 mt-2">
+                      Crypto checkout is rejected below this total. The default
+                      is $0.25.
+                    </p>
+                  </div>
+
+                  {/* Form */}
+                  <div className="space-y-4">
+                    <div>
+                      <label
+                        htmlFor="minimum-order"
+                        className="block text-sm text-gray-300 mb-2"
+                      >
+                        Minimum Order Total (USD)
+                      </label>
+                      <input
+                        id="minimum-order"
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        value={minimumOrderText}
+                        onChange={(e) => setMinimumOrderText(e.target.value)}
+                        placeholder="0.25"
+                        data-ocid="admin.minimum_order_input"
+                        className={inputClass}
+                      />
+                    </div>
+
+                    {minimumOrderError && (
+                      <p
+                        className="text-sm text-destructive"
+                        data-ocid="admin.minimum_order_error"
+                      >
+                        {minimumOrderError}
+                      </p>
+                    )}
+                    {minimumOrderMutationError && (
+                      <p
+                        className="text-sm text-destructive"
+                        data-ocid="admin.minimum_order_error"
+                      >
+                        {minimumOrderMutationError}
+                      </p>
+                    )}
+                    {minimumOrderSaved && (
+                      <p
+                        className="text-sm text-success flex items-center gap-2"
+                        data-ocid="admin.minimum_order_success"
+                      >
+                        <Check className="w-4 h-4" />
+                        Minimum order updated successfully.
+                      </p>
+                    )}
+
+                    <button
+                      type="button"
+                      onClick={handleSaveMinimumOrder}
+                      disabled={updateMinimumOrder.isPending}
+                      data-ocid="admin.save_minimum_order_button"
+                      className="btn w-full px-6 py-3 text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {updateMinimumOrder.isPending ? (
+                        <>
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          Saving…
+                        </>
+                      ) : (
+                        <>
+                          <Save className="w-4 h-4" />
+                          Save Minimum Order
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Products card */}
+                <div
+                  className="card glass-card p-6 sm:p-8 lg:col-span-2"
+                  data-ocid="admin.products_panel"
+                >
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="relative">
+                      <Package className="w-8 h-8 text-purple-400" />
+                      <div className="absolute inset-0 rounded-full bg-purple-400/20 blur-xl animate-pulse" />
+                    </div>
+                    <div>
+                      <h3
+                        className="text-2xl font-semibold text-white"
+                        style={{ fontFamily: "var(--font-heading)" }}
+                      >
+                        Products
+                      </h3>
+                      <p className="text-sm text-gray-400">
+                        Create new products or edit existing ones
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Mode selector */}
+                  <div className="mb-6">
+                    <label
+                      htmlFor="product-select"
+                      className="block text-sm text-gray-300 mb-2"
+                    >
+                      Product
+                    </label>
+                    <div className="flex flex-col sm:flex-row gap-3">
+                      <select
+                        id="product-select"
+                        value={
+                          productMode === "edit" && selectedProductId !== null
+                            ? selectedProductId.toString()
+                            : ""
+                        }
+                        onChange={(e) => {
+                          const v = e.target.value;
+                          if (v === "") {
+                            handleCreateNewProduct();
+                          } else {
+                            handleSelectProduct(BigInt(v));
+                          }
+                        }}
+                        data-ocid="admin.product_select"
+                        className={inputClass}
+                      >
+                        <option value="">Create new product…</option>
+                        {productsLoading ? (
+                          <option disabled>Loading products…</option>
+                        ) : (
+                          products?.map((p) => (
+                            <option
+                              key={p.id.toString()}
+                              value={p.id.toString()}
+                            >
+                              {p.name} ({formatPrice(p.price)})
+                            </option>
+                          ))
+                        )}
+                      </select>
+                      <button
+                        type="button"
+                        onClick={handleCreateNewProduct}
+                        data-ocid="admin.new_product_button"
+                        className="btn px-6 py-3 text-sm font-semibold shrink-0"
+                      >
+                        <Package className="w-4 h-4" />
+                        New Product
+                      </button>
+                    </div>
+                    <p className="text-xs text-gray-500 mt-2">
+                      {productMode === "edit"
+                        ? "Editing an existing product. Prices are stored as integer cents."
+                        : "Creating a new product. Prices are stored as integer cents."}
+                    </p>
+                  </div>
+
+                  {/* Form */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label
+                        htmlFor="product-name"
+                        className="block text-sm text-gray-300 mb-2"
+                      >
+                        Name
+                      </label>
+                      <input
+                        id="product-name"
+                        type="text"
+                        value={productDraft.name}
+                        onChange={(e) =>
+                          setProductDraft((d) => ({
+                            ...d,
+                            name: e.target.value,
+                          }))
+                        }
+                        placeholder="Product name"
+                        data-ocid="admin.product_name_input"
+                        className={inputClass}
+                      />
+                    </div>
+                    <div>
+                      <label
+                        htmlFor="product-slug"
+                        className="block text-sm text-gray-300 mb-2"
+                      >
+                        Slug
+                      </label>
+                      <input
+                        id="product-slug"
+                        type="text"
+                        value={productDraft.slug}
+                        onChange={(e) =>
+                          setProductDraft((d) => ({
+                            ...d,
+                            slug: e.target.value,
+                          }))
+                        }
+                        placeholder="product-slug"
+                        data-ocid="admin.product_slug_input"
+                        className={inputClass}
+                      />
+                    </div>
+                    <div>
+                      <label
+                        htmlFor="product-category"
+                        className="block text-sm text-gray-300 mb-2"
+                      >
+                        Category
+                      </label>
+                      <input
+                        id="product-category"
+                        type="text"
+                        value={productDraft.category}
+                        onChange={(e) =>
+                          setProductDraft((d) => ({
+                            ...d,
+                            category: e.target.value,
+                          }))
+                        }
+                        placeholder="Category"
+                        data-ocid="admin.product_category_input"
+                        className={inputClass}
+                      />
+                    </div>
+                    <div>
+                      <label
+                        htmlFor="product-currency"
+                        className="block text-sm text-gray-300 mb-2"
+                      >
+                        Currency
+                      </label>
+                      <input
+                        id="product-currency"
+                        type="text"
+                        value={productDraft.currency}
+                        onChange={(e) =>
+                          setProductDraft((d) => ({
+                            ...d,
+                            currency: e.target.value,
+                          }))
+                        }
+                        placeholder="USD"
+                        data-ocid="admin.product_currency_input"
+                        className={inputClass}
+                      />
+                    </div>
+                    <div>
+                      <label
+                        htmlFor="product-price"
+                        className="block text-sm text-gray-300 mb-2"
+                      >
+                        Price (USD)
+                      </label>
+                      <input
+                        id="product-price"
+                        type="text"
+                        inputMode="decimal"
+                        value={productDraft.priceText}
+                        onChange={(e) =>
+                          setProductDraft((d) => ({
+                            ...d,
+                            priceText: e.target.value,
+                          }))
+                        }
+                        placeholder="35.00"
+                        data-ocid="admin.product_price_input"
+                        className={inputClass}
+                      />
+                      {productDraft.priceText &&
+                        dollarsToCents(productDraft.priceText) !== null && (
+                          <p className="text-xs text-gray-400 mt-1">
+                            Stored as{" "}
+                            <span className="admin-mono text-teal-300">
+                              {dollarsToCents(productDraft.priceText)} cents
+                            </span>
+                          </p>
+                        )}
+                    </div>
+                    <div>
+                      <label
+                        htmlFor="product-inventory"
+                        className="block text-sm text-gray-300 mb-2"
+                      >
+                        Inventory
+                      </label>
+                      <input
+                        id="product-inventory"
+                        type="number"
+                        min="0"
+                        step="1"
+                        value={productDraft.inventoryText}
+                        onChange={(e) =>
+                          setProductDraft((d) => ({
+                            ...d,
+                            inventoryText: e.target.value,
+                          }))
+                        }
+                        placeholder="0"
+                        data-ocid="admin.product_inventory_input"
+                        className={inputClass}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Toggles */}
+                  <div className="flex flex-wrap gap-6 mt-4">
+                    <label className="flex items-center gap-2 text-sm text-gray-300">
+                      <input
+                        type="checkbox"
+                        checked={productDraft.active}
+                        onChange={(e) =>
+                          setProductDraft((d) => ({
+                            ...d,
+                            active: e.target.checked,
+                          }))
+                        }
+                        data-ocid="admin.product_active_toggle"
+                        className="w-4 h-4 accent-purple-500"
+                      />
+                      Active
+                    </label>
+                    <label className="flex items-center gap-2 text-sm text-gray-300">
+                      <input
+                        type="checkbox"
+                        checked={productDraft.adminOnly}
+                        onChange={(e) =>
+                          setProductDraft((d) => ({
+                            ...d,
+                            adminOnly: e.target.checked,
+                          }))
+                        }
+                        data-ocid="admin.product_admin_only_toggle"
+                        className="w-4 h-4 accent-purple-500"
+                      />
+                      Admin only (hidden from public shop)
+                    </label>
+                  </div>
+
+                  {/* Description */}
+                  <div className="mt-4">
+                    <label
+                      htmlFor="product-description"
+                      className="block text-sm text-gray-300 mb-2"
+                    >
+                      Description
+                    </label>
+                    <textarea
+                      id="product-description"
+                      value={productDraft.description}
+                      onChange={(e) =>
+                        setProductDraft((d) => ({
+                          ...d,
+                          description: e.target.value,
+                        }))
+                      }
+                      rows={3}
+                      placeholder="Product description"
+                      data-ocid="admin.product_description_input"
+                      className={`${inputClass} resize-y`}
+                    />
+                  </div>
+
+                  {/* Complex field note */}
+                  <p className="text-xs text-gray-500 mt-3">
+                    Variants and images are preserved from the existing product
+                    when editing and are not modified by this form.
+                  </p>
+
+                  {productError && (
+                    <p
+                      className="text-sm text-destructive mt-3"
+                      data-ocid="admin.product_error"
+                    >
+                      {productError}
+                    </p>
+                  )}
+                  {productSuccess && (
+                    <p
+                      className="text-sm text-success flex items-center gap-2 mt-3"
+                      data-ocid="admin.product_success"
+                    >
+                      <Check className="w-4 h-4" />
+                      {productMode === "create"
+                        ? "Product created successfully."
+                        : "Product updated successfully."}
+                    </p>
+                  )}
+
+                  <button
+                    type="button"
+                    onClick={handleSaveProduct}
+                    disabled={
+                      createProduct.isPending || updateProduct.isPending
+                    }
+                    data-ocid="admin.save_product_button"
+                    className="btn w-full mt-4 px-6 py-3 text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {createProduct.isPending || updateProduct.isPending ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        Saving…
+                      </>
+                    ) : (
+                      <>
+                        <Save className="w-4 h-4" />
+                        {productMode === "create"
+                          ? "Create Product"
+                          : "Save Product"}
+                      </>
+                    )}
+                  </button>
+                </div>
+
+                {/* Test Product card */}
+                <div
+                  className="card glass-card p-6 sm:p-8"
+                  data-ocid="admin.test_product_panel"
+                >
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="relative">
+                      <FlaskConical className="w-8 h-8 text-pink-400" />
+                      <div className="absolute inset-0 rounded-full bg-pink-400/20 blur-xl animate-pulse" />
+                    </div>
+                    <div>
+                      <h3
+                        className="text-2xl font-semibold text-white"
+                        style={{ fontFamily: "var(--font-heading)" }}
+                      >
+                        Test Product
+                      </h3>
+                      <p className="text-sm text-gray-400">
+                        Hidden internal payment test item
+                      </p>
+                    </div>
+                  </div>
+
+                  <p className="text-sm text-gray-300 mb-4">
+                    The test product is hidden from the public shop grid. As an
+                    admin you can open it directly to verify crypto checkout end
+                    to end without affecting public listings.
+                  </p>
+
+                  <button
+                    type="button"
+                    onClick={() => onNavigateToProduct("6")}
+                    data-ocid="admin.open_test_product_button"
+                    className="btn w-full px-6 py-3 text-sm font-semibold"
+                  >
+                    <FlaskConical className="w-4 h-4" />
+                    Open Test Product
+                  </button>
+                </div>
               </div>
             )}
+
+            {/* ============================================================
+               Canister Health
+               ============================================================ */}
+            <div
+              className="max-w-6xl mx-auto mb-8 card glass-card p-6 sm:p-8"
+              data-ocid="admin.canister_health_panel"
+            >
+              <div className="flex items-center gap-3 mb-6">
+                <div className="relative">
+                  <Activity className="w-8 h-8 text-teal-400" />
+                  <div className="absolute inset-0 rounded-full bg-teal-400/20 blur-xl animate-pulse" />
+                </div>
+                <div>
+                  <h3
+                    className="text-2xl font-semibold text-white"
+                    style={{ fontFamily: "var(--font-heading)" }}
+                  >
+                    Canister Health
+                  </h3>
+                  <p className="text-sm text-gray-400">
+                    Cycle funding and canister identity
+                  </p>
+                </div>
+              </div>
+
+              {/* Cycle balance with color band + gauge */}
+              <div className="mb-6">
+                <div className="flex items-center justify-between mb-2">
+                  <p className="text-xs uppercase tracking-wider text-gray-400">
+                    Cycle Balance
+                  </p>
+                  <span
+                    className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-semibold"
+                    style={{
+                      color:
+                        cycleBalance === undefined
+                          ? "#fbbf24"
+                          : cycleBalance > 2_000_000_000_000n
+                            ? "#34d399"
+                            : cycleBalance >= 500_000_000_000n
+                              ? "#fbbf24"
+                              : "#f87171",
+                      backgroundColor: `${
+                        cycleBalance === undefined
+                          ? "#fbbf24"
+                          : cycleBalance > 2_000_000_000_000n
+                            ? "#34d399"
+                            : cycleBalance >= 500_000_000_000n
+                              ? "#fbbf24"
+                              : "#f87171"
+                      }1f`,
+                      border: `1px solid ${
+                        cycleBalance === undefined
+                          ? "#fbbf24"
+                          : cycleBalance > 2_000_000_000_000n
+                            ? "#34d399"
+                            : cycleBalance >= 500_000_000_000n
+                              ? "#fbbf24"
+                              : "#f87171"
+                      }55`,
+                    }}
+                    data-ocid="admin.cycle_balance_badge"
+                  >
+                    <span
+                      className="w-2 h-2 rounded-full"
+                      style={{
+                        backgroundColor:
+                          cycleBalance === undefined
+                            ? "#fbbf24"
+                            : cycleBalance > 2_000_000_000_000n
+                              ? "#34d399"
+                              : cycleBalance >= 500_000_000_000n
+                                ? "#fbbf24"
+                                : "#f87171",
+                      }}
+                    />
+                    {cycleBalance !== undefined
+                      ? formatCycles(cycleBalance)
+                      : "—"}
+                  </span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="flex-1 h-3 rounded-full bg-black/40 border border-white/10 overflow-hidden">
+                    <div
+                      className="h-full rounded-full transition-all duration-500"
+                      style={{
+                        width: `${
+                          cycleBalance === undefined
+                            ? 0
+                            : Math.min(
+                                100,
+                                (Number(cycleBalance) / 2_000_000_000_000) *
+                                  100,
+                              )
+                        }%`,
+                        backgroundColor:
+                          cycleBalance === undefined
+                            ? "#fbbf24"
+                            : cycleBalance > 2_000_000_000_000n
+                              ? "#34d399"
+                              : cycleBalance >= 500_000_000_000n
+                                ? "#fbbf24"
+                                : "#f87171",
+                      }}
+                      data-ocid="admin.cycle_gauge"
+                    />
+                  </div>
+                  <span
+                    className="text-xs text-gray-400 shrink-0"
+                    style={{ fontFamily: "var(--font-mono)" }}
+                  >
+                    2T threshold
+                  </span>
+                </div>
+                <p className="text-xs text-gray-500 mt-2">
+                  Low cycles can cause inter-canister ledger calls to fail. Keep
+                  the balance above 2T cycles.
+                </p>
+              </div>
+
+              {/* Canister ID with copy + DRAFT/LIVE label */}
+              <div>
+                <p className="text-xs uppercase tracking-wider text-gray-400 mb-2">
+                  Canister ID
+                </p>
+                <div className="flex items-center gap-3 bg-black/30 px-4 py-3 rounded-xl border border-white/10">
+                  <Server className="w-4 h-4 text-teal-400 shrink-0" />
+                  <code className="font-mono-nak text-sm flex-1 break-all text-teal-300">
+                    {canisterId ?? "—"}
+                  </code>
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      if (!canisterId) return;
+                      try {
+                        await navigator.clipboard.writeText(canisterId);
+                        setCanisterCopied(true);
+                        setTimeout(() => setCanisterCopied(false), 2000);
+                      } catch {
+                        setCanisterCopied(false);
+                      }
+                    }}
+                    data-ocid="admin.copy_canister_button"
+                    className="btn flex items-center gap-2 px-3 py-2 text-xs"
+                    title="Copy canister ID"
+                  >
+                    {canisterCopied ? (
+                      <Check className="w-4 h-4" />
+                    ) : (
+                      <Copy className="w-4 h-4" />
+                    )}
+                    {canisterCopied ? "Copied" : "Copy"}
+                  </button>
+                  <span
+                    className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-semibold shrink-0 ${
+                      canisterId === "vm5zh-yaaaa-aaaaj-qoaza-cai" ||
+                      window.location.hostname.includes("draft")
+                        ? "bg-warning-soft text-warning border border-amber-500/30"
+                        : "bg-success-soft text-success border border-emerald-500/30"
+                    }`}
+                    data-ocid="admin.env_label"
+                  >
+                    {canisterId === "vm5zh-yaaaa-aaaaj-qoaza-cai" ||
+                    window.location.hostname.includes("draft")
+                      ? "DRAFT"
+                      : "LIVE"}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* ============================================================
+               Orders
+               ============================================================ */}
+            <div
+              className="max-w-6xl mx-auto mb-8 card glass-card p-6 sm:p-8"
+              data-ocid="admin.orders_panel"
+            >
+              <div className="flex items-center gap-3 mb-6">
+                <div className="relative">
+                  <RefreshCw className="w-8 h-8 text-purple-400" />
+                  <div className="absolute inset-0 rounded-full bg-purple-400/20 blur-xl animate-pulse" />
+                </div>
+                <div>
+                  <h3
+                    className="text-2xl font-semibold text-white"
+                    style={{ fontFamily: "var(--font-heading)" }}
+                  >
+                    Orders
+                  </h3>
+                  <p className="text-sm text-gray-400">
+                    Filter, re-check, and sweep crypto orders
+                  </p>
+                </div>
+              </div>
+
+              {/* Filter buttons */}
+              <div className="flex flex-wrap gap-2 mb-6">
+                {[
+                  "all",
+                  "awaiting_payment",
+                  "paid",
+                  "expired",
+                  "cancelled",
+                  "needs_review",
+                ].map((filter) => (
+                  <button
+                    key={filter}
+                    type="button"
+                    onClick={() => setOrderFilter(filter)}
+                    data-ocid={`admin.order_filter.${filter}`}
+                    className={`btn px-4 py-2 text-xs font-semibold ${
+                      orderFilter === filter
+                        ? "opacity-100"
+                        : "opacity-50 hover:opacity-80"
+                    }`}
+                  >
+                    {filter.replace(/_/g, " ")}
+                  </button>
+                ))}
+              </div>
+
+              {/* Per-row action error (exact ledger text) */}
+              {orderActionError && (
+                <div className="mb-4">
+                  <div
+                    className="error-panel relative flex items-start gap-2"
+                    role="alert"
+                    data-ocid="admin.order_action_error"
+                  >
+                    <AlertTriangle className="w-4 h-4 mt-0.5 shrink-0" />
+                    <span className="min-w-0">{orderActionError}</span>
+                  </div>
+                </div>
+              )}
+
+              {ordersLoading ? (
+                <div
+                  className="loading-shimmer h-40 rounded-xl"
+                  data-ocid="admin.orders_loading"
+                />
+              ) : !orders || orders.length === 0 ? (
+                <div
+                  className="text-center py-10 text-gray-400"
+                  data-ocid="admin.orders_empty"
+                >
+                  <p className="text-sm">No orders match the current filter.</p>
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="admin-table">
+                    <thead>
+                      <tr>
+                        <th>Reference</th>
+                        <th>Status</th>
+                        <th className="text-right">Amount</th>
+                        <th>Method</th>
+                        <th>Deposit Address</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {orders.map((order, index) => {
+                        const decimals = order.currency === "ICP" ? 8 : 6;
+                        return (
+                          <tr
+                            key={order.reference}
+                            data-ocid={`admin.order_row.${index + 1}`}
+                          >
+                            <td className="admin-mono">{order.reference}</td>
+                            <td>
+                              <span
+                                className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-semibold ${statusTone(
+                                  order.status,
+                                )}`}
+                              >
+                                {order.status}
+                              </span>
+                              {order.cryptoStatus && (
+                                <span className="block text-xs text-gray-400 mt-1">
+                                  {cryptoStatusLabel(order.cryptoStatus)}
+                                </span>
+                              )}
+                            </td>
+                            <td className="admin-mono text-right">
+                              {formatTokenAmount(order.amountOwed, decimals)}{" "}
+                              {order.currency}
+                            </td>
+                            <td className="admin-mono">
+                              {paymentMethodLabel(order.paymentMethod)}
+                            </td>
+                            <td className="admin-mono max-w-[16rem]">
+                              <span className="block break-all">
+                                {order.depositAccountText}
+                              </span>
+                            </td>
+                            <td>
+                              <div className="flex flex-col gap-2 min-w-[15rem]">
+                                <div className="flex items-center gap-2">
+                                  <button
+                                    type="button"
+                                    className="btn-recheck"
+                                    onClick={() =>
+                                      forceRecheck.mutate(order.reference, {
+                                        onError: (err) =>
+                                          setOrderActionError(
+                                            err &&
+                                              typeof err === "object" &&
+                                              "__kind__" in err
+                                              ? recoveryErrorMessage(
+                                                  err as unknown as RecoveryError,
+                                                )
+                                              : errorText(err),
+                                          ),
+                                      })
+                                    }
+                                    disabled={forceRecheck.isPending}
+                                    data-ocid={`admin.recheck_button.${index + 1}`}
+                                  >
+                                    <RefreshCw className="w-3 h-3" />
+                                    {forceRecheck.isPending
+                                      ? "Checking…"
+                                      : "Re-check payment"}
+                                  </button>
+                                  <button
+                                    type="button"
+                                    className="btn-sweep"
+                                    onClick={() =>
+                                      forceSweep.mutate(order.reference, {
+                                        onError: (err) =>
+                                          setOrderActionError(
+                                            err &&
+                                              typeof err === "object" &&
+                                              "__kind__" in err
+                                              ? recoveryErrorMessage(
+                                                  err as unknown as RecoveryError,
+                                                )
+                                              : errorText(err),
+                                          ),
+                                      })
+                                    }
+                                    disabled={forceSweep.isPending}
+                                    data-ocid={`admin.sweep_button.${index + 1}`}
+                                  >
+                                    {forceSweep.isPending
+                                      ? "Sweeping…"
+                                      : "Sweep now"}
+                                  </button>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <input
+                                    type="text"
+                                    value={trackingDraft[order.reference] ?? ""}
+                                    onChange={(e) =>
+                                      setTrackingDraft((d) => ({
+                                        ...d,
+                                        [order.reference]: e.target.value,
+                                      }))
+                                    }
+                                    placeholder="Tracking # (optional)"
+                                    data-ocid={`admin.tracking_input.${index + 1}`}
+                                    className="flex-1 min-w-0 bg-black/40 border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-purple-500/50 focus:ring-2 focus:ring-purple-500/20"
+                                  />
+                                  <button
+                                    type="button"
+                                    className="btn-shipped"
+                                    onClick={() =>
+                                      handleMarkShipped(order.reference)
+                                    }
+                                    disabled={markShipped.isPending}
+                                    data-ocid={`admin.mark_shipped_button.${index + 1}`}
+                                  >
+                                    <Truck className="w-3 h-3" />
+                                    {markShipped.isPending
+                                      ? "Shipping…"
+                                      : "Mark shipped"}
+                                  </button>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <button
+                                    type="button"
+                                    className="btn-email"
+                                    onClick={() =>
+                                      handleResendEmail(order.reference)
+                                    }
+                                    disabled={resendEmail.isPending}
+                                    data-ocid={`admin.resend_email_button.${index + 1}`}
+                                  >
+                                    <Mail className="w-3 h-3" />
+                                    {resendEmail.isPending
+                                      ? "Sending…"
+                                      : "Resend confirmation email"}
+                                  </button>
+                                </div>
+                                {shippedError && (
+                                  <p
+                                    className="text-xs text-destructive"
+                                    data-ocid={`admin.shipped_error.${index + 1}`}
+                                  >
+                                    {shippedError}
+                                  </p>
+                                )}
+                                {resendError && (
+                                  <p
+                                    className="text-xs text-destructive"
+                                    data-ocid={`admin.resend_error.${index + 1}`}
+                                  >
+                                    {resendError}
+                                  </p>
+                                )}
+                                {resendSuccess === order.reference && (
+                                  <p
+                                    className="text-xs text-success flex items-center gap-1"
+                                    data-ocid={`admin.resend_success.${index + 1}`}
+                                  >
+                                    <Check className="w-3 h-3" />
+                                    Confirmation email resent.
+                                  </p>
+                                )}
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+
+            {/* ============================================================
+               Consent List
+               ============================================================ */}
+            <div
+              className="max-w-6xl mx-auto mb-8 card glass-card p-6 sm:p-8"
+              data-ocid="admin.consent_panel"
+            >
+              <div className="flex items-center gap-3 mb-6">
+                <div className="relative">
+                  <Mail className="w-8 h-8 text-teal-400" />
+                  <div className="absolute inset-0 rounded-full bg-teal-400/20 blur-xl animate-pulse" />
+                </div>
+                <div>
+                  <h3
+                    className="text-2xl font-semibold text-white"
+                    style={{ fontFamily: "var(--font-heading)" }}
+                  >
+                    Consent List
+                  </h3>
+                  <p className="text-sm text-gray-400">
+                    Addresses that opted into marketing email
+                  </p>
+                </div>
+              </div>
+
+              <p className="text-sm text-gray-300 mb-4">
+                Export the addresses that have given marketing consent as a CSV.
+                Suppressed (unsubscribed) addresses are excluded, and
+                transactional emails are never affected.
+              </p>
+
+              <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+                <button
+                  type="button"
+                  className="btn-export"
+                  onClick={handleExportConsentCsv}
+                  disabled={consentCsv.isFetching}
+                  data-ocid="admin.export_consent_button"
+                >
+                  <Download className="w-4 h-4" />
+                  {consentCsv.isFetching
+                    ? "Loading…"
+                    : "Export consent list (CSV)"}
+                </button>
+                {consentCsv.isFetching && (
+                  <span className="text-xs text-gray-400 flex items-center gap-2">
+                    <Loader2 className="w-3 h-3 animate-spin" />
+                    Fetching consent list…
+                  </span>
+                )}
+              </div>
+
+              {consentCsv.error && (
+                <div className="mt-4">
+                  <div
+                    className="error-panel relative flex items-start gap-2"
+                    role="alert"
+                    data-ocid="admin.consent_query_error"
+                  >
+                    <AlertTriangle className="w-4 h-4 mt-0.5 shrink-0" />
+                    <span className="min-w-0">
+                      {consentErrorMessage(
+                        consentCsv.error as unknown as ConsentError,
+                      )}
+                    </span>
+                  </div>
+                </div>
+              )}
+              {consentError && (
+                <div className="mt-4">
+                  <div
+                    className="error-panel relative flex items-start gap-2"
+                    role="alert"
+                    data-ocid="admin.consent_error"
+                  >
+                    <AlertTriangle className="w-4 h-4 mt-0.5 shrink-0" />
+                    <span className="min-w-0">{consentError}</span>
+                  </div>
+                </div>
+              )}
+              {consentSuccess && (
+                <p
+                  className="text-sm text-success flex items-center gap-2 mt-4"
+                  data-ocid="admin.consent_success"
+                >
+                  <Check className="w-4 h-4" />
+                  Consent list downloaded.
+                </p>
+              )}
+            </div>
+
+            {/* ============================================================
+               Subaccount Sweep
+               ============================================================ */}
+            <div
+              className="max-w-6xl mx-auto mb-8 card glass-card p-6 sm:p-8"
+              data-ocid="admin.subaccount_sweep_panel"
+            >
+              <div className="flex items-center gap-3 mb-6">
+                <div className="relative">
+                  <Wallet className="w-8 h-8 text-purple-400" />
+                  <div className="absolute inset-0 rounded-full bg-purple-400/20 blur-xl animate-pulse" />
+                </div>
+                <div>
+                  <h3
+                    className="text-2xl font-semibold text-white"
+                    style={{ fontFamily: "var(--font-heading)" }}
+                  >
+                    Subaccount Sweep
+                  </h3>
+                  <p className="text-sm text-gray-400">
+                    Inspect and sweep a specific deposit subaccount
+                  </p>
+                </div>
+              </div>
+
+              <p className="text-sm text-gray-300 mb-4">
+                Query a deposit subaccount by its integer index to see its live
+                on-ledger balance, then sweep it to the treasury. Any ledger
+                error is surfaced exactly here.
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-3">
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  value={subaccountIndexText}
+                  onChange={(e) => setSubaccountIndexText(e.target.value)}
+                  placeholder="Subaccount index (e.g. 0)"
+                  data-ocid="admin.subaccount_index_input"
+                  className="flex-1 min-w-0 bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-purple-500/50 focus:ring-2 focus:ring-purple-500/20 font-mono-nak"
+                />
+                <button
+                  type="button"
+                  className="btn-recheck"
+                  onClick={handleQuerySubaccount}
+                  data-ocid="admin.query_subaccount_button"
+                >
+                  <Gauge className="w-4 h-4" />
+                  Query balance
+                </button>
+                <button
+                  type="button"
+                  className="btn-sweep"
+                  onClick={handleSweepSubaccount}
+                  disabled={sweepSubaccount.isPending}
+                  data-ocid="admin.sweep_subaccount_button"
+                >
+                  {sweepSubaccount.isPending ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Sweeping…
+                    </>
+                  ) : (
+                    <>
+                      <Coins className="w-4 h-4" />
+                      Sweep to treasury
+                    </>
+                  )}
+                </button>
+              </div>
+
+              {subaccountBalance && (
+                <div className="mt-4 bg-black/30 border border-white/10 rounded-xl p-4">
+                  <p className="text-xs uppercase tracking-wider text-gray-400 mb-2">
+                    Subaccount {subaccountBalance.subaccountIndex.toString()}
+                  </p>
+                  <p className="text-sm text-gray-300">
+                    Balance:{" "}
+                    <span className="admin-mono text-white">
+                      {formatTokenAmount(subaccountBalance.balance)} ckUSDC
+                    </span>
+                  </p>
+                  <code className="font-mono-nak text-xs break-all text-teal-300 block mt-2">
+                    {subaccountBalance.subaccountHex}
+                  </code>
+                </div>
+              )}
+              {subaccountBalanceError && (
+                <div className="mt-4">
+                  <div
+                    className="error-panel relative flex items-start gap-2"
+                    role="alert"
+                    data-ocid="admin.subaccount_balance_error"
+                  >
+                    <AlertTriangle className="w-4 h-4 mt-0.5 shrink-0" />
+                    <span className="min-w-0">
+                      {subaccountBalanceError instanceof Error
+                        ? subaccountBalanceError.message
+                        : "Failed to query subaccount balance."}
+                    </span>
+                  </div>
+                </div>
+              )}
+              {subaccountSweepError && (
+                <div className="mt-4">
+                  <div
+                    className="error-panel relative flex items-start gap-2"
+                    role="alert"
+                    data-ocid="admin.subaccount_sweep_error"
+                  >
+                    <AlertTriangle className="w-4 h-4 mt-0.5 shrink-0" />
+                    <span className="min-w-0">{subaccountSweepError}</span>
+                  </div>
+                </div>
+              )}
+              {subaccountSweepSuccess && (
+                <p
+                  className="text-sm text-success flex items-center gap-2 mt-4"
+                  data-ocid="admin.subaccount_sweep_success"
+                >
+                  <Check className="w-4 h-4" />
+                  {subaccountSweepSuccess}
+                </p>
+              )}
+            </div>
+
+            {/* ============================================================
+               Funds
+               ============================================================ */}
+            <div
+              className="max-w-6xl mx-auto mb-8 card glass-card p-6 sm:p-8"
+              data-ocid="admin.funds_panel"
+            >
+              <div className="flex items-center gap-3 mb-6">
+                <div className="relative">
+                  <Coins className="w-8 h-8 text-pink-400" />
+                  <div className="absolute inset-0 rounded-full bg-pink-400/20 blur-xl animate-pulse" />
+                </div>
+                <div>
+                  <h3
+                    className="text-2xl font-semibold text-white"
+                    style={{ fontFamily: "var(--font-heading)" }}
+                  >
+                    Funds
+                  </h3>
+                  <p className="text-sm text-gray-400">
+                    Treasury, default subaccount, and unswept order funds
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {/* Treasury */}
+                <div className="bg-black/30 border border-white/10 rounded-xl p-5">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Landmark className="w-4 h-4 text-purple-400" />
+                    <p className="text-xs uppercase tracking-wider text-gray-400">
+                      Treasury
+                    </p>
+                  </div>
+                  <code className="font-mono-nak text-xs break-all text-teal-300 block mb-3">
+                    {DEFAULT_TREASURY_PRINCIPAL}
+                  </code>
+                  <p className="text-sm text-gray-300">
+                    ckUSDC balance:{" "}
+                    <span className="admin-mono text-white">
+                      {treasuryCkUsdcBalance}
+                    </span>
+                  </p>
+                </div>
+
+                {/* Default subaccount */}
+                <div className="bg-black/30 border border-white/10 rounded-xl p-5">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Wallet className="w-4 h-4 text-teal-400" />
+                    <p className="text-xs uppercase tracking-wider text-gray-400">
+                      Default Subaccount
+                    </p>
+                  </div>
+                  <p className="text-sm text-gray-300 mb-3">
+                    Balance:{" "}
+                    <span className="admin-mono text-white">
+                      {defaultSubaccountBalance == null
+                        ? "—"
+                        : `${formatTokenAmount(defaultSubaccountBalance)} ckUSDC`}
+                    </span>
+                  </p>
+                  <button
+                    type="button"
+                    className="btn-sweep"
+                    onClick={() =>
+                      sweepDefault.mutate(undefined, {
+                        onError: (err) =>
+                          setSweepError(
+                            err && typeof err === "object" && "__kind__" in err
+                              ? recoveryErrorMessage(
+                                  err as unknown as RecoveryError,
+                                )
+                              : errorText(err),
+                          ),
+                      })
+                    }
+                    disabled={sweepDefault.isPending}
+                    data-ocid="admin.sweep_default_button"
+                  >
+                    {sweepDefault.isPending ? "Sweeping…" : "Sweep to treasury"}
+                  </button>
+                  {sweepError && (
+                    <div className="mt-3">
+                      <div
+                        className="error-panel relative flex items-start gap-2"
+                        role="alert"
+                        data-ocid="admin.sweep_error"
+                      >
+                        <AlertTriangle className="w-4 h-4 mt-0.5 shrink-0" />
+                        <span className="min-w-0">{sweepError}</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Unswept order funds */}
+                <div className="bg-black/30 border border-white/10 rounded-xl p-5">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Coins className="w-4 h-4 text-pink-400" />
+                    <p className="text-xs uppercase tracking-wider text-gray-400">
+                      Unswept Order Funds
+                    </p>
+                  </div>
+                  <p className="text-sm text-gray-300">
+                    Total across order subaccounts:{" "}
+                    <span className="admin-mono text-white">
+                      {unsweptTotal == null
+                        ? "—"
+                        : `${formatTokenAmount(unsweptTotal)} ckUSDC`}
+                    </span>
+                  </p>
+                  <p className="text-xs text-gray-500 mt-2">
+                    Live on-ledger balances from {recoveryOrders?.length ?? 0}{" "}
+                    crypto order(s).
+                  </p>
+                </div>
+              </div>
+            </div>
 
             {/* Admin authorization note */}
             <div

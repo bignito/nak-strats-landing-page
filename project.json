@@ -1,17 +1,18 @@
 {
-  "overview": "The official NAK STRATS landing page and storefront for the NAK token on ICP, with a dark liquid-glass design, a shop with crypto and card checkout, and now principal-based admin access control with Internet Identity sign-in.",
+  "overview": "An institutional landing page for New Age Kapital, a reserve-backed token on the Internet Computer, with live market data, artist culture, and a fragrance shop.",
   "features": [
-    "Admin access control with an admin allowlist and one-time initial admin claim",
-    "Internet Identity sign-in with admin-gated settings page",
-    "Crypto (ckUSDC) and card checkout flows",
-    "Product storefront with cart and order tracking"
+    "Live DexScreener market data and chart",
+    "Artist culture showcase with video",
+    "Cross-chain swap information",
+    "On-ledger reserve dashboard",
+    "Fragrance product shop"
   ],
   "category": "landing-page",
   "tags": [
+    "finance",
     "crypto",
-    "storefront",
-    "admin",
-    "security"
+    "culture",
+    "landing-page"
   ],
-  "last_updated": "2026-08-30T05:02:56.996Z"
+  "last_updated": "2026-08-31T00:24:58.860Z"
 }

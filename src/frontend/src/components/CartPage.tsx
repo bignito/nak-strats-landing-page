@@ -1,4 +1,5 @@
 import { useCart } from "@/hooks/useCart";
+import { formatPrice } from "@/lib/currency";
 import { ArrowLeft, Minus, Plus, ShoppingCart, Trash2 } from "lucide-react";
 import type React from "react";
 import { useEffect } from "react";
@@ -20,13 +21,6 @@ const CartPage: React.FC<CartPageProps> = ({
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
-  const formatPrice = (value: number) =>
-    value.toLocaleString("en-US", {
-      style: "currency",
-      currency: "USD",
-      maximumFractionDigits: 2,
-    });
 
   return (
     <div className="pt-24 sm:pt-32 pb-12 sm:pb-20 px-4 sm:px-6">

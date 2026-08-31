@@ -41,8 +41,10 @@ mixin (
 
   // Confirm a card order by querying the payment service's order-status
   // endpoint. Only marks the order paid when the server-side status is "paid".
+  // Passes the config + transform as the email config/transform so a confirmed
+  // card order triggers its transactional order-confirmation email.
   public func confirmCardPayment(reference : Text) : async Result.Result<StorefrontTypes.PaymentStatus, Types.PaymentServiceError> {
-    await PaymentServiceLib.confirmPayment(config, orders, reference, paymentServiceTransform);
+    await PaymentServiceLib.confirmPayment(config, orders, reference, paymentServiceTransform, config, paymentServiceTransform);
   };
 
   // Cancel a pending card order, releasing its reserved inventory.

@@ -1,5 +1,6 @@
 import { useCart } from "@/hooks/useCart";
 import { useProducts } from "@/hooks/useQueries";
+import { formatPrice } from "@/lib/currency";
 import type { Product } from "@/types/storefront";
 import {
   ArrowLeft,
@@ -14,13 +15,6 @@ interface ShopPageProps {
   onNavigateToMain: () => void;
   onNavigateToProduct?: (slugOrId: string) => void;
 }
-
-const formatPrice = (value: bigint) =>
-  Number(value).toLocaleString("en-US", {
-    style: "currency",
-    currency: "USD",
-    maximumFractionDigits: 2,
-  });
 
 const ShopPage: React.FC<ShopPageProps> = ({ onNavigateToMain }) => {
   const { data: products, isLoading, isError } = useProducts();

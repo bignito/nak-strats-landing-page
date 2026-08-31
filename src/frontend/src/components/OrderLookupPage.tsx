@@ -1,6 +1,8 @@
 import type { OrderItem } from "@/backend";
+import { formatPrice } from "@/lib/currency";
 import {
   ArrowLeft,
+  ArrowRight,
   Clock,
   Copy,
   CreditCard,
@@ -11,13 +13,19 @@ import {
 } from "lucide-react";
 import type React from "react";
 import { useEffect, useState } from "react";
+import { useActiveOrderRef } from "../hooks/useActiveOrderRef";
 import {
   useCryptoDepositInfo,
   useCryptoPaymentStatus,
   useOrderLookup,
   useReleaseExpiredOrders,
+  useResumeInfo,
 } from "../hooks/useQueries";
-import type { Order, PaymentStatus } from "../types/storefront";
+import {
+  type Order,
+  type PaymentStatus,
+  depositAccountString,
+} from "../types/storefront";
 
 interface OrderLookupPageProps {
   onNavigateToMain: () => void;
@@ -36,8 +44,19 @@ function formatTimestamp(timestamp: bigint): string {
   });
 }
 
-/** Format a bigint amount in the smallest unit into a currency string. */
-function formatAmount(amount: bigint, decimals = 2): string {
+/** Format a millisecond duration as MM:SS or HH:MM:SS. */
+function formatRemaining(ms: number): string {
+  const totalSec = Math.max(0, Math.floor(ms / 1000));
+  const hours = Math.floor(totalSec / 3600);
+  const minutes = Math.floor((totalSec % 3600) / 60);
+  const seconds = totalSec % 60;
+  const mm = String(minutes).padStart(2, "0");
+  const ss = String(seconds).padStart(2, "0");
+  return hours > 0 ? `${hours}:${mm}:${ss}` : `${mm}:${ss}`;
+}
+
+/** Format a token amount (ckUSDC/ICP) in its smallest unit into a string. */
+function formatTokenAmount(amount: bigint, decimals: number): string {
   const divisor = 10 ** decimals;
   const whole = amount / BigInt(divisor);
   const fraction = amount % BigInt(divisor);
@@ -104,7 +123,7 @@ function OrderItems({ items }: { items: OrderItem[] }) {
             </p>
           </div>
           <p className="text-sm font-mono-nak text-teal-bright whitespace-nowrap">
-            {formatAmount(item.unit_amount * item.quantity)}
+            {formatPrice(item.unit_amount * item.quantity)}
           </p>
         </li>
       ))}
@@ -126,6 +145,16 @@ const OrderLookupPage: React.FC<OrderLookupPageProps> = ({
   const { data: order, isLoading, isError } = useOrderLookup(submitted);
   const { data: deposit } = useCryptoDepositInfo(submitted);
   const { data: cryptoStatus } = useCryptoPaymentStatus(submitted);
+  const { data: resumeInfo } = useResumeInfo(submitted);
+  const { setActiveOrderRef } = useActiveOrderRef();
+
+  // Local tick only drives the display of the server-derived expiry; it never
+  // resets the countdown because the source of truth is resumeInfo.expiresAt.
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => {
+    const interval = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   // Periodically release reserved inventory for expired orders so they
   // confirm/release without a manual refresh.
@@ -137,6 +166,23 @@ const OrderLookupPage: React.FC<OrderLookupPageProps> = ({
     if (!trimmed) return;
     setSubmitted(trimmed);
   };
+
+  // Resume an in-progress (unexpired, unpaid) deposit. Store the reference as
+  // the active order ref and navigate to /checkout?resume=REF so App.tsx routes
+  // the customer back to the same deposit screen with the same address, amount,
+  // and remaining time.
+  const handleResume = () => {
+    if (!submitted) return;
+    setActiveOrderRef(submitted);
+    window.location.search = `?resume=${encodeURIComponent(submitted)}`;
+  };
+
+  const isResumable =
+    resumeInfo?.status.__kind__ === "awaiting_payment" &&
+    Number(resumeInfo.expiresAt / 1_000_000n) - now > 0;
+  const remainingMs = resumeInfo
+    ? Number(resumeInfo.expiresAt / 1_000_000n) - now
+    : 0;
 
   const handleCopy = async (text: string) => {
     try {
@@ -286,6 +332,44 @@ const OrderLookupPage: React.FC<OrderLookupPageProps> = ({
                   </div>
                 </div>
 
+                {/* Resume deposit — shown when the order is an in-progress,
+                    unexpired, unpaid deposit so the customer can return to the
+                    same deposit screen with the same address, amount, and
+                    remaining time. */}
+                {isResumable && resumeInfo && (
+                  <div
+                    className="deposit-surface relative p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+                    data-ocid="order.resume_panel"
+                  >
+                    <div className="flex items-center gap-4">
+                      <span className="flex h-12 w-12 items-center justify-center rounded-full bg-teal-soft text-teal-bright">
+                        <Wallet className="h-6 w-6" />
+                      </span>
+                      <div>
+                        <p className="text-sm font-semibold text-white">
+                          This deposit is still open
+                        </p>
+                        <p className="text-sm text-gray-300">
+                          Resume to complete your payment —{" "}
+                          <span className="font-mono-nak text-teal-bright">
+                            {formatRemaining(remainingMs)}
+                          </span>{" "}
+                          remaining
+                        </p>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleResume}
+                      className="btn px-6 py-3 text-sm font-semibold flex-shrink-0"
+                      data-ocid="order.resume_button"
+                    >
+                      Resume deposit
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                )}
+
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   {/* Items + totals */}
                   <div className="card glass-card p-6 sm:p-8">
@@ -301,25 +385,25 @@ const OrderLookupPage: React.FC<OrderLookupPageProps> = ({
                       <div className="flex justify-between text-gray-400">
                         <span>Subtotal</span>
                         <span className="font-mono-nak">
-                          {formatAmount(order.subtotal)}
+                          {formatPrice(order.subtotal)}
                         </span>
                       </div>
                       <div className="flex justify-between text-gray-400">
                         <span>Shipping</span>
                         <span className="font-mono-nak">
-                          {formatAmount(order.shipping)}
+                          {formatPrice(order.shipping)}
                         </span>
                       </div>
                       <div className="flex justify-between text-gray-400">
                         <span>Tax</span>
                         <span className="font-mono-nak">
-                          {formatAmount(order.tax)}
+                          {formatPrice(order.tax)}
                         </span>
                       </div>
                       <div className="flex justify-between items-center pt-2 border-t border-white/10">
                         <span className="font-semibold text-white">Total</span>
                         <span className="font-mono-nak text-lg text-teal-bright">
-                          {formatAmount(order.total)}
+                          {formatPrice(order.total)}
                         </span>
                       </div>
                     </div>
@@ -397,7 +481,7 @@ const OrderLookupPage: React.FC<OrderLookupPageProps> = ({
                           <div className="flex justify-between">
                             <span className="text-gray-400">Amount Due</span>
                             <span className="font-mono-nak text-white">
-                              {formatAmount(
+                              {formatTokenAmount(
                                 deposit.amountDue,
                                 deposit.decimals,
                               )}{" "}
@@ -416,12 +500,12 @@ const OrderLookupPage: React.FC<OrderLookupPageProps> = ({
                             </span>
                             <div className="flex items-center gap-2 rounded-xl bg-black/40 border border-white/10 px-3 py-2">
                               <span className="font-mono-nak text-xs text-teal-bright break-all min-w-0">
-                                {deposit.address.toText()}
+                                {depositAccountString(deposit)}
                               </span>
                               <button
                                 type="button"
                                 onClick={() =>
-                                  handleCopy(deposit.address.toText())
+                                  handleCopy(depositAccountString(deposit))
                                 }
                                 className="shrink-0 p-2 rounded-lg hover:bg-white/5 transition-colors"
                                 aria-label="Copy deposit address"

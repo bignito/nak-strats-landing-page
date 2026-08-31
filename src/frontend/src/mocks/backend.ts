@@ -1,5 +1,12 @@
+import type { Principal } from "@icp-sdk/core/principal";
 import type { backendInterface } from "../backend";
-import { PaymentMethod, PaymentStatus, Token } from "../backend";
+import {
+  PaymentMethod,
+  PaymentStatus,
+  ShippingStatus,
+  Token,
+  type AdminOrderView,
+} from "../backend";
 
 const sampleProduct = {
   id: 1n,
@@ -22,6 +29,7 @@ const sampleProduct = {
   currency: "usd",
   category: "apparel",
   price: 3500n,
+  admin_only: false,
   images: [],
 };
 
@@ -55,24 +63,81 @@ const sampleOrder = {
   customer_email: "jane@example.com",
   customer_name: "Jane Doe",
   subtotal: 3500n,
+  shipping_status: ShippingStatus.pending,
+  marketing_consent: false,
+  marketing_consent_at: undefined,
+  shipped_at: undefined,
+  tracking_number: undefined,
+};
+
+const sampleAdminOrder: AdminOrderView = {
+  status: PaymentStatus.pending,
+  paymentMethod: PaymentMethod.crypto_ckusdc,
+  cryptoStatus: { __kind__: "awaiting_payment", awaiting_payment: null },
+  createdAt: 1700000000000000000n,
+  itemCount: 1n,
+  reference: "NAK-000001",
+  amountOwed: 3500000000n,
+  currency: "usd",
+  subaccountHex: "0000000000000000000000000000000000000000000000000000000000000005",
+  depositAccountText:
+    "icrc1:ckUSDC:vm5zh-yaaaa-aaaaj-qoaza-cai:0000000000000000000000000000000000000000000000000000000000000005",
+};
+
+const sampleAdminOrderPaid: AdminOrderView = {
+  status: PaymentStatus.paid,
+  paymentMethod: PaymentMethod.crypto_ckusdc,
+  cryptoStatus: { __kind__: "paid", paid: { blockIndex: 42n } },
+  createdAt: 1700000000000000000n,
+  itemCount: 2n,
+  reference: "NAK-000002",
+  amountOwed: 500000n,
+  currency: "usd",
+  subaccountHex: "0000000000000000000000000000000000000000000000000000000000000005",
+  depositAccountText:
+    "icrc1:ckUSDC:vm5zh-yaaaa-aaaaj-qoaza-cai:0000000000000000000000000000000000000000000000000000000000000005",
 };
 
 export const mockBackend: backendInterface = {
   addAdmin: async () => true,
+  adminGetOrderDetail: async () => ({
+    customerName: "Jane Doe",
+    status: PaymentStatus.pending,
+    paymentMethod: PaymentMethod.crypto_ckusdc,
+    cryptoStatus: { __kind__: "awaiting_payment", awaiting_payment: null },
+    createdAt: 1700000000000000000n,
+    reference: "NAK-000001",
+    amountOwed: 3500000000n,
+    updatedAt: 1700000000000000000n,
+    currency: "usd",
+    subaccountHex: "0000000000000000000000000000000000000000000000000000000000000005",
+    items: [
+      {
+        product_id: 1n,
+        unit_amount: 3500n,
+        name: "NAK Shell Tee",
+        variant_id: "v1",
+        quantity: 1n,
+      },
+    ],
+    sweepNote: undefined,
+    customerEmail: "jane@example.com",
+    depositAccountText:
+      "icrc1:ckUSDC:vm5zh-yaaaa-aaaaj-qoaza-cai:0000000000000000000000000000000000000000000000000000000000000005",
+  }),
+  adminListOrders: async () => [sampleAdminOrder, sampleAdminOrderPaid],
   cancelCardOrder: async () => ({ __kind__: "ok", ok: null }),
   claimInitialAdmin: async () => true,
   isAdmin: async () => true,
   listAdmins: async () => [],
+  listLatePayments: async () => [],
+  listOrdersForRecovery: async () => [],
   removeAdmin: async () => true,
   checkCryptoPayment: async () => ({
     __kind__: "ok",
     ok: { __kind__: "awaiting_payment", awaiting_payment: null },
   }),
   confirmCardPayment: async () => ({ __kind__: "ok", ok: PaymentStatus.paid }),
-  confirmCryptoPayment: async () => ({
-    __kind__: "ok",
-    ok: { __kind__: "paid", paid: { blockIndex: 1n } },
-  }),
   createCardCheckoutSession: async () => ({
     __kind__: "ok",
     ok: { reference: "NAK-000001", url: "https://checkout.stripe.com/test" },
@@ -82,7 +147,17 @@ export const mockBackend: backendInterface = {
     ok: { reference: "NAK-000001" },
   }),
   createOrder: async () => ({ __kind__: "ok", ok: sampleOrder }),
+  createProduct: async () => true,
   execute: async () => ({ hasMore: false, rows: [] }),
+  forceRecheckPayment: async () => ({
+    __kind__: "ok",
+    ok: {
+      reference: "NAK-000001",
+      balance: 0n,
+      status: { __kind__: "awaiting_payment", awaiting_payment: null },
+    },
+  }),
+  forceSweepOrder: async () => ({ __kind__: "ok", ok: { blockIndex: 1n } }),
   getApiDoc: async () => "api doc",
   getCryptoConfig: async () => ({
     icp: {
@@ -95,8 +170,10 @@ export const mockBackend: backendInterface = {
       decimals: 8,
       canisterId: "aaaaa-aa" as never,
     },
+    minimumOrder: 25n,
     treasuryPrincipal: "aaaaa-aa" as never,
   }),
+  getMinimumOrder: async () => 25n,
   getCryptoDepositInfo: async () => ({
     __kind__: "ok",
     ok: {
@@ -114,7 +191,24 @@ export const mockBackend: backendInterface = {
     __kind__: "ok",
     ok: { __kind__: "awaiting_payment", awaiting_payment: null },
   }),
+  getCanisterId: async () => "aaaaa-aa" as unknown as Principal,
+  getCycleBalance: async () => 0n,
   getDashboardData: async () => "{}",
+  getDefaultSubaccountBalance: async () => ({ __kind__: "ok", ok: 0n }),
+  getConsentListCsv: async () => ({
+    __kind__: "ok",
+    ok: { csv: "email,consented_at\njane@example.com,1700000000000000000" },
+  }),
+  getSubaccountBalance: async () => ({
+    __kind__: "ok",
+    ok: {
+      balance: 0n,
+      subaccountHex:
+        "0000000000000000000000000000000000000000000000000000000000000005",
+      subaccountIndex: 5n,
+    },
+  }),
+  getMyOrders: async () => [sampleOrder],
   getNAKPrice: async () => "1.00",
   getOrderStatus: async () => sampleOrder,
   getPaymentServiceConfig: async () => ({
@@ -123,11 +217,53 @@ export const mockBackend: backendInterface = {
   }),
   getPaymentStatus: async () => PaymentStatus.pending,
   getProduct: async () => sampleProduct,
+  getResumeInfo: async () => ({
+    __kind__: "ok",
+    ok: {
+      reference: "NAK-000001",
+      status: { __kind__: "awaiting_payment", awaiting_payment: null },
+      expiresAt: 1700000000000000000n + 1800000000000n,
+      remainingNs: 1800000000000n,
+      deposit: {
+        decimals: 8,
+        token: Token.ckUSDC,
+        expiresAt: 1700000000000000000n + 1800000000000n,
+        qrPayload: "icp:abc",
+        subaccount: new Uint8Array(32),
+        reference: "NAK-000001",
+        address: "aaaaa-aa" as never,
+        amountDue: 3500000000n,
+      },
+    },
+  }),
   getTokenImage: async () => "",
   getTokenProfile: async () => "",
   getTreasuryTokens: async () => "[]",
   handlePaymentConfirmation: async () => ({ __kind__: "ok", ok: null }),
   listProducts: async () => [sampleProduct],
+  markLatePaymentReviewed: async () => true,
+  markOrderShipped: async () => ({ __kind__: "ok", ok: null }),
+  resendConfirmationEmail: async () => ({ __kind__: "ok", ok: null }),
+  sweepSubaccount: async () => ({
+    __kind__: "ok",
+    ok: {
+      subaccountHex:
+        "0000000000000000000000000000000000000000000000000000000000000005",
+      subaccountIndex: 5n,
+      blockIndex: 1n,
+    },
+  }),
+  unsubscribe: async () => ({ __kind__: "ok", ok: null }),
+  consentServiceTransform: async (input) => ({
+    status: input.response.status,
+    body: input.response.body,
+    headers: [],
+  }),
+  emailTransform: async (input) => ({
+    status: input.response.status,
+    body: input.response.body,
+    headers: [],
+  }),
   paymentServiceTransform: async (input) => ({
     status: input.response.status,
     body: input.response.body,
@@ -136,13 +272,18 @@ export const mockBackend: backendInterface = {
   releaseExpiredOrders: async () => 0n,
   schema: async () => "{}",
   sweepCryptoToTreasury: async () => ({ __kind__: "ok", ok: 1n }),
+  sweepDefaultSubaccount: async () => ({ __kind__: "ok", ok: {} }),
+  startVerificationTimer: async () => true,
+  stopVerificationTimer: async () => true,
   transform: async (input) => ({
     status: input.response.status,
     body: input.response.body,
     headers: [],
   }),
   updateLedgerConfig: async () => ({ __kind__: "ok", ok: null }),
+  updateMinimumOrder: async () => ({ __kind__: "ok", ok: null }),
   updatePaymentServiceToken: async () => ({ __kind__: "ok", ok: null }),
   updatePaymentServiceUrl: async () => ({ __kind__: "ok", ok: null }),
+  updateProduct: async () => true,
   updateTreasury: async () => ({ __kind__: "ok", ok: null }),
 };

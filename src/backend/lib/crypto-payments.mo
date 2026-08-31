@@ -7,7 +7,10 @@ import Map "mo:core/Map";
 import List "mo:core/List";
 import Types "../types/crypto-payments";
 import StorefrontTypes "../types/storefront";
+import PaymentServiceTypes "../types/payment-service";
 import PaymentAdapterLib "./payment-adapter";
+import EmailLib "./email";
+import OutCall "mo:caffeineai-http-outcalls/outcall";
 
 module {
   // ICRC-1 ledger interface (called via actor(canisterId), not the ic package).
@@ -41,6 +44,11 @@ module {
 
   // 30-minute deposit window, in nanoseconds.
   let DEPOSIT_WINDOW_NS : Int = 1_800_000_000_000;
+
+  // How long a cached icrc1_fee is considered fresh, in nanoseconds (5 minutes).
+  // The fee is queried from the ledger at runtime and cached briefly rather
+  // than queried on every sweep.
+  let FEE_CACHE_TTL_NS : Int = 300_000_000_000;
 
   func byteAt(value : Nat, position : Nat) : Nat8 {
     // position 0 = least significant byte.
@@ -83,6 +91,74 @@ module {
     switch token {
       case (#ckUSDC) { config.ckUSDC };
       case (#ICP) { config.icp };
+    };
+  };
+
+  // Returns the icrc1_fee for the given token's ledger, queried at runtime and
+  // cached briefly. The cache entry starts at the hardcoded ledger fee (the
+  // fallback) and is refreshed from the ledger when stale (updatedAt == 0 or
+  // older than FEE_CACHE_TTL_NS). The returned value is used for the sweep so a
+  // ledger fee change never silently breaks sweeps.
+  public func getRuntimeFee(
+    token : Types.Token,
+    config : Types.CryptoConfig,
+    feeCache : Types.FeeCache,
+  ) : async Nat {
+    let ledger = ledgerFor(token, config);
+    let entry = switch token {
+      case (#ckUSDC) { feeCache.ckUSDC };
+      case (#ICP) { feeCache.icp };
+    };
+    let now = Time.now();
+    if (entry.updatedAt == 0 or now - entry.updatedAt > FEE_CACHE_TTL_NS) {
+      let ledgerActor : Ledger = actor (ledger.canisterId.toText());
+      let queried = await ledgerActor.icrc1_fee();
+      entry.fee := queried;
+      entry.updatedAt := now;
+      queried;
+    } else {
+      entry.fee;
+    };
+  };
+
+  // Records a sweep outcome note on the order with the given reference. Used to
+  // record a skipped sweep (balance not greater than the fee) or a failed sweep
+  // (including low cycles) so the system does not repeatedly fail silently.
+  public func recordSweepNote(orders : List.List<StorefrontTypes.Order>, reference : Text, note : ?Text) {
+    switch (orders.find(func o = o.reference == reference)) {
+      case (?order) {
+        let updated : StorefrontTypes.Order = {
+          id = order.id;
+          reference = order.reference;
+          items = order.items;
+          subtotal = order.subtotal;
+          tax = order.tax;
+          shipping = order.shipping;
+          total = order.total;
+          currency = order.currency;
+          customer_email = order.customer_email;
+          customer_name = order.customer_name;
+          shipping_address = order.shipping_address;
+          payment_method = order.payment_method;
+          payment_status = order.payment_status;
+          payment_reference = order.payment_reference;
+          customer_principal = order.customer_principal;
+          sweep_note = note;
+          shipping_status = order.shipping_status;
+          shipped_at = order.shipped_at;
+          tracking_number = order.tracking_number;
+          marketing_consent = order.marketing_consent;
+          marketing_consent_at = order.marketing_consent_at;
+          created_at = order.created_at;
+          updated_at = Time.now();
+        };
+        let snapshot = orders.toArray();
+        orders.clear();
+        for (o in snapshot.values()) {
+          if (o.reference == reference) { orders.add(updated) } else { orders.add(o) };
+        };
+      };
+      case null {};
     };
   };
 
@@ -148,6 +224,137 @@ module {
     };
   };
 
+  // Builds the admin row view for an order in the admin Orders list. When the
+  // order has no crypto payment (e.g. manual/card), the crypto-specific fields
+  // are empty.
+  public func buildAdminOrderView(
+    order : StorefrontTypes.Order,
+    payment : ?Types.CryptoPayment,
+    selfPrincipal : Principal,
+  ) : Types.AdminOrderView {
+    let subaccountHex = switch (payment) {
+      case (?p) { blobToHex(p.subaccount) };
+      case null { "" };
+    };
+    let depositAccountText = switch (payment) {
+      case (?p) { selfPrincipal.toText() # "." # blobToHex(p.subaccount) };
+      case null { "" };
+    };
+    {
+      reference = order.reference;
+      createdAt = order.created_at;
+      status = order.payment_status;
+      cryptoStatus = switch (payment) { case (?p) { ?p.status }; case null { null } };
+      paymentMethod = order.payment_method;
+      amountOwed = order.total;
+      currency = order.currency;
+      itemCount = order.items.size();
+      subaccountHex;
+      depositAccountText;
+      sweepNote = order.sweep_note;
+    };
+  };
+
+  // Builds the admin full-detail view for an order, including line items and
+  // crypto payment status plus the deposit account info.
+  public func buildAdminOrderDetail(
+    order : StorefrontTypes.Order,
+    payment : ?Types.CryptoPayment,
+    selfPrincipal : Principal,
+  ) : Types.AdminOrderDetail {
+    let subaccountHex = switch (payment) {
+      case (?p) { blobToHex(p.subaccount) };
+      case null { "" };
+    };
+    let depositAccountText = switch (payment) {
+      case (?p) { selfPrincipal.toText() # "." # blobToHex(p.subaccount) };
+      case null { "" };
+    };
+    {
+      reference = order.reference;
+      createdAt = order.created_at;
+      updatedAt = order.updated_at;
+      status = order.payment_status;
+      cryptoStatus = switch (payment) { case (?p) { ?p.status }; case null { null } };
+      paymentMethod = order.payment_method;
+      amountOwed = order.total;
+      currency = order.currency;
+      items = order.items;
+      customerEmail = order.customer_email;
+      customerName = order.customer_name;
+      subaccountHex;
+      depositAccountText;
+      sweepNote = order.sweep_note;
+    };
+  };
+
+  // True when an order needs admin review: underpaid, overpaid, paid-but-not-
+  // swept, expired-but-funded, or sweep-failed. Derived from the crypto payment
+  // status variants and the order's sweep note (a sweep note means the last
+  // sweep was skipped or failed, so funds may still be sitting in the
+  // subaccount).
+  public func isNeedsReview(order : StorefrontTypes.Order, payment : ?Types.CryptoPayment) : Bool {
+    switch (payment) {
+      case null { false };
+      case (?p) {
+        switch (p.status) {
+          case (#underpayment _) { true };
+          case (#overpayment _) { true };
+          case (#paid _) {
+            switch (order.sweep_note) {
+              case (?_) { true };
+              case null { false };
+            };
+          };
+          case (#expired) {
+            switch (order.sweep_note) {
+              case (?_) { true };
+              case null { false };
+            };
+          };
+          case (#awaiting_payment) {
+            // Sweep-failed and expired-but-funded orders can remain in
+            // #awaiting_payment but carry a sweep_note (the last sweep was
+            // skipped or failed, so funds may still sit in the subaccount).
+            // A sweep note on an awaiting-payment order means it needs review.
+            switch (order.sweep_note) {
+              case (?_) { true };
+              case null { false };
+            };
+          };
+        };
+      };
+    };
+  };
+
+  // Matches an order against one of the admin Orders list filters: all,
+  // awaiting_payment, paid, expired, cancelled, needs_review.
+  public func matchesFilter(
+    order : StorefrontTypes.Order,
+    payment : ?Types.CryptoPayment,
+    filter : Text,
+  ) : Bool {
+    switch (filter) {
+      case "all" { true };
+      case "awaiting_payment" {
+        switch (payment) {
+          case (?p) {
+            switch (p.status) {
+              case (#awaiting_payment) { true };
+              case (_) { false };
+            };
+          };
+          case null { false };
+        };
+      };
+      case "paid" { order.payment_status == #paid };
+      case "expired" { order.payment_status == #expired };
+      case "cancelled" { order.payment_status == #cancelled };
+      case "needs_review" { isNeedsReview(order, payment) };
+      case _ { false };
+    };
+  };
+
   public func checkPayment(
     cryptoPayments : Map.Map<Text, Types.CryptoPayment>,
     reference : Text,
@@ -181,6 +388,9 @@ module {
     reference : Text,
     config : Types.CryptoConfig,
     selfPrincipal : Principal,
+    feeCache : Types.FeeCache,
+    emailConfig : PaymentServiceTypes.PaymentServiceConfig,
+    emailTransform : OutCall.Transform,
   ) : async Result.Result<Types.CryptoPaymentStatus, Types.CryptoPaymentError> {
     switch (cryptoPayments.get(reference)) {
       case null { #err(#notFound) };
@@ -204,9 +414,70 @@ module {
           return #ok(#awaiting_payment);
         };
         // balance >= amountDue: sweep the funds to the treasury and confirm.
-        let fee = ledger.fee;
+        // The transfer fee is queried from the ledger at runtime (cached
+        // briefly) rather than hardcoded, so a fee change never silently breaks
+        // the sweep.
+        let fee = await getRuntimeFee(payment.token, config, feeCache);
         if (balance <= fee) {
-          return #err(#sweepFailed("insufficient balance to cover transfer fee"));
+          // Cannot sweep: after deducting the fee there is nothing left to
+          // transfer and the ledger rejects a zero-value transfer. Skip the
+          // sweep, leave the funds in the subaccount, and record the skip on
+          // the order so we do not repeatedly fail. The payment is still
+          // confirmed (funds were received); blockIndex 0 signals no transfer.
+          recordSweepNote(orders, reference, ?("sweep skipped: subaccount balance " # balance.toText() # " is not greater than the transfer fee " # fee.toText() # "; funds left in place"));
+          let updated : Types.CryptoPayment = {
+            orderId = payment.orderId;
+            reference = payment.reference;
+            token = payment.token;
+            amountDue = payment.amountDue;
+            subaccount = payment.subaccount;
+            status = #paid({ blockIndex = 0 });
+            expiresAt = payment.expiresAt;
+            confirmedBlockIndex = null;
+            createdAt = payment.createdAt;
+            updatedAt = Time.now();
+          };
+          cryptoPayments.add(reference, updated);
+          switch (orders.find(func o = o.reference == reference)) {
+            case (?order) {
+              let updatedOrder : StorefrontTypes.Order = {
+                id = order.id;
+                reference = order.reference;
+                items = order.items;
+                subtotal = order.subtotal;
+                tax = order.tax;
+                shipping = order.shipping;
+                total = order.total;
+                currency = order.currency;
+                customer_email = order.customer_email;
+                customer_name = order.customer_name;
+                shipping_address = order.shipping_address;
+                payment_method = order.payment_method;
+                payment_status = #paid;
+                payment_reference = ?reference;
+                customer_principal = order.customer_principal;
+                sweep_note = order.sweep_note;
+                shipping_status = order.shipping_status;
+                shipped_at = order.shipped_at;
+                tracking_number = order.tracking_number;
+                marketing_consent = order.marketing_consent;
+                marketing_consent_at = order.marketing_consent_at;
+                created_at = order.created_at;
+                updated_at = Time.now();
+              };
+              let orderSnapshot = orders.toArray();
+              orders.clear();
+              for (o in orderSnapshot.values()) {
+                if (o.reference == reference) { orders.add(updatedOrder) } else { orders.add(o) };
+              };
+            };
+            case null {};
+          };
+          // Crypto order confirmed (funds received, sweep skipped): send the
+          // order confirmation email. Transactional — sends regardless of
+          // marketing consent.
+          ignore (await EmailLib.sendOrderConfirmation(emailConfig, orders, reference, emailTransform));
+          return #ok(#paid({ blockIndex = 0 }));
         };
         let sweepAmount = balance - fee;
         let transferResult = await ledgerActor.icrc1_transfer({
@@ -219,6 +490,8 @@ module {
         });
         switch transferResult {
           case (#Ok blockIndex) {
+            // Sweep succeeded: clear any prior sweep note on the order.
+            recordSweepNote(orders, reference, null);
             let updated : Types.CryptoPayment = {
               orderId = payment.orderId;
               reference = payment.reference;
@@ -253,6 +526,13 @@ module {
                   payment_method = order.payment_method;
                   payment_status = #paid;
                   payment_reference = ?reference;
+                  customer_principal = order.customer_principal;
+                  sweep_note = order.sweep_note;
+                  shipping_status = order.shipping_status;
+                  shipped_at = order.shipped_at;
+                  tracking_number = order.tracking_number;
+                  marketing_consent = order.marketing_consent;
+                  marketing_consent_at = order.marketing_consent_at;
                   created_at = order.created_at;
                   updated_at = Time.now();
                 };
@@ -264,9 +544,16 @@ module {
               };
               case null {};
             };
+            // Crypto order confirmed and swept: send the order confirmation
+            // email. Transactional — sends regardless of marketing consent.
+            ignore (await EmailLib.sendOrderConfirmation(emailConfig, orders, reference, emailTransform));
             #ok(#paid({ blockIndex }));
           };
-          case (#Err e) { #err(#sweepFailed(debug_show(e))) };
+          case (#Err e) {
+            // Record the sweep failure on the order so it is not silent.
+            recordSweepNote(orders, reference, ?("sweep failed: " # debug_show(e)));
+            #err(#sweepFailed(debug_show(e)));
+          };
         };
       };
     };
@@ -274,9 +561,11 @@ module {
 
   public func sweepToTreasury(
     cryptoPayments : Map.Map<Text, Types.CryptoPayment>,
+    orders : List.List<StorefrontTypes.Order>,
     reference : Text,
     config : Types.CryptoConfig,
     selfPrincipal : Principal,
+    feeCache : Types.FeeCache,
   ) : async Result.Result<Nat, Types.CryptoPaymentError> {
     switch (cryptoPayments.get(reference)) {
       case null { #err(#notFound) };
@@ -284,9 +573,17 @@ module {
         let ledger = ledgerFor(payment.token, config);
         let ledgerActor : Ledger = actor (ledger.canisterId.toText());
         let balance = await ledgerActor.icrc1_balance_of({ owner = selfPrincipal; subaccount = ?payment.subaccount });
-        let fee = ledger.fee;
+        // The transfer fee is queried from the ledger at runtime (cached
+        // briefly) rather than hardcoded, so a fee change never silently breaks
+        // the sweep.
+        let fee = await getRuntimeFee(payment.token, config, feeCache);
         if (balance <= fee) {
-          return #err(#sweepFailed("insufficient balance to cover transfer fee"));
+          // Skip the sweep: after deducting the fee there is nothing left to
+          // transfer and the ledger rejects a zero-value transfer. Leave the
+          // funds in the subaccount and record the skip on the order so we do
+          // not repeatedly fail. Returns #ok(0) to signal a successful no-op.
+          recordSweepNote(orders, reference, ?("sweep skipped: subaccount balance " # balance.toText() # " is not greater than the transfer fee " # fee.toText() # "; funds left in place"));
+          return #ok(0);
         };
         let sweepAmount = balance - fee;
         let transferResult = await ledgerActor.icrc1_transfer({
@@ -298,8 +595,16 @@ module {
           created_at_time = null;
         });
         switch transferResult {
-          case (#Ok blockIndex) { #ok(blockIndex) };
-          case (#Err e) { #err(#sweepFailed(debug_show(e))) };
+          case (#Ok blockIndex) {
+            // Sweep succeeded: clear any prior sweep note on the order.
+            recordSweepNote(orders, reference, null);
+            #ok(blockIndex);
+          };
+          case (#Err e) {
+            // Record the sweep failure on the order so it is not silent.
+            recordSweepNote(orders, reference, ?("sweep failed: " # debug_show(e)));
+            #err(#sweepFailed(debug_show(e)));
+          };
         };
       };
     };
@@ -357,6 +662,13 @@ module {
               payment_method = order.payment_method;
               payment_status = #expired;
               payment_reference = order.payment_reference;
+              customer_principal = order.customer_principal;
+              sweep_note = order.sweep_note;
+              shipping_status = order.shipping_status;
+              shipped_at = order.shipped_at;
+              tracking_number = order.tracking_number;
+              marketing_consent = order.marketing_consent;
+              marketing_consent_at = order.marketing_consent_at;
               created_at = order.created_at;
               updated_at = Time.now();
             };

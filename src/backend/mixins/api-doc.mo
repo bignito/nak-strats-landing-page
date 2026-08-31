@@ -16,10 +16,28 @@ treasury/dashboard data from external services.
 ### Storefront
 
 - `listProducts() : async [Product]` — query. Returns the active products in
-  the catalogue (products whose `active` field is `true`).
+  the catalogue (products whose `active` field is `true`). Hidden
+  (`admin_only`) products are NEVER included, so the public /shop grid shows
+  only the real catalogue.
 - `getProduct(slugOrId : Text) : async ?Product` — query. Looks up a product by
   its `slug`, or by its numeric `id` when the argument parses as a `Nat`.
-  Returns `null` when no product matches.
+  Returns `null` when no product matches. A hidden (`admin_only`) product is
+  returned ONLY to an authenticated admin caller (via a direct product URL or
+  an admin-only view); non-admin and anonymous callers get `null` for it, so
+  hidden products remain purchasable by an admin but never leak to customers.
+- `createProduct(product : Product) : async Bool` — update. ADMIN-ONLY. Appends
+  a new product to the catalogue. The caller supplies the full `Product`
+  record; every price field (`price`, and each `variant.price`) is an integer
+  in cents (never a float) — the frontend converts dollar input to cents before
+  calling. Binds the caller at the top of the function, rejects the anonymous
+  principal, and traps for a caller that is not a non-anonymous member of the
+  admin allowlist. Returns `true` on success.
+- `updateProduct(product : Product) : async Bool` — update. ADMIN-ONLY.
+  Replaces the existing product whose `id` matches the supplied record (a
+  no-op when no product with that id exists). Prices are integer cents. Binds
+  the caller at the top of the function, rejects the anonymous principal, and
+  traps for a caller that is not a non-anonymous member of the admin allowlist.
+  Returns `true` on success.
 - `createOrder(input : CreateOrderInput) : async Result<Order, OrderError>` —
   update. Validates the order server-side (product exists and is active,
   variant exists, quantity is at least 1, stock is sufficient), computes the
@@ -28,9 +46,24 @@ treasury/dashboard data from external services.
   browser-submitted prices. Creates the order with `payment_status = #pending`
   and a unique `reference` of the form `NAK-<id>`, then hands it to the
   payment adapter's `createCheckoutSession`. On success returns the created
-  order; on failure returns an `OrderError` variant.
+  order; on failure returns an `OrderError` variant. For crypto payment methods
+  (`#crypto_ckusdc`), the order total is checked server-side against the
+  configured minimum order total (default $0.25): an order whose total is below
+  the minimum is rejected with `#err(#belowMinimumOrder(minimum))` before any
+  payment is created, because such an order cannot be swept to the treasury
+  after the ledger transfer fee is deducted. Hidden (`admin_only`) test items
+  ship free (no shipping cost), so the total is exactly the item price.
 - `getOrderStatus(reference : Text) : async ?Order` — query. Returns the order
-  with the given `reference`, or `null` if none exists.
+  with the given `reference`, or `null` if none exists. This is the guest
+  lookup path: a customer who did not sign in can reach their order status this
+  way using the reference shown at checkout.
+- `getMyOrders() : async [Order]` — query. Returns ONLY the orders whose
+  `customer_principal` matches the caller. The caller is derived from
+  `msg.caller` server-side — never accepted as a parameter. It rejects the
+  anonymous principal (returns an empty list), so a guest who did not sign in
+  cannot read anyone's orders through this path, and one signed-in customer can
+  never read another customer's orders. A signed-in customer's orders are
+  attributed to them at creation time via `customer_principal`.
 
 ### Payment adapter
 
@@ -72,10 +105,20 @@ anonymous principal, and traps when the caller is not in the allowlist.
 ### Crypto checkout (ckUSDC via ICRC-1)
 
 - `getCryptoConfig() : async CryptoConfigView` — query. Returns the current
-  crypto configuration: the treasury principal and subaccount, and the ckUSDC
-  and ICP ledger configurations (canister id, decimals, fee). ICP is present in
+  crypto configuration: the treasury principal and subaccount, the ckUSDC
+  and ICP ledger configurations (canister id, decimals, fee), and the current
+  `minimumOrder` (in USD cents) required for crypto checkout. ICP is present in
   the config but is DISABLED for payments — no rate oracle is configured, so
   ICP is never offered and any attempt to pay with ICP is rejected.
+- `getMinimumOrder() : async Nat` — query. Public. Returns the current minimum
+  order total (in USD cents) required for crypto checkout. Defaults to `25`
+  ($0.25). Crypto orders whose total is below this are rejected server-side
+  because they cannot be swept to the treasury after the ledger transfer fee is
+  deducted.
+- `updateMinimumOrder(minimum : Nat) : async Result<(), CryptoPaymentError>` —
+  update. Admin-only. Sets the minimum order total (in USD cents) required for
+  crypto checkout. Traps for a caller that is not a non-anonymous member of the
+  admin allowlist.
 - `getCryptoDepositInfo(reference : Text) : async Result<DepositInfo,
   CryptoPaymentError>` — query. Returns the deposit details for an order's
   crypto payment: the deposit address (this canister's own principal), the
@@ -93,18 +136,24 @@ anonymous principal, and traps when the caller is not in the allowlist.
   balance at least the amount due is reported `#paid` (the excess is swept
   with the principal), so `#overpayment` is never returned by this method. The
   order is only ever considered paid when the on-ledger balance is at least
-  the amount due — never from a frontend claim.
-- `confirmCryptoPayment(reference : Text) : async Result<CryptoPaymentStatus,
-  CryptoPaymentError>` — update. Verifies the on-ledger balance; when it is at
-  least the amount due, sweeps the funds to the treasury, records the on-ledger
-  block index, and marks the payment `#paid`. Idempotent: confirming an
-  already-paid payment returns the existing status without re-sweeping or
-  re-confirming.
+  the amount due — never from a frontend claim. This method is read-only: it
+  only triggers an on-ledger re-check and can never mark an order paid on its
+  own.
 - `sweepCryptoToTreasury(reference : Text) : async Result<Nat,
-  CryptoPaymentError>` — update. Transfers the subaccount balance minus the
-  ledger transfer fee to the treasury and returns the on-ledger block index.
-  Never transfers more than `balance - fee`, so the sweep cannot fail on
+  CryptoPaymentError>` — update. ADMIN-ONLY. Transfers the subaccount balance
+  minus the ledger transfer fee to the treasury and returns the on-ledger block
+  index. Never transfers more than `balance - fee`, so the sweep cannot fail on
   insufficient funds and never leaves the subaccount unable to cover the fee.
+  The transfer fee is queried at runtime via `icrc1_fee` on the configured
+  ledger and cached briefly between sweeps; the hardcoded ledger fee is used
+  only as a fallback when the query fails. When the subaccount balance is not
+  greater than the fee, the sweep is skipped, the funds are left in place, and
+  a note is recorded on the order (`sweep_note`) rather than failing
+  repeatedly. Sweep failures — including low cycles — are recorded as a clear
+  note on the order (`sweep_note`) rather than failing silently or trapping.
+  Binds the caller at the top of the function, rejects the anonymous principal,
+  and traps for a caller that is not a non-anonymous member of the admin
+  allowlist.
 - `updateTreasury(principal : Principal, subaccount : ?Blob) : async
   Result<(), CryptoPaymentError>` — update. Admin-only. Updates the treasury
   principal and optional subaccount that confirmed funds are swept to. Traps
@@ -114,6 +163,27 @@ anonymous principal, and traps when the caller is not in the allowlist.
   Updates the ledger configuration (canister id, decimals, transfer fee) for
   the given token. Traps for a caller that is not a non-anonymous member of the
   admin allowlist.
+- `adminListOrders(filter : Text) : async [AdminOrderView]` — update.
+  ADMIN-ONLY. Enumerates orders for the admin UI. Binds the caller at the top
+  of the function, rejects the anonymous principal, and traps for a caller that
+  is not a non-anonymous member of the admin allowlist. Each returned view
+  carries the order `reference`, `created_at`, `status`, `payment_method`,
+  amount owed, `currency`, item count, the per-order ICRC-1 subaccount as
+  lowercase hex, and the full ICRC-1 deposit account text. The `filter` argument
+  selects which orders to return:
+  - `all` — every order.
+  - `awaiting_payment` — crypto orders still awaiting payment.
+  - `paid` — orders whose payment is `#paid`.
+  - `expired` — orders whose payment is `#expired`.
+  - `cancelled` — orders whose payment is `#cancelled`.
+  - `needs_review` — orders that need admin attention: paid-but-not-swept,
+    expired-but-funded, underpaid, overpaid, and sweep-failed.
+- `adminGetOrderDetail(reference : Text) : async ?AdminOrderDetail` — update.
+  ADMIN-ONLY. Returns the full detail of a single
+  order, including its line items, for the admin UI. Binds the caller at the top
+  of the function, rejects the anonymous principal, and traps for a caller that
+  is not a non-anonymous member of the admin allowlist. Returns
+  `null` for an unknown reference.
 
 ### Card checkout (Stripe via external payment service)
 
@@ -157,6 +227,46 @@ anonymous principal, and traps when the caller is not in the allowlist.
   trace headers) so responses are identical across replicas, returning only the
   stable JSON body.
 
+### Subaccount sweep (admin-only fund recovery by integer index)
+
+These endpoints let an admin query and sweep a SPECIFIC ICRC-1 subaccount by its
+integer index on the configured ckUSDC ledger. The subaccount is derived with
+the SAME big-endian encoding used to build the displayed deposit address (31
+zero bytes followed by the big-endian 32-byte encoding of the integer), so the
+subaccount queried/swept here is exactly the one a customer paid into. Both are
+admin-only and surface the exact ledger error on failure (never swallowed).
+
+- `getSubaccountBalance(subaccountIndex : Nat) : async Result<SubaccountBalanceResult, SweepError>` — update. ADMIN-ONLY. Queries `icrc1_balance_of` on the configured ckUSDC ledger for owner = this canister, subaccount = the big-endian 32-byte encoding of `subaccountIndex`, and returns the exact unit count. Binds the caller at the top, rejects the anonymous principal, and traps for a caller that is not a non-anonymous member of the admin allowlist.
+- `sweepSubaccount(subaccountIndex : Nat) : async Result<SweepSubaccountResult, SweepError>` — update. ADMIN-ONLY. Sweeps the subaccount at `subaccountIndex` to the treasury principal, returning the exact ledger error (icrc1_transfer error variant) on failure. Binds the caller at the top, rejects the anonymous principal, and traps for a caller that is not a non-anonymous member of the admin allowlist.
+
+### Transactional email (order confirmation, payment pending, shipping)
+
+The canister has NO email capability of its own and holds NO email provider key.
+Transactional emails are sent by the external payment service via Resend
+(`api.resend.com`); the Resend key lives only in the payment service's
+environment, never in the canister or this repo. The canister triggers a send
+via HTTPS outcall to `{PAYMENT_SERVICE_URL}/emails/...` authenticated with the
+shared bearer token. All transactional emails are EXEMPT from marketing consent
+and send regardless of the checkbox.
+
+- `markOrderShipped(reference : Text, trackingNumber : ?Text) : async Result<(), EmailError>` — update. ADMIN-ONLY. Marks the order shipped (sets `shipping_status = #shipped`, `shipped_at` to now, and `tracking_number` when provided) and triggers the shipping notification email, including the tracking number when present. Transactional — sends regardless of marketing consent. Binds the caller at the top, rejects the anonymous principal, and traps for a caller that is not a non-anonymous member of the admin allowlist.
+- `resendConfirmationEmail(reference : Text) : async Result<(), EmailError>` — update. ADMIN-ONLY. Re-sends the order confirmation email for an order. Transactional — sends regardless of marketing consent. Binds the caller at the top, rejects the anonymous principal, and traps for a caller that is not a non-anonymous member of the admin allowlist.
+- `emailTransform(input : TransformationInput) : async TransformationOutput` — query. The HTTP outcall response transform for the payment service email endpoints: strips every response header so responses are identical across replicas.
+
+Order confirmation emails are sent automatically when a payment is confirmed,
+for BOTH crypto and card orders, and carry the order reference, line items
+(quantities and prices), totals, shipping address, and payment method. A
+payment-pending email is sent when a crypto order is created, carrying the order
+reference and a link back to the order lookup page. These sends are triggered by
+the backend (via the verification timer and the payment confirmation paths) and
+are transactional — never gated on marketing consent.
+
+### Marketing consent (opt-in list and unsubscribe)
+
+- `getConsentListCsv() : async Result<ConsentListExport, ConsentError>` — update. ADMIN-ONLY. Fetches the list of addresses WITH marketing consent from the external payment service and returns it as CSV, so a mailing list can be built without accidentally including customers who did not opt in. The addresses are PII that lives off-canister at the payment service; the canister only proxies them through and never persists them. Binds the caller at the top, rejects the anonymous principal, and traps for a caller that is not a non-anonymous member of the admin allowlist.
+- `unsubscribe(token : Text) : async Result<(), ConsentError>` — update. PUBLIC. Token-based unsubscribe. The token is minted by the payment service and embedded in the unsubscribe link of marketing emails; the canister forwards it to the payment service, which adds the address to its stored suppression list. Suppressed addresses are never sent marketing email; transactional emails remain exempt. The suppression list lives at the payment service.
+- `consentServiceTransform(input : TransformationInput) : async TransformationOutput` — query. The HTTP outcall response transform for the payment service consent endpoints: strips every response header so responses are identical across replicas.
+
 ### HTTP outcall helpers
 
 - `transform(input : TransformationInput) : async TransformationOutput` —
@@ -174,11 +284,66 @@ anonymous principal, and traps when the caller is not in the allowlist.
 - `getDashboardData() : async Text` — query. Fetches dashboard data from the
   configured dashboard service.
 
+### Recovery (admin-only diagnosis and fund recovery)
+
+These endpoints exist to diagnose and recover real funds held in the canister's
+ICRC-1 subaccounts. Every one of them is admin-only (guarded by the principal
+allowlist) except `getResumeInfo` and `getCycleBalance`, which are public
+queries used to resume an in-progress deposit screen and to render the cycle
+gauge. Ledger errors are NEVER swallowed — they are returned verbatim in the
+`error` field of the result so an admin can act on the exact ledger failure.
+
+- `getCycleBalance() : async Nat` — query. PUBLIC. Returns the canister's
+  current cycle balance via `Cycles.balance()`. Low cycles can cause
+  inter-canister ledger calls to fail, so this lets an admin confirm the
+  canister is funded before attempting a sweep. It is a public query so the
+  admin UI can render the cycle gauge without an admin session.
+- `getCanisterId() : async Principal` — query. PUBLIC. Returns the canister's
+  own principal via `Principal.fromActor(Self)`. Used by the admin UI to
+  display the canister's identity and to build deposit addresses.
+- `listOrdersForRecovery() : async [OrderRecoveryView]` — update. Admin-only.
+  Lists every order with its reference, status, payment method, amount owed,
+  the full deposit account (owner + subaccount + text address), and the LIVE
+  on-ledger balance of each crypto order's subaccount.
+- `forceRecheckPayment(reference : Text) : async Result<RecheckResult,
+  RecoveryError>` — update. Admin-only. Forces verification of a single
+  order's payment to run immediately, returning the current balance, status,
+  and any error.
+- `forceSweepOrder(reference : Text) : async Result<SweepResult,
+  RecoveryError>` — update. Admin-only. Forces a sweep of a single order's
+  subaccount to the treasury, returning the exact ledger error on failure
+  (never swallowed).
+- `getDefaultSubaccountBalance() : async Result<Nat, RecoveryError>` — update.
+  Admin-only. Returns the canister's DEFAULT subaccount balance on the
+  configured ledger.
+- `sweepDefaultSubaccount() : async Result<SweepResult, RecoveryError>` —
+  update. Admin-only. Sweeps the canister's DEFAULT subaccount balance to the
+  treasury, returning the exact ledger error on failure (never swallowed).
+- `startVerificationTimer() : async Bool` — update. Admin-only. Registers the
+  recurring backend payment-verification timer (every 30 seconds). Returns
+  `true` when the timer was (re)started. The timer is also auto-registered on
+  canister init and post-upgrade, so verification runs even if no admin ever
+  calls this.
+- `stopVerificationTimer() : async Bool` — update. Admin-only. Cancels the
+  recurring verification timer. Returns `true` when a timer was running and was
+  cancelled, `false` when none was running.
+- `getResumeInfo(reference : Text) : async Result<ResumeInfo, RecoveryError>` —
+  query. PUBLIC. Returns full deposit info (address, amount, expiry timestamp,
+  remaining time, status) for resuming an in-progress deposit screen. Remaining
+  time is computed server-side from the stored expiry timestamp, never from a
+  client timer that resets on reload.
+- `listLatePayments() : async [LatePayment]` — update. Admin-only. Lists all
+  recorded late payments (received after the deposit window expired, flagged
+  for admin review, never discarded).
+- `markLatePaymentReviewed(reference : Text) : async Bool` — update.
+  Admin-only. Marks a late payment as reviewed. Returns `true` when found.
+
 ### OQL query layer
 
 - `schema() : async Text` — query. Returns a JSON catalogue of the queryable
   entities (`product`, `order`, `cryptoPayment`, `cryptoConfig`,
-  `paymentServiceConfig`), their primary keys, fields, and edges.
+  `paymentServiceConfig`, `latePayment`, `admin`), their primary keys, fields,
+  and edges.
 - `execute(qJson : Text) : async Result` — query. Runs a JSON-encoded OQL query
   and returns matching rows. See the OQL documentation for the query grammar.
 
@@ -186,18 +351,48 @@ anonymous principal, and traps when the caller is not in the allowlist.
 
 The storefront does not gate its public methods on a signed-in caller:
 
-- `listProducts`, `getProduct`, `getOrderStatus`, `schema`, `execute`, and the
-  HTTP outcall helpers are callable by any caller, including anonymous callers.
+- `listProducts`, `getProduct`, `getOrderStatus`, `getMyOrders`, `schema`,
+  `execute`, and the HTTP outcall helpers are callable by any caller, including
+  anonymous callers.
 - `createOrder`, `createCheckoutSession`, `getPaymentStatus`, and
   `handlePaymentConfirmation` are update methods and are likewise not
   restricted to a specific principal in the current source.
-- The crypto checkout read methods (`getCryptoConfig`, `getCryptoDepositInfo`,
-  `getCryptoPaymentStatus`, `checkCryptoPayment`, `confirmCryptoPayment`,
-  `sweepCryptoToTreasury`) are callable by any caller, including anonymous
-  callers.
+- The crypto checkout read methods (`getCryptoConfig`, `getMinimumOrder`,
+  `getCryptoDepositInfo`, `getCryptoPaymentStatus`, `checkCryptoPayment`) are
+  callable by any caller, including anonymous callers. `checkCryptoPayment` is
+  read-only and can never mark an order paid — it only triggers an on-ledger
+  re-check. There is no `confirmCryptoPayment` method: no arbitrary caller can
+  confirm an order and mark it paid on their say-so. Verification is driven by
+  the background verification timer and by a customer polling their OWN order
+  via `checkCryptoPayment`, which marks an order `#paid` only when the actual
+  on-ledger balance is at least the amount due. `sweepCryptoToTreasury` is
+  ADMIN-ONLY (see below). `updateMinimumOrder` is admin-gated (see below).
 - `isAdmin() : async Bool` is a public query that reports only on the caller:
   it returns `true` when the caller is a non-anonymous member of the admin
   allowlist, and `false` otherwise. It never reveals the allowlist contents.
+
+### Optional customer sign-in (order history)
+
+Signing in with Internet Identity is OPTIONAL and is entirely separate from the
+admin allowlist. It is never required to browse, add to cart, check out, or pay
+— by crypto or by card. Anonymous guest checkout remains the default path.
+
+- When a customer is signed in (a non-anonymous caller) at the moment
+  `createOrder` runs, their principal is stored on the order as
+  `customer_principal : ?Principal`. When they are not signed in (the anonymous
+  principal), `customer_principal` is `null` and the order proceeds exactly as
+  before — it still gets its per-order subaccount and still confirms.
+- `getMyOrders()` returns only the orders whose `customer_principal` matches
+  the caller. It filters by `msg.caller` server-side and never accepts a
+  principal as a parameter, so one customer can never read another customer's
+  orders. It rejects the anonymous principal by returning an empty list.
+- A customer who did not sign in has no `customer_principal` on their orders,
+  so `getMyOrders()` returns an empty list for them. Their only way back to an
+  order's status is the guest lookup `getOrderStatus(reference)` using the
+  reference shown at checkout.
+- Customer sign-in grants NO admin capability. The admin allowlist is a
+  separate, principal-based allowlist; signing in as a customer never adds the
+  caller to it and never unlocks any admin-gated method.
 
 ### Admin allowlist
 
@@ -229,10 +424,40 @@ Admin-gated privileged methods (trap for a non-admin or anonymous caller):
 
 - `updateTreasury` and `updateLedgerConfig` require a non-anonymous admin
   caller to change the treasury destination or the ledger configuration.
+- `createProduct` and `updateProduct` require a non-anonymous admin caller to
+  create or edit a product in the catalogue. Prices are integer cents — never
+  floats.
+- `updateMinimumOrder` requires a non-anonymous admin caller to set the minimum
+  order total (in USD cents) required for crypto checkout.
 - `updatePaymentServiceUrl` and `updatePaymentServiceToken` require a
   non-anonymous admin caller to set the payment service URL or the shared
   bearer token. The token is write-only: it is stored but never returned to any
   caller.
+- `sweepCryptoToTreasury` and `releaseExpiredOrders` require a non-anonymous
+  admin caller. `sweepCryptoToTreasury` moves a subaccount's funds to the
+  treasury, and `releaseExpiredOrders` advances expired payments — both are
+  spend/state-mutating operations that must never be reachable by an arbitrary
+  caller who merely knows or guesses an order reference.
+- `adminListOrders` and `adminGetOrderDetail` require a non-anonymous admin
+  caller. They enumerate orders and return full order detail (including line
+  items and deposit accounts) for the admin UI, so they are gated to admins.
+- The recovery methods (`listOrdersForRecovery`, `forceRecheckPayment`,
+  `forceSweepOrder`, `getDefaultSubaccountBalance`, `sweepDefaultSubaccount`,
+  `startVerificationTimer`, `stopVerificationTimer`, `listLatePayments`,
+  `markLatePaymentReviewed`) all require a non-anonymous admin caller.
+  `getResumeInfo` and `getCycleBalance` are the recovery methods that are public
+  queries and require no admin caller.
+- The subaccount sweep methods (`getSubaccountBalance`, `sweepSubaccount`)
+  require a non-anonymous admin caller. They query and move funds held in a
+  specific ICRC-1 subaccount, so they must never be reachable by an arbitrary
+  caller who merely knows or guesses a subaccount index.
+- The email methods (`markOrderShipped`, `resendConfirmationEmail`) require a
+  non-anonymous admin caller. They mutate order shipping state and trigger
+  transactional email sends.
+- `getConsentListCsv` requires a non-anonymous admin caller: it exports the
+  consenting-address mailing list (PII), so it is gated to admins.
+  `unsubscribe` is PUBLIC — it is the token-based unsubscribe link embedded in
+  marketing emails and requires no admin caller.
 
 There is no registration gate and no role model beyond the admin allowlist: no
 method requires a signed-in (non-anonymous) caller for the public storefront
@@ -266,6 +491,14 @@ OQL authorization is per entity and is enforced against the live caller on both
   reads the single payment service configuration row. It exposes only the URL
   and a `token_set` boolean — the token value itself is never exposed through
   OQL.
+- `latePayment` — `#controllerOnly`: only the canister controller reads late
+  payment rows. Each row carries the order reference, token, received and
+  expected amounts, the received timestamp, and the review flag. It is never
+  exposed to end users.
+- `admin` — `#controllerOnly`: only the canister controller reads the admin
+  allowlist rows (one row per admin principal). It is never exposed to end
+  users; the admin allowlist remains readable only through the admin-only
+  `listAdmins()` method.
 
 ## Units and Encodings
 
@@ -279,10 +512,23 @@ OQL authorization is per entity and is enforced against the live caller on both
 - **Identifiers**: `Product.id` and `Order.id` are `Nat`. `Order.reference` is
   a `Text` of the form `NAK-<id>` and is the stable public lookup key.
 - **Optional values**: `payment_reference` is `?Text` — `null` until a payment
-  is recorded. `ShippingAddress.line2` is `?Text`.
+  is recorded. `ShippingAddress.line2` is `?Text`. `shipped_at` is `?Int`
+  (nanoseconds since epoch) — `null` until the order is shipped.
+  `tracking_number` is `?Text` — `null` until an admin sets one when marking the
+  order shipped. `marketing_consent_at` is `?Int` (nanoseconds since epoch) —
+  `null` when the customer did not opt in to marketing.
 - **Variants**: `payment_method` is one of `#manual`, `#card_stripe`,
   `#crypto_icp`, `#crypto_ckusdc`. `payment_status` is one of `#pending`,
-  `#paid`, `#cancelled`, `#expired`.
+  `#paid`, `#cancelled`, `#expired`. `shipping_status` is one of `#pending`,
+  `#shipped` — `#pending` until an admin marks the order shipped.
+- **Marketing consent**: `marketing_consent` is a `Bool` recording whether the
+  customer opted in to marketing email at checkout. The checkbox is NEVER
+  pre-checked; the frontend sends the customer's explicit choice.
+  `marketing_consent_at` is the `?Int` timestamp (nanoseconds since epoch) at
+  which consent was given — `null` when the customer did not opt in. Recording
+  WHEN consent was given makes the record defensible under GDPR/CAN-SPAM.
+  Transactional emails (order confirmation, shipping) are EXEMPT from consent
+  and send regardless.
 - **Crypto amounts**: `CryptoPayment.amountDue` and `DepositInfo.amountDue` are
   `Nat` values in the token's smallest units (e.g. ckUSDC has 6 decimals, so
   the amount due is `order.total * 10^4`). `DepositInfo.decimals` is the
@@ -296,11 +542,18 @@ OQL authorization is per entity and is enforced against the live caller on both
   values in nanoseconds since the Unix epoch (`Time.now()`). The deposit window
   is 30 minutes from payment creation.
 - **OQL encodings**: In the OQL `product` entity, `images` is a comma-joined
-  `Text` of the image URLs, and `variants` is the `Nat` count of variants. In
-  the OQL `order` entity, `items` is the `Nat` count of line items,
-  `shipping_address` is a comma-joined `Text`, `payment_method` and
-  `payment_status` are their tag names as `Text`, and `payment_reference` is
-  the reference `Text` or `\"\"` when unset.
+  `Text` of the image URLs, `variants` is the `Nat` count of variants, and
+  `admin_only` is a `Bool` flag indicating whether the product is hidden from
+  the public /shop grid. In the OQL `order` entity, `items` is the `Nat` count
+  of line items, `shipping_address` is a comma-joined `Text`, `payment_method`
+  and `payment_status` are their tag names as `Text`, `payment_reference` is
+  the reference `Text` or `\"\"` when unset, `sweep_note` is the most recent
+  sweep outcome `Text` or `\"\"` when no sweep has been attempted or the last
+  sweep succeeded, `shipping_status` is its tag name as `Text`
+  (`pending`/`shipped`), `shipped_at` is the `Int` timestamp or `null` when not
+  shipped, `tracking_number` is the tracking `Text` or `\"\"` when unset,
+  `marketing_consent` is a `Bool`, and `marketing_consent_at` is the `Int`
+  consent timestamp or `null` when the customer did not opt in.
 - **OQL crypto encodings**: In the OQL `cryptoPayment` entity, `token` and
   `status` are their tag names as `Text` (`ckUSDC`/`ICP` and
   `awaiting_payment`/`paid`/`underpayment`/`overpayment`/`expired`),
@@ -317,6 +570,15 @@ OQL authorization is per entity and is enforced against the live caller on both
   single row), `url` is the configured payment service URL `Text` and
   `token_set` is a `Bool` indicating whether the write-only token has been set.
   The token value itself is never exposed.
+- **OQL late payment encoding**: In the OQL `latePayment` entity, `reference`
+  is the order reference `Text` (the primary key), `token` is the token tag
+  name as `Text` (`ckUSDC`/`ICP`), `received_amount` and `expected_amount` are
+  `Nat` values in the token's smallest units, `received_at` is an `Int`
+  timestamp in nanoseconds since the Unix epoch, and `reviewed` is a `Bool`
+  flag indicating whether an admin has reviewed the late payment.
+- **OQL admin encoding**: In the OQL `admin` entity, each row has a single
+  `principal` field — the admin principal as canonical `Text` (the primary
+  key).
 
 ## Lifecycle and Polling
 
@@ -336,13 +598,18 @@ For a crypto order (`#crypto_ckusdc`), the lifecycle is:
 3. The frontend polls `checkCryptoPayment(reference)` (or reads
    `getCryptoPaymentStatus`) to observe `#awaiting_payment`, `#underpayment`,
    or `#paid`. Overpayment is accepted and reported as `#paid` (the excess is
-   swept with the principal).
-4. When the balance is at least the amount due, `confirmCryptoPayment(reference)`
-   sweeps the funds to the treasury, records the block index, and marks the
-   payment `#paid`.
+   swept with the principal). `checkCryptoPayment` is read-only: it only
+   triggers an on-ledger re-check and can never mark an order paid on its own.
+4. When the balance is at least the amount due, the payment is marked `#paid`
+   and swept to the treasury. This is driven by the background verification
+   timer and by a customer polling their OWN order via
+   `checkCryptoPayment(reference)` — which only ever triggers an on-ledger
+   re-check and marks the payment `#paid` only when the actual on-ledger
+   balance is at least the amount due. No arbitrary caller can confirm an
+   arbitrary reference and mark it paid without a real on-ledger balance check.
 5. If the deposit window expires without confirmation,
-   `releaseInventoryOnExpiry` restores the reserved inventory and marks the
-   order and payment `#expired`.
+   `releaseInventoryOnExpiry` (admin-only) restores the reserved inventory and
+   marks the order and payment `#expired`.
 
 For a card order (`#card_stripe`), the lifecycle is:
 
@@ -371,6 +638,29 @@ only read state and never mutate it. There is no built-in timer; the frontend
 drives polling, and a backend timer check can call `checkCryptoPayment` /
 `releaseInventoryOnExpiry` to advance expired payments.
 
+### Recurring verification timer
+
+The backend runs a recurring payment-verification timer every 30 seconds
+(`Timer.recurringTimer<system>(#seconds(30), ...)`). It is auto-registered on
+canister init and post-upgrade (transient fields are re-initialized on every
+restart and timers are not persisted across upgrades), so verification runs
+independent of any browser tab even if no admin ever calls
+`startVerificationTimer`. Each pass (`runVerificationPass`) re-checks pending
+crypto payments against the ledger, confirms and sweeps paid ones, releases
+inventory on expiry, and records any late payment received after the deposit
+window expired. An admin can restart the timer with `startVerificationTimer`
+or stop it with `stopVerificationTimer`; both are admin-only.
+
+### Late payment handling
+
+When a payment arrives on an order's subaccount AFTER the deposit window has
+expired, it is recorded as a `LatePayment` (reference, token, received and
+expected amounts, received timestamp, `reviewed = false`) and is NEVER
+discarded. It is surfaced to admins through `listLatePayments()` and through
+the OQL `latePayment` entity (controller-only), and an admin marks it reviewed
+via `markLatePaymentReviewed(reference)`. This ensures funds that arrive late
+are never silently lost and are always flagged for admin recovery.
+
 ## Mutation Retry Safety
 
 - `createOrder` is not idempotent: each successful call creates a new order
@@ -382,10 +672,11 @@ drives polling, and a backend timer check can call `checkCryptoPayment` /
 - `createPayment` (invoked through the adapter on `createCheckoutSession`) is
   idempotent: creating a payment for a reference that already has one returns
   the existing payment and does not create a duplicate.
-- `confirmCryptoPayment` is idempotent: confirming an already-paid payment
-  returns the existing `#paid` status without re-sweeping or re-confirming. It
-  never double-decrements inventory (inventory is reserved once at order
-  creation and only released on expiry) and never duplicates the order.
+- `checkCryptoPayment` is idempotent and read-only: it only triggers an
+  on-ledger re-check and never double-sweeps, never double-decrements inventory
+  (inventory is reserved once at order creation and only released on expiry),
+  and never duplicates the order. There is no `confirmCryptoPayment` method —
+  no arbitrary caller can confirm an order and mark it paid on their say-so.
 - `releaseInventoryOnExpiry` is idempotent: it only releases inventory and marks
   the payment `#expired` once; a second call on an already-expired or already-
   paid payment is a no-op.
@@ -401,13 +692,24 @@ drives polling, and a backend timer check can call `checkCryptoPayment` /
   already-paid order is a no-op and does not double-release inventory.
 - `createCardCheckoutSession` is safe to retry: it only creates a Stripe
   checkout session and never marks the order paid or mutates inventory.
+- `forceSweepOrder` and `sweepDefaultSubaccount` are safe to retry: a sweep
+  transfers the current subaccount balance minus the ledger transfer fee to the
+  treasury, so a retry after a successful sweep finds a zero (or fee-only)
+  balance and is a no-op rather than double-transferring. `forceRecheckPayment`
+  only reads the ledger and never mutates state. `markLatePaymentReviewed` is
+  idempotent: marking an already-reviewed late payment is a no-op that still
+  returns `true` when the reference exists. `startVerificationTimer` /
+  `stopVerificationTimer` are idempotent: starting cancels any existing timer
+  before registering a fresh one, and stopping a stopped timer returns `false`.
 
 ## Errors, Traps, Limits, and Gotchas
 
 - `createOrder` returns an `OrderError` variant rather than trapping for
   caller-correctable problems: `#emptyOrder`, `#unknownProduct(id)`,
   `#productInactive(id)`, `#unknownVariant(id, variantId)`,
-  `#outOfStock(id, variantId)`, `#invalidQuantity`, and `#paymentFailed(msg)`.
+  `#outOfStock(id, variantId)`, `#invalidQuantity`, `#paymentFailed(msg)`, and
+  `#belowMinimumOrder(minimum)` (the crypto order total is below the configured
+  minimum order total, in cents).
 - `getProduct` returns `null` for an unknown slug or id — it does not trap.
 - `getOrderStatus` and `getPaymentStatus` return `null` / `#pending`
   respectively for an unknown reference — they do not trap.
@@ -415,19 +717,43 @@ drives polling, and a backend timer check can call `checkCryptoPayment` /
   caller-correctable problems: `#notFound`, `#expired`, `#underpayment`,
   `#overpayment`, `#unauthorized`, `#invalidConfig`, `#ledgerError`,
   `#sweepFailed`, and `#notCryptoOrder`. They do not trap on these.
-- The admin-gated configuration methods (`updateTreasury`, `updateLedgerConfig`,
+- The recovery methods return a `RecoveryError` variant for caller-correctable
+  problems: `#notFound`, `#notCryptoOrder`, `#unauthorized`,
+  `#invalidConfig(msg)`, `#ledgerError(msg)`, and `#sweepFailed(msg)`. Ledger
+  errors are NEVER swallowed — the exact ledger error text is carried in the
+  `msg` payload so an admin can act on it. The recovery methods that return a
+  `SweepResult` / `RecheckResult` put any ledger error in the result's `error`
+  field rather than trapping.
+- All recovery methods except `getResumeInfo` and `getCycleBalance` are
+  admin-only and TRAP for a caller that is not a non-anonymous member of the
+  admin allowlist (and for the anonymous principal). `getResumeInfo` and
+  `getCycleBalance` are public queries and do not require an admin caller.
+- The admin-gated methods (`updateTreasury`, `updateLedgerConfig`,
   `updatePaymentServiceUrl`, `updatePaymentServiceToken`, `addAdmin`,
-  `removeAdmin`, `listAdmins`) TRAP for a caller that is not a non-anonymous
-  member of the admin allowlist, and for the anonymous principal. This is an
-  authorization failure, not a caller-correctable error, so it reaches the
-  caller as a reject rather than a `Result` error. `claimInitialAdmin` returns
-  `false` (rather than trapping) when the allowlist is already non-empty or the
-  caller is anonymous.
-- `checkCryptoPayment` and `confirmCryptoPayment` return `#err(#expired)` once
-  the deposit window has passed; they never mark a payment paid from a
-  frontend claim — only an on-ledger balance at least the amount due counts.
+  `removeAdmin`, `listAdmins`, `sweepCryptoToTreasury`, `releaseExpiredOrders`,
+  `adminListOrders`, `adminGetOrderDetail`, `createProduct`, `updateProduct`)
+  TRAP for a caller that is not a
+  non-anonymous member of the admin allowlist, and for the anonymous principal.
+  This is an authorization failure, not a caller-correctable error, so it
+  reaches the caller as a reject rather than a `Result` error.
+  `claimInitialAdmin` returns `false` (rather than trapping) when the allowlist
+  is already non-empty or the caller is anonymous.
+- `checkCryptoPayment` returns `#err(#expired)` once the deposit window has
+  passed; it never marks a payment paid from a frontend claim — only an
+  on-ledger balance at least the amount due counts. `checkCryptoPayment` is
+  read-only (it only triggers an on-ledger re-check and can never mark an order
+  paid). There is no `confirmCryptoPayment` method: no arbitrary caller can
+  confirm an order and mark it paid on their say-so — verification is driven by
+  the background verification timer and by a customer polling their OWN order.
 - The sweep transfers `balance - fee` to the treasury and returns
-  `#err(#sweepFailed)` when the balance cannot cover the transfer fee.
+  `#err(#sweepFailed)` when the balance cannot cover the transfer fee. The
+  transfer fee is queried at runtime via `icrc1_fee` on the configured ledger
+  and cached briefly between sweeps; the hardcoded ledger fee is used only as a
+  fallback when the query fails. When the subaccount balance is not greater
+  than the fee, the sweep is skipped, the funds are left in the subaccount, and
+  a note is recorded on the order (`sweep_note`) rather than failing
+  repeatedly. Sweep failures — including low cycles — are recorded as a clear
+  note on the order (`sweep_note`) rather than failing silently or trapping.
 - ICP payments are disabled: `#crypto_icp` orders are rejected with a
   `#paymentFailed` error because no rate oracle is configured. Do not guess or
   hardcode an ICP exchange rate.

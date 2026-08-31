@@ -9,6 +9,22 @@
   font-display: swap;
 }
 
+/* Institutional typography — Inter for headings/body, Oswald for the wordmark.
+   NOTE: Inter.woff2 and Oswald.woff2 must be supplied by the frontend team
+   (via @fontsource import or local woff2 dropped into public/assets/fonts/).
+   They are NOT in the bundled design font set. JetBrains Mono is bundled. */
+@font-face {
+  font-family: "Inter";
+  src: url("/assets/fonts/Inter.woff2") format("woff2");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Oswald";
+  src: url("/assets/fonts/Oswald.woff2") format("woff2");
+  font-display: swap;
+}
+
 :root {
   /* Enhanced NAK Color Palette - Deep Black Theme with Liquid Glass */
   --nak-black: #000000;
@@ -28,7 +44,8 @@
   --text-secondary: #d4d4d8;
 
   /* Updated Typography - Oswald for headings, Inter for body */
-  --font-heading: "Oswald", system-ui, -apple-system, sans-serif;
+  --font-display: "Oswald", system-ui, -apple-system, sans-serif;
+  --font-heading: "Inter", system-ui, -apple-system, sans-serif;
   --font-body: "Inter", system-ui, -apple-system, sans-serif;
 
   /* Modern Design Tokens */
@@ -88,6 +105,68 @@
 }
 
 /* ============================================================
+   Institutional tokens (New Age Kapital main page rebrand).
+   Raw OKLCH L C H values. Purple is a subtle accent only; positive
+   and negative are reserved for price changes. Hairlines, no glows.
+   Legacy --nak-* / --text-* / glass tokens above are kept so the
+   shop, cart, checkout, and admin pages do not break.
+   ============================================================ */
+:root {
+  /* Surfaces */
+  --background: 0.04 0.003 250; /* #08090a */
+  --foreground: 0.95 0.002 250; /* #f4f4f5 */
+  --card: 0.06 0.003 250; /* #0e1011 */
+  --card-foreground: 0.95 0.002 250;
+  --surface-hover: 0.08 0.003 250; /* #141719 */
+  --popover: 0.06 0.003 250;
+  --popover-foreground: 0.95 0.002 250;
+
+  /* Hairline borders — no shadows */
+  --border: 0.16 0.003 250; /* rgba(255,255,255,0.09) */
+  --border-strong: 0.25 0.003 250; /* rgba(255,255,255,0.16) */
+  --input: 0.16 0.003 250;
+  --ring: 0.55 0.19 296;
+
+  /* Text hierarchy */
+  --muted: 0.08 0.003 250;
+  --muted-foreground: 0.48 0.006 250; /* #71717a */
+  --secondary: 0.08 0.003 250;
+  --secondary-foreground: 0.68 0.005 250; /* #a1a1aa */
+  --accent: 0.08 0.003 250;
+  --accent-foreground: 0.95 0.002 250;
+
+  /* Accent — purple, restrained */
+  --primary: 0.55 0.19 296; /* #8b5cf6 */
+  --primary-foreground: 0.98 0.002 250;
+
+  /* Price change only */
+  --positive: 0.62 0.13 165; /* #10b981 */
+  --negative: 0.62 0.19 25; /* #ef4444 */
+
+  /* Semantic / charts */
+  --destructive: 0.62 0.19 25;
+  --destructive-foreground: 0.98 0.002 250;
+  --chart-1: 0.55 0.19 296;
+  --chart-2: 0.62 0.13 165;
+  --chart-3: 0.62 0.19 25;
+  --chart-4: 0.68 0.005 250;
+  --chart-5: 0.48 0.006 250;
+
+  /* Sidebar */
+  --sidebar: 0.06 0.003 250;
+  --sidebar-foreground: 0.95 0.002 250;
+  --sidebar-primary: 0.55 0.19 296;
+  --sidebar-primary-foreground: 0.98 0.002 250;
+  --sidebar-accent: 0.08 0.003 250;
+  --sidebar-accent-foreground: 0.95 0.002 250;
+  --sidebar-border: 0.16 0.003 250;
+  --sidebar-ring: 0.55 0.19 296;
+
+  /* 0.25rem button radius */
+  --radius: 0.25rem;
+}
+
+/* ============================================================
    Crypto Checkout & Deposit Extensions (new screens only)
    Complements the NAK Strat language — does NOT modify it.
    ============================================================ */
@@ -116,6 +195,36 @@
     rgba(139, 92, 246, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
+/* ============================================================
+   Admin Recovery & Resume Extensions (new screens only)
+   Reuses the NAK palette — no new hues, only new surfaces.
+   ============================================================ */
+:root {
+  /* Admin orders table — subtle raised rows over the glass panel */
+  --admin-row: rgba(255, 255, 255, 0.02);
+  --admin-row-hover: rgba(139, 92, 246, 0.07);
+  --admin-row-border: rgba(255, 255, 255, 0.06);
+  --admin-th: rgba(255, 255, 255, 0.04);
+
+  /* Explicit ledger error panel — destructive, never hidden */
+  --error-panel-bg: rgba(248, 113, 113, 0.08);
+  --error-panel-border: rgba(248, 113, 113, 0.4);
+  --error-panel-shadow: 0 4px 20px rgba(248, 113, 113, 0.12), inset 0 1px 0
+    rgba(255, 255, 255, 0.06);
+
+  /* Resume banner — teal attention strip for an in-progress order */
+  --resume-banner-bg: rgba(34, 211, 238, 0.07);
+  --resume-banner-border: rgba(34, 211, 238, 0.35);
+  --resume-banner-shadow: 0 4px 24px rgba(34, 211, 238, 0.12), inset 0 1px 0
+    rgba(255, 255, 255, 0.08);
+
+  /* Action variants — reuse NAK hues for hierarchy */
+  --btn-recheck-bg: rgba(139, 92, 246, 0.14);
+  --btn-recheck-border: rgba(139, 92, 246, 0.4);
+  --btn-sweep-bg: rgba(248, 113, 113, 0.14);
+  --btn-sweep-border: rgba(248, 113, 113, 0.4);
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -129,8 +238,8 @@ html {
 
 html,
 body {
-  background: var(--nak-deep-black);
-  color: var(--text-light);
+  background: var(--background);
+  color: var(--foreground);
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -215,7 +324,8 @@ body {
   pointer-events: none;
 }
 
-/* Enhanced Typography for Deep Black - Updated with Oswald for headings */
+/* Institutional Typography — Inter for headings (weight 500, -0.02em).
+   Oswald is reserved for the wordmark only (see .wordmark utility). */
 h1,
 h2,
 h3,
@@ -223,64 +333,49 @@ h4,
 h5,
 h6 {
   font-family: var(--font-heading);
-  color: var(--text-light);
-  font-weight: 600;
+  color: var(--foreground);
+  font-weight: 500;
   line-height: 1.2;
   letter-spacing: -0.02em;
 }
 
 h1 {
-  font-size: clamp(2.5rem, 6vw, 4.5rem);
-  font-weight: 700;
-  background: linear-gradient(
-    135deg,
-    #ffffff 0%,
-    #a78bfa 40%,
-    #06b6d4 70%,
-    #ec4899 100%
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  letter-spacing: -0.04em;
+  font-size: clamp(2rem, 4.5vw, 3.25rem);
+  font-weight: 500;
+  color: var(--foreground);
 }
 
 h2 {
-  font-size: clamp(1.75rem, 4vw, 2.5rem);
-  font-weight: 600;
-  background: linear-gradient(135deg, #ffffff 0%, #a78bfa 50%, #06b6d4 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  letter-spacing: -0.03em;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 500;
+  color: var(--foreground);
 }
 
 h3 {
-  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
-  color: var(--text-light);
-  font-weight: 600;
+  font-size: clamp(1.125rem, 2vw, 1.5rem);
+  color: var(--foreground);
+  font-weight: 500;
 }
 
 h4 {
-  font-size: clamp(1.125rem, 2vw, 1.25rem);
-  color: var(--text-secondary);
+  font-size: clamp(1rem, 1.5vw, 1.125rem);
+  color: var(--secondary-foreground);
   font-weight: 500;
 }
 
-/* Enhanced Button Styles with Dark Smoky Liquid Glass */
+/* Institutional Buttons — 0.25rem radius, hairline borders, no glow.
+   Primary = white bg + dark text; Secondary = transparent + 1px border. */
 button,
 .btn {
-  background: var(--button-glass-background);
-  color: var(--text-light);
-  border-radius: var(--border-radius-xl);
+  background: #ffffff;
+  color: #08090a;
+  border-radius: var(--radius);
   font-weight: 500;
   font-family: var(--font-body);
-  border: 1px solid var(--button-glass-border);
-  padding: 0.75rem 1.5rem;
+  border: 1px solid transparent;
+  padding: 0.625rem 1.25rem;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   text-decoration: none;
   display: inline-flex;
   align-items: center;
@@ -288,72 +383,37 @@ button,
   gap: 0.5rem;
   font-size: 0.875rem;
   letter-spacing: 0.01em;
-  box-shadow: var(--button-glass-shadow);
-  backdrop-filter: var(--glass-backdrop);
-  -webkit-backdrop-filter: var(--glass-backdrop);
 }
 
-button::before,
-.btn::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.1) 0%,
-    transparent 30%,
-    rgba(139, 92, 246, 0.05) 70%,
-    transparent 100%
-  );
-  opacity: 0.6;
-  transition: opacity 0.3s ease;
-  border-radius: inherit;
+.btn-primary {
+  background: #ffffff;
+  color: #08090a;
 }
 
-button::after,
-.btn::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.15),
-    transparent
-  );
-  transition: left 0.5s ease;
+.btn-secondary {
+  background: transparent;
+  color: var(--foreground);
+  border-color: var(--border-strong);
+}
+
+.btn-secondary:hover {
+  border-color: var(--foreground);
+  background: var(--surface-hover);
 }
 
 button:hover,
 .btn:hover {
-  background: var(--button-glass-background-hover);
-  transform: translateY(-1px);
-  box-shadow: var(--button-glass-shadow-hover);
-  border-color: var(--button-glass-border-hover);
-}
-
-button:hover::before,
-.btn:hover::before {
-  opacity: 0.8;
-}
-
-button:hover::after,
-.btn:hover::after {
-  left: 100%;
+  filter: brightness(0.97);
 }
 
 button:active,
 .btn:active {
-  transform: translateY(0);
-  box-shadow: var(--button-glass-shadow);
+  filter: brightness(0.94);
 }
 
-button:focus,
-.btn:focus {
-  outline: 2px solid rgba(139, 92, 246, 0.6);
+button:focus-visible,
+.btn:focus-visible {
+  outline: 2px solid var(--primary);
   outline-offset: 2px;
 }
 
@@ -888,10 +948,10 @@ small {
   background: var(--gradient-secondary);
 }
 
-/* Enhanced Selection */
+/* Enhanced Selection — institutional purple */
 ::selection {
-  background: rgba(139, 92, 246, 0.4);
-  color: white;
+  background: var(--primary);
+  color: #ffffff;
 }
 
 /* Enhanced Focus Styles */
@@ -1556,6 +1616,149 @@ body {
   .countdown-critical {
     color: var(--nak-destructive);
   }
+
+  /* ============================================================
+     Admin Recovery & Resume utilities (new screens only)
+     ============================================================ */
+
+  /* Admin orders table — glass panel with striped, hoverable rows */
+  .admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-body);
+    font-size: 0.8125rem;
+  }
+  .admin-table thead th {
+    background: var(--admin-th);
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    text-align: left;
+    padding: 0.625rem 0.875rem;
+    border-bottom: 1px solid var(--admin-row-border);
+    white-space: nowrap;
+  }
+  .admin-table tbody td {
+    padding: 0.625rem 0.875rem;
+    border-bottom: 1px solid var(--admin-row-border);
+    color: var(--text-secondary);
+    vertical-align: middle;
+  }
+  .admin-table tbody tr {
+    background: var(--admin-row);
+    transition: background 0.2s ease;
+  }
+  .admin-table tbody tr:hover {
+    background: var(--admin-row-hover);
+  }
+  .admin-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  /* Mono cell for addresses, balances, order IDs */
+  .admin-mono {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.01em;
+    color: var(--text-secondary);
+    word-break: break-all;
+  }
+
+  /* Explicit ledger error panel — destructive, always visible */
+  .error-panel {
+    background: var(--error-panel-bg);
+    border: 1px solid var(--error-panel-border);
+    border-radius: var(--border-radius-xl);
+    box-shadow: var(--error-panel-shadow);
+    padding: 0.875rem 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--nak-destructive);
+    word-break: break-word;
+  }
+  .error-panel::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(248, 113, 113, 0.6),
+      transparent
+    );
+  }
+
+  /* Resume banner — teal attention strip for an in-progress order */
+  .resume-banner {
+    background: var(--resume-banner-bg);
+    backdrop-filter: var(--glass-backdrop);
+    -webkit-backdrop-filter: var(--glass-backdrop);
+    border: 1px solid var(--resume-banner-border);
+    border-radius: var(--border-radius-xl);
+    box-shadow: var(--resume-banner-shadow);
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .resume-banner::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(34, 211, 238, 0.6),
+      transparent
+    );
+  }
+
+  /* Admin action buttons — compact, color-coded by intent */
+  .btn-recheck {
+    background: var(--btn-recheck-bg);
+    color: var(--nak-purple-light);
+    border: 1px solid var(--btn-recheck-border);
+    border-radius: var(--border-radius-lg);
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.375rem 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .btn-recheck:hover {
+    background: rgba(139, 92, 246, 0.22);
+    border-color: rgba(139, 92, 246, 0.6);
+  }
+  .btn-sweep {
+    background: var(--btn-sweep-bg);
+    color: var(--nak-destructive);
+    border: 1px solid var(--btn-sweep-border);
+    border-radius: var(--border-radius-lg);
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.375rem 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .btn-sweep:hover {
+    background: rgba(248, 113, 113, 0.22);
+    border-color: rgba(248, 113, 113, 0.6);
+  }
+  .btn-recheck:disabled,
+  .btn-sweep:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 }
 
 /* ============================================================
@@ -1928,5 +2131,254 @@ body {
   }
   .ledger-dot {
     animation: none;
+  }
+}
+
+/* ============================================================
+   Email + Consent + Admin Email Actions (new surfaces only)
+   Complements the NAK Strat language — does NOT modify it.
+   ============================================================ */
+:root {
+  /* Email brand tokens — self-contained hex for standalone HTML email
+     (clients ignore CSS variables). Reference only; the rendered email
+     inlines these values. Dark bg, purple/teal accents, shell logo. */
+  --email-bg: #0a0a0a;
+  --email-surface: #141414;
+  --email-surface-border: #2a2a2a;
+  --email-text: #f5f5f5;
+  --email-muted: #a1a1aa;
+  --email-purple: #8b5cf6;
+  --email-teal: #06b6d4;
+  --email-success: #34d399;
+  --email-warning: #fbbf24;
+
+  /* Marketing consent checkbox — unticked by default */
+  --consent-box: rgba(255, 255, 255, 0.04);
+  --consent-box-border: rgba(139, 92, 246, 0.4);
+  --consent-box-checked: var(--nak-teal-bright);
+}
+
+@layer utilities {
+  /* Marketing consent checkbox — unticked by default; teal when checked.
+     Never render this pre-checked (marketing consent must be explicit). */
+  .consent-checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 1.125rem;
+    height: 1.125rem;
+    border-radius: 0.375rem;
+    border: 1px solid var(--consent-box-border);
+    background: var(--consent-box);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+  }
+  .consent-checkbox:hover {
+    border-color: var(--nak-purple);
+    background: rgba(139, 92, 246, 0.1);
+  }
+  .consent-checkbox:checked {
+    background: rgba(34, 211, 238, 0.16);
+    border-color: var(--nak-teal-bright);
+  }
+  .consent-checkbox:checked::after {
+    content: "";
+    width: 0.5rem;
+    height: 0.5rem;
+    background: var(--nak-teal-bright);
+    border-radius: 0.125rem;
+  }
+  .consent-checkbox:focus-visible {
+    outline: 2px solid rgba(139, 92, 246, 0.6);
+    outline-offset: 2px;
+  }
+
+  /* Admin email-action buttons — compact, color-coded by intent */
+  .btn-email {
+    background: rgba(34, 211, 238, 0.12);
+    color: var(--nak-teal-bright);
+    border: 1px solid rgba(34, 211, 238, 0.35);
+    border-radius: var(--border-radius-lg);
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.375rem 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .btn-email:hover {
+    background: rgba(34, 211, 238, 0.2);
+    border-color: rgba(34, 211, 238, 0.55);
+  }
+  .btn-shipped {
+    background: rgba(139, 92, 246, 0.14);
+    color: var(--nak-purple-light);
+    border: 1px solid rgba(139, 92, 246, 0.4);
+    border-radius: var(--border-radius-lg);
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.375rem 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .btn-shipped:hover {
+    background: rgba(139, 92, 246, 0.22);
+    border-color: rgba(139, 92, 246, 0.6);
+  }
+  .btn-export {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-secondary);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--border-radius-lg);
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.375rem 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .btn-export:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.25);
+    color: var(--text-light);
+  }
+  .btn-email:disabled,
+  .btn-shipped:disabled,
+  .btn-export:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+/* ============================================================
+   Institutional main-page utilities (New Age Kapital).
+   Consumed by the main page build; legacy pages keep their own.
+   ============================================================ */
+@layer utilities {
+  /* Oswald wordmark — nav "N.A.K." only */
+  .wordmark {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--foreground);
+    text-transform: uppercase;
+  }
+
+  /* Section label — 0.6875rem, uppercase, 0.16em, weight 600, muted */
+  .section-label {
+    font-family: var(--font-body);
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-weight: 600;
+    color: var(--muted-foreground);
+  }
+
+  /* JetBrains Mono for all numbers, tabular so figures align */
+  .num {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Hairline surfaces — 1px borders, no glow/shadow */
+  .hairline {
+    border: 1px solid var(--border);
+  }
+  .hairline-strong {
+    border: 1px solid var(--border-strong);
+  }
+  .surface {
+    background: var(--card);
+    border: 1px solid var(--border);
+  }
+  .surface-hover {
+    background: var(--surface-hover);
+  }
+
+  /* Spec table — 1px dividers */
+  .spec-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-body);
+    font-size: 0.8125rem;
+  }
+  .spec-table th,
+  .spec-table td {
+    padding: 0.625rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+  }
+  .spec-table th {
+    color: var(--muted-foreground);
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-weight: 600;
+  }
+  .spec-table td {
+    color: var(--foreground);
+  }
+  .spec-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  /* Thin full-width shop banner strip */
+  .shop-banner {
+    width: 100%;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: var(--card);
+    padding: 0.75rem 0;
+    font-family: var(--font-body);
+    font-size: 0.8125rem;
+    color: var(--muted-foreground);
+    text-align: center;
+    transition: background-color 0.2s ease;
+  }
+  .shop-banner:hover {
+    background: #141719;
+  }
+
+  /* 2px purple nav underline (hover/active only) */
+  .nav-underline {
+    position: relative;
+  }
+  .nav-underline::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -2px;
+    height: 2px;
+    background: var(--primary);
+    border-radius: 1px;
+  }
+
+  /* Price change only */
+  .text-positive {
+    color: var(--positive);
+  }
+  .text-negative {
+    color: var(--negative);
+  }
+
+  /* Demoted pixel shell logo — no glow, no drift */
+  .shell-logo-nav {
+    image-rendering: pixelated;
+    width: 22px;
+    height: 22px;
+    opacity: 0.75;
+    filter: saturate(0.5);
+  }
+  .shell-logo-footer {
+    image-rendering: pixelated;
+    width: 18px;
+    height: 18px;
+    opacity: 0.4;
+    filter: saturate(0.3);
   }
 }

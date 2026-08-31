@@ -8,6 +8,62 @@
 
 import { IDL } from '@icp-sdk/core/candid';
 
+export const PaymentStatus = IDL.Variant({
+  'cancelled' : IDL.Null,
+  'expired' : IDL.Null,
+  'pending' : IDL.Null,
+  'paid' : IDL.Null,
+});
+export const PaymentMethod = IDL.Variant({
+  'crypto_icp' : IDL.Null,
+  'card_stripe' : IDL.Null,
+  'crypto_ckusdc' : IDL.Null,
+  'manual' : IDL.Null,
+});
+export const CryptoPaymentStatus = IDL.Variant({
+  'overpayment' : IDL.Record({ 'expected' : IDL.Nat, 'received' : IDL.Nat }),
+  'expired' : IDL.Null,
+  'underpayment' : IDL.Record({ 'expected' : IDL.Nat, 'received' : IDL.Nat }),
+  'paid' : IDL.Record({ 'blockIndex' : IDL.Nat }),
+  'awaiting_payment' : IDL.Null,
+});
+export const ProductId = IDL.Nat;
+export const OrderItem = IDL.Record({
+  'product_id' : ProductId,
+  'unit_amount' : IDL.Nat,
+  'name' : IDL.Text,
+  'variant_id' : IDL.Text,
+  'quantity' : IDL.Nat,
+});
+export const AdminOrderDetail = IDL.Record({
+  'customerName' : IDL.Text,
+  'status' : PaymentStatus,
+  'paymentMethod' : PaymentMethod,
+  'cryptoStatus' : IDL.Opt(CryptoPaymentStatus),
+  'createdAt' : IDL.Int,
+  'reference' : IDL.Text,
+  'amountOwed' : IDL.Nat,
+  'updatedAt' : IDL.Int,
+  'currency' : IDL.Text,
+  'subaccountHex' : IDL.Text,
+  'items' : IDL.Vec(OrderItem),
+  'sweepNote' : IDL.Opt(IDL.Text),
+  'customerEmail' : IDL.Text,
+  'depositAccountText' : IDL.Text,
+});
+export const AdminOrderView = IDL.Record({
+  'status' : PaymentStatus,
+  'paymentMethod' : PaymentMethod,
+  'cryptoStatus' : IDL.Opt(CryptoPaymentStatus),
+  'createdAt' : IDL.Int,
+  'itemCount' : IDL.Nat,
+  'reference' : IDL.Text,
+  'amountOwed' : IDL.Nat,
+  'currency' : IDL.Text,
+  'subaccountHex' : IDL.Text,
+  'sweepNote' : IDL.Opt(IDL.Text),
+  'depositAccountText' : IDL.Text,
+});
 export const PaymentServiceError = IDL.Variant({
   'alreadyPaid' : IDL.Null,
   'notConfigured' : IDL.Text,
@@ -20,13 +76,6 @@ export const Result_1 = IDL.Variant({
   'ok' : IDL.Null,
   'err' : PaymentServiceError,
 });
-export const CryptoPaymentStatus = IDL.Variant({
-  'overpayment' : IDL.Record({ 'expected' : IDL.Nat, 'received' : IDL.Nat }),
-  'expired' : IDL.Null,
-  'underpayment' : IDL.Record({ 'expected' : IDL.Nat, 'received' : IDL.Nat }),
-  'paid' : IDL.Record({ 'blockIndex' : IDL.Nat }),
-  'awaiting_payment' : IDL.Null,
-});
 export const CryptoPaymentError = IDL.Variant({
   'alreadyPaid' : IDL.Null,
   'overpayment' : IDL.Record({ 'expected' : IDL.Nat, 'received' : IDL.Nat }),
@@ -38,26 +87,36 @@ export const CryptoPaymentError = IDL.Variant({
   'notCryptoOrder' : IDL.Null,
   'unauthorized' : IDL.Null,
   'invalidConfig' : IDL.Text,
+  'belowMinimumOrder' : IDL.Nat,
 });
-export const Result_4 = IDL.Variant({
+export const Result_11 = IDL.Variant({
   'ok' : CryptoPaymentStatus,
   'err' : CryptoPaymentError,
 });
-export const PaymentStatus = IDL.Variant({
-  'cancelled' : IDL.Null,
-  'expired' : IDL.Null,
-  'pending' : IDL.Null,
-  'paid' : IDL.Null,
-});
-export const Result_9 = IDL.Variant({
+export const Result_18 = IDL.Variant({
   'ok' : PaymentStatus,
   'err' : PaymentServiceError,
+});
+export const HttpHeader = IDL.Record({ 'value' : IDL.Text, 'name' : IDL.Text });
+export const HttpRequestResult = IDL.Record({
+  'status' : IDL.Nat,
+  'body' : IDL.Vec(IDL.Nat8),
+  'headers' : IDL.Vec(HttpHeader),
+});
+export const TransformationInput = IDL.Record({
+  'context' : IDL.Vec(IDL.Nat8),
+  'response' : HttpRequestResult,
+});
+export const TransformationOutput = IDL.Record({
+  'status' : IDL.Nat,
+  'body' : IDL.Vec(IDL.Nat8),
+  'headers' : IDL.Vec(HttpHeader),
 });
 export const CheckoutSession = IDL.Record({
   'url' : IDL.Opt(IDL.Text),
   'reference' : IDL.Text,
 });
-export const Result_8 = IDL.Variant({
+export const Result_17 = IDL.Variant({
   'ok' : CheckoutSession,
   'err' : PaymentServiceError,
 });
@@ -69,35 +128,32 @@ export const ShippingAddress = IDL.Record({
   'line1' : IDL.Text,
   'line2' : IDL.Opt(IDL.Text),
 });
-export const PaymentMethod = IDL.Variant({
-  'crypto_icp' : IDL.Null,
-  'card_stripe' : IDL.Null,
-  'crypto_ckusdc' : IDL.Null,
-  'manual' : IDL.Null,
-});
-export const ProductId = IDL.Nat;
-export const OrderItem = IDL.Record({
-  'product_id' : ProductId,
-  'unit_amount' : IDL.Nat,
-  'name' : IDL.Text,
-  'variant_id' : IDL.Text,
-  'quantity' : IDL.Nat,
+export const ShippingStatus = IDL.Variant({
+  'shipped' : IDL.Null,
+  'pending' : IDL.Null,
 });
 export const Order = IDL.Record({
   'id' : IDL.Nat,
   'tax' : IDL.Nat,
   'updated_at' : IDL.Int,
   'total' : IDL.Nat,
+  'sweep_note' : IDL.Opt(IDL.Text),
   'shipping_address' : ShippingAddress,
   'shipping' : IDL.Nat,
   'reference' : IDL.Text,
   'created_at' : IDL.Int,
   'payment_status' : PaymentStatus,
   'payment_method' : PaymentMethod,
+  'tracking_number' : IDL.Opt(IDL.Text),
   'currency' : IDL.Text,
+  'marketing_consent_at' : IDL.Opt(IDL.Int),
+  'shipping_status' : ShippingStatus,
   'items' : IDL.Vec(OrderItem),
   'customer_email' : IDL.Text,
+  'customer_principal' : IDL.Opt(IDL.Principal),
   'customer_name' : IDL.Text,
+  'shipped_at' : IDL.Opt(IDL.Int),
+  'marketing_consent' : IDL.Bool,
   'payment_reference' : IDL.Opt(IDL.Text),
   'subtotal' : IDL.Nat,
 });
@@ -105,7 +161,7 @@ export const PaymentError = IDL.Variant({
   'invalidOrder' : IDL.Null,
   'paymentFailed' : IDL.Text,
 });
-export const Result_7 = IDL.Variant({
+export const Result_16 = IDL.Variant({
   'ok' : CheckoutSession,
   'err' : PaymentError,
 });
@@ -120,60 +176,19 @@ export const CreateOrderInput = IDL.Record({
   'items' : IDL.Vec(CreateOrderItem),
   'customer_email' : IDL.Text,
   'customer_name' : IDL.Text,
+  'marketing_consent' : IDL.Bool,
 });
 export const OrderError = IDL.Variant({
   'outOfStock' : IDL.Tuple(ProductId, IDL.Text),
   'unknownVariant' : IDL.Tuple(ProductId, IDL.Text),
   'unknownProduct' : ProductId,
   'emptyOrder' : IDL.Null,
+  'belowMinimumOrder' : IDL.Nat,
   'productInactive' : ProductId,
   'paymentFailed' : IDL.Text,
   'invalidQuantity' : IDL.Null,
 });
-export const Result_6 = IDL.Variant({ 'ok' : Order, 'err' : OrderError });
-export const Value = IDL.Variant({
-  'int' : IDL.Int,
-  'nat' : IDL.Nat,
-  'float' : IDL.Float64,
-  'bool' : IDL.Bool,
-  'null' : IDL.Null,
-  'text' : IDL.Text,
-});
-export const Cell = IDL.Record({ 'value' : Value, 'name' : IDL.Text });
-export const Result__1 = IDL.Record({
-  'hasMore' : IDL.Bool,
-  'rows' : IDL.Vec(IDL.Vec(Cell)),
-});
-export const LedgerConfig = IDL.Record({
-  'fee' : IDL.Nat,
-  'decimals' : IDL.Nat8,
-  'canisterId' : IDL.Principal,
-});
-export const CryptoConfigView = IDL.Record({
-  'icp' : LedgerConfig,
-  'ckUSDC' : LedgerConfig,
-  'treasurySubaccount' : IDL.Opt(IDL.Vec(IDL.Nat8)),
-  'treasuryPrincipal' : IDL.Principal,
-});
-export const Token = IDL.Variant({ 'ICP' : IDL.Null, 'ckUSDC' : IDL.Null });
-export const DepositInfo = IDL.Record({
-  'decimals' : IDL.Nat8,
-  'token' : Token,
-  'expiresAt' : IDL.Int,
-  'qrPayload' : IDL.Text,
-  'subaccount' : IDL.Vec(IDL.Nat8),
-  'reference' : IDL.Text,
-  'address' : IDL.Principal,
-  'amountDue' : IDL.Nat,
-});
-export const Result_5 = IDL.Variant({
-  'ok' : DepositInfo,
-  'err' : CryptoPaymentError,
-});
-export const PaymentServiceConfigView = IDL.Record({
-  'url' : IDL.Text,
-  'tokenSet' : IDL.Bool,
-});
+export const Result_15 = IDL.Variant({ 'ok' : Order, 'err' : OrderError });
 export const ProductVariant = IDL.Record({
   'id' : IDL.Text,
   'inventory' : IDL.Nat,
@@ -192,30 +207,169 @@ export const Product = IDL.Record({
   'variants' : IDL.Vec(ProductVariant),
   'created_at' : IDL.Int,
   'currency' : IDL.Text,
+  'admin_only' : IDL.Bool,
   'category' : IDL.Text,
   'price' : IDL.Nat,
   'images' : IDL.Vec(IDL.Text),
 });
-export const Result_3 = IDL.Variant({ 'ok' : IDL.Null, 'err' : PaymentError });
-export const HttpHeader = IDL.Record({ 'value' : IDL.Text, 'name' : IDL.Text });
-export const HttpRequestResult = IDL.Record({
-  'status' : IDL.Nat,
-  'body' : IDL.Vec(IDL.Nat8),
-  'headers' : IDL.Vec(HttpHeader),
+export const Value = IDL.Variant({
+  'int' : IDL.Int,
+  'nat' : IDL.Nat,
+  'float' : IDL.Float64,
+  'bool' : IDL.Bool,
+  'null' : IDL.Null,
+  'text' : IDL.Text,
 });
-export const TransformationInput = IDL.Record({
-  'context' : IDL.Vec(IDL.Nat8),
-  'response' : HttpRequestResult,
+export const Cell = IDL.Record({ 'value' : Value, 'name' : IDL.Text });
+export const Result__1 = IDL.Record({
+  'hasMore' : IDL.Bool,
+  'rows' : IDL.Vec(IDL.Vec(Cell)),
 });
-export const TransformationOutput = IDL.Record({
-  'status' : IDL.Nat,
-  'body' : IDL.Vec(IDL.Nat8),
-  'headers' : IDL.Vec(HttpHeader),
+export const RecheckResult = IDL.Record({
+  'status' : CryptoPaymentStatus,
+  'balance' : IDL.Nat,
+  'reference' : IDL.Text,
+  'error' : IDL.Opt(IDL.Text),
 });
-export const Result_2 = IDL.Variant({
+export const RecoveryError = IDL.Variant({
+  'sweepFailed' : IDL.Text,
+  'notFound' : IDL.Null,
+  'ledgerError' : IDL.Text,
+  'notCryptoOrder' : IDL.Null,
+  'unauthorized' : IDL.Null,
+  'invalidConfig' : IDL.Text,
+});
+export const Result_14 = IDL.Variant({
+  'ok' : RecheckResult,
+  'err' : RecoveryError,
+});
+export const SweepResult = IDL.Record({
+  'reference' : IDL.Opt(IDL.Text),
+  'error' : IDL.Opt(IDL.Text),
+  'blockIndex' : IDL.Opt(IDL.Nat),
+});
+export const Result_4 = IDL.Variant({
+  'ok' : SweepResult,
+  'err' : RecoveryError,
+});
+export const ConsentListExport = IDL.Record({ 'csv' : IDL.Text });
+export const ConsentError = IDL.Variant({
+  'alreadyUnsubscribed' : IDL.Null,
+  'notConfigured' : IDL.Text,
+  'invalidToken' : IDL.Null,
+  'outcallFailed' : IDL.Text,
+  'unauthorized' : IDL.Null,
+  'invalidResponse' : IDL.Text,
+});
+export const Result_13 = IDL.Variant({
+  'ok' : ConsentListExport,
+  'err' : ConsentError,
+});
+export const LedgerConfig = IDL.Record({
+  'fee' : IDL.Nat,
+  'decimals' : IDL.Nat8,
+  'canisterId' : IDL.Principal,
+});
+export const CryptoConfigView = IDL.Record({
+  'icp' : LedgerConfig,
+  'ckUSDC' : LedgerConfig,
+  'treasurySubaccount' : IDL.Opt(IDL.Vec(IDL.Nat8)),
+  'minimumOrder' : IDL.Nat,
+  'treasuryPrincipal' : IDL.Principal,
+});
+export const Token = IDL.Variant({ 'ICP' : IDL.Null, 'ckUSDC' : IDL.Null });
+export const DepositInfo = IDL.Record({
+  'decimals' : IDL.Nat8,
+  'token' : Token,
+  'expiresAt' : IDL.Int,
+  'qrPayload' : IDL.Text,
+  'subaccount' : IDL.Vec(IDL.Nat8),
+  'reference' : IDL.Text,
+  'address' : IDL.Principal,
+  'amountDue' : IDL.Nat,
+});
+export const Result_12 = IDL.Variant({
+  'ok' : DepositInfo,
+  'err' : CryptoPaymentError,
+});
+export const Result_10 = IDL.Variant({ 'ok' : IDL.Nat, 'err' : RecoveryError });
+export const PaymentServiceConfigView = IDL.Record({
+  'url' : IDL.Text,
+  'tokenSet' : IDL.Bool,
+});
+export const ResumeInfo = IDL.Record({
+  'status' : CryptoPaymentStatus,
+  'expiresAt' : IDL.Int,
+  'reference' : IDL.Text,
+  'deposit' : IDL.Opt(DepositInfo),
+  'remainingNs' : IDL.Int,
+});
+export const Result_9 = IDL.Variant({
+  'ok' : ResumeInfo,
+  'err' : RecoveryError,
+});
+export const SubaccountBalanceResult = IDL.Record({
+  'balance' : IDL.Nat,
+  'subaccountHex' : IDL.Text,
+  'subaccountIndex' : IDL.Nat,
+});
+export const SweepError = IDL.Variant({
+  'sweepFailed' : IDL.Text,
+  'ledgerError' : IDL.Text,
+  'unauthorized' : IDL.Null,
+  'invalidConfig' : IDL.Text,
+});
+export const Result_8 = IDL.Variant({
+  'ok' : SubaccountBalanceResult,
+  'err' : SweepError,
+});
+export const Result_7 = IDL.Variant({ 'ok' : IDL.Null, 'err' : PaymentError });
+export const LatePayment = IDL.Record({
+  'token' : Token,
+  'reference' : IDL.Text,
+  'receivedAmount' : IDL.Nat,
+  'receivedAt' : IDL.Int,
+  'reviewed' : IDL.Bool,
+  'expectedAmount' : IDL.Nat,
+});
+export const DepositAccount = IDL.Record({
+  'owner' : IDL.Principal,
+  'subaccount' : IDL.Vec(IDL.Nat8),
+  'textAddress' : IDL.Text,
+});
+export const OrderRecoveryView = IDL.Record({
+  'status' : PaymentStatus,
+  'paymentMethod' : PaymentMethod,
+  'expiresAt' : IDL.Opt(IDL.Int),
+  'reference' : IDL.Text,
+  'depositAccount' : IDL.Opt(DepositAccount),
+  'amountOwed' : IDL.Nat,
+  'liveBalance' : IDL.Nat,
+});
+export const EmailError = IDL.Variant({
+  'notConfigured' : IDL.Text,
+  'notShippable' : IDL.Null,
+  'notFound' : IDL.Null,
+  'outcallFailed' : IDL.Text,
+  'unauthorized' : IDL.Null,
+  'invalidResponse' : IDL.Text,
+});
+export const Result_6 = IDL.Variant({ 'ok' : IDL.Null, 'err' : EmailError });
+export const Result_5 = IDL.Variant({
   'ok' : IDL.Nat,
   'err' : CryptoPaymentError,
 });
+export const SweepSubaccountResult = IDL.Record({
+  'error' : IDL.Opt(IDL.Text),
+  'blockIndex' : IDL.Opt(IDL.Nat),
+  'subaccountHex' : IDL.Text,
+  'subaccountIndex' : IDL.Nat,
+});
+export const Result_3 = IDL.Variant({
+  'ok' : SweepSubaccountResult,
+  'err' : SweepError,
+});
+export const Result_2 = IDL.Variant({ 'ok' : IDL.Null, 'err' : ConsentError });
 export const Result = IDL.Variant({
   'ok' : IDL.Null,
   'err' : CryptoPaymentError,
@@ -223,24 +377,52 @@ export const Result = IDL.Variant({
 
 export const idlService = IDL.Service({
   'addAdmin' : IDL.Func([IDL.Principal], [IDL.Bool], []),
+  'adminGetOrderDetail' : IDL.Func(
+      [IDL.Text],
+      [IDL.Opt(AdminOrderDetail)],
+      ['query'],
+    ),
+  'adminListOrders' : IDL.Func(
+      [IDL.Text],
+      [IDL.Vec(AdminOrderView)],
+      ['query'],
+    ),
   'cancelCardOrder' : IDL.Func([IDL.Text], [Result_1], []),
-  'checkCryptoPayment' : IDL.Func([IDL.Text], [Result_4], []),
+  'checkCryptoPayment' : IDL.Func([IDL.Text], [Result_11], []),
   'claimInitialAdmin' : IDL.Func([], [IDL.Bool], []),
-  'confirmCardPayment' : IDL.Func([IDL.Text], [Result_9], []),
-  'confirmCryptoPayment' : IDL.Func([IDL.Text], [Result_4], []),
+  'confirmCardPayment' : IDL.Func([IDL.Text], [Result_18], []),
+  'consentServiceTransform' : IDL.Func(
+      [TransformationInput],
+      [TransformationOutput],
+      ['query'],
+    ),
   'createCardCheckoutSession' : IDL.Func(
       [IDL.Text, IDL.Text, IDL.Text],
-      [Result_8],
+      [Result_17],
       [],
     ),
-  'createCheckoutSession' : IDL.Func([Order], [Result_7], []),
-  'createOrder' : IDL.Func([CreateOrderInput], [Result_6], []),
+  'createCheckoutSession' : IDL.Func([Order], [Result_16], []),
+  'createOrder' : IDL.Func([CreateOrderInput], [Result_15], []),
+  'createProduct' : IDL.Func([Product], [IDL.Bool], []),
+  'emailTransform' : IDL.Func(
+      [TransformationInput],
+      [TransformationOutput],
+      ['query'],
+    ),
   'execute' : IDL.Func([IDL.Text], [Result__1], ['query']),
+  'forceRecheckPayment' : IDL.Func([IDL.Text], [Result_14], []),
+  'forceSweepOrder' : IDL.Func([IDL.Text], [Result_4], []),
   'getApiDoc' : IDL.Func([], [IDL.Text], ['query']),
+  'getCanisterId' : IDL.Func([], [IDL.Principal], ['query']),
+  'getConsentListCsv' : IDL.Func([], [Result_13], []),
   'getCryptoConfig' : IDL.Func([], [CryptoConfigView], ['query']),
-  'getCryptoDepositInfo' : IDL.Func([IDL.Text], [Result_5], ['query']),
-  'getCryptoPaymentStatus' : IDL.Func([IDL.Text], [Result_4], ['query']),
+  'getCryptoDepositInfo' : IDL.Func([IDL.Text], [Result_12], ['query']),
+  'getCryptoPaymentStatus' : IDL.Func([IDL.Text], [Result_11], ['query']),
+  'getCycleBalance' : IDL.Func([], [IDL.Nat], ['query']),
   'getDashboardData' : IDL.Func([], [IDL.Text], []),
+  'getDefaultSubaccountBalance' : IDL.Func([], [Result_10], []),
+  'getMinimumOrder' : IDL.Func([], [IDL.Nat], ['query']),
+  'getMyOrders' : IDL.Func([], [IDL.Vec(Order)], ['query']),
   'getNAKPrice' : IDL.Func([], [IDL.Text], []),
   'getOrderStatus' : IDL.Func([IDL.Text], [IDL.Opt(Order)], ['query']),
   'getPaymentServiceConfig' : IDL.Func(
@@ -250,13 +432,19 @@ export const idlService = IDL.Service({
     ),
   'getPaymentStatus' : IDL.Func([IDL.Text], [PaymentStatus], []),
   'getProduct' : IDL.Func([IDL.Text], [IDL.Opt(Product)], ['query']),
+  'getResumeInfo' : IDL.Func([IDL.Text], [Result_9], ['query']),
+  'getSubaccountBalance' : IDL.Func([IDL.Nat], [Result_8], []),
   'getTokenImage' : IDL.Func([IDL.Text, IDL.Text], [IDL.Text], []),
   'getTokenProfile' : IDL.Func([IDL.Text, IDL.Text], [IDL.Text], []),
   'getTreasuryTokens' : IDL.Func([], [IDL.Text], []),
-  'handlePaymentConfirmation' : IDL.Func([IDL.Text], [Result_3], []),
+  'handlePaymentConfirmation' : IDL.Func([IDL.Text], [Result_7], []),
   'isAdmin' : IDL.Func([], [IDL.Bool], ['query']),
   'listAdmins' : IDL.Func([], [IDL.Vec(IDL.Principal)], []),
+  'listLatePayments' : IDL.Func([], [IDL.Vec(LatePayment)], []),
+  'listOrdersForRecovery' : IDL.Func([], [IDL.Vec(OrderRecoveryView)], []),
   'listProducts' : IDL.Func([], [IDL.Vec(Product)], ['query']),
+  'markLatePaymentReviewed' : IDL.Func([IDL.Text], [IDL.Bool], []),
+  'markOrderShipped' : IDL.Func([IDL.Text, IDL.Opt(IDL.Text)], [Result_6], []),
   'paymentServiceTransform' : IDL.Func(
       [TransformationInput],
       [TransformationOutput],
@@ -264,20 +452,28 @@ export const idlService = IDL.Service({
     ),
   'releaseExpiredOrders' : IDL.Func([], [IDL.Nat], []),
   'removeAdmin' : IDL.Func([IDL.Principal], [IDL.Bool], []),
+  'resendConfirmationEmail' : IDL.Func([IDL.Text], [Result_6], []),
   'schema' : IDL.Func([], [IDL.Text], ['query']),
-  'sweepCryptoToTreasury' : IDL.Func([IDL.Text], [Result_2], []),
+  'startVerificationTimer' : IDL.Func([], [IDL.Bool], []),
+  'stopVerificationTimer' : IDL.Func([], [IDL.Bool], []),
+  'sweepCryptoToTreasury' : IDL.Func([IDL.Text], [Result_5], []),
+  'sweepDefaultSubaccount' : IDL.Func([], [Result_4], []),
+  'sweepSubaccount' : IDL.Func([IDL.Nat], [Result_3], []),
   'transform' : IDL.Func(
       [TransformationInput],
       [TransformationOutput],
       ['query'],
     ),
+  'unsubscribe' : IDL.Func([IDL.Text], [Result_2], []),
   'updateLedgerConfig' : IDL.Func(
       [Token, IDL.Principal, IDL.Nat8, IDL.Nat],
       [Result],
       [],
     ),
+  'updateMinimumOrder' : IDL.Func([IDL.Nat], [Result], []),
   'updatePaymentServiceToken' : IDL.Func([IDL.Text], [Result_1], []),
   'updatePaymentServiceUrl' : IDL.Func([IDL.Text], [Result_1], []),
+  'updateProduct' : IDL.Func([Product], [IDL.Bool], []),
   'updateTreasury' : IDL.Func(
       [IDL.Principal, IDL.Opt(IDL.Vec(IDL.Nat8))],
       [Result],
@@ -288,6 +484,62 @@ export const idlService = IDL.Service({
 export const idlInitArgs = [];
 
 export const idlFactory = ({ IDL }) => {
+  const PaymentStatus = IDL.Variant({
+    'cancelled' : IDL.Null,
+    'expired' : IDL.Null,
+    'pending' : IDL.Null,
+    'paid' : IDL.Null,
+  });
+  const PaymentMethod = IDL.Variant({
+    'crypto_icp' : IDL.Null,
+    'card_stripe' : IDL.Null,
+    'crypto_ckusdc' : IDL.Null,
+    'manual' : IDL.Null,
+  });
+  const CryptoPaymentStatus = IDL.Variant({
+    'overpayment' : IDL.Record({ 'expected' : IDL.Nat, 'received' : IDL.Nat }),
+    'expired' : IDL.Null,
+    'underpayment' : IDL.Record({ 'expected' : IDL.Nat, 'received' : IDL.Nat }),
+    'paid' : IDL.Record({ 'blockIndex' : IDL.Nat }),
+    'awaiting_payment' : IDL.Null,
+  });
+  const ProductId = IDL.Nat;
+  const OrderItem = IDL.Record({
+    'product_id' : ProductId,
+    'unit_amount' : IDL.Nat,
+    'name' : IDL.Text,
+    'variant_id' : IDL.Text,
+    'quantity' : IDL.Nat,
+  });
+  const AdminOrderDetail = IDL.Record({
+    'customerName' : IDL.Text,
+    'status' : PaymentStatus,
+    'paymentMethod' : PaymentMethod,
+    'cryptoStatus' : IDL.Opt(CryptoPaymentStatus),
+    'createdAt' : IDL.Int,
+    'reference' : IDL.Text,
+    'amountOwed' : IDL.Nat,
+    'updatedAt' : IDL.Int,
+    'currency' : IDL.Text,
+    'subaccountHex' : IDL.Text,
+    'items' : IDL.Vec(OrderItem),
+    'sweepNote' : IDL.Opt(IDL.Text),
+    'customerEmail' : IDL.Text,
+    'depositAccountText' : IDL.Text,
+  });
+  const AdminOrderView = IDL.Record({
+    'status' : PaymentStatus,
+    'paymentMethod' : PaymentMethod,
+    'cryptoStatus' : IDL.Opt(CryptoPaymentStatus),
+    'createdAt' : IDL.Int,
+    'itemCount' : IDL.Nat,
+    'reference' : IDL.Text,
+    'amountOwed' : IDL.Nat,
+    'currency' : IDL.Text,
+    'subaccountHex' : IDL.Text,
+    'sweepNote' : IDL.Opt(IDL.Text),
+    'depositAccountText' : IDL.Text,
+  });
   const PaymentServiceError = IDL.Variant({
     'alreadyPaid' : IDL.Null,
     'notConfigured' : IDL.Text,
@@ -300,13 +552,6 @@ export const idlFactory = ({ IDL }) => {
     'ok' : IDL.Null,
     'err' : PaymentServiceError,
   });
-  const CryptoPaymentStatus = IDL.Variant({
-    'overpayment' : IDL.Record({ 'expected' : IDL.Nat, 'received' : IDL.Nat }),
-    'expired' : IDL.Null,
-    'underpayment' : IDL.Record({ 'expected' : IDL.Nat, 'received' : IDL.Nat }),
-    'paid' : IDL.Record({ 'blockIndex' : IDL.Nat }),
-    'awaiting_payment' : IDL.Null,
-  });
   const CryptoPaymentError = IDL.Variant({
     'alreadyPaid' : IDL.Null,
     'overpayment' : IDL.Record({ 'expected' : IDL.Nat, 'received' : IDL.Nat }),
@@ -318,26 +563,36 @@ export const idlFactory = ({ IDL }) => {
     'notCryptoOrder' : IDL.Null,
     'unauthorized' : IDL.Null,
     'invalidConfig' : IDL.Text,
+    'belowMinimumOrder' : IDL.Nat,
   });
-  const Result_4 = IDL.Variant({
+  const Result_11 = IDL.Variant({
     'ok' : CryptoPaymentStatus,
     'err' : CryptoPaymentError,
   });
-  const PaymentStatus = IDL.Variant({
-    'cancelled' : IDL.Null,
-    'expired' : IDL.Null,
-    'pending' : IDL.Null,
-    'paid' : IDL.Null,
-  });
-  const Result_9 = IDL.Variant({
+  const Result_18 = IDL.Variant({
     'ok' : PaymentStatus,
     'err' : PaymentServiceError,
+  });
+  const HttpHeader = IDL.Record({ 'value' : IDL.Text, 'name' : IDL.Text });
+  const HttpRequestResult = IDL.Record({
+    'status' : IDL.Nat,
+    'body' : IDL.Vec(IDL.Nat8),
+    'headers' : IDL.Vec(HttpHeader),
+  });
+  const TransformationInput = IDL.Record({
+    'context' : IDL.Vec(IDL.Nat8),
+    'response' : HttpRequestResult,
+  });
+  const TransformationOutput = IDL.Record({
+    'status' : IDL.Nat,
+    'body' : IDL.Vec(IDL.Nat8),
+    'headers' : IDL.Vec(HttpHeader),
   });
   const CheckoutSession = IDL.Record({
     'url' : IDL.Opt(IDL.Text),
     'reference' : IDL.Text,
   });
-  const Result_8 = IDL.Variant({
+  const Result_17 = IDL.Variant({
     'ok' : CheckoutSession,
     'err' : PaymentServiceError,
   });
@@ -349,35 +604,32 @@ export const idlFactory = ({ IDL }) => {
     'line1' : IDL.Text,
     'line2' : IDL.Opt(IDL.Text),
   });
-  const PaymentMethod = IDL.Variant({
-    'crypto_icp' : IDL.Null,
-    'card_stripe' : IDL.Null,
-    'crypto_ckusdc' : IDL.Null,
-    'manual' : IDL.Null,
-  });
-  const ProductId = IDL.Nat;
-  const OrderItem = IDL.Record({
-    'product_id' : ProductId,
-    'unit_amount' : IDL.Nat,
-    'name' : IDL.Text,
-    'variant_id' : IDL.Text,
-    'quantity' : IDL.Nat,
+  const ShippingStatus = IDL.Variant({
+    'shipped' : IDL.Null,
+    'pending' : IDL.Null,
   });
   const Order = IDL.Record({
     'id' : IDL.Nat,
     'tax' : IDL.Nat,
     'updated_at' : IDL.Int,
     'total' : IDL.Nat,
+    'sweep_note' : IDL.Opt(IDL.Text),
     'shipping_address' : ShippingAddress,
     'shipping' : IDL.Nat,
     'reference' : IDL.Text,
     'created_at' : IDL.Int,
     'payment_status' : PaymentStatus,
     'payment_method' : PaymentMethod,
+    'tracking_number' : IDL.Opt(IDL.Text),
     'currency' : IDL.Text,
+    'marketing_consent_at' : IDL.Opt(IDL.Int),
+    'shipping_status' : ShippingStatus,
     'items' : IDL.Vec(OrderItem),
     'customer_email' : IDL.Text,
+    'customer_principal' : IDL.Opt(IDL.Principal),
     'customer_name' : IDL.Text,
+    'shipped_at' : IDL.Opt(IDL.Int),
+    'marketing_consent' : IDL.Bool,
     'payment_reference' : IDL.Opt(IDL.Text),
     'subtotal' : IDL.Nat,
   });
@@ -385,7 +637,7 @@ export const idlFactory = ({ IDL }) => {
     'invalidOrder' : IDL.Null,
     'paymentFailed' : IDL.Text,
   });
-  const Result_7 = IDL.Variant({
+  const Result_16 = IDL.Variant({
     'ok' : CheckoutSession,
     'err' : PaymentError,
   });
@@ -400,60 +652,19 @@ export const idlFactory = ({ IDL }) => {
     'items' : IDL.Vec(CreateOrderItem),
     'customer_email' : IDL.Text,
     'customer_name' : IDL.Text,
+    'marketing_consent' : IDL.Bool,
   });
   const OrderError = IDL.Variant({
     'outOfStock' : IDL.Tuple(ProductId, IDL.Text),
     'unknownVariant' : IDL.Tuple(ProductId, IDL.Text),
     'unknownProduct' : ProductId,
     'emptyOrder' : IDL.Null,
+    'belowMinimumOrder' : IDL.Nat,
     'productInactive' : ProductId,
     'paymentFailed' : IDL.Text,
     'invalidQuantity' : IDL.Null,
   });
-  const Result_6 = IDL.Variant({ 'ok' : Order, 'err' : OrderError });
-  const Value = IDL.Variant({
-    'int' : IDL.Int,
-    'nat' : IDL.Nat,
-    'float' : IDL.Float64,
-    'bool' : IDL.Bool,
-    'null' : IDL.Null,
-    'text' : IDL.Text,
-  });
-  const Cell = IDL.Record({ 'value' : Value, 'name' : IDL.Text });
-  const Result__1 = IDL.Record({
-    'hasMore' : IDL.Bool,
-    'rows' : IDL.Vec(IDL.Vec(Cell)),
-  });
-  const LedgerConfig = IDL.Record({
-    'fee' : IDL.Nat,
-    'decimals' : IDL.Nat8,
-    'canisterId' : IDL.Principal,
-  });
-  const CryptoConfigView = IDL.Record({
-    'icp' : LedgerConfig,
-    'ckUSDC' : LedgerConfig,
-    'treasurySubaccount' : IDL.Opt(IDL.Vec(IDL.Nat8)),
-    'treasuryPrincipal' : IDL.Principal,
-  });
-  const Token = IDL.Variant({ 'ICP' : IDL.Null, 'ckUSDC' : IDL.Null });
-  const DepositInfo = IDL.Record({
-    'decimals' : IDL.Nat8,
-    'token' : Token,
-    'expiresAt' : IDL.Int,
-    'qrPayload' : IDL.Text,
-    'subaccount' : IDL.Vec(IDL.Nat8),
-    'reference' : IDL.Text,
-    'address' : IDL.Principal,
-    'amountDue' : IDL.Nat,
-  });
-  const Result_5 = IDL.Variant({
-    'ok' : DepositInfo,
-    'err' : CryptoPaymentError,
-  });
-  const PaymentServiceConfigView = IDL.Record({
-    'url' : IDL.Text,
-    'tokenSet' : IDL.Bool,
-  });
+  const Result_15 = IDL.Variant({ 'ok' : Order, 'err' : OrderError });
   const ProductVariant = IDL.Record({
     'id' : IDL.Text,
     'inventory' : IDL.Nat,
@@ -472,49 +683,210 @@ export const idlFactory = ({ IDL }) => {
     'variants' : IDL.Vec(ProductVariant),
     'created_at' : IDL.Int,
     'currency' : IDL.Text,
+    'admin_only' : IDL.Bool,
     'category' : IDL.Text,
     'price' : IDL.Nat,
     'images' : IDL.Vec(IDL.Text),
   });
-  const Result_3 = IDL.Variant({ 'ok' : IDL.Null, 'err' : PaymentError });
-  const HttpHeader = IDL.Record({ 'value' : IDL.Text, 'name' : IDL.Text });
-  const HttpRequestResult = IDL.Record({
-    'status' : IDL.Nat,
-    'body' : IDL.Vec(IDL.Nat8),
-    'headers' : IDL.Vec(HttpHeader),
+  const Value = IDL.Variant({
+    'int' : IDL.Int,
+    'nat' : IDL.Nat,
+    'float' : IDL.Float64,
+    'bool' : IDL.Bool,
+    'null' : IDL.Null,
+    'text' : IDL.Text,
   });
-  const TransformationInput = IDL.Record({
-    'context' : IDL.Vec(IDL.Nat8),
-    'response' : HttpRequestResult,
+  const Cell = IDL.Record({ 'value' : Value, 'name' : IDL.Text });
+  const Result__1 = IDL.Record({
+    'hasMore' : IDL.Bool,
+    'rows' : IDL.Vec(IDL.Vec(Cell)),
   });
-  const TransformationOutput = IDL.Record({
-    'status' : IDL.Nat,
-    'body' : IDL.Vec(IDL.Nat8),
-    'headers' : IDL.Vec(HttpHeader),
+  const RecheckResult = IDL.Record({
+    'status' : CryptoPaymentStatus,
+    'balance' : IDL.Nat,
+    'reference' : IDL.Text,
+    'error' : IDL.Opt(IDL.Text),
   });
-  const Result_2 = IDL.Variant({ 'ok' : IDL.Nat, 'err' : CryptoPaymentError });
+  const RecoveryError = IDL.Variant({
+    'sweepFailed' : IDL.Text,
+    'notFound' : IDL.Null,
+    'ledgerError' : IDL.Text,
+    'notCryptoOrder' : IDL.Null,
+    'unauthorized' : IDL.Null,
+    'invalidConfig' : IDL.Text,
+  });
+  const Result_14 = IDL.Variant({
+    'ok' : RecheckResult,
+    'err' : RecoveryError,
+  });
+  const SweepResult = IDL.Record({
+    'reference' : IDL.Opt(IDL.Text),
+    'error' : IDL.Opt(IDL.Text),
+    'blockIndex' : IDL.Opt(IDL.Nat),
+  });
+  const Result_4 = IDL.Variant({ 'ok' : SweepResult, 'err' : RecoveryError });
+  const ConsentListExport = IDL.Record({ 'csv' : IDL.Text });
+  const ConsentError = IDL.Variant({
+    'alreadyUnsubscribed' : IDL.Null,
+    'notConfigured' : IDL.Text,
+    'invalidToken' : IDL.Null,
+    'outcallFailed' : IDL.Text,
+    'unauthorized' : IDL.Null,
+    'invalidResponse' : IDL.Text,
+  });
+  const Result_13 = IDL.Variant({
+    'ok' : ConsentListExport,
+    'err' : ConsentError,
+  });
+  const LedgerConfig = IDL.Record({
+    'fee' : IDL.Nat,
+    'decimals' : IDL.Nat8,
+    'canisterId' : IDL.Principal,
+  });
+  const CryptoConfigView = IDL.Record({
+    'icp' : LedgerConfig,
+    'ckUSDC' : LedgerConfig,
+    'treasurySubaccount' : IDL.Opt(IDL.Vec(IDL.Nat8)),
+    'minimumOrder' : IDL.Nat,
+    'treasuryPrincipal' : IDL.Principal,
+  });
+  const Token = IDL.Variant({ 'ICP' : IDL.Null, 'ckUSDC' : IDL.Null });
+  const DepositInfo = IDL.Record({
+    'decimals' : IDL.Nat8,
+    'token' : Token,
+    'expiresAt' : IDL.Int,
+    'qrPayload' : IDL.Text,
+    'subaccount' : IDL.Vec(IDL.Nat8),
+    'reference' : IDL.Text,
+    'address' : IDL.Principal,
+    'amountDue' : IDL.Nat,
+  });
+  const Result_12 = IDL.Variant({
+    'ok' : DepositInfo,
+    'err' : CryptoPaymentError,
+  });
+  const Result_10 = IDL.Variant({ 'ok' : IDL.Nat, 'err' : RecoveryError });
+  const PaymentServiceConfigView = IDL.Record({
+    'url' : IDL.Text,
+    'tokenSet' : IDL.Bool,
+  });
+  const ResumeInfo = IDL.Record({
+    'status' : CryptoPaymentStatus,
+    'expiresAt' : IDL.Int,
+    'reference' : IDL.Text,
+    'deposit' : IDL.Opt(DepositInfo),
+    'remainingNs' : IDL.Int,
+  });
+  const Result_9 = IDL.Variant({ 'ok' : ResumeInfo, 'err' : RecoveryError });
+  const SubaccountBalanceResult = IDL.Record({
+    'balance' : IDL.Nat,
+    'subaccountHex' : IDL.Text,
+    'subaccountIndex' : IDL.Nat,
+  });
+  const SweepError = IDL.Variant({
+    'sweepFailed' : IDL.Text,
+    'ledgerError' : IDL.Text,
+    'unauthorized' : IDL.Null,
+    'invalidConfig' : IDL.Text,
+  });
+  const Result_8 = IDL.Variant({
+    'ok' : SubaccountBalanceResult,
+    'err' : SweepError,
+  });
+  const Result_7 = IDL.Variant({ 'ok' : IDL.Null, 'err' : PaymentError });
+  const LatePayment = IDL.Record({
+    'token' : Token,
+    'reference' : IDL.Text,
+    'receivedAmount' : IDL.Nat,
+    'receivedAt' : IDL.Int,
+    'reviewed' : IDL.Bool,
+    'expectedAmount' : IDL.Nat,
+  });
+  const DepositAccount = IDL.Record({
+    'owner' : IDL.Principal,
+    'subaccount' : IDL.Vec(IDL.Nat8),
+    'textAddress' : IDL.Text,
+  });
+  const OrderRecoveryView = IDL.Record({
+    'status' : PaymentStatus,
+    'paymentMethod' : PaymentMethod,
+    'expiresAt' : IDL.Opt(IDL.Int),
+    'reference' : IDL.Text,
+    'depositAccount' : IDL.Opt(DepositAccount),
+    'amountOwed' : IDL.Nat,
+    'liveBalance' : IDL.Nat,
+  });
+  const EmailError = IDL.Variant({
+    'notConfigured' : IDL.Text,
+    'notShippable' : IDL.Null,
+    'notFound' : IDL.Null,
+    'outcallFailed' : IDL.Text,
+    'unauthorized' : IDL.Null,
+    'invalidResponse' : IDL.Text,
+  });
+  const Result_6 = IDL.Variant({ 'ok' : IDL.Null, 'err' : EmailError });
+  const Result_5 = IDL.Variant({ 'ok' : IDL.Nat, 'err' : CryptoPaymentError });
+  const SweepSubaccountResult = IDL.Record({
+    'error' : IDL.Opt(IDL.Text),
+    'blockIndex' : IDL.Opt(IDL.Nat),
+    'subaccountHex' : IDL.Text,
+    'subaccountIndex' : IDL.Nat,
+  });
+  const Result_3 = IDL.Variant({
+    'ok' : SweepSubaccountResult,
+    'err' : SweepError,
+  });
+  const Result_2 = IDL.Variant({ 'ok' : IDL.Null, 'err' : ConsentError });
   const Result = IDL.Variant({ 'ok' : IDL.Null, 'err' : CryptoPaymentError });
   
   return IDL.Service({
     'addAdmin' : IDL.Func([IDL.Principal], [IDL.Bool], []),
+    'adminGetOrderDetail' : IDL.Func(
+        [IDL.Text],
+        [IDL.Opt(AdminOrderDetail)],
+        ['query'],
+      ),
+    'adminListOrders' : IDL.Func(
+        [IDL.Text],
+        [IDL.Vec(AdminOrderView)],
+        ['query'],
+      ),
     'cancelCardOrder' : IDL.Func([IDL.Text], [Result_1], []),
-    'checkCryptoPayment' : IDL.Func([IDL.Text], [Result_4], []),
+    'checkCryptoPayment' : IDL.Func([IDL.Text], [Result_11], []),
     'claimInitialAdmin' : IDL.Func([], [IDL.Bool], []),
-    'confirmCardPayment' : IDL.Func([IDL.Text], [Result_9], []),
-    'confirmCryptoPayment' : IDL.Func([IDL.Text], [Result_4], []),
+    'confirmCardPayment' : IDL.Func([IDL.Text], [Result_18], []),
+    'consentServiceTransform' : IDL.Func(
+        [TransformationInput],
+        [TransformationOutput],
+        ['query'],
+      ),
     'createCardCheckoutSession' : IDL.Func(
         [IDL.Text, IDL.Text, IDL.Text],
-        [Result_8],
+        [Result_17],
         [],
       ),
-    'createCheckoutSession' : IDL.Func([Order], [Result_7], []),
-    'createOrder' : IDL.Func([CreateOrderInput], [Result_6], []),
+    'createCheckoutSession' : IDL.Func([Order], [Result_16], []),
+    'createOrder' : IDL.Func([CreateOrderInput], [Result_15], []),
+    'createProduct' : IDL.Func([Product], [IDL.Bool], []),
+    'emailTransform' : IDL.Func(
+        [TransformationInput],
+        [TransformationOutput],
+        ['query'],
+      ),
     'execute' : IDL.Func([IDL.Text], [Result__1], ['query']),
+    'forceRecheckPayment' : IDL.Func([IDL.Text], [Result_14], []),
+    'forceSweepOrder' : IDL.Func([IDL.Text], [Result_4], []),
     'getApiDoc' : IDL.Func([], [IDL.Text], ['query']),
+    'getCanisterId' : IDL.Func([], [IDL.Principal], ['query']),
+    'getConsentListCsv' : IDL.Func([], [Result_13], []),
     'getCryptoConfig' : IDL.Func([], [CryptoConfigView], ['query']),
-    'getCryptoDepositInfo' : IDL.Func([IDL.Text], [Result_5], ['query']),
-    'getCryptoPaymentStatus' : IDL.Func([IDL.Text], [Result_4], ['query']),
+    'getCryptoDepositInfo' : IDL.Func([IDL.Text], [Result_12], ['query']),
+    'getCryptoPaymentStatus' : IDL.Func([IDL.Text], [Result_11], ['query']),
+    'getCycleBalance' : IDL.Func([], [IDL.Nat], ['query']),
     'getDashboardData' : IDL.Func([], [IDL.Text], []),
+    'getDefaultSubaccountBalance' : IDL.Func([], [Result_10], []),
+    'getMinimumOrder' : IDL.Func([], [IDL.Nat], ['query']),
+    'getMyOrders' : IDL.Func([], [IDL.Vec(Order)], ['query']),
     'getNAKPrice' : IDL.Func([], [IDL.Text], []),
     'getOrderStatus' : IDL.Func([IDL.Text], [IDL.Opt(Order)], ['query']),
     'getPaymentServiceConfig' : IDL.Func(
@@ -524,13 +896,23 @@ export const idlFactory = ({ IDL }) => {
       ),
     'getPaymentStatus' : IDL.Func([IDL.Text], [PaymentStatus], []),
     'getProduct' : IDL.Func([IDL.Text], [IDL.Opt(Product)], ['query']),
+    'getResumeInfo' : IDL.Func([IDL.Text], [Result_9], ['query']),
+    'getSubaccountBalance' : IDL.Func([IDL.Nat], [Result_8], []),
     'getTokenImage' : IDL.Func([IDL.Text, IDL.Text], [IDL.Text], []),
     'getTokenProfile' : IDL.Func([IDL.Text, IDL.Text], [IDL.Text], []),
     'getTreasuryTokens' : IDL.Func([], [IDL.Text], []),
-    'handlePaymentConfirmation' : IDL.Func([IDL.Text], [Result_3], []),
+    'handlePaymentConfirmation' : IDL.Func([IDL.Text], [Result_7], []),
     'isAdmin' : IDL.Func([], [IDL.Bool], ['query']),
     'listAdmins' : IDL.Func([], [IDL.Vec(IDL.Principal)], []),
+    'listLatePayments' : IDL.Func([], [IDL.Vec(LatePayment)], []),
+    'listOrdersForRecovery' : IDL.Func([], [IDL.Vec(OrderRecoveryView)], []),
     'listProducts' : IDL.Func([], [IDL.Vec(Product)], ['query']),
+    'markLatePaymentReviewed' : IDL.Func([IDL.Text], [IDL.Bool], []),
+    'markOrderShipped' : IDL.Func(
+        [IDL.Text, IDL.Opt(IDL.Text)],
+        [Result_6],
+        [],
+      ),
     'paymentServiceTransform' : IDL.Func(
         [TransformationInput],
         [TransformationOutput],
@@ -538,20 +920,28 @@ export const idlFactory = ({ IDL }) => {
       ),
     'releaseExpiredOrders' : IDL.Func([], [IDL.Nat], []),
     'removeAdmin' : IDL.Func([IDL.Principal], [IDL.Bool], []),
+    'resendConfirmationEmail' : IDL.Func([IDL.Text], [Result_6], []),
     'schema' : IDL.Func([], [IDL.Text], ['query']),
-    'sweepCryptoToTreasury' : IDL.Func([IDL.Text], [Result_2], []),
+    'startVerificationTimer' : IDL.Func([], [IDL.Bool], []),
+    'stopVerificationTimer' : IDL.Func([], [IDL.Bool], []),
+    'sweepCryptoToTreasury' : IDL.Func([IDL.Text], [Result_5], []),
+    'sweepDefaultSubaccount' : IDL.Func([], [Result_4], []),
+    'sweepSubaccount' : IDL.Func([IDL.Nat], [Result_3], []),
     'transform' : IDL.Func(
         [TransformationInput],
         [TransformationOutput],
         ['query'],
       ),
+    'unsubscribe' : IDL.Func([IDL.Text], [Result_2], []),
     'updateLedgerConfig' : IDL.Func(
         [Token, IDL.Principal, IDL.Nat8, IDL.Nat],
         [Result],
         [],
       ),
+    'updateMinimumOrder' : IDL.Func([IDL.Nat], [Result], []),
     'updatePaymentServiceToken' : IDL.Func([IDL.Text], [Result_1], []),
     'updatePaymentServiceUrl' : IDL.Func([IDL.Text], [Result_1], []),
+    'updateProduct' : IDL.Func([Product], [IDL.Bool], []),
     'updateTreasury' : IDL.Func(
         [IDL.Principal, IDL.Opt(IDL.Vec(IDL.Nat8))],
         [Result],

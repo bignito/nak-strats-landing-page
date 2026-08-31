@@ -1,16 +1,26 @@
 import { createActor } from "@/backend";
 import type {
+  AdminOrderDetail,
+  AdminOrderView,
+  ConsentListExport,
   CreateOrderInput,
   CryptoConfigView,
   CryptoPaymentStatus,
   DepositInfo,
+  LatePayment,
   Order,
+  OrderRecoveryView,
   PaymentServiceConfigView,
   PaymentStatus,
   Product,
+  RecheckResult,
+  ResumeInfo,
+  SubaccountBalanceResult,
+  SweepResult,
+  SweepSubaccountResult,
   Token,
 } from "@/backend";
-import { useActor } from "@caffeineai/core-infrastructure";
+import { useActor, useInternetIdentity } from "@caffeineai/core-infrastructure";
 import type { Principal } from "@icp-sdk/core/principal";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
@@ -36,6 +46,34 @@ export function useProduct(slugOrId: string | null) {
       return actor.getProduct(slugOrId);
     },
     enabled: !!actor && !isFetching && !!slugOrId,
+  });
+}
+
+export function useCreateProduct() {
+  const { actor } = useActor(createActor);
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (product: Product): Promise<boolean> => {
+      if (!actor) throw new Error("Backend is not ready");
+      return actor.createProduct(product);
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["products"] });
+    },
+  });
+}
+
+export function useUpdateProduct() {
+  const { actor } = useActor(createActor);
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (product: Product): Promise<boolean> => {
+      if (!actor) throw new Error("Backend is not ready");
+      return actor.updateProduct(product);
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["products"] });
+    },
   });
 }
 
@@ -151,7 +189,7 @@ export function useConfirmCryptoPayment() {
   return useMutation({
     mutationFn: async (reference: string) => {
       if (!actor) throw new Error("Backend is not ready");
-      return actor.confirmCryptoPayment(reference);
+      return actor.checkCryptoPayment(reference);
     },
     onSuccess: (_data, reference) => {
       void queryClient.invalidateQueries({
@@ -214,6 +252,24 @@ export function useOrderLookup(reference: string | null) {
       return actor.getOrderStatus(reference);
     },
     enabled: !!actor && !isFetching && !!reference,
+  });
+}
+
+/**
+ * Lists only the signed-in caller's own orders. The backend filters by the
+ * caller's identity server-side, so this never trusts a principal passed as a
+ * parameter and never exposes another customer's data.
+ */
+export function useMyOrders() {
+  const { actor, isFetching } = useActor(createActor);
+  const { isAuthenticated } = useInternetIdentity();
+  return useQuery({
+    queryKey: ["myOrders"],
+    queryFn: async (): Promise<Order[]> => {
+      if (!actor) return [];
+      return actor.getMyOrders();
+    },
+    enabled: !!actor && !isFetching && isAuthenticated,
   });
 }
 
@@ -411,5 +467,369 @@ export function useListAdmins() {
       return actor.listAdmins();
     },
     enabled: !!actor && !isFetching,
+  });
+}
+
+/**
+ * Reads the configured minimum crypto order total. The backend stores it in USD
+ * units (25 = $0.25), so callers divide by 100 for display.
+ */
+export function useGetMinimumOrder() {
+  const { actor, isFetching } = useActor(createActor);
+  return useQuery({
+    queryKey: ["minimumOrder"],
+    queryFn: async (): Promise<bigint> => {
+      if (!actor) return 25n;
+      return actor.getMinimumOrder();
+    },
+    enabled: !!actor && !isFetching,
+  });
+}
+
+/**
+ * Updates the minimum crypto order total. The backend expects USD units
+ * (dollars * 100), so callers multiply the entered dollars by 100.
+ */
+export function useUpdateMinimumOrder() {
+  const { actor } = useActor(createActor);
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (minimum: bigint) => {
+      if (!actor) throw new Error("Backend is not ready");
+      return actor.updateMinimumOrder(minimum);
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["minimumOrder"] });
+    },
+  });
+}
+
+/* ============================================================
+   Order Resume & Admin Recovery hooks
+   ============================================================ */
+
+/**
+ * Reads the resume info for a stored active order reference. Returns null when
+ * there is no resumable order (not found / expired / paid) so the resume banner
+ * can clear the stored reference; ledger errors surface through the query's
+ * `error` field and are never swallowed.
+ */
+export function useResumeInfo(reference: string | null) {
+  const { actor, isFetching } = useActor(createActor);
+  return useQuery({
+    queryKey: ["resumeInfo", reference],
+    queryFn: async (): Promise<ResumeInfo | null> => {
+      if (!actor || !reference) return null;
+      const result = await actor.getResumeInfo(reference);
+      if (result.__kind__ === "err") {
+        if (result.err.__kind__ === "ledgerError") throw result.err;
+        return null;
+      }
+      return result.ok;
+    },
+    enabled: !!actor && !isFetching && !!reference,
+  });
+}
+
+/** Lists every order needing recovery attention (admin-only). */
+export function useListOrdersForRecovery() {
+  const { actor, isFetching } = useActor(createActor);
+  return useQuery({
+    queryKey: ["ordersForRecovery"],
+    queryFn: async (): Promise<OrderRecoveryView[]> => {
+      if (!actor) return [];
+      return actor.listOrdersForRecovery();
+    },
+    enabled: !!actor && !isFetching,
+  });
+}
+
+/** Re-checks a crypto order's payment against the ledger (admin-only). */
+export function useForceRecheckPayment() {
+  const { actor } = useActor(createActor);
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (reference: string): Promise<RecheckResult> => {
+      if (!actor) throw new Error("Backend is not ready");
+      const result = await actor.forceRecheckPayment(reference);
+      if (result.__kind__ === "err") throw result.err;
+      return result.ok;
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["ordersForRecovery"] });
+    },
+  });
+}
+
+/** Force-sweeps a crypto order's deposit subaccount to treasury (admin-only). */
+export function useForceSweepOrder() {
+  const { actor } = useActor(createActor);
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (reference: string): Promise<SweepResult> => {
+      if (!actor) throw new Error("Backend is not ready");
+      const result = await actor.forceSweepOrder(reference);
+      if (result.__kind__ === "err") throw result.err;
+      return result.ok;
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["ordersForRecovery"] });
+      void queryClient.invalidateQueries({
+        queryKey: ["defaultSubaccountBalance"],
+      });
+    },
+  });
+}
+
+/** Reads the default subaccount balance (admin-only). */
+export function useGetDefaultSubaccountBalance() {
+  const { actor, isFetching } = useActor(createActor);
+  return useQuery({
+    queryKey: ["defaultSubaccountBalance"],
+    queryFn: async (): Promise<bigint | null> => {
+      if (!actor) return null;
+      const result = await actor.getDefaultSubaccountBalance();
+      if (result.__kind__ === "err") throw result.err;
+      return result.ok;
+    },
+    enabled: !!actor && !isFetching,
+  });
+}
+
+/** Sweeps the default subaccount to treasury (admin-only). */
+export function useSweepDefaultSubaccount() {
+  const { actor } = useActor(createActor);
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (): Promise<SweepResult> => {
+      if (!actor) throw new Error("Backend is not ready");
+      const result = await actor.sweepDefaultSubaccount();
+      if (result.__kind__ === "err") throw result.err;
+      return result.ok;
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({
+        queryKey: ["defaultSubaccountBalance"],
+      });
+      void queryClient.invalidateQueries({ queryKey: ["ordersForRecovery"] });
+    },
+  });
+}
+
+/** Reads the canister's cycle balance (admin-only). */
+export function useGetCycleBalance() {
+  const { actor, isFetching } = useActor(createActor);
+  return useQuery({
+    queryKey: ["cycleBalance"],
+    queryFn: async (): Promise<bigint> => {
+      if (!actor) return 0n;
+      return actor.getCycleBalance();
+    },
+    enabled: !!actor && !isFetching,
+  });
+}
+
+/** Lists late payments that arrived after their deposit window closed. */
+export function useListLatePayments() {
+  const { actor, isFetching } = useActor(createActor);
+  return useQuery({
+    queryKey: ["latePayments"],
+    queryFn: async (): Promise<LatePayment[]> => {
+      if (!actor) return [];
+      return actor.listLatePayments();
+    },
+    enabled: !!actor && !isFetching,
+  });
+}
+
+/** Marks a late payment as reviewed (admin-only). */
+export function useMarkLatePaymentReviewed() {
+  const { actor } = useActor(createActor);
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (reference: string): Promise<boolean> => {
+      if (!actor) throw new Error("Backend is not ready");
+      return actor.markLatePaymentReviewed(reference);
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["latePayments"] });
+    },
+  });
+}
+
+/* ============================================================
+   Admin Orders, Canister Health & Funds hooks
+   ============================================================ */
+
+/**
+ * Lists orders for the admin Orders table, filtered by status. Filter values
+ * are: all, awaiting_payment, paid, expired, cancelled, needs_review.
+ */
+export function useAdminListOrders(filter: string) {
+  const { actor, isFetching } = useActor(createActor);
+  return useQuery({
+    queryKey: ["adminOrders", filter],
+    queryFn: async (): Promise<AdminOrderView[]> => {
+      if (!actor) return [];
+      return actor.adminListOrders(filter);
+    },
+    enabled: !!actor && !isFetching,
+  });
+}
+
+/** Fetches the full admin detail (including line items) for one order. */
+export function useAdminGetOrderDetail(reference: string | null) {
+  const { actor, isFetching } = useActor(createActor);
+  return useQuery({
+    queryKey: ["adminOrderDetail", reference],
+    queryFn: async (): Promise<AdminOrderDetail | null> => {
+      if (!actor || !reference) return null;
+      return actor.adminGetOrderDetail(reference);
+    },
+    enabled: !!actor && !isFetching && !!reference,
+  });
+}
+
+/** Reads the canister's own principal (public query). */
+export function useGetCanisterId() {
+  const { actor, isFetching } = useActor(createActor);
+  return useQuery({
+    queryKey: ["canisterId"],
+    queryFn: async (): Promise<string | null> => {
+      if (!actor) return null;
+      return actor.getCanisterId().then((p) => p.toText());
+    },
+    enabled: !!actor && !isFetching,
+  });
+}
+
+/** Reads the treasury token data returned by the backend (raw JSON text). */
+export function useGetTreasuryTokens() {
+  const { actor, isFetching } = useActor(createActor);
+  return useQuery({
+    queryKey: ["treasuryTokens"],
+    queryFn: async (): Promise<string | null> => {
+      if (!actor) return null;
+      return actor.getTreasuryTokens();
+    },
+    enabled: !!actor && !isFetching,
+  });
+}
+
+/* ============================================================
+   Consent, Shipping & Subaccount hooks
+   ============================================================ */
+
+/**
+ * Reads the balance of a specific deposit subaccount by index (admin-only).
+ * The backend returns the balance plus the subaccount hex and index.
+ */
+export function useGetSubaccountBalance(subaccountIndex: bigint | null) {
+  const { actor, isFetching } = useActor(createActor);
+  return useQuery({
+    queryKey: ["subaccountBalance", subaccountIndex],
+    queryFn: async (): Promise<SubaccountBalanceResult | null> => {
+      if (!actor || subaccountIndex === null) return null;
+      const result = await actor.getSubaccountBalance(subaccountIndex);
+      if (result.__kind__ === "err") throw result.err;
+      return result.ok;
+    },
+    enabled: !!actor && !isFetching && subaccountIndex !== null,
+  });
+}
+
+/** Sweeps a specific deposit subaccount to treasury (admin-only). */
+export function useSweepSubaccount() {
+  const { actor } = useActor(createActor);
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (
+      subaccountIndex: bigint,
+    ): Promise<SweepSubaccountResult> => {
+      if (!actor) throw new Error("Backend is not ready");
+      const result = await actor.sweepSubaccount(subaccountIndex);
+      if (result.__kind__ === "err") throw result.err;
+      return result.ok;
+    },
+    onSuccess: (_data, subaccountIndex) => {
+      void queryClient.invalidateQueries({
+        queryKey: ["subaccountBalance", subaccountIndex],
+      });
+      void queryClient.invalidateQueries({ queryKey: ["ordersForRecovery"] });
+    },
+  });
+}
+
+/** Marks an order as shipped with an optional tracking number (admin-only). */
+export function useMarkOrderShipped() {
+  const { actor } = useActor(createActor);
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (args: {
+      reference: string;
+      trackingNumber: string | null;
+    }): Promise<void> => {
+      if (!actor) throw new Error("Backend is not ready");
+      const result = await actor.markOrderShipped(
+        args.reference,
+        args.trackingNumber,
+      );
+      if (result.__kind__ === "err") throw result.err;
+    },
+    onSuccess: (_data, args) => {
+      void queryClient.invalidateQueries({ queryKey: ["adminOrders"] });
+      void queryClient.invalidateQueries({
+        queryKey: ["adminOrderDetail", args.reference],
+      });
+      void queryClient.invalidateQueries({
+        queryKey: ["orderStatus", args.reference],
+      });
+    },
+  });
+}
+
+/** Resends the order confirmation email (admin-only). */
+export function useResendConfirmationEmail() {
+  const { actor } = useActor(createActor);
+  return useMutation({
+    mutationFn: async (reference: string): Promise<void> => {
+      if (!actor) throw new Error("Backend is not ready");
+      const result = await actor.resendConfirmationEmail(reference);
+      if (result.__kind__ === "err") throw result.err;
+    },
+  });
+}
+
+/**
+ * Fetches the CSV of addresses that have opted into marketing (admin-only).
+ * Only consenting addresses are included; suppressed addresses are excluded.
+ */
+export function useGetConsentListCsv() {
+  const { actor, isFetching } = useActor(createActor);
+  return useQuery({
+    queryKey: ["consentListCsv"],
+    queryFn: async (): Promise<ConsentListExport | null> => {
+      if (!actor) return null;
+      const result = await actor.getConsentListCsv();
+      if (result.__kind__ === "err") throw result.err;
+      return result.ok;
+    },
+    enabled: !!actor && !isFetching,
+  });
+}
+
+/**
+ * Unsubscribes an address from marketing via a token from the unsubscribe
+ * link. Adds the address to the suppression list so it is never sent marketing
+ * email (transactional emails remain exempt).
+ */
+export function useUnsubscribe() {
+  const { actor } = useActor(createActor);
+  return useMutation({
+    mutationFn: async (token: string): Promise<void> => {
+      if (!actor) throw new Error("Backend is not ready");
+      const result = await actor.unsubscribe(token);
+      if (result.__kind__ === "err") throw result.err;
+    },
   });
 }

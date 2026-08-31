@@ -4,19 +4,33 @@ import List "mo:core/List";
 import Map "mo:core/Map";
 import Text "mo:core/Text";
 import Nat "mo:core/Nat";
+import Principal "mo:core/Principal";
 import Types "../types/storefront";
 
 module {
   public func listActiveProducts(products : List.List<Types.Product>) : [Types.Product] {
-    products.toArray().filter(func p = p.active);
+    // The public /shop grid shows only active, non-admin-only products. Hidden
+    // (admin_only) products never appear here.
+    products.toArray().filter(func p = p.active and not p.admin_only);
   };
 
-  public func getProduct(products : List.List<Types.Product>, slugOrId : Text) : ?Types.Product {
+  public func getProduct(products : List.List<Types.Product>, slugOrId : Text, isAdmin : Bool) : ?Types.Product {
+    // Hidden (admin_only) products are returned only to an authenticated admin,
+    // so an admin can reach and purchase the test product via a direct product
+    // URL or an admin-only view. Non-admins never see hidden products.
+    func visible(p : Types.Product) : ?Types.Product {
+      if (p.admin_only and not isAdmin) { null } else { ?p };
+    };
     switch (products.find(func p = p.slug == slugOrId)) {
-      case (?p) { ?p };
+      case (?p) { visible(p) };
       case null {
         switch (Nat.fromText(slugOrId)) {
-          case (?id) { products.find(func p = p.id == id) };
+          case (?id) {
+            switch (products.find(func p = p.id == id)) {
+              case (?p) { visible(p) };
+              case null { null };
+            };
+          };
           case null { null };
         };
       };
@@ -25,6 +39,20 @@ module {
 
   public func getOrderByReference(orders : List.List<Types.Order>, reference : Text) : ?Types.Order {
     orders.find(func o = o.reference == reference);
+  };
+
+  // Returns only the orders whose customer_principal matches the caller. The
+  // caller is always derived from msg.caller server-side — never accepted as a
+  // parameter. The anonymous principal is rejected (returns an empty list), so
+  // a guest can never read anyone's orders through this path.
+  public func getMyOrders(orders : List.List<Types.Order>, caller : Principal) : [Types.Order] {
+    if (caller == Principal.fromText("2vxsx-fae")) {
+      return [];
+    };
+    orders.toArray().filter(func o = switch (o.customer_principal) {
+      case (?p) { p == caller };
+      case null { false };
+    });
   };
 
   func decrementVariant(product : Types.Product, variantId : Text, qty : Nat) : Types.Product {
@@ -48,17 +76,38 @@ module {
     };
   };
 
+  // Admin-only: append a new product to the catalogue. The caller supplies the
+  // full Product record (prices in integer cents). The id and timestamps are
+  // provided by the caller; the frontend assigns a fresh id and current
+  // timestamps when creating.
+  public func createProduct(products : List.List<Types.Product>, product : Types.Product) {
+    products.add(product);
+  };
+
+  // Admin-only: replace an existing product (matched by id) with the supplied
+  // record. Prices are integer cents. A no-op when no product with that id
+  // exists.
+  public func updateProduct(products : List.List<Types.Product>, product : Types.Product) {
+    replaceProduct(products, product);
+  };
+
   public func createOrder(
     products : List.List<Types.Product>,
     orders : List.List<Types.Order>,
     state : { var nextOrderId : Nat },
     input : Types.CreateOrderInput,
+    caller : Principal,
+    minimumOrder : Nat,
   ) : Result.Result<Types.Order, Types.OrderError> {
     if (input.items.size() == 0) { return #err(#emptyOrder) };
 
     var subtotal = 0;
     var validatedItems : [Types.OrderItem] = [];
     var reserved : [(Types.ProductId, Text, Nat)] = [];
+    // True when the order contains an internal test item (an admin_only
+    // product). Internal test items ship free so the test product's total is
+    // exactly its price, making the ckUSDC sweep math easy to verify.
+    var hasTestItem = false;
     let reservedQty = Map.empty<Text, Nat>();
 
     for (item in input.items.values()) {
@@ -67,6 +116,7 @@ module {
         case null { return #err(#unknownProduct(item.product_id)) };
         case (?p) {
           if (not p.active) { return #err(#productInactive(item.product_id)) };
+          if (p.admin_only) { hasTestItem := true };
           switch (p.variants.find(func v = v.id == item.variant_id)) {
             case null { return #err(#unknownVariant(item.product_id, item.variant_id)) };
             case (?v) {
@@ -92,10 +142,29 @@ module {
       };
     };
 
-    let tax = subtotal * 8 / 100;
-    let shipping = if (subtotal >= 5000) { 0 } else { 500 };
+    // Internal test items (admin_only products) are exempt from tax as well as
+    // shipping, so a single test item's total is exactly its price ($0.50),
+    // making the ckUSDC sweep math easy to verify. Real products keep the
+    // existing 8% tax and shipping rules.
+    let tax = if (hasTestItem) { 0 } else { subtotal * 8 / 100 };
+    let shipping = if (hasTestItem or subtotal >= 5000) { 0 } else { 500 };
     let total = subtotal + tax + shipping;
     let now = Time.now();
+
+    // Minimum order guard (enforced server-side, not only in the UI): a crypto
+    // order whose total is below the configured minimum cannot be swept to the
+    // treasury after the ledger transfer fee is deducted, so reject it here
+    // with a clear customer-facing error. Card and manual orders are unaffected.
+    let pm = input.payment_method;
+    switch pm {
+      case (#crypto_ckusdc) {
+        if (total < minimumOrder) { return #err(#belowMinimumOrder(minimumOrder)) };
+      };
+      case (#crypto_icp) {
+        if (total < minimumOrder) { return #err(#belowMinimumOrder(minimumOrder)) };
+      };
+      case (_) {};
+    };
 
     let order : Types.Order = {
       id = state.nextOrderId;
@@ -112,6 +181,18 @@ module {
       payment_method = input.payment_method;
       payment_status = #pending;
       payment_reference = null;
+      // Store the caller's principal only when they are signed in (non-anonymous).
+      // Anonymous guest checkout leaves this null and proceeds exactly as before.
+      customer_principal = if (caller == Principal.fromText("2vxsx-fae")) { null } else { ?caller };
+      sweep_note = null;
+      shipping_status = #pending;
+      shipped_at = null;
+      tracking_number = null;
+      // Record the customer's marketing consent choice and, when they opted in,
+      // the exact timestamp at which consent was given (defensible under
+      // GDPR/CAN-SPAM). The checkbox is never pre-checked.
+      marketing_consent = input.marketing_consent;
+      marketing_consent_at = if (input.marketing_consent) { ?now } else { null };
       created_at = now;
       updated_at = now;
     };
@@ -175,6 +256,13 @@ module {
           payment_method = order.payment_method;
           payment_status = status;
           payment_reference = paymentReference;
+          customer_principal = order.customer_principal;
+          sweep_note = order.sweep_note;
+          shipping_status = order.shipping_status;
+          shipped_at = order.shipped_at;
+          tracking_number = order.tracking_number;
+          marketing_consent = order.marketing_consent;
+          marketing_consent_at = order.marketing_consent_at;
           created_at = order.created_at;
           updated_at = Time.now();
         };

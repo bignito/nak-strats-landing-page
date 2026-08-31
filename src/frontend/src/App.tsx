@@ -1,4 +1,4 @@
-import { Heart } from "lucide-react";
+import { ShieldAlert } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import AdminSettingsPage from "./components/AdminSettingsPage";
 import BubbleBackground from "./components/BubbleBackground";
@@ -8,17 +8,23 @@ import CheckoutPage from "./components/CheckoutPage";
 import MainContent from "./components/MainContent";
 import MarsLiveArtistPage from "./components/MarsLiveArtistPage";
 import MetaTheatrePage from "./components/MetaTheatrePage";
+import MyOrdersPage from "./components/MyOrdersPage";
 import NAKFeaturedArtist from "./components/NAKFeaturedArtist";
 import Navigation from "./components/Navigation";
 import OrderLookupPage from "./components/OrderLookupPage";
 import ProductPage from "./components/ProductPage";
 import PurchaseNAK from "./components/PurchaseNAK";
+import RecoveryPage from "./components/RecoveryPage";
 import ReserveTreasury from "./components/ReserveTreasury";
+import ResumeBanner from "./components/ResumeBanner";
+import ShopBanner from "./components/ShopBanner";
 import ShopPage from "./components/ShopPage";
 import SuccessPage from "./components/SuccessPage";
-import TelegramSection from "./components/TelegramSection";
 import TokenInfo from "./components/TokenInfo";
+import UnsubscribePage from "./components/UnsubscribePage";
+import { useActiveOrderRef } from "./hooks/useActiveOrderRef";
 import { CartProvider } from "./hooks/useCart";
+import { useIsAdmin } from "./hooks/useQueries";
 
 function App() {
   const [currentPage, setCurrentPage] = useState<
@@ -32,8 +38,14 @@ function App() {
     | "success"
     | "cancelled"
     | "orderlookup"
+    | "myorders"
     | "admin"
+    | "adminrecovery"
+    | "unsubscribe"
   >("main");
+
+  const { setActiveOrderRef } = useActiveOrderRef();
+  const { data: isAdmin } = useIsAdmin();
 
   const [selectedProductSlugOrId, setSelectedProductSlugOrId] = useState<
     string | null
@@ -55,6 +67,10 @@ function App() {
       const hash = window.location.hash.replace(/^#\/?/, "").toLowerCase();
       if (hash === "admin") {
         setCurrentPage("admin");
+      } else if (hash === "admin/recovery") {
+        setCurrentPage("adminrecovery");
+      } else if (hash === "unsubscribe") {
+        setCurrentPage("unsubscribe");
       }
     };
     handleHash();
@@ -82,6 +98,21 @@ function App() {
     url.search = "";
     window.history.replaceState({}, "", url.toString());
   }, []);
+
+  // Checkout resume: /checkout?resume=REF restores a returning customer's
+  // in-progress deposit. Store REF as the active order ref (so CheckoutPage can
+  // restore the same address, amount, and remaining time) and route to checkout,
+  // then clean the query param so it does not linger.
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const resumeRef = params.get("resume");
+    if (!resumeRef) return;
+    setActiveOrderRef(resumeRef);
+    setCurrentPage("checkout");
+    const url = new URL(window.location.href);
+    url.search = "";
+    window.history.replaceState({}, "", url.toString());
+  }, [setActiveOrderRef]);
 
   const navigateToArtistPage = () => {
     setCurrentPage("artist");
@@ -117,6 +148,10 @@ function App() {
     setCurrentPage("orderlookup");
   };
 
+  const navigateToMyOrdersPage = () => {
+    setCurrentPage("myorders");
+  };
+
   const navigateToMainPage = () => {
     setCurrentPage("main");
   };
@@ -127,7 +162,9 @@ function App() {
         className="min-h-screen relative overflow-x-hidden"
         style={{ backgroundColor: "var(--nak-deep-black)" }}
       >
-        <BubbleBackground />
+        {/* Falling emoji rain renders on the sub-pages only — the main page
+            uses the restrained institutional background. */}
+        {currentPage !== "main" && <BubbleBackground />}
         <Navigation
           currentPage={
             currentPage as
@@ -139,6 +176,7 @@ function App() {
               | "checkout"
               | "success"
               | "orderlookup"
+              | "myorders"
               | "admin"
           }
           onNavigateToMain={navigateToMainPage}
@@ -146,43 +184,66 @@ function App() {
           onNavigateToShop={navigateToShopPage}
           onNavigateToCart={navigateToCartPage}
           onNavigateToOrderLookup={navigateToOrderLookupPage}
+          onNavigateToMyOrders={navigateToMyOrdersPage}
         />
+
+        {/* Resume-order banner for a returning customer with an unexpired
+            unpaid order. It reads the stored active order ref and calls
+            getResumeInfo itself. */}
+        <ResumeBanner onResume={navigateToCheckoutPage} />
+
+        {/* Admin-only Payment Recovery link, shown only to admins. */}
+        {isAdmin && (
+          <div className="relative z-10 flex justify-end px-4 sm:px-6 pt-3">
+            <button
+              type="button"
+              onClick={() => setCurrentPage("adminrecovery")}
+              className="nav-item flex items-center gap-2"
+              data-ocid="nav.payment_recovery_link"
+            >
+              <ShieldAlert className="w-4 h-4" />
+              <span>Payment Recovery</span>
+            </button>
+          </div>
+        )}
 
         <div className="relative z-10">
           {currentPage === "main" ? (
             <>
               <MainContent />
               <TokenInfo />
-              <PurchaseNAK />
               <NAKFeaturedArtist onNavigateToArtist={navigateToArtistPage} />
+              <PurchaseNAK />
+              <ShopBanner onNavigateToShop={navigateToShopPage} />
               <ReserveTreasury />
-              <TelegramSection />
 
-              {/* Enhanced Footer for Deep Black */}
+              {/* Institutional footer — shell mark + copyright left, risk
+                  disclaimer right. */}
               <footer
-                className="text-center py-12 px-6 border-t border-purple-500/20"
-                style={{ color: "var(--text-muted)" }}
+                id="company"
+                className="border-t border-border"
+                style={{ borderColor: "var(--border)" }}
               >
-                <div className="max-w-4xl mx-auto">
-                  <img
-                    src="/assets/images/nak-shell.png"
-                    alt="NAK STRATS shell mascot"
-                    className="pixel-art footer-shell object-contain mx-auto mb-4"
-                    style={{ width: "2.5rem", height: "2.5rem" }}
-                  />
-                  <p className="text-sm flex items-center justify-center gap-2">
-                    © 2025. Built with{" "}
-                    <Heart className="inline w-4 h-4 text-pink-400 mx-1 animate-pulse" />{" "}
-                    using{" "}
-                    <a
-                      href="https://caffeine.ai"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="hover:opacity-80 transition-opacity underline font-medium"
-                      style={{ color: "var(--nak-teal)" }}
+                <div className="max-w-7xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <img
+                      src="/assets/images/nak-shell.png"
+                      alt="New Age Kapital shell mark"
+                      className="shell-logo-footer"
+                    />
+                    <span
+                      className="text-sm"
+                      style={{ color: "var(--muted-foreground)" }}
                     >
-                      caffeine.ai
-                    </a>
+                      © 2026 New Age Kapital
+                    </span>
+                  </div>
+                  <p
+                    className="text-xs text-right"
+                    style={{ color: "var(--muted-foreground)" }}
+                  >
+                    Digital assets carry risk. Nothing here constitutes
+                    investment advice.
                   </p>
                 </div>
               </footer>
@@ -227,8 +288,20 @@ function App() {
             />
           ) : currentPage === "orderlookup" ? (
             <OrderLookupPage onNavigateToMain={navigateToMainPage} />
+          ) : currentPage === "myorders" ? (
+            <MyOrdersPage onNavigateToMain={navigateToMainPage} />
           ) : currentPage === "admin" ? (
-            <AdminSettingsPage onNavigateToMain={navigateToMainPage} />
+            <AdminSettingsPage
+              onNavigateToMain={navigateToMainPage}
+              onNavigateToProduct={navigateToProductPage}
+            />
+          ) : currentPage === "adminrecovery" ? (
+            <RecoveryPage
+              onNavigateToAdmin={() => setCurrentPage("admin")}
+              onNavigateToMain={navigateToMainPage}
+            />
+          ) : currentPage === "unsubscribe" ? (
+            <UnsubscribePage onNavigateToMain={navigateToMainPage} />
           ) : (
             <MetaTheatrePage onNavigateToMain={navigateToMainPage} />
           )}

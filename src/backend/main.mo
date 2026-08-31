@@ -3,8 +3,10 @@ import List "mo:core/List";
 import Map "mo:core/Map";
 import Principal "mo:core/Principal";
 import Set "mo:core/Set";
+import Timer "mo:core/Timer";
 import Types "types/storefront";
 import CryptoTypes "types/crypto-payments";
+import RecoveryTypes "types/recovery";
 import StorefrontApi "mixins/storefront-api";
 import PaymentAdapterApi "mixins/payment-adapter-api";
 import CryptoPaymentsApi "mixins/crypto-payments-api";
@@ -12,10 +14,16 @@ import CryptoPaymentsLib "lib/crypto-payments";
 import PaymentServiceTypes "types/payment-service";
 import PaymentServiceApi "mixins/payment-service-api";
 import AdminApi "mixins/admin-api";
+import RecoveryApi "mixins/recovery-api";
+import RecoveryLib "lib/recovery";
+import SweepApi "mixins/sweep-api";
+import EmailApi "mixins/email-api";
+import ConsentApi "mixins/consent-api";
 import OQL "mo:caffeineai-oql";
 import Expose "mo:caffeineai-oql/Expose";
 import ListEntity "mo:caffeineai-oql/ListEntity";
 import MapEntity "mo:caffeineai-oql/MapEntity";
+import SetEntity "mo:caffeineai-oql/SetEntity";
 import ApiDocMixin "mixins/api-doc";
 
 persistent actor Self {
@@ -41,6 +49,10 @@ persistent actor Self {
       switch o { case null { "" }; case (?t) { t } };
     };
 
+    func optPrincipalToText(o : ?Principal) : Text {
+      switch o { case null { "" }; case (?p) { p.toText() } };
+    };
+
     func addrToText(a : Types.ShippingAddress) : Text {
       a.line1 # ", " # a.city # ", " # a.region # " " # a.postal_code # ", " # a.country;
     };
@@ -58,6 +70,7 @@ persistent actor Self {
         ("variants", #nat(p.variants.size())),
         ("inventory", #nat(p.inventory)),
         ("active", #bool(p.active)),
+        ("admin_only", #bool(p.admin_only)),
         ("created_at", #int(p.created_at)),
         ("updated_at", #int(p.updated_at)),
       ]
@@ -79,6 +92,13 @@ persistent actor Self {
         ("payment_method", #text(pmToText(o.payment_method))),
         ("payment_status", #text(psToText(o.payment_status))),
         ("payment_reference", #text(optText(o.payment_reference))),
+        ("customer_principal", #text(optPrincipalToText(o.customer_principal))),
+        ("sweep_note", #text(optText(o.sweep_note))),
+        ("shipping_status", #text(ssToText(o.shipping_status))),
+        ("shipped_at", optIntToValue(o.shipped_at)),
+        ("tracking_number", #text(optText(o.tracking_number))),
+        ("marketing_consent", #bool(o.marketing_consent)),
+        ("marketing_consent_at", optIntToValue(o.marketing_consent_at)),
         ("created_at", #int(o.created_at)),
         ("updated_at", #int(o.updated_at)),
       ]
@@ -103,6 +123,17 @@ persistent actor Self {
 
     func optNatToValue(o : ?Nat) : OQL.Value {
       switch o { case null { #null_ }; case (?n) { #nat(n) } };
+    };
+
+    func optIntToValue(o : ?Int) : OQL.Value {
+      switch o { case null { #null_ }; case (?n) { #int(n) } };
+    };
+
+    func ssToText(s : Types.ShippingStatus) : Text {
+      switch s {
+        case (#pending) "pending";
+        case (#shipped) "shipped";
+      };
     };
 
     func optBlobToText(o : ?Blob) : Text {
@@ -172,6 +203,24 @@ persistent actor Self {
       ]
     };
 
+    // Late payment row: a payment received after the deposit window expired,
+    // flagged for admin review and never discarded. Private (controller-only).
+    func latePaymentRow(lp : RecoveryTypes.LatePayment) : OQL.Entity.Row {
+      [
+        ("reference", #text(lp.reference)),
+        ("token", #text(tokenToText(lp.token))),
+        ("received_amount", #nat(lp.receivedAmount)),
+        ("expected_amount", #nat(lp.expectedAmount)),
+        ("received_at", #int(lp.receivedAt)),
+        ("reviewed", #bool(lp.reviewed)),
+      ]
+    };
+
+    // Admin allowlist row: a single admin principal. Private (controller-only).
+    func adminRow(p : Principal) : OQL.Entity.Row {
+      [("principal", #text(p.toText()))]
+    };
+
     public query func transform(input : OutCall.TransformationInput) : async OutCall.TransformationOutput {
         OutCall.transform(input);
     };
@@ -220,15 +269,50 @@ persistent actor Self {
     // the first admin claims it via claimInitialAdmin().
     let adminAllowlist : Set.Set<Principal>;
 
+    // Minimum order total (in USD cents) required for crypto checkout (stable,
+    // seeded by the migration chain, default $0.25). Crypto orders below this
+    // are rejected server-side because they cannot be swept to the treasury
+    // after the ledger transfer fee is deducted. Admin-configurable.
+    let minimumOrder : { var minimumOrder : Nat };
+
+    // Runtime icrc1_fee cache (stable, seeded by the migration chain). The
+    // sweep queries icrc1_fee on the configured ledger at runtime and caches it
+    // briefly rather than hardcoding it; the hardcoded ledger fee is only the
+    // initial fallback before the first query.
+    let feeCache : CryptoTypes.FeeCache;
+
+    // Late payments received after the deposit window expired, flagged for
+    // admin review and never discarded (stable, seeded by the migration chain).
+    let latePayments : List.List<RecoveryTypes.LatePayment>;
+
     // Payment adapter (transient — recreated on restart, not persisted)
     transient let selfPrincipal = Principal.fromActor(Self);
     transient let paymentAdapter = CryptoPaymentsLib.cryptoAdapter(orders, products, cryptoPayments, cryptoConfig);
 
-    include StorefrontApi(products, orders, state, paymentAdapter);
+    // Verification timer handle (transient — a timer id is not stable state and
+    // is recreated on restart). Registered/cancelled via the recovery API.
+    transient let timerState = { var timerId = null : ?Timer.TimerId };
+
+    // Auto-register the recurring payment-verification timer on every (re)start.
+    // Transient fields are re-initialized on canister init AND post-upgrade, and
+    // timers are not persisted across upgrades, so this re-registers the timer
+    // after every upgrade. Verification therefore runs independent of the
+    // browser tab even if no admin ever calls startVerificationTimer.
+    transient let _verificationTimer = ignore {
+      timerState.timerId := ?Timer.recurringTimer<system>(#seconds(30), func() : async () {
+        ignore (await RecoveryLib.runVerificationPass(cryptoPayments, orders, products, latePayments, cryptoConfig, selfPrincipal, feeCache, paymentServiceConfig, emailTransform));
+      });
+    };
+
+    include EmailApi(paymentServiceConfig, orders, adminAllowlist);
+    include ConsentApi(paymentServiceConfig, adminAllowlist);
+    include SweepApi(cryptoConfig, selfPrincipal, adminAllowlist, feeCache);
+    include StorefrontApi(products, orders, state, paymentAdapter, adminAllowlist, minimumOrder, paymentServiceConfig, emailTransform);
     include PaymentAdapterApi(paymentAdapter);
-    include CryptoPaymentsApi(orders, products, cryptoPayments, cryptoConfig, selfPrincipal, adminAllowlist);
+    include CryptoPaymentsApi(orders, products, cryptoPayments, cryptoConfig, selfPrincipal, adminAllowlist, minimumOrder, feeCache);
     include PaymentServiceApi(paymentServiceConfig, orders, products, adminAllowlist);
     include AdminApi(adminAllowlist);
+    include RecoveryApi(orders, products, cryptoPayments, cryptoConfig, selfPrincipal, adminAllowlist, feeCache, latePayments, timerState, paymentServiceConfig, emailTransform);
 
     // OQL — expose persisted storefront data as queryable entities.
     // Products are a public catalogue; orders are private (controller-only).
@@ -246,6 +330,7 @@ persistent actor Self {
         variants = [];
         inventory = 0;
         active = true;
+        admin_only = false;
         created_at = 0;
         updated_at = 0;
       }
@@ -274,8 +359,15 @@ persistent actor Self {
         payment_method = #manual;
         payment_status = #pending;
         payment_reference = null;
-        created_at = 0;
-        updated_at = 0;
+        customer_principal = null;
+        sweep_note = null : ?Text;
+        shipping_status = #pending;
+        shipped_at = null : ?Int;
+        tracking_number = null : ?Text;
+        marketing_consent = false;
+        marketing_consent_at = null : ?Int;
+        created_at = 0 : Int;
+        updated_at = 0 : Int;
       }
     )));
     // Crypto payment records are private (controller-only): they carry the
@@ -328,8 +420,27 @@ persistent actor Self {
         var token = "";
       }
     )));
+    // Late payments are private (controller-only): they carry the reference,
+    // token, received/expected amounts, and review flag for admin recovery.
+    transient let latePaymentEntity = OQL.Entity.build(OQL.Entity.controllerOnly(OQL.Entity.sample(
+      latePayments.toEntity("latePayment", "LatePayment", "reference", latePaymentRow),
+      {
+        reference = "";
+        token = #ckUSDC;
+        receivedAmount = 0;
+        expectedAmount = 0;
+        receivedAt = 0 : Int;
+        reviewed = false;
+      }
+    )));
+    // The admin allowlist is private (controller-only): it lists the admin
+    // principals. It is never exposed to end users through OQL.
+    transient let adminEntity = OQL.Entity.build(OQL.Entity.controllerOnly(OQL.Entity.sample(
+      adminAllowlist.toEntity("admin", "Admin", "principal", adminRow),
+      Principal.fromText("aaaaa-aa")
+    )));
     include Expose({
-      entities = [productEntity, orderEntity, cryptoPaymentEntity, cryptoConfigEntity, paymentServiceConfigEntity];
+      entities = [productEntity, orderEntity, cryptoPaymentEntity, cryptoConfigEntity, paymentServiceConfigEntity, latePaymentEntity, adminEntity];
     });
 
     include ApiDocMixin();

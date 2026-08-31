@@ -9,4 +9,7 @@ export type Page =
   | "success"
   | "cancelled"
   | "orderlookup"
-  | "admin";
+  | "myorders"
+  | "admin"
+  | "adminrecovery"
+  | "unsubscribe";

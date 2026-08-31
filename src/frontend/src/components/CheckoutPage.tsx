@@ -1,5 +1,6 @@
 import { PaymentMethod } from "@/backend";
 import type { CreateOrderInput } from "@/backend";
+import { formatPrice } from "@/lib/currency";
 import {
   AlertTriangle,
   ArrowLeft,
@@ -15,6 +16,7 @@ import {
 import type React from "react";
 import { useEffect, useMemo, useState } from "react";
 import QRCode from "react-qr-code";
+import { useActiveOrderRef } from "../hooks/useActiveOrderRef";
 import { useCart } from "../hooks/useCart";
 import {
   useCheckCryptoPayment,
@@ -26,8 +28,10 @@ import {
   useCryptoPaymentStatus,
   usePaymentServiceConfig,
   useReleaseExpiredOrders,
+  useResumeInfo,
 } from "../hooks/useQueries";
 import type { CartItem, CryptoPaymentStatus, Order } from "../types/storefront";
+import { depositAccountString } from "../types/storefront";
 
 interface CheckoutPageProps {
   onNavigateToMain: () => void;
@@ -42,12 +46,6 @@ const STEPS: { key: Step; label: string }[] = [
   { key: "review", label: "Review" },
   { key: "deposit", label: "Payment" },
 ];
-
-function formatCurrency(amount: bigint): string {
-  const whole = amount / 100n;
-  const fraction = amount % 100n;
-  return `$${whole}.${fraction.toString().padStart(2, "0")}`;
-}
 
 function formatTokenAmount(amount: bigint, decimals: number): string {
   const divisor = 10n ** BigInt(decimals);
@@ -127,7 +125,7 @@ function OrderSummary({
                   </p>
                 </div>
                 <span className="font-mono-nak text-sm text-gray-200">
-                  {formatCurrency(item.unit_amount * item.quantity)}
+                  {formatPrice(item.unit_amount * item.quantity)}
                 </span>
               </div>
             ))}
@@ -137,25 +135,25 @@ function OrderSummary({
             <div className="flex items-center justify-between">
               <span className="text-gray-400">Subtotal</span>
               <span className="font-mono-nak text-gray-200">
-                {formatCurrency(order.subtotal)}
+                {formatPrice(order.subtotal)}
               </span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-gray-400">Tax</span>
               <span className="font-mono-nak text-gray-200">
-                {formatCurrency(order.tax)}
+                {formatPrice(order.tax)}
               </span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-gray-400">Shipping</span>
               <span className="font-mono-nak text-gray-200">
-                {formatCurrency(order.shipping)}
+                {formatPrice(order.shipping)}
               </span>
             </div>
             <div className="flex items-center justify-between border-t border-white/10 pt-3 text-base font-semibold">
               <span className="text-white">Total</span>
               <span className="font-mono-nak text-teal-bright">
-                {formatCurrency(order.total)}
+                {formatPrice(order.total)}
               </span>
             </div>
           </div>
@@ -181,7 +179,7 @@ function OrderSummary({
                     <p className="text-xs text-gray-400">Qty {item.quantity}</p>
                   </div>
                   <span className="font-mono-nak text-sm text-gray-200">
-                    {formatCurrency(unitPrice * BigInt(item.quantity))}
+                    {formatPrice(unitPrice * BigInt(item.quantity))}
                   </span>
                 </div>
               );
@@ -192,7 +190,7 @@ function OrderSummary({
             <div className="flex items-center justify-between">
               <span className="text-gray-400">Subtotal</span>
               <span className="font-mono-nak text-gray-200">
-                {formatCurrency(BigInt(Math.round(cartSubtotal)))}
+                {formatPrice(BigInt(Math.round(cartSubtotal)))}
               </span>
             </div>
             <p className="pt-2 text-xs text-gray-500">
@@ -221,9 +219,20 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
   const [paid, setPaid] = useState(false);
   const [expired, setExpired] = useState(false);
 
+  // Resume: a stored active order reference restores a returning customer's
+  // in-progress deposit (same address, amount, and server-derived remaining
+  // time) instead of starting a new order.
+  const { activeOrderRef, setActiveOrderRef, clearActiveOrderRef } =
+    useActiveOrderRef();
+  const { data: resumeInfo, isError: resumeError } =
+    useResumeInfo(activeOrderRef);
+  const [resumeMode, setResumeMode] = useState(false);
+
   // Shipping form draft (local UI state)
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  // Marketing consent — always unticked by default (explicit opt-in only).
+  const [marketingConsent, setMarketingConsent] = useState(false);
   const [line1, setLine1] = useState("");
   const [line2, setLine2] = useState("");
   const [city, setCity] = useState("");
@@ -248,30 +257,77 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
     );
   }, [paymentServiceConfig]);
 
-  const depositInfo = useCryptoDepositInfo(order?.reference ?? null);
-  const paymentStatus = useCryptoPaymentStatus(order?.reference ?? null);
+  // The reference driving the deposit screen. In resume mode it comes from the
+  // stored order's resume info; otherwise from the freshly-created order.
+  const depositReference = resumeMode
+    ? (resumeInfo?.reference ?? null)
+    : (order?.reference ?? null);
+
+  const depositInfo = useCryptoDepositInfo(
+    resumeMode ? null : (order?.reference ?? null),
+  );
+  const paymentStatus = useCryptoPaymentStatus(depositReference);
+
+  // Deposit data for display: resume mode uses the server-provided deposit from
+  // getResumeInfo; the fresh flow uses the deposit query for the new order.
+  const depositData = resumeMode
+    ? (resumeInfo?.deposit ?? null)
+    : depositInfo.data;
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
+  // Restore a returning customer's in-progress deposit on load. Only applies
+  // before the user starts a new order (order is null and still on shipping).
+  // When the stored reference resolves to a valid awaiting-payment deposit we
+  // jump straight to the deposit screen with the same address, amount, and
+  // server-derived remaining time. Otherwise the reference is cleared and the
+  // normal flow is shown.
+  useEffect(() => {
+    if (order !== null || step !== "shipping") return;
+    if (!activeOrderRef) return;
+    if (resumeError) {
+      clearActiveOrderRef();
+      return;
+    }
+    if (!resumeInfo) return;
+    if (
+      resumeInfo.status.__kind__ === "awaiting_payment" &&
+      resumeInfo.deposit
+    ) {
+      setResumeMode(true);
+      setStep("deposit");
+    } else {
+      clearActiveOrderRef();
+    }
+  }, [
+    activeOrderRef,
+    resumeInfo,
+    resumeError,
+    order,
+    step,
+    clearActiveOrderRef,
+  ]);
+
   // Poll on-ledger payment status while on the deposit screen.
   useEffect(() => {
-    if (step !== "deposit" || !order?.reference) return;
+    if (step !== "deposit" || !depositReference) return;
     const interval = setInterval(() => {
-      checkPayment.mutate(order.reference, {
+      checkPayment.mutate(depositReference, {
         onSuccess: (result) => {
           if (result.__kind__ === "ok" && result.ok.__kind__ === "paid") {
             // Finalize the order: sweep funds to treasury, mark paid, decrement
             // inventory. Guard against double-confirmation while pending.
             if (!confirmPayment.isPending) {
-              confirmPayment.mutate(order.reference, {
+              confirmPayment.mutate(depositReference, {
                 onSuccess: (confirmResult) => {
                   if (
                     confirmResult.__kind__ === "ok" &&
                     confirmResult.ok.__kind__ === "paid"
                   ) {
                     setPaid(true);
+                    clearActiveOrderRef();
                   }
                 },
               });
@@ -282,12 +338,19 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
           ) {
             // The backend reports the deposit has expired.
             setExpired(true);
+            clearActiveOrderRef();
           }
         },
       });
     }, 5000);
     return () => clearInterval(interval);
-  }, [step, order?.reference, checkPayment, confirmPayment]);
+  }, [
+    step,
+    depositReference,
+    checkPayment,
+    confirmPayment,
+    clearActiveOrderRef,
+  ]);
 
   // Navigate to success once paid, passing the real order reference.
   useEffect(() => {
@@ -304,19 +367,21 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
   }, []);
 
   const remainingSec = useMemo(() => {
-    if (!depositInfo.data) return 0;
-    const expiresMs = Number(depositInfo.data.expiresAt / 1_000_000n);
+    if (!depositData) return 0;
+    const expiresMs = Number(depositData.expiresAt / 1_000_000n);
     return Math.max(0, Math.floor((expiresMs - now) / 1000));
-  }, [depositInfo.data, now]);
+  }, [depositData, now]);
 
-  // Transition to the expired state once the 30-minute countdown hits zero
-  // (unless the deposit was already paid).
+  // Transition to the expired state once the countdown hits zero (unless the
+  // deposit was already paid). The countdown is derived from the server-side
+  // expiry timestamp, so it never resets on reload.
   useEffect(() => {
     if (step !== "deposit" || paid) return;
-    if (remainingSec <= 0 && depositInfo.data) {
+    if (remainingSec <= 0 && depositData) {
       setExpired(true);
+      clearActiveOrderRef();
     }
-  }, [step, paid, remainingSec, depositInfo.data]);
+  }, [step, paid, remainingSec, depositData, clearActiveOrderRef]);
 
   const ledgerUnset = useMemo(() => {
     if (!cryptoConfig) return false;
@@ -329,6 +394,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
     const input: CreateOrderInput = {
       customer_name: name,
       customer_email: email,
+      marketing_consent: marketingConsent,
       shipping_address: {
         line1,
         line2: line2 || undefined,
@@ -351,6 +417,10 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
       onSuccess: (result) => {
         if (result.__kind__ === "ok") {
           setOrder(result.ok);
+          setResumeMode(false);
+          // Remember this order so a returning customer can restore its
+          // deposit screen (same address, amount, remaining time).
+          setActiveOrderRef(result.ok.reference);
           setStep("review");
         } else {
           setOrderError(
@@ -358,7 +428,11 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
               ? "One or more items are out of stock."
               : result.err.__kind__ === "emptyOrder"
                 ? "Your cart is empty."
-                : "We could not place your order. Please try again.",
+                : result.err.__kind__ === "belowMinimumOrder"
+                  ? `Orders must be at least ${formatPrice(
+                      result.err.belowMinimumOrder,
+                    )} for crypto payment.`
+                  : "We could not place your order. Please try again.",
           );
         }
       },
@@ -417,12 +491,16 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
     country.trim() !== "" &&
     postalCode.trim() !== "";
 
-  const depositAddress = depositInfo.data
-    ? depositInfo.data.address.toText()
+  const depositAddress = depositData ? depositAccountString(depositData) : "";
+  const amountOwed = depositData
+    ? formatTokenAmount(depositData.amountDue, depositData.decimals)
     : "";
-  const amountOwed = depositInfo.data
-    ? formatTokenAmount(depositInfo.data.amountDue, depositInfo.data.decimals)
-    : "";
+
+  // Loading state for the deposit screen: the fresh flow waits on the deposit
+  // query; resume mode waits on the resume info resolving before we know
+  // whether to restore a deposit or show the normal flow.
+  const checkingResume = !!activeOrderRef && !resumeInfo && !resumeError;
+  const depositLoading = resumeMode ? false : depositInfo.isLoading;
 
   const stepIndex = STEPS.findIndex((s) => s.key === step);
 
@@ -480,7 +558,18 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
           })}
         </div>
 
-        {items.length === 0 && step !== "deposit" ? (
+        {checkingResume ? (
+          <div className="relative max-w-2xl mx-auto px-2">
+            <div
+              className="relative card glass-card p-8 sm:p-12 text-center"
+              data-ocid="checkout.resume_loading"
+            >
+              <div className="mx-auto mb-4 h-12 w-12 rounded-full bg-white/5 loading-shimmer" />
+              <div className="mx-auto mb-3 h-6 w-48 rounded-xl bg-white/5 loading-shimmer" />
+              <div className="mx-auto h-4 w-64 rounded-xl bg-white/5 loading-shimmer" />
+            </div>
+          </div>
+        ) : items.length === 0 && step !== "deposit" ? (
           <div className="relative max-w-2xl mx-auto px-2">
             <div className="relative card glass-card p-8 sm:p-12 text-center">
               <ShoppingCart className="w-12 h-12 text-teal-400 mx-auto mb-4" />
@@ -569,6 +658,26 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
                         />
                       </div>
                     </div>
+
+                    {/* Optional marketing consent — separate from the required
+                        email field above. Never pre-checked (explicit opt-in). */}
+                    <label
+                      htmlFor="checkout-consent"
+                      className="flex cursor-pointer items-start gap-3 rounded-xl border border-white/10 bg-white/5 p-4"
+                    >
+                      <input
+                        id="checkout-consent"
+                        type="checkbox"
+                        checked={marketingConsent}
+                        onChange={(e) => setMarketingConsent(e.target.checked)}
+                        className="consent-checkbox mt-0.5"
+                        data-ocid="checkout.consent_checkbox"
+                      />
+                      <span className="text-sm text-gray-300">
+                        Email me about new NAK STRATS drops and releases
+                        <span className="text-gray-500"> (optional)</span>
+                      </span>
+                    </label>
 
                     <div>
                       <label
@@ -895,7 +1004,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
                         Back to Main
                       </button>
                     </div>
-                  ) : depositInfo.isLoading ? (
+                  ) : depositLoading ? (
                     <div
                       className="space-y-4"
                       data-ocid="checkout.deposit_loading"
@@ -904,12 +1013,25 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
                       <div className="mx-auto h-40 w-40 rounded-xl bg-white/5 loading-shimmer" />
                       <div className="h-8 w-40 mx-auto rounded-xl bg-white/5 loading-shimmer" />
                     </div>
-                  ) : depositInfo.data ? (
+                  ) : depositData ? (
                     <div className="space-y-8">
+                      {/* Order reference — shown prominently before payment */}
+                      <div className="flex flex-col items-center gap-1 text-center">
+                        <p className="text-xs font-medium uppercase tracking-widest text-gray-400">
+                          Order reference
+                        </p>
+                        <p
+                          className="font-mono-nak text-lg sm:text-xl font-bold text-teal-bright"
+                          data-ocid="checkout.order_reference"
+                        >
+                          {depositReference}
+                        </p>
+                      </div>
+
                       {/* Amount owed — largest element */}
                       <div className="text-center">
                         <p className="mb-2 text-sm font-medium text-gray-300">
-                          Exact amount owed ({depositInfo.data.token})
+                          Exact amount owed ({depositData.token})
                         </p>
                         <p
                           className="amount-owed"
@@ -917,7 +1039,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
                         >
                           {amountOwed}{" "}
                           <span className="text-teal-bright">
-                            {depositInfo.data.token}
+                            {depositData.token}
                           </span>
                         </p>
                       </div>
@@ -954,7 +1076,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
                       <div className="flex justify-center">
                         <div className="rounded-2xl bg-white p-4">
                           <QRCode
-                            value={depositInfo.data.qrPayload}
+                            value={depositAddress}
                             size={168}
                             bgColor="#ffffff"
                             fgColor="#000000"

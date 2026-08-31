@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import type React from "react";
 import { useEffect, useState } from "react";
+import { useActiveOrderRef } from "../hooks/useActiveOrderRef";
 import { useConfirmCardPayment, useOrderStatus } from "../hooks/useQueries";
 
 interface SuccessPageProps {
@@ -31,6 +32,7 @@ const SuccessPage: React.FC<SuccessPageProps> = ({
   const [copied, setCopied] = useState(false);
   const confirm = useConfirmCardPayment();
   const { data: order } = useOrderStatus(orderReference || null);
+  const { clearActiveOrderRef } = useActiveOrderRef();
 
   // Only card orders need server-side confirmation via the payment service.
   // Crypto orders are already confirmed on-ledger, so they render the
@@ -78,6 +80,14 @@ const SuccessPage: React.FC<SuccessPageProps> = ({
     isCardOrder &&
     (confirm.isError ||
       (data?.__kind__ === "err" && data.err.__kind__ !== "alreadyPaid"));
+
+  // Once the order is confirmed as paid, clear the active order reference so
+  // the resume banner does not reappear for a completed order.
+  useEffect(() => {
+    if (isConfirmed) {
+      clearActiveOrderRef();
+    }
+  }, [isConfirmed, clearActiveOrderRef]);
 
   const errorMessage = (() => {
     if (data?.__kind__ === "err" && data.err.__kind__ !== "alreadyPaid") {

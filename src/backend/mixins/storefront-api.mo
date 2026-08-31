@@ -1,28 +1,73 @@
 import Result "mo:core/Result";
 import List "mo:core/List";
+import Set "mo:core/Set";
+import Principal "mo:core/Principal";
 import Types "../types/storefront";
+import PaymentServiceTypes "../types/payment-service";
 import StorefrontLib "../lib/storefront";
 import PaymentAdapterLib "../lib/payment-adapter";
+import EmailLib "../lib/email";
+import AdminLib "../lib/admin-access-control";
+import OutCall "mo:caffeineai-http-outcalls/outcall";
 
 mixin (
   products : List.List<Types.Product>,
   orders : List.List<Types.Order>,
   state : { var nextOrderId : Nat },
   paymentAdapter : PaymentAdapterLib.PaymentAdapter,
+  adminAllowlist : Set.Set<Principal>,
+  minimumOrderState : { var minimumOrder : Nat },
+  emailConfig : PaymentServiceTypes.PaymentServiceConfig,
+  emailTransform : OutCall.Transform,
 ) {
   public query func listProducts() : async [Types.Product] {
     StorefrontLib.listActiveProducts(products);
   };
 
-  public query func getProduct(slugOrId : Text) : async ?Types.Product {
-    StorefrontLib.getProduct(products, slugOrId);
+  // Admin-only: create a new product in the catalogue. The caller supplies the
+  // full Product record with prices in integer cents (never floats) — the
+  // frontend converts dollar input to cents before calling. Binds the caller at
+  // the top, rejects the anonymous principal, and traps for a caller that is
+  // not a non-anonymous member of the admin allowlist.
+  public shared ({ caller }) func createProduct(product : Types.Product) : async Bool {
+    AdminLib.requireAdmin(adminAllowlist, caller);
+    StorefrontLib.createProduct(products, product);
+    true
   };
 
-  public func createOrder(input : Types.CreateOrderInput) : async Result.Result<Types.Order, Types.OrderError> {
-    switch (StorefrontLib.createOrder(products, orders, state, input)) {
+  // Admin-only: update an existing product (matched by id). The caller supplies
+  // the full Product record with prices in integer cents. Binds the caller at
+  // the top, rejects the anonymous principal, and traps for a caller that is
+  // not a non-anonymous member of the admin allowlist.
+  public shared ({ caller }) func updateProduct(product : Types.Product) : async Bool {
+    AdminLib.requireAdmin(adminAllowlist, caller);
+    StorefrontLib.updateProduct(products, product);
+    true
+  };
+
+  // Hidden (admin_only) products are returned only to an authenticated admin,
+  // so an admin can reach and purchase the test product via a direct product
+  // URL or an admin-only view. Non-admins never see hidden products.
+  public shared query ({ caller }) func getProduct(slugOrId : Text) : async ?Types.Product {
+    StorefrontLib.getProduct(products, slugOrId, AdminLib.isAdmin(adminAllowlist, caller));
+  };
+
+  public shared ({ caller }) func createOrder(input : Types.CreateOrderInput) : async Result.Result<Types.Order, Types.OrderError> {
+    switch (StorefrontLib.createOrder(products, orders, state, input, caller, minimumOrderState.minimumOrder)) {
       case (#ok order) {
         switch (await paymentAdapter.createCheckoutSession(order)) {
-          case (#ok _) { #ok(order) };
+          case (#ok _) {
+            // For a crypto order, send the payment-pending email so a customer
+            // who closes the tab can still find their order via the lookup
+            // link. Transactional — sends regardless of marketing consent.
+            switch (order.payment_method) {
+              case (#crypto_ckusdc) {
+                ignore (await EmailLib.sendPaymentPending(emailConfig, orders, order.reference, emailTransform));
+              };
+              case (_) {};
+            };
+            #ok(order);
+          };
           case (#err e) { #err(#paymentFailed(debug_show(e))) };
         };
       };
@@ -32,5 +77,13 @@ mixin (
 
   public query func getOrderStatus(reference : Text) : async ?Types.Order {
     StorefrontLib.getOrderByReference(orders, reference);
+  };
+
+  // Lists only the orders whose customer_principal matches the caller. The
+  // caller is derived from msg.caller server-side — never accepted as a
+  // parameter. Rejects the anonymous principal (returns an empty list), so a
+  // guest cannot read anyone's orders through this path.
+  public shared query ({ caller }) func getMyOrders() : async [Types.Order] {
+    StorefrontLib.getMyOrders(orders, caller);
   };
 };

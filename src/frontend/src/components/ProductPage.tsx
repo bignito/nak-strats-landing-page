@@ -1,5 +1,6 @@
 import { useCart } from "@/hooks/useCart";
 import { useProduct } from "@/hooks/useQueries";
+import { formatPrice } from "@/lib/currency";
 import {
   ArrowLeft,
   Check,
@@ -17,13 +18,6 @@ interface ProductPageProps {
   onNavigateToMain: () => void;
   onNavigateToShop: () => void;
 }
-
-const formatPrice = (value: bigint) =>
-  Number(value).toLocaleString("en-US", {
-    style: "currency",
-    currency: "USD",
-    maximumFractionDigits: 2,
-  });
 
 const ProductPage: React.FC<ProductPageProps> = ({
   slugOrId,

@@ -6,6 +6,7 @@ import Error "mo:core/Error";
 import Types "../types/payment-service";
 import StorefrontTypes "../types/storefront";
 import StorefrontLib "../lib/storefront";
+import EmailLib "./email";
 import OutCall "mo:caffeineai-http-outcalls/outcall";
 
 module {
@@ -58,6 +59,7 @@ module {
       # "\"lineItems\":" # itemsJson # ","
       # "\"currency\":\"usd\","
       # "\"customerEmail\":\"" # order.customer_email # "\","
+      # "\"marketingConsent\":" # (if (order.marketing_consent) { "true" } else { "false" }) # ","
       # "\"successUrl\":\"" # successUrl # "\","
       # "\"cancelUrl\":\"" # cancelUrl # "\""
       # "}"
@@ -109,6 +111,8 @@ module {
     orders : List.List<StorefrontTypes.Order>,
     reference : Text,
     transform : OutCall.Transform,
+    emailConfig : Types.PaymentServiceConfig,
+    emailTransform : OutCall.Transform,
   ) : async Result.Result<StorefrontTypes.PaymentStatus, Types.PaymentServiceError> {
     if (config.url == "") { return #err(#notConfigured("PAYMENT_SERVICE_URL is not set")) };
     if (config.token == "") { return #err(#notConfigured("PAYMENT_SERVICE_TOKEN is not set")) };
@@ -132,6 +136,9 @@ module {
               if (status == "paid") {
                 let paymentReference = jsonStringField(responseText, "paymentReference");
                 ignore StorefrontLib.updateOrderStatus(orders, reference, #paid, paymentReference);
+                // Card order confirmed: send the order confirmation email.
+                // Transactional — sends regardless of marketing consent.
+                ignore (await EmailLib.sendOrderConfirmation(emailConfig, orders, reference, emailTransform));
                 #ok(#paid);
               } else {
                 // pending / expired / failed / unknown — leave the order pending.

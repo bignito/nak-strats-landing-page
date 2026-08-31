@@ -25,6 +25,8 @@ import ListEntity "mo:caffeineai-oql/ListEntity";
 import MapEntity "mo:caffeineai-oql/MapEntity";
 import SetEntity "mo:caffeineai-oql/SetEntity";
 import ApiDocMixin "mixins/api-doc";
+import SubmissionTypes "types/submissions";
+import SubmissionsApi "mixins/submissions-api";
 
 persistent actor Self {
     func pmToText(m : Types.PaymentMethod) : Text {
@@ -285,6 +287,12 @@ persistent actor Self {
     // admin review and never discarded (stable, seeded by the migration chain).
     let latePayments : List.List<RecoveryTypes.LatePayment>;
 
+    // Per-principal submission rate-limit state (stable, seeded by the
+    // migration chain). Maps a caller principal to the timestamps of its recent
+    // submissions so the canister can reject a burst of submissions from the
+    // same principal, complementing the payment service's per-IP limit.
+    let rateLimit : SubmissionTypes.RateLimitState;
+
     // Payment adapter (transient — recreated on restart, not persisted)
     transient let selfPrincipal = Principal.fromActor(Self);
     transient let paymentAdapter = CryptoPaymentsLib.cryptoAdapter(orders, products, cryptoPayments, cryptoConfig);
@@ -313,6 +321,7 @@ persistent actor Self {
     include PaymentServiceApi(paymentServiceConfig, orders, products, adminAllowlist);
     include AdminApi(adminAllowlist);
     include RecoveryApi(orders, products, cryptoPayments, cryptoConfig, selfPrincipal, adminAllowlist, feeCache, latePayments, timerState, paymentServiceConfig, emailTransform);
+    include SubmissionsApi(paymentServiceConfig, adminAllowlist, rateLimit);
 
     // OQL — expose persisted storefront data as queryable entities.
     // Products are a public catalogue; orders are private (controller-only).

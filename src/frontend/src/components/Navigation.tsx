@@ -138,7 +138,7 @@ const Navigation: React.FC<NavigationProps> = ({
         background: "rgba(8,9,10,0.9)",
         backdropFilter: "blur(12px)",
         WebkitBackdropFilter: "blur(12px)",
-        borderBottom: "1px solid var(--border)",
+        borderBottom: "1px solid var(--nak-border)",
       }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -176,9 +176,9 @@ const Navigation: React.FC<NavigationProps> = ({
             <span
               className="hidden min-[620px]:inline-flex items-center pl-[0.625rem]"
               style={{
-                borderLeft: "1px solid var(--border-strong)",
+                borderLeft: "1px solid var(--nak-border-strong)",
                 fontSize: "0.6875rem",
-                color: "var(--muted-foreground)",
+                color: "var(--nak-text-muted)",
                 whiteSpace: "nowrap",
               }}
             >
@@ -203,7 +203,7 @@ const Navigation: React.FC<NavigationProps> = ({
                   fontSize: "0.8125rem",
                   fontWeight: 500,
                   letterSpacing: "0.01em",
-                  color: "var(--secondary-foreground)",
+                  color: "var(--nak-text-secondary)",
                   padding: "0.5rem 0.75rem",
                 }}
                 data-ocid={`nav.${group.key}`}
@@ -220,16 +220,16 @@ const Navigation: React.FC<NavigationProps> = ({
                 className="relative cursor-pointer bg-transparent border-0 p-2"
                 aria-label={`Cart, ${itemCount} item${itemCount === 1 ? "" : "s"}`}
                 data-ocid="nav.cart_button"
-                style={{ color: "var(--secondary-foreground)" }}
+                style={{ color: "var(--nak-text-secondary)" }}
               >
                 <ShoppingCart className="w-4 h-4" />
                 {itemCount > 0 && (
                   <span
                     className="absolute -top-1 -right-1 min-w-[1rem] h-4 px-1 rounded-full text-[0.625rem] font-bold leading-4 text-center"
                     style={{
-                      background: "var(--card)",
-                      color: "var(--muted-foreground)",
-                      border: "1px solid var(--border)",
+                      background: "var(--nak-surface)",
+                      color: "var(--nak-text-muted)",
+                      border: "1px solid var(--nak-border)",
                     }}
                   >
                     {itemCount}
@@ -248,7 +248,7 @@ const Navigation: React.FC<NavigationProps> = ({
                     className="cursor-pointer bg-transparent border-0 p-2"
                     aria-label="My orders"
                     data-ocid="nav.my_orders_button"
-                    style={{ color: "var(--secondary-foreground)" }}
+                    style={{ color: "var(--nak-text-secondary)" }}
                   >
                     <Package className="w-4 h-4" />
                   </button>
@@ -258,7 +258,7 @@ const Navigation: React.FC<NavigationProps> = ({
                     className="cursor-pointer bg-transparent border-0 p-2"
                     aria-label="Sign out"
                     data-ocid="nav.sign_out_button"
-                    style={{ color: "var(--secondary-foreground)" }}
+                    style={{ color: "var(--nak-text-secondary)" }}
                   >
                     <LogOut className="w-4 h-4" />
                   </button>
@@ -271,7 +271,7 @@ const Navigation: React.FC<NavigationProps> = ({
                   className="cursor-pointer bg-transparent border-0 p-2 disabled:opacity-50 disabled:cursor-not-allowed"
                   aria-label="Sign in"
                   data-ocid="nav.sign_in_button"
-                  style={{ color: "var(--secondary-foreground)" }}
+                  style={{ color: "var(--nak-text-secondary)" }}
                 >
                   <LogIn className="w-4 h-4" />
                 </button>
@@ -285,7 +285,7 @@ const Navigation: React.FC<NavigationProps> = ({
                 data-ocid="nav.shop_button"
                 style={{
                   background: "#ffffff",
-                  color: "#08090a",
+                  color: "var(--nak-bg)",
                   borderRadius: "var(--radius)",
                   padding: "0.5rem 1rem",
                   fontSize: "0.8125rem",
@@ -307,9 +307,9 @@ const Navigation: React.FC<NavigationProps> = ({
             data-ocid="nav.menu_toggle"
             style={{
               background: "transparent",
-              border: "1px solid var(--border)",
+              border: "1px solid var(--nak-border)",
               borderRadius: "var(--radius)",
-              color: "var(--foreground)",
+              color: "var(--nak-text)",
             }}
           >
             {isMenuOpen ? (
@@ -327,7 +327,7 @@ const Navigation: React.FC<NavigationProps> = ({
           className="lg:hidden"
           style={{
             background: "rgba(8,9,10,0.98)",
-            borderTop: "1px solid var(--border)",
+            borderTop: "1px solid var(--nak-border)",
             maxHeight: "80vh",
             overflowY: "auto",
           }}
@@ -342,8 +342,8 @@ const Navigation: React.FC<NavigationProps> = ({
                 style={{
                   fontFamily: "var(--font-body)",
                   fontSize: "0.875rem",
-                  color: "var(--secondary-foreground)",
-                  borderBottom: "1px solid var(--border)",
+                  color: "var(--nak-text-secondary)",
+                  borderBottom: "1px solid var(--nak-border)",
                 }}
                 data-ocid={`nav.mobile_${group.key}`}
               >
@@ -359,7 +359,7 @@ const Navigation: React.FC<NavigationProps> = ({
                 data-ocid="nav.mobile_shop_button"
                 style={{
                   background: "#ffffff",
-                  color: "#08090a",
+                  color: "var(--nak-bg)",
                   borderRadius: "var(--radius)",
                 }}
               >
@@ -372,7 +372,7 @@ const Navigation: React.FC<NavigationProps> = ({
                 style={{
                   fontFamily: "var(--font-body)",
                   fontSize: "0.875rem",
-                  color: "var(--secondary-foreground)",
+                  color: "var(--nak-text-secondary)",
                 }}
                 data-ocid="nav.mobile_cart_button"
               >
@@ -382,9 +382,9 @@ const Navigation: React.FC<NavigationProps> = ({
                   <span
                     className="min-w-[1rem] h-4 px-1 rounded-full text-[0.625rem] font-bold leading-4 text-center"
                     style={{
-                      background: "var(--card)",
-                      color: "var(--muted-foreground)",
-                      border: "1px solid var(--border)",
+                      background: "var(--nak-surface)",
+                      color: "var(--nak-text-muted)",
+                      border: "1px solid var(--nak-border)",
                     }}
                   >
                     {itemCount}
@@ -404,7 +404,7 @@ const Navigation: React.FC<NavigationProps> = ({
                     style={{
                       fontFamily: "var(--font-body)",
                       fontSize: "0.875rem",
-                      color: "var(--secondary-foreground)",
+                      color: "var(--nak-text-secondary)",
                     }}
                     data-ocid="nav.mobile_my_orders_button"
                   >
@@ -421,7 +421,7 @@ const Navigation: React.FC<NavigationProps> = ({
                     style={{
                       fontFamily: "var(--font-body)",
                       fontSize: "0.875rem",
-                      color: "var(--secondary-foreground)",
+                      color: "var(--nak-text-secondary)",
                     }}
                     data-ocid="nav.mobile_sign_out_button"
                   >
@@ -438,7 +438,7 @@ const Navigation: React.FC<NavigationProps> = ({
                   style={{
                     fontFamily: "var(--font-body)",
                     fontSize: "0.875rem",
-                    color: "var(--secondary-foreground)",
+                    color: "var(--nak-text-secondary)",
                   }}
                   data-ocid="nav.mobile_sign_in_button"
                 >

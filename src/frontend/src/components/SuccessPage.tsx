@@ -4,7 +4,6 @@ import {
   BadgeCheck,
   CheckCircle2,
   Clock,
-  Copy,
   Loader2,
   Mail,
   PackageCheck,
@@ -14,9 +13,11 @@ import {
   Wallet,
 } from "lucide-react";
 import type React from "react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useActiveOrderRef } from "../hooks/useActiveOrderRef";
 import { useConfirmCardPayment, useOrderStatus } from "../hooks/useQueries";
+import { formatPrice } from "../lib/currency";
+import { CopyButton } from "./CopyButton";
 
 interface SuccessPageProps {
   orderReference: string;
@@ -29,7 +30,6 @@ const SuccessPage: React.FC<SuccessPageProps> = ({
   onNavigateToMain,
   onNavigateToShop,
 }) => {
-  const [copied, setCopied] = useState(false);
   const confirm = useConfirmCardPayment();
   const { data: order } = useOrderStatus(orderReference || null);
   const { clearActiveOrderRef } = useActiveOrderRef();
@@ -54,16 +54,6 @@ const SuccessPage: React.FC<SuccessPageProps> = ({
     if (!orderReference || !isCardOrder) return;
     confirm.mutate(orderReference);
   }, [orderReference, isCardOrder, confirm.mutate]);
-
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(orderReference);
-      setCopied(true);
-      window.setTimeout(() => setCopied(false), 2000);
-    } catch {
-      setCopied(false);
-    }
-  };
 
   const handleRetry = () => {
     if (!orderReference || !isCardOrder) return;
@@ -110,24 +100,83 @@ const SuccessPage: React.FC<SuccessPageProps> = ({
       icon: Wallet,
       title: "Payment Confirmed",
       body: "Your payment was received and verified. Your order is now locked in.",
-      accent: "text-teal-bright",
-      soft: "bg-teal-soft",
+      accent: "text-positive",
     },
     {
       icon: PackageCheck,
       title: "Order Processing",
-      body: "Our team is preparing your items for dispatch. You will receive a shipping update shortly.",
-      accent: "text-pink-bright",
-      soft: "bg-pink-soft",
+      body: "Our team is preparing your items for dispatch. You will receive a shipping update when your order ships.",
+      accent: "text-primary",
     },
     {
       icon: ReceiptText,
       title: "Keep Your Reference",
       body: "Save your order reference above. Use it any time to look up your order status.",
-      accent: "text-purple-400",
-      soft: "bg-purple-900/20",
+      accent: "text-muted-foreground",
     },
   ];
+
+  const renderOrderReference = () => (
+    <div className="w-full max-w-md">
+      <div className="flex items-center justify-center gap-2 mb-2">
+        <ReceiptText className="w-4 h-4 text-muted-foreground" />
+        <span className="field-label">Order Reference</span>
+      </div>
+      <div className="inset-well flex items-center justify-between gap-3">
+        <span className="mono-num text-sm text-foreground break-all">
+          {orderReference}
+        </span>
+        <CopyButton text={orderReference} label="Copy" className="shrink-0" />
+      </div>
+    </div>
+  );
+
+  const renderOrderSummary = () => {
+    if (!order) return null;
+    return (
+      <div className="w-full max-w-md text-left">
+        <div className="flex items-center justify-center gap-2 mb-4">
+          <PackageCheck className="w-4 h-4 text-muted-foreground" />
+          <span className="field-label">Order Summary</span>
+        </div>
+        <div className="summary-panel">
+          {order.items.map((item, index) => (
+            <div
+              key={`${item.variant_id}-${index}`}
+              className="summary-row"
+              data-ocid={`success.line_item.${index + 1}`}
+            >
+              <span className="min-w-0">
+                <span className="block truncate">{item.name}</span>
+                <span className="block text-xs text-muted-foreground">
+                  Qty {item.quantity.toString()}
+                </span>
+              </span>
+              <span className="summary-value shrink-0">
+                {formatPrice(item.unit_amount * item.quantity)}
+              </span>
+            </div>
+          ))}
+          <div className="summary-row">
+            <span>Subtotal</span>
+            <span className="summary-value">{formatPrice(order.subtotal)}</span>
+          </div>
+          <div className="summary-row">
+            <span>Shipping</span>
+            <span className="summary-value">{formatPrice(order.shipping)}</span>
+          </div>
+          <div className="summary-row">
+            <span>Tax</span>
+            <span className="summary-value">{formatPrice(order.tax)}</span>
+          </div>
+          <div className="summary-total">
+            <span>Total</span>
+            <span className="summary-value">{formatPrice(order.total)}</span>
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div className="pt-24 sm:pt-32 pb-12 sm:pb-20 px-4 sm:px-6">
@@ -135,22 +184,16 @@ const SuccessPage: React.FC<SuccessPageProps> = ({
         {/* Header */}
         <div className="text-center mb-12 sm:mb-16 px-2">
           <div className="flex items-center justify-center gap-4 mb-8">
-            <div className="relative">
-              {isConfirmed ? (
-                <CheckCircle2 className="w-12 h-12 text-success" />
-              ) : (
-                <Loader2 className="w-12 h-12 text-purple-400 animate-spin" />
-              )}
-              <div className="absolute inset-0 rounded-full bg-success-soft blur-xl animate-pulse" />
-            </div>
-            <h1
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold leading-tight"
-              style={{ fontFamily: "var(--font-heading)" }}
-            >
+            {isConfirmed ? (
+              <CheckCircle2 className="w-12 h-12 text-positive" />
+            ) : (
+              <Loader2 className="w-12 h-12 text-primary animate-spin" />
+            )}
+            <h1 className="section-heading text-3xl sm:text-4xl md:text-5xl">
               {isConfirmed ? "Order Confirmed" : "Confirming Your Order"}
             </h1>
           </div>
-          <p className="text-sm sm:text-base text-gray-300 max-w-2xl mx-auto">
+          <p className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto">
             {isConfirmed
               ? "Thank you for your purchase. Your payment was successful and your order is confirmed."
               : "We are confirming your payment with the payment service. This only takes a moment."}
@@ -161,70 +204,44 @@ const SuccessPage: React.FC<SuccessPageProps> = ({
           {confirm.isPending || isStillPending ? (
             /* Confirming state */
             <div
-              className="relative card glass-card p-6 sm:p-10 text-center"
+              className="surface p-6 sm:p-10 text-center"
               data-ocid="success.confirming_state"
             >
               <div className="flex flex-col items-center">
-                <div className="relative mb-6">
-                  <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-purple-900/20 flex items-center justify-center">
-                    <Loader2 className="w-10 h-10 sm:w-12 sm:h-12 text-purple-400 animate-spin" />
+                <div className="mb-6">
+                  <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full surface-hover flex items-center justify-center">
+                    <Loader2 className="w-10 h-10 sm:w-12 sm:h-12 text-primary animate-spin" />
                   </div>
                 </div>
-                <h2
-                  className="text-2xl sm:text-3xl font-semibold text-white mb-3"
-                  style={{ fontFamily: "var(--font-heading)" }}
-                >
+                <h2 className="section-heading text-2xl sm:text-3xl mb-3">
                   Confirming Payment
                 </h2>
-                <p className="text-sm sm:text-base text-gray-300 max-w-xl mx-auto mb-8">
+                <p className="text-sm sm:text-base text-muted-foreground max-w-xl mx-auto mb-8">
                   We are checking your order status with the payment service.
                   Your order is still pending until this confirmation completes.
                 </p>
-                <div className="w-full max-w-md deposit-surface p-5 sm:p-6">
-                  <div className="flex items-center justify-center gap-2 mb-2">
-                    <ReceiptText className="w-4 h-4 text-teal-bright" />
-                    <span className="text-xs uppercase tracking-widest text-gray-400">
-                      Order Reference
-                    </span>
-                  </div>
-                  <span className="font-mono-nak text-lg sm:text-xl text-teal-bright break-all">
-                    {orderReference}
-                  </span>
-                </div>
+                {renderOrderReference()}
               </div>
             </div>
           ) : isError ? (
             /* Outcall failure / error state — order stays pending */
             <div
-              className="relative card glass-card p-6 sm:p-10 text-center"
+              className="surface p-6 sm:p-10 text-center"
               data-ocid="success.error_state"
             >
               <div className="flex flex-col items-center">
-                <div className="relative mb-6">
+                <div className="mb-6">
                   <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-destructive-soft flex items-center justify-center">
                     <AlertTriangle className="w-10 h-10 sm:w-12 sm:h-12 text-destructive" />
                   </div>
                 </div>
-                <h2
-                  className="text-2xl sm:text-3xl font-semibold text-white mb-3"
-                  style={{ fontFamily: "var(--font-heading)" }}
-                >
+                <h2 className="section-heading text-2xl sm:text-3xl mb-3">
                   Payment Not Confirmed
                 </h2>
-                <p className="text-sm sm:text-base text-gray-300 max-w-xl mx-auto mb-8">
+                <p className="text-sm sm:text-base text-muted-foreground max-w-xl mx-auto mb-8">
                   {errorMessage}
                 </p>
-                <div className="w-full max-w-md deposit-surface p-5 sm:p-6 mb-8">
-                  <div className="flex items-center justify-center gap-2 mb-2">
-                    <ReceiptText className="w-4 h-4 text-teal-bright" />
-                    <span className="text-xs uppercase tracking-widest text-gray-400">
-                      Order Reference
-                    </span>
-                  </div>
-                  <span className="font-mono-nak text-lg sm:text-xl text-teal-bright break-all">
-                    {orderReference}
-                  </span>
-                </div>
+                <div className="mb-8">{renderOrderReference()}</div>
                 <div className="flex flex-wrap items-center justify-center gap-4">
                   <button
                     type="button"
@@ -239,7 +256,7 @@ const SuccessPage: React.FC<SuccessPageProps> = ({
                     type="button"
                     onClick={onNavigateToShop}
                     data-ocid="success.continue_shopping_button"
-                    className="btn px-8 py-4 text-base font-semibold"
+                    className="btn-secondary px-8 py-4 text-base font-semibold"
                   >
                     <ShoppingBag className="w-4 h-4" />
                     Continue Shopping
@@ -250,59 +267,29 @@ const SuccessPage: React.FC<SuccessPageProps> = ({
           ) : (
             /* Confirmed state */
             <>
-              <div className="relative card glass-card p-6 sm:p-10 mb-8 sm:mb-12">
+              <div className="surface p-6 sm:p-10 mb-8 sm:mb-12">
                 <div className="flex flex-col items-center text-center">
-                  <div className="relative mb-6">
+                  <div className="mb-6">
                     <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-success-soft flex items-center justify-center">
                       <BadgeCheck className="w-10 h-10 sm:w-12 sm:h-12 text-success" />
                     </div>
-                    <div className="absolute inset-0 rounded-full bg-success-soft blur-2xl animate-pulse" />
                   </div>
 
-                  <h2
-                    className="text-2xl sm:text-3xl font-semibold text-white mb-3"
-                    style={{ fontFamily: "var(--font-heading)" }}
-                  >
+                  <h2 className="section-heading text-2xl sm:text-3xl mb-3">
                     Payment Successful
                   </h2>
-                  <p className="text-sm sm:text-base text-gray-300 max-w-xl mx-auto mb-8">
+                  <p className="text-sm sm:text-base text-muted-foreground max-w-xl mx-auto mb-8">
                     Your order has been placed and your payment has been
                     confirmed. A summary of your purchase is below.
                   </p>
 
                   {/* Order reference */}
-                  <div className="w-full max-w-md deposit-surface p-5 sm:p-6 mb-8">
-                    <div className="flex items-center justify-center gap-2 mb-2">
-                      <ReceiptText className="w-4 h-4 text-teal-bright" />
-                      <span className="text-xs uppercase tracking-widest text-gray-400">
-                        Order Reference
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-center gap-3">
-                      <span className="font-mono-nak text-lg sm:text-xl text-teal-bright break-all">
-                        {orderReference}
-                      </span>
-                      <button
-                        type="button"
-                        onClick={handleCopy}
-                        aria-label="Copy order reference"
-                        data-ocid="success.copy_reference_button"
-                        className="btn p-2.5 rounded-xl"
-                      >
-                        <Copy className="w-4 h-4" />
-                      </button>
-                    </div>
-                    {copied && (
-                      <p
-                        className="mt-2 text-xs text-success"
-                        data-ocid="success.copy_confirmation"
-                      >
-                        Reference copied to clipboard
-                      </p>
-                    )}
-                  </div>
+                  <div className="mb-8">{renderOrderReference()}</div>
 
-                  <div className="flex flex-wrap items-center justify-center gap-4">
+                  {/* Ordered items summary */}
+                  {renderOrderSummary()}
+
+                  <div className="flex flex-wrap items-center justify-center gap-4 mt-8">
                     <button
                       type="button"
                       onClick={onNavigateToShop}
@@ -316,7 +303,7 @@ const SuccessPage: React.FC<SuccessPageProps> = ({
                       type="button"
                       onClick={onNavigateToMain}
                       data-ocid="success.back_to_main_button"
-                      className="btn px-8 py-4 text-base font-semibold"
+                      className="btn-secondary px-8 py-4 text-base font-semibold"
                     >
                       <ArrowLeft className="w-4 h-4" />
                       Back to Main
@@ -326,13 +313,10 @@ const SuccessPage: React.FC<SuccessPageProps> = ({
               </div>
 
               {/* Next steps */}
-              <div className="relative card glass-card p-6 sm:p-10">
+              <div className="surface p-6 sm:p-10">
                 <div className="flex items-center justify-center gap-2 sm:gap-3 mb-6 sm:mb-8">
-                  <Clock className="w-6 h-6 sm:w-7 sm:h-7 text-pink-400" />
-                  <h3
-                    className="text-2xl sm:text-3xl font-semibold text-white"
-                    style={{ fontFamily: "var(--font-heading)" }}
-                  >
+                  <Clock className="w-6 h-6 sm:w-7 sm:h-7 text-primary" />
+                  <h3 className="section-heading text-2xl sm:text-3xl">
                     What Happens Next
                   </h3>
                 </div>
@@ -343,21 +327,18 @@ const SuccessPage: React.FC<SuccessPageProps> = ({
                     return (
                       <div
                         key={step.title}
-                        className="relative token-option p-5 sm:p-6"
+                        className="hairline p-5 sm:p-6"
                         data-ocid={`success.next_step.${index + 1}`}
                       >
-                        <div
-                          className={`w-12 h-12 rounded-xl ${step.soft} flex items-center justify-center mb-4`}
-                        >
+                        <div className="w-12 h-12 rounded-md surface-hover flex items-center justify-center mb-4">
                           <Icon className={`w-6 h-6 ${step.accent}`} />
                         </div>
-                        <h4
-                          className="text-lg font-semibold text-white mb-2"
-                          style={{ fontFamily: "var(--font-heading)" }}
-                        >
+                        <h4 className="section-heading text-lg mb-2">
                           {step.title}
                         </h4>
-                        <p className="text-sm text-gray-400">{step.body}</p>
+                        <p className="text-sm text-muted-foreground">
+                          {step.body}
+                        </p>
                       </div>
                     );
                   })}
@@ -365,8 +346,8 @@ const SuccessPage: React.FC<SuccessPageProps> = ({
 
                 {/* Support note */}
                 <div className="mt-8 sm:mt-10 flex items-start justify-center gap-3 text-center">
-                  <Mail className="w-4 h-4 text-purple-400 mt-0.5 shrink-0" />
-                  <p className="text-xs sm:text-sm text-gray-400 max-w-xl">
+                  <Mail className="w-4 h-4 text-muted-foreground mt-0.5 shrink-0" />
+                  <p className="text-xs sm:text-sm text-muted-foreground max-w-xl">
                     Questions about your order? Reach out to our support team
                     and reference your order number so we can help you faster.
                   </p>

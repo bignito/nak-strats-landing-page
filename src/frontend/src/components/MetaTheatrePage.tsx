@@ -77,7 +77,7 @@ const MetaTheatrePage: React.FC<MetaTheatrePageProps> = ({
         {/* Movie Video Section */}
         <div className="relative max-w-6xl mx-auto mb-12 sm:mb-16 px-2">
           {/* Glow effect */}
-          <div className="absolute inset-0 bg-gradient-to-r from-purple-600/10 to-pink-600/10 rounded-3xl blur-2xl opacity-60" />
+          <div className="absolute inset-0 bg-gradient-to-r from-purple-600/10 to-purple-600/10 rounded-3xl blur-2xl opacity-60" />
 
           {/* Video card */}
           <div className="relative card glass-card p-4 sm:p-6 lg:p-10">
@@ -203,10 +203,10 @@ const MetaTheatrePage: React.FC<MetaTheatrePageProps> = ({
                   </p>
                 </div>
 
-                <div className="bg-gradient-to-br from-pink-500/10 to-red-500/10 rounded-3xl p-6 border border-pink-500/20">
+                <div className="bg-gradient-to-br from-purple-500/10 to-red-500/10 rounded-3xl p-6 border border-purple-500/20">
                   <div className="flex items-center justify-center gap-3 mb-3">
-                    <Sparkles className="w-6 h-6 text-pink-400" />
-                    <span className="text-lg font-semibold text-pink-400">
+                    <Sparkles className="w-6 h-6 text-purple-400" />
+                    <span className="text-lg font-semibold text-purple-400">
                       Expansion
                     </span>
                   </div>
@@ -326,7 +326,7 @@ const MetaTheatrePage: React.FC<MetaTheatrePageProps> = ({
                   </div>
                   <div className="w-1 h-1 bg-white/20 rounded-full hidden sm:block" />
                   <div className="flex items-center gap-2">
-                    <Heart className="w-3 h-3 text-pink-400" />
+                    <Heart className="w-3 h-3 text-purple-400" />
                     <span>Supporting Arts</span>
                   </div>
                 </div>
@@ -343,7 +343,7 @@ const MetaTheatrePage: React.FC<MetaTheatrePageProps> = ({
             className="btn inline-flex items-center gap-3 sm:gap-4 px-8 sm:px-12 py-4 sm:py-6 text-lg sm:text-xl font-semibold rounded-2xl sm:rounded-3xl transition-all duration-300 hover:scale-105 hover:shadow-2xl group relative overflow-hidden"
             style={{
               background:
-                "linear-gradient(135deg, var(--nak-teal) 0%, var(--nak-purple) 50%, var(--nak-pink) 100%)",
+                "linear-gradient(135deg, var(--nak-teal) 0%, var(--nak-purple) 50%, var(--nak-purple-dark) 100%)",
               border: "2px solid rgba(6, 182, 212, 0.3)",
               boxShadow: "0 10px 40px rgba(6, 182, 212, 0.2)",
             }}

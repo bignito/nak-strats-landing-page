@@ -51,7 +51,7 @@ const TelegramSection: React.FC = () => {
                   className="btn inline-flex items-center gap-3 px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-xl group relative overflow-hidden"
                   style={{
                     background:
-                      "linear-gradient(135deg, #0088cc 0%, var(--nak-purple) 50%, var(--nak-pink) 100%)",
+                      "linear-gradient(135deg, #0088cc 0%, var(--nak-purple) 50%, var(--nak-purple-dark) 100%)",
                     border: "2px solid rgba(139, 92, 246, 0.3)",
                     boxShadow: "0 8px 32px rgba(0, 136, 204, 0.2)",
                   }}

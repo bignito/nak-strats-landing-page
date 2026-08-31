@@ -2,12 +2,7 @@ import { useCart } from "@/hooks/useCart";
 import { useProducts } from "@/hooks/useQueries";
 import { formatPrice } from "@/lib/currency";
 import type { Product } from "@/types/storefront";
-import {
-  ArrowLeft,
-  Check,
-  Image as ImageIcon,
-  ShoppingCart,
-} from "lucide-react";
+import { ArrowLeft, Check, Image as ImageIcon } from "lucide-react";
 import type React from "react";
 import { useEffect, useState } from "react";
 
@@ -42,6 +37,11 @@ const ShopPage: React.FC<ShopPageProps> = ({ onNavigateToMain }) => {
             type="button"
             onClick={onNavigateToMain}
             className="back-link"
+            style={{
+              background: "transparent",
+              border: "none",
+              padding: 0,
+            }}
             data-ocid="shop.back_link"
           >
             <ArrowLeft className="w-4 h-4" />
@@ -50,17 +50,18 @@ const ShopPage: React.FC<ShopPageProps> = ({ onNavigateToMain }) => {
         </div>
 
         {/* Header */}
-        <div className="text-center mb-12 sm:mb-16 px-2">
-          <p className="text-xs sm:text-sm uppercase tracking-[0.3em] text-teal-400 mb-3">
-            Fragrance
-          </p>
+        <div className="mb-10 sm:mb-14 px-2">
+          <p className="section-label mb-3">Product Line</p>
           <h1
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold leading-tight"
-            style={{ fontFamily: "var(--font-heading)" }}
+            className="text-[1.75rem] font-medium leading-tight"
+            style={{ fontSize: "1.75rem", letterSpacing: "-0.015em" }}
           >
-            The NAK STRATS Collection
+            Fragrance
           </h1>
-          <p className="text-sm sm:text-base text-gray-300 max-w-2xl mx-auto mt-4">
+          <p
+            className="text-sm mt-3 max-w-2xl"
+            style={{ color: "var(--muted-foreground)" }}
+          >
             Handcrafted colognes from the NAK STRATS collection — reserve yours
             before they sell out.
           </p>
@@ -68,19 +69,13 @@ const ShopPage: React.FC<ShopPageProps> = ({ onNavigateToMain }) => {
 
         {/* Loading state */}
         {isLoading && (
-          <div
-            className="grid gap-5"
-            style={{
-              gridTemplateColumns: "repeat(auto-fill, minmax(15rem, 1fr))",
-            }}
-            data-ocid="shop.loading_state"
-          >
+          <div className="lattice" data-ocid="shop.loading_state">
             {["skeleton-0", "skeleton-1", "skeleton-2"].map((key) => (
-              <div key={key} className="shop-card p-4">
-                <div className="shop-well loading-shimmer mb-4" />
-                <div className="loading-shimmer h-6 w-3/4 rounded-lg mb-3" />
-                <div className="loading-shimmer h-4 w-full rounded-lg mb-3" />
-                <div className="loading-shimmer h-4 w-2/3 rounded-lg" />
+              <div key={key} className="lattice-cell">
+                <div className="product-well loading-shimmer" />
+                <div className="loading-shimmer h-5 w-3/4" />
+                <div className="loading-shimmer h-4 w-full" />
+                <div className="loading-shimmer h-4 w-2/3" />
               </div>
             ))}
           </div>
@@ -89,20 +84,23 @@ const ShopPage: React.FC<ShopPageProps> = ({ onNavigateToMain }) => {
         {/* Error state */}
         {!isLoading && isError && (
           <div
-            className="card glass-card p-6 sm:p-10 text-center max-w-4xl mx-auto"
+            className="surface p-8 sm:p-10 text-center max-w-4xl mx-auto"
             data-ocid="shop.error_state"
           >
             <h3 className="text-xl sm:text-2xl mb-3">
               Couldn&apos;t load the collection
             </h3>
-            <p className="text-gray-300 mb-8 max-w-md mx-auto">
+            <p
+              className="text-sm mb-8 max-w-md mx-auto"
+              style={{ color: "var(--muted-foreground)" }}
+            >
               Something went wrong while fetching the products. Please try again
               shortly.
             </p>
             <button
               type="button"
               onClick={onNavigateToMain}
-              className="btn px-8 py-4 text-base font-semibold"
+              className="btn-secondary"
               data-ocid="shop.back_to_main_button"
             >
               <ArrowLeft className="w-4 h-4" />
@@ -114,26 +112,27 @@ const ShopPage: React.FC<ShopPageProps> = ({ onNavigateToMain }) => {
         {/* Empty state */}
         {!isLoading && !isError && (!products || products.length === 0) && (
           <div
-            className="card glass-card p-6 sm:p-10 text-center max-w-4xl mx-auto"
+            className="surface p-8 sm:p-10 text-center max-w-4xl mx-auto"
             data-ocid="shop.empty_state"
           >
-            <div className="relative flex items-center justify-center gap-4 mb-6">
-              <div className="relative">
-                <ShoppingCart className="w-10 h-10 text-purple-400" />
-                <div className="absolute inset-0 rounded-full bg-purple-400/20 blur-xl animate-pulse" />
-              </div>
-            </div>
+            <ImageIcon
+              className="w-10 h-10 mx-auto mb-6"
+              style={{ color: "var(--muted-foreground)" }}
+            />
             <h3 className="text-xl sm:text-2xl mb-3">
               The collection is being finalized
             </h3>
-            <p className="text-gray-300 mb-8 max-w-md mx-auto">
+            <p
+              className="text-sm mb-8 max-w-md mx-auto"
+              style={{ color: "var(--muted-foreground)" }}
+            >
               Our cologne lineup is being prepared. Check back soon for
               availability and pricing.
             </p>
             <button
               type="button"
               onClick={onNavigateToMain}
-              className="btn px-8 py-4 text-base font-semibold"
+              className="btn-secondary"
               data-ocid="shop.back_to_main_button"
             >
               <ArrowLeft className="w-4 h-4" />
@@ -142,91 +141,87 @@ const ShopPage: React.FC<ShopPageProps> = ({ onNavigateToMain }) => {
           </div>
         )}
 
-        {/* Product cards */}
+        {/* Product lattice */}
         {!isLoading && !isError && products && products.length > 0 && (
-          <div
-            className="grid gap-5"
-            style={{
-              gridTemplateColumns: "repeat(auto-fill, minmax(15rem, 1fr))",
-            }}
-          >
+          <div className="lattice" data-ocid="shop.grid">
             {products.map((product, index) => {
               const image = product.images?.[0];
               const inventory = Number(product.inventory);
               const isSoldOut = inventory === 0;
               const isLow = inventory > 0 && inventory <= 10;
-              const isCritical = inventory > 0 && inventory <= 3;
               const isAdded = addedId === (product.slug || String(product.id));
+              const size = product.variants[0]?.size;
               return (
                 <div
                   key={product.slug || String(product.id)}
-                  className={`shop-card ${isSoldOut ? "shop-card-soldout" : ""} animate-fade-in-up`}
-                  style={{ animationDelay: `${(index + 1) * 0.1}s` }}
+                  className={`lattice-cell ${isSoldOut ? "is-soldout" : ""}`}
                   data-ocid={`shop.item.${index + 1}`}
                 >
                   {/* Portrait image well */}
-                  <div className="p-4 pb-0">
-                    <div className="shop-well">
-                      {image ? (
-                        <img src={image} alt={product.name} />
-                      ) : (
-                        <ImageIcon className="w-12 h-12 text-white/40" />
-                      )}
-                    </div>
+                  <div className="product-well">
+                    {image ? (
+                      <img src={image} alt={product.name} />
+                    ) : (
+                      <ImageIcon
+                        className="w-12 h-12"
+                        style={{ color: "var(--muted-foreground)" }}
+                      />
+                    )}
                   </div>
 
-                  {/* Card body */}
-                  <div className="p-4">
-                    {/* Inventory pill */}
-                    <div className="flex items-center justify-between gap-2 mb-2">
-                      {isSoldOut ? (
-                        <span className="inventory-pill inventory-pill-soldout">
-                          Sold out
-                        </span>
-                      ) : isLow ? (
-                        <span
-                          className={`inventory-pill ${
-                            isCritical
-                              ? "inventory-pill-critical"
-                              : "inventory-pill-low"
-                          }`}
-                        >
-                          {inventory} left
-                        </span>
-                      ) : (
-                        <span className="inventory-pill inventory-pill-low">
-                          In stock
-                        </span>
-                      )}
-                    </div>
-
-                    {/* Product name */}
+                  {/* Name + size */}
+                  <div className="flex items-baseline justify-between gap-2">
                     <h4
-                      className="text-lg sm:text-xl font-semibold mb-1 text-white"
-                      style={{ fontFamily: "var(--font-heading)" }}
+                      className="text-[0.9375rem] font-medium leading-snug"
+                      style={{
+                        fontSize: "0.9375rem",
+                        letterSpacing: "-0.015em",
+                      }}
                     >
                       {product.name}
                     </h4>
+                    {size && (
+                      <span
+                        className="mono-num text-[0.6875rem] whitespace-nowrap"
+                        style={{ color: "var(--muted-foreground)" }}
+                      >
+                        {size}
+                      </span>
+                    )}
+                  </div>
 
-                    {/* Description */}
-                    <p className="text-xs sm:text-sm text-gray-400 mb-3 line-clamp-2">
-                      {product.description}
-                    </p>
+                  {/* Fragrance notes */}
+                  <p
+                    className="text-[0.75rem] leading-relaxed"
+                    style={{ color: "var(--muted-foreground)" }}
+                  >
+                    {product.description}
+                  </p>
 
-                    {/* Price */}
-                    <div
-                      className="text-lg font-semibold text-teal-300 mb-4"
-                      style={{ fontFamily: "var(--font-mono)" }}
-                    >
+                  {/* Divider */}
+                  <div
+                    className="mt-auto"
+                    style={{ borderTop: "1px solid var(--border)" }}
+                  />
+
+                  {/* Price + add */}
+                  <div className="flex items-center justify-between gap-2 pt-3">
+                    <span className="mono-num text-[0.9375rem]">
                       {formatPrice(product.price)}
-                    </div>
-
-                    {/* Add to cart */}
+                    </span>
                     <button
                       type="button"
                       onClick={() => handleAddToCart(product)}
                       disabled={isSoldOut}
-                      className="add-to-cart"
+                      className="add-arrow"
+                      style={{
+                        background: "transparent",
+                        border: "none",
+                        padding: 0,
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "0.25rem",
+                      }}
                       data-ocid={`shop.add_to_cart_button.${index + 1}`}
                     >
                       {isAdded ? (
@@ -235,12 +230,22 @@ const ShopPage: React.FC<ShopPageProps> = ({ onNavigateToMain }) => {
                           Added
                         </>
                       ) : (
-                        <>
-                          <ShoppingCart className="w-4 h-4" />
-                          Add to Cart
-                        </>
+                        <>Add &rarr;</>
                       )}
                     </button>
+                  </div>
+
+                  {/* Inventory pill */}
+                  <div className="flex items-center justify-between">
+                    {isSoldOut ? (
+                      <span className="stock-pill stock-pill-soldout">
+                        Sold out
+                      </span>
+                    ) : isLow ? (
+                      <span className="stock-pill">{inventory} left</span>
+                    ) : (
+                      <span className="stock-pill">In stock</span>
+                    )}
                   </div>
                 </div>
               );

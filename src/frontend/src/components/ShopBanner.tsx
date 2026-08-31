@@ -24,7 +24,7 @@ const ShopBanner: React.FC<ShopBannerProps> = ({ onNavigateToShop }) => {
             <span
               className="w-4 h-4"
               style={{
-                background: "var(--border-strong)",
+                background: "var(--nak-border-strong)",
                 borderRadius: "2px",
               }}
             />
@@ -33,7 +33,7 @@ const ShopBanner: React.FC<ShopBannerProps> = ({ onNavigateToShop }) => {
           {/* Label + line */}
           <span className="flex-1 min-w-0 flex flex-col gap-0.5">
             <span className="section-label">Product Line</span>
-            <span className="truncate" style={{ color: "var(--foreground)" }}>
+            <span className="truncate" style={{ color: "var(--nak-text)" }}>
               N.A.K. Fragrance — five colognes, settled in ckUSDC
             </span>
           </span>
@@ -42,7 +42,7 @@ const ShopBanner: React.FC<ShopBannerProps> = ({ onNavigateToShop }) => {
           <span className="flex-shrink-0 flex items-center gap-2">
             <span
               className="text-sm font-medium"
-              style={{ color: "var(--foreground)" }}
+              style={{ color: "var(--nak-text)" }}
             >
               Enter the shop
             </span>

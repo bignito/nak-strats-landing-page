@@ -101,6 +101,11 @@ export interface DepositInfo {
   'address' : Principal,
   'amountDue' : bigint,
 }
+export type Discipline = { 'music' : null } |
+  { 'other' : null } |
+  { 'video' : null } |
+  { 'visualArt' : null } |
+  { 'writing' : null };
 export type EmailError = { 'notConfigured' : string } |
   { 'notShippable' : null } |
   { 'notFound' : null } |
@@ -235,26 +240,30 @@ export type Result = { 'ok' : null } |
   { 'err' : CryptoPaymentError };
 export type Result_1 = { 'ok' : null } |
   { 'err' : PaymentServiceError };
-export type Result_10 = { 'ok' : bigint } |
+export type Result_10 = { 'ok' : SubaccountBalanceResult } |
+  { 'err' : SweepError };
+export type Result_11 = { 'ok' : ResumeInfo } |
   { 'err' : RecoveryError };
-export type Result_11 = { 'ok' : CryptoPaymentStatus } |
+export type Result_12 = { 'ok' : bigint } |
+  { 'err' : RecoveryError };
+export type Result_13 = { 'ok' : CryptoPaymentStatus } |
   { 'err' : CryptoPaymentError };
-export type Result_12 = { 'ok' : DepositInfo } |
+export type Result_14 = { 'ok' : DepositInfo } |
   { 'err' : CryptoPaymentError };
-export type Result_13 = { 'ok' : ConsentListExport } |
+export type Result_15 = { 'ok' : ConsentListExport } |
   { 'err' : ConsentError };
-export type Result_14 = { 'ok' : RecheckResult } |
+export type Result_16 = { 'ok' : RecheckResult } |
   { 'err' : RecoveryError };
-export type Result_15 = { 'ok' : Order } |
+export type Result_17 = { 'ok' : Order } |
   { 'err' : OrderError };
-export type Result_16 = { 'ok' : CheckoutSession } |
+export type Result_18 = { 'ok' : CheckoutSession } |
   { 'err' : PaymentError };
-export type Result_17 = { 'ok' : CheckoutSession } |
-  { 'err' : PaymentServiceError };
-export type Result_18 = { 'ok' : PaymentStatus } |
+export type Result_19 = { 'ok' : CheckoutSession } |
   { 'err' : PaymentServiceError };
 export type Result_2 = { 'ok' : null } |
   { 'err' : ConsentError };
+export type Result_20 = { 'ok' : PaymentStatus } |
+  { 'err' : PaymentServiceError };
 export type Result_3 = { 'ok' : SweepSubaccountResult } |
   { 'err' : SweepError };
 export type Result_4 = { 'ok' : SweepResult } |
@@ -262,13 +271,13 @@ export type Result_4 = { 'ok' : SweepResult } |
 export type Result_5 = { 'ok' : bigint } |
   { 'err' : CryptoPaymentError };
 export type Result_6 = { 'ok' : null } |
-  { 'err' : EmailError };
+  { 'err' : SubmissionError };
 export type Result_7 = { 'ok' : null } |
+  { 'err' : EmailError };
+export type Result_8 = { 'ok' : Array<SubmissionRecord> } |
+  { 'err' : SubmissionError };
+export type Result_9 = { 'ok' : null } |
   { 'err' : PaymentError };
-export type Result_8 = { 'ok' : SubaccountBalanceResult } |
-  { 'err' : SweepError };
-export type Result_9 = { 'ok' : ResumeInfo } |
-  { 'err' : RecoveryError };
 export interface Result__1 { 'hasMore' : boolean, 'rows' : Array<Array<Cell>> }
 export interface ResumeInfo {
   'status' : CryptoPaymentStatus,
@@ -291,6 +300,33 @@ export interface SubaccountBalanceResult {
   'balance' : bigint,
   'subaccountHex' : string,
   'subaccountIndex' : bigint,
+}
+export type SubmissionError = { 'invalidInput' : string } |
+  { 'notConfigured' : string } |
+  { 'honeypot' : null } |
+  { 'rateLimited' : null } |
+  { 'outcallFailed' : string } |
+  { 'invalidResponse' : string };
+export interface SubmissionInput {
+  'discipline' : Discipline,
+  'link' : string,
+  'name' : string,
+  'email' : string,
+  'message' : [] | [string],
+  'honeypot' : string,
+  'marketingConsentAt' : [] | [bigint],
+  'marketingConsent' : boolean,
+}
+export interface SubmissionRecord {
+  'id' : string,
+  'discipline' : Discipline,
+  'link' : string,
+  'name' : string,
+  'submittedAt' : bigint,
+  'email' : string,
+  'message' : [] | [string],
+  'marketingConsentAt' : [] | [bigint],
+  'marketingConsent' : boolean,
 }
 export type SweepError = { 'sweepFailed' : string } |
   { 'ledgerError' : string } |
@@ -329,33 +365,33 @@ export interface _SERVICE {
   'adminGetOrderDetail' : ActorMethod<[string], [] | [AdminOrderDetail]>,
   'adminListOrders' : ActorMethod<[string], Array<AdminOrderView>>,
   'cancelCardOrder' : ActorMethod<[string], Result_1>,
-  'checkCryptoPayment' : ActorMethod<[string], Result_11>,
+  'checkCryptoPayment' : ActorMethod<[string], Result_13>,
   'claimInitialAdmin' : ActorMethod<[], boolean>,
-  'confirmCardPayment' : ActorMethod<[string], Result_18>,
+  'confirmCardPayment' : ActorMethod<[string], Result_20>,
   'consentServiceTransform' : ActorMethod<
     [TransformationInput],
     TransformationOutput
   >,
   'createCardCheckoutSession' : ActorMethod<
     [string, string, string],
-    Result_17
+    Result_19
   >,
-  'createCheckoutSession' : ActorMethod<[Order], Result_16>,
-  'createOrder' : ActorMethod<[CreateOrderInput], Result_15>,
+  'createCheckoutSession' : ActorMethod<[Order], Result_18>,
+  'createOrder' : ActorMethod<[CreateOrderInput], Result_17>,
   'createProduct' : ActorMethod<[Product], boolean>,
   'emailTransform' : ActorMethod<[TransformationInput], TransformationOutput>,
   'execute' : ActorMethod<[string], Result__1>,
-  'forceRecheckPayment' : ActorMethod<[string], Result_14>,
+  'forceRecheckPayment' : ActorMethod<[string], Result_16>,
   'forceSweepOrder' : ActorMethod<[string], Result_4>,
   'getApiDoc' : ActorMethod<[], string>,
   'getCanisterId' : ActorMethod<[], Principal>,
-  'getConsentListCsv' : ActorMethod<[], Result_13>,
+  'getConsentListCsv' : ActorMethod<[], Result_15>,
   'getCryptoConfig' : ActorMethod<[], CryptoConfigView>,
-  'getCryptoDepositInfo' : ActorMethod<[string], Result_12>,
-  'getCryptoPaymentStatus' : ActorMethod<[string], Result_11>,
+  'getCryptoDepositInfo' : ActorMethod<[string], Result_14>,
+  'getCryptoPaymentStatus' : ActorMethod<[string], Result_13>,
   'getCycleBalance' : ActorMethod<[], bigint>,
   'getDashboardData' : ActorMethod<[], string>,
-  'getDefaultSubaccountBalance' : ActorMethod<[], Result_10>,
+  'getDefaultSubaccountBalance' : ActorMethod<[], Result_12>,
   'getMinimumOrder' : ActorMethod<[], bigint>,
   'getMyOrders' : ActorMethod<[], Array<Order>>,
   'getNAKPrice' : ActorMethod<[], string>,
@@ -363,29 +399,35 @@ export interface _SERVICE {
   'getPaymentServiceConfig' : ActorMethod<[], PaymentServiceConfigView>,
   'getPaymentStatus' : ActorMethod<[string], PaymentStatus>,
   'getProduct' : ActorMethod<[string], [] | [Product]>,
-  'getResumeInfo' : ActorMethod<[string], Result_9>,
-  'getSubaccountBalance' : ActorMethod<[bigint], Result_8>,
+  'getResumeInfo' : ActorMethod<[string], Result_11>,
+  'getSubaccountBalance' : ActorMethod<[bigint], Result_10>,
   'getTokenImage' : ActorMethod<[string, string], string>,
   'getTokenProfile' : ActorMethod<[string, string], string>,
   'getTreasuryTokens' : ActorMethod<[], string>,
-  'handlePaymentConfirmation' : ActorMethod<[string], Result_7>,
+  'handlePaymentConfirmation' : ActorMethod<[string], Result_9>,
   'isAdmin' : ActorMethod<[], boolean>,
   'listAdmins' : ActorMethod<[], Array<Principal>>,
   'listLatePayments' : ActorMethod<[], Array<LatePayment>>,
   'listOrdersForRecovery' : ActorMethod<[], Array<OrderRecoveryView>>,
   'listProducts' : ActorMethod<[], Array<Product>>,
+  'listSubmissions' : ActorMethod<[], Result_8>,
   'markLatePaymentReviewed' : ActorMethod<[string], boolean>,
-  'markOrderShipped' : ActorMethod<[string, [] | [string]], Result_6>,
+  'markOrderShipped' : ActorMethod<[string, [] | [string]], Result_7>,
   'paymentServiceTransform' : ActorMethod<
     [TransformationInput],
     TransformationOutput
   >,
   'releaseExpiredOrders' : ActorMethod<[], bigint>,
   'removeAdmin' : ActorMethod<[Principal], boolean>,
-  'resendConfirmationEmail' : ActorMethod<[string], Result_6>,
+  'resendConfirmationEmail' : ActorMethod<[string], Result_7>,
   'schema' : ActorMethod<[], string>,
   'startVerificationTimer' : ActorMethod<[], boolean>,
   'stopVerificationTimer' : ActorMethod<[], boolean>,
+  'submissionServiceTransform' : ActorMethod<
+    [TransformationInput],
+    TransformationOutput
+  >,
+  'submitSubmission' : ActorMethod<[SubmissionInput], Result_6>,
   'sweepCryptoToTreasury' : ActorMethod<[string], Result_5>,
   'sweepDefaultSubaccount' : ActorMethod<[], Result_4>,
   'sweepSubaccount' : ActorMethod<[bigint], Result_3>,

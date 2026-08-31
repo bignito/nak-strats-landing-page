@@ -16,6 +16,8 @@ import type {
   RecheckResult,
   ResumeInfo,
   SubaccountBalanceResult,
+  SubmissionInput,
+  SubmissionRecord,
   SweepResult,
   SweepSubaccountResult,
   Token,
@@ -831,5 +833,40 @@ export function useUnsubscribe() {
       const result = await actor.unsubscribe(token);
       if (result.__kind__ === "err") throw result.err;
     },
+  });
+}
+
+/* ============================================================
+   Artist Submission hooks (Culture section)
+   ============================================================ */
+
+/**
+ * Submits an artist work for review through the backend. The shared bearer
+ * token stays in canister config and is never exposed to the browser. Throws
+ * the SubmissionError on failure so the form can surface a readable message.
+ */
+export function useSubmitSubmission() {
+  const { actor } = useActor(createActor);
+  return useMutation({
+    mutationFn: async (input: SubmissionInput): Promise<void> => {
+      if (!actor) throw new Error("Backend is not ready");
+      const result = await actor.submitSubmission(input);
+      if (result.__kind__ === "err") throw result.err;
+    },
+  });
+}
+
+/** Lists submitted artist works (admin-only). */
+export function useListSubmissions() {
+  const { actor, isFetching } = useActor(createActor);
+  return useQuery({
+    queryKey: ["submissions"],
+    queryFn: async (): Promise<SubmissionRecord[]> => {
+      if (!actor) return [];
+      const result = await actor.listSubmissions();
+      if (result.__kind__ === "err") throw result.err;
+      return result.ok;
+    },
+    enabled: !!actor && !isFetching,
   });
 }

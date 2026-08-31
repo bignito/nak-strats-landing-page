@@ -113,7 +113,7 @@ export type Result_7 = {
     ok: null;
 } | {
     __kind__: "err";
-    err: PaymentError;
+    err: EmailError;
 };
 export interface DepositInfo {
     decimals: number;
@@ -180,7 +180,7 @@ export type Result_6 = {
     ok: null;
 } | {
     __kind__: "err";
-    err: EmailError;
+    err: SubmissionError;
 };
 export interface ShippingAddress {
     region: string;
@@ -196,17 +196,17 @@ export interface CheckoutSession {
 }
 export type Result_12 = {
     __kind__: "ok";
-    ok: DepositInfo;
-} | {
-    __kind__: "err";
-    err: CryptoPaymentError;
-};
-export type Result_9 = {
-    __kind__: "ok";
-    ok: ResumeInfo;
+    ok: bigint;
 } | {
     __kind__: "err";
     err: RecoveryError;
+};
+export type Result_9 = {
+    __kind__: "ok";
+    ok: null;
+} | {
+    __kind__: "err";
+    err: PaymentError;
 };
 export interface Order {
     id: bigint;
@@ -237,6 +237,24 @@ export interface HttpHeader {
     value: string;
     name: string;
 }
+export interface SubmissionRecord {
+    id: string;
+    discipline: Discipline;
+    link: string;
+    name: string;
+    submittedAt: bigint;
+    email: string;
+    message?: string;
+    marketingConsentAt?: bigint;
+    marketingConsent: boolean;
+}
+export type Result_10 = {
+    __kind__: "ok";
+    ok: SubaccountBalanceResult;
+} | {
+    __kind__: "err";
+    err: SweepError;
+};
 export type Result = {
     __kind__: "ok";
     ok: null;
@@ -244,19 +262,12 @@ export type Result = {
     __kind__: "err";
     err: CryptoPaymentError;
 };
-export type Result_10 = {
-    __kind__: "ok";
-    ok: bigint;
-} | {
-    __kind__: "err";
-    err: RecoveryError;
-};
 export type Result_8 = {
     __kind__: "ok";
-    ok: SubaccountBalanceResult;
+    ok: Array<SubmissionRecord>;
 } | {
     __kind__: "err";
-    err: SweepError;
+    err: SubmissionError;
 };
 export interface CryptoConfigView {
     icp: LedgerConfig;
@@ -267,17 +278,17 @@ export interface CryptoConfigView {
 }
 export type Result_17 = {
     __kind__: "ok";
-    ok: CheckoutSession;
+    ok: Order;
 } | {
     __kind__: "err";
-    err: PaymentServiceError;
+    err: OrderError;
 };
 export type Result_13 = {
     __kind__: "ok";
-    ok: ConsentListExport;
+    ok: CryptoPaymentStatus;
 } | {
     __kind__: "err";
-    err: ConsentError;
+    err: CryptoPaymentError;
 };
 export interface OrderItem {
     product_id: ProductId;
@@ -304,16 +315,31 @@ export interface ResumeInfo {
     deposit?: DepositInfo;
     remainingNs: bigint;
 }
-export interface PaymentServiceConfigView {
-    url: string;
-    tokenSet: boolean;
-}
+export type SubmissionError = {
+    __kind__: "invalidInput";
+    invalidInput: string;
+} | {
+    __kind__: "notConfigured";
+    notConfigured: string;
+} | {
+    __kind__: "honeypot";
+    honeypot: null;
+} | {
+    __kind__: "rateLimited";
+    rateLimited: null;
+} | {
+    __kind__: "outcallFailed";
+    outcallFailed: string;
+} | {
+    __kind__: "invalidResponse";
+    invalidResponse: string;
+};
 export type Result_16 = {
     __kind__: "ok";
-    ok: CheckoutSession;
+    ok: RecheckResult;
 } | {
     __kind__: "err";
-    err: PaymentError;
+    err: RecoveryError;
 };
 export type Result_1 = {
     __kind__: "ok";
@@ -341,18 +367,39 @@ export type PaymentServiceError = {
     __kind__: "invalidResponse";
     invalidResponse: string;
 };
+export interface PaymentServiceConfigView {
+    url: string;
+    tokenSet: boolean;
+}
 export type Result_11 = {
     __kind__: "ok";
-    ok: CryptoPaymentStatus;
+    ok: ResumeInfo;
 } | {
     __kind__: "err";
-    err: CryptoPaymentError;
+    err: RecoveryError;
 };
+export interface SubmissionInput {
+    discipline: Discipline;
+    link: string;
+    name: string;
+    email: string;
+    message?: string;
+    honeypot: string;
+    marketingConsentAt?: bigint;
+    marketingConsent: boolean;
+}
 export interface SweepResult {
     reference?: string;
     error?: string;
     blockIndex?: bigint;
 }
+export type Result_19 = {
+    __kind__: "ok";
+    ok: CheckoutSession;
+} | {
+    __kind__: "err";
+    err: PaymentServiceError;
+};
 export interface TransformationInput {
     context: Uint8Array;
     response: HttpRequestResult;
@@ -368,10 +415,10 @@ export interface OrderRecoveryView {
 }
 export type Result_14 = {
     __kind__: "ok";
-    ok: RecheckResult;
+    ok: DepositInfo;
 } | {
     __kind__: "err";
-    err: RecoveryError;
+    err: CryptoPaymentError;
 };
 export type EmailError = {
     __kind__: "notConfigured";
@@ -436,10 +483,10 @@ export interface ProductVariant {
 }
 export type Result_18 = {
     __kind__: "ok";
-    ok: PaymentStatus;
+    ok: CheckoutSession;
 } | {
     __kind__: "err";
-    err: PaymentServiceError;
+    err: PaymentError;
 };
 export type PaymentError = {
     __kind__: "invalidOrder";
@@ -457,10 +504,10 @@ export type Result_3 = {
 };
 export type Result_15 = {
     __kind__: "ok";
-    ok: Order;
+    ok: ConsentListExport;
 } | {
     __kind__: "err";
-    err: OrderError;
+    err: ConsentError;
 };
 export interface AdminOrderDetail {
     customerName: string;
@@ -544,6 +591,13 @@ export type CryptoPaymentError = {
     __kind__: "belowMinimumOrder";
     belowMinimumOrder: bigint;
 };
+export type Result_20 = {
+    __kind__: "ok";
+    ok: PaymentStatus;
+} | {
+    __kind__: "err";
+    err: PaymentServiceError;
+};
 export interface Product {
     id: ProductId;
     updated_at: bigint;
@@ -559,6 +613,13 @@ export interface Product {
     category: string;
     price: bigint;
     images: Array<string>;
+}
+export enum Discipline {
+    music = "music",
+    other = "other",
+    video = "video",
+    visualArt = "visualArt",
+    writing = "writing"
 }
 export enum PaymentMethod {
     crypto_icp = "crypto_icp",
@@ -585,27 +646,27 @@ export interface backendInterface {
     adminGetOrderDetail(reference: string): Promise<AdminOrderDetail | null>;
     adminListOrders(filter: string): Promise<Array<AdminOrderView>>;
     cancelCardOrder(reference: string): Promise<Result_1>;
-    checkCryptoPayment(reference: string): Promise<Result_11>;
+    checkCryptoPayment(reference: string): Promise<Result_13>;
     claimInitialAdmin(): Promise<boolean>;
-    confirmCardPayment(reference: string): Promise<Result_18>;
+    confirmCardPayment(reference: string): Promise<Result_20>;
     consentServiceTransform(input: TransformationInput): Promise<TransformationOutput>;
-    createCardCheckoutSession(reference: string, successUrl: string, cancelUrl: string): Promise<Result_17>;
-    createCheckoutSession(order: Order): Promise<Result_16>;
-    createOrder(input: CreateOrderInput): Promise<Result_15>;
+    createCardCheckoutSession(reference: string, successUrl: string, cancelUrl: string): Promise<Result_19>;
+    createCheckoutSession(order: Order): Promise<Result_18>;
+    createOrder(input: CreateOrderInput): Promise<Result_17>;
     createProduct(product: Product): Promise<boolean>;
     emailTransform(input: TransformationInput): Promise<TransformationOutput>;
     execute(qJson: string): Promise<Result__1>;
-    forceRecheckPayment(reference: string): Promise<Result_14>;
+    forceRecheckPayment(reference: string): Promise<Result_16>;
     forceSweepOrder(reference: string): Promise<Result_4>;
     getApiDoc(): Promise<string>;
     getCanisterId(): Promise<Principal>;
-    getConsentListCsv(): Promise<Result_13>;
+    getConsentListCsv(): Promise<Result_15>;
     getCryptoConfig(): Promise<CryptoConfigView>;
-    getCryptoDepositInfo(reference: string): Promise<Result_12>;
-    getCryptoPaymentStatus(reference: string): Promise<Result_11>;
+    getCryptoDepositInfo(reference: string): Promise<Result_14>;
+    getCryptoPaymentStatus(reference: string): Promise<Result_13>;
     getCycleBalance(): Promise<bigint>;
     getDashboardData(): Promise<string>;
-    getDefaultSubaccountBalance(): Promise<Result_10>;
+    getDefaultSubaccountBalance(): Promise<Result_12>;
     getMinimumOrder(): Promise<bigint>;
     getMyOrders(): Promise<Array<Order>>;
     getNAKPrice(): Promise<string>;
@@ -613,26 +674,29 @@ export interface backendInterface {
     getPaymentServiceConfig(): Promise<PaymentServiceConfigView>;
     getPaymentStatus(reference: string): Promise<PaymentStatus>;
     getProduct(slugOrId: string): Promise<Product | null>;
-    getResumeInfo(reference: string): Promise<Result_9>;
-    getSubaccountBalance(subaccountIndex: bigint): Promise<Result_8>;
+    getResumeInfo(reference: string): Promise<Result_11>;
+    getSubaccountBalance(subaccountIndex: bigint): Promise<Result_10>;
     getTokenImage(chainId: string, tokenAddress: string): Promise<string>;
     getTokenProfile(chainId: string, tokenAddress: string): Promise<string>;
     getTreasuryTokens(): Promise<string>;
-    handlePaymentConfirmation(payload: string): Promise<Result_7>;
+    handlePaymentConfirmation(payload: string): Promise<Result_9>;
     isAdmin(): Promise<boolean>;
     listAdmins(): Promise<Array<Principal>>;
     listLatePayments(): Promise<Array<LatePayment>>;
     listOrdersForRecovery(): Promise<Array<OrderRecoveryView>>;
     listProducts(): Promise<Array<Product>>;
+    listSubmissions(): Promise<Result_8>;
     markLatePaymentReviewed(reference: string): Promise<boolean>;
-    markOrderShipped(reference: string, trackingNumber: string | null): Promise<Result_6>;
+    markOrderShipped(reference: string, trackingNumber: string | null): Promise<Result_7>;
     paymentServiceTransform(input: TransformationInput): Promise<TransformationOutput>;
     releaseExpiredOrders(): Promise<bigint>;
     removeAdmin(p: Principal): Promise<boolean>;
-    resendConfirmationEmail(reference: string): Promise<Result_6>;
+    resendConfirmationEmail(reference: string): Promise<Result_7>;
     schema(): Promise<string>;
     startVerificationTimer(): Promise<boolean>;
     stopVerificationTimer(): Promise<boolean>;
+    submissionServiceTransform(input: TransformationInput): Promise<TransformationOutput>;
+    submitSubmission(input: SubmissionInput): Promise<Result_6>;
     sweepCryptoToTreasury(reference: string): Promise<Result_5>;
     sweepDefaultSubaccount(): Promise<Result_4>;
     sweepSubaccount(subaccountIndex: bigint): Promise<Result_3>;

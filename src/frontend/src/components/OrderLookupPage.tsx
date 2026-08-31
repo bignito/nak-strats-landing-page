@@ -4,7 +4,6 @@ import {
   ArrowLeft,
   ArrowRight,
   Clock,
-  Copy,
   CreditCard,
   MapPin,
   Package,
@@ -26,6 +25,8 @@ import {
   type PaymentStatus,
   depositAccountString,
 } from "../types/storefront";
+import { CopyButton } from "./CopyButton";
+import { StatusPill } from "./StatusPill";
 
 interface OrderLookupPageProps {
   onNavigateToMain: () => void;
@@ -66,28 +67,12 @@ function formatTokenAmount(amount: bigint, decimals: number): string {
 
 const STATUS_META: Record<
   PaymentStatus,
-  { label: string; className: string; soft: string }
+  { label: string; tone: "positive" | "warning" | "muted" | "negative" }
 > = {
-  paid: {
-    label: "Paid",
-    className: "text-success",
-    soft: "bg-success-soft",
-  },
-  pending: {
-    label: "Pending Payment",
-    className: "text-warning",
-    soft: "bg-warning-soft",
-  },
-  expired: {
-    label: "Expired",
-    className: "text-destructive",
-    soft: "bg-destructive-soft",
-  },
-  cancelled: {
-    label: "Cancelled",
-    className: "text-destructive",
-    soft: "bg-destructive-soft",
-  },
+  paid: { label: "Paid", tone: "positive" },
+  pending: { label: "Pending Payment", tone: "warning" },
+  expired: { label: "Expired", tone: "muted" },
+  cancelled: { label: "Cancelled", tone: "negative" },
 };
 
 function paymentMethodLabel(method: Order["payment_method"]): string {
@@ -107,7 +92,7 @@ function paymentMethodLabel(method: Order["payment_method"]): string {
 
 function OrderItems({ items }: { items: OrderItem[] }) {
   return (
-    <ul className="divide-y divide-white/5">
+    <ul className="divide-y divide-[var(--border)]">
       {items.map((item, index) => (
         <li
           key={`${item.product_id}-${item.variant_id}-${index}`}
@@ -115,14 +100,14 @@ function OrderItems({ items }: { items: OrderItem[] }) {
           className="flex items-center justify-between gap-4 py-3"
         >
           <div className="min-w-0">
-            <p className="text-sm font-medium text-white truncate">
+            <p className="text-sm font-medium text-[var(--foreground)] truncate">
               {item.name}
             </p>
-            <p className="text-xs text-gray-400 mt-0.5">
+            <p className="text-xs text-[var(--muted-foreground)] mt-0.5">
               Qty {item.quantity.toString()} · {item.variant_id}
             </p>
           </div>
-          <p className="text-sm font-mono-nak text-teal-bright whitespace-nowrap">
+          <p className="text-sm mono-num text-[var(--foreground)] whitespace-nowrap">
             {formatPrice(item.unit_amount * item.quantity)}
           </p>
         </li>
@@ -136,7 +121,6 @@ const OrderLookupPage: React.FC<OrderLookupPageProps> = ({
 }) => {
   const [reference, setReference] = useState("");
   const [submitted, setSubmitted] = useState<string | null>(null);
-  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -184,51 +168,32 @@ const OrderLookupPage: React.FC<OrderLookupPageProps> = ({
     ? Number(resumeInfo.expiresAt / 1_000_000n) - now
     : 0;
 
-  const handleCopy = async (text: string) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      // Clipboard unavailable — ignore.
-    }
-  };
-
   const statusMeta = order ? STATUS_META[order.payment_status] : undefined;
 
   return (
     <div className="pt-24 sm:pt-32 pb-12 sm:pb-20 px-4 sm:px-6">
       <div className="max-w-5xl mx-auto">
-        <div className="text-center mb-10 sm:mb-14 px-2">
-          <div className="flex items-center justify-center gap-4 mb-8">
-            <div className="relative">
-              <Search className="w-12 h-12 text-teal-400" />
-              <div className="absolute inset-0 rounded-full bg-teal-400/20 blur-xl animate-pulse" />
-            </div>
-            <h1
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold leading-tight"
-              style={{ fontFamily: "var(--font-heading)" }}
-            >
+        <div className="mb-10 sm:mb-14 px-2">
+          <div className="flex items-center gap-3 mb-4">
+            <Search className="w-5 h-5 text-[var(--primary)]" />
+            <h1 className="section-heading text-2xl sm:text-3xl">
               Order Lookup
             </h1>
           </div>
-          <p className="text-sm sm:text-base text-gray-300 max-w-2xl mx-auto">
+          <p className="text-sm text-[var(--muted-foreground)] max-w-2xl">
             Enter your order reference to check its status, items, total, and
             payment state.
           </p>
         </div>
 
         {/* Lookup form */}
-        <div className="relative max-w-2xl mx-auto px-2 mb-10">
+        <div className="max-w-2xl px-2 mb-10">
           <form
             onSubmit={handleSubmit}
-            className="relative card glass-card p-5 sm:p-6"
+            className="surface p-5 sm:p-6"
             data-ocid="order.lookup_form"
           >
-            <label
-              htmlFor="order-reference"
-              className="block text-sm font-medium text-gray-300 mb-2"
-            >
+            <label htmlFor="order-reference" className="field-label block mb-2">
               Order Reference
             </label>
             <div className="flex flex-col sm:flex-row gap-3">
@@ -238,7 +203,7 @@ const OrderLookupPage: React.FC<OrderLookupPageProps> = ({
                 value={reference}
                 onChange={(event) => setReference(event.target.value)}
                 placeholder="e.g. NAK-XXXXXX"
-                className="flex-1 min-w-0 rounded-xl border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-purple-500/50"
+                className="field-input flex-1 min-w-0"
                 data-ocid="order.reference_input"
               />
               <button
@@ -255,10 +220,10 @@ const OrderLookupPage: React.FC<OrderLookupPageProps> = ({
 
         {/* Results */}
         {submitted && (
-          <div className="relative px-2">
+          <div className="px-2">
             {isLoading && (
               <div
-                className="card glass-card p-8 text-center"
+                className="surface p-8 text-center"
                 data-ocid="order.loading_state"
               >
                 <div className="loading-shimmer h-4 w-40 mx-auto rounded mb-4" />
@@ -268,10 +233,10 @@ const OrderLookupPage: React.FC<OrderLookupPageProps> = ({
 
             {!isLoading && isError && (
               <div
-                className="card glass-card p-8 text-center"
+                className="surface p-8 text-center"
                 data-ocid="order.error_state"
               >
-                <p className="text-destructive mb-4">
+                <p className="text-[var(--negative)] mb-4">
                   We couldn&apos;t look up that order. Please check the
                   reference and try again.
                 </p>
@@ -288,13 +253,13 @@ const OrderLookupPage: React.FC<OrderLookupPageProps> = ({
 
             {!isLoading && !isError && !order && (
               <div
-                className="card glass-card p-8 text-center"
+                className="surface p-8 text-center"
                 data-ocid="order.empty_state"
               >
-                <Package className="w-10 h-10 text-gray-500 mx-auto mb-4" />
-                <p className="text-gray-300">
+                <Package className="w-10 h-10 text-[var(--muted-foreground)] mx-auto mb-4" />
+                <p className="text-[var(--secondary-foreground)]">
                   No order found for reference{" "}
-                  <span className="font-mono-nak text-teal-bright">
+                  <span className="mono-num text-[var(--foreground)]">
                     {submitted}
                   </span>
                   .
@@ -306,27 +271,24 @@ const OrderLookupPage: React.FC<OrderLookupPageProps> = ({
               <div className="space-y-6">
                 {/* Status banner */}
                 <div
-                  className="card glass-card p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+                  className="surface p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
                   data-ocid="order.status_banner"
                 >
                   <div className="flex items-center gap-4">
-                    <span
-                      className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold ${statusMeta.soft} ${statusMeta.className}`}
-                      data-ocid="order.status"
-                    >
-                      <Clock className="w-4 h-4" />
+                    <StatusPill tone={statusMeta.tone}>
+                      <Clock className="w-3.5 h-3.5" />
                       {statusMeta.label}
-                    </span>
+                    </StatusPill>
                     <div>
-                      <p className="text-sm text-gray-400">Reference</p>
-                      <p className="font-mono-nak text-white">
+                      <p className="field-label mb-1">Reference</p>
+                      <p className="mono-num text-[var(--foreground)]">
                         {order.reference}
                       </p>
                     </div>
                   </div>
                   <div className="text-left sm:text-right">
-                    <p className="text-sm text-gray-400">Placed</p>
-                    <p className="text-sm text-gray-300">
+                    <p className="field-label mb-1">Placed</p>
+                    <p className="text-sm text-[var(--secondary-foreground)]">
                       {formatTimestamp(order.created_at)}
                     </p>
                   </div>
@@ -338,20 +300,20 @@ const OrderLookupPage: React.FC<OrderLookupPageProps> = ({
                     remaining time. */}
                 {isResumable && resumeInfo && (
                   <div
-                    className="deposit-surface relative p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+                    className="surface p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
                     data-ocid="order.resume_panel"
                   >
                     <div className="flex items-center gap-4">
-                      <span className="flex h-12 w-12 items-center justify-center rounded-full bg-teal-soft text-teal-bright">
-                        <Wallet className="h-6 w-6" />
+                      <span className="flex h-10 w-10 items-center justify-center rounded-[var(--radius)] border border-[var(--border-strong)] text-[var(--primary)]">
+                        <Wallet className="h-5 w-5" />
                       </span>
                       <div>
-                        <p className="text-sm font-semibold text-white">
+                        <p className="section-heading text-sm mb-1">
                           This deposit is still open
                         </p>
-                        <p className="text-sm text-gray-300">
+                        <p className="text-sm text-[var(--secondary-foreground)]">
                           Resume to complete your payment —{" "}
-                          <span className="font-mono-nak text-teal-bright">
+                          <span className="mono-num text-[var(--foreground)]">
                             {formatRemaining(remainingMs)}
                           </span>{" "}
                           remaining
@@ -372,37 +334,36 @@ const OrderLookupPage: React.FC<OrderLookupPageProps> = ({
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   {/* Items + totals */}
-                  <div className="card glass-card p-6 sm:p-8">
-                    <h3
-                      className="text-lg font-semibold mb-4 flex items-center gap-2"
-                      style={{ fontFamily: "var(--font-heading)" }}
-                    >
-                      <Package className="w-5 h-5 text-purple-400" />
+                  <div className="surface p-6 sm:p-8">
+                    <h3 className="section-heading text-base mb-4 flex items-center gap-2">
+                      <Package className="w-4 h-4 text-[var(--primary)]" />
                       Items
                     </h3>
                     <OrderItems items={order.items} />
-                    <div className="mt-4 pt-4 border-t border-white/10 space-y-2 text-sm">
-                      <div className="flex justify-between text-gray-400">
+                    <div className="mt-4 pt-4 border-t border-[var(--border)] space-y-2 text-sm">
+                      <div className="flex justify-between text-[var(--muted-foreground)]">
                         <span>Subtotal</span>
-                        <span className="font-mono-nak">
+                        <span className="mono-num text-[var(--foreground)]">
                           {formatPrice(order.subtotal)}
                         </span>
                       </div>
-                      <div className="flex justify-between text-gray-400">
+                      <div className="flex justify-between text-[var(--muted-foreground)]">
                         <span>Shipping</span>
-                        <span className="font-mono-nak">
+                        <span className="mono-num text-[var(--foreground)]">
                           {formatPrice(order.shipping)}
                         </span>
                       </div>
-                      <div className="flex justify-between text-gray-400">
+                      <div className="flex justify-between text-[var(--muted-foreground)]">
                         <span>Tax</span>
-                        <span className="font-mono-nak">
+                        <span className="mono-num text-[var(--foreground)]">
                           {formatPrice(order.tax)}
                         </span>
                       </div>
-                      <div className="flex justify-between items-center pt-2 border-t border-white/10">
-                        <span className="font-semibold text-white">Total</span>
-                        <span className="font-mono-nak text-lg text-teal-bright">
+                      <div className="flex justify-between items-center pt-2 border-t border-[var(--border)]">
+                        <span className="font-medium text-[var(--foreground)]">
+                          Total
+                        </span>
+                        <span className="mono-num text-base text-[var(--foreground)]">
                           {formatPrice(order.total)}
                         </span>
                       </div>
@@ -411,37 +372,40 @@ const OrderLookupPage: React.FC<OrderLookupPageProps> = ({
 
                   {/* Payment + deposit */}
                   <div className="space-y-6">
-                    <div className="card glass-card p-6 sm:p-8">
-                      <h3
-                        className="text-lg font-semibold mb-4 flex items-center gap-2"
-                        style={{ fontFamily: "var(--font-heading)" }}
-                      >
-                        <CreditCard className="w-5 h-5 text-pink-400" />
+                    <div className="surface p-6 sm:p-8">
+                      <h3 className="section-heading text-base mb-4 flex items-center gap-2">
+                        <CreditCard className="w-4 h-4 text-[var(--primary)]" />
                         Payment
                       </h3>
                       <div className="space-y-3 text-sm">
                         <div className="flex justify-between">
-                          <span className="text-gray-400">Method</span>
-                          <span className="text-white">
+                          <span className="text-[var(--muted-foreground)]">
+                            Method
+                          </span>
+                          <span className="text-[var(--foreground)]">
                             {paymentMethodLabel(order.payment_method)}
                           </span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-gray-400">Status</span>
-                          <span className={statusMeta.className}>
+                          <span className="text-[var(--muted-foreground)]">
+                            Status
+                          </span>
+                          <span className="mono-num text-[var(--foreground)]">
                             {statusMeta.label}
                           </span>
                         </div>
                         {cryptoStatus && (
                           <div className="flex justify-between">
-                            <span className="text-gray-400">Payment State</span>
+                            <span className="text-[var(--muted-foreground)]">
+                              Payment State
+                            </span>
                             <span
                               className={
                                 cryptoStatus.__kind__ === "paid"
-                                  ? "text-success"
+                                  ? "text-[var(--positive)]"
                                   : cryptoStatus.__kind__ === "expired"
-                                    ? "text-destructive"
-                                    : "text-warning"
+                                    ? "text-[var(--negative)]"
+                                    : "text-[var(--nak-warning)]"
                               }
                             >
                               {cryptoStatus.__kind__ === "paid"
@@ -461,26 +425,27 @@ const OrderLookupPage: React.FC<OrderLookupPageProps> = ({
 
                     {deposit && (
                       <div
-                        className="deposit-surface relative p-6 sm:p-8"
+                        className="surface p-6 sm:p-8"
                         data-ocid="order.deposit_panel"
                       >
-                        <h3
-                          className="text-lg font-semibold mb-4 flex items-center gap-2"
-                          style={{ fontFamily: "var(--font-heading)" }}
-                        >
-                          <Wallet className="w-5 h-5 text-teal-bright" />
+                        <h3 className="section-heading text-base mb-4 flex items-center gap-2">
+                          <Wallet className="w-4 h-4 text-[var(--primary)]" />
                           Deposit Address
                         </h3>
                         <div className="space-y-3 text-sm">
                           <div className="flex justify-between">
-                            <span className="text-gray-400">Token</span>
-                            <span className="font-mono-nak text-teal-bright">
+                            <span className="text-[var(--muted-foreground)]">
+                              Token
+                            </span>
+                            <span className="mono-num text-[var(--foreground)]">
                               {deposit.token}
                             </span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-gray-400">Amount Due</span>
-                            <span className="font-mono-nak text-white">
+                            <span className="text-[var(--muted-foreground)]">
+                              Amount Due
+                            </span>
+                            <span className="mono-num text-[var(--foreground)]">
                               {formatTokenAmount(
                                 deposit.amountDue,
                                 deposit.decimals,
@@ -489,36 +454,27 @@ const OrderLookupPage: React.FC<OrderLookupPageProps> = ({
                             </span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-gray-400">Expires</span>
-                            <span className="text-gray-300">
+                            <span className="text-[var(--muted-foreground)]">
+                              Expires
+                            </span>
+                            <span className="text-[var(--secondary-foreground)]">
                               {formatTimestamp(deposit.expiresAt)}
                             </span>
                           </div>
                           <div>
-                            <span className="text-gray-400 block mb-2">
+                            <span className="field-label block mb-2">
                               Address
                             </span>
-                            <div className="flex items-center gap-2 rounded-xl bg-black/40 border border-white/10 px-3 py-2">
-                              <span className="font-mono-nak text-xs text-teal-bright break-all min-w-0">
+                            <div className="flex items-center gap-2">
+                              <span className="inset-well flex-1 min-w-0">
                                 {depositAccountString(deposit)}
                               </span>
-                              <button
-                                type="button"
-                                onClick={() =>
-                                  handleCopy(depositAccountString(deposit))
-                                }
-                                className="shrink-0 p-2 rounded-lg hover:bg-white/5 transition-colors"
-                                aria-label="Copy deposit address"
-                                data-ocid="order.copy_address_button"
-                              >
-                                <Copy className="w-4 h-4 text-gray-400" />
-                              </button>
+                              <CopyButton
+                                text={depositAccountString(deposit)}
+                                label="Copy"
+                                className="shrink-0"
+                              />
                             </div>
-                            {copied && (
-                              <p className="text-xs text-success mt-2">
-                                Address copied to clipboard.
-                              </p>
-                            )}
                           </div>
                         </div>
                       </div>
@@ -527,18 +483,15 @@ const OrderLookupPage: React.FC<OrderLookupPageProps> = ({
                 </div>
 
                 {/* Shipping */}
-                <div className="card glass-card p-6 sm:p-8">
-                  <h3
-                    className="text-lg font-semibold mb-4 flex items-center gap-2"
-                    style={{ fontFamily: "var(--font-heading)" }}
-                  >
-                    <MapPin className="w-5 h-5 text-teal-400" />
+                <div className="surface p-6 sm:p-8">
+                  <h3 className="section-heading text-base mb-4 flex items-center gap-2">
+                    <MapPin className="w-4 h-4 text-[var(--primary)]" />
                     Shipping
                   </h3>
-                  <p className="text-sm text-gray-300">
+                  <p className="text-sm text-[var(--secondary-foreground)]">
                     {order.customer_name} · {order.customer_email}
                   </p>
-                  <p className="text-sm text-gray-400 mt-2">
+                  <p className="text-sm text-[var(--muted-foreground)] mt-2">
                     {order.shipping_address.line1}
                     {order.shipping_address.line2
                       ? `, ${order.shipping_address.line2}`

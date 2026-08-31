@@ -14,12 +14,14 @@ const MainContent: React.FC = () => {
         <h1 className="mb-6">
           Capital that backs the people
           <br />
-          <span style={{ color: "#71717a" }}>making the culture.</span>
+          <span style={{ color: "var(--nak-text-muted)" }}>
+            making the culture.
+          </span>
         </h1>
 
         <p
           className="mb-10 text-base sm:text-lg leading-relaxed"
-          style={{ color: "var(--muted-foreground)", maxWidth: "36rem" }}
+          style={{ color: "var(--nak-text-muted)", maxWidth: "36rem" }}
         >
           New Age Kapital operates a reserve-backed token on the Internet
           Computer and reinvests into the artists, producers, and creators

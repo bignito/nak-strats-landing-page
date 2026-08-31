@@ -6,6 +6,7 @@
 @font-face {
   font-family: "JetBrains Mono";
   src: url("/assets/fonts/JetBrainsMono.woff2") format("woff2");
+  font-weight: 100 700;
   font-display: swap;
 }
 
@@ -16,12 +17,21 @@
 @font-face {
   font-family: "Inter";
   src: url("/assets/fonts/Inter.woff2") format("woff2");
+  font-weight: 100 900;
   font-display: swap;
 }
 
 @font-face {
   font-family: "Oswald";
   src: url("/assets/fonts/Oswald.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Oswald";
+  src: url("/assets/fonts/Oswald-600.woff2") format("woff2");
+  font-weight: 600;
   font-display: swap;
 }
 
@@ -34,7 +44,6 @@
   --nak-purple-light: #a78bfa;
   --nak-teal: #06b6d4;
   --nak-teal-dark: #0891b2;
-  --nak-pink: #ec4899;
   --nak-indigo: #6366f1;
 
   /* Enhanced Text Colors with Better Contrast on Deep Black */
@@ -69,7 +78,7 @@
   /* Enhanced Gradients for Deep Black Theme */
   --gradient-primary: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
   --gradient-secondary: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
-  --gradient-accent: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);
+  --gradient-accent: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
   --gradient-background: linear-gradient(
     135deg,
     #000000 0%,
@@ -105,6 +114,24 @@
 }
 
 /* ============================================================
+   NAK palette — single source of truth for the institutional
+   tokens below. Hex values, defined once here.
+   ============================================================ */
+:root {
+  --nak-bg: #08090a;
+  --nak-surface: #0e1011;
+  --nak-surface-hi: #141719;
+  --nak-border: rgba(255, 255, 255, 0.09);
+  --nak-border-strong: rgba(255, 255, 255, 0.16);
+  --nak-text: #f4f4f5;
+  --nak-text-secondary: #a1a1aa;
+  --nak-text-muted: #8a8a93;
+  --nak-accent: #8b5cf6;
+  --nak-positive: #10b981;
+  --nak-negative: #ef4444;
+}
+
+/* ============================================================
    Institutional tokens (New Age Kapital main page rebrand).
    Raw OKLCH L C H values. Purple is a subtle accent only; positive
    and negative are reserved for price changes. Hairlines, no glows.
@@ -113,35 +140,35 @@
    ============================================================ */
 :root {
   /* Surfaces */
-  --background: 0.04 0.003 250; /* #08090a */
-  --foreground: 0.95 0.002 250; /* #f4f4f5 */
-  --card: 0.06 0.003 250; /* #0e1011 */
-  --card-foreground: 0.95 0.002 250;
-  --surface-hover: 0.08 0.003 250; /* #141719 */
-  --popover: 0.06 0.003 250;
-  --popover-foreground: 0.95 0.002 250;
+  --background: var(--nak-bg); /* #08090a */
+  --foreground: var(--nak-text); /* #f4f4f5 */
+  --card: var(--nak-surface); /* #0e1011 */
+  --card-foreground: var(--nak-text);
+  --surface-hover: var(--nak-surface-hi); /* #141719 */
+  --popover: var(--nak-surface);
+  --popover-foreground: var(--nak-text);
 
   /* Hairline borders — no shadows */
-  --border: 0.16 0.003 250; /* rgba(255,255,255,0.09) */
-  --border-strong: 0.25 0.003 250; /* rgba(255,255,255,0.16) */
-  --input: 0.16 0.003 250;
+  --border: var(--nak-border); /* rgba(255,255,255,0.09) */
+  --border-strong: var(--nak-border-strong); /* rgba(255,255,255,0.16) */
+  --input: var(--nak-border);
   --ring: 0.55 0.19 296;
 
   /* Text hierarchy */
   --muted: 0.08 0.003 250;
-  --muted-foreground: 0.48 0.006 250; /* #71717a */
+  --muted-foreground: var(--nak-text-muted); /* #8a8a93 */
   --secondary: 0.08 0.003 250;
-  --secondary-foreground: 0.68 0.005 250; /* #a1a1aa */
+  --secondary-foreground: var(--nak-text-secondary); /* #a1a1aa */
   --accent: 0.08 0.003 250;
   --accent-foreground: 0.95 0.002 250;
 
   /* Accent — purple, restrained */
-  --primary: 0.55 0.19 296; /* #8b5cf6 */
-  --primary-foreground: 0.98 0.002 250;
+  --primary: var(--nak-accent); /* #8b5cf6 */
+  --primary-foreground: var(--nak-bg);
 
   /* Price change only */
-  --positive: 0.62 0.13 165; /* #10b981 */
-  --negative: 0.62 0.19 25; /* #ef4444 */
+  --positive: var(--nak-positive); /* #10b981 */
+  --negative: var(--nak-negative); /* #ef4444 */
 
   /* Semantic / charts */
   --destructive: 0.62 0.19 25;
@@ -185,8 +212,6 @@
   /* Token-select / payment accents (native NAK hues) */
   --nak-teal-bright: #22d3ee;
   --nak-teal-soft: rgba(34, 211, 238, 0.12);
-  --nak-pink-bright: #f472b6;
-  --nak-pink-soft: rgba(244, 114, 182, 0.12);
 
   /* Deposit surface — a slightly raised liquid-glass panel */
   --deposit-surface: rgba(255, 255, 255, 0.03);
@@ -238,8 +263,8 @@ html {
 
 html,
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--nak-bg);
+  color: var(--nak-text);
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -557,21 +582,6 @@ small {
   color: var(--text-secondary);
 }
 
-/* Enhanced Gradient Text */
-.text-gradient-primary {
-  background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.text-gradient-secondary {
-  background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
 /* Enhanced Color Classes for Deep Black Theme */
 .text-blue-400 {
   color: #60a5fa !important;
@@ -587,9 +597,6 @@ small {
 }
 .text-teal-400 {
   color: #2dd4bf !important;
-}
-.text-pink-400 {
-  color: #f472b6 !important;
 }
 .text-red-400 {
   color: #f87171 !important;
@@ -845,7 +852,7 @@ small {
       #ffffff 0%,
       #a78bfa 40%,
       #06b6d4 70%,
-      #ec4899 100%
+      #8b5cf6 100%
     );
     -webkit-background-clip: text;
     background-clip: text;
@@ -855,7 +862,7 @@ small {
       135deg,
       #a78bfa 0%,
       #06b6d4 30%,
-      #ec4899 60%,
+      #8b5cf6 60%,
       #ffffff 100%
     );
     -webkit-background-clip: text;
@@ -865,7 +872,7 @@ small {
     background-image: linear-gradient(
       135deg,
       #06b6d4 0%,
-      #ec4899 30%,
+      #8b5cf6 30%,
       #8b5cf6 60%,
       #ffffff 100%
     );
@@ -875,7 +882,7 @@ small {
   75% {
     background-image: linear-gradient(
       135deg,
-      #ec4899 0%,
+      #8b5cf6 0%,
       #8b5cf6 30%,
       #ffffff 60%,
       #06b6d4 100%
@@ -889,7 +896,7 @@ small {
       #ffffff 0%,
       #a78bfa 40%,
       #06b6d4 70%,
-      #ec4899 100%
+      #8b5cf6 100%
     );
     -webkit-background-clip: text;
     background-clip: text;
@@ -1205,9 +1212,6 @@ select:focus {
 .bg-yellow-900\/20 {
   background-color: rgba(113, 63, 18, 0.2) !important;
 }
-.bg-pink-900\/20 {
-  background-color: rgba(131, 24, 67, 0.2) !important;
-}
 .bg-black\/40 {
   background-color: rgba(0, 0, 0, 0.4) !important;
 }
@@ -1308,44 +1312,6 @@ select:focus {
   animation: shimmer 1.5s infinite;
 }
 
-/* Enhanced Interactive Elements with Liquid Glass */
-.interactive-element {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-
-.interactive-element::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.03) 0%,
-    transparent 50%,
-    rgba(139, 92, 246, 0.02) 100%
-  );
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  pointer-events: none;
-  border-radius: inherit;
-}
-
-.interactive-element:hover {
-  transform: translateY(-1px);
-  filter: brightness(1.1);
-}
-
-.interactive-element:hover::after {
-  opacity: 1;
-}
-
-.interactive-element:active {
-  transform: translateY(0);
-  filter: brightness(0.95);
-}
-
 /* Compact Responsive Typography */
 @media (max-width: 640px) {
   html {
@@ -1397,33 +1363,6 @@ select:focus {
   will-change: transform, opacity;
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
-}
-
-/* Special Liquid Glass Effects for Specific Elements */
-.liquid-glass-intense {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(40px);
-  -webkit-backdrop-filter: blur(40px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(139, 92, 246, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.15), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
-}
-
-.liquid-glass-intense::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.08) 0%,
-    transparent 25%,
-    rgba(139, 92, 246, 0.04) 50%,
-    transparent 75%,
-    rgba(6, 182, 212, 0.03) 100%
-  );
-  pointer-events: none;
-  border-radius: inherit;
-  animation: glass-shimmer 6s ease-in-out infinite;
 }
 
 /* Opacity utility classes for effects */
@@ -1537,9 +1476,6 @@ body {
   .text-teal-bright {
     color: var(--nak-teal-bright);
   }
-  .text-pink-bright {
-    color: var(--nak-pink-bright);
-  }
 
   .bg-success-soft {
     background-color: var(--nak-success-soft);
@@ -1552,9 +1488,6 @@ body {
   }
   .bg-teal-soft {
     background-color: var(--nak-teal-soft);
-  }
-  .bg-pink-soft {
-    background-color: var(--nak-pink-soft);
   }
 
   /* Raised liquid-glass deposit panel */
@@ -1770,50 +1703,6 @@ body {
   image-rendering: crisp-edges;
 }
 
-/* Hero shell: soft purple radial glow behind the mascot */
-.shell-glow {
-  position: relative;
-}
-.shell-glow::before {
-  content: "";
-  position: absolute;
-  inset: -30%;
-  background: radial-gradient(
-    circle at 50% 45%,
-    rgba(139, 92, 246, 0.35) 0%,
-    rgba(139, 92, 246, 0.12) 40%,
-    transparent 70%
-  );
-  filter: blur(24px);
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* Hero shell slow drift — translateY -14px, ±1.5deg over 6s */
-@keyframes shell-drift {
-  0%,
-  100% {
-    transform: translateY(0) rotate(0deg);
-  }
-  50% {
-    transform: translateY(-14px) rotate(1.5deg);
-  }
-  25% {
-    transform: translateY(-7px) rotate(-1.5deg);
-  }
-  75% {
-    transform: translateY(-10px) rotate(0.75deg);
-  }
-}
-.shell-drift {
-  animation: shell-drift 6s ease-in-out infinite;
-}
-
-/* Footer shell — small, 50% opacity */
-.footer-shell {
-  opacity: 0.5;
-}
-
 /* ============================================================
    Restructured Desktop Nav — dropdown groups, cart badge, admin
    ============================================================ */
@@ -1888,7 +1777,7 @@ body {
   background: rgba(139, 92, 246, 0.12);
 }
 
-/* Cart count badge — live pink pill */
+/* Cart count badge — live accent pill */
 .cart-badge {
   position: absolute;
   top: -0.375rem;
@@ -1897,7 +1786,7 @@ body {
   height: 1rem;
   padding: 0 0.25rem;
   border-radius: 9999px;
-  background: var(--nak-pink);
+  background: var(--primary);
   color: #ffffff;
   font-family: var(--font-body);
   font-size: 0.625rem;
@@ -1907,7 +1796,7 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.9), 0 2px 8px rgba(236, 72, 153, 0.5);
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.9);
 }
 
 /* Icon-only Admin button */
@@ -1971,7 +1860,7 @@ body {
   opacity: 0.55;
 }
 
-/* Inventory pill — pink/amber 'N left', red 'Sold out' */
+/* Inventory pill — amber 'N left', red 'Sold out' */
 .inventory-pill {
   display: inline-flex;
   align-items: center;
@@ -1989,9 +1878,9 @@ body {
   border: 1px solid rgba(251, 191, 36, 0.3);
 }
 .inventory-pill-critical {
-  background: rgba(236, 72, 153, 0.14);
-  color: var(--nak-pink);
-  border: 1px solid rgba(236, 72, 153, 0.3);
+  background: rgba(239, 68, 68, 0.14);
+  color: var(--nak-negative);
+  border: 1px solid rgba(239, 68, 68, 0.3);
 }
 .inventory-pill-soldout {
   background: rgba(248, 113, 113, 0.14);
@@ -2126,9 +2015,6 @@ body {
 
 /* prefers-reduced-motion — disable shell drift */
 @media (prefers-reduced-motion: reduce) {
-  .shell-drift {
-    animation: none;
-  }
   .ledger-dot {
     animation: none;
   }
@@ -2380,5 +2266,451 @@ body {
     height: 18px;
     opacity: 0.4;
     filter: saturate(0.3);
+  }
+}
+
+/* ============================================================
+   Storefront utilities — SHOP / PRODUCT / CART (stage 2).
+   Scoped with shop-/product-/cart- prefixes; consumes the
+   existing institutional tokens. No pink, no glows, no pills,
+   no scale transforms. Frontend page tasks consume these.
+   ============================================================ */
+@layer utilities {
+  /* Mono numbers — alias of .num for storefront clarity */
+  .mono-num {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* SHOP — 1px lattice product grid (gap 1px, border-coloured bg) */
+  .lattice {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+  .lattice-cell {
+    background: var(--card);
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    transition: background-color 0.2s ease;
+  }
+  .lattice-cell:hover {
+    background: var(--surface-hover);
+  }
+  .lattice-cell.is-soldout {
+    opacity: 0.55;
+  }
+
+  /* SHOP — 4/5 portrait image well at top of each cell */
+  .product-well {
+    aspect-ratio: 4 / 5;
+    width: 100%;
+    overflow: hidden;
+    background: #08090a;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .product-well img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* SHOP — inventory stock pill (muted bordered; negative when sold out) */
+  .stock-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.625rem;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    font-family: var(--font-body);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--muted-foreground);
+  }
+  .stock-pill-soldout {
+    color: var(--negative);
+    border-color: rgba(239, 68, 68, 0.35);
+  }
+
+  /* SHOP — 'Add →' affordance, purple on hover */
+  .add-arrow {
+    font-family: var(--font-body);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--foreground);
+    transition: color 0.2s ease;
+  }
+  .add-arrow:hover {
+    color: var(--primary);
+  }
+
+  /* PRODUCT — bordered variant/quantity selectors, purple active */
+  .bordered-select {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 0.875rem;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    background: transparent;
+    color: var(--foreground);
+    font-family: var(--font-body);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+  }
+  .bordered-select:hover {
+    border-color: var(--foreground);
+  }
+  .bordered-select.is-active {
+    border-color: var(--primary);
+    background: rgba(139, 92, 246, 0.1);
+  }
+
+  /* PRODUCT/CART — small bordered quantity stepper */
+  .bordered-stepper {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .bordered-stepper button {
+    background: transparent;
+    border: none;
+    color: var(--foreground);
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+  .bordered-stepper button:hover {
+    background: var(--surface-hover);
+  }
+  .bordered-stepper .stepper-value {
+    min-width: 2.25rem;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    font-size: 0.875rem;
+    color: var(--foreground);
+  }
+
+  /* CART — bordered line-item table, 1px row dividers (no cards) */
+  .cart-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid var(--border);
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+  }
+  .cart-table th,
+  .cart-table td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+    text-align: left;
+  }
+  .cart-table th {
+    color: var(--muted-foreground);
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-weight: 600;
+  }
+  .cart-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  /* CART — quiet remove control (not a loud red button) */
+  .quiet-remove {
+    background: transparent;
+    border: none;
+    color: var(--muted-foreground);
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.25rem;
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+  .quiet-remove:hover {
+    color: var(--foreground);
+  }
+
+  /* CART — bordered order-summary panel, mono right-aligned figures */
+  .summary-panel {
+    border: 1px solid var(--border);
+    background: var(--card);
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    color: var(--secondary-foreground);
+  }
+  .summary-row .summary-value {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    color: var(--foreground);
+  }
+  .summary-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-top: 1px solid var(--border);
+    padding-top: 0.875rem;
+    margin-top: 0.125rem;
+    font-family: var(--font-body);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--foreground);
+  }
+  .summary-total .summary-value {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    font-size: 1rem;
+    font-weight: 500;
+  }
+}
+
+/* ============================================================
+   Checkout / Admin shared utilities (stage 3).
+   Consumes existing institutional tokens only — no new colours,
+   no glows, 0.25rem radius, hairline borders.
+   ============================================================ */
+@layer utilities {
+  /* Field label — 0.6875rem uppercase, 0.16em, weight 600, muted */
+  .field-label {
+    font-family: var(--font-body);
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-weight: 600;
+    color: var(--muted-foreground);
+  }
+
+  /* Field input — surface bg, 1px border, purple border on focus */
+  .field-input {
+    width: 100%;
+    background: var(--card);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    padding: 0.625rem 0.75rem;
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    color: var(--foreground);
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+  }
+  .field-input::placeholder {
+    color: var(--muted-foreground);
+  }
+  .field-input:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: var(--surface-hover);
+  }
+
+  /* Section heading — Inter 500, -0.015em letter-spacing */
+  .section-heading {
+    font-family: var(--font-heading);
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    color: var(--foreground);
+  }
+
+  /* Mono number — JetBrains Mono, tabular figures */
+  .mono-num {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Inset well — dark bg, 1px border, mono small, break-all */
+  .inset-well {
+    background: var(--nak-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0.75rem 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    color: var(--secondary-foreground);
+    word-break: break-all;
+  }
+
+  /* Status pill — bordered, 0.25rem radius, uppercase small */
+  .status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.25rem 0.625rem;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    font-family: var(--font-body);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted-foreground);
+    white-space: nowrap;
+  }
+  .status-pill-positive {
+    color: var(--positive);
+    border-color: rgba(16, 185, 129, 0.35);
+  }
+  .status-pill-warning {
+    color: var(--nak-warning);
+    border-color: rgba(251, 191, 36, 0.35);
+  }
+  .status-pill-muted {
+    color: var(--muted-foreground);
+    border-color: var(--border);
+  }
+  .status-pill-negative {
+    color: var(--negative);
+    border-color: rgba(239, 68, 68, 0.35);
+  }
+  .status-pill-neutral {
+    color: var(--secondary-foreground);
+    border-color: var(--border-strong);
+  }
+
+  /* Admin table — 1px row dividers, no cards, right-aligned numerics */
+  .admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid var(--border);
+    font-family: var(--font-body);
+    font-size: 0.8125rem;
+  }
+  .admin-table th,
+  .admin-table td {
+    padding: 0.625rem 0.875rem;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+    vertical-align: middle;
+  }
+  .admin-table th {
+    color: var(--muted-foreground);
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .admin-table td {
+    color: var(--secondary-foreground);
+  }
+  .admin-table tr:last-child td {
+    border-bottom: none;
+  }
+  .admin-table .num-col {
+    text-align: right;
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    color: var(--foreground);
+  }
+
+  /* Tab underline — 2px purple underline on active tab */
+  .tab-underline {
+    position: relative;
+    padding-bottom: 0.5rem;
+    color: var(--muted-foreground);
+    font-family: var(--font-body);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+  .tab-underline:hover {
+    color: var(--foreground);
+  }
+  .tab-underline.is-active {
+    color: var(--foreground);
+  }
+  .tab-underline.is-active::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    background: var(--primary);
+    border-radius: 1px;
+  }
+
+  /* Confirm step — bordered confirmation panel */
+  .confirm-step {
+    border: 1px solid var(--border-strong);
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+  }
+  .confirm-step-message {
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    color: var(--secondary-foreground);
+    line-height: 1.5;
+  }
+  .confirm-step-actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+  }
+
+  /* Step connector — thin 1px connector line */
+  .step-connector {
+    width: 2rem;
+    height: 1px;
+    background: var(--border-strong);
+  }
+
+  /* Copy button — quiet bordered button */
+  .copy-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    background: transparent;
+    color: var(--secondary-foreground);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    padding: 0.375rem 0.625rem;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s
+      ease;
+  }
+  .copy-btn:hover {
+    border-color: var(--foreground);
+    color: var(--foreground);
+    background: var(--surface-hover);
+  }
+  .copy-btn.is-copied {
+    color: var(--positive);
+    border-color: rgba(16, 185, 129, 0.4);
   }
 }

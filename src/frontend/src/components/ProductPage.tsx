@@ -8,7 +8,6 @@ import {
   Minus,
   Plus,
   ShoppingCart,
-  Sparkles,
 } from "lucide-react";
 import type React from "react";
 import { useEffect, useMemo, useState } from "react";
@@ -68,23 +67,17 @@ const ProductPage: React.FC<ProductPageProps> = ({
   return (
     <div className="pt-24 sm:pt-32 pb-12 sm:pb-20 px-4 sm:px-6">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-10 sm:mb-14 px-2">
-          <div className="flex items-center justify-center gap-4 mb-6">
-            <div className="relative">
-              <ShoppingCart className="w-10 h-10 text-teal-400" />
-              <div className="absolute inset-0 rounded-full bg-teal-400/20 blur-xl animate-pulse" />
-            </div>
-            <h1
-              className="text-3xl sm:text-4xl md:text-5xl font-semibold leading-tight"
-              style={{ fontFamily: "var(--font-heading)" }}
-            >
-              Product
-            </h1>
-          </div>
-          <p className="text-sm sm:text-base text-gray-300 max-w-2xl mx-auto">
-            Official NAK STRATS merchandise and collectibles
-          </p>
+        {/* Quiet back link */}
+        <div className="mb-8 sm:mb-10 px-2">
+          <button
+            type="button"
+            onClick={onNavigateToShop}
+            className="back-link"
+            data-ocid="product.back_link"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Back to Shop
+          </button>
         </div>
 
         {/* Loading state */}
@@ -93,14 +86,15 @@ const ProductPage: React.FC<ProductPageProps> = ({
             className="relative max-w-5xl mx-auto px-2"
             data-ocid="product.loading_state"
           >
-            <div className="card glass-card p-6 sm:p-10">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
-                <div className="loading-shimmer rounded-2xl aspect-square" />
+            <div className="surface p-6 sm:p-10">
+              <div className="grid grid-cols-1 min-[860px]:grid-cols-2 gap-8 md:gap-12">
+                <div className="loading-shimmer aspect-square" />
                 <div className="space-y-4">
-                  <div className="loading-shimmer h-8 w-3/4 rounded-lg" />
-                  <div className="loading-shimmer h-4 w-full rounded-lg" />
-                  <div className="loading-shimmer h-4 w-2/3 rounded-lg" />
-                  <div className="loading-shimmer h-12 w-40 rounded-xl mt-6" />
+                  <div className="loading-shimmer h-4 w-24" />
+                  <div className="loading-shimmer h-8 w-3/4" />
+                  <div className="loading-shimmer h-4 w-full" />
+                  <div className="loading-shimmer h-4 w-2/3" />
+                  <div className="loading-shimmer h-12 w-40 mt-6" />
                 </div>
               </div>
             </div>
@@ -113,11 +107,11 @@ const ProductPage: React.FC<ProductPageProps> = ({
             className="relative max-w-4xl mx-auto px-2"
             data-ocid="product.error_state"
           >
-            <div className="card glass-card p-6 sm:p-10 text-center">
+            <div className="surface p-6 sm:p-10 text-center">
               <h3 className="text-xl sm:text-2xl mb-3">
                 Couldn&apos;t load this product
               </h3>
-              <p className="text-gray-300 mb-8 max-w-md mx-auto">
+              <p className="text-muted-foreground mb-8 max-w-md mx-auto">
                 Something went wrong while fetching the product details. Please
                 try again or head back to the shop.
               </p>
@@ -125,7 +119,7 @@ const ProductPage: React.FC<ProductPageProps> = ({
                 <button
                   type="button"
                   onClick={onNavigateToShop}
-                  className="btn px-8 py-4 text-base font-semibold"
+                  className="btn px-8 py-4 text-base"
                   data-ocid="product.back_to_shop_button"
                 >
                   Back to Shop
@@ -133,7 +127,7 @@ const ProductPage: React.FC<ProductPageProps> = ({
                 <button
                   type="button"
                   onClick={onNavigateToMain}
-                  className="btn px-8 py-4 text-base font-semibold"
+                  className="btn btn-secondary px-8 py-4 text-base"
                   data-ocid="product.back_to_main_button"
                 >
                   <ArrowLeft className="w-4 h-4" />
@@ -150,15 +144,12 @@ const ProductPage: React.FC<ProductPageProps> = ({
             className="relative max-w-4xl mx-auto px-2"
             data-ocid="product.empty_state"
           >
-            <div className="card glass-card p-6 sm:p-10 text-center">
-              <div className="relative flex items-center justify-center gap-4 mb-6">
-                <div className="relative">
-                  <ShoppingCart className="w-10 h-10 text-purple-400" />
-                  <div className="absolute inset-0 rounded-full bg-purple-400/20 blur-xl animate-pulse" />
-                </div>
+            <div className="surface p-6 sm:p-10 text-center">
+              <div className="flex items-center justify-center gap-4 mb-6">
+                <ShoppingCart className="w-10 h-10 text-muted-foreground" />
               </div>
               <h3 className="text-xl sm:text-2xl mb-3">Product not found</h3>
-              <p className="text-gray-300 mb-8 max-w-md mx-auto">
+              <p className="text-muted-foreground mb-8 max-w-md mx-auto">
                 We couldn&apos;t find the product you were looking for. It may
                 have been removed or the link is no longer valid.
               </p>
@@ -166,7 +157,7 @@ const ProductPage: React.FC<ProductPageProps> = ({
                 <button
                   type="button"
                   onClick={onNavigateToShop}
-                  className="btn px-8 py-4 text-base font-semibold"
+                  className="btn px-8 py-4 text-base"
                   data-ocid="product.back_to_shop_button"
                 >
                   Browse the Shop
@@ -174,7 +165,7 @@ const ProductPage: React.FC<ProductPageProps> = ({
                 <button
                   type="button"
                   onClick={onNavigateToMain}
-                  className="btn px-8 py-4 text-base font-semibold"
+                  className="btn btn-secondary px-8 py-4 text-base"
                   data-ocid="product.back_to_main_button"
                 >
                   <ArrowLeft className="w-4 h-4" />
@@ -188,50 +179,41 @@ const ProductPage: React.FC<ProductPageProps> = ({
         {/* Product detail */}
         {!isLoading && !isError && product && (
           <div className="relative max-w-6xl mx-auto px-2">
-            <div className="card glass-card p-6 sm:p-8 lg:p-12">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start">
-                {/* Product image */}
-                <div className="relative">
-                  <div className="absolute inset-0 bg-gradient-to-br from-purple-600/20 via-teal-600/10 to-pink-600/20 rounded-3xl blur-2xl opacity-40" />
-                  <div className="relative aspect-square rounded-3xl overflow-hidden bg-black/40 border border-white/10 flex items-center justify-center">
-                    {image ? (
-                      <img
-                        src={image}
-                        alt={product.name}
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <div className="flex flex-col items-center justify-center gap-3 text-gray-400">
-                        <ImageIcon className="w-16 h-16 text-purple-400" />
-                        <span className="text-sm">No image available</span>
-                      </div>
-                    )}
-                  </div>
+            <div className="surface p-6 sm:p-8 lg:p-12">
+              <div className="grid grid-cols-1 min-[860px]:grid-cols-2 gap-8 md:gap-12 items-start">
+                {/* Product image well */}
+                <div className="product-well aspect-square">
+                  {image ? (
+                    <img src={image} alt={product.name} />
+                  ) : (
+                    <div className="flex flex-col items-center justify-center gap-3 text-muted-foreground">
+                      <ImageIcon className="w-16 h-16" />
+                      <span className="text-sm">No image available</span>
+                    </div>
+                  )}
                 </div>
 
                 {/* Product details */}
                 <div className="min-w-0">
-                  <p className="text-xs sm:text-sm uppercase tracking-widest text-teal-400 mb-2">
-                    {product.category}
-                  </p>
+                  <p className="section-label mb-3">{product.category}</p>
                   <h2
-                    className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-white mb-3"
-                    style={{ fontFamily: "var(--font-heading)" }}
+                    className="text-2xl sm:text-3xl lg:text-4xl mb-3"
+                    style={{ fontSize: "1.75rem" }}
                   >
                     {product.name}
                   </h2>
-                  <p className="text-sm sm:text-base text-gray-300 mb-6">
+                  <p className="text-sm sm:text-base text-secondary-foreground mb-8">
                     {product.description}
                   </p>
 
                   {/* Price */}
                   <div className="flex items-center gap-3 mb-8">
-                    <span className="text-2xl sm:text-3xl font-bold text-teal-300">
+                    <span className="mono-num text-2xl sm:text-3xl">
                       {formatPrice(unitPrice)}
                     </span>
                     {maxInventory === 0n && (
-                      <span className="px-3 py-1 rounded-full text-xs font-semibold bg-destructive-soft text-destructive">
-                        Out of stock
+                      <span className="stock-pill stock-pill-soldout">
+                        Sold out
                       </span>
                     )}
                   </div>
@@ -239,9 +221,7 @@ const ProductPage: React.FC<ProductPageProps> = ({
                   {/* Variant selector */}
                   {product.variants.length > 0 && (
                     <div className="mb-8">
-                      <h3 className="text-sm font-semibold text-gray-300 mb-3">
-                        Select Variant
-                      </h3>
+                      <h3 className="section-label mb-3">Select Variant</h3>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         {product.variants.map((variant) => {
                           const isSelected = variant.id === selectedVariantId;
@@ -256,32 +236,30 @@ const ProductPage: React.FC<ProductPageProps> = ({
                                 setAdded(false);
                               }}
                               disabled={isSoldOut}
-                              className={`relative text-left px-4 py-3 rounded-xl border transition-all duration-300 ${
-                                isSelected
-                                  ? "border-teal-400 bg-teal-soft shadow-[0_0_0_1px_var(--nak-teal-bright),0_4px_16px_rgba(34,211,238,0.2)]"
-                                  : "border-white/10 bg-black/40 hover:border-white/25 hover:bg-white/5"
+                              className={`bordered-select justify-between text-left ${
+                                isSelected ? "is-active" : ""
                               } ${isSoldOut ? "opacity-45 cursor-not-allowed" : ""}`}
                               data-ocid={`product.variant.${variant.id}`}
                             >
-                              <div className="flex items-center justify-between gap-2">
-                                <span className="font-semibold text-sm text-white">
+                              <span className="flex items-center gap-2">
+                                <span className="font-medium text-sm">
                                   {variant.name}
                                   {variant.size ? ` · ${variant.size}` : ""}
                                 </span>
                                 {isSelected && (
-                                  <Check className="w-4 h-4 text-teal-400 shrink-0" />
+                                  <Check className="w-4 h-4 shrink-0" />
                                 )}
-                              </div>
-                              <div className="flex items-center justify-between gap-2 mt-1">
-                                <span className="text-sm text-teal-300">
+                              </span>
+                              <span className="flex items-center gap-3">
+                                <span className="mono-num text-sm">
                                   {formatPrice(variant.price)}
                                 </span>
-                                <span className="text-xs text-gray-400">
+                                <span className="text-xs text-muted-foreground">
                                   {isSoldOut
                                     ? "Sold out"
                                     : `${variant.inventory} in stock`}
                                 </span>
-                              </div>
+                              </span>
                             </button>
                           );
                         })}
@@ -291,27 +269,22 @@ const ProductPage: React.FC<ProductPageProps> = ({
 
                   {/* Quantity stepper */}
                   <div className="mb-8">
-                    <h3 className="text-sm font-semibold text-gray-300 mb-3">
-                      Quantity
-                    </h3>
+                    <h3 className="section-label mb-3">Quantity</h3>
                     <div
-                      className="inline-flex items-center gap-1 rounded-xl border border-white/10 bg-black/40 p-1"
+                      className="bordered-stepper"
                       data-ocid="product.quantity"
                     >
                       <button
                         type="button"
                         onClick={() => setQuantity((q) => Math.max(1, q - 1))}
                         disabled={quantity <= 1}
-                        className="w-10 h-10 rounded-lg flex items-center justify-center hover:bg-white/10 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                        className="disabled:opacity-40 disabled:cursor-not-allowed"
                         aria-label="Decrease quantity"
                         data-ocid="product.decrease_button"
                       >
                         <Minus className="w-4 h-4" />
                       </button>
-                      <span
-                        className="w-10 text-center font-semibold"
-                        aria-live="polite"
-                      >
+                      <span className="stepper-value" aria-live="polite">
                         {quantity}
                       </span>
                       <button
@@ -320,7 +293,7 @@ const ProductPage: React.FC<ProductPageProps> = ({
                           setQuantity((q) => Math.min(maxQty, q + 1))
                         }
                         disabled={quantity >= maxQty}
-                        className="w-10 h-10 rounded-lg flex items-center justify-center hover:bg-white/10 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                        className="disabled:opacity-40 disabled:cursor-not-allowed"
                         aria-label="Increase quantity"
                         data-ocid="product.increase_button"
                       >
@@ -335,12 +308,12 @@ const ProductPage: React.FC<ProductPageProps> = ({
                       type="button"
                       onClick={handleAddToCart}
                       disabled={maxInventory === 0n}
-                      className="btn px-8 py-4 text-base font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="btn px-8 py-4 text-base disabled:opacity-50 disabled:cursor-not-allowed"
                       data-ocid="product.add_to_cart_button"
                     >
                       {added ? (
                         <>
-                          <Check className="w-5 h-5 text-teal-300" />
+                          <Check className="w-5 h-5" />
                           Added to Cart
                         </>
                       ) : (
@@ -353,7 +326,7 @@ const ProductPage: React.FC<ProductPageProps> = ({
                     <button
                       type="button"
                       onClick={onNavigateToShop}
-                      className="btn px-8 py-4 text-base font-semibold"
+                      className="btn btn-secondary px-8 py-4 text-base"
                       data-ocid="product.continue_shopping_button"
                     >
                       Continue Shopping
@@ -365,7 +338,7 @@ const ProductPage: React.FC<ProductPageProps> = ({
                     <button
                       type="button"
                       onClick={onNavigateToMain}
-                      className="btn inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold"
+                      className="back-link"
                       data-ocid="product.back_to_main_button"
                     >
                       <ArrowLeft className="w-4 h-4" />

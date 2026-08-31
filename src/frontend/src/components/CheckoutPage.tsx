@@ -6,7 +6,6 @@ import {
   ArrowLeft,
   Check,
   Clock,
-  Copy,
   CreditCard,
   Loader2,
   ShieldCheck,
@@ -32,6 +31,7 @@ import {
 } from "../hooks/useQueries";
 import type { CartItem, CryptoPaymentStatus, Order } from "../types/storefront";
 import { depositAccountString } from "../types/storefront";
+import { CopyButton } from "./CopyButton";
 
 interface CheckoutPageProps {
   onNavigateToMain: () => void;
@@ -104,12 +104,12 @@ function OrderSummary({
   const hasOrder = order !== null;
 
   return (
-    <div className="relative card glass-card p-6">
-      <h3 className="mb-4 text-lg uppercase tracking-wide">Order Summary</h3>
+    <div className="summary-panel">
+      <h3 className="section-heading text-base">Order Summary</h3>
 
       {hasOrder ? (
         <>
-          <div className="mb-5 space-y-3">
+          <div className="flex flex-col gap-3">
             {order.items.map((item, idx) => (
               <div
                 key={item.variant_id}
@@ -117,50 +117,46 @@ function OrderSummary({
                 data-ocid={`checkout.summary_item.${idx + 1}`}
               >
                 <div className="min-w-0">
-                  <p className="truncate text-sm font-medium text-white">
+                  <p className="truncate text-sm font-medium text-foreground">
                     {item.name}
                   </p>
-                  <p className="text-xs text-gray-400">
+                  <p className="text-xs text-muted-foreground">
                     Qty {item.quantity.toString()}
                   </p>
                 </div>
-                <span className="font-mono-nak text-sm text-gray-200">
+                <span className="mono-num text-sm text-secondary-foreground">
                   {formatPrice(item.unit_amount * item.quantity)}
                 </span>
               </div>
             ))}
           </div>
 
-          <div className="space-y-2 border-t border-white/10 pt-4 text-sm">
-            <div className="flex items-center justify-between">
-              <span className="text-gray-400">Subtotal</span>
-              <span className="font-mono-nak text-gray-200">
+          <div className="flex flex-col gap-2 border-t border-border pt-4 text-sm">
+            <div className="summary-row">
+              <span className="text-muted-foreground">Subtotal</span>
+              <span className="summary-value">
                 {formatPrice(order.subtotal)}
               </span>
             </div>
-            <div className="flex items-center justify-between">
-              <span className="text-gray-400">Tax</span>
-              <span className="font-mono-nak text-gray-200">
-                {formatPrice(order.tax)}
-              </span>
+            <div className="summary-row">
+              <span className="text-muted-foreground">Tax</span>
+              <span className="summary-value">{formatPrice(order.tax)}</span>
             </div>
-            <div className="flex items-center justify-between">
-              <span className="text-gray-400">Shipping</span>
-              <span className="font-mono-nak text-gray-200">
+            <div className="summary-row">
+              <span className="text-muted-foreground">Shipping</span>
+              <span className="summary-value">
                 {formatPrice(order.shipping)}
               </span>
             </div>
-            <div className="flex items-center justify-between border-t border-white/10 pt-3 text-base font-semibold">
-              <span className="text-white">Total</span>
-              <span className="font-mono-nak text-teal-bright">
-                {formatPrice(order.total)}
-              </span>
+            <div className="summary-total">
+              <span>Total</span>
+              <span className="summary-value">{formatPrice(order.total)}</span>
             </div>
           </div>
         </>
       ) : (
         <>
-          <div className="mb-5 space-y-3">
+          <div className="flex flex-col gap-3">
             {items.map((item, idx) => {
               const variant = item.product.variants.find(
                 (v) => v.id === item.variantId,
@@ -173,12 +169,14 @@ function OrderSummary({
                   data-ocid={`checkout.summary_item.${idx + 1}`}
                 >
                   <div className="min-w-0">
-                    <p className="truncate text-sm font-medium text-white">
+                    <p className="truncate text-sm font-medium text-foreground">
                       {item.product.name}
                     </p>
-                    <p className="text-xs text-gray-400">Qty {item.quantity}</p>
+                    <p className="text-xs text-muted-foreground">
+                      Qty {item.quantity}
+                    </p>
                   </div>
-                  <span className="font-mono-nak text-sm text-gray-200">
+                  <span className="mono-num text-sm text-secondary-foreground">
                     {formatPrice(unitPrice * BigInt(item.quantity))}
                   </span>
                 </div>
@@ -186,14 +184,14 @@ function OrderSummary({
             })}
           </div>
 
-          <div className="space-y-2 border-t border-white/10 pt-4 text-sm">
-            <div className="flex items-center justify-between">
-              <span className="text-gray-400">Subtotal</span>
-              <span className="font-mono-nak text-gray-200">
+          <div className="flex flex-col gap-2 border-t border-border pt-4 text-sm">
+            <div className="summary-row">
+              <span className="text-muted-foreground">Subtotal</span>
+              <span className="summary-value">
                 {formatPrice(BigInt(Math.round(cartSubtotal)))}
               </span>
             </div>
-            <p className="pt-2 text-xs text-gray-500">
+            <p className="pt-2 text-xs text-muted-foreground">
               Tax and shipping are calculated when you place your order.
             </p>
           </div>
@@ -215,7 +213,6 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
     "crypto",
   );
   const [orderError, setOrderError] = useState<string | null>(null);
-  const [copied, setCopied] = useState(false);
   const [paid, setPaid] = useState(false);
   const [expired, setExpired] = useState(false);
 
@@ -439,16 +436,6 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
     });
   };
 
-  const handleCopyAddress = async (address: string) => {
-    try {
-      await navigator.clipboard.writeText(address);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1800);
-    } catch {
-      // Clipboard unavailable — ignore.
-    }
-  };
-
   // Place the order: crypto advances to the deposit screen (existing flow),
   // card creates a Stripe checkout session and redirects the customer.
   const handlePlaceOrder = () => {
@@ -507,22 +494,11 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
   return (
     <div className="pt-24 sm:pt-32 pb-12 sm:pb-20 px-4 sm:px-6">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-8 sm:mb-10 px-2">
-          <div className="flex items-center justify-center gap-4 mb-6">
-            <div className="relative">
-              <Wallet className="w-12 h-12 text-teal-400" />
-              <div className="absolute inset-0 rounded-full bg-teal-400/20 blur-xl animate-pulse" />
-            </div>
-            <h1
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold leading-tight"
-              style={{ fontFamily: "var(--font-heading)" }}
-            >
-              Checkout
-            </h1>
-          </div>
-          <p className="text-sm sm:text-base text-gray-300 max-w-2xl mx-auto">
-            Complete your crypto payment
-          </p>
+        <div className="mb-8 sm:mb-10 px-2">
+          <p className="section-label mb-2">Checkout</p>
+          <h1 className="section-heading text-2xl sm:text-3xl">
+            Complete your payment
+          </h1>
         </div>
 
         {/* 3-step progress indicator */}
@@ -550,9 +526,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
                   </span>
                   <span className="hidden sm:inline">{s.label}</span>
                 </div>
-                {i < STEPS.length - 1 && (
-                  <div className="h-px w-8 sm:w-12 bg-white/15" />
-                )}
+                {i < STEPS.length - 1 && <div className="step-connector" />}
               </div>
             );
           })}
@@ -561,7 +535,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
         {checkingResume ? (
           <div className="relative max-w-2xl mx-auto px-2">
             <div
-              className="relative card glass-card p-8 sm:p-12 text-center"
+              className="surface p-8 sm:p-12 text-center"
               data-ocid="checkout.resume_loading"
             >
               <div className="mx-auto mb-4 h-12 w-12 rounded-full bg-white/5 loading-shimmer" />
@@ -571,10 +545,12 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
           </div>
         ) : items.length === 0 && step !== "deposit" ? (
           <div className="relative max-w-2xl mx-auto px-2">
-            <div className="relative card glass-card p-8 sm:p-12 text-center">
-              <ShoppingCart className="w-12 h-12 text-teal-400 mx-auto mb-4" />
-              <h3 className="text-2xl mb-3">Your cart is empty</h3>
-              <p className="text-gray-300 mb-6">
+            <div className="surface p-8 sm:p-12 text-center">
+              <ShoppingCart className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+              <h3 className="section-heading text-xl mb-3">
+                Your cart is empty
+              </h3>
+              <p className="text-muted-foreground mb-6">
                 Add some pieces to your cart before checking out.
               </p>
               <div className="flex flex-wrap items-center justify-center gap-4">
@@ -590,7 +566,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
                   type="button"
                   onClick={onNavigateToMain}
                   data-ocid="checkout.back_to_main_button"
-                  className="btn px-8 py-4 text-base font-semibold"
+                  className="btn-secondary px-8 py-4 text-base font-semibold"
                 >
                   <ArrowLeft className="w-4 h-4" />
                   Back to Main
@@ -603,17 +579,17 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
             {/* Left column — active step content */}
             <div className="relative min-w-0 px-2">
               {step === "shipping" ? (
-                <div className="relative card glass-card p-6 sm:p-10">
-                  <h2 className="text-2xl sm:text-3xl mb-2">
+                <div className="surface p-6 sm:p-10">
+                  <h2 className="section-heading text-xl sm:text-2xl mb-2">
                     Shipping Details
                   </h2>
-                  <p className="text-gray-300 mb-8">
+                  <p className="text-muted-foreground mb-8">
                     Where should we send your order?
                   </p>
 
                   {orderError && (
                     <div
-                      className="mb-6 flex items-start gap-3 rounded-xl bg-destructive-soft p-4 text-sm text-destructive"
+                      className="mb-6 flex items-start gap-3 border border-destructive/40 bg-destructive-soft p-4 text-sm text-destructive"
                       data-ocid="checkout.order_error"
                     >
                       <AlertTriangle className="h-5 w-5 shrink-0" />
@@ -626,7 +602,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
                       <div>
                         <label
                           htmlFor="checkout-name"
-                          className="mb-1.5 block text-sm font-medium text-gray-300"
+                          className="field-label mb-1.5 block"
                         >
                           Full name
                         </label>
@@ -636,14 +612,14 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
                           value={name}
                           onChange={(e) => setName(e.target.value)}
                           placeholder="Jane Doe"
-                          className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-purple-500/50 focus:outline-none"
+                          className="field-input"
                           data-ocid="checkout.name_input"
                         />
                       </div>
                       <div>
                         <label
                           htmlFor="checkout-email"
-                          className="mb-1.5 block text-sm font-medium text-gray-300"
+                          className="field-label mb-1.5 block"
                         >
                           Email
                         </label>
@@ -653,7 +629,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
                           placeholder="jane@example.com"
-                          className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-purple-500/50 focus:outline-none"
+                          className="field-input"
                           data-ocid="checkout.email_input"
                         />
                       </div>
@@ -663,7 +639,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
                         email field above. Never pre-checked (explicit opt-in). */}
                     <label
                       htmlFor="checkout-consent"
-                      className="flex cursor-pointer items-start gap-3 rounded-xl border border-white/10 bg-white/5 p-4"
+                      className="flex cursor-pointer items-start gap-3 border border-border bg-card p-4"
                     >
                       <input
                         id="checkout-consent"
@@ -673,16 +649,19 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
                         className="consent-checkbox mt-0.5"
                         data-ocid="checkout.consent_checkbox"
                       />
-                      <span className="text-sm text-gray-300">
+                      <span className="text-sm text-secondary-foreground">
                         Email me about new NAK STRATS drops and releases
-                        <span className="text-gray-500"> (optional)</span>
+                        <span className="text-muted-foreground">
+                          {" "}
+                          (optional)
+                        </span>
                       </span>
                     </label>
 
                     <div>
                       <label
                         htmlFor="checkout-line1"
-                        className="mb-1.5 block text-sm font-medium text-gray-300"
+                        className="field-label mb-1.5 block"
                       >
                         Address line 1
                       </label>
@@ -692,7 +671,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
                         value={line1}
                         onChange={(e) => setLine1(e.target.value)}
                         placeholder="123 Neon Avenue"
-                        className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-purple-500/50 focus:outline-none"
+                        className="field-input"
                         data-ocid="checkout.line1_input"
                       />
                     </div>
@@ -700,10 +679,12 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
                     <div>
                       <label
                         htmlFor="checkout-line2"
-                        className="mb-1.5 block text-sm font-medium text-gray-300"
+                        className="field-label mb-1.5 block"
                       >
                         Address line 2{" "}
-                        <span className="text-gray-500">(optional)</span>
+                        <span className="text-muted-foreground">
+                          (optional)
+                        </span>
                       </label>
                       <input
                         id="checkout-line2"
@@ -711,7 +692,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
                         value={line2}
                         onChange={(e) => setLine2(e.target.value)}
                         placeholder="Apt, suite, unit"
-                        className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-purple-500/50 focus:outline-none"
+                        className="field-input"
                         data-ocid="checkout.line2_input"
                       />
                     </div>
@@ -720,7 +701,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
                       <div>
                         <label
                           htmlFor="checkout-city"
-                          className="mb-1.5 block text-sm font-medium text-gray-300"
+                          className="field-label mb-1.5 block"
                         >
                           City
                         </label>
@@ -730,14 +711,14 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
                           value={city}
                           onChange={(e) => setCity(e.target.value)}
                           placeholder="Neo Tokyo"
-                          className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-purple-500/50 focus:outline-none"
+                          className="field-input"
                           data-ocid="checkout.city_input"
                         />
                       </div>
                       <div>
                         <label
                           htmlFor="checkout-region"
-                          className="mb-1.5 block text-sm font-medium text-gray-300"
+                          className="field-label mb-1.5 block"
                         >
                           Region / State
                         </label>
@@ -747,7 +728,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
                           value={region}
                           onChange={(e) => setRegion(e.target.value)}
                           placeholder="Kanto"
-                          className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-purple-500/50 focus:outline-none"
+                          className="field-input"
                           data-ocid="checkout.region_input"
                         />
                       </div>
@@ -757,7 +738,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
                       <div>
                         <label
                           htmlFor="checkout-country"
-                          className="mb-1.5 block text-sm font-medium text-gray-300"
+                          className="field-label mb-1.5 block"
                         >
                           Country
                         </label>
@@ -767,14 +748,14 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
                           value={country}
                           onChange={(e) => setCountry(e.target.value)}
                           placeholder="Japan"
-                          className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-purple-500/50 focus:outline-none"
+                          className="field-input"
                           data-ocid="checkout.country_input"
                         />
                       </div>
                       <div>
                         <label
                           htmlFor="checkout-postal"
-                          className="mb-1.5 block text-sm font-medium text-gray-300"
+                          className="field-label mb-1.5 block"
                         >
                           Postal code
                         </label>
@@ -784,7 +765,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
                           value={postalCode}
                           onChange={(e) => setPostalCode(e.target.value)}
                           placeholder="100-0001"
-                          className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-purple-500/50 focus:outline-none"
+                          className="field-input"
                           data-ocid="checkout.postal_input"
                         />
                       </div>
@@ -795,7 +776,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
                         type="button"
                         onClick={onNavigateToCart}
                         data-ocid="checkout.back_to_cart_button"
-                        className="btn px-6 py-3 text-sm font-semibold"
+                        className="btn-secondary px-6 py-3 text-sm font-semibold"
                       >
                         <ArrowLeft className="w-4 h-4" />
                         Back to Cart
@@ -819,17 +800,17 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
                   </form>
                 </div>
               ) : step === "review" ? (
-                <div className="relative card glass-card p-6 sm:p-10">
-                  <h2 className="text-2xl sm:text-3xl mb-2">
+                <div className="surface p-6 sm:p-10">
+                  <h2 className="section-heading text-xl sm:text-2xl mb-2">
                     Checkout Summary
                   </h2>
-                  <p className="text-gray-300 mb-8">
+                  <p className="text-muted-foreground mb-8">
                     Review your order and choose a payment token.
                   </p>
 
                   {ledgerUnset && (
                     <div
-                      className="mb-6 flex items-start gap-3 rounded-xl bg-warning-soft p-4 text-sm text-warning"
+                      className="mb-6 flex items-start gap-3 border border-warning/40 bg-warning-soft p-4 text-sm text-warning"
                       data-ocid="checkout.admin_warning"
                     >
                       <AlertTriangle className="h-5 w-5 shrink-0" />
@@ -842,7 +823,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
 
                   {orderError && (
                     <div
-                      className="mb-6 flex items-start gap-3 rounded-xl bg-destructive-soft p-4 text-sm text-destructive"
+                      className="mb-6 flex items-start gap-3 border border-destructive/40 bg-destructive-soft p-4 text-sm text-destructive"
                       data-ocid="checkout.order_error"
                     >
                       <AlertTriangle className="h-5 w-5 shrink-0" />
@@ -852,33 +833,29 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
 
                   {/* Payment method selection — crypto (ckUSDC) and card (Stripe) */}
                   <div className="mb-8">
-                    <p className="mb-3 text-sm font-medium text-gray-300">
-                      Payment method
-                    </p>
+                    <p className="field-label mb-3">Payment method</p>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <button
                         type="button"
                         onClick={() => setPaymentMethod("crypto")}
                         data-ocid="checkout.method_crypto"
-                        className={`token-option flex items-center gap-4 p-4 text-left ${
-                          paymentMethod === "crypto"
-                            ? "token-option-selected"
-                            : ""
+                        className={`bordered-select flex items-center gap-4 p-4 text-left w-full ${
+                          paymentMethod === "crypto" ? "is-active" : ""
                         }`}
                       >
-                        <span className="flex h-10 w-10 items-center justify-center rounded-full bg-teal-soft text-teal-bright">
+                        <span className="flex h-10 w-10 items-center justify-center border border-border bg-card text-primary">
                           <Wallet className="h-5 w-5" />
                         </span>
                         <span className="min-w-0">
-                          <span className="block text-sm font-semibold text-white">
+                          <span className="block text-sm font-semibold text-foreground">
                             Pay with crypto
                           </span>
-                          <span className="block text-xs text-gray-400">
+                          <span className="block text-xs text-muted-foreground">
                             ckUSDC deposit
                           </span>
                         </span>
                         {paymentMethod === "crypto" && (
-                          <Check className="ml-auto h-5 w-5 text-teal-bright" />
+                          <Check className="ml-auto h-5 w-5 text-primary" />
                         )}
                       </button>
 
@@ -887,27 +864,25 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
                         onClick={() => cardEnabled && setPaymentMethod("card")}
                         disabled={!cardEnabled}
                         data-ocid="checkout.method_card"
-                        className={`token-option flex items-center gap-4 p-4 text-left ${
-                          paymentMethod === "card"
-                            ? "token-option-selected"
-                            : ""
-                        } ${!cardEnabled ? "token-option-disabled" : ""}`}
+                        className={`bordered-select flex items-center gap-4 p-4 text-left w-full ${
+                          paymentMethod === "card" ? "is-active" : ""
+                        } ${!cardEnabled ? "opacity-45 cursor-not-allowed" : ""}`}
                       >
-                        <span className="flex h-10 w-10 items-center justify-center rounded-full bg-teal-soft text-teal-bright">
+                        <span className="flex h-10 w-10 items-center justify-center border border-border bg-card text-primary">
                           <CreditCard className="h-5 w-5" />
                         </span>
                         <span className="min-w-0">
-                          <span className="block text-sm font-semibold text-white">
+                          <span className="block text-sm font-semibold text-foreground">
                             Pay with card
                           </span>
-                          <span className="block text-xs text-gray-400">
+                          <span className="block text-xs text-muted-foreground">
                             {cardEnabled
                               ? "Stripe checkout"
                               : "Unavailable — not configured"}
                           </span>
                         </span>
                         {paymentMethod === "card" && (
-                          <Check className="ml-auto h-5 w-5 text-teal-bright" />
+                          <Check className="ml-auto h-5 w-5 text-primary" />
                         )}
                       </button>
                     </div>
@@ -918,7 +893,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
                       type="button"
                       onClick={() => setStep("shipping")}
                       data-ocid="checkout.back_to_shipping_button"
-                      className="btn px-6 py-3 text-sm font-semibold"
+                      className="btn-secondary px-6 py-3 text-sm font-semibold"
                     >
                       <ArrowLeft className="w-4 h-4" />
                       Edit Shipping
@@ -942,11 +917,11 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
                   </div>
                 </div>
               ) : (
-                <div className="relative deposit-surface p-6 sm:p-10">
+                <div className="surface p-6 sm:p-10">
                   {/* PAID badge */}
                   {paid && (
                     <div
-                      className="absolute right-5 top-5 flex items-center gap-2 rounded-full bg-success-soft px-4 py-1.5 text-sm font-bold uppercase tracking-wide text-success"
+                      className="absolute right-5 top-5 flex items-center gap-2 border border-positive/40 bg-success-soft px-4 py-1.5 text-sm font-bold uppercase tracking-wide text-success"
                       data-ocid="checkout.paid_badge"
                     >
                       <ShieldCheck className="h-4 w-4" />
@@ -957,10 +932,10 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
                   {/* Header row — title left, countdown top-right */}
                   <div className="mb-6 flex items-start justify-between gap-4">
                     <div>
-                      <h2 className="text-2xl sm:text-3xl mb-1">
+                      <h2 className="section-heading text-xl sm:text-2xl mb-1">
                         Crypto Deposit
                       </h2>
-                      <p className="text-gray-300">
+                      <p className="text-muted-foreground">
                         Send the exact amount to the address below to complete
                         your order.
                       </p>
@@ -968,7 +943,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
                     <div className="flex shrink-0 items-center gap-2">
                       <Clock className="h-5 w-5 text-warning" />
                       <span
-                        className={`font-mono-nak text-2xl sm:text-3xl font-bold ${countdownClass(
+                        className={`mono-num text-2xl sm:text-3xl font-bold ${countdownClass(
                           remainingSec,
                         )}`}
                         data-ocid="checkout.countdown"
@@ -980,15 +955,15 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
 
                   {expired ? (
                     <div
-                      className="flex flex-col items-center gap-4 rounded-xl bg-destructive-soft p-8 text-center"
+                      className="flex flex-col items-center gap-4 border border-destructive/40 bg-destructive-soft p-8 text-center"
                       data-ocid="checkout.expired_state"
                     >
                       <AlertTriangle className="h-10 w-10 text-destructive" />
                       <div>
-                        <h3 className="text-xl font-semibold text-destructive mb-1">
+                        <h3 className="section-heading text-xl text-destructive mb-1">
                           Deposit Expired
                         </h3>
-                        <p className="text-sm text-gray-300">
+                        <p className="text-sm text-muted-foreground">
                           This deposit has expired and the reserved inventory
                           has been released. Please place a new order to
                           continue.
@@ -1017,11 +992,9 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
                     <div className="space-y-8">
                       {/* Order reference — shown prominently before payment */}
                       <div className="flex flex-col items-center gap-1 text-center">
-                        <p className="text-xs font-medium uppercase tracking-widest text-gray-400">
-                          Order reference
-                        </p>
+                        <p className="section-label">Order reference</p>
                         <p
-                          className="font-mono-nak text-lg sm:text-xl font-bold text-teal-bright"
+                          className="mono-num text-lg sm:text-xl font-bold text-foreground"
                           data-ocid="checkout.order_reference"
                         >
                           {depositReference}
@@ -1030,51 +1003,38 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
 
                       {/* Amount owed — largest element */}
                       <div className="text-center">
-                        <p className="mb-2 text-sm font-medium text-gray-300">
-                          Exact amount owed ({depositData.token})
+                        <p className="section-label mb-2">
+                          Amount owed ({depositData.token})
                         </p>
                         <p
                           className="amount-owed"
                           data-ocid="checkout.amount_owed"
                         >
-                          {amountOwed}{" "}
-                          <span className="text-teal-bright">
-                            {depositData.token}
-                          </span>
+                          {amountOwed} {depositData.token}
                         </p>
                       </div>
 
                       {/* Deposit address — dark inset well */}
                       <div>
-                        <p className="mb-2 text-sm font-medium text-gray-300">
-                          Deposit address
-                        </p>
-                        <div className="deposit-address-well flex items-center gap-3">
+                        <p className="section-label mb-2">Deposit address</p>
+                        <div className="flex items-start gap-3">
                           <span
-                            className="min-w-0 flex-1 break-all"
+                            className="inset-well min-w-0 flex-1"
                             data-ocid="checkout.deposit_address"
                           >
                             {depositAddress}
                           </span>
-                          <button
-                            type="button"
-                            onClick={() => handleCopyAddress(depositAddress)}
-                            aria-label="Copy deposit address"
-                            data-ocid="checkout.copy_address_button"
-                            className="btn shrink-0 px-3 py-2 text-sm"
-                          >
-                            {copied ? (
-                              <Check className="h-4 w-4 text-success" />
-                            ) : (
-                              <Copy className="h-4 w-4" />
-                            )}
-                          </button>
+                          <CopyButton
+                            text={depositAddress}
+                            label="Copy deposit address"
+                            className="shrink-0"
+                          />
                         </div>
                       </div>
 
                       {/* QR code */}
                       <div className="flex justify-center">
-                        <div className="rounded-2xl bg-white p-4">
+                        <div className="border border-border bg-white p-4">
                           <QRCode
                             value={depositAddress}
                             size={168}
@@ -1087,10 +1047,10 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
 
                       {/* Status — 'watching the ledger' with pulsing amber dot */}
                       <div
-                        className={`flex items-center gap-3 rounded-xl p-4 text-sm ${
+                        className={`flex items-center gap-3 border p-4 text-sm ${
                           paid
-                            ? "bg-success-soft text-success"
-                            : "bg-teal-soft text-teal-bright"
+                            ? "border-positive/40 bg-success-soft text-success"
+                            : "border-warning/40 bg-warning-soft text-warning"
                         }`}
                         data-ocid="checkout.payment_status"
                       >
@@ -1116,19 +1076,19 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
                           type="button"
                           onClick={onNavigateToMain}
                           data-ocid="checkout.back_to_main_button"
-                          className="btn px-6 py-3 text-sm font-semibold"
+                          className="btn-secondary px-6 py-3 text-sm font-semibold"
                         >
                           <ArrowLeft className="w-4 h-4" />
                           Back to Main
                         </button>
-                        <p className="text-xs text-gray-500">
+                        <p className="text-xs text-muted-foreground">
                           Payment is verified on-ledger automatically.
                         </p>
                       </div>
                     </div>
                   ) : (
                     <div
-                      className="flex items-start gap-3 rounded-xl bg-destructive-soft p-4 text-sm text-destructive"
+                      className="flex items-start gap-3 border border-destructive/40 bg-destructive-soft p-4 text-sm text-destructive"
                       data-ocid="checkout.deposit_error"
                     >
                       <AlertTriangle className="h-5 w-5 shrink-0" />

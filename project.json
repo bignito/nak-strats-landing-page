@@ -1,18 +1,17 @@
 {
-  "overview": "An institutional landing page for New Age Kapital, a reserve-backed token on the Internet Computer, with live market data, artist culture, and a fragrance shop.",
+  "overview": "The NAK STRATS landing page showcases the N.A.K. artist roster and token, with a shop, checkout, and admin tools.",
   "features": [
-    "Live DexScreener market data and chart",
-    "Artist culture showcase with video",
-    "Cross-chain swap information",
-    "On-ledger reserve dashboard",
-    "Fragrance product shop"
+    "Showcase the N.A.K. artist roster and token",
+    "Artist work submission form with acknowledgement email",
+    "Shop and checkout for the token",
+    "Admin tools for orders, products, and submissions"
   ],
   "category": "landing-page",
   "tags": [
-    "finance",
-    "crypto",
-    "culture",
-    "landing-page"
+    "art",
+    "token",
+    "showcase",
+    "institutional"
   ],
-  "last_updated": "2026-08-31T00:24:58.860Z"
+  "last_updated": "2026-08-31T01:59:41.404Z"
 }

@@ -18,6 +18,25 @@ var __privateWrapper = (obj, member, setter, getter) => ({
   }
 });
 var _disableTimeVerification, _agent, _inner, _expirationTime, _rawKey, _derKey, _a2, _currentInterval, _randomizationFactor, _multiplier, _maxInterval, _startTime, _maxElapsedTime, _maxIterations, _date, _count, _rootKeyPromise, _shouldFetchRootKey, _timeDiffMsecs, _hasSyncedTime, _syncTimePromise, _shouldSyncTime, _identity, _fetch, _fetchOptions, _callOptions, _credentials, _retryTimes, _backoffStrategy, _maxIngressExpiryInMinutes, _HttpAgent_instances, maxIngressExpiryInMs_get, _queryPipeline, _updatePipeline, _subnetKeys, _verifyQuerySignatures, requestAndRetryQuery_fn, requestAndRetry_fn, _verifyQueryResponse, asyncGuard_fn, rootKeyGuard_fn, syncTimeGuard_fn, _focused, _cleanup, _setup, _b2, _provider, _providerCalled, _c, _online, _cleanup2, _setup2, _d, _gcTimeout, _e, _initialState, _revertState, _cache, _client, _retryer, _defaultOptions, _abortSignalConsumed, _Query_instances, isInitialPausedFetch_fn, dispatch_fn, _f, _client2, _currentQuery, _currentQueryInitialState, _currentResult, _currentResultState, _currentResultOptions, _currentThenable, _selectError, _selectFn, _selectResult, _lastQueryWithDefinedData, _staleTimeoutId, _refetchIntervalId, _currentRefetchInterval, _trackedProps, _QueryObserver_instances, executeFetch_fn, updateStaleTimeout_fn, computeRefetchInterval_fn, updateRefetchInterval_fn, updateTimers_fn, clearStaleTimeout_fn, clearRefetchInterval_fn, updateQuery_fn, notify_fn, _g, _client3, _observers, _mutationCache, _retryer2, _Mutation_instances, dispatch_fn2, _h, _mutations, _scopes, _mutationId, _i, _client4, _currentResult2, _currentMutation, _mutateOptions, _MutationObserver_instances, updateResult_fn, notify_fn2, _j, _queries, _k, _queryCache, _mutationCache2, _defaultOptions2, _queryDefaults, _mutationDefaults, _mountCount, _unsubscribeFocus, _unsubscribeOnline, _l, _rawKey2, _derKey2, _publicKey, _privateKey, _inner2, _delegation, _options;
+function _mergeNamespaces(n, m2) {
+  for (var i = 0; i < m2.length; i++) {
+    const e = m2[i];
+    if (typeof e !== "string" && !Array.isArray(e)) {
+      for (const k2 in e) {
+        if (k2 !== "default" && !(k2 in n)) {
+          const d2 = Object.getOwnPropertyDescriptor(e, k2);
+          if (d2) {
+            Object.defineProperty(n, k2, d2.get ? d2 : {
+              enumerable: true,
+              get: () => e[k2]
+            });
+          }
+        }
+      }
+    }
+  }
+  return Object.freeze(Object.defineProperty(n, Symbol.toStringTag, { value: "Module" }));
+}
 (function polyfill() {
   const relList = document.createElement("link").relList;
   if (relList && relList.supports && relList.supports("modulepreload")) {
@@ -4453,14 +4472,14 @@ const p = 2 * 1024, C = 100, v = new TextEncoder();
 function S(t) {
   return t << 5;
 }
-let o = new Uint8Array(p), r = new DataView(o.buffer), s = 0, O = [];
+let o = new Uint8Array(p), r$1 = new DataView(o.buffer), s = 0, O = [];
 function dt(t, n) {
   s = 0;
   const e = (n == null ? void 0 : n(t)) ?? t;
   return it(m, e, n), o.slice(0, s);
 }
 function _(t, n) {
-  if (s > o.length - C && (o = R$2(o, o.length * 2), r = new DataView(o.buffer)), t === false || t === true || t === null || t === void 0) {
+  if (s > o.length - C && (o = R$2(o, o.length * 2), r$1 = new DataView(o.buffer)), t === false || t === true || t === null || t === void 0) {
     et(t);
     return;
   }
@@ -4502,38 +4521,38 @@ function nt(t, n) {
 }
 function I(t, n) {
   if (n <= z$1) {
-    r.setUint8(
+    r$1.setUint8(
       s++,
       S(t) | Number(n)
     );
     return;
   }
   if (n <= Y) {
-    r.setUint8(
+    r$1.setUint8(
       s++,
       S(t) | d.OneByte
-    ), r.setUint8(s, Number(n)), s += 1;
+    ), r$1.setUint8(s, Number(n)), s += 1;
     return;
   }
   if (n <= G) {
-    r.setUint8(
+    r$1.setUint8(
       s++,
       S(t) | d.TwoBytes
-    ), r.setUint16(s, Number(n), h), s += 2;
+    ), r$1.setUint16(s, Number(n), h), s += 2;
     return;
   }
   if (n <= P) {
-    r.setUint8(
+    r$1.setUint8(
       s++,
       S(t) | d.FourBytes
-    ), r.setUint32(s, Number(n), h), s += 4;
+    ), r$1.setUint32(s, Number(n), h), s += 4;
     return;
   }
   if (n <= H) {
-    r.setUint8(
+    r$1.setUint8(
       s++,
       S(t) | d.EightBytes
-    ), r.setBigUint64(s, BigInt(n), h), s += 8;
+    ), r$1.setBigUint64(s, BigInt(n), h), s += 8;
     return;
   }
   throw new x(`Value too large to encode: ${n}`);
@@ -4553,7 +4572,7 @@ function st(t) {
   throw new x(`Unrecognized simple value: ${t.toString()}`);
 }
 function k(t, n) {
-  I(t, n.length), s > o.length - n.length && (o = R$2(o, o.length + n.length), r = new DataView(o.buffer)), o.set(n, s), s += n.length;
+  I(t, n.length), s > o.length - n.length && (o = R$2(o, o.length + n.length), r$1 = new DataView(o.buffer)), o.set(n, s), s += n.length;
 }
 function T(t, n) {
   I(t, n);
@@ -5528,7 +5547,7 @@ function expand_message_xof(msg, DST, lenInBytes, k2, H2) {
     throw new Error("expand_message_xof: invalid lenInBytes");
   return H2.create({ dkLen: lenInBytes }).update(msg).update(i2osp(lenInBytes, 2)).update(DST).update(i2osp(DST.length, 1)).digest();
 }
-function hash_to_field(msg, count, options) {
+function hash_to_field(msg, count2, options) {
   _validateObject(options, {
     p: "bigint",
     m: "number",
@@ -5539,10 +5558,10 @@ function hash_to_field(msg, count, options) {
   if (!isHash(options.hash))
     throw new Error("expected valid hash");
   abytes(msg);
-  anum(count);
+  anum(count2);
   const log2p = p2.toString(2).length;
   const L2 = Math.ceil((log2p + k2) / 8);
-  const len_in_bytes = count * m2 * L2;
+  const len_in_bytes = count2 * m2 * L2;
   let prb;
   if (expand === "xmd") {
     prb = expand_message_xmd(msg, DST, len_in_bytes, hash);
@@ -5553,8 +5572,8 @@ function hash_to_field(msg, count, options) {
   } else {
     throw new Error('expand must be "xmd" or "xof"');
   }
-  const u2 = new Array(count);
-  for (let i = 0; i < count; i++) {
+  const u2 = new Array(count2);
+  for (let i = 0; i < count2; i++) {
     const e = new Array(m2);
     for (let j2 = 0; j2 < m2; j2++) {
       const elm_offset = L2 * (j2 + i * m2);
@@ -13988,9 +14007,9 @@ function mapIntoArray(children, array, escapedPrefix, nameSoFar, callback) {
 }
 function mapChildren(children, func, context) {
   if (null == children) return children;
-  var result = [], count = 0;
+  var result = [], count2 = 0;
   mapIntoArray(children, result, "", "", function(child) {
-    return func.call(context, child, count++);
+    return func.call(context, child, count2++);
   });
   return result;
 }
@@ -14235,6 +14254,10 @@ react_production.version = "19.1.5";
 }
 var reactExports = react.exports;
 const React$2 = /* @__PURE__ */ getDefaultExportFromCjs(reactExports);
+const React$3 = /* @__PURE__ */ _mergeNamespaces({
+  __proto__: null,
+  default: React$2
+}, [reactExports]);
 var QueryClientContext = reactExports.createContext(
   void 0
 );
@@ -16353,6 +16376,7 @@ function checkDCE$1() {
   reactDom.exports = reactDom_production;
 }
 var reactDomExports = reactDom.exports;
+const ReactDOM$2 = /* @__PURE__ */ getDefaultExportFromCjs(reactDomExports);
 /**
  * @license React
  * react-dom-client.production.js
@@ -17490,14 +17514,14 @@ function getListener(inst, registrationName) {
 var canUseDOM = !("undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement), passiveBrowserEventsSupported = false;
 if (canUseDOM)
   try {
-    var options = {};
-    Object.defineProperty(options, "passive", {
+    var options$1 = {};
+    Object.defineProperty(options$1, "passive", {
       get: function() {
         passiveBrowserEventsSupported = true;
       }
     });
-    window.addEventListener("test", options, options);
-    window.removeEventListener("test", options, options);
+    window.addEventListener("test", options$1, options$1);
+    window.removeEventListener("test", options$1, options$1);
   } catch (e) {
     passiveBrowserEventsSupported = false;
   }
@@ -18035,9 +18059,9 @@ function markUpdateLaneFromFiberToRoot(sourceFiber, update, lane) {
   sourceFiber.lanes |= lane;
   var alternate = sourceFiber.alternate;
   null !== alternate && (alternate.lanes |= lane);
-  for (var isHidden = false, parent = sourceFiber.return; null !== parent; )
-    parent.childLanes |= lane, alternate = parent.alternate, null !== alternate && (alternate.childLanes |= lane), 22 === parent.tag && (sourceFiber = parent.stateNode, null === sourceFiber || sourceFiber._visibility & 1 || (isHidden = true)), sourceFiber = parent, parent = parent.return;
-  return 3 === sourceFiber.tag ? (parent = sourceFiber.stateNode, isHidden && null !== update && (isHidden = 31 - clz32(lane), sourceFiber = parent.hiddenUpdates, alternate = sourceFiber[isHidden], null === alternate ? sourceFiber[isHidden] = [update] : alternate.push(update), update.lane = lane | 536870912), parent) : null;
+  for (var isHidden2 = false, parent = sourceFiber.return; null !== parent; )
+    parent.childLanes |= lane, alternate = parent.alternate, null !== alternate && (alternate.childLanes |= lane), 22 === parent.tag && (sourceFiber = parent.stateNode, null === sourceFiber || sourceFiber._visibility & 1 || (isHidden2 = true)), sourceFiber = parent, parent = parent.return;
+  return 3 === sourceFiber.tag ? (parent = sourceFiber.stateNode, isHidden2 && null !== update && (isHidden2 = 31 - clz32(lane), sourceFiber = parent.hiddenUpdates, alternate = sourceFiber[isHidden2], null === alternate ? sourceFiber[isHidden2] = [update] : alternate.push(update), update.lane = lane | 536870912), parent) : null;
 }
 function getRootForUpdatedFiber(sourceFiber) {
   if (50 < nestedUpdateCount)
@@ -27532,7 +27556,7 @@ const createLucideIcon = (iconName, iconNode) => {
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$X = [
+const __iconNode$V = [
   [
     "path",
     {
@@ -27541,29 +27565,7 @@ const __iconNode$X = [
     }
   ]
 ];
-const Activity = createLucideIcon("activity", __iconNode$X);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$W = [
-  ["path", { d: "m12 19-7-7 7-7", key: "1l729n" }],
-  ["path", { d: "M19 12H5", key: "x3x0zl" }]
-];
-const ArrowLeft = createLucideIcon("arrow-left", __iconNode$W);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$V = [
-  ["path", { d: "M5 12h14", key: "1ays0h" }],
-  ["path", { d: "m12 5 7 7-7 7", key: "xquz4c" }]
-];
-const ArrowRight = createLucideIcon("arrow-right", __iconNode$V);
+const Activity = createLucideIcon("activity", __iconNode$V);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -27571,10 +27573,10 @@ const ArrowRight = createLucideIcon("arrow-right", __iconNode$V);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$U = [
-  ["path", { d: "M7 7h10v10", key: "1tivn9" }],
-  ["path", { d: "M7 17 17 7", key: "1vkiza" }]
+  ["path", { d: "m12 19-7-7 7-7", key: "1l729n" }],
+  ["path", { d: "M19 12H5", key: "x3x0zl" }]
 ];
-const ArrowUpRight = createLucideIcon("arrow-up-right", __iconNode$U);
+const ArrowLeft = createLucideIcon("arrow-left", __iconNode$U);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -27582,6 +27584,28 @@ const ArrowUpRight = createLucideIcon("arrow-up-right", __iconNode$U);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$T = [
+  ["path", { d: "M5 12h14", key: "1ays0h" }],
+  ["path", { d: "m12 5 7 7-7 7", key: "xquz4c" }]
+];
+const ArrowRight = createLucideIcon("arrow-right", __iconNode$T);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$S = [
+  ["path", { d: "M7 7h10v10", key: "1tivn9" }],
+  ["path", { d: "M7 17 17 7", key: "1vkiza" }]
+];
+const ArrowUpRight = createLucideIcon("arrow-up-right", __iconNode$S);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$R = [
   [
     "path",
     {
@@ -27591,14 +27615,14 @@ const __iconNode$T = [
   ],
   ["path", { d: "m9 12 2 2 4-4", key: "dzmm74" }]
 ];
-const BadgeCheck = createLucideIcon("badge-check", __iconNode$T);
+const BadgeCheck = createLucideIcon("badge-check", __iconNode$R);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$S = [
+const __iconNode$Q = [
   [
     "path",
     {
@@ -27609,38 +27633,15 @@ const __iconNode$S = [
   ["path", { d: "M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8", key: "1h4pet" }],
   ["path", { d: "M12 18V6", key: "zqpxq5" }]
 ];
-const BadgeDollarSign = createLucideIcon("badge-dollar-sign", __iconNode$S);
+const BadgeDollarSign = createLucideIcon("badge-dollar-sign", __iconNode$Q);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$R = [["path", { d: "M20 6 9 17l-5-5", key: "1gmf2c" }]];
-const Check = createLucideIcon("check", __iconNode$R);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$Q = [
-  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
-  ["path", { d: "m9 12 2 2 4-4", key: "dzmm74" }]
-];
-const CircleCheck = createLucideIcon("circle-check", __iconNode$Q);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$P = [
-  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
-  ["path", { d: "m15 9-6 6", key: "1uzhvr" }],
-  ["path", { d: "m9 9 6 6", key: "z0biqf" }]
-];
-const CircleX = createLucideIcon("circle-x", __iconNode$P);
+const __iconNode$P = [["path", { d: "M20 6 9 17l-5-5", key: "1gmf2c" }]];
+const Check = createLucideIcon("check", __iconNode$P);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -27649,9 +27650,9 @@ const CircleX = createLucideIcon("circle-x", __iconNode$P);
  */
 const __iconNode$O = [
   ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
-  ["polyline", { points: "12 6 12 12 16 14", key: "68esgv" }]
+  ["path", { d: "m9 12 2 2 4-4", key: "dzmm74" }]
 ];
-const Clock = createLucideIcon("clock", __iconNode$O);
+const CircleCheck = createLucideIcon("circle-check", __iconNode$O);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -27659,12 +27660,11 @@ const Clock = createLucideIcon("clock", __iconNode$O);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$N = [
-  ["circle", { cx: "8", cy: "8", r: "6", key: "3yglwk" }],
-  ["path", { d: "M18.09 10.37A6 6 0 1 1 10.34 18", key: "t5s6rm" }],
-  ["path", { d: "M7 6h1v4", key: "1obek4" }],
-  ["path", { d: "m16.71 13.88.7.71-2.82 2.82", key: "1rbuyh" }]
+  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
+  ["path", { d: "m15 9-6 6", key: "1uzhvr" }],
+  ["path", { d: "m9 9 6 6", key: "z0biqf" }]
 ];
-const Coins = createLucideIcon("coins", __iconNode$N);
+const CircleX = createLucideIcon("circle-x", __iconNode$N);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -27672,10 +27672,10 @@ const Coins = createLucideIcon("coins", __iconNode$N);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$M = [
-  ["rect", { width: "14", height: "14", x: "8", y: "8", rx: "2", ry: "2", key: "17jyea" }],
-  ["path", { d: "M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2", key: "zix9uf" }]
+  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
+  ["polyline", { points: "12 6 12 12 16 14", key: "68esgv" }]
 ];
-const Copy = createLucideIcon("copy", __iconNode$M);
+const Clock = createLucideIcon("clock", __iconNode$M);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -27683,10 +27683,12 @@ const Copy = createLucideIcon("copy", __iconNode$M);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$L = [
-  ["rect", { width: "20", height: "14", x: "2", y: "5", rx: "2", key: "ynyp8z" }],
-  ["line", { x1: "2", x2: "22", y1: "10", y2: "10", key: "1b3vmo" }]
+  ["circle", { cx: "8", cy: "8", r: "6", key: "3yglwk" }],
+  ["path", { d: "M18.09 10.37A6 6 0 1 1 10.34 18", key: "t5s6rm" }],
+  ["path", { d: "M7 6h1v4", key: "1obek4" }],
+  ["path", { d: "m16.71 13.88.7.71-2.82 2.82", key: "1rbuyh" }]
 ];
-const CreditCard = createLucideIcon("credit-card", __iconNode$L);
+const Coins = createLucideIcon("coins", __iconNode$L);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -27694,10 +27696,10 @@ const CreditCard = createLucideIcon("credit-card", __iconNode$L);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$K = [
-  ["line", { x1: "12", x2: "12", y1: "2", y2: "22", key: "7eqyqh" }],
-  ["path", { d: "M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6", key: "1b0p4s" }]
+  ["rect", { width: "14", height: "14", x: "8", y: "8", rx: "2", ry: "2", key: "17jyea" }],
+  ["path", { d: "M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2", key: "zix9uf" }]
 ];
-const DollarSign = createLucideIcon("dollar-sign", __iconNode$K);
+const Copy = createLucideIcon("copy", __iconNode$K);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -27705,11 +27707,10 @@ const DollarSign = createLucideIcon("dollar-sign", __iconNode$K);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$J = [
-  ["path", { d: "M12 15V3", key: "m9g1x1" }],
-  ["path", { d: "M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4", key: "ih7n3h" }],
-  ["path", { d: "m7 10 5 5 5-5", key: "brsn70" }]
+  ["rect", { width: "20", height: "14", x: "2", y: "5", rx: "2", key: "ynyp8z" }],
+  ["line", { x1: "2", x2: "22", y1: "10", y2: "10", key: "1b3vmo" }]
 ];
-const Download = createLucideIcon("download", __iconNode$J);
+const CreditCard = createLucideIcon("credit-card", __iconNode$J);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -27717,11 +27718,10 @@ const Download = createLucideIcon("download", __iconNode$J);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$I = [
-  ["path", { d: "M15 3h6v6", key: "1q9fwt" }],
-  ["path", { d: "M10 14 21 3", key: "gplh6r" }],
-  ["path", { d: "M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6", key: "a6xqqp" }]
+  ["line", { x1: "12", x2: "12", y1: "2", y2: "22", key: "7eqyqh" }],
+  ["path", { d: "M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6", key: "1b0p4s" }]
 ];
-const ExternalLink = createLucideIcon("external-link", __iconNode$I);
+const DollarSign = createLucideIcon("dollar-sign", __iconNode$I);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -27729,6 +27729,30 @@ const ExternalLink = createLucideIcon("external-link", __iconNode$I);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$H = [
+  ["path", { d: "M12 15V3", key: "m9g1x1" }],
+  ["path", { d: "M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4", key: "ih7n3h" }],
+  ["path", { d: "m7 10 5 5 5-5", key: "brsn70" }]
+];
+const Download = createLucideIcon("download", __iconNode$H);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$G = [
+  ["path", { d: "M15 3h6v6", key: "1q9fwt" }],
+  ["path", { d: "M10 14 21 3", key: "gplh6r" }],
+  ["path", { d: "M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6", key: "a6xqqp" }]
+];
+const ExternalLink = createLucideIcon("external-link", __iconNode$G);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$F = [
   ["rect", { width: "18", height: "18", x: "3", y: "3", rx: "2", key: "afitv7" }],
   ["path", { d: "M7 3v18", key: "bbkbws" }],
   ["path", { d: "M3 7.5h4", key: "zfgn84" }],
@@ -27738,14 +27762,14 @@ const __iconNode$H = [
   ["path", { d: "M17 7.5h4", key: "myr1c1" }],
   ["path", { d: "M17 16.5h4", key: "go4c1d" }]
 ];
-const Film = createLucideIcon("film", __iconNode$H);
+const Film = createLucideIcon("film", __iconNode$F);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$G = [
+const __iconNode$E = [
   [
     "path",
     {
@@ -27756,25 +27780,25 @@ const __iconNode$G = [
   ["path", { d: "M6.453 15h11.094", key: "3shlmq" }],
   ["path", { d: "M8.5 2h7", key: "csnxdl" }]
 ];
-const FlaskConical = createLucideIcon("flask-conical", __iconNode$G);
+const FlaskConical = createLucideIcon("flask-conical", __iconNode$E);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$F = [
+const __iconNode$D = [
   ["path", { d: "m12 14 4-4", key: "9kzdfg" }],
   ["path", { d: "M3.34 19a10 10 0 1 1 17.32 0", key: "19p75a" }]
 ];
-const Gauge = createLucideIcon("gauge", __iconNode$F);
+const Gauge = createLucideIcon("gauge", __iconNode$D);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$E = [
+const __iconNode$C = [
   ["rect", { x: "3", y: "8", width: "18", height: "4", rx: "1", key: "bkv52" }],
   ["path", { d: "M12 8v13", key: "1c76mn" }],
   ["path", { d: "M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7", key: "6wjy6b" }],
@@ -27786,26 +27810,26 @@ const __iconNode$E = [
     }
   ]
 ];
-const Gift = createLucideIcon("gift", __iconNode$E);
+const Gift = createLucideIcon("gift", __iconNode$C);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$D = [
+const __iconNode$B = [
   ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
   ["path", { d: "M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20", key: "13o1zl" }],
   ["path", { d: "M2 12h20", key: "9i4pu4" }]
 ];
-const Globe = createLucideIcon("globe", __iconNode$D);
+const Globe = createLucideIcon("globe", __iconNode$B);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$C = [
+const __iconNode$A = [
   [
     "path",
     {
@@ -27814,26 +27838,26 @@ const __iconNode$C = [
     }
   ]
 ];
-const Heart = createLucideIcon("heart", __iconNode$C);
+const Heart = createLucideIcon("heart", __iconNode$A);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$B = [
+const __iconNode$z = [
   ["rect", { width: "18", height: "18", x: "3", y: "3", rx: "2", ry: "2", key: "1m3agn" }],
   ["circle", { cx: "9", cy: "9", r: "2", key: "af1f0g" }],
   ["path", { d: "m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21", key: "1xmnt7" }]
 ];
-const Image = createLucideIcon("image", __iconNode$B);
+const Image = createLucideIcon("image", __iconNode$z);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$A = [
+const __iconNode$y = [
   ["path", { d: "M10 18v-7", key: "wt116b" }],
   [
     "path",
@@ -27847,38 +27871,15 @@ const __iconNode$A = [
   ["path", { d: "M3 22h18", key: "8prr45" }],
   ["path", { d: "M6 18v-7", key: "1ivflk" }]
 ];
-const Landmark = createLucideIcon("landmark", __iconNode$A);
+const Landmark = createLucideIcon("landmark", __iconNode$y);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$z = [["path", { d: "M21 12a9 9 0 1 1-6.219-8.56", key: "13zald" }]];
-const LoaderCircle = createLucideIcon("loader-circle", __iconNode$z);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$y = [
-  ["rect", { width: "18", height: "11", x: "3", y: "11", rx: "2", ry: "2", key: "1w4ew1" }],
-  ["path", { d: "M7 11V7a5 5 0 0 1 10 0v4", key: "fwvmzm" }]
-];
-const Lock = createLucideIcon("lock", __iconNode$y);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$x = [
-  ["path", { d: "m10 17 5-5-5-5", key: "1bsop3" }],
-  ["path", { d: "M15 12H3", key: "6jk70r" }],
-  ["path", { d: "M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4", key: "u53s6r" }]
-];
-const LogIn = createLucideIcon("log-in", __iconNode$x);
+const __iconNode$x = [["path", { d: "M21 12a9 9 0 1 1-6.219-8.56", key: "13zald" }]];
+const LoaderCircle = createLucideIcon("loader-circle", __iconNode$x);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -27886,11 +27887,10 @@ const LogIn = createLucideIcon("log-in", __iconNode$x);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$w = [
-  ["path", { d: "m16 17 5-5-5-5", key: "1bji2h" }],
-  ["path", { d: "M21 12H9", key: "dn1m92" }],
-  ["path", { d: "M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4", key: "1uf3rs" }]
+  ["rect", { width: "18", height: "11", x: "3", y: "11", rx: "2", ry: "2", key: "1w4ew1" }],
+  ["path", { d: "M7 11V7a5 5 0 0 1 10 0v4", key: "fwvmzm" }]
 ];
-const LogOut = createLucideIcon("log-out", __iconNode$w);
+const Lock = createLucideIcon("lock", __iconNode$w);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -27898,10 +27898,11 @@ const LogOut = createLucideIcon("log-out", __iconNode$w);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$v = [
-  ["path", { d: "m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7", key: "132q7q" }],
-  ["rect", { x: "2", y: "4", width: "20", height: "16", rx: "2", key: "izxlao" }]
+  ["path", { d: "m10 17 5-5-5-5", key: "1bsop3" }],
+  ["path", { d: "M15 12H3", key: "6jk70r" }],
+  ["path", { d: "M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4", key: "u53s6r" }]
 ];
-const Mail = createLucideIcon("mail", __iconNode$v);
+const LogIn = createLucideIcon("log-in", __iconNode$v);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -27909,6 +27910,29 @@ const Mail = createLucideIcon("mail", __iconNode$v);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$u = [
+  ["path", { d: "m16 17 5-5-5-5", key: "1bji2h" }],
+  ["path", { d: "M21 12H9", key: "dn1m92" }],
+  ["path", { d: "M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4", key: "1uf3rs" }]
+];
+const LogOut = createLucideIcon("log-out", __iconNode$u);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$t = [
+  ["path", { d: "m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7", key: "132q7q" }],
+  ["rect", { x: "2", y: "4", width: "20", height: "16", rx: "2", key: "izxlao" }]
+];
+const Mail = createLucideIcon("mail", __iconNode$t);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$s = [
   [
     "path",
     {
@@ -27918,27 +27942,7 @@ const __iconNode$u = [
   ],
   ["circle", { cx: "12", cy: "10", r: "3", key: "ilqhr7" }]
 ];
-const MapPin = createLucideIcon("map-pin", __iconNode$u);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$t = [
-  ["path", { d: "M4 12h16", key: "1lakjw" }],
-  ["path", { d: "M4 18h16", key: "19g7jn" }],
-  ["path", { d: "M4 6h16", key: "1o0s65" }]
-];
-const Menu = createLucideIcon("menu", __iconNode$t);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$s = [["path", { d: "M5 12h14", key: "1ays0h" }]];
-const Minus = createLucideIcon("minus", __iconNode$s);
+const MapPin = createLucideIcon("map-pin", __iconNode$s);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -27946,6 +27950,26 @@ const Minus = createLucideIcon("minus", __iconNode$s);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$r = [
+  ["path", { d: "M4 12h16", key: "1lakjw" }],
+  ["path", { d: "M4 18h16", key: "19g7jn" }],
+  ["path", { d: "M4 6h16", key: "1o0s65" }]
+];
+const Menu = createLucideIcon("menu", __iconNode$r);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$q = [["path", { d: "M5 12h14", key: "1ays0h" }]];
+const Minus = createLucideIcon("minus", __iconNode$q);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$p = [
   ["path", { d: "m16 16 2 2 4-4", key: "gfu2re" }],
   [
     "path",
@@ -27958,14 +27982,14 @@ const __iconNode$r = [
   ["polyline", { points: "3.29 7 12 12 20.71 7", key: "ousv84" }],
   ["line", { x1: "12", x2: "12", y1: "22", y2: "12", key: "a4e8g8" }]
 ];
-const PackageCheck = createLucideIcon("package-check", __iconNode$r);
+const PackageCheck = createLucideIcon("package-check", __iconNode$p);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$q = [
+const __iconNode$o = [
   ["path", { d: "M12 22v-9", key: "x3hkom" }],
   [
     "path",
@@ -27989,14 +28013,14 @@ const __iconNode$q = [
     }
   ]
 ];
-const PackageOpen = createLucideIcon("package-open", __iconNode$q);
+const PackageOpen = createLucideIcon("package-open", __iconNode$o);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$p = [
+const __iconNode$n = [
   [
     "path",
     {
@@ -28008,25 +28032,25 @@ const __iconNode$p = [
   ["polyline", { points: "3.29 7 12 12 20.71 7", key: "ousv84" }],
   ["path", { d: "m7.5 4.27 9 5.15", key: "1c824w" }]
 ];
-const Package = createLucideIcon("package", __iconNode$p);
+const Package = createLucideIcon("package", __iconNode$n);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$o = [
+const __iconNode$m = [
   ["path", { d: "M5 12h14", key: "1ays0h" }],
   ["path", { d: "M12 5v14", key: "s699le" }]
 ];
-const Plus = createLucideIcon("plus", __iconNode$o);
+const Plus = createLucideIcon("plus", __iconNode$m);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$n = [
+const __iconNode$l = [
   [
     "path",
     { d: "M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z", key: "q3az6g" }
@@ -28035,27 +28059,27 @@ const __iconNode$n = [
   ["path", { d: "M16 12H8", key: "1fr5h0" }],
   ["path", { d: "M13 16H8", key: "wsln4y" }]
 ];
-const ReceiptText = createLucideIcon("receipt-text", __iconNode$n);
+const ReceiptText = createLucideIcon("receipt-text", __iconNode$l);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$m = [
+const __iconNode$k = [
   ["path", { d: "M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8", key: "v9h5vc" }],
   ["path", { d: "M21 3v5h-5", key: "1q7to0" }],
   ["path", { d: "M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16", key: "3uifl3" }],
   ["path", { d: "M8 16H3v5", key: "1cv678" }]
 ];
-const RefreshCw = createLucideIcon("refresh-cw", __iconNode$m);
+const RefreshCw = createLucideIcon("refresh-cw", __iconNode$k);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$l = [
+const __iconNode$j = [
   [
     "path",
     {
@@ -28066,31 +28090,7 @@ const __iconNode$l = [
   ["path", { d: "M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7", key: "1ydtos" }],
   ["path", { d: "M7 3v4a1 1 0 0 0 1 1h7", key: "t51u73" }]
 ];
-const Save = createLucideIcon("save", __iconNode$l);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$k = [
-  ["path", { d: "m21 21-4.34-4.34", key: "14j7rj" }],
-  ["circle", { cx: "11", cy: "11", r: "8", key: "4ej97u" }]
-];
-const Search = createLucideIcon("search", __iconNode$k);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$j = [
-  ["rect", { width: "20", height: "8", x: "2", y: "2", rx: "2", ry: "2", key: "ngkwjq" }],
-  ["rect", { width: "20", height: "8", x: "2", y: "14", rx: "2", ry: "2", key: "iecqi9" }],
-  ["line", { x1: "6", x2: "6.01", y1: "6", y2: "6", key: "16zg32" }],
-  ["line", { x1: "6", x2: "6.01", y1: "18", y2: "18", key: "nzw8ys" }]
-];
-const Server = createLucideIcon("server", __iconNode$j);
+const Save = createLucideIcon("save", __iconNode$j);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -28098,16 +28098,10 @@ const Server = createLucideIcon("server", __iconNode$j);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$i = [
-  [
-    "path",
-    {
-      d: "M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z",
-      key: "1qme2f"
-    }
-  ],
-  ["circle", { cx: "12", cy: "12", r: "3", key: "1v7zrd" }]
+  ["path", { d: "m21 21-4.34-4.34", key: "14j7rj" }],
+  ["circle", { cx: "11", cy: "11", r: "8", key: "4ej97u" }]
 ];
-const Settings = createLucideIcon("settings", __iconNode$i);
+const Search = createLucideIcon("search", __iconNode$i);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -28115,17 +28109,12 @@ const Settings = createLucideIcon("settings", __iconNode$i);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$h = [
-  [
-    "path",
-    {
-      d: "M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z",
-      key: "oel41y"
-    }
-  ],
-  ["path", { d: "M12 8v4", key: "1got3b" }],
-  ["path", { d: "M12 16h.01", key: "1drbdi" }]
+  ["rect", { width: "20", height: "8", x: "2", y: "2", rx: "2", ry: "2", key: "ngkwjq" }],
+  ["rect", { width: "20", height: "8", x: "2", y: "14", rx: "2", ry: "2", key: "iecqi9" }],
+  ["line", { x1: "6", x2: "6.01", y1: "6", y2: "6", key: "16zg32" }],
+  ["line", { x1: "6", x2: "6.01", y1: "18", y2: "18", key: "nzw8ys" }]
 ];
-const ShieldAlert = createLucideIcon("shield-alert", __iconNode$h);
+const Server = createLucideIcon("server", __iconNode$h);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -28140,9 +28129,10 @@ const __iconNode$g = [
       key: "oel41y"
     }
   ],
-  ["path", { d: "m9 12 2 2 4-4", key: "dzmm74" }]
+  ["path", { d: "M12 8v4", key: "1got3b" }],
+  ["path", { d: "M12 16h.01", key: "1drbdi" }]
 ];
-const ShieldCheck = createLucideIcon("shield-check", __iconNode$g);
+const ShieldAlert = createLucideIcon("shield-alert", __iconNode$g);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -28150,11 +28140,16 @@ const ShieldCheck = createLucideIcon("shield-check", __iconNode$g);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$f = [
-  ["path", { d: "M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z", key: "hou9p0" }],
-  ["path", { d: "M3 6h18", key: "d0wm0j" }],
-  ["path", { d: "M16 10a4 4 0 0 1-8 0", key: "1ltviw" }]
+  [
+    "path",
+    {
+      d: "M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z",
+      key: "oel41y"
+    }
+  ],
+  ["path", { d: "m9 12 2 2 4-4", key: "dzmm74" }]
 ];
-const ShoppingBag = createLucideIcon("shopping-bag", __iconNode$f);
+const ShieldCheck = createLucideIcon("shield-check", __iconNode$f);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -28162,6 +28157,18 @@ const ShoppingBag = createLucideIcon("shopping-bag", __iconNode$f);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$e = [
+  ["path", { d: "M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z", key: "hou9p0" }],
+  ["path", { d: "M3 6h18", key: "d0wm0j" }],
+  ["path", { d: "M16 10a4 4 0 0 1-8 0", key: "1ltviw" }]
+];
+const ShoppingBag = createLucideIcon("shopping-bag", __iconNode$e);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$d = [
   ["circle", { cx: "8", cy: "21", r: "1", key: "jimo8o" }],
   ["circle", { cx: "19", cy: "21", r: "1", key: "13723u" }],
   [
@@ -28172,14 +28179,14 @@ const __iconNode$e = [
     }
   ]
 ];
-const ShoppingCart = createLucideIcon("shopping-cart", __iconNode$e);
+const ShoppingCart = createLucideIcon("shopping-cart", __iconNode$d);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$d = [
+const __iconNode$c = [
   [
     "path",
     {
@@ -28192,14 +28199,14 @@ const __iconNode$d = [
   ["path", { d: "M4 17v2", key: "vumght" }],
   ["path", { d: "M5 18H3", key: "zchphs" }]
 ];
-const Sparkles = createLucideIcon("sparkles", __iconNode$d);
+const Sparkles = createLucideIcon("sparkles", __iconNode$c);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$c = [
+const __iconNode$b = [
   ["path", { d: "M2 10s3-3 3-8", key: "3xiif0" }],
   ["path", { d: "M22 10s-3-3-3-8", key: "ioaa5q" }],
   ["path", { d: "M10 2c0 4.4-3.6 8-8 8", key: "16fkpi" }],
@@ -28210,21 +28217,7 @@ const __iconNode$c = [
   ["path", { d: "M2 22v-1a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1", key: "1vsc2m" }],
   ["path", { d: "M14 22v-1a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1", key: "hrha4u" }]
 ];
-const Theater = createLucideIcon("theater", __iconNode$c);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$b = [
-  ["path", { d: "M3 6h18", key: "d0wm0j" }],
-  ["path", { d: "M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6", key: "4alrt4" }],
-  ["path", { d: "M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2", key: "v07s0e" }],
-  ["line", { x1: "10", x2: "10", y1: "11", y2: "17", key: "1uufr5" }],
-  ["line", { x1: "14", x2: "14", y1: "11", y2: "17", key: "xtxkd" }]
-];
-const Trash2 = createLucideIcon("trash-2", __iconNode$b);
+const Theater = createLucideIcon("theater", __iconNode$b);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -28472,11 +28465,11 @@ const CryptoPaymentError = Variant({
   "invalidConfig": Text,
   "belowMinimumOrder": Nat
 });
-const Result_11 = Variant({
+const Result_13 = Variant({
   "ok": CryptoPaymentStatus,
   "err": CryptoPaymentError
 });
-const Result_18 = Variant({
+const Result_20 = Variant({
   "ok": PaymentStatus$1,
   "err": PaymentServiceError
 });
@@ -28499,7 +28492,7 @@ const CheckoutSession = Record({
   "url": Opt(Text),
   "reference": Text
 });
-const Result_17 = Variant({
+const Result_19 = Variant({
   "ok": CheckoutSession,
   "err": PaymentServiceError
 });
@@ -28544,7 +28537,7 @@ const PaymentError = Variant({
   "invalidOrder": Null,
   "paymentFailed": Text
 });
-const Result_16 = Variant({
+const Result_18 = Variant({
   "ok": CheckoutSession,
   "err": PaymentError
 });
@@ -28571,7 +28564,7 @@ const OrderError = Variant({
   "paymentFailed": Text,
   "invalidQuantity": Null
 });
-const Result_15 = Variant({ "ok": Order, "err": OrderError });
+const Result_17 = Variant({ "ok": Order, "err": OrderError });
 const ProductVariant = Record({
   "id": Text,
   "inventory": Nat,
@@ -28622,7 +28615,7 @@ const RecoveryError = Variant({
   "unauthorized": Null,
   "invalidConfig": Text
 });
-const Result_14 = Variant({
+const Result_16 = Variant({
   "ok": RecheckResult,
   "err": RecoveryError
 });
@@ -28644,7 +28637,7 @@ const ConsentError = Variant({
   "unauthorized": Null,
   "invalidResponse": Text
 });
-const Result_13 = Variant({
+const Result_15 = Variant({
   "ok": ConsentListExport,
   "err": ConsentError
 });
@@ -28671,11 +28664,11 @@ const DepositInfo = Record({
   "address": Principal2,
   "amountDue": Nat
 });
-const Result_12 = Variant({
+const Result_14 = Variant({
   "ok": DepositInfo,
   "err": CryptoPaymentError
 });
-const Result_10 = Variant({ "ok": Nat, "err": RecoveryError });
+const Result_12 = Variant({ "ok": Nat, "err": RecoveryError });
 const PaymentServiceConfigView = Record({
   "url": Text,
   "tokenSet": Bool
@@ -28687,7 +28680,7 @@ const ResumeInfo = Record({
   "deposit": Opt(DepositInfo),
   "remainingNs": Int
 });
-const Result_9 = Variant({
+const Result_11 = Variant({
   "ok": ResumeInfo,
   "err": RecoveryError
 });
@@ -28702,11 +28695,11 @@ const SweepError = Variant({
   "unauthorized": Null,
   "invalidConfig": Text
 });
-const Result_8 = Variant({
+const Result_10 = Variant({
   "ok": SubaccountBalanceResult,
   "err": SweepError
 });
-const Result_7 = Variant({ "ok": Null, "err": PaymentError });
+const Result_9 = Variant({ "ok": Null, "err": PaymentError });
 const LatePayment = Record({
   "token": Token$1,
   "reference": Text,
@@ -28729,6 +28722,36 @@ const OrderRecoveryView = Record({
   "amountOwed": Nat,
   "liveBalance": Nat
 });
+const Discipline$1 = Variant({
+  "music": Null,
+  "other": Null,
+  "video": Null,
+  "visualArt": Null,
+  "writing": Null
+});
+const SubmissionRecord = Record({
+  "id": Text,
+  "discipline": Discipline$1,
+  "link": Text,
+  "name": Text,
+  "submittedAt": Int,
+  "email": Text,
+  "message": Opt(Text),
+  "marketingConsentAt": Opt(Int),
+  "marketingConsent": Bool
+});
+const SubmissionError = Variant({
+  "invalidInput": Text,
+  "notConfigured": Text,
+  "honeypot": Null,
+  "rateLimited": Null,
+  "outcallFailed": Text,
+  "invalidResponse": Text
+});
+const Result_8 = Variant({
+  "ok": Vec(SubmissionRecord),
+  "err": SubmissionError
+});
 const EmailError = Variant({
   "notConfigured": Text,
   "notShippable": Null,
@@ -28737,7 +28760,21 @@ const EmailError = Variant({
   "unauthorized": Null,
   "invalidResponse": Text
 });
-const Result_6 = Variant({ "ok": Null, "err": EmailError });
+const Result_7 = Variant({ "ok": Null, "err": EmailError });
+const SubmissionInput = Record({
+  "discipline": Discipline$1,
+  "link": Text,
+  "name": Text,
+  "email": Text,
+  "message": Opt(Text),
+  "honeypot": Text,
+  "marketingConsentAt": Opt(Int),
+  "marketingConsent": Bool
+});
+const Result_6 = Variant({
+  "ok": Null,
+  "err": SubmissionError
+});
 const Result_5 = Variant({
   "ok": Nat,
   "err": CryptoPaymentError
@@ -28770,9 +28807,9 @@ Service({
     ["query"]
   ),
   "cancelCardOrder": Func([Text], [Result_1], []),
-  "checkCryptoPayment": Func([Text], [Result_11], []),
+  "checkCryptoPayment": Func([Text], [Result_13], []),
   "claimInitialAdmin": Func([], [Bool], []),
-  "confirmCardPayment": Func([Text], [Result_18], []),
+  "confirmCardPayment": Func([Text], [Result_20], []),
   "consentServiceTransform": Func(
     [TransformationInput],
     [TransformationOutput],
@@ -28780,11 +28817,11 @@ Service({
   ),
   "createCardCheckoutSession": Func(
     [Text, Text, Text],
-    [Result_17],
+    [Result_19],
     []
   ),
-  "createCheckoutSession": Func([Order], [Result_16], []),
-  "createOrder": Func([CreateOrderInput], [Result_15], []),
+  "createCheckoutSession": Func([Order], [Result_18], []),
+  "createOrder": Func([CreateOrderInput], [Result_17], []),
   "createProduct": Func([Product], [Bool], []),
   "emailTransform": Func(
     [TransformationInput],
@@ -28792,17 +28829,17 @@ Service({
     ["query"]
   ),
   "execute": Func([Text], [Result__1], ["query"]),
-  "forceRecheckPayment": Func([Text], [Result_14], []),
+  "forceRecheckPayment": Func([Text], [Result_16], []),
   "forceSweepOrder": Func([Text], [Result_4], []),
   "getApiDoc": Func([], [Text], ["query"]),
   "getCanisterId": Func([], [Principal2], ["query"]),
-  "getConsentListCsv": Func([], [Result_13], []),
+  "getConsentListCsv": Func([], [Result_15], []),
   "getCryptoConfig": Func([], [CryptoConfigView], ["query"]),
-  "getCryptoDepositInfo": Func([Text], [Result_12], ["query"]),
-  "getCryptoPaymentStatus": Func([Text], [Result_11], ["query"]),
+  "getCryptoDepositInfo": Func([Text], [Result_14], ["query"]),
+  "getCryptoPaymentStatus": Func([Text], [Result_13], ["query"]),
   "getCycleBalance": Func([], [Nat], ["query"]),
   "getDashboardData": Func([], [Text], []),
-  "getDefaultSubaccountBalance": Func([], [Result_10], []),
+  "getDefaultSubaccountBalance": Func([], [Result_12], []),
   "getMinimumOrder": Func([], [Nat], ["query"]),
   "getMyOrders": Func([], [Vec(Order)], ["query"]),
   "getNAKPrice": Func([], [Text], []),
@@ -28814,19 +28851,20 @@ Service({
   ),
   "getPaymentStatus": Func([Text], [PaymentStatus$1], []),
   "getProduct": Func([Text], [Opt(Product)], ["query"]),
-  "getResumeInfo": Func([Text], [Result_9], ["query"]),
-  "getSubaccountBalance": Func([Nat], [Result_8], []),
+  "getResumeInfo": Func([Text], [Result_11], ["query"]),
+  "getSubaccountBalance": Func([Nat], [Result_10], []),
   "getTokenImage": Func([Text, Text], [Text], []),
   "getTokenProfile": Func([Text, Text], [Text], []),
   "getTreasuryTokens": Func([], [Text], []),
-  "handlePaymentConfirmation": Func([Text], [Result_7], []),
+  "handlePaymentConfirmation": Func([Text], [Result_9], []),
   "isAdmin": Func([], [Bool], ["query"]),
   "listAdmins": Func([], [Vec(Principal2)], []),
   "listLatePayments": Func([], [Vec(LatePayment)], []),
   "listOrdersForRecovery": Func([], [Vec(OrderRecoveryView)], []),
   "listProducts": Func([], [Vec(Product)], ["query"]),
+  "listSubmissions": Func([], [Result_8], []),
   "markLatePaymentReviewed": Func([Text], [Bool], []),
-  "markOrderShipped": Func([Text, Opt(Text)], [Result_6], []),
+  "markOrderShipped": Func([Text, Opt(Text)], [Result_7], []),
   "paymentServiceTransform": Func(
     [TransformationInput],
     [TransformationOutput],
@@ -28834,10 +28872,16 @@ Service({
   ),
   "releaseExpiredOrders": Func([], [Nat], []),
   "removeAdmin": Func([Principal2], [Bool], []),
-  "resendConfirmationEmail": Func([Text], [Result_6], []),
+  "resendConfirmationEmail": Func([Text], [Result_7], []),
   "schema": Func([], [Text], ["query"]),
   "startVerificationTimer": Func([], [Bool], []),
   "stopVerificationTimer": Func([], [Bool], []),
+  "submissionServiceTransform": Func(
+    [TransformationInput],
+    [TransformationOutput],
+    ["query"]
+  ),
+  "submitSubmission": Func([SubmissionInput], [Result_6], []),
   "sweepCryptoToTreasury": Func([Text], [Result_5], []),
   "sweepDefaultSubaccount": Func([], [Result_4], []),
   "sweepSubaccount": Func([Nat], [Result_3], []),
@@ -28927,7 +28971,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "unauthorized": IDL2.Null,
     "invalidResponse": IDL2.Text
   });
-  const Result_19 = IDL2.Variant({
+  const Result_110 = IDL2.Variant({
     "ok": IDL2.Null,
     "err": PaymentServiceError2
   });
@@ -28944,11 +28988,11 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "invalidConfig": IDL2.Text,
     "belowMinimumOrder": IDL2.Nat
   });
-  const Result_112 = IDL2.Variant({
+  const Result_132 = IDL2.Variant({
     "ok": CryptoPaymentStatus2,
     "err": CryptoPaymentError2
   });
-  const Result_182 = IDL2.Variant({
+  const Result_202 = IDL2.Variant({
     "ok": PaymentStatus2,
     "err": PaymentServiceError2
   });
@@ -28971,7 +29015,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "url": IDL2.Opt(IDL2.Text),
     "reference": IDL2.Text
   });
-  const Result_172 = IDL2.Variant({
+  const Result_192 = IDL2.Variant({
     "ok": CheckoutSession2,
     "err": PaymentServiceError2
   });
@@ -29016,7 +29060,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "invalidOrder": IDL2.Null,
     "paymentFailed": IDL2.Text
   });
-  const Result_162 = IDL2.Variant({
+  const Result_182 = IDL2.Variant({
     "ok": CheckoutSession2,
     "err": PaymentError2
   });
@@ -29043,7 +29087,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "paymentFailed": IDL2.Text,
     "invalidQuantity": IDL2.Null
   });
-  const Result_152 = IDL2.Variant({ "ok": Order2, "err": OrderError2 });
+  const Result_172 = IDL2.Variant({ "ok": Order2, "err": OrderError2 });
   const ProductVariant2 = IDL2.Record({
     "id": IDL2.Text,
     "inventory": IDL2.Nat,
@@ -29094,7 +29138,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "unauthorized": IDL2.Null,
     "invalidConfig": IDL2.Text
   });
-  const Result_142 = IDL2.Variant({
+  const Result_162 = IDL2.Variant({
     "ok": RecheckResult2,
     "err": RecoveryError2
   });
@@ -29113,7 +29157,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "unauthorized": IDL2.Null,
     "invalidResponse": IDL2.Text
   });
-  const Result_132 = IDL2.Variant({
+  const Result_152 = IDL2.Variant({
     "ok": ConsentListExport2,
     "err": ConsentError2
   });
@@ -29140,11 +29184,11 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "address": IDL2.Principal,
     "amountDue": IDL2.Nat
   });
-  const Result_122 = IDL2.Variant({
+  const Result_142 = IDL2.Variant({
     "ok": DepositInfo2,
     "err": CryptoPaymentError2
   });
-  const Result_102 = IDL2.Variant({ "ok": IDL2.Nat, "err": RecoveryError2 });
+  const Result_122 = IDL2.Variant({ "ok": IDL2.Nat, "err": RecoveryError2 });
   const PaymentServiceConfigView2 = IDL2.Record({
     "url": IDL2.Text,
     "tokenSet": IDL2.Bool
@@ -29156,7 +29200,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "deposit": IDL2.Opt(DepositInfo2),
     "remainingNs": IDL2.Int
   });
-  const Result_92 = IDL2.Variant({ "ok": ResumeInfo2, "err": RecoveryError2 });
+  const Result_112 = IDL2.Variant({ "ok": ResumeInfo2, "err": RecoveryError2 });
   const SubaccountBalanceResult2 = IDL2.Record({
     "balance": IDL2.Nat,
     "subaccountHex": IDL2.Text,
@@ -29168,11 +29212,11 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "unauthorized": IDL2.Null,
     "invalidConfig": IDL2.Text
   });
-  const Result_82 = IDL2.Variant({
+  const Result_102 = IDL2.Variant({
     "ok": SubaccountBalanceResult2,
     "err": SweepError2
   });
-  const Result_72 = IDL2.Variant({ "ok": IDL2.Null, "err": PaymentError2 });
+  const Result_92 = IDL2.Variant({ "ok": IDL2.Null, "err": PaymentError2 });
   const LatePayment2 = IDL2.Record({
     "token": Token2,
     "reference": IDL2.Text,
@@ -29195,6 +29239,36 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "amountOwed": IDL2.Nat,
     "liveBalance": IDL2.Nat
   });
+  const Discipline2 = IDL2.Variant({
+    "music": IDL2.Null,
+    "other": IDL2.Null,
+    "video": IDL2.Null,
+    "visualArt": IDL2.Null,
+    "writing": IDL2.Null
+  });
+  const SubmissionRecord2 = IDL2.Record({
+    "id": IDL2.Text,
+    "discipline": Discipline2,
+    "link": IDL2.Text,
+    "name": IDL2.Text,
+    "submittedAt": IDL2.Int,
+    "email": IDL2.Text,
+    "message": IDL2.Opt(IDL2.Text),
+    "marketingConsentAt": IDL2.Opt(IDL2.Int),
+    "marketingConsent": IDL2.Bool
+  });
+  const SubmissionError2 = IDL2.Variant({
+    "invalidInput": IDL2.Text,
+    "notConfigured": IDL2.Text,
+    "honeypot": IDL2.Null,
+    "rateLimited": IDL2.Null,
+    "outcallFailed": IDL2.Text,
+    "invalidResponse": IDL2.Text
+  });
+  const Result_82 = IDL2.Variant({
+    "ok": IDL2.Vec(SubmissionRecord2),
+    "err": SubmissionError2
+  });
   const EmailError2 = IDL2.Variant({
     "notConfigured": IDL2.Text,
     "notShippable": IDL2.Null,
@@ -29203,7 +29277,18 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "unauthorized": IDL2.Null,
     "invalidResponse": IDL2.Text
   });
-  const Result_62 = IDL2.Variant({ "ok": IDL2.Null, "err": EmailError2 });
+  const Result_72 = IDL2.Variant({ "ok": IDL2.Null, "err": EmailError2 });
+  const SubmissionInput2 = IDL2.Record({
+    "discipline": Discipline2,
+    "link": IDL2.Text,
+    "name": IDL2.Text,
+    "email": IDL2.Text,
+    "message": IDL2.Opt(IDL2.Text),
+    "honeypot": IDL2.Text,
+    "marketingConsentAt": IDL2.Opt(IDL2.Int),
+    "marketingConsent": IDL2.Bool
+  });
+  const Result_62 = IDL2.Variant({ "ok": IDL2.Null, "err": SubmissionError2 });
   const Result_52 = IDL2.Variant({ "ok": IDL2.Nat, "err": CryptoPaymentError2 });
   const SweepSubaccountResult2 = IDL2.Record({
     "error": IDL2.Opt(IDL2.Text),
@@ -29229,10 +29314,10 @@ const idlFactory = ({ IDL: IDL2 }) => {
       [IDL2.Vec(AdminOrderView2)],
       ["query"]
     ),
-    "cancelCardOrder": IDL2.Func([IDL2.Text], [Result_19], []),
-    "checkCryptoPayment": IDL2.Func([IDL2.Text], [Result_112], []),
+    "cancelCardOrder": IDL2.Func([IDL2.Text], [Result_110], []),
+    "checkCryptoPayment": IDL2.Func([IDL2.Text], [Result_132], []),
     "claimInitialAdmin": IDL2.Func([], [IDL2.Bool], []),
-    "confirmCardPayment": IDL2.Func([IDL2.Text], [Result_182], []),
+    "confirmCardPayment": IDL2.Func([IDL2.Text], [Result_202], []),
     "consentServiceTransform": IDL2.Func(
       [TransformationInput2],
       [TransformationOutput2],
@@ -29240,11 +29325,11 @@ const idlFactory = ({ IDL: IDL2 }) => {
     ),
     "createCardCheckoutSession": IDL2.Func(
       [IDL2.Text, IDL2.Text, IDL2.Text],
-      [Result_172],
+      [Result_192],
       []
     ),
-    "createCheckoutSession": IDL2.Func([Order2], [Result_162], []),
-    "createOrder": IDL2.Func([CreateOrderInput2], [Result_152], []),
+    "createCheckoutSession": IDL2.Func([Order2], [Result_182], []),
+    "createOrder": IDL2.Func([CreateOrderInput2], [Result_172], []),
     "createProduct": IDL2.Func([Product2], [IDL2.Bool], []),
     "emailTransform": IDL2.Func(
       [TransformationInput2],
@@ -29252,17 +29337,17 @@ const idlFactory = ({ IDL: IDL2 }) => {
       ["query"]
     ),
     "execute": IDL2.Func([IDL2.Text], [Result__12], ["query"]),
-    "forceRecheckPayment": IDL2.Func([IDL2.Text], [Result_142], []),
+    "forceRecheckPayment": IDL2.Func([IDL2.Text], [Result_162], []),
     "forceSweepOrder": IDL2.Func([IDL2.Text], [Result_42], []),
     "getApiDoc": IDL2.Func([], [IDL2.Text], ["query"]),
     "getCanisterId": IDL2.Func([], [IDL2.Principal], ["query"]),
-    "getConsentListCsv": IDL2.Func([], [Result_132], []),
+    "getConsentListCsv": IDL2.Func([], [Result_152], []),
     "getCryptoConfig": IDL2.Func([], [CryptoConfigView2], ["query"]),
-    "getCryptoDepositInfo": IDL2.Func([IDL2.Text], [Result_122], ["query"]),
-    "getCryptoPaymentStatus": IDL2.Func([IDL2.Text], [Result_112], ["query"]),
+    "getCryptoDepositInfo": IDL2.Func([IDL2.Text], [Result_142], ["query"]),
+    "getCryptoPaymentStatus": IDL2.Func([IDL2.Text], [Result_132], ["query"]),
     "getCycleBalance": IDL2.Func([], [IDL2.Nat], ["query"]),
     "getDashboardData": IDL2.Func([], [IDL2.Text], []),
-    "getDefaultSubaccountBalance": IDL2.Func([], [Result_102], []),
+    "getDefaultSubaccountBalance": IDL2.Func([], [Result_122], []),
     "getMinimumOrder": IDL2.Func([], [IDL2.Nat], ["query"]),
     "getMyOrders": IDL2.Func([], [IDL2.Vec(Order2)], ["query"]),
     "getNAKPrice": IDL2.Func([], [IDL2.Text], []),
@@ -29274,21 +29359,22 @@ const idlFactory = ({ IDL: IDL2 }) => {
     ),
     "getPaymentStatus": IDL2.Func([IDL2.Text], [PaymentStatus2], []),
     "getProduct": IDL2.Func([IDL2.Text], [IDL2.Opt(Product2)], ["query"]),
-    "getResumeInfo": IDL2.Func([IDL2.Text], [Result_92], ["query"]),
-    "getSubaccountBalance": IDL2.Func([IDL2.Nat], [Result_82], []),
+    "getResumeInfo": IDL2.Func([IDL2.Text], [Result_112], ["query"]),
+    "getSubaccountBalance": IDL2.Func([IDL2.Nat], [Result_102], []),
     "getTokenImage": IDL2.Func([IDL2.Text, IDL2.Text], [IDL2.Text], []),
     "getTokenProfile": IDL2.Func([IDL2.Text, IDL2.Text], [IDL2.Text], []),
     "getTreasuryTokens": IDL2.Func([], [IDL2.Text], []),
-    "handlePaymentConfirmation": IDL2.Func([IDL2.Text], [Result_72], []),
+    "handlePaymentConfirmation": IDL2.Func([IDL2.Text], [Result_92], []),
     "isAdmin": IDL2.Func([], [IDL2.Bool], ["query"]),
     "listAdmins": IDL2.Func([], [IDL2.Vec(IDL2.Principal)], []),
     "listLatePayments": IDL2.Func([], [IDL2.Vec(LatePayment2)], []),
     "listOrdersForRecovery": IDL2.Func([], [IDL2.Vec(OrderRecoveryView2)], []),
     "listProducts": IDL2.Func([], [IDL2.Vec(Product2)], ["query"]),
+    "listSubmissions": IDL2.Func([], [Result_82], []),
     "markLatePaymentReviewed": IDL2.Func([IDL2.Text], [IDL2.Bool], []),
     "markOrderShipped": IDL2.Func(
       [IDL2.Text, IDL2.Opt(IDL2.Text)],
-      [Result_62],
+      [Result_72],
       []
     ),
     "paymentServiceTransform": IDL2.Func(
@@ -29298,10 +29384,16 @@ const idlFactory = ({ IDL: IDL2 }) => {
     ),
     "releaseExpiredOrders": IDL2.Func([], [IDL2.Nat], []),
     "removeAdmin": IDL2.Func([IDL2.Principal], [IDL2.Bool], []),
-    "resendConfirmationEmail": IDL2.Func([IDL2.Text], [Result_62], []),
+    "resendConfirmationEmail": IDL2.Func([IDL2.Text], [Result_72], []),
     "schema": IDL2.Func([], [IDL2.Text], ["query"]),
     "startVerificationTimer": IDL2.Func([], [IDL2.Bool], []),
     "stopVerificationTimer": IDL2.Func([], [IDL2.Bool], []),
+    "submissionServiceTransform": IDL2.Func(
+      [TransformationInput2],
+      [TransformationOutput2],
+      ["query"]
+    ),
+    "submitSubmission": IDL2.Func([SubmissionInput2], [Result_62], []),
     "sweepCryptoToTreasury": IDL2.Func([IDL2.Text], [Result_52], []),
     "sweepDefaultSubaccount": IDL2.Func([], [Result_42], []),
     "sweepSubaccount": IDL2.Func([IDL2.Nat], [Result_32], []),
@@ -29317,8 +29409,8 @@ const idlFactory = ({ IDL: IDL2 }) => {
       []
     ),
     "updateMinimumOrder": IDL2.Func([IDL2.Nat], [Result2], []),
-    "updatePaymentServiceToken": IDL2.Func([IDL2.Text], [Result_19], []),
-    "updatePaymentServiceUrl": IDL2.Func([IDL2.Text], [Result_19], []),
+    "updatePaymentServiceToken": IDL2.Func([IDL2.Text], [Result_110], []),
+    "updatePaymentServiceUrl": IDL2.Func([IDL2.Text], [Result_110], []),
     "updateProduct": IDL2.Func([Product2], [IDL2.Bool], []),
     "updateTreasury": IDL2.Func(
       [IDL2.Principal, IDL2.Opt(IDL2.Vec(IDL2.Nat8))],
@@ -29341,6 +29433,14 @@ function candid_none() {
 function record_opt_to_undefined(arg) {
   return arg == null ? void 0 : arg;
 }
+var Discipline = /* @__PURE__ */ ((Discipline2) => {
+  Discipline2["music"] = "music";
+  Discipline2["other"] = "other";
+  Discipline2["video"] = "video";
+  Discipline2["visualArt"] = "visualArt";
+  Discipline2["writing"] = "writing";
+  return Discipline2;
+})(Discipline || {});
 var PaymentMethod = /* @__PURE__ */ ((PaymentMethod2) => {
   PaymentMethod2["crypto_icp"] = "crypto_icp";
   PaymentMethod2["card_stripe"] = "card_stripe";
@@ -29427,14 +29527,14 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.checkCryptoPayment(arg0);
-        return from_candid_Result_11_n19(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_13_n19(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.checkCryptoPayment(arg0);
-      return from_candid_Result_11_n19(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_13_n19(this._uploadFile, this._downloadFile, result);
     }
   }
   async claimInitialAdmin() {
@@ -29455,14 +29555,14 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.confirmCardPayment(arg0);
-        return from_candid_Result_18_n23(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_20_n23(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.confirmCardPayment(arg0);
-      return from_candid_Result_18_n23(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_20_n23(this._uploadFile, this._downloadFile, result);
     }
   }
   async consentServiceTransform(arg0) {
@@ -29483,42 +29583,42 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.createCardCheckoutSession(arg0, arg1, arg2);
-        return from_candid_Result_17_n25(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_19_n25(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.createCardCheckoutSession(arg0, arg1, arg2);
-      return from_candid_Result_17_n25(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_19_n25(this._uploadFile, this._downloadFile, result);
     }
   }
   async createCheckoutSession(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.createCheckoutSession(to_candid_Order_n29(this._uploadFile, this._downloadFile, arg0));
-        return from_candid_Result_16_n39(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_18_n39(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.createCheckoutSession(to_candid_Order_n29(this._uploadFile, this._downloadFile, arg0));
-      return from_candid_Result_16_n39(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_18_n39(this._uploadFile, this._downloadFile, result);
     }
   }
   async createOrder(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.createOrder(to_candid_CreateOrderInput_n43(this._uploadFile, this._downloadFile, arg0));
-        return from_candid_Result_15_n45(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_17_n45(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.createOrder(to_candid_CreateOrderInput_n43(this._uploadFile, this._downloadFile, arg0));
-      return from_candid_Result_15_n45(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_17_n45(this._uploadFile, this._downloadFile, result);
     }
   }
   async createProduct(arg0) {
@@ -29567,14 +29667,14 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.forceRecheckPayment(arg0);
-        return from_candid_Result_14_n65(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_16_n65(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.forceRecheckPayment(arg0);
-      return from_candid_Result_14_n65(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_16_n65(this._uploadFile, this._downloadFile, result);
     }
   }
   async forceSweepOrder(arg0) {
@@ -29623,14 +29723,14 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.getConsentListCsv();
-        return from_candid_Result_13_n76(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_15_n76(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getConsentListCsv();
-      return from_candid_Result_13_n76(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_15_n76(this._uploadFile, this._downloadFile, result);
     }
   }
   async getCryptoConfig() {
@@ -29651,28 +29751,28 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.getCryptoDepositInfo(arg0);
-        return from_candid_Result_12_n83(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_14_n83(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getCryptoDepositInfo(arg0);
-      return from_candid_Result_12_n83(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_14_n83(this._uploadFile, this._downloadFile, result);
     }
   }
   async getCryptoPaymentStatus(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.getCryptoPaymentStatus(arg0);
-        return from_candid_Result_11_n19(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_13_n19(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getCryptoPaymentStatus(arg0);
-      return from_candid_Result_11_n19(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_13_n19(this._uploadFile, this._downloadFile, result);
     }
   }
   async getCycleBalance() {
@@ -29707,14 +29807,14 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.getDefaultSubaccountBalance();
-        return from_candid_Result_10_n89(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_12_n89(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getDefaultSubaccountBalance();
-      return from_candid_Result_10_n89(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_12_n89(this._uploadFile, this._downloadFile, result);
     }
   }
   async getMinimumOrder() {
@@ -29819,28 +29919,28 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.getResumeInfo(arg0);
-        return from_candid_Result_9_n94(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_11_n94(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getResumeInfo(arg0);
-      return from_candid_Result_9_n94(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_11_n94(this._uploadFile, this._downloadFile, result);
     }
   }
   async getSubaccountBalance(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.getSubaccountBalance(arg0);
-        return from_candid_Result_8_n99(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_10_n99(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getSubaccountBalance(arg0);
-      return from_candid_Result_8_n99(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_10_n99(this._uploadFile, this._downloadFile, result);
     }
   }
   async getTokenImage(arg0, arg1) {
@@ -29889,14 +29989,14 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.handlePaymentConfirmation(arg0);
-        return from_candid_Result_7_n103(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_9_n103(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.handlePaymentConfirmation(arg0);
-      return from_candid_Result_7_n103(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_9_n103(this._uploadFile, this._downloadFile, result);
     }
   }
   async isAdmin() {
@@ -29969,6 +30069,20 @@ class Backend {
       return result;
     }
   }
+  async listSubmissions() {
+    if (this.processError) {
+      try {
+        const result = await this.actor.listSubmissions();
+        return from_candid_Result_8_n112(this._uploadFile, this._downloadFile, result);
+      } catch (e) {
+        this.processError(e);
+        throw new Error("unreachable");
+      }
+    } else {
+      const result = await this.actor.listSubmissions();
+      return from_candid_Result_8_n112(this._uploadFile, this._downloadFile, result);
+    }
+  }
   async markLatePaymentReviewed(arg0) {
     if (this.processError) {
       try {
@@ -29986,15 +30100,15 @@ class Backend {
   async markOrderShipped(arg0, arg1) {
     if (this.processError) {
       try {
-        const result = await this.actor.markOrderShipped(arg0, to_candid_opt_n112(this._uploadFile, this._downloadFile, arg1));
-        return from_candid_Result_6_n113(this._uploadFile, this._downloadFile, result);
+        const result = await this.actor.markOrderShipped(arg0, to_candid_opt_n121(this._uploadFile, this._downloadFile, arg1));
+        return from_candid_Result_7_n122(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
-      const result = await this.actor.markOrderShipped(arg0, to_candid_opt_n112(this._uploadFile, this._downloadFile, arg1));
-      return from_candid_Result_6_n113(this._uploadFile, this._downloadFile, result);
+      const result = await this.actor.markOrderShipped(arg0, to_candid_opt_n121(this._uploadFile, this._downloadFile, arg1));
+      return from_candid_Result_7_n122(this._uploadFile, this._downloadFile, result);
     }
   }
   async paymentServiceTransform(arg0) {
@@ -30043,14 +30157,14 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.resendConfirmationEmail(arg0);
-        return from_candid_Result_6_n113(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_7_n122(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.resendConfirmationEmail(arg0);
-      return from_candid_Result_6_n113(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_7_n122(this._uploadFile, this._downloadFile, result);
     }
   }
   async schema() {
@@ -30095,18 +30209,46 @@ class Backend {
       return result;
     }
   }
+  async submissionServiceTransform(arg0) {
+    if (this.processError) {
+      try {
+        const result = await this.actor.submissionServiceTransform(arg0);
+        return result;
+      } catch (e) {
+        this.processError(e);
+        throw new Error("unreachable");
+      }
+    } else {
+      const result = await this.actor.submissionServiceTransform(arg0);
+      return result;
+    }
+  }
+  async submitSubmission(arg0) {
+    if (this.processError) {
+      try {
+        const result = await this.actor.submitSubmission(to_candid_SubmissionInput_n126(this._uploadFile, this._downloadFile, arg0));
+        return from_candid_Result_6_n130(this._uploadFile, this._downloadFile, result);
+      } catch (e) {
+        this.processError(e);
+        throw new Error("unreachable");
+      }
+    } else {
+      const result = await this.actor.submitSubmission(to_candid_SubmissionInput_n126(this._uploadFile, this._downloadFile, arg0));
+      return from_candid_Result_6_n130(this._uploadFile, this._downloadFile, result);
+    }
+  }
   async sweepCryptoToTreasury(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.sweepCryptoToTreasury(arg0);
-        return from_candid_Result_5_n117(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_5_n132(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.sweepCryptoToTreasury(arg0);
-      return from_candid_Result_5_n117(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_5_n132(this._uploadFile, this._downloadFile, result);
     }
   }
   async sweepDefaultSubaccount() {
@@ -30127,14 +30269,14 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.sweepSubaccount(arg0);
-        return from_candid_Result_3_n119(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_3_n134(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.sweepSubaccount(arg0);
-      return from_candid_Result_3_n119(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_3_n134(this._uploadFile, this._downloadFile, result);
     }
   }
   async transform(arg0) {
@@ -30155,42 +30297,42 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.unsubscribe(arg0);
-        return from_candid_Result_2_n123(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_2_n138(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.unsubscribe(arg0);
-      return from_candid_Result_2_n123(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_2_n138(this._uploadFile, this._downloadFile, result);
     }
   }
   async updateLedgerConfig(arg0, arg1, arg2, arg3) {
     if (this.processError) {
       try {
-        const result = await this.actor.updateLedgerConfig(to_candid_Token_n125(this._uploadFile, this._downloadFile, arg0), arg1, arg2, arg3);
-        return from_candid_Result_n127(this._uploadFile, this._downloadFile, result);
+        const result = await this.actor.updateLedgerConfig(to_candid_Token_n140(this._uploadFile, this._downloadFile, arg0), arg1, arg2, arg3);
+        return from_candid_Result_n142(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
-      const result = await this.actor.updateLedgerConfig(to_candid_Token_n125(this._uploadFile, this._downloadFile, arg0), arg1, arg2, arg3);
-      return from_candid_Result_n127(this._uploadFile, this._downloadFile, result);
+      const result = await this.actor.updateLedgerConfig(to_candid_Token_n140(this._uploadFile, this._downloadFile, arg0), arg1, arg2, arg3);
+      return from_candid_Result_n142(this._uploadFile, this._downloadFile, result);
     }
   }
   async updateMinimumOrder(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.updateMinimumOrder(arg0);
-        return from_candid_Result_n127(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_n142(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.updateMinimumOrder(arg0);
-      return from_candid_Result_n127(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_n142(this._uploadFile, this._downloadFile, result);
     }
   }
   async updatePaymentServiceToken(arg0) {
@@ -30238,15 +30380,15 @@ class Backend {
   async updateTreasury(arg0, arg1) {
     if (this.processError) {
       try {
-        const result = await this.actor.updateTreasury(arg0, to_candid_opt_n129(this._uploadFile, this._downloadFile, arg1));
-        return from_candid_Result_n127(this._uploadFile, this._downloadFile, result);
+        const result = await this.actor.updateTreasury(arg0, to_candid_opt_n144(this._uploadFile, this._downloadFile, arg1));
+        return from_candid_Result_n142(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
-      const result = await this.actor.updateTreasury(arg0, to_candid_opt_n129(this._uploadFile, this._downloadFile, arg1));
-      return from_candid_Result_n127(this._uploadFile, this._downloadFile, result);
+      const result = await this.actor.updateTreasury(arg0, to_candid_opt_n144(this._uploadFile, this._downloadFile, arg1));
+      return from_candid_Result_n142(this._uploadFile, this._downloadFile, result);
     }
   }
 }
@@ -30277,8 +30419,11 @@ function from_candid_CryptoPaymentStatus_n9(_uploadFile, _downloadFile, value) {
 function from_candid_DepositInfo_n85(_uploadFile, _downloadFile, value) {
   return from_candid_record_n86(_uploadFile, _downloadFile, value);
 }
-function from_candid_EmailError_n115(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n116(_uploadFile, _downloadFile, value);
+function from_candid_Discipline_n117(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n118(_uploadFile, _downloadFile, value);
+}
+function from_candid_EmailError_n124(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n125(_uploadFile, _downloadFile, value);
 }
 function from_candid_LatePayment_n106(_uploadFile, _downloadFile, value) {
   return from_candid_record_n107(_uploadFile, _downloadFile, value);
@@ -30310,65 +30455,71 @@ function from_candid_RecheckResult_n67(_uploadFile, _downloadFile, value) {
 function from_candid_RecoveryError_n69(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n70(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_10_n89(_uploadFile, _downloadFile, value) {
+function from_candid_Result_10_n99(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n100(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_11_n94(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n95(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_12_n89(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n90(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_11_n19(_uploadFile, _downloadFile, value) {
+function from_candid_Result_13_n19(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n20(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_12_n83(_uploadFile, _downloadFile, value) {
+function from_candid_Result_14_n83(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n84(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_13_n76(_uploadFile, _downloadFile, value) {
+function from_candid_Result_15_n76(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n77(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_14_n65(_uploadFile, _downloadFile, value) {
+function from_candid_Result_16_n65(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n66(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_15_n45(_uploadFile, _downloadFile, value) {
+function from_candid_Result_17_n45(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n46(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_16_n39(_uploadFile, _downloadFile, value) {
+function from_candid_Result_18_n39(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n40(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_17_n25(_uploadFile, _downloadFile, value) {
+function from_candid_Result_19_n25(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n26(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_18_n23(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n24(_uploadFile, _downloadFile, value);
 }
 function from_candid_Result_1_n15(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n16(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_2_n123(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n124(_uploadFile, _downloadFile, value);
+function from_candid_Result_20_n23(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n24(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_3_n119(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n120(_uploadFile, _downloadFile, value);
+function from_candid_Result_2_n138(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n139(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_3_n134(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n135(_uploadFile, _downloadFile, value);
 }
 function from_candid_Result_4_n71(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n72(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_5_n117(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n118(_uploadFile, _downloadFile, value);
+function from_candid_Result_5_n132(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n133(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_6_n113(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n114(_uploadFile, _downloadFile, value);
+function from_candid_Result_6_n130(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n131(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_7_n103(_uploadFile, _downloadFile, value) {
+function from_candid_Result_7_n122(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n123(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_8_n112(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n113(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_9_n103(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n104(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_8_n99(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n100(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_9_n94(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n95(_uploadFile, _downloadFile, value);
 }
 function from_candid_Result__1_n57(_uploadFile, _downloadFile, value) {
   return from_candid_record_n58(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_n127(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n128(_uploadFile, _downloadFile, value);
+function from_candid_Result_n142(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n143(_uploadFile, _downloadFile, value);
 }
 function from_candid_ResumeInfo_n96(_uploadFile, _downloadFile, value) {
   return from_candid_record_n97(_uploadFile, _downloadFile, value);
@@ -30379,14 +30530,20 @@ function from_candid_ShippingAddress_n49(_uploadFile, _downloadFile, value) {
 function from_candid_ShippingStatus_n52(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n53(_uploadFile, _downloadFile, value);
 }
+function from_candid_SubmissionError_n119(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n120(_uploadFile, _downloadFile, value);
+}
+function from_candid_SubmissionRecord_n115(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n116(_uploadFile, _downloadFile, value);
+}
 function from_candid_SweepError_n101(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n102(_uploadFile, _downloadFile, value);
 }
 function from_candid_SweepResult_n73(_uploadFile, _downloadFile, value) {
   return from_candid_record_n74(_uploadFile, _downloadFile, value);
 }
-function from_candid_SweepSubaccountResult_n121(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n122(_uploadFile, _downloadFile, value);
+function from_candid_SweepSubaccountResult_n136(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n137(_uploadFile, _downloadFile, value);
 }
 function from_candid_Token_n87(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n88(_uploadFile, _downloadFile, value);
@@ -30448,7 +30605,20 @@ function from_candid_record_n110(_uploadFile, _downloadFile, value) {
     liveBalance: value.liveBalance
   };
 }
-function from_candid_record_n122(_uploadFile, _downloadFile, value) {
+function from_candid_record_n116(_uploadFile, _downloadFile, value) {
+  return {
+    id: value.id,
+    discipline: from_candid_Discipline_n117(_uploadFile, _downloadFile, value.discipline),
+    link: value.link,
+    name: value.name,
+    submittedAt: value.submittedAt,
+    email: value.email,
+    message: record_opt_to_undefined(from_candid_opt_n11(_uploadFile, _downloadFile, value.message)),
+    marketingConsentAt: record_opt_to_undefined(from_candid_opt_n51(_uploadFile, _downloadFile, value.marketingConsentAt)),
+    marketingConsent: value.marketingConsent
+  };
+}
+function from_candid_record_n137(_uploadFile, _downloadFile, value) {
   return {
     error: record_opt_to_undefined(from_candid_opt_n11(_uploadFile, _downloadFile, value.error)),
     blockIndex: record_opt_to_undefined(from_candid_opt_n75(_uploadFile, _downloadFile, value.blockIndex)),
@@ -30640,16 +30810,49 @@ function from_candid_variant_n104(_uploadFile, _downloadFile, value) {
     err: from_candid_PaymentError_n41(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function from_candid_variant_n114(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n113(_uploadFile, _downloadFile, value) {
+  return "ok" in value ? {
+    __kind__: "ok",
+    ok: from_candid_vec_n114(_uploadFile, _downloadFile, value.ok)
+  } : "err" in value ? {
+    __kind__: "err",
+    err: from_candid_SubmissionError_n119(_uploadFile, _downloadFile, value.err)
+  } : value;
+}
+function from_candid_variant_n118(_uploadFile, _downloadFile, value) {
+  return "music" in value ? "music" : "other" in value ? "other" : "video" in value ? "video" : "visualArt" in value ? "visualArt" : "writing" in value ? "writing" : value;
+}
+function from_candid_variant_n120(_uploadFile, _downloadFile, value) {
+  return "invalidInput" in value ? {
+    __kind__: "invalidInput",
+    invalidInput: value.invalidInput
+  } : "notConfigured" in value ? {
+    __kind__: "notConfigured",
+    notConfigured: value.notConfigured
+  } : "honeypot" in value ? {
+    __kind__: "honeypot",
+    honeypot: value.honeypot
+  } : "rateLimited" in value ? {
+    __kind__: "rateLimited",
+    rateLimited: value.rateLimited
+  } : "outcallFailed" in value ? {
+    __kind__: "outcallFailed",
+    outcallFailed: value.outcallFailed
+  } : "invalidResponse" in value ? {
+    __kind__: "invalidResponse",
+    invalidResponse: value.invalidResponse
+  } : value;
+}
+function from_candid_variant_n123(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
     ok: value.ok
   } : "err" in value ? {
     __kind__: "err",
-    err: from_candid_EmailError_n115(_uploadFile, _downloadFile, value.err)
+    err: from_candid_EmailError_n124(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function from_candid_variant_n116(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n125(_uploadFile, _downloadFile, value) {
   return "notConfigured" in value ? {
     __kind__: "notConfigured",
     notConfigured: value.notConfigured
@@ -30670,7 +30873,16 @@ function from_candid_variant_n116(_uploadFile, _downloadFile, value) {
     invalidResponse: value.invalidResponse
   } : value;
 }
-function from_candid_variant_n118(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n131(_uploadFile, _downloadFile, value) {
+  return "ok" in value ? {
+    __kind__: "ok",
+    ok: value.ok
+  } : "err" in value ? {
+    __kind__: "err",
+    err: from_candid_SubmissionError_n119(_uploadFile, _downloadFile, value.err)
+  } : value;
+}
+function from_candid_variant_n133(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
     ok: value.ok
@@ -30679,16 +30891,16 @@ function from_candid_variant_n118(_uploadFile, _downloadFile, value) {
     err: from_candid_CryptoPaymentError_n21(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function from_candid_variant_n120(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n135(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
-    ok: from_candid_SweepSubaccountResult_n121(_uploadFile, _downloadFile, value.ok)
+    ok: from_candid_SweepSubaccountResult_n136(_uploadFile, _downloadFile, value.ok)
   } : "err" in value ? {
     __kind__: "err",
     err: from_candid_SweepError_n101(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function from_candid_variant_n124(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n139(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
     ok: value.ok
@@ -30697,7 +30909,7 @@ function from_candid_variant_n124(_uploadFile, _downloadFile, value) {
     err: from_candid_ConsentError_n78(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function from_candid_variant_n128(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n143(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
     ok: value.ok
@@ -30988,6 +31200,9 @@ function from_candid_vec_n105(_uploadFile, _downloadFile, value) {
 function from_candid_vec_n108(_uploadFile, _downloadFile, value) {
   return value.map((x2) => from_candid_OrderRecoveryView_n109(_uploadFile, _downloadFile, x2));
 }
+function from_candid_vec_n114(_uploadFile, _downloadFile, value) {
+  return value.map((x2) => from_candid_SubmissionRecord_n115(_uploadFile, _downloadFile, x2));
+}
 function from_candid_vec_n12(_uploadFile, _downloadFile, value) {
   return value.map((x2) => from_candid_AdminOrderView_n13(_uploadFile, _downloadFile, x2));
 }
@@ -31002,6 +31217,9 @@ function from_candid_vec_n91(_uploadFile, _downloadFile, value) {
 }
 function to_candid_CreateOrderInput_n43(_uploadFile, _downloadFile, value) {
   return to_candid_record_n44(_uploadFile, _downloadFile, value);
+}
+function to_candid_Discipline_n128(_uploadFile, _downloadFile, value) {
+  return to_candid_variant_n129(_uploadFile, _downloadFile, value);
 }
 function to_candid_Order_n29(_uploadFile, _downloadFile, value) {
   return to_candid_record_n30(_uploadFile, _downloadFile, value);
@@ -31018,14 +31236,29 @@ function to_candid_ShippingAddress_n31(_uploadFile, _downloadFile, value) {
 function to_candid_ShippingStatus_n37(_uploadFile, _downloadFile, value) {
   return to_candid_variant_n38(_uploadFile, _downloadFile, value);
 }
-function to_candid_Token_n125(_uploadFile, _downloadFile, value) {
-  return to_candid_variant_n126(_uploadFile, _downloadFile, value);
+function to_candid_SubmissionInput_n126(_uploadFile, _downloadFile, value) {
+  return to_candid_record_n127(_uploadFile, _downloadFile, value);
 }
-function to_candid_opt_n112(_uploadFile, _downloadFile, value) {
+function to_candid_Token_n140(_uploadFile, _downloadFile, value) {
+  return to_candid_variant_n141(_uploadFile, _downloadFile, value);
+}
+function to_candid_opt_n121(_uploadFile, _downloadFile, value) {
   return value === null ? candid_none() : candid_some(value);
 }
-function to_candid_opt_n129(_uploadFile, _downloadFile, value) {
+function to_candid_opt_n144(_uploadFile, _downloadFile, value) {
   return value === null ? candid_none() : candid_some(value);
+}
+function to_candid_record_n127(_uploadFile, _downloadFile, value) {
+  return {
+    discipline: to_candid_Discipline_n128(_uploadFile, _downloadFile, value.discipline),
+    link: value.link,
+    name: value.name,
+    email: value.email,
+    message: value.message ? candid_some(value.message) : candid_none(),
+    honeypot: value.honeypot,
+    marketingConsentAt: value.marketingConsentAt ? candid_some(value.marketingConsentAt) : candid_none(),
+    marketingConsent: value.marketingConsent
+  };
 }
 function to_candid_record_n30(_uploadFile, _downloadFile, value) {
   return {
@@ -31074,7 +31307,20 @@ function to_candid_record_n44(_uploadFile, _downloadFile, value) {
     marketing_consent: value.marketing_consent
   };
 }
-function to_candid_variant_n126(_uploadFile, _downloadFile, value) {
+function to_candid_variant_n129(_uploadFile, _downloadFile, value) {
+  return value == "music" ? {
+    music: null
+  } : value == "other" ? {
+    other: null
+  } : value == "video" ? {
+    video: null
+  } : value == "visualArt" ? {
+    visualArt: null
+  } : value == "writing" ? {
+    writing: null
+  } : value;
+}
+function to_candid_variant_n141(_uploadFile, _downloadFile, value) {
   return value == "ICP" ? {
     ICP: null
   } : value == "ckUSDC" ? {
@@ -31751,6 +31997,29 @@ function useUnsubscribe() {
     }
   });
 }
+function useSubmitSubmission() {
+  const { actor } = useActor(createActor);
+  return useMutation({
+    mutationFn: async (input) => {
+      if (!actor) throw new Error("Backend is not ready");
+      const result = await actor.submitSubmission(input);
+      if (result.__kind__ === "err") throw result.err;
+    }
+  });
+}
+function useListSubmissions() {
+  const { actor, isFetching } = useActor(createActor);
+  return useQuery({
+    queryKey: ["submissions"],
+    queryFn: async () => {
+      if (!actor) return [];
+      const result = await actor.listSubmissions();
+      if (result.__kind__ === "err") throw result.err;
+      return result.ok;
+    },
+    enabled: !!actor && !isFetching
+  });
+}
 function formatPrice(value) {
   const cents = Number(value);
   return (cents / 100).toLocaleString("en-US", {
@@ -31766,6 +32035,99 @@ function dollarsToCents(input) {
   const [whole, fraction = ""] = trimmed.split(".");
   const cents = Number(whole) * 100 + Number(fraction.padEnd(2, "0"));
   return cents;
+}
+function ConfirmStep({
+  trigger,
+  message,
+  confirmLabel,
+  cancelLabel,
+  onConfirm,
+  tone = "neutral"
+}) {
+  const [open, setOpen] = reactExports.useState(false);
+  const handleConfirm = () => {
+    onConfirm();
+    setOpen(false);
+  };
+  if (!open) {
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "button",
+      {
+        type: "button",
+        className: "confirm-step-trigger",
+        onClick: () => setOpen(true),
+        "data-ocid": "confirm_step_trigger",
+        children: trigger
+      }
+    );
+  }
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "confirm-step", "data-ocid": "confirm_step", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "confirm-step-message", children: message }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "confirm-step-actions", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "button",
+        {
+          type: "button",
+          className: "btn btn-secondary",
+          onClick: () => setOpen(false),
+          "data-ocid": "cancel_button",
+          children: cancelLabel
+        }
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "button",
+        {
+          type: "button",
+          className: `btn ${tone === "neutral" ? "" : `btn-${tone}`}`,
+          onClick: handleConfirm,
+          "data-ocid": "confirm_button",
+          children: confirmLabel
+        }
+      )
+    ] })
+  ] });
+}
+function CopyButton({ text, label, className }) {
+  const [copied, setCopied] = reactExports.useState(false);
+  const timerRef = reactExports.useRef(null);
+  reactExports.useEffect(() => {
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, []);
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      if (timerRef.current) clearTimeout(timerRef.current);
+      timerRef.current = setTimeout(() => setCopied(false), 1800);
+    } catch {
+    }
+  };
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+    "button",
+    {
+      type: "button",
+      onClick: handleCopy,
+      className: `copy-btn ${copied ? "is-copied" : ""} ${className ?? ""}`,
+      "aria-label": label ?? "Copy to clipboard",
+      "data-ocid": "copy_button",
+      children: [
+        copied ? /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-3.5 h-3.5", "aria-hidden": "true" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Copy, { className: "w-3.5 h-3.5", "aria-hidden": "true" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: copied ? "Copied" : label ?? "Copy" })
+      ]
+    }
+  );
+}
+const TONE_CLASS = {
+  positive: "status-pill-positive",
+  warning: "status-pill-warning",
+  muted: "status-pill-muted",
+  negative: "status-pill-negative",
+  neutral: "status-pill-neutral"
+};
+function StatusPill({ tone, children }) {
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `status-pill ${TONE_CLASS[tone]}`, "data-ocid": "status_pill", children });
 }
 const DEFAULT_TREASURY_PRINCIPAL = "ttfax-iely3-bkfh4-tb7o3-dso2i-acf6j-yh6w5-jclgp-7mnhg-lxbzi-qae";
 function bytesToHex(bytes) {
@@ -31837,6 +32199,31 @@ function formatTokenAmount$3(units, decimals = 6) {
     minimumFractionDigits: 2,
     maximumFractionDigits: decimals
   });
+}
+function formatTimestamp$3(timestamp) {
+  const date = new Date(Number(timestamp / 1000000n));
+  if (Number.isNaN(date.getTime())) return "—";
+  return date.toLocaleDateString(void 0, {
+    year: "numeric",
+    month: "short",
+    day: "numeric"
+  });
+}
+function disciplineLabel(discipline) {
+  switch (discipline) {
+    case Discipline.music:
+      return "Music";
+    case Discipline.visualArt:
+      return "Visual Art";
+    case Discipline.video:
+      return "Video";
+    case Discipline.writing:
+      return "Writing";
+    case Discipline.other:
+      return "Other";
+    default:
+      return discipline;
+  }
 }
 function recoveryErrorMessage$1(err) {
   switch (err.__kind__) {
@@ -31911,18 +32298,18 @@ function errorText$1(err) {
   if (typeof err === "string") return err;
   return "An unknown error occurred.";
 }
-function statusTone$1(status) {
+function statusPillTone(status) {
   switch (status) {
     case PaymentStatus.paid:
-      return "text-success";
+      return "positive";
     case PaymentStatus.pending:
-      return "text-warning";
+      return "warning";
     case PaymentStatus.expired:
-      return "text-destructive";
+      return "negative";
     case PaymentStatus.cancelled:
-      return "text-gray-400";
+      return "muted";
     default:
-      return "text-gray-300";
+      return "neutral";
   }
 }
 function paymentMethodLabel$2(method) {
@@ -31953,6 +32340,17 @@ function cryptoStatusLabel$1(status) {
       return "Overpayment";
   }
 }
+function cycleTone(balance) {
+  if (balance === void 0) return "warning";
+  if (balance > 2000000000000n) return "success";
+  if (balance >= 500000000000n) return "warning";
+  return "destructive";
+}
+const CYCLE_COLOR = {
+  success: "var(--nak-success)",
+  warning: "var(--nak-warning)",
+  destructive: "var(--nak-destructive)"
+};
 const EMPTY_PRODUCT_DRAFT = {
   name: "",
   slug: "",
@@ -32009,12 +32407,12 @@ const AdminSettingsPage = ({
   const updateMinimumOrder = useUpdateMinimumOrder();
   const { data: cycleBalance } = useGetCycleBalance();
   const { data: canisterId } = useGetCanisterId();
-  const [canisterCopied, setCanisterCopied] = reactExports.useState(false);
   const [orderFilter, setOrderFilter] = reactExports.useState("all");
   const { data: orders, isLoading: ordersLoading } = useAdminListOrders(orderFilter);
   const forceRecheck = useForceRecheckPayment();
   const forceSweep = useForceSweepOrder();
   const [orderActionError, setOrderActionError] = reactExports.useState(null);
+  const { data: submissions, isLoading: submissionsLoading } = useListSubmissions();
   const markShipped = useMarkOrderShipped();
   const resendEmail = useResendConfirmationEmail();
   const [trackingDraft, setTrackingDraft] = reactExports.useState(
@@ -32062,18 +32460,8 @@ const AdminSettingsPage = ({
   const [addAdminError, setAddAdminError] = reactExports.useState(null);
   const [addAdminSuccess, setAddAdminSuccess] = reactExports.useState(false);
   const [removeAdminError, setRemoveAdminError] = reactExports.useState(null);
-  const [principalCopied, setPrincipalCopied] = reactExports.useState(false);
   const [claimError, setClaimError] = reactExports.useState(null);
   const userPrincipalText = (identity == null ? void 0 : identity.getPrincipal().toText()) ?? "";
-  const handleCopyPrincipal = async () => {
-    try {
-      await navigator.clipboard.writeText(userPrincipalText);
-      setPrincipalCopied(true);
-      setTimeout(() => setPrincipalCopied(false), 2e3);
-    } catch {
-      setPrincipalCopied(false);
-    }
-  };
   const handleClaimInitialAdmin = () => {
     setClaimError(null);
     claimInitialAdmin.mutate(void 0, {
@@ -32117,7 +32505,6 @@ const AdminSettingsPage = ({
   const [subaccountText, setSubaccountText] = reactExports.useState("");
   const [treasuryInit, setTreasuryInit] = reactExports.useState(false);
   const [treasuryError, setTreasuryError] = reactExports.useState(null);
-  const [copied, setCopied] = reactExports.useState(false);
   const [icpCanisterText, setIcpCanisterText] = reactExports.useState("");
   const [ckUsdcCanisterText, setCkUsdcCanisterText] = reactExports.useState("");
   const [ledgerInit, setLedgerInit] = reactExports.useState(false);
@@ -32186,15 +32573,6 @@ const AdminSettingsPage = ({
   const paymentUrlSaved = ((_f2 = updatePaymentUrl.data) == null ? void 0 : _f2.__kind__) === "ok";
   const paymentTokenMutationError = ((_g2 = updatePaymentToken.data) == null ? void 0 : _g2.__kind__) === "err" ? formatPaymentServiceError(updatePaymentToken.data.err) : null;
   const paymentTokenSaved = ((_h2 = updatePaymentToken.data) == null ? void 0 : _h2.__kind__) === "ok";
-  const handleCopyTreasury = async () => {
-    try {
-      await navigator.clipboard.writeText(treasuryPrincipalText);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2e3);
-    } catch {
-      setCopied(false);
-    }
-  };
   const handleSaveTreasury = () => {
     let principal;
     try {
@@ -32460,31 +32838,27 @@ const AdminSettingsPage = ({
       onError: () => setProductError("Failed to update the product.")
     });
   };
-  const inputClass = "w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-purple-500/50 focus:ring-2 focus:ring-purple-500/20 font-mono-nak";
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "pt-24 sm:pt-32 pb-12 sm:pb-20 px-4 sm:px-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-7xl mx-auto", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center mb-10 sm:mb-14 px-2", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-4 mb-6", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Settings, { className: "w-12 h-12 text-teal-400" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 rounded-full bg-teal-400/20 blur-xl animate-pulse" })
-        ] }),
+  const inputClass = "field-input";
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 py-8", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "section-heading text-2xl", children: "Admin Settings" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "h1",
+          "p",
           {
-            className: "text-3xl sm:text-4xl md:text-5xl font-semibold leading-tight",
-            style: { fontFamily: "var(--font-heading)" },
-            children: "Admin Settings"
+            className: "text-sm mt-1",
+            style: { color: "var(--muted-foreground)" },
+            children: "Manage treasury, ledgers, payment service, products, and orders."
           }
         )
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm sm:text-base text-gray-300 max-w-2xl mx-auto", children: "Manage the treasury principal and ledger canister configuration. Changes require admin authorization." }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs(
         "button",
         {
           type: "button",
           onClick: onNavigateToMain,
           "data-ocid": "admin.back_button",
-          className: "btn mt-6 px-6 py-3 text-sm font-semibold",
+          className: "btn btn-secondary shrink-0",
           children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
             "Back to Main"
@@ -32495,7 +32869,8 @@ const AdminSettingsPage = ({
     isInitializing ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
       "div",
       {
-        className: "max-w-4xl mx-auto flex items-center justify-center gap-3 text-gray-300",
+        className: "flex items-center justify-center gap-3 py-16",
+        style: { color: "var(--muted-foreground)" },
         "data-ocid": "admin.auth_loading",
         children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-5 h-5 animate-spin" }),
@@ -32505,24 +32880,21 @@ const AdminSettingsPage = ({
     ) : !isAuthenticated ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
       "div",
       {
-        className: "max-w-4xl mx-auto card glass-card p-8 sm:p-12 text-center",
+        className: "surface p-8 text-center max-w-xl mx-auto",
         "data-ocid": "admin.sign_in_state",
         children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-4 mb-6", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Lock, { className: "w-10 h-10 text-purple-400" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 rounded-full bg-purple-400/20 blur-xl animate-pulse" })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "h2",
-              {
-                className: "text-2xl sm:text-3xl font-semibold text-white",
-                style: { fontFamily: "var(--font-heading)" },
-                children: "Sign in required"
-              }
-            )
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-3 mb-4", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Lock, { className: "w-6 h-6", style: { color: "var(--primary)" } }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "section-heading text-xl", children: "Sign in required" })
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm sm:text-base text-gray-300 max-w-xl mx-auto mb-8", children: "Admin settings are restricted. Sign in with Internet Identity to verify your principal before accessing this page." }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "p",
+            {
+              className: "text-sm max-w-md mx-auto mb-6",
+              style: { color: "var(--muted-foreground)" },
+              children: "Admin settings are restricted. Sign in with Internet Identity to verify your principal before accessing this page."
+            }
+          ),
           /* @__PURE__ */ jsxRuntimeExports.jsx(
             "button",
             {
@@ -32530,7 +32902,7 @@ const AdminSettingsPage = ({
               onClick: login,
               disabled: isLoggingIn,
               "data-ocid": "admin.sign_in_button",
-              className: "btn px-8 py-3 text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed",
+              className: "btn disabled:opacity-50 disabled:cursor-not-allowed",
               children: isLoggingIn ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-4 h-4 animate-spin" }),
                 "Signing in…"
@@ -32545,7 +32917,8 @@ const AdminSettingsPage = ({
     ) : isAdminLoading ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
       "div",
       {
-        className: "max-w-4xl mx-auto flex items-center justify-center gap-3 text-gray-300",
+        className: "flex items-center justify-center gap-3 py-16",
+        style: { color: "var(--muted-foreground)" },
         "data-ocid": "admin.auth_loading",
         children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-5 h-5 animate-spin" }),
@@ -32555,90 +32928,103 @@ const AdminSettingsPage = ({
     ) : !isAdmin ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
       "div",
       {
-        className: "max-w-4xl mx-auto card glass-card p-8 sm:p-12 text-center",
+        className: "surface p-8 text-center max-w-xl mx-auto",
         "data-ocid": "admin.not_authorized_state",
         children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-4 mb-6", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(ShieldAlert, { className: "w-10 h-10 text-warning" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 rounded-full bg-yellow-500/20 blur-xl animate-pulse" })
-            ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-3 mb-4", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "h2",
+              ShieldAlert,
               {
-                className: "text-2xl sm:text-3xl font-semibold text-white",
-                style: { fontFamily: "var(--font-heading)" },
-                children: "Not authorized"
+                className: "w-6 h-6",
+                style: { color: "var(--nak-warning)" }
               }
-            )
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "section-heading text-xl", children: "Not authorized" })
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm sm:text-base text-gray-300 max-w-xl mx-auto mb-6", children: "Your principal is not an admin, so you cannot view or change these settings." }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-xl mx-auto mb-8", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs uppercase tracking-wider text-gray-400 mb-2", children: "Your Principal" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 bg-black/30 px-4 py-3 rounded-xl border border-white/10", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("code", { className: "font-mono-nak text-sm flex-1 break-all text-teal-300", children: userPrincipalText }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                "button",
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "p",
+            {
+              className: "text-sm max-w-md mx-auto mb-6",
+              style: { color: "var(--muted-foreground)" },
+              children: "Your principal is not an admin, so you cannot view or change these settings."
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-xl mx-auto mb-6 text-left", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "section-label mb-2", children: "Your Principal" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "inset-well flex items-center gap-3", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("code", { className: "flex-1 min-w-0 break-all", children: userPrincipalText }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                CopyButton,
                 {
-                  type: "button",
-                  onClick: handleCopyPrincipal,
-                  "data-ocid": "admin.copy_principal_button",
-                  className: "btn flex items-center gap-2 px-3 py-2 text-xs",
-                  title: "Copy your principal",
-                  children: [
-                    principalCopied ? /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Copy, { className: "w-4 h-4" }),
-                    principalCopied ? "Copied" : "Copy"
-                  ]
+                  text: userPrincipalText,
+                  label: "Copy",
+                  className: "shrink-0"
                 }
               )
             ] })
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-xl mx-auto border-t border-white/10 pt-6", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-300 mb-4", children: "If this is the first deployment, claim the initial admin role to bootstrap access." }),
-            claimError && /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "p",
-              {
-                className: "text-sm text-destructive mb-3",
-                "data-ocid": "admin.claim_error",
-                children: claimError
-              }
-            ),
-            claimInitialAdmin.isSuccess && /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "p",
-              {
-                className: "text-sm text-success flex items-center justify-center gap-2 mb-3",
-                "data-ocid": "admin.claim_success",
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4" }),
-                  "Initial admin claimed successfully."
-                ]
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "button",
-              {
-                type: "button",
-                onClick: handleClaimInitialAdmin,
-                disabled: claimInitialAdmin.isPending,
-                "data-ocid": "admin.claim_admin_button",
-                className: "btn px-6 py-3 text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed",
-                children: claimInitialAdmin.isPending ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-4 h-4 animate-spin" }),
-                  "Claiming…"
-                ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(ShieldCheck, { className: "w-4 h-4" }),
-                  "Claim Initial Admin"
-                ] })
-              }
-            )
-          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "div",
+            {
+              className: "max-w-xl mx-auto border-t pt-6",
+              style: { borderColor: "var(--border)" },
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "p",
+                  {
+                    className: "text-sm mb-4",
+                    style: { color: "var(--muted-foreground)" },
+                    children: "If this is the first deployment, claim the initial admin role to bootstrap access."
+                  }
+                ),
+                claimError && /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "p",
+                  {
+                    className: "text-sm mb-3",
+                    style: { color: "var(--nak-destructive)" },
+                    "data-ocid": "admin.claim_error",
+                    children: claimError
+                  }
+                ),
+                claimInitialAdmin.isSuccess && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                  "p",
+                  {
+                    className: "text-sm flex items-center justify-center gap-2 mb-3",
+                    style: { color: "var(--nak-success)" },
+                    "data-ocid": "admin.claim_success",
+                    children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4" }),
+                      "Initial admin claimed successfully."
+                    ]
+                  }
+                ),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "button",
+                  {
+                    type: "button",
+                    onClick: handleClaimInitialAdmin,
+                    disabled: claimInitialAdmin.isPending,
+                    "data-ocid": "admin.claim_admin_button",
+                    className: "btn disabled:opacity-50 disabled:cursor-not-allowed",
+                    children: claimInitialAdmin.isPending ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-4 h-4 animate-spin" }),
+                      "Claiming…"
+                    ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(ShieldCheck, { className: "w-4 h-4" }),
+                      "Claim Initial Admin"
+                    ] })
+                  }
+                )
+              ]
+            }
+          ),
           /* @__PURE__ */ jsxRuntimeExports.jsxs(
             "button",
             {
               type: "button",
               onClick: clear,
               "data-ocid": "admin.sign_out_button",
-              className: "btn mt-8 px-6 py-3 text-sm font-semibold",
+              className: "btn btn-secondary mt-6",
               children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx(LogOut, { className: "w-4 h-4" }),
                 "Sign out"
@@ -32648,544 +33034,657 @@ const AdminSettingsPage = ({
         ]
       }
     ) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
-        "div",
-        {
-          className: "max-w-6xl mx-auto mb-8 card glass-card p-5",
-          "data-ocid": "admin.identity_bar",
-          children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col sm:flex-row sm:items-center gap-4", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 min-w-0", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs uppercase tracking-wider text-gray-400 mb-2", children: "Signed in as" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 bg-black/30 px-4 py-3 rounded-xl border border-white/10", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(ShieldCheck, { className: "w-4 h-4 text-success shrink-0" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("code", { className: "font-mono-nak text-sm flex-1 break-all text-teal-300", children: userPrincipalText }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                  "button",
-                  {
-                    type: "button",
-                    onClick: handleCopyPrincipal,
-                    "data-ocid": "admin.copy_principal_button",
-                    className: "btn flex items-center gap-2 px-3 py-2 text-xs",
-                    title: "Copy your principal",
-                    children: [
-                      principalCopied ? /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Copy, { className: "w-4 h-4" }),
-                      principalCopied ? "Copied" : "Copy"
-                    ]
-                  }
-                )
-              ] })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "button",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "surface p-4 mb-6", "data-ocid": "admin.identity_bar", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col sm:flex-row sm:items-center gap-4", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 min-w-0", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "section-label mb-2", children: "Signed in as" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "inset-well flex items-center gap-3", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              ShieldCheck,
               {
-                type: "button",
-                onClick: clear,
-                "data-ocid": "admin.sign_out_button",
-                className: "btn px-5 py-2.5 text-sm font-semibold shrink-0",
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(LogOut, { className: "w-4 h-4" }),
-                  "Sign out"
-                ]
+                className: "w-4 h-4 shrink-0",
+                style: { color: "var(--nak-success)" }
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("code", { className: "flex-1 min-w-0 break-all", children: userPrincipalText }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              CopyButton,
+              {
+                text: userPrincipalText,
+                label: "Copy",
+                className: "shrink-0"
               }
             )
           ] })
-        }
-      ),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        "div",
-        {
-          className: "max-w-6xl mx-auto mb-8 card glass-card p-6 sm:p-8",
-          "data-ocid": "admin.admins_panel",
-          children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 mb-6", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(ShieldCheck, { className: "w-8 h-8 text-purple-400" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 rounded-full bg-purple-400/20 blur-xl animate-pulse" })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "h3",
-                  {
-                    className: "text-2xl font-semibold text-white",
-                    style: { fontFamily: "var(--font-heading)" },
-                    children: "Admin Access"
-                  }
-                ),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-400", children: "Manage who can change these settings" })
-              ] })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "label",
-                {
-                  htmlFor: "add-admin-principal",
-                  className: "block text-sm text-gray-300 mb-2",
-                  children: "Add an Admin"
-                }
-              ),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col sm:flex-row gap-3", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "input",
-                  {
-                    id: "add-admin-principal",
-                    type: "text",
-                    value: addAdminText,
-                    onChange: (e) => setAddAdminText(e.target.value),
-                    placeholder: "Enter a principal to grant admin access",
-                    "data-ocid": "admin.add_admin_input",
-                    className: inputClass
-                  }
-                ),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "button",
-                  {
-                    type: "button",
-                    onClick: handleAddAdmin,
-                    disabled: addAdmin.isPending,
-                    "data-ocid": "admin.add_admin_button",
-                    className: "btn px-6 py-3 text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed shrink-0",
-                    children: addAdmin.isPending ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-4 h-4 animate-spin" }),
-                      "Adding…"
-                    ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx(UserPlus, { className: "w-4 h-4" }),
-                      "Add Admin"
-                    ] })
-                  }
-                )
-              ] }),
-              addAdminError && /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "p",
-                {
-                  className: "text-sm text-destructive mt-2",
-                  "data-ocid": "admin.add_admin_error",
-                  children: addAdminError
-                }
-              ),
-              addAdminSuccess && /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                "p",
-                {
-                  className: "text-sm text-success flex items-center gap-2 mt-2",
-                  "data-ocid": "admin.add_admin_success",
-                  children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4" }),
-                    "Admin added successfully."
-                  ]
-                }
-              )
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs uppercase tracking-wider text-gray-400 mb-2", children: "Current Admins" }),
-              removeAdminError && /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "p",
-                {
-                  className: "text-sm text-destructive mb-2",
-                  "data-ocid": "admin.remove_admin_error",
-                  children: removeAdminError
-                }
-              ),
-              admins && admins.length > 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("ul", { className: "space-y-2", children: admins.map((admin, index2) => {
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            type: "button",
+            onClick: clear,
+            "data-ocid": "admin.sign_out_button",
+            className: "btn btn-secondary shrink-0",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(LogOut, { className: "w-4 h-4" }),
+              "Sign out"
+            ]
+          }
+        )
+      ] }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "surface p-5 mb-6", "data-ocid": "admin.admins_panel", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 mb-5", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            ShieldCheck,
+            {
+              className: "w-5 h-5",
+              style: { color: "var(--primary)" }
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "section-heading text-lg", children: "Admin Access" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "p",
+              {
+                className: "text-xs",
+                style: { color: "var(--muted-foreground)" },
+                children: "Manage who can change these settings"
+              }
+            )
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-5", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "label",
+            {
+              htmlFor: "add-admin-principal",
+              className: "field-label block mb-2",
+              children: "Add an Admin"
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col sm:flex-row gap-3", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "input",
+              {
+                id: "add-admin-principal",
+                type: "text",
+                value: addAdminText,
+                onChange: (e) => setAddAdminText(e.target.value),
+                placeholder: "Enter a principal to grant admin access",
+                "data-ocid": "admin.add_admin_input",
+                className: inputClass
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                type: "button",
+                onClick: handleAddAdmin,
+                disabled: addAdmin.isPending,
+                "data-ocid": "admin.add_admin_button",
+                className: "btn shrink-0 disabled:opacity-50 disabled:cursor-not-allowed",
+                children: addAdmin.isPending ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-4 h-4 animate-spin" }),
+                  "Adding…"
+                ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(UserPlus, { className: "w-4 h-4" }),
+                  "Add Admin"
+                ] })
+              }
+            )
+          ] }),
+          addAdminError && /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "p",
+            {
+              className: "text-sm mt-2",
+              style: { color: "var(--nak-destructive)" },
+              "data-ocid": "admin.add_admin_error",
+              children: addAdminError
+            }
+          ),
+          addAdminSuccess && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "p",
+            {
+              className: "text-sm flex items-center gap-2 mt-2",
+              style: { color: "var(--nak-success)" },
+              "data-ocid": "admin.add_admin_success",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4" }),
+                "Admin added successfully."
+              ]
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "section-label mb-2", children: "Current Admins" }),
+          removeAdminError && /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "p",
+            {
+              className: "text-sm mb-2",
+              style: { color: "var(--nak-destructive)" },
+              "data-ocid": "admin.remove_admin_error",
+              children: removeAdminError
+            }
+          ),
+          admins && admins.length > 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "ul",
+            {
+              className: "divide-y",
+              style: { borderColor: "var(--border)" },
+              children: admins.map((admin, index2) => {
                 const isSelf = admin.toText() === userPrincipalText;
                 return /* @__PURE__ */ jsxRuntimeExports.jsxs(
                   "li",
                   {
                     "data-ocid": `admin.admin_item.${index2 + 1}`,
-                    className: "flex items-center gap-3 bg-black/30 px-4 py-3 rounded-xl border border-white/10",
+                    className: "flex items-center gap-3 py-3",
                     children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("code", { className: "font-mono-nak text-sm flex-1 break-all text-teal-300", children: admin.toText() }),
-                      isSelf && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-success shrink-0", children: "you" }),
-                      !isSelf && /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                        "button",
+                      /* @__PURE__ */ jsxRuntimeExports.jsx("code", { className: "mono-num text-sm flex-1 min-w-0 break-all", children: admin.toText() }),
+                      isSelf && /* @__PURE__ */ jsxRuntimeExports.jsx(
+                        "span",
                         {
-                          type: "button",
-                          onClick: () => handleRemoveAdmin(admin),
-                          disabled: removeAdmin.isPending,
-                          "data-ocid": `admin.remove_admin_button.${index2 + 1}`,
-                          className: "btn flex items-center gap-2 px-3 py-2 text-xs disabled:opacity-50 disabled:cursor-not-allowed shrink-0",
-                          title: "Remove this admin",
-                          children: [
-                            /* @__PURE__ */ jsxRuntimeExports.jsx(UserX, { className: "w-4 h-4" }),
-                            "Remove"
-                          ]
+                          className: "text-xs shrink-0",
+                          style: { color: "var(--nak-success)" },
+                          children: "you"
+                        }
+                      ),
+                      !isSelf && /* @__PURE__ */ jsxRuntimeExports.jsx(
+                        ConfirmStep,
+                        {
+                          trigger: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                            "button",
+                            {
+                              type: "button",
+                              className: "btn btn-secondary flex items-center gap-2 px-3 py-2 text-xs shrink-0",
+                              disabled: removeAdmin.isPending,
+                              title: "Remove this admin",
+                              children: [
+                                /* @__PURE__ */ jsxRuntimeExports.jsx(UserX, { className: "w-4 h-4" }),
+                                "Remove"
+                              ]
+                            }
+                          ),
+                          message: `Remove ${admin.toText()} as an admin? They will lose access to these settings immediately.`,
+                          confirmLabel: "Remove admin",
+                          cancelLabel: "Cancel",
+                          tone: "negative",
+                          onConfirm: () => handleRemoveAdmin(admin)
                         }
                       )
                     ]
                   },
                   admin.toText()
                 );
-              }) }) : /* @__PURE__ */ jsxRuntimeExports.jsx(
+              })
+            }
+          ) : /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "p",
+            {
+              className: "text-sm",
+              style: { color: "var(--muted-foreground)" },
+              "data-ocid": "admin.admins_empty",
+              children: "No admins configured yet."
+            }
+          )
+        ] })
+      ] }),
+      hasWarnings && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mb-6", "data-ocid": "admin.warning_banner", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "div",
+        {
+          className: "border p-4 flex items-start gap-3",
+          style: {
+            borderColor: "var(--nak-warning)",
+            background: "var(--nak-warning-soft)"
+          },
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              TriangleAlert,
+              {
+                className: "w-5 h-5 shrink-0 mt-0.5",
+                style: { color: "var(--nak-warning)" }
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "h3",
+                {
+                  className: "text-sm font-medium",
+                  style: { color: "var(--nak-warning)" },
+                  children: "Configuration Incomplete"
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                "ul",
+                {
+                  className: "mt-2 space-y-1 text-sm",
+                  style: { color: "var(--secondary-foreground)" },
+                  children: [
+                    treasuryUnset && /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: "• Treasury principal is not set." }),
+                    icpUnset && /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: "• ICP ledger canister ID is not set." }),
+                    ckUsdcUnset && /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: "• ckUSDC ledger canister ID is not set." })
+                  ]
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
                 "p",
                 {
-                  className: "text-sm text-gray-400",
-                  "data-ocid": "admin.admins_empty",
-                  children: "No admins configured yet."
+                  className: "mt-2 text-xs",
+                  style: { color: "var(--muted-foreground)" },
+                  children: "Crypto deposits will not work until these critical values are configured."
                 }
               )
             ] })
           ]
         }
-      ),
-      hasWarnings && /* @__PURE__ */ jsxRuntimeExports.jsx(
+      ) }),
+      hasPaymentWarnings && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mb-6", "data-ocid": "admin.payment_warning_banner", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
         "div",
         {
-          className: "max-w-4xl mx-auto mb-8",
-          "data-ocid": "admin.warning_banner",
-          children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-warning-soft border border-yellow-500/30 rounded-2xl p-5 flex items-start gap-4", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(TriangleAlert, { className: "w-6 h-6 text-warning shrink-0 mt-0.5" }),
+          className: "border p-4 flex items-start gap-3",
+          style: {
+            borderColor: "var(--nak-warning)",
+            background: "var(--nak-warning-soft)"
+          },
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              TriangleAlert,
+              {
+                className: "w-5 h-5 shrink-0 mt-0.5",
+                style: { color: "var(--nak-warning)" }
+              }
+            ),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(
                 "h3",
                 {
-                  className: "text-lg font-semibold text-warning",
-                  style: { fontFamily: "var(--font-heading)" },
-                  children: "Configuration Incomplete"
-                }
-              ),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("ul", { className: "mt-2 space-y-1 text-sm text-gray-300", children: [
-                treasuryUnset && /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: "• Treasury principal is not set." }),
-                icpUnset && /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: "• ICP ledger canister ID is not set." }),
-                ckUsdcUnset && /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: "• ckUSDC ledger canister ID is not set." })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-2 text-sm text-gray-400", children: "Crypto deposits will not work until these critical values are configured." })
-            ] })
-          ] })
-        }
-      ),
-      hasPaymentWarnings && /* @__PURE__ */ jsxRuntimeExports.jsx(
-        "div",
-        {
-          className: "max-w-4xl mx-auto mb-8",
-          "data-ocid": "admin.payment_warning_banner",
-          children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-warning-soft border border-yellow-500/30 rounded-2xl p-5 flex items-start gap-4", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(TriangleAlert, { className: "w-6 h-6 text-warning shrink-0 mt-0.5" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "h3",
-                {
-                  className: "text-lg font-semibold text-warning",
-                  style: { fontFamily: "var(--font-heading)" },
+                  className: "text-sm font-medium",
+                  style: { color: "var(--nak-warning)" },
                   children: "Payment Service Incomplete"
                 }
               ),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("ul", { className: "mt-2 space-y-1 text-sm text-gray-300", children: [
-                paymentUrlUnset && /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: "• Payment service URL is not set." }),
-                paymentTokenUnset && /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: "• Payment service token is not set." })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-2 text-sm text-gray-400", children: "Card checkout will not work until the payment service URL and token are configured." })
-            ] })
-          ] })
-        }
-      ),
-      isLoading ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        "div",
-        {
-          className: "max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6",
-          "data-ocid": "admin.loading_state",
-          children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "card glass-card p-6 sm:p-8 loading-shimmer h-72" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "card glass-card p-6 sm:p-8 loading-shimmer h-72" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "card glass-card p-6 sm:p-8 loading-shimmer h-72" })
-          ]
-        }
-      ) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-6xl mx-auto", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "div",
-          {
-            className: "card glass-card p-6 sm:p-8",
-            "data-ocid": "admin.treasury_panel",
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 mb-6", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Wallet, { className: "w-8 h-8 text-purple-400" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 rounded-full bg-purple-400/20 blur-xl animate-pulse" })
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(
-                    "h3",
-                    {
-                      className: "text-2xl font-semibold text-white",
-                      style: { fontFamily: "var(--font-heading)" },
-                      children: "Treasury"
-                    }
-                  ),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-400", children: "Where crypto deposits are swept" })
-                ] })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs uppercase tracking-wider text-gray-400 mb-2", children: "Current Treasury Principal" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 bg-black/30 px-4 py-3 rounded-xl border border-white/10", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("code", { className: "font-mono-nak text-sm flex-1 break-all text-teal-300", children: (config == null ? void 0 : config.treasuryPrincipal.isAnonymous()) ? "Not set" : config == null ? void 0 : config.treasuryPrincipal.toText() }),
-                  config && !config.treasuryPrincipal.isAnonymous() && /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                    "button",
-                    {
-                      type: "button",
-                      onClick: handleCopyTreasury,
-                      "data-ocid": "admin.copy_treasury_button",
-                      className: "btn flex items-center gap-2 px-3 py-2 text-xs",
-                      title: "Copy treasury principal",
-                      children: [
-                        copied ? /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Copy, { className: "w-4 h-4" }),
-                        copied ? "Copied" : "Copy"
-                      ]
-                    }
-                  )
-                ] })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(
-                    "label",
-                    {
-                      htmlFor: "treasury-principal",
-                      className: "block text-sm text-gray-300 mb-2",
-                      children: "Treasury Principal"
-                    }
-                  ),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(
-                    "input",
-                    {
-                      id: "treasury-principal",
-                      type: "text",
-                      value: treasuryPrincipalText,
-                      onChange: (e) => setTreasuryPrincipalText(e.target.value),
-                      placeholder: DEFAULT_TREASURY_PRINCIPAL,
-                      "data-ocid": "admin.treasury_principal_input",
-                      className: inputClass
-                    }
-                  )
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                    "label",
-                    {
-                      htmlFor: "treasury-subaccount",
-                      className: "block text-sm text-gray-300 mb-2",
-                      children: [
-                        "Treasury Subaccount",
-                        " ",
-                        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-gray-500", children: "(optional, hex)" })
-                      ]
-                    }
-                  ),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(
-                    "input",
-                    {
-                      id: "treasury-subaccount",
-                      type: "text",
-                      value: subaccountText,
-                      onChange: (e) => setSubaccountText(e.target.value),
-                      placeholder: "Leave blank for the default subaccount",
-                      "data-ocid": "admin.subaccount_input",
-                      className: inputClass
-                    }
-                  )
-                ] }),
-                treasuryError && /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "p",
-                  {
-                    className: "text-sm text-destructive",
-                    "data-ocid": "admin.treasury_error",
-                    children: treasuryError
-                  }
-                ),
-                treasuryMutationError && /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "p",
-                  {
-                    className: "text-sm text-destructive",
-                    "data-ocid": "admin.treasury_error",
-                    children: treasuryMutationError
-                  }
-                ),
-                treasurySaved && /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                  "p",
-                  {
-                    className: "text-sm text-success flex items-center gap-2",
-                    "data-ocid": "admin.treasury_success",
-                    children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4" }),
-                      "Treasury updated successfully."
-                    ]
-                  }
-                ),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "button",
-                  {
-                    type: "button",
-                    onClick: handleSaveTreasury,
-                    disabled: updateTreasury.isPending,
-                    "data-ocid": "admin.save_treasury_button",
-                    className: "btn w-full px-6 py-3 text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed",
-                    children: updateTreasury.isPending ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-4 h-4 animate-spin" }),
-                      "Saving…"
-                    ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx(Save, { className: "w-4 h-4" }),
-                      "Save Treasury"
-                    ] })
-                  }
-                )
-              ] })
-            ]
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "div",
-          {
-            className: "card glass-card p-6 sm:p-8",
-            "data-ocid": "admin.ledger_panel",
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 mb-6", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Landmark, { className: "w-8 h-8 text-teal-400" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 rounded-full bg-teal-400/20 blur-xl animate-pulse" })
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(
-                    "h3",
-                    {
-                      className: "text-2xl font-semibold text-white",
-                      style: { fontFamily: "var(--font-heading)" },
-                      children: "Ledger Canisters"
-                    }
-                  ),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-400", children: "Token ledger canister IDs" })
-                ] })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 mb-2", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm font-semibold text-white", children: "ICP" }),
-                  icpUnset && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-warning", children: "not set" })
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "bg-black/30 px-4 py-3 rounded-xl border border-white/10 mb-3", children: /* @__PURE__ */ jsxRuntimeExports.jsx("code", { className: "font-mono-nak text-sm break-all text-teal-300", children: (config == null ? void 0 : config.icp.canisterId.isAnonymous()) ? "Not set" : config == null ? void 0 : config.icp.canisterId.toText() }) }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "input",
-                  {
-                    type: "text",
-                    value: icpCanisterText,
-                    onChange: (e) => setIcpCanisterText(e.target.value),
-                    placeholder: "ICP ledger canister ID",
-                    "data-ocid": "admin.icp_canister_input",
-                    className: inputClass
-                  }
-                ),
-                icpError && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-destructive mt-2", children: icpError }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "button",
-                  {
-                    type: "button",
-                    onClick: handleSaveIcp,
-                    disabled: updateLedger.isPending,
-                    "data-ocid": "admin.save_icp_button",
-                    className: "btn w-full mt-3 px-6 py-3 text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed",
-                    children: updateLedger.isPending ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-4 h-4 animate-spin" }),
-                      "Saving…"
-                    ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx(Save, { className: "w-4 h-4" }),
-                      "Save ICP Ledger"
-                    ] })
-                  }
-                )
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 mb-2", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm font-semibold text-white", children: "ckUSDC" }),
-                  ckUsdcUnset && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-warning", children: "not set" })
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "bg-black/30 px-4 py-3 rounded-xl border border-white/10 mb-3", children: /* @__PURE__ */ jsxRuntimeExports.jsx("code", { className: "font-mono-nak text-sm break-all text-teal-300", children: (config == null ? void 0 : config.ckUSDC.canisterId.isAnonymous()) ? "Not set" : config == null ? void 0 : config.ckUSDC.canisterId.toText() }) }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "input",
-                  {
-                    type: "text",
-                    value: ckUsdcCanisterText,
-                    onChange: (e) => setCkUsdcCanisterText(e.target.value),
-                    placeholder: "ckUSDC ledger canister ID",
-                    "data-ocid": "admin.ckusdc_canister_input",
-                    className: inputClass
-                  }
-                ),
-                ckUsdcError && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-destructive mt-2", children: ckUsdcError }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "button",
-                  {
-                    type: "button",
-                    onClick: handleSaveCkUsdc,
-                    disabled: updateLedger.isPending,
-                    "data-ocid": "admin.save_ckusdc_button",
-                    className: "btn w-full mt-3 px-6 py-3 text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed",
-                    children: updateLedger.isPending ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-4 h-4 animate-spin" }),
-                      "Saving…"
-                    ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx(Save, { className: "w-4 h-4" }),
-                      "Save ckUSDC Ledger"
-                    ] })
-                  }
-                )
-              ] }),
-              icpMutationError && /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "p",
+              /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                "ul",
                 {
-                  className: "text-sm text-destructive",
-                  "data-ocid": "admin.ledger_error",
-                  children: icpMutationError
-                }
-              ),
-              icpSaved && /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                "p",
-                {
-                  className: "text-sm text-success flex items-center gap-2",
-                  "data-ocid": "admin.ledger_success",
+                  className: "mt-2 space-y-1 text-sm",
+                  style: { color: "var(--secondary-foreground)" },
                   children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4" }),
-                    "Ledger configuration updated successfully."
+                    paymentUrlUnset && /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: "• Payment service URL is not set." }),
+                    paymentTokenUnset && /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: "• Payment service token is not set." })
                   ]
                 }
               ),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-warning-soft border border-yellow-500/30 rounded-xl p-4 flex items-start gap-3", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(ShieldAlert, { className: "w-5 h-5 text-warning shrink-0 mt-0.5" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm font-semibold text-warning", children: "ICP payments disabled" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-300 mt-1", children: "ICP deposits require a rate oracle to convert amounts. ICP is disabled until a rate oracle is configured. ckUSDC deposits remain available." })
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "p",
+                {
+                  className: "mt-2 text-xs",
+                  style: { color: "var(--muted-foreground)" },
+                  children: "Card checkout will not work until the payment service URL and token are configured."
+                }
+              )
+            ] })
+          ]
+        }
+      ) }),
+      isLoading ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "div",
+        {
+          className: "grid grid-cols-1 lg:grid-cols-2 gap-4",
+          "data-ocid": "admin.loading_state",
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "surface p-6 loading-shimmer h-64" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "surface p-6 loading-shimmer h-64" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "surface p-6 loading-shimmer h-64" })
+          ]
+        }
+      ) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 lg:grid-cols-2 gap-4", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "surface p-5", "data-ocid": "admin.treasury_panel", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 mb-5", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              Wallet,
+              {
+                className: "w-5 h-5",
+                style: { color: "var(--primary)" }
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "section-heading text-lg", children: "Treasury" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "p",
+                {
+                  className: "text-xs",
+                  style: { color: "var(--muted-foreground)" },
+                  children: "Where crypto deposits are swept"
+                }
+              )
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-5", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "section-label mb-2", children: "Current Treasury Principal" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "inset-well flex items-center gap-3", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("code", { className: "flex-1 min-w-0 break-all", children: (config == null ? void 0 : config.treasuryPrincipal.isAnonymous()) ? "Not set" : config == null ? void 0 : config.treasuryPrincipal.toText() }),
+              config && !config.treasuryPrincipal.isAnonymous() && /* @__PURE__ */ jsxRuntimeExports.jsx(
+                CopyButton,
+                {
+                  text: treasuryPrincipalText,
+                  label: "Copy",
+                  className: "shrink-0"
+                }
+              )
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "label",
+                {
+                  htmlFor: "treasury-principal",
+                  className: "field-label block mb-2",
+                  children: "Treasury Principal"
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "input",
+                {
+                  id: "treasury-principal",
+                  type: "text",
+                  value: treasuryPrincipalText,
+                  onChange: (e) => setTreasuryPrincipalText(e.target.value),
+                  placeholder: DEFAULT_TREASURY_PRINCIPAL,
+                  "data-ocid": "admin.treasury_principal_input",
+                  className: inputClass
+                }
+              )
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                "label",
+                {
+                  htmlFor: "treasury-subaccount",
+                  className: "field-label block mb-2",
+                  children: [
+                    "Treasury Subaccount",
+                    " ",
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { color: "var(--muted-foreground)" }, children: "(optional, hex)" })
+                  ]
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "input",
+                {
+                  id: "treasury-subaccount",
+                  type: "text",
+                  value: subaccountText,
+                  onChange: (e) => setSubaccountText(e.target.value),
+                  placeholder: "Leave blank for the default subaccount",
+                  "data-ocid": "admin.subaccount_input",
+                  className: inputClass
+                }
+              )
+            ] }),
+            treasuryError && /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "p",
+              {
+                className: "text-sm",
+                style: { color: "var(--nak-destructive)" },
+                "data-ocid": "admin.treasury_error",
+                children: treasuryError
+              }
+            ),
+            treasuryMutationError && /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "p",
+              {
+                className: "text-sm",
+                style: { color: "var(--nak-destructive)" },
+                "data-ocid": "admin.treasury_error",
+                children: treasuryMutationError
+              }
+            ),
+            treasurySaved && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "p",
+              {
+                className: "text-sm flex items-center gap-2",
+                style: { color: "var(--nak-success)" },
+                "data-ocid": "admin.treasury_success",
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4" }),
+                  "Treasury updated successfully."
+                ]
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                type: "button",
+                onClick: handleSaveTreasury,
+                disabled: updateTreasury.isPending,
+                "data-ocid": "admin.save_treasury_button",
+                className: "btn w-full disabled:opacity-50 disabled:cursor-not-allowed",
+                children: updateTreasury.isPending ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-4 h-4 animate-spin" }),
+                  "Saving…"
+                ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(Save, { className: "w-4 h-4" }),
+                  "Save Treasury"
                 ] })
-              ] })
-            ]
-          }
-        ),
+              }
+            )
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "surface p-5", "data-ocid": "admin.ledger_panel", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 mb-5", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              Landmark,
+              {
+                className: "w-5 h-5",
+                style: { color: "var(--primary)" }
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "section-heading text-lg", children: "Ledger Canisters" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "p",
+                {
+                  className: "text-xs",
+                  style: { color: "var(--muted-foreground)" },
+                  children: "Token ledger canister IDs"
+                }
+              )
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-5", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 mb-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm font-medium", children: "ICP" }),
+              icpUnset && /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "span",
+                {
+                  className: "text-xs",
+                  style: { color: "var(--nak-warning)" },
+                  children: "not set"
+                }
+              )
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "inset-well mb-3", children: /* @__PURE__ */ jsxRuntimeExports.jsx("code", { className: "break-all", children: (config == null ? void 0 : config.icp.canisterId.isAnonymous()) ? "Not set" : config == null ? void 0 : config.icp.canisterId.toText() }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "input",
+              {
+                type: "text",
+                value: icpCanisterText,
+                onChange: (e) => setIcpCanisterText(e.target.value),
+                placeholder: "ICP ledger canister ID",
+                "data-ocid": "admin.icp_canister_input",
+                className: inputClass
+              }
+            ),
+            icpError && /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "p",
+              {
+                className: "text-sm mt-2",
+                style: { color: "var(--nak-destructive)" },
+                children: icpError
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                type: "button",
+                onClick: handleSaveIcp,
+                disabled: updateLedger.isPending,
+                "data-ocid": "admin.save_icp_button",
+                className: "btn w-full mt-3 disabled:opacity-50 disabled:cursor-not-allowed",
+                children: updateLedger.isPending ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-4 h-4 animate-spin" }),
+                  "Saving…"
+                ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(Save, { className: "w-4 h-4" }),
+                  "Save ICP Ledger"
+                ] })
+              }
+            )
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-5", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 mb-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm font-medium", children: "ckUSDC" }),
+              ckUsdcUnset && /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "span",
+                {
+                  className: "text-xs",
+                  style: { color: "var(--nak-warning)" },
+                  children: "not set"
+                }
+              )
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "inset-well mb-3", children: /* @__PURE__ */ jsxRuntimeExports.jsx("code", { className: "break-all", children: (config == null ? void 0 : config.ckUSDC.canisterId.isAnonymous()) ? "Not set" : config == null ? void 0 : config.ckUSDC.canisterId.toText() }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "input",
+              {
+                type: "text",
+                value: ckUsdcCanisterText,
+                onChange: (e) => setCkUsdcCanisterText(e.target.value),
+                placeholder: "ckUSDC ledger canister ID",
+                "data-ocid": "admin.ckusdc_canister_input",
+                className: inputClass
+              }
+            ),
+            ckUsdcError && /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "p",
+              {
+                className: "text-sm mt-2",
+                style: { color: "var(--nak-destructive)" },
+                children: ckUsdcError
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                type: "button",
+                onClick: handleSaveCkUsdc,
+                disabled: updateLedger.isPending,
+                "data-ocid": "admin.save_ckusdc_button",
+                className: "btn w-full mt-3 disabled:opacity-50 disabled:cursor-not-allowed",
+                children: updateLedger.isPending ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-4 h-4 animate-spin" }),
+                  "Saving…"
+                ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(Save, { className: "w-4 h-4" }),
+                  "Save ckUSDC Ledger"
+                ] })
+              }
+            )
+          ] }),
+          icpMutationError && /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "p",
+            {
+              className: "text-sm",
+              style: { color: "var(--nak-destructive)" },
+              "data-ocid": "admin.ledger_error",
+              children: icpMutationError
+            }
+          ),
+          icpSaved && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "p",
+            {
+              className: "text-sm flex items-center gap-2",
+              style: { color: "var(--nak-success)" },
+              "data-ocid": "admin.ledger_success",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4" }),
+                "Ledger configuration updated successfully."
+              ]
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "div",
+            {
+              className: "border p-4 flex items-start gap-3",
+              style: {
+                borderColor: "var(--nak-warning)",
+                background: "var(--nak-warning-soft)"
+              },
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  ShieldAlert,
+                  {
+                    className: "w-5 h-5 shrink-0 mt-0.5",
+                    style: { color: "var(--nak-warning)" }
+                  }
+                ),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "p",
+                    {
+                      className: "text-sm font-medium",
+                      style: { color: "var(--nak-warning)" },
+                      children: "ICP payments disabled"
+                    }
+                  ),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "p",
+                    {
+                      className: "text-xs mt-1",
+                      style: { color: "var(--secondary-foreground)" },
+                      children: "ICP deposits require a rate oracle to convert amounts. ICP is disabled until a rate oracle is configured. ckUSDC deposits remain available."
+                    }
+                  )
+                ] })
+              ]
+            }
+          )
+        ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs(
           "div",
           {
-            className: "card glass-card p-6 sm:p-8",
+            className: "surface p-5",
             "data-ocid": "admin.payment_service_panel",
             children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 mb-6", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(CreditCard, { className: "w-8 h-8 text-pink-400" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 rounded-full bg-pink-400/20 blur-xl animate-pulse" })
-                ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 mb-5", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  CreditCard,
+                  {
+                    className: "w-5 h-5",
+                    style: { color: "var(--primary)" }
+                  }
+                ),
                 /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "section-heading text-lg", children: "Payment Service" }),
                   /* @__PURE__ */ jsxRuntimeExports.jsx(
-                    "h3",
+                    "p",
                     {
-                      className: "text-2xl font-semibold text-white",
-                      style: { fontFamily: "var(--font-heading)" },
-                      children: "Payment Service"
+                      className: "text-xs",
+                      style: { color: "var(--muted-foreground)" },
+                      children: "Card checkout endpoint and auth token"
                     }
-                  ),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-400", children: "Card checkout endpoint and auth token" })
+                  )
                 ] })
               ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs uppercase tracking-wider text-gray-400 mb-2", children: "Current Payment Service URL" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center gap-3 bg-black/30 px-4 py-3 rounded-xl border border-white/10", children: /* @__PURE__ */ jsxRuntimeExports.jsx("code", { className: "font-mono-nak text-sm flex-1 break-all text-teal-300", children: (paymentConfig == null ? void 0 : paymentConfig.url) ? paymentConfig.url : "Not set" }) })
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-5", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "section-label mb-2", children: "Current Payment Service URL" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "inset-well", children: /* @__PURE__ */ jsxRuntimeExports.jsx("code", { className: "break-all", children: (paymentConfig == null ? void 0 : paymentConfig.url) ? paymentConfig.url : "Not set" }) })
               ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4 mb-6", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4 mb-5", children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
                   /* @__PURE__ */ jsxRuntimeExports.jsx(
                     "label",
                     {
                       htmlFor: "payment-service-url",
-                      className: "block text-sm text-gray-300 mb-2",
+                      className: "field-label block mb-2",
                       children: "PAYMENT_SERVICE_URL"
                     }
                   ),
@@ -33205,7 +33704,8 @@ const AdminSettingsPage = ({
                 paymentUrlError && /* @__PURE__ */ jsxRuntimeExports.jsx(
                   "p",
                   {
-                    className: "text-sm text-destructive",
+                    className: "text-sm",
+                    style: { color: "var(--nak-destructive)" },
                     "data-ocid": "admin.payment_url_error",
                     children: paymentUrlError
                   }
@@ -33213,7 +33713,8 @@ const AdminSettingsPage = ({
                 paymentUrlMutationError && /* @__PURE__ */ jsxRuntimeExports.jsx(
                   "p",
                   {
-                    className: "text-sm text-destructive",
+                    className: "text-sm",
+                    style: { color: "var(--nak-destructive)" },
                     "data-ocid": "admin.payment_url_error",
                     children: paymentUrlMutationError
                   }
@@ -33221,7 +33722,8 @@ const AdminSettingsPage = ({
                 paymentUrlSaved && /* @__PURE__ */ jsxRuntimeExports.jsxs(
                   "p",
                   {
-                    className: "text-sm text-success flex items-center gap-2",
+                    className: "text-sm flex items-center gap-2",
+                    style: { color: "var(--nak-success)" },
                     "data-ocid": "admin.payment_url_success",
                     children: [
                       /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4" }),
@@ -33236,7 +33738,7 @@ const AdminSettingsPage = ({
                     onClick: handleSavePaymentUrl,
                     disabled: updatePaymentUrl.isPending,
                     "data-ocid": "admin.save_payment_url_button",
-                    className: "btn w-full px-6 py-3 text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed",
+                    className: "btn w-full disabled:opacity-50 disabled:cursor-not-allowed",
                     children: updatePaymentUrl.isPending ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
                       /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-4 h-4 animate-spin" }),
                       "Saving…"
@@ -33247,13 +33749,26 @@ const AdminSettingsPage = ({
                   }
                 )
               ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs uppercase tracking-wider text-gray-400 mb-2", children: "Payment Service Token" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 bg-black/30 px-4 py-3 rounded-xl border border-white/10", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Lock, { className: "w-4 h-4 text-gray-400 shrink-0" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm text-gray-300", children: (paymentConfig == null ? void 0 : paymentConfig.tokenSet) ? /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-success", children: "set" }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-warning", children: "not set" }) })
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-5", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "section-label mb-2", children: "Payment Service Token" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "inset-well flex items-center gap-3", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    Lock,
+                    {
+                      className: "w-4 h-4 shrink-0",
+                      style: { color: "var(--muted-foreground)" }
+                    }
+                  ),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm", children: (paymentConfig == null ? void 0 : paymentConfig.tokenSet) ? /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { color: "var(--nak-success)" }, children: "set" }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { color: "var(--nak-warning)" }, children: "not set" }) })
                 ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500 mt-2", children: "The token value is write-only and is never displayed. Enter a new value to replace it." })
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "p",
+                  {
+                    className: "text-xs mt-2",
+                    style: { color: "var(--muted-foreground)" },
+                    children: "The token value is write-only and is never displayed. Enter a new value to replace it."
+                  }
+                )
               ] }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
@@ -33261,7 +33776,7 @@ const AdminSettingsPage = ({
                     "label",
                     {
                       htmlFor: "payment-service-token",
-                      className: "block text-sm text-gray-300 mb-2",
+                      className: "field-label block mb-2",
                       children: "PAYMENT_SERVICE_TOKEN"
                     }
                   ),
@@ -33282,7 +33797,8 @@ const AdminSettingsPage = ({
                 paymentTokenError && /* @__PURE__ */ jsxRuntimeExports.jsx(
                   "p",
                   {
-                    className: "text-sm text-destructive",
+                    className: "text-sm",
+                    style: { color: "var(--nak-destructive)" },
                     "data-ocid": "admin.payment_token_error",
                     children: paymentTokenError
                   }
@@ -33290,7 +33806,8 @@ const AdminSettingsPage = ({
                 paymentTokenMutationError && /* @__PURE__ */ jsxRuntimeExports.jsx(
                   "p",
                   {
-                    className: "text-sm text-destructive",
+                    className: "text-sm",
+                    style: { color: "var(--nak-destructive)" },
                     "data-ocid": "admin.payment_token_error",
                     children: paymentTokenMutationError
                   }
@@ -33298,7 +33815,8 @@ const AdminSettingsPage = ({
                 paymentTokenSaved && /* @__PURE__ */ jsxRuntimeExports.jsxs(
                   "p",
                   {
-                    className: "text-sm text-success flex items-center gap-2",
+                    className: "text-sm flex items-center gap-2",
+                    style: { color: "var(--nak-success)" },
                     "data-ocid": "admin.payment_token_success",
                     children: [
                       /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4" }),
@@ -33313,7 +33831,7 @@ const AdminSettingsPage = ({
                     onClick: handleSavePaymentToken,
                     disabled: updatePaymentToken.isPending,
                     "data-ocid": "admin.save_payment_token_button",
-                    className: "btn w-full px-6 py-3 text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed",
+                    className: "btn w-full disabled:opacity-50 disabled:cursor-not-allowed",
                     children: updatePaymentToken.isPending ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
                       /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-4 h-4 animate-spin" }),
                       "Saving…"
@@ -33330,33 +33848,49 @@ const AdminSettingsPage = ({
         /* @__PURE__ */ jsxRuntimeExports.jsxs(
           "div",
           {
-            className: "card glass-card p-6 sm:p-8",
+            className: "surface p-5",
             "data-ocid": "admin.minimum_order_panel",
             children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 mb-6", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(BadgeDollarSign, { className: "w-8 h-8 text-teal-400" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 rounded-full bg-teal-400/20 blur-xl animate-pulse" })
-                ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 mb-5", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  BadgeDollarSign,
+                  {
+                    className: "w-5 h-5",
+                    style: { color: "var(--primary)" }
+                  }
+                ),
                 /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "section-heading text-lg", children: "Minimum Order" }),
                   /* @__PURE__ */ jsxRuntimeExports.jsx(
-                    "h3",
+                    "p",
                     {
-                      className: "text-2xl font-semibold text-white",
-                      style: { fontFamily: "var(--font-heading)" },
-                      children: "Minimum Order"
+                      className: "text-xs",
+                      style: { color: "var(--muted-foreground)" },
+                      children: "Lowest crypto order total accepted"
                     }
-                  ),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-400", children: "Lowest crypto order total accepted" })
+                  )
                 ] })
               ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs uppercase tracking-wider text-gray-400 mb-2", children: "Current Minimum" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 bg-black/30 px-4 py-3 rounded-xl border border-white/10", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(BadgeDollarSign, { className: "w-5 h-5 text-teal-400 shrink-0" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm text-white", children: minimumOrder !== void 0 ? `$${(Number(minimumOrder) / 100).toFixed(2)}` : "—" })
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-5", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "section-label mb-2", children: "Current Minimum" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "inset-well flex items-center gap-3", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    BadgeDollarSign,
+                    {
+                      className: "w-5 h-5 shrink-0",
+                      style: { color: "var(--primary)" }
+                    }
+                  ),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num text-sm", children: minimumOrder !== void 0 ? `$${(Number(minimumOrder) / 100).toFixed(2)}` : "—" })
                 ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500 mt-2", children: "Crypto checkout is rejected below this total. The default is $0.25." })
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "p",
+                  {
+                    className: "text-xs mt-2",
+                    style: { color: "var(--muted-foreground)" },
+                    children: "Crypto checkout is rejected below this total. The default is $0.25."
+                  }
+                )
               ] }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
@@ -33364,7 +33898,7 @@ const AdminSettingsPage = ({
                     "label",
                     {
                       htmlFor: "minimum-order",
-                      className: "block text-sm text-gray-300 mb-2",
+                      className: "field-label block mb-2",
                       children: "Minimum Order Total (USD)"
                     }
                   ),
@@ -33386,7 +33920,8 @@ const AdminSettingsPage = ({
                 minimumOrderError && /* @__PURE__ */ jsxRuntimeExports.jsx(
                   "p",
                   {
-                    className: "text-sm text-destructive",
+                    className: "text-sm",
+                    style: { color: "var(--nak-destructive)" },
                     "data-ocid": "admin.minimum_order_error",
                     children: minimumOrderError
                   }
@@ -33394,7 +33929,8 @@ const AdminSettingsPage = ({
                 minimumOrderMutationError && /* @__PURE__ */ jsxRuntimeExports.jsx(
                   "p",
                   {
-                    className: "text-sm text-destructive",
+                    className: "text-sm",
+                    style: { color: "var(--nak-destructive)" },
                     "data-ocid": "admin.minimum_order_error",
                     children: minimumOrderMutationError
                   }
@@ -33402,7 +33938,8 @@ const AdminSettingsPage = ({
                 minimumOrderSaved && /* @__PURE__ */ jsxRuntimeExports.jsxs(
                   "p",
                   {
-                    className: "text-sm text-success flex items-center gap-2",
+                    className: "text-sm flex items-center gap-2",
+                    style: { color: "var(--nak-success)" },
                     "data-ocid": "admin.minimum_order_success",
                     children: [
                       /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4" }),
@@ -33417,7 +33954,7 @@ const AdminSettingsPage = ({
                     onClick: handleSaveMinimumOrder,
                     disabled: updateMinimumOrder.isPending,
                     "data-ocid": "admin.save_minimum_order_button",
-                    className: "btn w-full px-6 py-3 text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed",
+                    className: "btn w-full disabled:opacity-50 disabled:cursor-not-allowed",
                     children: updateMinimumOrder.isPending ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
                       /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-4 h-4 animate-spin" }),
                       "Saving…"
@@ -33434,32 +33971,35 @@ const AdminSettingsPage = ({
         /* @__PURE__ */ jsxRuntimeExports.jsxs(
           "div",
           {
-            className: "card glass-card p-6 sm:p-8 lg:col-span-2",
+            className: "surface p-5 lg:col-span-2",
             "data-ocid": "admin.products_panel",
             children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 mb-6", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Package, { className: "w-8 h-8 text-purple-400" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 rounded-full bg-purple-400/20 blur-xl animate-pulse" })
-                ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 mb-5", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  Package,
+                  {
+                    className: "w-5 h-5",
+                    style: { color: "var(--primary)" }
+                  }
+                ),
                 /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "section-heading text-lg", children: "Products" }),
                   /* @__PURE__ */ jsxRuntimeExports.jsx(
-                    "h3",
+                    "p",
                     {
-                      className: "text-2xl font-semibold text-white",
-                      style: { fontFamily: "var(--font-heading)" },
-                      children: "Products"
+                      className: "text-xs",
+                      style: { color: "var(--muted-foreground)" },
+                      children: "Create new products or edit existing ones"
                     }
-                  ),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-400", children: "Create new products or edit existing ones" })
+                  )
                 ] })
               ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-5", children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx(
                   "label",
                   {
                     htmlFor: "product-select",
-                    className: "block text-sm text-gray-300 mb-2",
+                    className: "field-label block mb-2",
                     children: "Product"
                   }
                 ),
@@ -33481,19 +34021,12 @@ const AdminSettingsPage = ({
                       className: inputClass,
                       children: [
                         /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "", children: "Create new product…" }),
-                        productsLoading ? /* @__PURE__ */ jsxRuntimeExports.jsx("option", { disabled: true, children: "Loading products…" }) : products == null ? void 0 : products.map((p2) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                          "option",
-                          {
-                            value: p2.id.toString(),
-                            children: [
-                              p2.name,
-                              " (",
-                              formatPrice(p2.price),
-                              ")"
-                            ]
-                          },
-                          p2.id.toString()
-                        ))
+                        productsLoading ? /* @__PURE__ */ jsxRuntimeExports.jsx("option", { disabled: true, children: "Loading products…" }) : products == null ? void 0 : products.map((p2) => /* @__PURE__ */ jsxRuntimeExports.jsxs("option", { value: p2.id.toString(), children: [
+                          p2.name,
+                          " (",
+                          formatPrice(p2.price),
+                          ")"
+                        ] }, p2.id.toString()))
                       ]
                     }
                   ),
@@ -33503,7 +34036,7 @@ const AdminSettingsPage = ({
                       type: "button",
                       onClick: handleCreateNewProduct,
                       "data-ocid": "admin.new_product_button",
-                      className: "btn px-6 py-3 text-sm font-semibold shrink-0",
+                      className: "btn btn-secondary shrink-0",
                       children: [
                         /* @__PURE__ */ jsxRuntimeExports.jsx(Package, { className: "w-4 h-4" }),
                         "New Product"
@@ -33511,7 +34044,14 @@ const AdminSettingsPage = ({
                     }
                   )
                 ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500 mt-2", children: productMode === "edit" ? "Editing an existing product. Prices are stored as integer cents." : "Creating a new product. Prices are stored as integer cents." })
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "p",
+                  {
+                    className: "text-xs mt-2",
+                    style: { color: "var(--muted-foreground)" },
+                    children: productMode === "edit" ? "Editing an existing product. Prices are stored as integer cents." : "Creating a new product. Prices are stored as integer cents."
+                  }
+                )
               ] }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 md:grid-cols-2 gap-4", children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
@@ -33519,7 +34059,7 @@ const AdminSettingsPage = ({
                     "label",
                     {
                       htmlFor: "product-name",
-                      className: "block text-sm text-gray-300 mb-2",
+                      className: "field-label block mb-2",
                       children: "Name"
                     }
                   ),
@@ -33544,7 +34084,7 @@ const AdminSettingsPage = ({
                     "label",
                     {
                       htmlFor: "product-slug",
-                      className: "block text-sm text-gray-300 mb-2",
+                      className: "field-label block mb-2",
                       children: "Slug"
                     }
                   ),
@@ -33569,7 +34109,7 @@ const AdminSettingsPage = ({
                     "label",
                     {
                       htmlFor: "product-category",
-                      className: "block text-sm text-gray-300 mb-2",
+                      className: "field-label block mb-2",
                       children: "Category"
                     }
                   ),
@@ -33594,7 +34134,7 @@ const AdminSettingsPage = ({
                     "label",
                     {
                       htmlFor: "product-currency",
-                      className: "block text-sm text-gray-300 mb-2",
+                      className: "field-label block mb-2",
                       children: "Currency"
                     }
                   ),
@@ -33619,7 +34159,7 @@ const AdminSettingsPage = ({
                     "label",
                     {
                       htmlFor: "product-price",
-                      className: "block text-sm text-gray-300 mb-2",
+                      className: "field-label block mb-2",
                       children: "Price (USD)"
                     }
                   ),
@@ -33639,21 +34179,28 @@ const AdminSettingsPage = ({
                       className: inputClass
                     }
                   ),
-                  productDraft.priceText && dollarsToCents(productDraft.priceText) !== null && /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-xs text-gray-400 mt-1", children: [
-                    "Stored as",
-                    " ",
-                    /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "admin-mono text-teal-300", children: [
-                      dollarsToCents(productDraft.priceText),
-                      " cents"
-                    ] })
-                  ] })
+                  productDraft.priceText && dollarsToCents(productDraft.priceText) !== null && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                    "p",
+                    {
+                      className: "text-xs mt-1",
+                      style: { color: "var(--muted-foreground)" },
+                      children: [
+                        "Stored as",
+                        " ",
+                        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "mono-num", children: [
+                          dollarsToCents(productDraft.priceText),
+                          " cents"
+                        ] })
+                      ]
+                    }
+                  )
                 ] }),
                 /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
                   /* @__PURE__ */ jsxRuntimeExports.jsx(
                     "label",
                     {
                       htmlFor: "product-inventory",
-                      className: "block text-sm text-gray-300 mb-2",
+                      className: "field-label block mb-2",
                       children: "Inventory"
                     }
                   ),
@@ -33677,45 +34224,61 @@ const AdminSettingsPage = ({
                 ] })
               ] }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap gap-6 mt-4", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: "flex items-center gap-2 text-sm text-gray-300", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(
-                    "input",
-                    {
-                      type: "checkbox",
-                      checked: productDraft.active,
-                      onChange: (e) => setProductDraft((d2) => ({
-                        ...d2,
-                        active: e.target.checked
-                      })),
-                      "data-ocid": "admin.product_active_toggle",
-                      className: "w-4 h-4 accent-purple-500"
-                    }
-                  ),
-                  "Active"
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: "flex items-center gap-2 text-sm text-gray-300", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(
-                    "input",
-                    {
-                      type: "checkbox",
-                      checked: productDraft.adminOnly,
-                      onChange: (e) => setProductDraft((d2) => ({
-                        ...d2,
-                        adminOnly: e.target.checked
-                      })),
-                      "data-ocid": "admin.product_admin_only_toggle",
-                      className: "w-4 h-4 accent-purple-500"
-                    }
-                  ),
-                  "Admin only (hidden from public shop)"
-                ] })
+                /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                  "label",
+                  {
+                    className: "flex items-center gap-2 text-sm",
+                    style: { color: "var(--secondary-foreground)" },
+                    children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(
+                        "input",
+                        {
+                          type: "checkbox",
+                          checked: productDraft.active,
+                          onChange: (e) => setProductDraft((d2) => ({
+                            ...d2,
+                            active: e.target.checked
+                          })),
+                          "data-ocid": "admin.product_active_toggle",
+                          className: "w-4 h-4",
+                          style: { accentColor: "var(--primary)" }
+                        }
+                      ),
+                      "Active"
+                    ]
+                  }
+                ),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                  "label",
+                  {
+                    className: "flex items-center gap-2 text-sm",
+                    style: { color: "var(--secondary-foreground)" },
+                    children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(
+                        "input",
+                        {
+                          type: "checkbox",
+                          checked: productDraft.adminOnly,
+                          onChange: (e) => setProductDraft((d2) => ({
+                            ...d2,
+                            adminOnly: e.target.checked
+                          })),
+                          "data-ocid": "admin.product_admin_only_toggle",
+                          className: "w-4 h-4",
+                          style: { accentColor: "var(--primary)" }
+                        }
+                      ),
+                      "Admin only (hidden from public shop)"
+                    ]
+                  }
+                )
               ] }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-4", children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx(
                   "label",
                   {
                     htmlFor: "product-description",
-                    className: "block text-sm text-gray-300 mb-2",
+                    className: "field-label block mb-2",
                     children: "Description"
                   }
                 ),
@@ -33735,11 +34298,19 @@ const AdminSettingsPage = ({
                   }
                 )
               ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500 mt-3", children: "Variants and images are preserved from the existing product when editing and are not modified by this form." }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "p",
+                {
+                  className: "text-xs mt-3",
+                  style: { color: "var(--muted-foreground)" },
+                  children: "Variants and images are preserved from the existing product when editing and are not modified by this form."
+                }
+              ),
               productError && /* @__PURE__ */ jsxRuntimeExports.jsx(
                 "p",
                 {
-                  className: "text-sm text-destructive mt-3",
+                  className: "text-sm mt-3",
+                  style: { color: "var(--nak-destructive)" },
                   "data-ocid": "admin.product_error",
                   children: productError
                 }
@@ -33747,7 +34318,8 @@ const AdminSettingsPage = ({
               productSuccess && /* @__PURE__ */ jsxRuntimeExports.jsxs(
                 "p",
                 {
-                  className: "text-sm text-success flex items-center gap-2 mt-3",
+                  className: "text-sm flex items-center gap-2 mt-3",
+                  style: { color: "var(--nak-success)" },
                   "data-ocid": "admin.product_success",
                   children: [
                     /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4" }),
@@ -33755,101 +34327,116 @@ const AdminSettingsPage = ({
                   ]
                 }
               ),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "button",
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-4", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+                ConfirmStep,
                 {
-                  type: "button",
-                  onClick: handleSaveProduct,
-                  disabled: createProduct.isPending || updateProduct.isPending,
-                  "data-ocid": "admin.save_product_button",
-                  className: "btn w-full mt-4 px-6 py-3 text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed",
-                  children: createProduct.isPending || updateProduct.isPending ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-4 h-4 animate-spin" }),
-                    "Saving…"
-                  ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(Save, { className: "w-4 h-4" }),
-                    productMode === "create" ? "Create Product" : "Save Product"
-                  ] })
+                  trigger: /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "button",
+                    {
+                      type: "button",
+                      className: "btn w-full disabled:opacity-50 disabled:cursor-not-allowed",
+                      disabled: createProduct.isPending || updateProduct.isPending,
+                      "data-ocid": "admin.save_product_button",
+                      children: createProduct.isPending || updateProduct.isPending ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+                        /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-4 h-4 animate-spin" }),
+                        "Saving…"
+                      ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+                        /* @__PURE__ */ jsxRuntimeExports.jsx(Save, { className: "w-4 h-4" }),
+                        productMode === "create" ? "Create Product" : "Save Product"
+                      ] })
+                    }
+                  ),
+                  message: `Save this product at $${productDraft.priceText || "0.00"}? The price and inventory will be updated on the live shop.`,
+                  confirmLabel: "Save product",
+                  cancelLabel: "Cancel",
+                  tone: "neutral",
+                  onConfirm: handleSaveProduct
                 }
-              )
+              ) })
             ]
           }
         ),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "div",
-          {
-            className: "card glass-card p-6 sm:p-8",
-            "data-ocid": "admin.test_product_panel",
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 mb-6", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(FlaskConical, { className: "w-8 h-8 text-pink-400" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 rounded-full bg-pink-400/20 blur-xl animate-pulse" })
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(
-                    "h3",
-                    {
-                      className: "text-2xl font-semibold text-white",
-                      style: { fontFamily: "var(--font-heading)" },
-                      children: "Test Product"
-                    }
-                  ),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-400", children: "Hidden internal payment test item" })
-                ] })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-300 mb-4", children: "The test product is hidden from the public shop grid. As an admin you can open it directly to verify crypto checkout end to end without affecting public listings." }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                "button",
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "surface p-5", "data-ocid": "admin.test_product_panel", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 mb-5", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              FlaskConical,
+              {
+                className: "w-5 h-5",
+                style: { color: "var(--primary)" }
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "section-heading text-lg", children: "Test Product" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "p",
                 {
-                  type: "button",
-                  onClick: () => onNavigateToProduct("6"),
-                  "data-ocid": "admin.open_test_product_button",
-                  className: "btn w-full px-6 py-3 text-sm font-semibold",
-                  children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(FlaskConical, { className: "w-4 h-4" }),
-                    "Open Test Product"
-                  ]
+                  className: "text-xs",
+                  style: { color: "var(--muted-foreground)" },
+                  children: "Hidden internal payment test item"
                 }
               )
-            ]
-          }
-        )
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "p",
+            {
+              className: "text-sm mb-4",
+              style: { color: "var(--secondary-foreground)" },
+              children: "The test product is hidden from the public shop grid. As an admin you can open it directly to verify crypto checkout end to end without affecting public listings."
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "button",
+            {
+              type: "button",
+              onClick: () => onNavigateToProduct("6"),
+              "data-ocid": "admin.open_test_product_button",
+              className: "btn w-full",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(FlaskConical, { className: "w-4 h-4" }),
+                "Open Test Product"
+              ]
+            }
+          )
+        ] })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs(
         "div",
         {
-          className: "max-w-6xl mx-auto mb-8 card glass-card p-6 sm:p-8",
+          className: "surface p-5 mt-6",
           "data-ocid": "admin.canister_health_panel",
           children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 mb-6", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Activity, { className: "w-8 h-8 text-teal-400" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 rounded-full bg-teal-400/20 blur-xl animate-pulse" })
-              ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 mb-5", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                Activity,
+                {
+                  className: "w-5 h-5",
+                  style: { color: "var(--primary)" }
+                }
+              ),
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "section-heading text-lg", children: "Canister Health" }),
                 /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "h3",
+                  "p",
                   {
-                    className: "text-2xl font-semibold text-white",
-                    style: { fontFamily: "var(--font-heading)" },
-                    children: "Canister Health"
+                    className: "text-xs",
+                    style: { color: "var(--muted-foreground)" },
+                    children: "Cycle funding and canister identity"
                   }
-                ),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-400", children: "Cycle funding and canister identity" })
+                )
               ] })
             ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-5", children: [
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-2", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs uppercase tracking-wider text-gray-400", children: "Cycle Balance" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "section-label", children: "Cycle Balance" }),
                 /* @__PURE__ */ jsxRuntimeExports.jsxs(
                   "span",
                   {
-                    className: "inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-semibold",
+                    className: "inline-flex items-center gap-1.5 px-2.5 py-0.5 text-xs font-semibold border",
                     style: {
-                      color: cycleBalance === void 0 ? "#fbbf24" : cycleBalance > 2000000000000n ? "#34d399" : cycleBalance >= 500000000000n ? "#fbbf24" : "#f87171",
-                      backgroundColor: `${cycleBalance === void 0 ? "#fbbf24" : cycleBalance > 2000000000000n ? "#34d399" : cycleBalance >= 500000000000n ? "#fbbf24" : "#f87171"}1f`,
-                      border: `1px solid ${cycleBalance === void 0 ? "#fbbf24" : cycleBalance > 2000000000000n ? "#34d399" : cycleBalance >= 500000000000n ? "#fbbf24" : "#f87171"}55`
+                      color: CYCLE_COLOR[cycleTone(cycleBalance)],
+                      borderColor: CYCLE_COLOR[cycleTone(cycleBalance)],
+                      background: `color-mix(in srgb, ${CYCLE_COLOR[cycleTone(cycleBalance)]} 12%, transparent)`
                     },
                     "data-ocid": "admin.cycle_balance_badge",
                     children: [
@@ -33858,73 +34445,78 @@ const AdminSettingsPage = ({
                         {
                           className: "w-2 h-2 rounded-full",
                           style: {
-                            backgroundColor: cycleBalance === void 0 ? "#fbbf24" : cycleBalance > 2000000000000n ? "#34d399" : cycleBalance >= 500000000000n ? "#fbbf24" : "#f87171"
+                            backgroundColor: CYCLE_COLOR[cycleTone(cycleBalance)]
                           }
                         }
                       ),
-                      cycleBalance !== void 0 ? formatCycles$1(cycleBalance) : "—"
+                      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num", children: cycleBalance !== void 0 ? formatCycles$1(cycleBalance) : "—" })
                     ]
                   }
                 )
               ] }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 h-3 rounded-full bg-black/40 border border-white/10 overflow-hidden", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
                   "div",
                   {
-                    className: "h-full rounded-full transition-all duration-500",
-                    style: {
-                      width: `${cycleBalance === void 0 ? 0 : Math.min(
-                        100,
-                        Number(cycleBalance) / 2e12 * 100
-                      )}%`,
-                      backgroundColor: cycleBalance === void 0 ? "#fbbf24" : cycleBalance > 2000000000000n ? "#34d399" : cycleBalance >= 500000000000n ? "#fbbf24" : "#f87171"
-                    },
-                    "data-ocid": "admin.cycle_gauge"
-                  }
-                ) }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "span",
-                  {
-                    className: "text-xs text-gray-400 shrink-0",
-                    style: { fontFamily: "var(--font-mono)" },
-                    children: "2T threshold"
-                  }
-                )
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500 mt-2", children: "Low cycles can cause inter-canister ledger calls to fail. Keep the balance above 2T cycles." })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs uppercase tracking-wider text-gray-400 mb-2", children: "Canister ID" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 bg-black/30 px-4 py-3 rounded-xl border border-white/10", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Server, { className: "w-4 h-4 text-teal-400 shrink-0" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("code", { className: "font-mono-nak text-sm flex-1 break-all text-teal-300", children: canisterId ?? "—" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                  "button",
-                  {
-                    type: "button",
-                    onClick: async () => {
-                      if (!canisterId) return;
-                      try {
-                        await navigator.clipboard.writeText(canisterId);
-                        setCanisterCopied(true);
-                        setTimeout(() => setCanisterCopied(false), 2e3);
-                      } catch {
-                        setCanisterCopied(false);
+                    className: "flex-1 h-3 border overflow-hidden",
+                    style: { borderColor: "var(--border)" },
+                    children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+                      "div",
+                      {
+                        className: "h-full transition-all duration-500",
+                        style: {
+                          width: `${cycleBalance === void 0 ? 0 : Math.min(
+                            100,
+                            Number(cycleBalance) / 2e12 * 100
+                          )}%`,
+                          backgroundColor: CYCLE_COLOR[cycleTone(cycleBalance)]
+                        },
+                        "data-ocid": "admin.cycle_gauge"
                       }
-                    },
-                    "data-ocid": "admin.copy_canister_button",
-                    className: "btn flex items-center gap-2 px-3 py-2 text-xs",
-                    title: "Copy canister ID",
-                    children: [
-                      canisterCopied ? /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Copy, { className: "w-4 h-4" }),
-                      canisterCopied ? "Copied" : "Copy"
-                    ]
+                    )
                   }
                 ),
                 /* @__PURE__ */ jsxRuntimeExports.jsx(
                   "span",
                   {
-                    className: `inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-semibold shrink-0 ${canisterId === "vm5zh-yaaaa-aaaaj-qoaza-cai" || window.location.hostname.includes("draft") ? "bg-warning-soft text-warning border border-amber-500/30" : "bg-success-soft text-success border border-emerald-500/30"}`,
+                    className: "text-xs shrink-0 mono-num",
+                    style: { color: "var(--muted-foreground)" },
+                    children: "2T threshold"
+                  }
+                )
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "p",
+                {
+                  className: "text-xs mt-2",
+                  style: { color: "var(--muted-foreground)" },
+                  children: "Low cycles can cause inter-canister ledger calls to fail. Keep the balance above 2T cycles."
+                }
+              )
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "section-label mb-2", children: "Canister ID" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "inset-well flex items-center gap-3", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  Server,
+                  {
+                    className: "w-4 h-4 shrink-0",
+                    style: { color: "var(--primary)" }
+                  }
+                ),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("code", { className: "flex-1 min-w-0 break-all", children: canisterId ?? "—" }),
+                canisterId && /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  CopyButton,
+                  {
+                    text: canisterId,
+                    label: "Copy",
+                    className: "shrink-0"
+                  }
+                ),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "span",
+                  {
+                    className: `inline-flex items-center gap-1.5 px-2.5 py-0.5 text-xs font-semibold border shrink-0 ${canisterId === "vm5zh-yaaaa-aaaaj-qoaza-cai" || window.location.hostname.includes("draft") ? "status-pill-warning" : "status-pill-positive"}`,
                     "data-ocid": "admin.env_label",
                     children: canisterId === "vm5zh-yaaaa-aaaaj-qoaza-cai" || window.location.hostname.includes("draft") ? "DRAFT" : "LIVE"
                   }
@@ -33934,30 +34526,33 @@ const AdminSettingsPage = ({
           ]
         }
       ),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        "div",
-        {
-          className: "max-w-6xl mx-auto mb-8 card glass-card p-6 sm:p-8",
-          "data-ocid": "admin.orders_panel",
-          children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 mb-6", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { className: "w-8 h-8 text-purple-400" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 rounded-full bg-purple-400/20 blur-xl animate-pulse" })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "h3",
-                  {
-                    className: "text-2xl font-semibold text-white",
-                    style: { fontFamily: "var(--font-heading)" },
-                    children: "Orders"
-                  }
-                ),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-400", children: "Filter, re-check, and sweep crypto orders" })
-              ] })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-2 mb-6", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "surface p-5 mt-6", "data-ocid": "admin.orders_panel", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 mb-5", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            RefreshCw,
+            {
+              className: "w-5 h-5",
+              style: { color: "var(--primary)" }
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "section-heading text-lg", children: "Orders" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "p",
+              {
+                className: "text-xs",
+                style: { color: "var(--muted-foreground)" },
+                children: "Filter, re-check, and sweep crypto orders"
+              }
+            )
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "div",
+          {
+            className: "flex flex-wrap gap-1 border-b mb-4",
+            style: { borderColor: "var(--border)" },
+            children: [
               "all",
               "awaiting_payment",
               "paid",
@@ -33970,301 +34565,387 @@ const AdminSettingsPage = ({
                 type: "button",
                 onClick: () => setOrderFilter(filter),
                 "data-ocid": `admin.order_filter.${filter}`,
-                className: `btn px-4 py-2 text-xs font-semibold ${orderFilter === filter ? "opacity-100" : "opacity-50 hover:opacity-80"}`,
+                className: `tab-underline ${orderFilter === filter ? "is-active" : ""}`,
                 children: filter.replace(/_/g, " ")
               },
               filter
-            )) }),
-            orderActionError && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mb-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "div",
+            ))
+          }
+        ),
+        orderActionError && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mb-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "div",
+          {
+            className: "error-panel relative flex items-start gap-2",
+            role: "alert",
+            "data-ocid": "admin.order_action_error",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(TriangleAlert, { className: "w-4 h-4 mt-0.5 shrink-0" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "min-w-0", children: orderActionError })
+            ]
+          }
+        ) }),
+        ordersLoading ? /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "div",
+          {
+            className: "loading-shimmer h-40",
+            "data-ocid": "admin.orders_loading"
+          }
+        ) : !orders || orders.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "div",
+          {
+            className: "text-center py-10",
+            style: { color: "var(--muted-foreground)" },
+            "data-ocid": "admin.orders_empty",
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm", children: "No orders match the current filter." })
+          }
+        ) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "overflow-x-auto", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { className: "admin-table", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { children: "Reference" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { children: "Status" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "num-col", children: "Amount" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { children: "Method" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { children: "Deposit Address" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { children: "Actions" })
+          ] }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("tbody", { children: orders.map((order, index2) => {
+            const decimals = order.currency === "ICP" ? 8 : 6;
+            return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "tr",
               {
-                className: "error-panel relative flex items-start gap-2",
-                role: "alert",
-                "data-ocid": "admin.order_action_error",
+                "data-ocid": `admin.order_row.${index2 + 1}`,
                 children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(TriangleAlert, { className: "w-4 h-4 mt-0.5 shrink-0" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "min-w-0", children: orderActionError })
-                ]
-              }
-            ) }),
-            ordersLoading ? /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "div",
-              {
-                className: "loading-shimmer h-40 rounded-xl",
-                "data-ocid": "admin.orders_loading"
-              }
-            ) : !orders || orders.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "div",
-              {
-                className: "text-center py-10 text-gray-400",
-                "data-ocid": "admin.orders_empty",
-                children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm", children: "No orders match the current filter." })
-              }
-            ) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "overflow-x-auto", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { className: "admin-table", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("th", { children: "Reference" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("th", { children: "Status" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "text-right", children: "Amount" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("th", { children: "Method" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("th", { children: "Deposit Address" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("th", { children: "Actions" })
-              ] }) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("tbody", { children: orders.map((order, index2) => {
-                const decimals = order.currency === "ICP" ? 8 : 6;
-                return /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                  "tr",
-                  {
-                    "data-ocid": `admin.order_row.${index2 + 1}`,
-                    children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "admin-mono", children: order.reference }),
-                      /* @__PURE__ */ jsxRuntimeExports.jsxs("td", { children: [
-                        /* @__PURE__ */ jsxRuntimeExports.jsx(
-                          "span",
-                          {
-                            className: `inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-semibold ${statusTone$1(
-                              order.status
-                            )}`,
-                            children: order.status
-                          }
-                        ),
-                        order.cryptoStatus && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block text-xs text-gray-400 mt-1", children: cryptoStatusLabel$1(order.cryptoStatus) })
-                      ] }),
-                      /* @__PURE__ */ jsxRuntimeExports.jsxs("td", { className: "admin-mono text-right", children: [
-                        formatTokenAmount$3(order.amountOwed, decimals),
-                        " ",
-                        order.currency
-                      ] }),
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "admin-mono", children: paymentMethodLabel$2(order.paymentMethod) }),
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "admin-mono max-w-[16rem]", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block break-all", children: order.depositAccountText }) }),
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-2 min-w-[15rem]", children: [
-                        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-                          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                            "button",
-                            {
-                              type: "button",
-                              className: "btn-recheck",
-                              onClick: () => forceRecheck.mutate(order.reference, {
-                                onError: (err) => setOrderActionError(
-                                  err && typeof err === "object" && "__kind__" in err ? recoveryErrorMessage$1(
-                                    err
-                                  ) : errorText$1(err)
-                                )
-                              }),
-                              disabled: forceRecheck.isPending,
-                              "data-ocid": `admin.recheck_button.${index2 + 1}`,
-                              children: [
-                                /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { className: "w-3 h-3" }),
-                                forceRecheck.isPending ? "Checking…" : "Re-check payment"
-                              ]
-                            }
-                          ),
-                          /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "mono-num", children: order.reference }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("td", { children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(StatusPill, { tone: statusPillTone(order.status), children: order.status }),
+                    order.cryptoStatus && /* @__PURE__ */ jsxRuntimeExports.jsx(
+                      "span",
+                      {
+                        className: "block text-xs mt-1",
+                        style: { color: "var(--muted-foreground)" },
+                        children: cryptoStatusLabel$1(order.cryptoStatus)
+                      }
+                    )
+                  ] }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("td", { className: "num-col", children: [
+                    formatTokenAmount$3(order.amountOwed, decimals),
+                    " ",
+                    order.currency
+                  ] }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "mono-num", children: paymentMethodLabel$2(order.paymentMethod) }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "mono-num max-w-[16rem]", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block break-all", children: order.depositAccountText }) }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-2 min-w-[15rem]", children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                        "button",
+                        {
+                          type: "button",
+                          className: "btn-recheck",
+                          onClick: () => forceRecheck.mutate(order.reference, {
+                            onError: (err) => setOrderActionError(
+                              err && typeof err === "object" && "__kind__" in err ? recoveryErrorMessage$1(
+                                err
+                              ) : errorText$1(err)
+                            )
+                          }),
+                          disabled: forceRecheck.isPending,
+                          "data-ocid": `admin.recheck_button.${index2 + 1}`,
+                          children: [
+                            /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { className: "w-3 h-3" }),
+                            forceRecheck.isPending ? "Checking…" : "Re-check payment"
+                          ]
+                        }
+                      ),
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(
+                        ConfirmStep,
+                        {
+                          trigger: /* @__PURE__ */ jsxRuntimeExports.jsx(
                             "button",
                             {
                               type: "button",
                               className: "btn-sweep",
-                              onClick: () => forceSweep.mutate(order.reference, {
-                                onError: (err) => setOrderActionError(
-                                  err && typeof err === "object" && "__kind__" in err ? recoveryErrorMessage$1(
-                                    err
-                                  ) : errorText$1(err)
-                                )
-                              }),
                               disabled: forceSweep.isPending,
                               "data-ocid": `admin.sweep_button.${index2 + 1}`,
                               children: forceSweep.isPending ? "Sweeping…" : "Sweep now"
                             }
-                          )
-                        ] }),
-                        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-                          /* @__PURE__ */ jsxRuntimeExports.jsx(
-                            "input",
-                            {
-                              type: "text",
-                              value: trackingDraft[order.reference] ?? "",
-                              onChange: (e) => setTrackingDraft((d2) => ({
-                                ...d2,
-                                [order.reference]: e.target.value
-                              })),
-                              placeholder: "Tracking # (optional)",
-                              "data-ocid": `admin.tracking_input.${index2 + 1}`,
-                              className: "flex-1 min-w-0 bg-black/40 border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-purple-500/50 focus:ring-2 focus:ring-purple-500/20"
-                            }
                           ),
-                          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                            "button",
-                            {
-                              type: "button",
-                              className: "btn-shipped",
-                              onClick: () => handleMarkShipped(order.reference),
-                              disabled: markShipped.isPending,
-                              "data-ocid": `admin.mark_shipped_button.${index2 + 1}`,
-                              children: [
-                                /* @__PURE__ */ jsxRuntimeExports.jsx(Truck, { className: "w-3 h-3" }),
-                                markShipped.isPending ? "Shipping…" : "Mark shipped"
-                              ]
-                            }
-                          )
-                        ] }),
-                        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center gap-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                          "button",
-                          {
-                            type: "button",
-                            className: "btn-email",
-                            onClick: () => handleResendEmail(order.reference),
-                            disabled: resendEmail.isPending,
-                            "data-ocid": `admin.resend_email_button.${index2 + 1}`,
-                            children: [
-                              /* @__PURE__ */ jsxRuntimeExports.jsx(Mail, { className: "w-3 h-3" }),
-                              resendEmail.isPending ? "Sending…" : "Resend confirmation email"
-                            ]
-                          }
-                        ) }),
-                        shippedError && /* @__PURE__ */ jsxRuntimeExports.jsx(
-                          "p",
-                          {
-                            className: "text-xs text-destructive",
-                            "data-ocid": `admin.shipped_error.${index2 + 1}`,
-                            children: shippedError
-                          }
-                        ),
-                        resendError && /* @__PURE__ */ jsxRuntimeExports.jsx(
-                          "p",
-                          {
-                            className: "text-xs text-destructive",
-                            "data-ocid": `admin.resend_error.${index2 + 1}`,
-                            children: resendError
-                          }
-                        ),
-                        resendSuccess === order.reference && /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                          "p",
-                          {
-                            className: "text-xs text-success flex items-center gap-1",
-                            "data-ocid": `admin.resend_success.${index2 + 1}`,
-                            children: [
-                              /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-3 h-3" }),
-                              "Confirmation email resent."
-                            ]
-                          }
-                        )
-                      ] }) })
-                    ]
-                  },
-                  order.reference
-                );
-              }) })
-            ] }) })
-          ]
-        }
-      ),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        "div",
-        {
-          className: "max-w-6xl mx-auto mb-8 card glass-card p-6 sm:p-8",
-          "data-ocid": "admin.consent_panel",
-          children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 mb-6", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Mail, { className: "w-8 h-8 text-teal-400" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 rounded-full bg-teal-400/20 blur-xl animate-pulse" })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "h3",
-                  {
-                    className: "text-2xl font-semibold text-white",
-                    style: { fontFamily: "var(--font-heading)" },
-                    children: "Consent List"
-                  }
-                ),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-400", children: "Addresses that opted into marketing email" })
-              ] })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-300 mb-4", children: "Export the addresses that have given marketing consent as a CSV. Suppressed (unsubscribed) addresses are excluded, and transactional emails are never affected." }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col sm:flex-row sm:items-center gap-3", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                "button",
-                {
-                  type: "button",
-                  className: "btn-export",
-                  onClick: handleExportConsentCsv,
-                  disabled: consentCsv.isFetching,
-                  "data-ocid": "admin.export_consent_button",
-                  children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(Download, { className: "w-4 h-4" }),
-                    consentCsv.isFetching ? "Loading…" : "Export consent list (CSV)"
-                  ]
-                }
-              ),
-              consentCsv.isFetching && /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-xs text-gray-400 flex items-center gap-2", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-3 h-3 animate-spin" }),
-                "Fetching consent list…"
-              ] })
-            ] }),
-            consentCsv.error && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "div",
-              {
-                className: "error-panel relative flex items-start gap-2",
-                role: "alert",
-                "data-ocid": "admin.consent_query_error",
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(TriangleAlert, { className: "w-4 h-4 mt-0.5 shrink-0" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "min-w-0", children: consentErrorMessage(
-                    consentCsv.error
-                  ) })
+                          message: `Sweep order ${order.reference} to the treasury? This moves the on-ledger balance and cannot be undone.`,
+                          confirmLabel: "Sweep now",
+                          cancelLabel: "Cancel",
+                          tone: "negative",
+                          onConfirm: () => forceSweep.mutate(order.reference, {
+                            onError: (err) => setOrderActionError(
+                              err && typeof err === "object" && "__kind__" in err ? recoveryErrorMessage$1(
+                                err
+                              ) : errorText$1(err)
+                            )
+                          })
+                        }
+                      )
+                    ] }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(
+                        "input",
+                        {
+                          type: "text",
+                          value: trackingDraft[order.reference] ?? "",
+                          onChange: (e) => setTrackingDraft((d2) => ({
+                            ...d2,
+                            [order.reference]: e.target.value
+                          })),
+                          placeholder: "Tracking # (optional)",
+                          "data-ocid": `admin.tracking_input.${index2 + 1}`,
+                          className: "field-input flex-1 min-w-0 text-xs"
+                        }
+                      ),
+                      /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                        "button",
+                        {
+                          type: "button",
+                          className: "btn-shipped",
+                          onClick: () => handleMarkShipped(order.reference),
+                          disabled: markShipped.isPending,
+                          "data-ocid": `admin.mark_shipped_button.${index2 + 1}`,
+                          children: [
+                            /* @__PURE__ */ jsxRuntimeExports.jsx(Truck, { className: "w-3 h-3" }),
+                            markShipped.isPending ? "Shipping…" : "Mark shipped"
+                          ]
+                        }
+                      )
+                    ] }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center gap-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                      "button",
+                      {
+                        type: "button",
+                        className: "btn-email",
+                        onClick: () => handleResendEmail(order.reference),
+                        disabled: resendEmail.isPending,
+                        "data-ocid": `admin.resend_email_button.${index2 + 1}`,
+                        children: [
+                          /* @__PURE__ */ jsxRuntimeExports.jsx(Mail, { className: "w-3 h-3" }),
+                          resendEmail.isPending ? "Sending…" : "Resend confirmation email"
+                        ]
+                      }
+                    ) }),
+                    shippedError && /* @__PURE__ */ jsxRuntimeExports.jsx(
+                      "p",
+                      {
+                        className: "text-xs",
+                        style: { color: "var(--nak-destructive)" },
+                        "data-ocid": `admin.shipped_error.${index2 + 1}`,
+                        children: shippedError
+                      }
+                    ),
+                    resendError && /* @__PURE__ */ jsxRuntimeExports.jsx(
+                      "p",
+                      {
+                        className: "text-xs",
+                        style: { color: "var(--nak-destructive)" },
+                        "data-ocid": `admin.resend_error.${index2 + 1}`,
+                        children: resendError
+                      }
+                    ),
+                    resendSuccess === order.reference && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                      "p",
+                      {
+                        className: "text-xs flex items-center gap-1",
+                        style: { color: "var(--nak-success)" },
+                        "data-ocid": `admin.resend_success.${index2 + 1}`,
+                        children: [
+                          /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-3 h-3" }),
+                          "Confirmation email resent."
+                        ]
+                      }
+                    )
+                  ] }) })
                 ]
-              }
-            ) }),
-            consentError && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "div",
-              {
-                className: "error-panel relative flex items-start gap-2",
-                role: "alert",
-                "data-ocid": "admin.consent_error",
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(TriangleAlert, { className: "w-4 h-4 mt-0.5 shrink-0" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "min-w-0", children: consentError })
-                ]
-              }
-            ) }),
-            consentSuccess && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              },
+              order.reference
+            );
+          }) })
+        ] }) })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "surface p-5 mt-6", "data-ocid": "admin.submissions_panel", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 mb-5", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Mail, { className: "w-5 h-5", style: { color: "var(--primary)" } }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "section-heading text-lg", children: "Submissions" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
               "p",
               {
-                className: "text-sm text-success flex items-center gap-2 mt-4",
-                "data-ocid": "admin.consent_success",
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4" }),
-                  "Consent list downloaded."
-                ]
+                className: "text-xs",
+                style: { color: "var(--muted-foreground)" },
+                children: "Artist works submitted for review"
               }
             )
-          ]
-        }
-      ),
+          ] })
+        ] }),
+        submissionsLoading ? /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "div",
+          {
+            className: "loading-shimmer h-40",
+            "data-ocid": "admin.submissions_loading"
+          }
+        ) : !submissions || submissions.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "div",
+          {
+            className: "text-center py-10",
+            style: { color: "var(--muted-foreground)" },
+            "data-ocid": "admin.submissions_empty",
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm", children: "No submissions yet." })
+          }
+        ) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "overflow-x-auto", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { className: "admin-table", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { children: "Name" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { children: "Email" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { children: "Discipline" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { children: "Link" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { children: "Message" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { children: "Submitted" })
+          ] }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("tbody", { children: submissions.map((submission, index2) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "tr",
+            {
+              "data-ocid": `admin.submission_row.${index2 + 1}`,
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "min-w-[10rem]", children: submission.name }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "min-w-[14rem] break-all", children: submission.email }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "whitespace-nowrap", children: disciplineLabel(submission.discipline) }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "min-w-[12rem]", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "a",
+                  {
+                    href: submission.link,
+                    target: "_blank",
+                    rel: "noopener noreferrer",
+                    className: "admin-mono inline-block max-w-[16rem] break-all",
+                    "data-ocid": `admin.submission_link.${index2 + 1}`,
+                    children: submission.link
+                  }
+                ) }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "min-w-[16rem] max-w-[24rem]", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block whitespace-pre-wrap break-words", children: submission.message || "—" }) }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "whitespace-nowrap", children: formatTimestamp$3(submission.submittedAt) })
+              ]
+            },
+            submission.id
+          )) })
+        ] }) })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "surface p-5 mt-6", "data-ocid": "admin.consent_panel", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 mb-5", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Mail, { className: "w-5 h-5", style: { color: "var(--primary)" } }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "section-heading text-lg", children: "Consent List" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "p",
+              {
+                className: "text-xs",
+                style: { color: "var(--muted-foreground)" },
+                children: "Addresses that opted into marketing email"
+              }
+            )
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "p",
+          {
+            className: "text-sm mb-4",
+            style: { color: "var(--secondary-foreground)" },
+            children: "Export the addresses that have given marketing consent as a CSV. Suppressed (unsubscribed) addresses are excluded, and transactional emails are never affected."
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col sm:flex-row sm:items-center gap-3", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "button",
+            {
+              type: "button",
+              className: "btn-export",
+              onClick: handleExportConsentCsv,
+              disabled: consentCsv.isFetching,
+              "data-ocid": "admin.export_consent_button",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Download, { className: "w-4 h-4" }),
+                consentCsv.isFetching ? "Loading…" : "Export consent list (CSV)"
+              ]
+            }
+          ),
+          consentCsv.isFetching && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "span",
+            {
+              className: "text-xs flex items-center gap-2",
+              style: { color: "var(--muted-foreground)" },
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-3 h-3 animate-spin" }),
+                "Fetching consent list…"
+              ]
+            }
+          )
+        ] }),
+        consentCsv.error && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "div",
+          {
+            className: "error-panel relative flex items-start gap-2",
+            role: "alert",
+            "data-ocid": "admin.consent_query_error",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(TriangleAlert, { className: "w-4 h-4 mt-0.5 shrink-0" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "min-w-0", children: consentErrorMessage(
+                consentCsv.error
+              ) })
+            ]
+          }
+        ) }),
+        consentError && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "div",
+          {
+            className: "error-panel relative flex items-start gap-2",
+            role: "alert",
+            "data-ocid": "admin.consent_error",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(TriangleAlert, { className: "w-4 h-4 mt-0.5 shrink-0" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "min-w-0", children: consentError })
+            ]
+          }
+        ) }),
+        consentSuccess && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "p",
+          {
+            className: "text-sm flex items-center gap-2 mt-4",
+            style: { color: "var(--nak-success)" },
+            "data-ocid": "admin.consent_success",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4" }),
+              "Consent list downloaded."
+            ]
+          }
+        )
+      ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs(
         "div",
         {
-          className: "max-w-6xl mx-auto mb-8 card glass-card p-6 sm:p-8",
+          className: "surface p-5 mt-6",
           "data-ocid": "admin.subaccount_sweep_panel",
           children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 mb-6", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Wallet, { className: "w-8 h-8 text-purple-400" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 rounded-full bg-purple-400/20 blur-xl animate-pulse" })
-              ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 mb-5", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Wallet, { className: "w-5 h-5", style: { color: "var(--primary)" } }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "section-heading text-lg", children: "Subaccount Sweep" }),
                 /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "h3",
+                  "p",
                   {
-                    className: "text-2xl font-semibold text-white",
-                    style: { fontFamily: "var(--font-heading)" },
-                    children: "Subaccount Sweep"
+                    className: "text-xs",
+                    style: { color: "var(--muted-foreground)" },
+                    children: "Inspect and sweep a specific deposit subaccount"
                   }
-                ),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-400", children: "Inspect and sweep a specific deposit subaccount" })
+                )
               ] })
             ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-300 mb-4", children: "Query a deposit subaccount by its integer index to see its live on-ledger balance, then sweep it to the treasury. Any ledger error is surfaced exactly here." }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "p",
+              {
+                className: "text-sm mb-4",
+                style: { color: "var(--secondary-foreground)" },
+                children: "Query a deposit subaccount by its integer index to see its live on-ledger balance, then sweep it to the treasury. Any ledger error is surfaced exactly here."
+              }
+            ),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col sm:flex-row gap-3", children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(
                 "input",
@@ -34275,7 +34956,7 @@ const AdminSettingsPage = ({
                   onChange: (e) => setSubaccountIndexText(e.target.value),
                   placeholder: "Subaccount index (e.g. 0)",
                   "data-ocid": "admin.subaccount_index_input",
-                  className: "flex-1 min-w-0 bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-purple-500/50 focus:ring-2 focus:ring-purple-500/20 font-mono-nak"
+                  className: "field-input flex-1 min-w-0"
                 }
               ),
               /* @__PURE__ */ jsxRuntimeExports.jsxs(
@@ -34292,37 +34973,46 @@ const AdminSettingsPage = ({
                 }
               ),
               /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "button",
+                ConfirmStep,
                 {
-                  type: "button",
-                  className: "btn-sweep",
-                  onClick: handleSweepSubaccount,
-                  disabled: sweepSubaccount.isPending,
-                  "data-ocid": "admin.sweep_subaccount_button",
-                  children: sweepSubaccount.isPending ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-4 h-4 animate-spin" }),
-                    "Sweeping…"
-                  ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(Coins, { className: "w-4 h-4" }),
-                    "Sweep to treasury"
-                  ] })
+                  trigger: /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "button",
+                    {
+                      type: "button",
+                      className: "btn-sweep",
+                      disabled: sweepSubaccount.isPending,
+                      "data-ocid": "admin.sweep_subaccount_button",
+                      children: sweepSubaccount.isPending ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+                        /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-4 h-4 animate-spin" }),
+                        "Sweeping…"
+                      ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+                        /* @__PURE__ */ jsxRuntimeExports.jsx(Coins, { className: "w-4 h-4" }),
+                        "Sweep to treasury"
+                      ] })
+                    }
+                  ),
+                  message: `Sweep subaccount ${(subaccountIndex == null ? void 0 : subaccountIndex.toString()) ?? ""} to the treasury? This moves the on-ledger balance and cannot be undone.`,
+                  confirmLabel: "Sweep to treasury",
+                  cancelLabel: "Cancel",
+                  tone: "negative",
+                  onConfirm: handleSweepSubaccount
                 }
               )
             ] }),
-            subaccountBalance && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-4 bg-black/30 border border-white/10 rounded-xl p-4", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-xs uppercase tracking-wider text-gray-400 mb-2", children: [
+            subaccountBalance && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "inset-well mt-4", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "section-label mb-2", children: [
                 "Subaccount ",
                 subaccountBalance.subaccountIndex.toString()
               ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-gray-300", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm", children: [
                 "Balance:",
                 " ",
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "admin-mono text-white", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "mono-num", children: [
                   formatTokenAmount$3(subaccountBalance.balance),
                   " ckUSDC"
                 ] })
               ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("code", { className: "font-mono-nak text-xs break-all text-teal-300 block mt-2", children: subaccountBalance.subaccountHex })
+              /* @__PURE__ */ jsxRuntimeExports.jsx("code", { className: "mono-num text-xs break-all block mt-2", children: subaccountBalance.subaccountHex })
             ] }),
             subaccountBalanceError && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
               "div",
@@ -34351,7 +35041,8 @@ const AdminSettingsPage = ({
             subaccountSweepSuccess && /* @__PURE__ */ jsxRuntimeExports.jsxs(
               "p",
               {
-                className: "text-sm text-success flex items-center gap-2 mt-4",
+                className: "text-sm flex items-center gap-2 mt-4",
+                style: { color: "var(--nak-success)" },
                 "data-ocid": "admin.subaccount_sweep_success",
                 children: [
                   /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4" }),
@@ -34362,107 +35053,132 @@ const AdminSettingsPage = ({
           ]
         }
       ),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        "div",
-        {
-          className: "max-w-6xl mx-auto mb-8 card glass-card p-6 sm:p-8",
-          "data-ocid": "admin.funds_panel",
-          children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 mb-6", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Coins, { className: "w-8 h-8 text-pink-400" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 rounded-full bg-pink-400/20 blur-xl animate-pulse" })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "h3",
-                  {
-                    className: "text-2xl font-semibold text-white",
-                    style: { fontFamily: "var(--font-heading)" },
-                    children: "Funds"
-                  }
-                ),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-400", children: "Treasury, default subaccount, and unswept order funds" })
-              ] })
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "surface p-5 mt-6", "data-ocid": "admin.funds_panel", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 mb-5", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Coins, { className: "w-5 h-5", style: { color: "var(--primary)" } }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "section-heading text-lg", children: "Funds" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "p",
+              {
+                className: "text-xs",
+                style: { color: "var(--muted-foreground)" },
+                children: "Treasury, default subaccount, and unswept order funds"
+              }
+            )
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 md:grid-cols-3 gap-4", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "surface p-4", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 mb-3", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                Landmark,
+                {
+                  className: "w-4 h-4",
+                  style: { color: "var(--primary)" }
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "section-label", children: "Treasury" })
             ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 md:grid-cols-3 gap-4", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-black/30 border border-white/10 rounded-xl p-5", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 mb-3", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Landmark, { className: "w-4 h-4 text-purple-400" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs uppercase tracking-wider text-gray-400", children: "Treasury" })
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("code", { className: "font-mono-nak text-xs break-all text-teal-300 block mb-3", children: DEFAULT_TREASURY_PRINCIPAL }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-gray-300", children: [
-                  "ckUSDC balance:",
-                  " ",
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "admin-mono text-white", children: treasuryCkUsdcBalance })
-                ] })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-black/30 border border-white/10 rounded-xl p-5", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 mb-3", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Wallet, { className: "w-4 h-4 text-teal-400" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs uppercase tracking-wider text-gray-400", children: "Default Subaccount" })
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-gray-300 mb-3", children: [
-                  "Balance:",
-                  " ",
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "admin-mono text-white", children: defaultSubaccountBalance == null ? "—" : `${formatTokenAmount$3(defaultSubaccountBalance)} ckUSDC` })
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
+            /* @__PURE__ */ jsxRuntimeExports.jsx("code", { className: "mono-num text-xs break-all block mb-3", children: DEFAULT_TREASURY_PRINCIPAL }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm", children: [
+              "ckUSDC balance:",
+              " ",
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num", children: treasuryCkUsdcBalance })
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "surface p-4", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 mb-3", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                Wallet,
+                {
+                  className: "w-4 h-4",
+                  style: { color: "var(--primary)" }
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "section-label", children: "Default Subaccount" })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm mb-3", children: [
+              "Balance:",
+              " ",
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num", children: defaultSubaccountBalance == null ? "—" : `${formatTokenAmount$3(defaultSubaccountBalance)} ckUSDC` })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              ConfirmStep,
+              {
+                trigger: /* @__PURE__ */ jsxRuntimeExports.jsx(
                   "button",
                   {
                     type: "button",
                     className: "btn-sweep",
-                    onClick: () => sweepDefault.mutate(void 0, {
-                      onError: (err) => setSweepError(
-                        err && typeof err === "object" && "__kind__" in err ? recoveryErrorMessage$1(
-                          err
-                        ) : errorText$1(err)
-                      )
-                    }),
                     disabled: sweepDefault.isPending,
                     "data-ocid": "admin.sweep_default_button",
                     children: sweepDefault.isPending ? "Sweeping…" : "Sweep to treasury"
                   }
                 ),
-                sweepError && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-3", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                  "div",
-                  {
-                    className: "error-panel relative flex items-start gap-2",
-                    role: "alert",
-                    "data-ocid": "admin.sweep_error",
-                    children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx(TriangleAlert, { className: "w-4 h-4 mt-0.5 shrink-0" }),
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "min-w-0", children: sweepError })
-                    ]
-                  }
-                ) })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-black/30 border border-white/10 rounded-xl p-5", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 mb-3", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Coins, { className: "w-4 h-4 text-pink-400" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs uppercase tracking-wider text-gray-400", children: "Unswept Order Funds" })
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-gray-300", children: [
-                  "Total across order subaccounts:",
-                  " ",
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "admin-mono text-white", children: unsweptTotal == null ? "—" : `${formatTokenAmount$3(unsweptTotal)} ckUSDC` })
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-xs text-gray-500 mt-2", children: [
+                message: "Sweep the default subaccount balance to the treasury? This moves the on-ledger balance and cannot be undone.",
+                confirmLabel: "Sweep to treasury",
+                cancelLabel: "Cancel",
+                tone: "negative",
+                onConfirm: () => sweepDefault.mutate(void 0, {
+                  onError: (err) => setSweepError(
+                    err && typeof err === "object" && "__kind__" in err ? recoveryErrorMessage$1(
+                      err
+                    ) : errorText$1(err)
+                  )
+                })
+              }
+            ),
+            sweepError && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-3", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "div",
+              {
+                className: "error-panel relative flex items-start gap-2",
+                role: "alert",
+                "data-ocid": "admin.sweep_error",
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(TriangleAlert, { className: "w-4 h-4 mt-0.5 shrink-0" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "min-w-0", children: sweepError })
+                ]
+              }
+            ) })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "surface p-4", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 mb-3", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                Coins,
+                {
+                  className: "w-4 h-4",
+                  style: { color: "var(--primary)" }
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "section-label", children: "Unswept Order Funds" })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm", children: [
+              "Total across order subaccounts:",
+              " ",
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num", children: unsweptTotal == null ? "—" : `${formatTokenAmount$3(unsweptTotal)} ckUSDC` })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "p",
+              {
+                className: "text-xs mt-2",
+                style: { color: "var(--muted-foreground)" },
+                children: [
                   "Live on-ledger balances from ",
                   (recoveryOrders == null ? void 0 : recoveryOrders.length) ?? 0,
                   " ",
                   "crypto order(s)."
-                ] })
-              ] })
-            ] })
-          ]
-        }
-      ),
+                ]
+              }
+            )
+          ] })
+        ] })
+      ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs(
         "div",
         {
-          className: "max-w-6xl mx-auto mt-8 flex items-center justify-center gap-2 text-sm text-gray-400",
+          className: "mt-8 flex items-center justify-center gap-2 text-sm",
+          style: { color: "var(--muted-foreground)" },
           "data-ocid": "admin.auth_note",
           children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(Lock, { className: "w-4 h-4" }),
@@ -34471,7 +35187,7 @@ const AdminSettingsPage = ({
         }
       )
     ] })
-  ] }) });
+  ] });
 };
 const SHELL_RAIN_ITEMS = Array.from({ length: 15 }, (_2, i) => ({
   id: `shell-rain-${i}`,
@@ -34573,7 +35289,7 @@ const BubbleBackground = () => {
           background: `
             radial-gradient(ellipse at 50% 0%, rgba(6, 182, 212, 0.02) 0%, transparent 60%),
             radial-gradient(ellipse at 0% 100%, rgba(139, 92, 246, 0.015) 0%, transparent 50%),
-            radial-gradient(ellipse at 100% 100%, rgba(236, 72, 153, 0.01) 0%, transparent 50%)
+            radial-gradient(ellipse at 100% 100%, rgba(139, 92, 246, 0.01) 0%, transparent 50%)
           `,
           backdropFilter: "blur(60px)"
         }
@@ -34645,40 +35361,16 @@ const CancelledPage = ({
     }
   }, [orderReference, cancelCardOrder.mutate]);
   return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "pt-24 sm:pt-32 pb-12 sm:pb-20 px-4 sm:px-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-7xl mx-auto", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center mb-12 sm:mb-16 px-2", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-4 mb-8", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(CircleX, { className: "w-12 h-12 text-red-400" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 rounded-full bg-red-400/20 blur-xl animate-pulse" })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "h1",
-          {
-            className: "text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold leading-tight",
-            style: { fontFamily: "var(--font-heading)" },
-            children: "Checkout Cancelled"
-          }
-        )
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm sm:text-base text-gray-300 max-w-2xl mx-auto", children: "Your checkout was cancelled" })
-    ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative max-w-4xl mx-auto px-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative card glass-card p-6 sm:p-10 text-center", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-gray-300 mb-6", children: "No payment was processed and your cart is still intact. Any reserved inventory has been released. You can return to the shop to keep browsing, or head back to your cart to try the checkout again." }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-center mb-12 sm:mb-16 px-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "section-heading text-3xl sm:text-4xl md:text-5xl", children: "Checkout Cancelled" }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative max-w-4xl mx-auto px-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "surface p-6 sm:p-10 text-center", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm sm:text-base text-muted-foreground mb-8", children: "No payment was processed and your cart is still intact. Any reserved inventory has been released." }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center justify-center gap-4", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "button",
-          {
-            type: "button",
-            onClick: onNavigateToShop,
-            className: "btn px-8 py-4 text-base font-semibold",
-            children: "Return to Shop"
-          }
-        ),
         /* @__PURE__ */ jsxRuntimeExports.jsxs(
           "button",
           {
             type: "button",
             onClick: onNavigateToCart,
+            "data-ocid": "cancelled.back_to_cart_button",
             className: "btn px-8 py-4 text-base font-semibold",
             children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingCart, { className: "w-4 h-4" }),
@@ -34686,12 +35378,23 @@ const CancelledPage = ({
             ]
           }
         ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            type: "button",
+            onClick: onNavigateToShop,
+            "data-ocid": "cancelled.return_to_shop_button",
+            className: "btn-secondary px-8 py-4 text-base font-semibold",
+            children: "Return to Shop"
+          }
+        ),
         /* @__PURE__ */ jsxRuntimeExports.jsxs(
           "button",
           {
             type: "button",
             onClick: onNavigateToMain,
-            className: "btn px-8 py-4 text-base font-semibold",
+            "data-ocid": "cancelled.back_to_main_button",
+            className: "btn-secondary px-8 py-4 text-base font-semibold",
             children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
               "Back to Main"
@@ -34794,117 +35497,96 @@ const CartPage = ({
     window.scrollTo(0, 0);
   }, []);
   return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "pt-24 sm:pt-32 pb-12 sm:pb-20 px-4 sm:px-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-7xl mx-auto", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center mb-12 sm:mb-16 px-2", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-4 mb-8", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingCart, { className: "w-12 h-12 text-teal-400" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 rounded-full bg-teal-400/20 blur-xl animate-pulse" })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "h1",
-          {
-            className: "text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold leading-tight",
-            style: { fontFamily: "var(--font-heading)" },
-            children: "Your Cart"
-          }
-        )
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm sm:text-base text-gray-300 max-w-2xl mx-auto", children: itemCount > 0 ? `${itemCount} ${itemCount === 1 ? "item" : "items"} ready for checkout` : "Your cart is empty" })
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-10 sm:mb-14 px-2", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "button",
+        {
+          type: "button",
+          onClick: onNavigateToShop,
+          className: "back-link mb-6",
+          "data-ocid": "cart.back_to_shop_link",
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
+            "Back to Shop"
+          ]
+        }
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "section-label mb-3", children: "Cart" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-3xl sm:text-4xl font-medium leading-tight tracking-[-0.015em]", children: "Your Cart" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-muted-foreground mt-2", children: itemCount > 0 ? `${itemCount} ${itemCount === 1 ? "item" : "items"} ready for checkout` : "Your cart is empty" })
     ] }),
-    items.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative max-w-4xl mx-auto px-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-      "div",
-      {
-        className: "relative card glass-card p-6 sm:p-10 text-center",
-        "data-ocid": "cart.empty_state",
-        children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative flex items-center justify-center gap-4 mb-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingCart, { className: "w-10 h-10 text-purple-400" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 rounded-full bg-purple-400/20 blur-xl animate-pulse" })
-          ] }) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-xl sm:text-2xl mb-3", children: "Your cart is empty" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-gray-300 mb-8 max-w-md mx-auto", children: "Looks like you haven't added anything yet. Explore the shop and grab some NAK Strat gear." }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center justify-center gap-4", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "button",
-              {
-                type: "button",
-                onClick: onNavigateToShop,
-                className: "btn px-8 py-4 text-base font-semibold",
-                "data-ocid": "cart.continue_shopping_button",
-                children: "Continue Shopping"
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "button",
-              {
-                type: "button",
-                onClick: onNavigateToMain,
-                className: "btn px-8 py-4 text-base font-semibold",
-                "data-ocid": "cart.back_to_main_button",
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
-                  "Back to Main"
-                ]
-              }
-            )
-          ] })
-        ]
-      }
-    ) }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 items-start", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "lg:col-span-2 space-y-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card glass-card p-4 sm:p-6", "data-ocid": "cart.list", children: [
+    items.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-4xl mx-auto px-2", "data-ocid": "cart.empty_state", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-muted-foreground text-sm mb-6", children: "Your cart is empty. Explore the shop and add something to get started." }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "button",
+        {
+          type: "button",
+          onClick: onNavigateToShop,
+          className: "back-link",
+          "data-ocid": "cart.continue_shopping_button",
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
+            "Continue Shopping"
+          ]
+        }
+      )
+    ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 items-start", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "lg:col-span-2", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-4", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-lg sm:text-xl", children: "Items" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
             "button",
             {
               type: "button",
               onClick: clearCart,
-              className: "btn px-4 py-2 text-sm",
+              className: "quiet-remove",
               "data-ocid": "cart.clear_button",
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { className: "w-4 h-4" }),
-                "Clear Cart"
-              ]
+              children: "Clear Cart"
             }
           )
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("ul", { className: "divide-y divide-white/10", children: items.map((item, index2) => {
-          const variant = item.product.variants.find(
-            (v2) => v2.id === item.variantId
-          );
-          const unitPrice = variant ? Number(variant.price) : Number(item.product.price);
-          const lineTotal = unitPrice * item.quantity;
-          const image = item.product.images[0];
-          return /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "li",
-            {
-              className: "py-4 first:pt-0 last:pb-0",
-              "data-ocid": `cart.item.${index2 + 1}`,
-              children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col sm:flex-row gap-4 sm:items-center", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "shrink-0 w-full sm:w-20 h-40 sm:h-20 rounded-xl overflow-hidden bg-black/40 border border-white/10 flex items-center justify-center", children: image ? /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "img",
-                  {
-                    src: image,
-                    alt: item.product.name,
-                    className: "w-full h-full object-cover"
-                  }
-                ) : /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingCart, { className: "w-6 h-6 text-purple-400" }) }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 min-w-0", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("h4", { className: "text-base sm:text-lg truncate", children: item.product.name }),
-                  variant && /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-gray-400", children: [
-                    variant.name,
-                    variant.size ? ` · ${variant.size}` : ""
-                  ] }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-gray-400 mt-1", children: [
-                    formatPrice(unitPrice),
-                    " each"
-                  ] })
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { className: "cart-table", "data-ocid": "cart.list", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { children: "Product" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "text-right", children: "Price" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "text-right", children: "Qty" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "text-right", children: "Total" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { "aria-label": "Remove" })
+          ] }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("tbody", { children: items.map((item, index2) => {
+            const variant = item.product.variants.find(
+              (v2) => v2.id === item.variantId
+            );
+            const unitPrice = variant ? Number(variant.price) : Number(item.product.price);
+            const lineTotal = unitPrice * item.quantity;
+            const image = item.product.images[0];
+            return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "tr",
+              {
+                "data-ocid": `cart.item.${index2 + 1}`,
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-4 min-w-0", children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "shrink-0 w-16 h-16 rounded overflow-hidden bg-black/40 border border-border flex items-center justify-center", children: image ? /* @__PURE__ */ jsxRuntimeExports.jsx(
+                      "img",
+                      {
+                        src: image,
+                        alt: item.product.name,
+                        className: "w-full h-full object-cover"
+                      }
+                    ) : /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingCart, { className: "w-5 h-5 text-muted-foreground" }) }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0", children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx("h4", { className: "text-base truncate", children: item.product.name }),
+                      variant && /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-muted-foreground", children: [
+                        variant.name,
+                        variant.size ? ` · ${variant.size}` : ""
+                      ] })
+                    ] })
+                  ] }) }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "text-right", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num text-muted-foreground", children: formatPrice(unitPrice) }) }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "text-right", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
                     "div",
                     {
-                      className: "flex items-center gap-1 rounded-xl border border-white/10 bg-black/40 p-1",
+                      className: "bordered-stepper justify-end",
                       "data-ocid": `cart.quantity.${index2 + 1}`,
                       children: [
                         /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -34916,20 +35598,12 @@ const CartPage = ({
                               item.variantId,
                               item.quantity - 1
                             ),
-                            className: "w-9 h-9 rounded-lg flex items-center justify-center hover:bg-white/10 transition-colors",
                             "aria-label": `Decrease quantity of ${item.product.name}`,
                             "data-ocid": `cart.decrease_button.${index2 + 1}`,
-                            children: /* @__PURE__ */ jsxRuntimeExports.jsx(Minus, { className: "w-4 h-4" })
+                            children: /* @__PURE__ */ jsxRuntimeExports.jsx(Minus, { className: "w-3.5 h-3.5" })
                           }
                         ),
-                        /* @__PURE__ */ jsxRuntimeExports.jsx(
-                          "span",
-                          {
-                            className: "w-8 text-center font-semibold",
-                            "aria-live": "polite",
-                            children: item.quantity
-                          }
-                        ),
+                        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "stepper-value", "aria-live": "polite", children: item.quantity }),
                         /* @__PURE__ */ jsxRuntimeExports.jsx(
                           "button",
                           {
@@ -34939,62 +35613,66 @@ const CartPage = ({
                               item.variantId,
                               item.quantity + 1
                             ),
-                            className: "w-9 h-9 rounded-lg flex items-center justify-center hover:bg-white/10 transition-colors",
                             "aria-label": `Increase quantity of ${item.product.name}`,
                             "data-ocid": `cart.increase_button.${index2 + 1}`,
-                            children: /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { className: "w-4 h-4" })
+                            children: /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { className: "w-3.5 h-3.5" })
                           }
                         )
                       ]
                     }
-                  ),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-24 text-right", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-semibold text-teal-300", children: formatPrice(lineTotal) }) }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  ) }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "text-right", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num", children: formatPrice(lineTotal) }) }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "text-right", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
                     "button",
                     {
                       type: "button",
                       onClick: () => removeItem(item.product.id, item.variantId),
-                      className: "w-10 h-10 rounded-xl flex items-center justify-center text-gray-400 hover:text-red-400 hover:bg-red-500/10 transition-colors",
+                      className: "quiet-remove",
                       "aria-label": `Remove ${item.product.name} from cart`,
                       "data-ocid": `cart.remove_button.${index2 + 1}`,
-                      children: /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { className: "w-4 h-4" })
+                      children: "Remove"
                     }
-                  )
-                ] })
-              ] })
-            },
-            `${item.product.id}-${item.variantId}`
-          );
-        }) })
-      ] }) }),
+                  ) })
+                ]
+              },
+              `${item.product.id}-${item.variantId}`
+            );
+          }) })
+        ] })
+      ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "lg:col-span-1", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
         "div",
         {
-          className: "card glass-card p-6 sm:p-8 sticky top-24",
+          className: "summary-panel sticky top-24",
           "data-ocid": "cart.summary",
           children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-lg sm:text-xl mb-6", children: "Order Summary" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-3 text-sm", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-gray-400", children: "Items" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-medium", children: itemCount })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-gray-400", children: "Subtotal" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-medium", children: formatPrice(subtotal) })
-              ] })
+            /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-lg sm:text-xl mb-1", children: "Order Summary" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "summary-row", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Items" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "summary-value", children: itemCount })
             ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "my-6 h-px bg-gradient-to-r from-transparent via-purple-500/40 to-transparent" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-6", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-base font-semibold", children: "Total" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xl font-bold text-teal-300", children: formatPrice(subtotal) })
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "summary-row", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Subtotal" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "summary-value", children: formatPrice(subtotal) })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "summary-row", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Shipping" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "summary-value", children: "—" })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "summary-row", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Tax" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "summary-value", children: "—" })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "summary-total", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Total" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "summary-value", children: formatPrice(subtotal) })
             ] }),
             /* @__PURE__ */ jsxRuntimeExports.jsx(
               "button",
               {
                 type: "button",
                 onClick: onNavigateToCheckout,
-                className: "btn w-full px-8 py-4 text-base font-semibold",
+                className: "btn w-full px-8 py-4 text-base font-medium mt-2",
                 "data-ocid": "cart.checkout_button",
                 children: "Proceed to Checkout"
               }
@@ -35004,7 +35682,7 @@ const CartPage = ({
               {
                 type: "button",
                 onClick: onNavigateToShop,
-                className: "btn w-full px-8 py-4 text-base font-semibold mt-3",
+                className: "btn-secondary btn w-full px-8 py-4 text-base font-medium",
                 "data-ocid": "cart.continue_shopping_button",
                 children: "Continue Shopping"
               }
@@ -35014,7 +35692,7 @@ const CartPage = ({
               {
                 type: "button",
                 onClick: onNavigateToMain,
-                className: "btn w-full px-8 py-4 text-base font-semibold mt-3",
+                className: "btn-secondary btn w-full px-8 py-4 text-base font-medium",
                 "data-ocid": "cart.back_to_main_button",
                 children: [
                   /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
@@ -35627,7 +36305,7 @@ qrcode.createStringToBytes = function(unicodeData, numChars) {
       if (b2 == -1) throw "eof";
       return b2;
     };
-    let count = 0;
+    let count2 = 0;
     const unicodeMap2 = {};
     while (true) {
       const b0 = bin.read();
@@ -35638,10 +36316,10 @@ qrcode.createStringToBytes = function(unicodeData, numChars) {
       const k2 = String.fromCharCode(b0 << 8 | b1);
       const v2 = b2 << 8 | b3;
       unicodeMap2[k2] = v2;
-      count += 1;
+      count2 += 1;
     }
-    if (count != numChars) {
-      throw count + " != " + numChars;
+    if (count2 != numChars) {
+      throw count2 + " != " + numChars;
     }
     return unicodeMap2;
   }();
@@ -35882,12 +36560,12 @@ const QRUtil = function() {
     }
     for (let row = 0; row < moduleCount - 1; row += 1) {
       for (let col = 0; col < moduleCount - 1; col += 1) {
-        let count = 0;
-        if (qrcode2.isDark(row, col)) count += 1;
-        if (qrcode2.isDark(row + 1, col)) count += 1;
-        if (qrcode2.isDark(row, col + 1)) count += 1;
-        if (qrcode2.isDark(row + 1, col + 1)) count += 1;
-        if (count == 0 || count == 4) {
+        let count2 = 0;
+        if (qrcode2.isDark(row, col)) count2 += 1;
+        if (qrcode2.isDark(row + 1, col)) count2 += 1;
+        if (qrcode2.isDark(row, col + 1)) count2 += 1;
+        if (qrcode2.isDark(row + 1, col + 1)) count2 += 1;
+        if (count2 == 0 || count2 == 4) {
           lostPoint += 3;
         }
       }
@@ -36233,10 +36911,10 @@ const QRRSBlock = function() {
     const length = rsBlock.length / 3;
     const list = [];
     for (let i = 0; i < length; i += 1) {
-      const count = rsBlock[i * 3 + 0];
+      const count2 = rsBlock[i * 3 + 0];
       const totalCount = rsBlock[i * 3 + 1];
       const dataCount = rsBlock[i * 3 + 2];
-      for (let j2 = 0; j2 < count; j2 += 1) {
+      for (let j2 = 0; j2 < count2; j2 += 1) {
         list.push(qrRSBlock(totalCount, dataCount));
       }
     }
@@ -36931,47 +37609,47 @@ function OrderSummary({
   cartSubtotal
 }) {
   const hasOrder = order !== null;
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative card glass-card p-6", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "mb-4 text-lg uppercase tracking-wide", children: "Order Summary" }),
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "summary-panel", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "section-heading text-base", children: "Order Summary" }),
     hasOrder ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mb-5 space-y-3", children: order.items.map((item, idx) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-col gap-3", children: order.items.map((item, idx) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
         "div",
         {
           className: "flex items-center justify-between gap-4",
           "data-ocid": `checkout.summary_item.${idx + 1}`,
           children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "truncate text-sm font-medium text-white", children: item.name }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-xs text-gray-400", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "truncate text-sm font-medium text-foreground", children: item.name }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-xs text-muted-foreground", children: [
                 "Qty ",
                 item.quantity.toString()
               ] })
             ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono-nak text-sm text-gray-200", children: formatPrice(item.unit_amount * item.quantity) })
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num text-sm text-secondary-foreground", children: formatPrice(item.unit_amount * item.quantity) })
           ]
         },
         item.variant_id
       )) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-2 border-t border-white/10 pt-4 text-sm", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-gray-400", children: "Subtotal" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono-nak text-gray-200", children: formatPrice(order.subtotal) })
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-2 border-t border-border pt-4 text-sm", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "summary-row", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-muted-foreground", children: "Subtotal" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "summary-value", children: formatPrice(order.subtotal) })
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-gray-400", children: "Tax" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono-nak text-gray-200", children: formatPrice(order.tax) })
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "summary-row", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-muted-foreground", children: "Tax" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "summary-value", children: formatPrice(order.tax) })
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-gray-400", children: "Shipping" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono-nak text-gray-200", children: formatPrice(order.shipping) })
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "summary-row", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-muted-foreground", children: "Shipping" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "summary-value", children: formatPrice(order.shipping) })
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between border-t border-white/10 pt-3 text-base font-semibold", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white", children: "Total" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono-nak text-teal-bright", children: formatPrice(order.total) })
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "summary-total", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Total" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "summary-value", children: formatPrice(order.total) })
         ] })
       ] })
     ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mb-5 space-y-3", children: items.map((item, idx) => {
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-col gap-3", children: items.map((item, idx) => {
         const variant = item.product.variants.find(
           (v2) => v2.id === item.variantId
         );
@@ -36983,24 +37661,24 @@ function OrderSummary({
             "data-ocid": `checkout.summary_item.${idx + 1}`,
             children: [
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "truncate text-sm font-medium text-white", children: item.product.name }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-xs text-gray-400", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "truncate text-sm font-medium text-foreground", children: item.product.name }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-xs text-muted-foreground", children: [
                   "Qty ",
                   item.quantity
                 ] })
               ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono-nak text-sm text-gray-200", children: formatPrice(unitPrice * BigInt(item.quantity)) })
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num text-sm text-secondary-foreground", children: formatPrice(unitPrice * BigInt(item.quantity)) })
             ]
           },
           `${item.product.id}-${item.variantId}`
         );
       }) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-2 border-t border-white/10 pt-4 text-sm", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-gray-400", children: "Subtotal" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono-nak text-gray-200", children: formatPrice(BigInt(Math.round(cartSubtotal))) })
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-2 border-t border-border pt-4 text-sm", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "summary-row", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-muted-foreground", children: "Subtotal" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "summary-value", children: formatPrice(BigInt(Math.round(cartSubtotal))) })
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "pt-2 text-xs text-gray-500", children: "Tax and shipping are calculated when you place your order." })
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "pt-2 text-xs text-muted-foreground", children: "Tax and shipping are calculated when you place your order." })
       ] })
     ] })
   ] });
@@ -37017,7 +37695,6 @@ const CheckoutPage = ({
     "crypto"
   );
   const [orderError, setOrderError] = reactExports.useState(null);
-  const [copied, setCopied] = reactExports.useState(false);
   const [paid, setPaid] = reactExports.useState(false);
   const [expired, setExpired] = reactExports.useState(false);
   const { activeOrderRef, setActiveOrderRef, clearActiveOrderRef } = useActiveOrderRef();
@@ -37170,14 +37847,6 @@ const CheckoutPage = ({
       }
     });
   };
-  const handleCopyAddress = async (address) => {
-    try {
-      await navigator.clipboard.writeText(address);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1800);
-    } catch {
-    }
-  };
   const handlePlaceOrder = () => {
     if (!(order == null ? void 0 : order.reference)) return;
     setOrderError(null);
@@ -37212,22 +37881,9 @@ const CheckoutPage = ({
   const depositLoading = resumeMode ? false : depositInfo.isLoading;
   const stepIndex = STEPS.findIndex((s2) => s2.key === step);
   return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "pt-24 sm:pt-32 pb-12 sm:pb-20 px-4 sm:px-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-6xl mx-auto", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center mb-8 sm:mb-10 px-2", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-4 mb-6", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Wallet, { className: "w-12 h-12 text-teal-400" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 rounded-full bg-teal-400/20 blur-xl animate-pulse" })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "h1",
-          {
-            className: "text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold leading-tight",
-            style: { fontFamily: "var(--font-heading)" },
-            children: "Checkout"
-          }
-        )
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm sm:text-base text-gray-300 max-w-2xl mx-auto", children: "Complete your crypto payment" })
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-8 sm:mb-10 px-2", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "section-label mb-2", children: "Checkout" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "section-heading text-2xl sm:text-3xl", children: "Complete your payment" })
     ] }),
     /* @__PURE__ */ jsxRuntimeExports.jsx(
       "div",
@@ -37249,7 +37905,7 @@ const CheckoutPage = ({
                 ]
               }
             ),
-            i < STEPS.length - 1 && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-px w-8 sm:w-12 bg-white/15" })
+            i < STEPS.length - 1 && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "step-connector" })
           ] }, s2.key);
         })
       }
@@ -37257,7 +37913,7 @@ const CheckoutPage = ({
     checkingResume ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative max-w-2xl mx-auto px-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
       "div",
       {
-        className: "relative card glass-card p-8 sm:p-12 text-center",
+        className: "surface p-8 sm:p-12 text-center",
         "data-ocid": "checkout.resume_loading",
         children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mx-auto mb-4 h-12 w-12 rounded-full bg-white/5 loading-shimmer" }),
@@ -37265,10 +37921,10 @@ const CheckoutPage = ({
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mx-auto h-4 w-64 rounded-xl bg-white/5 loading-shimmer" })
         ]
       }
-    ) }) : items.length === 0 && step !== "deposit" ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative max-w-2xl mx-auto px-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative card glass-card p-8 sm:p-12 text-center", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingCart, { className: "w-12 h-12 text-teal-400 mx-auto mb-4" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-2xl mb-3", children: "Your cart is empty" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-gray-300 mb-6", children: "Add some pieces to your cart before checking out." }),
+    ) }) : items.length === 0 && step !== "deposit" ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative max-w-2xl mx-auto px-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "surface p-8 sm:p-12 text-center", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingCart, { className: "w-12 h-12 text-muted-foreground mx-auto mb-4" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "section-heading text-xl mb-3", children: "Your cart is empty" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-muted-foreground mb-6", children: "Add some pieces to your cart before checking out." }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center justify-center gap-4", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx(
           "button",
@@ -37286,7 +37942,7 @@ const CheckoutPage = ({
             type: "button",
             onClick: onNavigateToMain,
             "data-ocid": "checkout.back_to_main_button",
-            className: "btn px-8 py-4 text-base font-semibold",
+            className: "btn-secondary px-8 py-4 text-base font-semibold",
             children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
               "Back to Main"
@@ -37295,13 +37951,13 @@ const CheckoutPage = ({
         )
       ] })
     ] }) }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 min-[820px]:grid-cols-[minmax(0,1fr)_340px] gap-6 sm:gap-8 items-start", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative min-w-0 px-2", children: step === "shipping" ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative card glass-card p-6 sm:p-10", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-2xl sm:text-3xl mb-2", children: "Shipping Details" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-gray-300 mb-8", children: "Where should we send your order?" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative min-w-0 px-2", children: step === "shipping" ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "surface p-6 sm:p-10", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "section-heading text-xl sm:text-2xl mb-2", children: "Shipping Details" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-muted-foreground mb-8", children: "Where should we send your order?" }),
         orderError && /* @__PURE__ */ jsxRuntimeExports.jsxs(
           "div",
           {
-            className: "mb-6 flex items-start gap-3 rounded-xl bg-destructive-soft p-4 text-sm text-destructive",
+            className: "mb-6 flex items-start gap-3 border border-destructive/40 bg-destructive-soft p-4 text-sm text-destructive",
             "data-ocid": "checkout.order_error",
             children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(TriangleAlert, { className: "h-5 w-5 shrink-0" }),
@@ -37316,7 +37972,7 @@ const CheckoutPage = ({
                 "label",
                 {
                   htmlFor: "checkout-name",
-                  className: "mb-1.5 block text-sm font-medium text-gray-300",
+                  className: "field-label mb-1.5 block",
                   children: "Full name"
                 }
               ),
@@ -37328,7 +37984,7 @@ const CheckoutPage = ({
                   value: name,
                   onChange: (e) => setName(e.target.value),
                   placeholder: "Jane Doe",
-                  className: "w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-purple-500/50 focus:outline-none",
+                  className: "field-input",
                   "data-ocid": "checkout.name_input"
                 }
               )
@@ -37338,7 +37994,7 @@ const CheckoutPage = ({
                 "label",
                 {
                   htmlFor: "checkout-email",
-                  className: "mb-1.5 block text-sm font-medium text-gray-300",
+                  className: "field-label mb-1.5 block",
                   children: "Email"
                 }
               ),
@@ -37350,7 +38006,7 @@ const CheckoutPage = ({
                   value: email,
                   onChange: (e) => setEmail(e.target.value),
                   placeholder: "jane@example.com",
-                  className: "w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-purple-500/50 focus:outline-none",
+                  className: "field-input",
                   "data-ocid": "checkout.email_input"
                 }
               )
@@ -37360,7 +38016,7 @@ const CheckoutPage = ({
             "label",
             {
               htmlFor: "checkout-consent",
-              className: "flex cursor-pointer items-start gap-3 rounded-xl border border-white/10 bg-white/5 p-4",
+              className: "flex cursor-pointer items-start gap-3 border border-border bg-card p-4",
               children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx(
                   "input",
@@ -37373,9 +38029,12 @@ const CheckoutPage = ({
                     "data-ocid": "checkout.consent_checkbox"
                   }
                 ),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-sm text-gray-300", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-sm text-secondary-foreground", children: [
                   "Email me about new NAK STRATS drops and releases",
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-gray-500", children: " (optional)" })
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-muted-foreground", children: [
+                    " ",
+                    "(optional)"
+                  ] })
                 ] })
               ]
             }
@@ -37385,7 +38044,7 @@ const CheckoutPage = ({
               "label",
               {
                 htmlFor: "checkout-line1",
-                className: "mb-1.5 block text-sm font-medium text-gray-300",
+                className: "field-label mb-1.5 block",
                 children: "Address line 1"
               }
             ),
@@ -37397,7 +38056,7 @@ const CheckoutPage = ({
                 value: line1,
                 onChange: (e) => setLine1(e.target.value),
                 placeholder: "123 Neon Avenue",
-                className: "w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-purple-500/50 focus:outline-none",
+                className: "field-input",
                 "data-ocid": "checkout.line1_input"
               }
             )
@@ -37407,11 +38066,11 @@ const CheckoutPage = ({
               "label",
               {
                 htmlFor: "checkout-line2",
-                className: "mb-1.5 block text-sm font-medium text-gray-300",
+                className: "field-label mb-1.5 block",
                 children: [
                   "Address line 2",
                   " ",
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-gray-500", children: "(optional)" })
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-muted-foreground", children: "(optional)" })
                 ]
               }
             ),
@@ -37423,7 +38082,7 @@ const CheckoutPage = ({
                 value: line2,
                 onChange: (e) => setLine2(e.target.value),
                 placeholder: "Apt, suite, unit",
-                className: "w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-purple-500/50 focus:outline-none",
+                className: "field-input",
                 "data-ocid": "checkout.line2_input"
               }
             )
@@ -37434,7 +38093,7 @@ const CheckoutPage = ({
                 "label",
                 {
                   htmlFor: "checkout-city",
-                  className: "mb-1.5 block text-sm font-medium text-gray-300",
+                  className: "field-label mb-1.5 block",
                   children: "City"
                 }
               ),
@@ -37446,7 +38105,7 @@ const CheckoutPage = ({
                   value: city,
                   onChange: (e) => setCity(e.target.value),
                   placeholder: "Neo Tokyo",
-                  className: "w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-purple-500/50 focus:outline-none",
+                  className: "field-input",
                   "data-ocid": "checkout.city_input"
                 }
               )
@@ -37456,7 +38115,7 @@ const CheckoutPage = ({
                 "label",
                 {
                   htmlFor: "checkout-region",
-                  className: "mb-1.5 block text-sm font-medium text-gray-300",
+                  className: "field-label mb-1.5 block",
                   children: "Region / State"
                 }
               ),
@@ -37468,7 +38127,7 @@ const CheckoutPage = ({
                   value: region,
                   onChange: (e) => setRegion(e.target.value),
                   placeholder: "Kanto",
-                  className: "w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-purple-500/50 focus:outline-none",
+                  className: "field-input",
                   "data-ocid": "checkout.region_input"
                 }
               )
@@ -37480,7 +38139,7 @@ const CheckoutPage = ({
                 "label",
                 {
                   htmlFor: "checkout-country",
-                  className: "mb-1.5 block text-sm font-medium text-gray-300",
+                  className: "field-label mb-1.5 block",
                   children: "Country"
                 }
               ),
@@ -37492,7 +38151,7 @@ const CheckoutPage = ({
                   value: country,
                   onChange: (e) => setCountry(e.target.value),
                   placeholder: "Japan",
-                  className: "w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-purple-500/50 focus:outline-none",
+                  className: "field-input",
                   "data-ocid": "checkout.country_input"
                 }
               )
@@ -37502,7 +38161,7 @@ const CheckoutPage = ({
                 "label",
                 {
                   htmlFor: "checkout-postal",
-                  className: "mb-1.5 block text-sm font-medium text-gray-300",
+                  className: "field-label mb-1.5 block",
                   children: "Postal code"
                 }
               ),
@@ -37514,7 +38173,7 @@ const CheckoutPage = ({
                   value: postalCode,
                   onChange: (e) => setPostalCode(e.target.value),
                   placeholder: "100-0001",
-                  className: "w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-purple-500/50 focus:outline-none",
+                  className: "field-input",
                   "data-ocid": "checkout.postal_input"
                 }
               )
@@ -37527,7 +38186,7 @@ const CheckoutPage = ({
                 type: "button",
                 onClick: onNavigateToCart,
                 "data-ocid": "checkout.back_to_cart_button",
-                className: "btn px-6 py-3 text-sm font-semibold",
+                className: "btn-secondary px-6 py-3 text-sm font-semibold",
                 children: [
                   /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
                   "Back to Cart"
@@ -37549,13 +38208,13 @@ const CheckoutPage = ({
             )
           ] })
         ] })
-      ] }) : step === "review" ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative card glass-card p-6 sm:p-10", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-2xl sm:text-3xl mb-2", children: "Checkout Summary" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-gray-300 mb-8", children: "Review your order and choose a payment token." }),
+      ] }) : step === "review" ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "surface p-6 sm:p-10", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "section-heading text-xl sm:text-2xl mb-2", children: "Checkout Summary" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-muted-foreground mb-8", children: "Review your order and choose a payment token." }),
         ledgerUnset && /* @__PURE__ */ jsxRuntimeExports.jsxs(
           "div",
           {
-            className: "mb-6 flex items-start gap-3 rounded-xl bg-warning-soft p-4 text-sm text-warning",
+            className: "mb-6 flex items-start gap-3 border border-warning/40 bg-warning-soft p-4 text-sm text-warning",
             "data-ocid": "checkout.admin_warning",
             children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(TriangleAlert, { className: "h-5 w-5 shrink-0" }),
@@ -37566,7 +38225,7 @@ const CheckoutPage = ({
         orderError && /* @__PURE__ */ jsxRuntimeExports.jsxs(
           "div",
           {
-            className: "mb-6 flex items-start gap-3 rounded-xl bg-destructive-soft p-4 text-sm text-destructive",
+            className: "mb-6 flex items-start gap-3 border border-destructive/40 bg-destructive-soft p-4 text-sm text-destructive",
             "data-ocid": "checkout.order_error",
             children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(TriangleAlert, { className: "h-5 w-5 shrink-0" }),
@@ -37575,7 +38234,7 @@ const CheckoutPage = ({
           }
         ),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-8", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mb-3 text-sm font-medium text-gray-300", children: "Payment method" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "field-label mb-3", children: "Payment method" }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 sm:grid-cols-2 gap-4", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs(
               "button",
@@ -37583,14 +38242,14 @@ const CheckoutPage = ({
                 type: "button",
                 onClick: () => setPaymentMethod("crypto"),
                 "data-ocid": "checkout.method_crypto",
-                className: `token-option flex items-center gap-4 p-4 text-left ${paymentMethod === "crypto" ? "token-option-selected" : ""}`,
+                className: `bordered-select flex items-center gap-4 p-4 text-left w-full ${paymentMethod === "crypto" ? "is-active" : ""}`,
                 children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "flex h-10 w-10 items-center justify-center rounded-full bg-teal-soft text-teal-bright", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Wallet, { className: "h-5 w-5" }) }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "flex h-10 w-10 items-center justify-center border border-border bg-card text-primary", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Wallet, { className: "h-5 w-5" }) }),
                   /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "min-w-0", children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block text-sm font-semibold text-white", children: "Pay with crypto" }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block text-xs text-gray-400", children: "ckUSDC deposit" })
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block text-sm font-semibold text-foreground", children: "Pay with crypto" }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block text-xs text-muted-foreground", children: "ckUSDC deposit" })
                   ] }),
-                  paymentMethod === "crypto" && /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "ml-auto h-5 w-5 text-teal-bright" })
+                  paymentMethod === "crypto" && /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "ml-auto h-5 w-5 text-primary" })
                 ]
               }
             ),
@@ -37601,14 +38260,14 @@ const CheckoutPage = ({
                 onClick: () => cardEnabled && setPaymentMethod("card"),
                 disabled: !cardEnabled,
                 "data-ocid": "checkout.method_card",
-                className: `token-option flex items-center gap-4 p-4 text-left ${paymentMethod === "card" ? "token-option-selected" : ""} ${!cardEnabled ? "token-option-disabled" : ""}`,
+                className: `bordered-select flex items-center gap-4 p-4 text-left w-full ${paymentMethod === "card" ? "is-active" : ""} ${!cardEnabled ? "opacity-45 cursor-not-allowed" : ""}`,
                 children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "flex h-10 w-10 items-center justify-center rounded-full bg-teal-soft text-teal-bright", children: /* @__PURE__ */ jsxRuntimeExports.jsx(CreditCard, { className: "h-5 w-5" }) }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "flex h-10 w-10 items-center justify-center border border-border bg-card text-primary", children: /* @__PURE__ */ jsxRuntimeExports.jsx(CreditCard, { className: "h-5 w-5" }) }),
                   /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "min-w-0", children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block text-sm font-semibold text-white", children: "Pay with card" }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block text-xs text-gray-400", children: cardEnabled ? "Stripe checkout" : "Unavailable — not configured" })
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block text-sm font-semibold text-foreground", children: "Pay with card" }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block text-xs text-muted-foreground", children: cardEnabled ? "Stripe checkout" : "Unavailable — not configured" })
                   ] }),
-                  paymentMethod === "card" && /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "ml-auto h-5 w-5 text-teal-bright" })
+                  paymentMethod === "card" && /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "ml-auto h-5 w-5 text-primary" })
                 ]
               }
             )
@@ -37621,7 +38280,7 @@ const CheckoutPage = ({
               type: "button",
               onClick: () => setStep("shipping"),
               "data-ocid": "checkout.back_to_shipping_button",
-              className: "btn px-6 py-3 text-sm font-semibold",
+              className: "btn-secondary px-6 py-3 text-sm font-semibold",
               children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
                 "Edit Shipping"
@@ -37643,11 +38302,11 @@ const CheckoutPage = ({
             }
           )
         ] })
-      ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative deposit-surface p-6 sm:p-10", children: [
+      ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "surface p-6 sm:p-10", children: [
         paid && /* @__PURE__ */ jsxRuntimeExports.jsxs(
           "div",
           {
-            className: "absolute right-5 top-5 flex items-center gap-2 rounded-full bg-success-soft px-4 py-1.5 text-sm font-bold uppercase tracking-wide text-success",
+            className: "absolute right-5 top-5 flex items-center gap-2 border border-positive/40 bg-success-soft px-4 py-1.5 text-sm font-bold uppercase tracking-wide text-success",
             "data-ocid": "checkout.paid_badge",
             children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(ShieldCheck, { className: "h-4 w-4" }),
@@ -37657,15 +38316,15 @@ const CheckoutPage = ({
         ),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6 flex items-start justify-between gap-4", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-2xl sm:text-3xl mb-1", children: "Crypto Deposit" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-gray-300", children: "Send the exact amount to the address below to complete your order." })
+            /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "section-heading text-xl sm:text-2xl mb-1", children: "Crypto Deposit" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-muted-foreground", children: "Send the exact amount to the address below to complete your order." })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex shrink-0 items-center gap-2", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(Clock, { className: "h-5 w-5 text-warning" }),
             /* @__PURE__ */ jsxRuntimeExports.jsx(
               "span",
               {
-                className: `font-mono-nak text-2xl sm:text-3xl font-bold ${countdownClass(
+                className: `mono-num text-2xl sm:text-3xl font-bold ${countdownClass(
                   remainingSec
                 )}`,
                 "data-ocid": "checkout.countdown",
@@ -37677,13 +38336,13 @@ const CheckoutPage = ({
         expired ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
           "div",
           {
-            className: "flex flex-col items-center gap-4 rounded-xl bg-destructive-soft p-8 text-center",
+            className: "flex flex-col items-center gap-4 border border-destructive/40 bg-destructive-soft p-8 text-center",
             "data-ocid": "checkout.expired_state",
             children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(TriangleAlert, { className: "h-10 w-10 text-destructive" }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-xl font-semibold text-destructive mb-1", children: "Deposit Expired" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-300", children: "This deposit has expired and the reserved inventory has been released. Please place a new order to continue." })
+                /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "section-heading text-xl text-destructive mb-1", children: "Deposit Expired" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-muted-foreground", children: "This deposit has expired and the reserved inventory has been released. Please place a new order to continue." })
               ] }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs(
                 "button",
@@ -37713,19 +38372,19 @@ const CheckoutPage = ({
           }
         ) : depositData ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-8", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center gap-1 text-center", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs font-medium uppercase tracking-widest text-gray-400", children: "Order reference" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "section-label", children: "Order reference" }),
             /* @__PURE__ */ jsxRuntimeExports.jsx(
               "p",
               {
-                className: "font-mono-nak text-lg sm:text-xl font-bold text-teal-bright",
+                className: "mono-num text-lg sm:text-xl font-bold text-foreground",
                 "data-ocid": "checkout.order_reference",
                 children: depositReference
               }
             )
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "mb-2 text-sm font-medium text-gray-300", children: [
-              "Exact amount owed (",
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "section-label mb-2", children: [
+              "Amount owed (",
               depositData.token,
               ")"
             ] }),
@@ -37737,36 +38396,33 @@ const CheckoutPage = ({
                 children: [
                   amountOwed,
                   " ",
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-teal-bright", children: depositData.token })
+                  depositData.token
                 ]
               }
             )
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mb-2 text-sm font-medium text-gray-300", children: "Deposit address" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "deposit-address-well flex items-center gap-3", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "section-label mb-2", children: "Deposit address" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start gap-3", children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(
                 "span",
                 {
-                  className: "min-w-0 flex-1 break-all",
+                  className: "inset-well min-w-0 flex-1",
                   "data-ocid": "checkout.deposit_address",
                   children: depositAddress
                 }
               ),
               /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "button",
+                CopyButton,
                 {
-                  type: "button",
-                  onClick: () => handleCopyAddress(depositAddress),
-                  "aria-label": "Copy deposit address",
-                  "data-ocid": "checkout.copy_address_button",
-                  className: "btn shrink-0 px-3 py-2 text-sm",
-                  children: copied ? /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "h-4 w-4 text-success" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Copy, { className: "h-4 w-4" })
+                  text: depositAddress,
+                  label: "Copy deposit address",
+                  className: "shrink-0"
                 }
               )
             ] })
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "rounded-2xl bg-white p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "border border-border bg-white p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
             QRCode,
             {
               value: depositAddress,
@@ -37779,7 +38435,7 @@ const CheckoutPage = ({
           /* @__PURE__ */ jsxRuntimeExports.jsxs(
             "div",
             {
-              className: `flex items-center gap-3 rounded-xl p-4 text-sm ${paid ? "bg-success-soft text-success" : "bg-teal-soft text-teal-bright"}`,
+              className: `flex items-center gap-3 border p-4 text-sm ${paid ? "border-positive/40 bg-success-soft text-success" : "border-warning/40 bg-warning-soft text-warning"}`,
               "data-ocid": "checkout.payment_status",
               children: [
                 paid ? /* @__PURE__ */ jsxRuntimeExports.jsx(ShieldCheck, { className: "h-5 w-5 shrink-0" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -37802,19 +38458,19 @@ const CheckoutPage = ({
                 type: "button",
                 onClick: onNavigateToMain,
                 "data-ocid": "checkout.back_to_main_button",
-                className: "btn px-6 py-3 text-sm font-semibold",
+                className: "btn-secondary px-6 py-3 text-sm font-semibold",
                 children: [
                   /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
                   "Back to Main"
                 ]
               }
             ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500", children: "Payment is verified on-ledger automatically." })
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-muted-foreground", children: "Payment is verified on-ledger automatically." })
           ] })
         ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(
           "div",
           {
-            className: "flex items-start gap-3 rounded-xl bg-destructive-soft p-4 text-sm text-destructive",
+            className: "flex items-start gap-3 border border-destructive/40 bg-destructive-soft p-4 text-sm text-destructive",
             "data-ocid": "checkout.deposit_error",
             children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(TriangleAlert, { className: "h-5 w-5 shrink-0" }),
@@ -37845,13 +38501,13 @@ const MainContent = () => {
         /* @__PURE__ */ jsxRuntimeExports.jsxs("h1", { className: "mb-6", children: [
           "Capital that backs the people",
           /* @__PURE__ */ jsxRuntimeExports.jsx("br", {}),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { color: "#71717a" }, children: "making the culture." })
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { color: "var(--nak-text-muted)" }, children: "making the culture." })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsx(
           "p",
           {
             className: "mb-10 text-base sm:text-lg leading-relaxed",
-            style: { color: "var(--muted-foreground)", maxWidth: "36rem" },
+            style: { color: "var(--nak-text-muted)", maxWidth: "36rem" },
             children: "New Age Kapital operates a reserve-backed token on the Internet Computer and reinvests into the artists, producers, and creators building around it. Reserve holdings are on-ledger and independently verifiable."
           }
         ),
@@ -37930,7 +38586,7 @@ const MarsLiveArtistPage = ({
       }
     ) }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative max-w-4xl mx-auto mb-12 sm:mb-20 px-2", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 bg-gradient-to-r from-purple-600/10 to-pink-600/10 rounded-3xl blur-2xl opacity-60" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 bg-gradient-to-r from-purple-600/10 to-purple-600/10 rounded-3xl blur-2xl opacity-60" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative card glass-card p-8 sm:p-12 lg:p-16", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
         "h2",
         {
@@ -37941,7 +38597,7 @@ const MarsLiveArtistPage = ({
       ) }) })
     ] }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative max-w-6xl mx-auto mb-12 sm:mb-20 px-2", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 bg-gradient-to-r from-red-600/10 to-pink-600/10 rounded-3xl blur-2xl opacity-40" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 bg-gradient-to-r from-red-600/10 to-red-600/10 rounded-3xl blur-2xl opacity-40" }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative card glass-card p-4 sm:p-6 lg:p-10", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center mb-6 sm:mb-8", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-2 sm:gap-3 mb-3 sm:mb-4", children: [
@@ -38072,7 +38728,7 @@ const MarsLiveArtistPage = ({
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-1 h-1 bg-white/20 rounded-full hidden sm:block" }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-2 h-2 bg-pink-400 rounded-full animate-pulse" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-2 h-2 bg-purple-400 rounded-full animate-pulse" }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Official Content" })
           ] })
         ] }) }) })
@@ -38150,7 +38806,7 @@ const MarsLiveArtistPage = ({
         onClick: onNavigateToMain,
         className: "btn inline-flex items-center gap-3 sm:gap-4 px-8 sm:px-12 py-4 sm:py-6 text-lg sm:text-xl font-semibold rounded-2xl sm:rounded-3xl transition-all duration-300 hover:scale-105 hover:shadow-2xl group relative overflow-hidden",
         style: {
-          background: "linear-gradient(135deg, var(--nak-teal) 0%, var(--nak-purple) 50%, var(--nak-pink) 100%)",
+          background: "linear-gradient(135deg, var(--nak-teal) 0%, var(--nak-purple) 50%, var(--nak-purple-dark) 100%)",
           border: "2px solid rgba(6, 182, 212, 0.3)",
           boxShadow: "0 10px 40px rgba(6, 182, 212, 0.2)"
         },
@@ -38207,7 +38863,7 @@ const MetaTheatrePage = ({
       )
     ] }) }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative max-w-6xl mx-auto mb-12 sm:mb-16 px-2", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 bg-gradient-to-r from-purple-600/10 to-pink-600/10 rounded-3xl blur-2xl opacity-60" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 bg-gradient-to-r from-purple-600/10 to-purple-600/10 rounded-3xl blur-2xl opacity-60" }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative card glass-card p-4 sm:p-6 lg:p-10", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center mb-6 sm:mb-8", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-2 sm:gap-3 mb-3 sm:mb-4", children: [
@@ -38297,10 +38953,10 @@ const MetaTheatrePage = ({
             ] }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-300", children: "High-definition content" })
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-gradient-to-br from-pink-500/10 to-red-500/10 rounded-3xl p-6 border border-pink-500/20", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-gradient-to-br from-purple-500/10 to-red-500/10 rounded-3xl p-6 border border-purple-500/20", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-3 mb-3", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-6 h-6 text-pink-400" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-lg font-semibold text-pink-400", children: "Expansion" })
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-6 h-6 text-purple-400" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-lg font-semibold text-purple-400", children: "Expansion" })
             ] }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-300", children: "Growing movie library" })
           ] })
@@ -38401,7 +39057,7 @@ const MetaTheatrePage = ({
             ] }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-1 h-1 bg-white/20 rounded-full hidden sm:block" }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Heart, { className: "w-3 h-3 text-pink-400" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Heart, { className: "w-3 h-3 text-purple-400" }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Supporting Arts" })
             ] })
           ] })
@@ -38415,7 +39071,7 @@ const MetaTheatrePage = ({
         onClick: onNavigateToMain,
         className: "btn inline-flex items-center gap-3 sm:gap-4 px-8 sm:px-12 py-4 sm:py-6 text-lg sm:text-xl font-semibold rounded-2xl sm:rounded-3xl transition-all duration-300 hover:scale-105 hover:shadow-2xl group relative overflow-hidden",
         style: {
-          background: "linear-gradient(135deg, var(--nak-teal) 0%, var(--nak-purple) 50%, var(--nak-pink) 100%)",
+          background: "linear-gradient(135deg, var(--nak-teal) 0%, var(--nak-purple) 50%, var(--nak-purple-dark) 100%)",
           border: "2px solid rgba(6, 182, 212, 0.3)",
           boxShadow: "0 10px 40px rgba(6, 182, 212, 0.2)"
         },
@@ -38671,6 +39327,4555 @@ const MyOrdersPage = ({ onNavigateToMain }) => {
     ) })
   ] }) });
 };
+function composeEventHandlers(originalEventHandler, ourEventHandler, { checkForDefaultPrevented = true } = {}) {
+  return function handleEvent(event) {
+    originalEventHandler == null ? void 0 : originalEventHandler(event);
+    if (checkForDefaultPrevented === false || !event.defaultPrevented) {
+      return ourEventHandler == null ? void 0 : ourEventHandler(event);
+    }
+  };
+}
+function setRef(ref, value) {
+  if (typeof ref === "function") {
+    return ref(value);
+  } else if (ref !== null && ref !== void 0) {
+    ref.current = value;
+  }
+}
+function composeRefs(...refs) {
+  return (node) => {
+    let hasCleanup = false;
+    const cleanups = refs.map((ref) => {
+      const cleanup = setRef(ref, node);
+      if (!hasCleanup && typeof cleanup == "function") {
+        hasCleanup = true;
+      }
+      return cleanup;
+    });
+    if (hasCleanup) {
+      return () => {
+        for (let i = 0; i < cleanups.length; i++) {
+          const cleanup = cleanups[i];
+          if (typeof cleanup == "function") {
+            cleanup();
+          } else {
+            setRef(refs[i], null);
+          }
+        }
+      };
+    }
+  };
+}
+function useComposedRefs(...refs) {
+  return reactExports.useCallback(composeRefs(...refs), refs);
+}
+function createContext2(rootComponentName, defaultContext) {
+  const Context = reactExports.createContext(defaultContext);
+  const Provider = (props) => {
+    const { children, ...context } = props;
+    const value = reactExports.useMemo(() => context, Object.values(context));
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(Context.Provider, { value, children });
+  };
+  Provider.displayName = rootComponentName + "Provider";
+  function useContext2(consumerName) {
+    const context = reactExports.useContext(Context);
+    if (context) return context;
+    if (defaultContext !== void 0) return defaultContext;
+    throw new Error(`\`${consumerName}\` must be used within \`${rootComponentName}\``);
+  }
+  return [Provider, useContext2];
+}
+function createContextScope(scopeName, createContextScopeDeps = []) {
+  let defaultContexts = [];
+  function createContext3(rootComponentName, defaultContext) {
+    const BaseContext = reactExports.createContext(defaultContext);
+    const index2 = defaultContexts.length;
+    defaultContexts = [...defaultContexts, defaultContext];
+    const Provider = (props) => {
+      var _a3;
+      const { scope, children, ...context } = props;
+      const Context = ((_a3 = scope == null ? void 0 : scope[scopeName]) == null ? void 0 : _a3[index2]) || BaseContext;
+      const value = reactExports.useMemo(() => context, Object.values(context));
+      return /* @__PURE__ */ jsxRuntimeExports.jsx(Context.Provider, { value, children });
+    };
+    Provider.displayName = rootComponentName + "Provider";
+    function useContext2(consumerName, scope) {
+      var _a3;
+      const Context = ((_a3 = scope == null ? void 0 : scope[scopeName]) == null ? void 0 : _a3[index2]) || BaseContext;
+      const context = reactExports.useContext(Context);
+      if (context) return context;
+      if (defaultContext !== void 0) return defaultContext;
+      throw new Error(`\`${consumerName}\` must be used within \`${rootComponentName}\``);
+    }
+    return [Provider, useContext2];
+  }
+  const createScope = () => {
+    const scopeContexts = defaultContexts.map((defaultContext) => {
+      return reactExports.createContext(defaultContext);
+    });
+    return function useScope(scope) {
+      const contexts = (scope == null ? void 0 : scope[scopeName]) || scopeContexts;
+      return reactExports.useMemo(
+        () => ({ [`__scope${scopeName}`]: { ...scope, [scopeName]: contexts } }),
+        [scope, contexts]
+      );
+    };
+  };
+  createScope.scopeName = scopeName;
+  return [createContext3, composeContextScopes(createScope, ...createContextScopeDeps)];
+}
+function composeContextScopes(...scopes) {
+  const baseScope = scopes[0];
+  if (scopes.length === 1) return baseScope;
+  const createScope = () => {
+    const scopeHooks = scopes.map((createScope2) => ({
+      useScope: createScope2(),
+      scopeName: createScope2.scopeName
+    }));
+    return function useComposedScopes(overrideScopes) {
+      const nextScopes = scopeHooks.reduce((nextScopes2, { useScope, scopeName }) => {
+        const scopeProps = useScope(overrideScopes);
+        const currentScope = scopeProps[`__scope${scopeName}`];
+        return { ...nextScopes2, ...currentScope };
+      }, {});
+      return reactExports.useMemo(() => ({ [`__scope${baseScope.scopeName}`]: nextScopes }), [nextScopes]);
+    };
+  };
+  createScope.scopeName = baseScope.scopeName;
+  return createScope;
+}
+var useLayoutEffect2 = (globalThis == null ? void 0 : globalThis.document) ? reactExports.useLayoutEffect : () => {
+};
+var useReactId = React$3[" useId ".trim().toString()] || (() => void 0);
+var count$1 = 0;
+function useId(deterministicId) {
+  const [id, setId] = reactExports.useState(useReactId());
+  useLayoutEffect2(() => {
+    setId((reactId) => reactId ?? String(count$1++));
+  }, [deterministicId]);
+  return deterministicId || (id ? `radix-${id}` : "");
+}
+var useInsertionEffect = React$3[" useInsertionEffect ".trim().toString()] || useLayoutEffect2;
+function useControllableState({
+  prop,
+  defaultProp,
+  onChange = () => {
+  },
+  caller
+}) {
+  const [uncontrolledProp, setUncontrolledProp, onChangeRef] = useUncontrolledState({
+    defaultProp,
+    onChange
+  });
+  const isControlled = prop !== void 0;
+  const value = isControlled ? prop : uncontrolledProp;
+  {
+    const isControlledRef = reactExports.useRef(prop !== void 0);
+    reactExports.useEffect(() => {
+      const wasControlled = isControlledRef.current;
+      if (wasControlled !== isControlled) {
+        const from = wasControlled ? "controlled" : "uncontrolled";
+        const to = isControlled ? "controlled" : "uncontrolled";
+        console.warn(
+          `${caller} is changing from ${from} to ${to}. Components should not switch from controlled to uncontrolled (or vice versa). Decide between using a controlled or uncontrolled value for the lifetime of the component.`
+        );
+      }
+      isControlledRef.current = isControlled;
+    }, [isControlled, caller]);
+  }
+  const setValue = reactExports.useCallback(
+    (nextValue) => {
+      var _a3;
+      if (isControlled) {
+        const value2 = isFunction(nextValue) ? nextValue(prop) : nextValue;
+        if (value2 !== prop) {
+          (_a3 = onChangeRef.current) == null ? void 0 : _a3.call(onChangeRef, value2);
+        }
+      } else {
+        setUncontrolledProp(nextValue);
+      }
+    },
+    [isControlled, prop, setUncontrolledProp, onChangeRef]
+  );
+  return [value, setValue];
+}
+function useUncontrolledState({
+  defaultProp,
+  onChange
+}) {
+  const [value, setValue] = reactExports.useState(defaultProp);
+  const prevValueRef = reactExports.useRef(value);
+  const onChangeRef = reactExports.useRef(onChange);
+  useInsertionEffect(() => {
+    onChangeRef.current = onChange;
+  }, [onChange]);
+  reactExports.useEffect(() => {
+    var _a3;
+    if (prevValueRef.current !== value) {
+      (_a3 = onChangeRef.current) == null ? void 0 : _a3.call(onChangeRef, value);
+      prevValueRef.current = value;
+    }
+  }, [value, prevValueRef]);
+  return [value, setValue, onChangeRef];
+}
+function isFunction(value) {
+  return typeof value === "function";
+}
+// @__NO_SIDE_EFFECTS__
+function createSlot(ownerName) {
+  const SlotClone = /* @__PURE__ */ createSlotClone(ownerName);
+  const Slot2 = reactExports.forwardRef((props, forwardedRef) => {
+    const { children, ...slotProps } = props;
+    const childrenArray = reactExports.Children.toArray(children);
+    const slottable = childrenArray.find(isSlottable);
+    if (slottable) {
+      const newElement = slottable.props.children;
+      const newChildren = childrenArray.map((child) => {
+        if (child === slottable) {
+          if (reactExports.Children.count(newElement) > 1) return reactExports.Children.only(null);
+          return reactExports.isValidElement(newElement) ? newElement.props.children : null;
+        } else {
+          return child;
+        }
+      });
+      return /* @__PURE__ */ jsxRuntimeExports.jsx(SlotClone, { ...slotProps, ref: forwardedRef, children: reactExports.isValidElement(newElement) ? reactExports.cloneElement(newElement, void 0, newChildren) : null });
+    }
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(SlotClone, { ...slotProps, ref: forwardedRef, children });
+  });
+  Slot2.displayName = `${ownerName}.Slot`;
+  return Slot2;
+}
+// @__NO_SIDE_EFFECTS__
+function createSlotClone(ownerName) {
+  const SlotClone = reactExports.forwardRef((props, forwardedRef) => {
+    const { children, ...slotProps } = props;
+    if (reactExports.isValidElement(children)) {
+      const childrenRef = getElementRef$1(children);
+      const props2 = mergeProps(slotProps, children.props);
+      if (children.type !== reactExports.Fragment) {
+        props2.ref = forwardedRef ? composeRefs(forwardedRef, childrenRef) : childrenRef;
+      }
+      return reactExports.cloneElement(children, props2);
+    }
+    return reactExports.Children.count(children) > 1 ? reactExports.Children.only(null) : null;
+  });
+  SlotClone.displayName = `${ownerName}.SlotClone`;
+  return SlotClone;
+}
+var SLOTTABLE_IDENTIFIER = Symbol("radix.slottable");
+function isSlottable(child) {
+  return reactExports.isValidElement(child) && typeof child.type === "function" && "__radixId" in child.type && child.type.__radixId === SLOTTABLE_IDENTIFIER;
+}
+function mergeProps(slotProps, childProps) {
+  const overrideProps = { ...childProps };
+  for (const propName in childProps) {
+    const slotPropValue = slotProps[propName];
+    const childPropValue = childProps[propName];
+    const isHandler = /^on[A-Z]/.test(propName);
+    if (isHandler) {
+      if (slotPropValue && childPropValue) {
+        overrideProps[propName] = (...args) => {
+          const result = childPropValue(...args);
+          slotPropValue(...args);
+          return result;
+        };
+      } else if (slotPropValue) {
+        overrideProps[propName] = slotPropValue;
+      }
+    } else if (propName === "style") {
+      overrideProps[propName] = { ...slotPropValue, ...childPropValue };
+    } else if (propName === "className") {
+      overrideProps[propName] = [slotPropValue, childPropValue].filter(Boolean).join(" ");
+    }
+  }
+  return { ...slotProps, ...overrideProps };
+}
+function getElementRef$1(element) {
+  var _a3, _b3;
+  let getter = (_a3 = Object.getOwnPropertyDescriptor(element.props, "ref")) == null ? void 0 : _a3.get;
+  let mayWarn = getter && "isReactWarning" in getter && getter.isReactWarning;
+  if (mayWarn) {
+    return element.ref;
+  }
+  getter = (_b3 = Object.getOwnPropertyDescriptor(element, "ref")) == null ? void 0 : _b3.get;
+  mayWarn = getter && "isReactWarning" in getter && getter.isReactWarning;
+  if (mayWarn) {
+    return element.props.ref;
+  }
+  return element.props.ref || element.ref;
+}
+var NODES = [
+  "a",
+  "button",
+  "div",
+  "form",
+  "h2",
+  "h3",
+  "img",
+  "input",
+  "label",
+  "li",
+  "nav",
+  "ol",
+  "p",
+  "select",
+  "span",
+  "svg",
+  "ul"
+];
+var Primitive = NODES.reduce((primitive, node) => {
+  const Slot2 = /* @__PURE__ */ createSlot(`Primitive.${node}`);
+  const Node2 = reactExports.forwardRef((props, forwardedRef) => {
+    const { asChild, ...primitiveProps } = props;
+    const Comp = asChild ? Slot2 : node;
+    if (typeof window !== "undefined") {
+      window[Symbol.for("radix-ui")] = true;
+    }
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(Comp, { ...primitiveProps, ref: forwardedRef });
+  });
+  Node2.displayName = `Primitive.${node}`;
+  return { ...primitive, [node]: Node2 };
+}, {});
+function dispatchDiscreteCustomEvent(target, event) {
+  if (target) reactDomExports.flushSync(() => target.dispatchEvent(event));
+}
+function useCallbackRef$1(callback) {
+  const callbackRef = reactExports.useRef(callback);
+  reactExports.useEffect(() => {
+    callbackRef.current = callback;
+  });
+  return reactExports.useMemo(() => (...args) => {
+    var _a3;
+    return (_a3 = callbackRef.current) == null ? void 0 : _a3.call(callbackRef, ...args);
+  }, []);
+}
+function useEscapeKeydown(onEscapeKeyDownProp, ownerDocument = globalThis == null ? void 0 : globalThis.document) {
+  const onEscapeKeyDown = useCallbackRef$1(onEscapeKeyDownProp);
+  reactExports.useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        onEscapeKeyDown(event);
+      }
+    };
+    ownerDocument.addEventListener("keydown", handleKeyDown, { capture: true });
+    return () => ownerDocument.removeEventListener("keydown", handleKeyDown, { capture: true });
+  }, [onEscapeKeyDown, ownerDocument]);
+}
+var DISMISSABLE_LAYER_NAME = "DismissableLayer";
+var CONTEXT_UPDATE = "dismissableLayer.update";
+var POINTER_DOWN_OUTSIDE = "dismissableLayer.pointerDownOutside";
+var FOCUS_OUTSIDE = "dismissableLayer.focusOutside";
+var originalBodyPointerEvents;
+var DismissableLayerContext = reactExports.createContext({
+  layers: /* @__PURE__ */ new Set(),
+  layersWithOutsidePointerEventsDisabled: /* @__PURE__ */ new Set(),
+  branches: /* @__PURE__ */ new Set()
+});
+var DismissableLayer = reactExports.forwardRef(
+  (props, forwardedRef) => {
+    const {
+      disableOutsidePointerEvents = false,
+      onEscapeKeyDown,
+      onPointerDownOutside,
+      onFocusOutside,
+      onInteractOutside,
+      onDismiss,
+      ...layerProps
+    } = props;
+    const context = reactExports.useContext(DismissableLayerContext);
+    const [node, setNode] = reactExports.useState(null);
+    const ownerDocument = (node == null ? void 0 : node.ownerDocument) ?? (globalThis == null ? void 0 : globalThis.document);
+    const [, force] = reactExports.useState({});
+    const composedRefs = useComposedRefs(forwardedRef, (node2) => setNode(node2));
+    const layers = Array.from(context.layers);
+    const [highestLayerWithOutsidePointerEventsDisabled] = [...context.layersWithOutsidePointerEventsDisabled].slice(-1);
+    const highestLayerWithOutsidePointerEventsDisabledIndex = layers.indexOf(highestLayerWithOutsidePointerEventsDisabled);
+    const index2 = node ? layers.indexOf(node) : -1;
+    const isBodyPointerEventsDisabled = context.layersWithOutsidePointerEventsDisabled.size > 0;
+    const isPointerEventsEnabled = index2 >= highestLayerWithOutsidePointerEventsDisabledIndex;
+    const pointerDownOutside = usePointerDownOutside((event) => {
+      const target = event.target;
+      const isPointerDownOnBranch = [...context.branches].some((branch) => branch.contains(target));
+      if (!isPointerEventsEnabled || isPointerDownOnBranch) return;
+      onPointerDownOutside == null ? void 0 : onPointerDownOutside(event);
+      onInteractOutside == null ? void 0 : onInteractOutside(event);
+      if (!event.defaultPrevented) onDismiss == null ? void 0 : onDismiss();
+    }, ownerDocument);
+    const focusOutside = useFocusOutside((event) => {
+      const target = event.target;
+      const isFocusInBranch = [...context.branches].some((branch) => branch.contains(target));
+      if (isFocusInBranch) return;
+      onFocusOutside == null ? void 0 : onFocusOutside(event);
+      onInteractOutside == null ? void 0 : onInteractOutside(event);
+      if (!event.defaultPrevented) onDismiss == null ? void 0 : onDismiss();
+    }, ownerDocument);
+    useEscapeKeydown((event) => {
+      const isHighestLayer = index2 === context.layers.size - 1;
+      if (!isHighestLayer) return;
+      onEscapeKeyDown == null ? void 0 : onEscapeKeyDown(event);
+      if (!event.defaultPrevented && onDismiss) {
+        event.preventDefault();
+        onDismiss();
+      }
+    }, ownerDocument);
+    reactExports.useEffect(() => {
+      if (!node) return;
+      if (disableOutsidePointerEvents) {
+        if (context.layersWithOutsidePointerEventsDisabled.size === 0) {
+          originalBodyPointerEvents = ownerDocument.body.style.pointerEvents;
+          ownerDocument.body.style.pointerEvents = "none";
+        }
+        context.layersWithOutsidePointerEventsDisabled.add(node);
+      }
+      context.layers.add(node);
+      dispatchUpdate();
+      return () => {
+        if (disableOutsidePointerEvents && context.layersWithOutsidePointerEventsDisabled.size === 1) {
+          ownerDocument.body.style.pointerEvents = originalBodyPointerEvents;
+        }
+      };
+    }, [node, ownerDocument, disableOutsidePointerEvents, context]);
+    reactExports.useEffect(() => {
+      return () => {
+        if (!node) return;
+        context.layers.delete(node);
+        context.layersWithOutsidePointerEventsDisabled.delete(node);
+        dispatchUpdate();
+      };
+    }, [node, context]);
+    reactExports.useEffect(() => {
+      const handleUpdate = () => force({});
+      document.addEventListener(CONTEXT_UPDATE, handleUpdate);
+      return () => document.removeEventListener(CONTEXT_UPDATE, handleUpdate);
+    }, []);
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(
+      Primitive.div,
+      {
+        ...layerProps,
+        ref: composedRefs,
+        style: {
+          pointerEvents: isBodyPointerEventsDisabled ? isPointerEventsEnabled ? "auto" : "none" : void 0,
+          ...props.style
+        },
+        onFocusCapture: composeEventHandlers(props.onFocusCapture, focusOutside.onFocusCapture),
+        onBlurCapture: composeEventHandlers(props.onBlurCapture, focusOutside.onBlurCapture),
+        onPointerDownCapture: composeEventHandlers(
+          props.onPointerDownCapture,
+          pointerDownOutside.onPointerDownCapture
+        )
+      }
+    );
+  }
+);
+DismissableLayer.displayName = DISMISSABLE_LAYER_NAME;
+var BRANCH_NAME = "DismissableLayerBranch";
+var DismissableLayerBranch = reactExports.forwardRef((props, forwardedRef) => {
+  const context = reactExports.useContext(DismissableLayerContext);
+  const ref = reactExports.useRef(null);
+  const composedRefs = useComposedRefs(forwardedRef, ref);
+  reactExports.useEffect(() => {
+    const node = ref.current;
+    if (node) {
+      context.branches.add(node);
+      return () => {
+        context.branches.delete(node);
+      };
+    }
+  }, [context.branches]);
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(Primitive.div, { ...props, ref: composedRefs });
+});
+DismissableLayerBranch.displayName = BRANCH_NAME;
+function usePointerDownOutside(onPointerDownOutside, ownerDocument = globalThis == null ? void 0 : globalThis.document) {
+  const handlePointerDownOutside = useCallbackRef$1(onPointerDownOutside);
+  const isPointerInsideReactTreeRef = reactExports.useRef(false);
+  const handleClickRef = reactExports.useRef(() => {
+  });
+  reactExports.useEffect(() => {
+    const handlePointerDown = (event) => {
+      if (event.target && !isPointerInsideReactTreeRef.current) {
+        let handleAndDispatchPointerDownOutsideEvent2 = function() {
+          handleAndDispatchCustomEvent(
+            POINTER_DOWN_OUTSIDE,
+            handlePointerDownOutside,
+            eventDetail,
+            { discrete: true }
+          );
+        };
+        const eventDetail = { originalEvent: event };
+        if (event.pointerType === "touch") {
+          ownerDocument.removeEventListener("click", handleClickRef.current);
+          handleClickRef.current = handleAndDispatchPointerDownOutsideEvent2;
+          ownerDocument.addEventListener("click", handleClickRef.current, { once: true });
+        } else {
+          handleAndDispatchPointerDownOutsideEvent2();
+        }
+      } else {
+        ownerDocument.removeEventListener("click", handleClickRef.current);
+      }
+      isPointerInsideReactTreeRef.current = false;
+    };
+    const timerId = window.setTimeout(() => {
+      ownerDocument.addEventListener("pointerdown", handlePointerDown);
+    }, 0);
+    return () => {
+      window.clearTimeout(timerId);
+      ownerDocument.removeEventListener("pointerdown", handlePointerDown);
+      ownerDocument.removeEventListener("click", handleClickRef.current);
+    };
+  }, [ownerDocument, handlePointerDownOutside]);
+  return {
+    // ensures we check React component tree (not just DOM tree)
+    onPointerDownCapture: () => isPointerInsideReactTreeRef.current = true
+  };
+}
+function useFocusOutside(onFocusOutside, ownerDocument = globalThis == null ? void 0 : globalThis.document) {
+  const handleFocusOutside = useCallbackRef$1(onFocusOutside);
+  const isFocusInsideReactTreeRef = reactExports.useRef(false);
+  reactExports.useEffect(() => {
+    const handleFocus = (event) => {
+      if (event.target && !isFocusInsideReactTreeRef.current) {
+        const eventDetail = { originalEvent: event };
+        handleAndDispatchCustomEvent(FOCUS_OUTSIDE, handleFocusOutside, eventDetail, {
+          discrete: false
+        });
+      }
+    };
+    ownerDocument.addEventListener("focusin", handleFocus);
+    return () => ownerDocument.removeEventListener("focusin", handleFocus);
+  }, [ownerDocument, handleFocusOutside]);
+  return {
+    onFocusCapture: () => isFocusInsideReactTreeRef.current = true,
+    onBlurCapture: () => isFocusInsideReactTreeRef.current = false
+  };
+}
+function dispatchUpdate() {
+  const event = new CustomEvent(CONTEXT_UPDATE);
+  document.dispatchEvent(event);
+}
+function handleAndDispatchCustomEvent(name, handler, detail, { discrete }) {
+  const target = detail.originalEvent.target;
+  const event = new CustomEvent(name, { bubbles: false, cancelable: true, detail });
+  if (handler) target.addEventListener(name, handler, { once: true });
+  if (discrete) {
+    dispatchDiscreteCustomEvent(target, event);
+  } else {
+    target.dispatchEvent(event);
+  }
+}
+var AUTOFOCUS_ON_MOUNT = "focusScope.autoFocusOnMount";
+var AUTOFOCUS_ON_UNMOUNT = "focusScope.autoFocusOnUnmount";
+var EVENT_OPTIONS = { bubbles: false, cancelable: true };
+var FOCUS_SCOPE_NAME = "FocusScope";
+var FocusScope = reactExports.forwardRef((props, forwardedRef) => {
+  const {
+    loop = false,
+    trapped = false,
+    onMountAutoFocus: onMountAutoFocusProp,
+    onUnmountAutoFocus: onUnmountAutoFocusProp,
+    ...scopeProps
+  } = props;
+  const [container, setContainer] = reactExports.useState(null);
+  const onMountAutoFocus = useCallbackRef$1(onMountAutoFocusProp);
+  const onUnmountAutoFocus = useCallbackRef$1(onUnmountAutoFocusProp);
+  const lastFocusedElementRef = reactExports.useRef(null);
+  const composedRefs = useComposedRefs(forwardedRef, (node) => setContainer(node));
+  const focusScope = reactExports.useRef({
+    paused: false,
+    pause() {
+      this.paused = true;
+    },
+    resume() {
+      this.paused = false;
+    }
+  }).current;
+  reactExports.useEffect(() => {
+    if (trapped) {
+      let handleFocusIn2 = function(event) {
+        if (focusScope.paused || !container) return;
+        const target = event.target;
+        if (container.contains(target)) {
+          lastFocusedElementRef.current = target;
+        } else {
+          focus(lastFocusedElementRef.current, { select: true });
+        }
+      }, handleFocusOut2 = function(event) {
+        if (focusScope.paused || !container) return;
+        const relatedTarget = event.relatedTarget;
+        if (relatedTarget === null) return;
+        if (!container.contains(relatedTarget)) {
+          focus(lastFocusedElementRef.current, { select: true });
+        }
+      }, handleMutations2 = function(mutations) {
+        const focusedElement = document.activeElement;
+        if (focusedElement !== document.body) return;
+        for (const mutation of mutations) {
+          if (mutation.removedNodes.length > 0) focus(container);
+        }
+      };
+      document.addEventListener("focusin", handleFocusIn2);
+      document.addEventListener("focusout", handleFocusOut2);
+      const mutationObserver = new MutationObserver(handleMutations2);
+      if (container) mutationObserver.observe(container, { childList: true, subtree: true });
+      return () => {
+        document.removeEventListener("focusin", handleFocusIn2);
+        document.removeEventListener("focusout", handleFocusOut2);
+        mutationObserver.disconnect();
+      };
+    }
+  }, [trapped, container, focusScope.paused]);
+  reactExports.useEffect(() => {
+    if (container) {
+      focusScopesStack.add(focusScope);
+      const previouslyFocusedElement = document.activeElement;
+      const hasFocusedCandidate = container.contains(previouslyFocusedElement);
+      if (!hasFocusedCandidate) {
+        const mountEvent = new CustomEvent(AUTOFOCUS_ON_MOUNT, EVENT_OPTIONS);
+        container.addEventListener(AUTOFOCUS_ON_MOUNT, onMountAutoFocus);
+        container.dispatchEvent(mountEvent);
+        if (!mountEvent.defaultPrevented) {
+          focusFirst(removeLinks(getTabbableCandidates(container)), { select: true });
+          if (document.activeElement === previouslyFocusedElement) {
+            focus(container);
+          }
+        }
+      }
+      return () => {
+        container.removeEventListener(AUTOFOCUS_ON_MOUNT, onMountAutoFocus);
+        setTimeout(() => {
+          const unmountEvent = new CustomEvent(AUTOFOCUS_ON_UNMOUNT, EVENT_OPTIONS);
+          container.addEventListener(AUTOFOCUS_ON_UNMOUNT, onUnmountAutoFocus);
+          container.dispatchEvent(unmountEvent);
+          if (!unmountEvent.defaultPrevented) {
+            focus(previouslyFocusedElement ?? document.body, { select: true });
+          }
+          container.removeEventListener(AUTOFOCUS_ON_UNMOUNT, onUnmountAutoFocus);
+          focusScopesStack.remove(focusScope);
+        }, 0);
+      };
+    }
+  }, [container, onMountAutoFocus, onUnmountAutoFocus, focusScope]);
+  const handleKeyDown = reactExports.useCallback(
+    (event) => {
+      if (!loop && !trapped) return;
+      if (focusScope.paused) return;
+      const isTabKey = event.key === "Tab" && !event.altKey && !event.ctrlKey && !event.metaKey;
+      const focusedElement = document.activeElement;
+      if (isTabKey && focusedElement) {
+        const container2 = event.currentTarget;
+        const [first, last] = getTabbableEdges(container2);
+        const hasTabbableElementsInside = first && last;
+        if (!hasTabbableElementsInside) {
+          if (focusedElement === container2) event.preventDefault();
+        } else {
+          if (!event.shiftKey && focusedElement === last) {
+            event.preventDefault();
+            if (loop) focus(first, { select: true });
+          } else if (event.shiftKey && focusedElement === first) {
+            event.preventDefault();
+            if (loop) focus(last, { select: true });
+          }
+        }
+      }
+    },
+    [loop, trapped, focusScope.paused]
+  );
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(Primitive.div, { tabIndex: -1, ...scopeProps, ref: composedRefs, onKeyDown: handleKeyDown });
+});
+FocusScope.displayName = FOCUS_SCOPE_NAME;
+function focusFirst(candidates, { select = false } = {}) {
+  const previouslyFocusedElement = document.activeElement;
+  for (const candidate of candidates) {
+    focus(candidate, { select });
+    if (document.activeElement !== previouslyFocusedElement) return;
+  }
+}
+function getTabbableEdges(container) {
+  const candidates = getTabbableCandidates(container);
+  const first = findVisible(candidates, container);
+  const last = findVisible(candidates.reverse(), container);
+  return [first, last];
+}
+function getTabbableCandidates(container) {
+  const nodes = [];
+  const walker = document.createTreeWalker(container, NodeFilter.SHOW_ELEMENT, {
+    acceptNode: (node) => {
+      const isHiddenInput = node.tagName === "INPUT" && node.type === "hidden";
+      if (node.disabled || node.hidden || isHiddenInput) return NodeFilter.FILTER_SKIP;
+      return node.tabIndex >= 0 ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP;
+    }
+  });
+  while (walker.nextNode()) nodes.push(walker.currentNode);
+  return nodes;
+}
+function findVisible(elements, container) {
+  for (const element of elements) {
+    if (!isHidden(element, { upTo: container })) return element;
+  }
+}
+function isHidden(node, { upTo }) {
+  if (getComputedStyle(node).visibility === "hidden") return true;
+  while (node) {
+    if (upTo !== void 0 && node === upTo) return false;
+    if (getComputedStyle(node).display === "none") return true;
+    node = node.parentElement;
+  }
+  return false;
+}
+function isSelectableInput(element) {
+  return element instanceof HTMLInputElement && "select" in element;
+}
+function focus(element, { select = false } = {}) {
+  if (element && element.focus) {
+    const previouslyFocusedElement = document.activeElement;
+    element.focus({ preventScroll: true });
+    if (element !== previouslyFocusedElement && isSelectableInput(element) && select)
+      element.select();
+  }
+}
+var focusScopesStack = createFocusScopesStack();
+function createFocusScopesStack() {
+  let stack = [];
+  return {
+    add(focusScope) {
+      const activeFocusScope = stack[0];
+      if (focusScope !== activeFocusScope) {
+        activeFocusScope == null ? void 0 : activeFocusScope.pause();
+      }
+      stack = arrayRemove(stack, focusScope);
+      stack.unshift(focusScope);
+    },
+    remove(focusScope) {
+      var _a3;
+      stack = arrayRemove(stack, focusScope);
+      (_a3 = stack[0]) == null ? void 0 : _a3.resume();
+    }
+  };
+}
+function arrayRemove(array, item) {
+  const updatedArray = [...array];
+  const index2 = updatedArray.indexOf(item);
+  if (index2 !== -1) {
+    updatedArray.splice(index2, 1);
+  }
+  return updatedArray;
+}
+function removeLinks(items) {
+  return items.filter((item) => item.tagName !== "A");
+}
+var PORTAL_NAME$1 = "Portal";
+var Portal$1 = reactExports.forwardRef((props, forwardedRef) => {
+  var _a3;
+  const { container: containerProp, ...portalProps } = props;
+  const [mounted, setMounted] = reactExports.useState(false);
+  useLayoutEffect2(() => setMounted(true), []);
+  const container = containerProp || mounted && ((_a3 = globalThis == null ? void 0 : globalThis.document) == null ? void 0 : _a3.body);
+  return container ? ReactDOM$2.createPortal(/* @__PURE__ */ jsxRuntimeExports.jsx(Primitive.div, { ...portalProps, ref: forwardedRef }), container) : null;
+});
+Portal$1.displayName = PORTAL_NAME$1;
+function useStateMachine(initialState, machine) {
+  return reactExports.useReducer((state, event) => {
+    const nextState = machine[state][event];
+    return nextState ?? state;
+  }, initialState);
+}
+var Presence = (props) => {
+  const { present, children } = props;
+  const presence = usePresence(present);
+  const child = typeof children === "function" ? children({ present: presence.isPresent }) : reactExports.Children.only(children);
+  const ref = useComposedRefs(presence.ref, getElementRef(child));
+  const forceMount = typeof children === "function";
+  return forceMount || presence.isPresent ? reactExports.cloneElement(child, { ref }) : null;
+};
+Presence.displayName = "Presence";
+function usePresence(present) {
+  const [node, setNode] = reactExports.useState();
+  const stylesRef = reactExports.useRef(null);
+  const prevPresentRef = reactExports.useRef(present);
+  const prevAnimationNameRef = reactExports.useRef("none");
+  const initialState = present ? "mounted" : "unmounted";
+  const [state, send] = useStateMachine(initialState, {
+    mounted: {
+      UNMOUNT: "unmounted",
+      ANIMATION_OUT: "unmountSuspended"
+    },
+    unmountSuspended: {
+      MOUNT: "mounted",
+      ANIMATION_END: "unmounted"
+    },
+    unmounted: {
+      MOUNT: "mounted"
+    }
+  });
+  reactExports.useEffect(() => {
+    const currentAnimationName = getAnimationName(stylesRef.current);
+    prevAnimationNameRef.current = state === "mounted" ? currentAnimationName : "none";
+  }, [state]);
+  useLayoutEffect2(() => {
+    const styles = stylesRef.current;
+    const wasPresent = prevPresentRef.current;
+    const hasPresentChanged = wasPresent !== present;
+    if (hasPresentChanged) {
+      const prevAnimationName = prevAnimationNameRef.current;
+      const currentAnimationName = getAnimationName(styles);
+      if (present) {
+        send("MOUNT");
+      } else if (currentAnimationName === "none" || (styles == null ? void 0 : styles.display) === "none") {
+        send("UNMOUNT");
+      } else {
+        const isAnimating = prevAnimationName !== currentAnimationName;
+        if (wasPresent && isAnimating) {
+          send("ANIMATION_OUT");
+        } else {
+          send("UNMOUNT");
+        }
+      }
+      prevPresentRef.current = present;
+    }
+  }, [present, send]);
+  useLayoutEffect2(() => {
+    if (node) {
+      let timeoutId;
+      const ownerWindow = node.ownerDocument.defaultView ?? window;
+      const handleAnimationEnd = (event) => {
+        const currentAnimationName = getAnimationName(stylesRef.current);
+        const isCurrentAnimation = currentAnimationName.includes(CSS.escape(event.animationName));
+        if (event.target === node && isCurrentAnimation) {
+          send("ANIMATION_END");
+          if (!prevPresentRef.current) {
+            const currentFillMode = node.style.animationFillMode;
+            node.style.animationFillMode = "forwards";
+            timeoutId = ownerWindow.setTimeout(() => {
+              if (node.style.animationFillMode === "forwards") {
+                node.style.animationFillMode = currentFillMode;
+              }
+            });
+          }
+        }
+      };
+      const handleAnimationStart = (event) => {
+        if (event.target === node) {
+          prevAnimationNameRef.current = getAnimationName(stylesRef.current);
+        }
+      };
+      node.addEventListener("animationstart", handleAnimationStart);
+      node.addEventListener("animationcancel", handleAnimationEnd);
+      node.addEventListener("animationend", handleAnimationEnd);
+      return () => {
+        ownerWindow.clearTimeout(timeoutId);
+        node.removeEventListener("animationstart", handleAnimationStart);
+        node.removeEventListener("animationcancel", handleAnimationEnd);
+        node.removeEventListener("animationend", handleAnimationEnd);
+      };
+    } else {
+      send("ANIMATION_END");
+    }
+  }, [node, send]);
+  return {
+    isPresent: ["mounted", "unmountSuspended"].includes(state),
+    ref: reactExports.useCallback((node2) => {
+      stylesRef.current = node2 ? getComputedStyle(node2) : null;
+      setNode(node2);
+    }, [])
+  };
+}
+function getAnimationName(styles) {
+  return (styles == null ? void 0 : styles.animationName) || "none";
+}
+function getElementRef(element) {
+  var _a3, _b3;
+  let getter = (_a3 = Object.getOwnPropertyDescriptor(element.props, "ref")) == null ? void 0 : _a3.get;
+  let mayWarn = getter && "isReactWarning" in getter && getter.isReactWarning;
+  if (mayWarn) {
+    return element.ref;
+  }
+  getter = (_b3 = Object.getOwnPropertyDescriptor(element, "ref")) == null ? void 0 : _b3.get;
+  mayWarn = getter && "isReactWarning" in getter && getter.isReactWarning;
+  if (mayWarn) {
+    return element.props.ref;
+  }
+  return element.props.ref || element.ref;
+}
+var count = 0;
+function useFocusGuards() {
+  reactExports.useEffect(() => {
+    const edgeGuards = document.querySelectorAll("[data-radix-focus-guard]");
+    document.body.insertAdjacentElement("afterbegin", edgeGuards[0] ?? createFocusGuard());
+    document.body.insertAdjacentElement("beforeend", edgeGuards[1] ?? createFocusGuard());
+    count++;
+    return () => {
+      if (count === 1) {
+        document.querySelectorAll("[data-radix-focus-guard]").forEach((node) => node.remove());
+      }
+      count--;
+    };
+  }, []);
+}
+function createFocusGuard() {
+  const element = document.createElement("span");
+  element.setAttribute("data-radix-focus-guard", "");
+  element.tabIndex = 0;
+  element.style.outline = "none";
+  element.style.opacity = "0";
+  element.style.position = "fixed";
+  element.style.pointerEvents = "none";
+  return element;
+}
+var __assign = function() {
+  __assign = Object.assign || function __assign2(t) {
+    for (var s2, i = 1, n = arguments.length; i < n; i++) {
+      s2 = arguments[i];
+      for (var p2 in s2) if (Object.prototype.hasOwnProperty.call(s2, p2)) t[p2] = s2[p2];
+    }
+    return t;
+  };
+  return __assign.apply(this, arguments);
+};
+function __rest(s2, e) {
+  var t = {};
+  for (var p2 in s2) if (Object.prototype.hasOwnProperty.call(s2, p2) && e.indexOf(p2) < 0)
+    t[p2] = s2[p2];
+  if (s2 != null && typeof Object.getOwnPropertySymbols === "function")
+    for (var i = 0, p2 = Object.getOwnPropertySymbols(s2); i < p2.length; i++) {
+      if (e.indexOf(p2[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s2, p2[i]))
+        t[p2[i]] = s2[p2[i]];
+    }
+  return t;
+}
+function __spreadArray(to, from, pack) {
+  if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+    if (ar || !(i in from)) {
+      if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+      ar[i] = from[i];
+    }
+  }
+  return to.concat(ar || Array.prototype.slice.call(from));
+}
+typeof SuppressedError === "function" ? SuppressedError : function(error, suppressed, message) {
+  var e = new Error(message);
+  return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
+};
+var zeroRightClassName = "right-scroll-bar-position";
+var fullWidthClassName = "width-before-scroll-bar";
+var noScrollbarsClassName = "with-scroll-bars-hidden";
+var removedBarSizeVariable = "--removed-body-scroll-bar-size";
+function assignRef(ref, value) {
+  if (typeof ref === "function") {
+    ref(value);
+  } else if (ref) {
+    ref.current = value;
+  }
+  return ref;
+}
+function useCallbackRef(initialValue, callback) {
+  var ref = reactExports.useState(function() {
+    return {
+      // value
+      value: initialValue,
+      // last callback
+      callback,
+      // "memoized" public interface
+      facade: {
+        get current() {
+          return ref.value;
+        },
+        set current(value) {
+          var last = ref.value;
+          if (last !== value) {
+            ref.value = value;
+            ref.callback(value, last);
+          }
+        }
+      }
+    };
+  })[0];
+  ref.callback = callback;
+  return ref.facade;
+}
+var useIsomorphicLayoutEffect = typeof window !== "undefined" ? reactExports.useLayoutEffect : reactExports.useEffect;
+var currentValues = /* @__PURE__ */ new WeakMap();
+function useMergeRefs(refs, defaultValue) {
+  var callbackRef = useCallbackRef(null, function(newValue) {
+    return refs.forEach(function(ref) {
+      return assignRef(ref, newValue);
+    });
+  });
+  useIsomorphicLayoutEffect(function() {
+    var oldValue = currentValues.get(callbackRef);
+    if (oldValue) {
+      var prevRefs_1 = new Set(oldValue);
+      var nextRefs_1 = new Set(refs);
+      var current_1 = callbackRef.current;
+      prevRefs_1.forEach(function(ref) {
+        if (!nextRefs_1.has(ref)) {
+          assignRef(ref, null);
+        }
+      });
+      nextRefs_1.forEach(function(ref) {
+        if (!prevRefs_1.has(ref)) {
+          assignRef(ref, current_1);
+        }
+      });
+    }
+    currentValues.set(callbackRef, refs);
+  }, [refs]);
+  return callbackRef;
+}
+function ItoI(a2) {
+  return a2;
+}
+function innerCreateMedium(defaults, middleware) {
+  if (middleware === void 0) {
+    middleware = ItoI;
+  }
+  var buffer = [];
+  var assigned = false;
+  var medium = {
+    read: function() {
+      if (assigned) {
+        throw new Error("Sidecar: could not `read` from an `assigned` medium. `read` could be used only with `useMedium`.");
+      }
+      if (buffer.length) {
+        return buffer[buffer.length - 1];
+      }
+      return defaults;
+    },
+    useMedium: function(data) {
+      var item = middleware(data, assigned);
+      buffer.push(item);
+      return function() {
+        buffer = buffer.filter(function(x2) {
+          return x2 !== item;
+        });
+      };
+    },
+    assignSyncMedium: function(cb) {
+      assigned = true;
+      while (buffer.length) {
+        var cbs = buffer;
+        buffer = [];
+        cbs.forEach(cb);
+      }
+      buffer = {
+        push: function(x2) {
+          return cb(x2);
+        },
+        filter: function() {
+          return buffer;
+        }
+      };
+    },
+    assignMedium: function(cb) {
+      assigned = true;
+      var pendingQueue = [];
+      if (buffer.length) {
+        var cbs = buffer;
+        buffer = [];
+        cbs.forEach(cb);
+        pendingQueue = buffer;
+      }
+      var executeQueue = function() {
+        var cbs2 = pendingQueue;
+        pendingQueue = [];
+        cbs2.forEach(cb);
+      };
+      var cycle = function() {
+        return Promise.resolve().then(executeQueue);
+      };
+      cycle();
+      buffer = {
+        push: function(x2) {
+          pendingQueue.push(x2);
+          cycle();
+        },
+        filter: function(filter) {
+          pendingQueue = pendingQueue.filter(filter);
+          return buffer;
+        }
+      };
+    }
+  };
+  return medium;
+}
+function createSidecarMedium(options) {
+  if (options === void 0) {
+    options = {};
+  }
+  var medium = innerCreateMedium(null);
+  medium.options = __assign({ async: true, ssr: false }, options);
+  return medium;
+}
+var SideCar$1 = function(_a3) {
+  var sideCar = _a3.sideCar, rest = __rest(_a3, ["sideCar"]);
+  if (!sideCar) {
+    throw new Error("Sidecar: please provide `sideCar` property to import the right car");
+  }
+  var Target = sideCar.read();
+  if (!Target) {
+    throw new Error("Sidecar medium not found");
+  }
+  return reactExports.createElement(Target, __assign({}, rest));
+};
+SideCar$1.isSideCarExport = true;
+function exportSidecar(medium, exported) {
+  medium.useMedium(exported);
+  return SideCar$1;
+}
+var effectCar = createSidecarMedium();
+var nothing = function() {
+  return;
+};
+var RemoveScroll = reactExports.forwardRef(function(props, parentRef) {
+  var ref = reactExports.useRef(null);
+  var _a3 = reactExports.useState({
+    onScrollCapture: nothing,
+    onWheelCapture: nothing,
+    onTouchMoveCapture: nothing
+  }), callbacks = _a3[0], setCallbacks = _a3[1];
+  var forwardProps = props.forwardProps, children = props.children, className = props.className, removeScrollBar = props.removeScrollBar, enabled = props.enabled, shards = props.shards, sideCar = props.sideCar, noRelative = props.noRelative, noIsolation = props.noIsolation, inert = props.inert, allowPinchZoom = props.allowPinchZoom, _b3 = props.as, Container = _b3 === void 0 ? "div" : _b3, gapMode = props.gapMode, rest = __rest(props, ["forwardProps", "children", "className", "removeScrollBar", "enabled", "shards", "sideCar", "noRelative", "noIsolation", "inert", "allowPinchZoom", "as", "gapMode"]);
+  var SideCar2 = sideCar;
+  var containerRef = useMergeRefs([ref, parentRef]);
+  var containerProps = __assign(__assign({}, rest), callbacks);
+  return reactExports.createElement(
+    reactExports.Fragment,
+    null,
+    enabled && reactExports.createElement(SideCar2, { sideCar: effectCar, removeScrollBar, shards, noRelative, noIsolation, inert, setCallbacks, allowPinchZoom: !!allowPinchZoom, lockRef: ref, gapMode }),
+    forwardProps ? reactExports.cloneElement(reactExports.Children.only(children), __assign(__assign({}, containerProps), { ref: containerRef })) : reactExports.createElement(Container, __assign({}, containerProps, { className, ref: containerRef }), children)
+  );
+});
+RemoveScroll.defaultProps = {
+  enabled: true,
+  removeScrollBar: true,
+  inert: false
+};
+RemoveScroll.classNames = {
+  fullWidth: fullWidthClassName,
+  zeroRight: zeroRightClassName
+};
+var getNonce = function() {
+  if (typeof __webpack_nonce__ !== "undefined") {
+    return __webpack_nonce__;
+  }
+  return void 0;
+};
+function makeStyleTag() {
+  if (!document)
+    return null;
+  var tag = document.createElement("style");
+  tag.type = "text/css";
+  var nonce = getNonce();
+  if (nonce) {
+    tag.setAttribute("nonce", nonce);
+  }
+  return tag;
+}
+function injectStyles(tag, css) {
+  if (tag.styleSheet) {
+    tag.styleSheet.cssText = css;
+  } else {
+    tag.appendChild(document.createTextNode(css));
+  }
+}
+function insertStyleTag(tag) {
+  var head = document.head || document.getElementsByTagName("head")[0];
+  head.appendChild(tag);
+}
+var stylesheetSingleton = function() {
+  var counter = 0;
+  var stylesheet = null;
+  return {
+    add: function(style2) {
+      if (counter == 0) {
+        if (stylesheet = makeStyleTag()) {
+          injectStyles(stylesheet, style2);
+          insertStyleTag(stylesheet);
+        }
+      }
+      counter++;
+    },
+    remove: function() {
+      counter--;
+      if (!counter && stylesheet) {
+        stylesheet.parentNode && stylesheet.parentNode.removeChild(stylesheet);
+        stylesheet = null;
+      }
+    }
+  };
+};
+var styleHookSingleton = function() {
+  var sheet = stylesheetSingleton();
+  return function(styles, isDynamic) {
+    reactExports.useEffect(function() {
+      sheet.add(styles);
+      return function() {
+        sheet.remove();
+      };
+    }, [styles && isDynamic]);
+  };
+};
+var styleSingleton = function() {
+  var useStyle = styleHookSingleton();
+  var Sheet = function(_a3) {
+    var styles = _a3.styles, dynamic = _a3.dynamic;
+    useStyle(styles, dynamic);
+    return null;
+  };
+  return Sheet;
+};
+var zeroGap = {
+  left: 0,
+  top: 0,
+  right: 0,
+  gap: 0
+};
+var parse = function(x2) {
+  return parseInt(x2 || "", 10) || 0;
+};
+var getOffset = function(gapMode) {
+  var cs = window.getComputedStyle(document.body);
+  var left = cs[gapMode === "padding" ? "paddingLeft" : "marginLeft"];
+  var top = cs[gapMode === "padding" ? "paddingTop" : "marginTop"];
+  var right = cs[gapMode === "padding" ? "paddingRight" : "marginRight"];
+  return [parse(left), parse(top), parse(right)];
+};
+var getGapWidth = function(gapMode) {
+  if (gapMode === void 0) {
+    gapMode = "margin";
+  }
+  if (typeof window === "undefined") {
+    return zeroGap;
+  }
+  var offsets = getOffset(gapMode);
+  var documentWidth = document.documentElement.clientWidth;
+  var windowWidth = window.innerWidth;
+  return {
+    left: offsets[0],
+    top: offsets[1],
+    right: offsets[2],
+    gap: Math.max(0, windowWidth - documentWidth + offsets[2] - offsets[0])
+  };
+};
+var Style = styleSingleton();
+var lockAttribute = "data-scroll-locked";
+var getStyles = function(_a3, allowRelative, gapMode, important) {
+  var left = _a3.left, top = _a3.top, right = _a3.right, gap = _a3.gap;
+  if (gapMode === void 0) {
+    gapMode = "margin";
+  }
+  return "\n  .".concat(noScrollbarsClassName, " {\n   overflow: hidden ").concat(important, ";\n   padding-right: ").concat(gap, "px ").concat(important, ";\n  }\n  body[").concat(lockAttribute, "] {\n    overflow: hidden ").concat(important, ";\n    overscroll-behavior: contain;\n    ").concat([
+    allowRelative && "position: relative ".concat(important, ";"),
+    gapMode === "margin" && "\n    padding-left: ".concat(left, "px;\n    padding-top: ").concat(top, "px;\n    padding-right: ").concat(right, "px;\n    margin-left:0;\n    margin-top:0;\n    margin-right: ").concat(gap, "px ").concat(important, ";\n    "),
+    gapMode === "padding" && "padding-right: ".concat(gap, "px ").concat(important, ";")
+  ].filter(Boolean).join(""), "\n  }\n  \n  .").concat(zeroRightClassName, " {\n    right: ").concat(gap, "px ").concat(important, ";\n  }\n  \n  .").concat(fullWidthClassName, " {\n    margin-right: ").concat(gap, "px ").concat(important, ";\n  }\n  \n  .").concat(zeroRightClassName, " .").concat(zeroRightClassName, " {\n    right: 0 ").concat(important, ";\n  }\n  \n  .").concat(fullWidthClassName, " .").concat(fullWidthClassName, " {\n    margin-right: 0 ").concat(important, ";\n  }\n  \n  body[").concat(lockAttribute, "] {\n    ").concat(removedBarSizeVariable, ": ").concat(gap, "px;\n  }\n");
+};
+var getCurrentUseCounter = function() {
+  var counter = parseInt(document.body.getAttribute(lockAttribute) || "0", 10);
+  return isFinite(counter) ? counter : 0;
+};
+var useLockAttribute = function() {
+  reactExports.useEffect(function() {
+    document.body.setAttribute(lockAttribute, (getCurrentUseCounter() + 1).toString());
+    return function() {
+      var newCounter = getCurrentUseCounter() - 1;
+      if (newCounter <= 0) {
+        document.body.removeAttribute(lockAttribute);
+      } else {
+        document.body.setAttribute(lockAttribute, newCounter.toString());
+      }
+    };
+  }, []);
+};
+var RemoveScrollBar = function(_a3) {
+  var noRelative = _a3.noRelative, noImportant = _a3.noImportant, _b3 = _a3.gapMode, gapMode = _b3 === void 0 ? "margin" : _b3;
+  useLockAttribute();
+  var gap = reactExports.useMemo(function() {
+    return getGapWidth(gapMode);
+  }, [gapMode]);
+  return reactExports.createElement(Style, { styles: getStyles(gap, !noRelative, gapMode, !noImportant ? "!important" : "") });
+};
+var passiveSupported = false;
+if (typeof window !== "undefined") {
+  try {
+    var options = Object.defineProperty({}, "passive", {
+      get: function() {
+        passiveSupported = true;
+        return true;
+      }
+    });
+    window.addEventListener("test", options, options);
+    window.removeEventListener("test", options, options);
+  } catch (err) {
+    passiveSupported = false;
+  }
+}
+var nonPassive = passiveSupported ? { passive: false } : false;
+var alwaysContainsScroll = function(node) {
+  return node.tagName === "TEXTAREA";
+};
+var elementCanBeScrolled = function(node, overflow) {
+  if (!(node instanceof Element)) {
+    return false;
+  }
+  var styles = window.getComputedStyle(node);
+  return (
+    // not-not-scrollable
+    styles[overflow] !== "hidden" && // contains scroll inside self
+    !(styles.overflowY === styles.overflowX && !alwaysContainsScroll(node) && styles[overflow] === "visible")
+  );
+};
+var elementCouldBeVScrolled = function(node) {
+  return elementCanBeScrolled(node, "overflowY");
+};
+var elementCouldBeHScrolled = function(node) {
+  return elementCanBeScrolled(node, "overflowX");
+};
+var locationCouldBeScrolled = function(axis, node) {
+  var ownerDocument = node.ownerDocument;
+  var current = node;
+  do {
+    if (typeof ShadowRoot !== "undefined" && current instanceof ShadowRoot) {
+      current = current.host;
+    }
+    var isScrollable = elementCouldBeScrolled(axis, current);
+    if (isScrollable) {
+      var _a3 = getScrollVariables(axis, current), scrollHeight = _a3[1], clientHeight = _a3[2];
+      if (scrollHeight > clientHeight) {
+        return true;
+      }
+    }
+    current = current.parentNode;
+  } while (current && current !== ownerDocument.body);
+  return false;
+};
+var getVScrollVariables = function(_a3) {
+  var scrollTop = _a3.scrollTop, scrollHeight = _a3.scrollHeight, clientHeight = _a3.clientHeight;
+  return [
+    scrollTop,
+    scrollHeight,
+    clientHeight
+  ];
+};
+var getHScrollVariables = function(_a3) {
+  var scrollLeft = _a3.scrollLeft, scrollWidth = _a3.scrollWidth, clientWidth = _a3.clientWidth;
+  return [
+    scrollLeft,
+    scrollWidth,
+    clientWidth
+  ];
+};
+var elementCouldBeScrolled = function(axis, node) {
+  return axis === "v" ? elementCouldBeVScrolled(node) : elementCouldBeHScrolled(node);
+};
+var getScrollVariables = function(axis, node) {
+  return axis === "v" ? getVScrollVariables(node) : getHScrollVariables(node);
+};
+var getDirectionFactor = function(axis, direction) {
+  return axis === "h" && direction === "rtl" ? -1 : 1;
+};
+var handleScroll = function(axis, endTarget, event, sourceDelta, noOverscroll) {
+  var directionFactor = getDirectionFactor(axis, window.getComputedStyle(endTarget).direction);
+  var delta = directionFactor * sourceDelta;
+  var target = event.target;
+  var targetInLock = endTarget.contains(target);
+  var shouldCancelScroll = false;
+  var isDeltaPositive = delta > 0;
+  var availableScroll = 0;
+  var availableScrollTop = 0;
+  do {
+    if (!target) {
+      break;
+    }
+    var _a3 = getScrollVariables(axis, target), position = _a3[0], scroll_1 = _a3[1], capacity = _a3[2];
+    var elementScroll = scroll_1 - capacity - directionFactor * position;
+    if (position || elementScroll) {
+      if (elementCouldBeScrolled(axis, target)) {
+        availableScroll += elementScroll;
+        availableScrollTop += position;
+      }
+    }
+    var parent_1 = target.parentNode;
+    target = parent_1 && parent_1.nodeType === Node.DOCUMENT_FRAGMENT_NODE ? parent_1.host : parent_1;
+  } while (
+    // portaled content
+    !targetInLock && target !== document.body || // self content
+    targetInLock && (endTarget.contains(target) || endTarget === target)
+  );
+  if (isDeltaPositive && (Math.abs(availableScroll) < 1 || false)) {
+    shouldCancelScroll = true;
+  } else if (!isDeltaPositive && (Math.abs(availableScrollTop) < 1 || false)) {
+    shouldCancelScroll = true;
+  }
+  return shouldCancelScroll;
+};
+var getTouchXY = function(event) {
+  return "changedTouches" in event ? [event.changedTouches[0].clientX, event.changedTouches[0].clientY] : [0, 0];
+};
+var getDeltaXY = function(event) {
+  return [event.deltaX, event.deltaY];
+};
+var extractRef = function(ref) {
+  return ref && "current" in ref ? ref.current : ref;
+};
+var deltaCompare = function(x2, y2) {
+  return x2[0] === y2[0] && x2[1] === y2[1];
+};
+var generateStyle = function(id) {
+  return "\n  .block-interactivity-".concat(id, " {pointer-events: none;}\n  .allow-interactivity-").concat(id, " {pointer-events: all;}\n");
+};
+var idCounter = 0;
+var lockStack = [];
+function RemoveScrollSideCar(props) {
+  var shouldPreventQueue = reactExports.useRef([]);
+  var touchStartRef = reactExports.useRef([0, 0]);
+  var activeAxis = reactExports.useRef();
+  var id = reactExports.useState(idCounter++)[0];
+  var Style2 = reactExports.useState(styleSingleton)[0];
+  var lastProps = reactExports.useRef(props);
+  reactExports.useEffect(function() {
+    lastProps.current = props;
+  }, [props]);
+  reactExports.useEffect(function() {
+    if (props.inert) {
+      document.body.classList.add("block-interactivity-".concat(id));
+      var allow_1 = __spreadArray([props.lockRef.current], (props.shards || []).map(extractRef), true).filter(Boolean);
+      allow_1.forEach(function(el) {
+        return el.classList.add("allow-interactivity-".concat(id));
+      });
+      return function() {
+        document.body.classList.remove("block-interactivity-".concat(id));
+        allow_1.forEach(function(el) {
+          return el.classList.remove("allow-interactivity-".concat(id));
+        });
+      };
+    }
+    return;
+  }, [props.inert, props.lockRef.current, props.shards]);
+  var shouldCancelEvent = reactExports.useCallback(function(event, parent) {
+    if ("touches" in event && event.touches.length === 2 || event.type === "wheel" && event.ctrlKey) {
+      return !lastProps.current.allowPinchZoom;
+    }
+    var touch = getTouchXY(event);
+    var touchStart = touchStartRef.current;
+    var deltaX = "deltaX" in event ? event.deltaX : touchStart[0] - touch[0];
+    var deltaY = "deltaY" in event ? event.deltaY : touchStart[1] - touch[1];
+    var currentAxis;
+    var target = event.target;
+    var moveDirection = Math.abs(deltaX) > Math.abs(deltaY) ? "h" : "v";
+    if ("touches" in event && moveDirection === "h" && target.type === "range") {
+      return false;
+    }
+    var selection = window.getSelection();
+    var anchorNode = selection && selection.anchorNode;
+    var isTouchingSelection = anchorNode ? anchorNode === target || anchorNode.contains(target) : false;
+    if (isTouchingSelection) {
+      return false;
+    }
+    var canBeScrolledInMainDirection = locationCouldBeScrolled(moveDirection, target);
+    if (!canBeScrolledInMainDirection) {
+      return true;
+    }
+    if (canBeScrolledInMainDirection) {
+      currentAxis = moveDirection;
+    } else {
+      currentAxis = moveDirection === "v" ? "h" : "v";
+      canBeScrolledInMainDirection = locationCouldBeScrolled(moveDirection, target);
+    }
+    if (!canBeScrolledInMainDirection) {
+      return false;
+    }
+    if (!activeAxis.current && "changedTouches" in event && (deltaX || deltaY)) {
+      activeAxis.current = currentAxis;
+    }
+    if (!currentAxis) {
+      return true;
+    }
+    var cancelingAxis = activeAxis.current || currentAxis;
+    return handleScroll(cancelingAxis, parent, event, cancelingAxis === "h" ? deltaX : deltaY);
+  }, []);
+  var shouldPrevent = reactExports.useCallback(function(_event) {
+    var event = _event;
+    if (!lockStack.length || lockStack[lockStack.length - 1] !== Style2) {
+      return;
+    }
+    var delta = "deltaY" in event ? getDeltaXY(event) : getTouchXY(event);
+    var sourceEvent = shouldPreventQueue.current.filter(function(e) {
+      return e.name === event.type && (e.target === event.target || event.target === e.shadowParent) && deltaCompare(e.delta, delta);
+    })[0];
+    if (sourceEvent && sourceEvent.should) {
+      if (event.cancelable) {
+        event.preventDefault();
+      }
+      return;
+    }
+    if (!sourceEvent) {
+      var shardNodes = (lastProps.current.shards || []).map(extractRef).filter(Boolean).filter(function(node) {
+        return node.contains(event.target);
+      });
+      var shouldStop = shardNodes.length > 0 ? shouldCancelEvent(event, shardNodes[0]) : !lastProps.current.noIsolation;
+      if (shouldStop) {
+        if (event.cancelable) {
+          event.preventDefault();
+        }
+      }
+    }
+  }, []);
+  var shouldCancel = reactExports.useCallback(function(name, delta, target, should) {
+    var event = { name, delta, target, should, shadowParent: getOutermostShadowParent(target) };
+    shouldPreventQueue.current.push(event);
+    setTimeout(function() {
+      shouldPreventQueue.current = shouldPreventQueue.current.filter(function(e) {
+        return e !== event;
+      });
+    }, 1);
+  }, []);
+  var scrollTouchStart = reactExports.useCallback(function(event) {
+    touchStartRef.current = getTouchXY(event);
+    activeAxis.current = void 0;
+  }, []);
+  var scrollWheel = reactExports.useCallback(function(event) {
+    shouldCancel(event.type, getDeltaXY(event), event.target, shouldCancelEvent(event, props.lockRef.current));
+  }, []);
+  var scrollTouchMove = reactExports.useCallback(function(event) {
+    shouldCancel(event.type, getTouchXY(event), event.target, shouldCancelEvent(event, props.lockRef.current));
+  }, []);
+  reactExports.useEffect(function() {
+    lockStack.push(Style2);
+    props.setCallbacks({
+      onScrollCapture: scrollWheel,
+      onWheelCapture: scrollWheel,
+      onTouchMoveCapture: scrollTouchMove
+    });
+    document.addEventListener("wheel", shouldPrevent, nonPassive);
+    document.addEventListener("touchmove", shouldPrevent, nonPassive);
+    document.addEventListener("touchstart", scrollTouchStart, nonPassive);
+    return function() {
+      lockStack = lockStack.filter(function(inst) {
+        return inst !== Style2;
+      });
+      document.removeEventListener("wheel", shouldPrevent, nonPassive);
+      document.removeEventListener("touchmove", shouldPrevent, nonPassive);
+      document.removeEventListener("touchstart", scrollTouchStart, nonPassive);
+    };
+  }, []);
+  var removeScrollBar = props.removeScrollBar, inert = props.inert;
+  return reactExports.createElement(
+    reactExports.Fragment,
+    null,
+    inert ? reactExports.createElement(Style2, { styles: generateStyle(id) }) : null,
+    removeScrollBar ? reactExports.createElement(RemoveScrollBar, { noRelative: props.noRelative, gapMode: props.gapMode }) : null
+  );
+}
+function getOutermostShadowParent(node) {
+  var shadowParent = null;
+  while (node !== null) {
+    if (node instanceof ShadowRoot) {
+      shadowParent = node.host;
+      node = node.host;
+    }
+    node = node.parentNode;
+  }
+  return shadowParent;
+}
+const SideCar = exportSidecar(effectCar, RemoveScrollSideCar);
+var ReactRemoveScroll = reactExports.forwardRef(function(props, ref) {
+  return reactExports.createElement(RemoveScroll, __assign({}, props, { ref, sideCar: SideCar }));
+});
+ReactRemoveScroll.classNames = RemoveScroll.classNames;
+var getDefaultParent = function(originalTarget) {
+  if (typeof document === "undefined") {
+    return null;
+  }
+  var sampleTarget = Array.isArray(originalTarget) ? originalTarget[0] : originalTarget;
+  return sampleTarget.ownerDocument.body;
+};
+var counterMap = /* @__PURE__ */ new WeakMap();
+var uncontrolledNodes = /* @__PURE__ */ new WeakMap();
+var markerMap = {};
+var lockCount = 0;
+var unwrapHost = function(node) {
+  return node && (node.host || unwrapHost(node.parentNode));
+};
+var correctTargets = function(parent, targets) {
+  return targets.map(function(target) {
+    if (parent.contains(target)) {
+      return target;
+    }
+    var correctedTarget = unwrapHost(target);
+    if (correctedTarget && parent.contains(correctedTarget)) {
+      return correctedTarget;
+    }
+    console.error("aria-hidden", target, "in not contained inside", parent, ". Doing nothing");
+    return null;
+  }).filter(function(x2) {
+    return Boolean(x2);
+  });
+};
+var applyAttributeToOthers = function(originalTarget, parentNode, markerName, controlAttribute) {
+  var targets = correctTargets(parentNode, Array.isArray(originalTarget) ? originalTarget : [originalTarget]);
+  if (!markerMap[markerName]) {
+    markerMap[markerName] = /* @__PURE__ */ new WeakMap();
+  }
+  var markerCounter = markerMap[markerName];
+  var hiddenNodes = [];
+  var elementsToKeep = /* @__PURE__ */ new Set();
+  var elementsToStop = new Set(targets);
+  var keep = function(el) {
+    if (!el || elementsToKeep.has(el)) {
+      return;
+    }
+    elementsToKeep.add(el);
+    keep(el.parentNode);
+  };
+  targets.forEach(keep);
+  var deep = function(parent) {
+    if (!parent || elementsToStop.has(parent)) {
+      return;
+    }
+    Array.prototype.forEach.call(parent.children, function(node) {
+      if (elementsToKeep.has(node)) {
+        deep(node);
+      } else {
+        try {
+          var attr = node.getAttribute(controlAttribute);
+          var alreadyHidden = attr !== null && attr !== "false";
+          var counterValue = (counterMap.get(node) || 0) + 1;
+          var markerValue = (markerCounter.get(node) || 0) + 1;
+          counterMap.set(node, counterValue);
+          markerCounter.set(node, markerValue);
+          hiddenNodes.push(node);
+          if (counterValue === 1 && alreadyHidden) {
+            uncontrolledNodes.set(node, true);
+          }
+          if (markerValue === 1) {
+            node.setAttribute(markerName, "true");
+          }
+          if (!alreadyHidden) {
+            node.setAttribute(controlAttribute, "true");
+          }
+        } catch (e) {
+          console.error("aria-hidden: cannot operate on ", node, e);
+        }
+      }
+    });
+  };
+  deep(parentNode);
+  elementsToKeep.clear();
+  lockCount++;
+  return function() {
+    hiddenNodes.forEach(function(node) {
+      var counterValue = counterMap.get(node) - 1;
+      var markerValue = markerCounter.get(node) - 1;
+      counterMap.set(node, counterValue);
+      markerCounter.set(node, markerValue);
+      if (!counterValue) {
+        if (!uncontrolledNodes.has(node)) {
+          node.removeAttribute(controlAttribute);
+        }
+        uncontrolledNodes.delete(node);
+      }
+      if (!markerValue) {
+        node.removeAttribute(markerName);
+      }
+    });
+    lockCount--;
+    if (!lockCount) {
+      counterMap = /* @__PURE__ */ new WeakMap();
+      counterMap = /* @__PURE__ */ new WeakMap();
+      uncontrolledNodes = /* @__PURE__ */ new WeakMap();
+      markerMap = {};
+    }
+  };
+};
+var hideOthers = function(originalTarget, parentNode, markerName) {
+  if (markerName === void 0) {
+    markerName = "data-aria-hidden";
+  }
+  var targets = Array.from(Array.isArray(originalTarget) ? originalTarget : [originalTarget]);
+  var activeParentNode = getDefaultParent(originalTarget);
+  if (!activeParentNode) {
+    return function() {
+      return null;
+    };
+  }
+  targets.push.apply(targets, Array.from(activeParentNode.querySelectorAll("[aria-live], script")));
+  return applyAttributeToOthers(targets, activeParentNode, markerName, "aria-hidden");
+};
+var DIALOG_NAME = "Dialog";
+var [createDialogContext] = createContextScope(DIALOG_NAME);
+var [DialogProvider, useDialogContext] = createDialogContext(DIALOG_NAME);
+var Dialog$1 = (props) => {
+  const {
+    __scopeDialog,
+    children,
+    open: openProp,
+    defaultOpen,
+    onOpenChange,
+    modal = true
+  } = props;
+  const triggerRef = reactExports.useRef(null);
+  const contentRef = reactExports.useRef(null);
+  const [open, setOpen] = useControllableState({
+    prop: openProp,
+    defaultProp: defaultOpen ?? false,
+    onChange: onOpenChange,
+    caller: DIALOG_NAME
+  });
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    DialogProvider,
+    {
+      scope: __scopeDialog,
+      triggerRef,
+      contentRef,
+      contentId: useId(),
+      titleId: useId(),
+      descriptionId: useId(),
+      open,
+      onOpenChange: setOpen,
+      onOpenToggle: reactExports.useCallback(() => setOpen((prevOpen) => !prevOpen), [setOpen]),
+      modal,
+      children
+    }
+  );
+};
+Dialog$1.displayName = DIALOG_NAME;
+var TRIGGER_NAME = "DialogTrigger";
+var DialogTrigger = reactExports.forwardRef(
+  (props, forwardedRef) => {
+    const { __scopeDialog, ...triggerProps } = props;
+    const context = useDialogContext(TRIGGER_NAME, __scopeDialog);
+    const composedTriggerRef = useComposedRefs(forwardedRef, context.triggerRef);
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(
+      Primitive.button,
+      {
+        type: "button",
+        "aria-haspopup": "dialog",
+        "aria-expanded": context.open,
+        "aria-controls": context.contentId,
+        "data-state": getState(context.open),
+        ...triggerProps,
+        ref: composedTriggerRef,
+        onClick: composeEventHandlers(props.onClick, context.onOpenToggle)
+      }
+    );
+  }
+);
+DialogTrigger.displayName = TRIGGER_NAME;
+var PORTAL_NAME = "DialogPortal";
+var [PortalProvider, usePortalContext] = createDialogContext(PORTAL_NAME, {
+  forceMount: void 0
+});
+var DialogPortal$1 = (props) => {
+  const { __scopeDialog, forceMount, children, container } = props;
+  const context = useDialogContext(PORTAL_NAME, __scopeDialog);
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(PortalProvider, { scope: __scopeDialog, forceMount, children: reactExports.Children.map(children, (child) => /* @__PURE__ */ jsxRuntimeExports.jsx(Presence, { present: forceMount || context.open, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Portal$1, { asChild: true, container, children: child }) })) });
+};
+DialogPortal$1.displayName = PORTAL_NAME;
+var OVERLAY_NAME = "DialogOverlay";
+var DialogOverlay$1 = reactExports.forwardRef(
+  (props, forwardedRef) => {
+    const portalContext = usePortalContext(OVERLAY_NAME, props.__scopeDialog);
+    const { forceMount = portalContext.forceMount, ...overlayProps } = props;
+    const context = useDialogContext(OVERLAY_NAME, props.__scopeDialog);
+    return context.modal ? /* @__PURE__ */ jsxRuntimeExports.jsx(Presence, { present: forceMount || context.open, children: /* @__PURE__ */ jsxRuntimeExports.jsx(DialogOverlayImpl, { ...overlayProps, ref: forwardedRef }) }) : null;
+  }
+);
+DialogOverlay$1.displayName = OVERLAY_NAME;
+var Slot = /* @__PURE__ */ createSlot("DialogOverlay.RemoveScroll");
+var DialogOverlayImpl = reactExports.forwardRef(
+  (props, forwardedRef) => {
+    const { __scopeDialog, ...overlayProps } = props;
+    const context = useDialogContext(OVERLAY_NAME, __scopeDialog);
+    return (
+      // Make sure `Content` is scrollable even when it doesn't live inside `RemoveScroll`
+      // ie. when `Overlay` and `Content` are siblings
+      /* @__PURE__ */ jsxRuntimeExports.jsx(ReactRemoveScroll, { as: Slot, allowPinchZoom: true, shards: [context.contentRef], children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+        Primitive.div,
+        {
+          "data-state": getState(context.open),
+          ...overlayProps,
+          ref: forwardedRef,
+          style: { pointerEvents: "auto", ...overlayProps.style }
+        }
+      ) })
+    );
+  }
+);
+var CONTENT_NAME = "DialogContent";
+var DialogContent$1 = reactExports.forwardRef(
+  (props, forwardedRef) => {
+    const portalContext = usePortalContext(CONTENT_NAME, props.__scopeDialog);
+    const { forceMount = portalContext.forceMount, ...contentProps } = props;
+    const context = useDialogContext(CONTENT_NAME, props.__scopeDialog);
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(Presence, { present: forceMount || context.open, children: context.modal ? /* @__PURE__ */ jsxRuntimeExports.jsx(DialogContentModal, { ...contentProps, ref: forwardedRef }) : /* @__PURE__ */ jsxRuntimeExports.jsx(DialogContentNonModal, { ...contentProps, ref: forwardedRef }) });
+  }
+);
+DialogContent$1.displayName = CONTENT_NAME;
+var DialogContentModal = reactExports.forwardRef(
+  (props, forwardedRef) => {
+    const context = useDialogContext(CONTENT_NAME, props.__scopeDialog);
+    const contentRef = reactExports.useRef(null);
+    const composedRefs = useComposedRefs(forwardedRef, context.contentRef, contentRef);
+    reactExports.useEffect(() => {
+      const content = contentRef.current;
+      if (content) return hideOthers(content);
+    }, []);
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(
+      DialogContentImpl,
+      {
+        ...props,
+        ref: composedRefs,
+        trapFocus: context.open,
+        disableOutsidePointerEvents: true,
+        onCloseAutoFocus: composeEventHandlers(props.onCloseAutoFocus, (event) => {
+          var _a3;
+          event.preventDefault();
+          (_a3 = context.triggerRef.current) == null ? void 0 : _a3.focus();
+        }),
+        onPointerDownOutside: composeEventHandlers(props.onPointerDownOutside, (event) => {
+          const originalEvent = event.detail.originalEvent;
+          const ctrlLeftClick = originalEvent.button === 0 && originalEvent.ctrlKey === true;
+          const isRightClick = originalEvent.button === 2 || ctrlLeftClick;
+          if (isRightClick) event.preventDefault();
+        }),
+        onFocusOutside: composeEventHandlers(
+          props.onFocusOutside,
+          (event) => event.preventDefault()
+        )
+      }
+    );
+  }
+);
+var DialogContentNonModal = reactExports.forwardRef(
+  (props, forwardedRef) => {
+    const context = useDialogContext(CONTENT_NAME, props.__scopeDialog);
+    const hasInteractedOutsideRef = reactExports.useRef(false);
+    const hasPointerDownOutsideRef = reactExports.useRef(false);
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(
+      DialogContentImpl,
+      {
+        ...props,
+        ref: forwardedRef,
+        trapFocus: false,
+        disableOutsidePointerEvents: false,
+        onCloseAutoFocus: (event) => {
+          var _a3, _b3;
+          (_a3 = props.onCloseAutoFocus) == null ? void 0 : _a3.call(props, event);
+          if (!event.defaultPrevented) {
+            if (!hasInteractedOutsideRef.current) (_b3 = context.triggerRef.current) == null ? void 0 : _b3.focus();
+            event.preventDefault();
+          }
+          hasInteractedOutsideRef.current = false;
+          hasPointerDownOutsideRef.current = false;
+        },
+        onInteractOutside: (event) => {
+          var _a3, _b3;
+          (_a3 = props.onInteractOutside) == null ? void 0 : _a3.call(props, event);
+          if (!event.defaultPrevented) {
+            hasInteractedOutsideRef.current = true;
+            if (event.detail.originalEvent.type === "pointerdown") {
+              hasPointerDownOutsideRef.current = true;
+            }
+          }
+          const target = event.target;
+          const targetIsTrigger = (_b3 = context.triggerRef.current) == null ? void 0 : _b3.contains(target);
+          if (targetIsTrigger) event.preventDefault();
+          if (event.detail.originalEvent.type === "focusin" && hasPointerDownOutsideRef.current) {
+            event.preventDefault();
+          }
+        }
+      }
+    );
+  }
+);
+var DialogContentImpl = reactExports.forwardRef(
+  (props, forwardedRef) => {
+    const { __scopeDialog, trapFocus, onOpenAutoFocus, onCloseAutoFocus, ...contentProps } = props;
+    const context = useDialogContext(CONTENT_NAME, __scopeDialog);
+    const contentRef = reactExports.useRef(null);
+    const composedRefs = useComposedRefs(forwardedRef, contentRef);
+    useFocusGuards();
+    return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        FocusScope,
+        {
+          asChild: true,
+          loop: true,
+          trapped: trapFocus,
+          onMountAutoFocus: onOpenAutoFocus,
+          onUnmountAutoFocus: onCloseAutoFocus,
+          children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+            DismissableLayer,
+            {
+              role: "dialog",
+              id: context.contentId,
+              "aria-describedby": context.descriptionId,
+              "aria-labelledby": context.titleId,
+              "data-state": getState(context.open),
+              ...contentProps,
+              ref: composedRefs,
+              onDismiss: () => context.onOpenChange(false)
+            }
+          )
+        }
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(TitleWarning, { titleId: context.titleId }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(DescriptionWarning, { contentRef, descriptionId: context.descriptionId })
+      ] })
+    ] });
+  }
+);
+var TITLE_NAME = "DialogTitle";
+var DialogTitle$1 = reactExports.forwardRef(
+  (props, forwardedRef) => {
+    const { __scopeDialog, ...titleProps } = props;
+    const context = useDialogContext(TITLE_NAME, __scopeDialog);
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(Primitive.h2, { id: context.titleId, ...titleProps, ref: forwardedRef });
+  }
+);
+DialogTitle$1.displayName = TITLE_NAME;
+var DESCRIPTION_NAME = "DialogDescription";
+var DialogDescription$1 = reactExports.forwardRef(
+  (props, forwardedRef) => {
+    const { __scopeDialog, ...descriptionProps } = props;
+    const context = useDialogContext(DESCRIPTION_NAME, __scopeDialog);
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(Primitive.p, { id: context.descriptionId, ...descriptionProps, ref: forwardedRef });
+  }
+);
+DialogDescription$1.displayName = DESCRIPTION_NAME;
+var CLOSE_NAME = "DialogClose";
+var DialogClose = reactExports.forwardRef(
+  (props, forwardedRef) => {
+    const { __scopeDialog, ...closeProps } = props;
+    const context = useDialogContext(CLOSE_NAME, __scopeDialog);
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(
+      Primitive.button,
+      {
+        type: "button",
+        ...closeProps,
+        ref: forwardedRef,
+        onClick: composeEventHandlers(props.onClick, () => context.onOpenChange(false))
+      }
+    );
+  }
+);
+DialogClose.displayName = CLOSE_NAME;
+function getState(open) {
+  return open ? "open" : "closed";
+}
+var TITLE_WARNING_NAME = "DialogTitleWarning";
+var [WarningProvider, useWarningContext] = createContext2(TITLE_WARNING_NAME, {
+  contentName: CONTENT_NAME,
+  titleName: TITLE_NAME,
+  docsSlug: "dialog"
+});
+var TitleWarning = ({ titleId }) => {
+  const titleWarningContext = useWarningContext(TITLE_WARNING_NAME);
+  const MESSAGE = `\`${titleWarningContext.contentName}\` requires a \`${titleWarningContext.titleName}\` for the component to be accessible for screen reader users.
+
+If you want to hide the \`${titleWarningContext.titleName}\`, you can wrap it with our VisuallyHidden component.
+
+For more information, see https://radix-ui.com/primitives/docs/components/${titleWarningContext.docsSlug}`;
+  reactExports.useEffect(() => {
+    if (titleId) {
+      const hasTitle = document.getElementById(titleId);
+      if (!hasTitle) console.error(MESSAGE);
+    }
+  }, [MESSAGE, titleId]);
+  return null;
+};
+var DESCRIPTION_WARNING_NAME = "DialogDescriptionWarning";
+var DescriptionWarning = ({ contentRef, descriptionId }) => {
+  const descriptionWarningContext = useWarningContext(DESCRIPTION_WARNING_NAME);
+  const MESSAGE = `Warning: Missing \`Description\` or \`aria-describedby={undefined}\` for {${descriptionWarningContext.contentName}}.`;
+  reactExports.useEffect(() => {
+    var _a3;
+    const describedById = (_a3 = contentRef.current) == null ? void 0 : _a3.getAttribute("aria-describedby");
+    if (descriptionId && describedById) {
+      const hasDescription = document.getElementById(descriptionId);
+      if (!hasDescription) console.warn(MESSAGE);
+    }
+  }, [MESSAGE, contentRef, descriptionId]);
+  return null;
+};
+var Root = Dialog$1;
+var Portal = DialogPortal$1;
+var Overlay = DialogOverlay$1;
+var Content = DialogContent$1;
+var Title = DialogTitle$1;
+var Description = DialogDescription$1;
+var Close = DialogClose;
+function r(e) {
+  var t, f, n = "";
+  if ("string" == typeof e || "number" == typeof e) n += e;
+  else if ("object" == typeof e) if (Array.isArray(e)) {
+    var o2 = e.length;
+    for (t = 0; t < o2; t++) e[t] && (f = r(e[t])) && (n && (n += " "), n += f);
+  } else for (f in e) e[f] && (n && (n += " "), n += f);
+  return n;
+}
+function clsx() {
+  for (var e, t, f = 0, n = "", o2 = arguments.length; f < o2; f++) (e = arguments[f]) && (t = r(e)) && (n && (n += " "), n += t);
+  return n;
+}
+const CLASS_PART_SEPARATOR = "-";
+const createClassGroupUtils = (config) => {
+  const classMap = createClassMap(config);
+  const {
+    conflictingClassGroups,
+    conflictingClassGroupModifiers
+  } = config;
+  const getClassGroupId = (className) => {
+    const classParts = className.split(CLASS_PART_SEPARATOR);
+    if (classParts[0] === "" && classParts.length !== 1) {
+      classParts.shift();
+    }
+    return getGroupRecursive(classParts, classMap) || getGroupIdForArbitraryProperty(className);
+  };
+  const getConflictingClassGroupIds = (classGroupId, hasPostfixModifier) => {
+    const conflicts = conflictingClassGroups[classGroupId] || [];
+    if (hasPostfixModifier && conflictingClassGroupModifiers[classGroupId]) {
+      return [...conflicts, ...conflictingClassGroupModifiers[classGroupId]];
+    }
+    return conflicts;
+  };
+  return {
+    getClassGroupId,
+    getConflictingClassGroupIds
+  };
+};
+const getGroupRecursive = (classParts, classPartObject) => {
+  var _a3;
+  if (classParts.length === 0) {
+    return classPartObject.classGroupId;
+  }
+  const currentClassPart = classParts[0];
+  const nextClassPartObject = classPartObject.nextPart.get(currentClassPart);
+  const classGroupFromNextClassPart = nextClassPartObject ? getGroupRecursive(classParts.slice(1), nextClassPartObject) : void 0;
+  if (classGroupFromNextClassPart) {
+    return classGroupFromNextClassPart;
+  }
+  if (classPartObject.validators.length === 0) {
+    return void 0;
+  }
+  const classRest = classParts.join(CLASS_PART_SEPARATOR);
+  return (_a3 = classPartObject.validators.find(({
+    validator
+  }) => validator(classRest))) == null ? void 0 : _a3.classGroupId;
+};
+const arbitraryPropertyRegex = /^\[(.+)\]$/;
+const getGroupIdForArbitraryProperty = (className) => {
+  if (arbitraryPropertyRegex.test(className)) {
+    const arbitraryPropertyClassName = arbitraryPropertyRegex.exec(className)[1];
+    const property = arbitraryPropertyClassName == null ? void 0 : arbitraryPropertyClassName.substring(0, arbitraryPropertyClassName.indexOf(":"));
+    if (property) {
+      return "arbitrary.." + property;
+    }
+  }
+};
+const createClassMap = (config) => {
+  const {
+    theme,
+    prefix: prefix2
+  } = config;
+  const classMap = {
+    nextPart: /* @__PURE__ */ new Map(),
+    validators: []
+  };
+  const prefixedClassGroupEntries = getPrefixedClassGroupEntries(Object.entries(config.classGroups), prefix2);
+  prefixedClassGroupEntries.forEach(([classGroupId, classGroup]) => {
+    processClassesRecursively(classGroup, classMap, classGroupId, theme);
+  });
+  return classMap;
+};
+const processClassesRecursively = (classGroup, classPartObject, classGroupId, theme) => {
+  classGroup.forEach((classDefinition) => {
+    if (typeof classDefinition === "string") {
+      const classPartObjectToEdit = classDefinition === "" ? classPartObject : getPart(classPartObject, classDefinition);
+      classPartObjectToEdit.classGroupId = classGroupId;
+      return;
+    }
+    if (typeof classDefinition === "function") {
+      if (isThemeGetter(classDefinition)) {
+        processClassesRecursively(classDefinition(theme), classPartObject, classGroupId, theme);
+        return;
+      }
+      classPartObject.validators.push({
+        validator: classDefinition,
+        classGroupId
+      });
+      return;
+    }
+    Object.entries(classDefinition).forEach(([key, classGroup2]) => {
+      processClassesRecursively(classGroup2, getPart(classPartObject, key), classGroupId, theme);
+    });
+  });
+};
+const getPart = (classPartObject, path) => {
+  let currentClassPartObject = classPartObject;
+  path.split(CLASS_PART_SEPARATOR).forEach((pathPart) => {
+    if (!currentClassPartObject.nextPart.has(pathPart)) {
+      currentClassPartObject.nextPart.set(pathPart, {
+        nextPart: /* @__PURE__ */ new Map(),
+        validators: []
+      });
+    }
+    currentClassPartObject = currentClassPartObject.nextPart.get(pathPart);
+  });
+  return currentClassPartObject;
+};
+const isThemeGetter = (func) => func.isThemeGetter;
+const getPrefixedClassGroupEntries = (classGroupEntries, prefix2) => {
+  if (!prefix2) {
+    return classGroupEntries;
+  }
+  return classGroupEntries.map(([classGroupId, classGroup]) => {
+    const prefixedClassGroup = classGroup.map((classDefinition) => {
+      if (typeof classDefinition === "string") {
+        return prefix2 + classDefinition;
+      }
+      if (typeof classDefinition === "object") {
+        return Object.fromEntries(Object.entries(classDefinition).map(([key, value]) => [prefix2 + key, value]));
+      }
+      return classDefinition;
+    });
+    return [classGroupId, prefixedClassGroup];
+  });
+};
+const createLruCache = (maxCacheSize) => {
+  if (maxCacheSize < 1) {
+    return {
+      get: () => void 0,
+      set: () => {
+      }
+    };
+  }
+  let cacheSize = 0;
+  let cache = /* @__PURE__ */ new Map();
+  let previousCache = /* @__PURE__ */ new Map();
+  const update = (key, value) => {
+    cache.set(key, value);
+    cacheSize++;
+    if (cacheSize > maxCacheSize) {
+      cacheSize = 0;
+      previousCache = cache;
+      cache = /* @__PURE__ */ new Map();
+    }
+  };
+  return {
+    get(key) {
+      let value = cache.get(key);
+      if (value !== void 0) {
+        return value;
+      }
+      if ((value = previousCache.get(key)) !== void 0) {
+        update(key, value);
+        return value;
+      }
+    },
+    set(key, value) {
+      if (cache.has(key)) {
+        cache.set(key, value);
+      } else {
+        update(key, value);
+      }
+    }
+  };
+};
+const IMPORTANT_MODIFIER = "!";
+const createParseClassName = (config) => {
+  const {
+    separator,
+    experimentalParseClassName
+  } = config;
+  const isSeparatorSingleCharacter = separator.length === 1;
+  const firstSeparatorCharacter = separator[0];
+  const separatorLength = separator.length;
+  const parseClassName = (className) => {
+    const modifiers = [];
+    let bracketDepth = 0;
+    let modifierStart = 0;
+    let postfixModifierPosition;
+    for (let index2 = 0; index2 < className.length; index2++) {
+      let currentCharacter = className[index2];
+      if (bracketDepth === 0) {
+        if (currentCharacter === firstSeparatorCharacter && (isSeparatorSingleCharacter || className.slice(index2, index2 + separatorLength) === separator)) {
+          modifiers.push(className.slice(modifierStart, index2));
+          modifierStart = index2 + separatorLength;
+          continue;
+        }
+        if (currentCharacter === "/") {
+          postfixModifierPosition = index2;
+          continue;
+        }
+      }
+      if (currentCharacter === "[") {
+        bracketDepth++;
+      } else if (currentCharacter === "]") {
+        bracketDepth--;
+      }
+    }
+    const baseClassNameWithImportantModifier = modifiers.length === 0 ? className : className.substring(modifierStart);
+    const hasImportantModifier = baseClassNameWithImportantModifier.startsWith(IMPORTANT_MODIFIER);
+    const baseClassName = hasImportantModifier ? baseClassNameWithImportantModifier.substring(1) : baseClassNameWithImportantModifier;
+    const maybePostfixModifierPosition = postfixModifierPosition && postfixModifierPosition > modifierStart ? postfixModifierPosition - modifierStart : void 0;
+    return {
+      modifiers,
+      hasImportantModifier,
+      baseClassName,
+      maybePostfixModifierPosition
+    };
+  };
+  if (experimentalParseClassName) {
+    return (className) => experimentalParseClassName({
+      className,
+      parseClassName
+    });
+  }
+  return parseClassName;
+};
+const sortModifiers = (modifiers) => {
+  if (modifiers.length <= 1) {
+    return modifiers;
+  }
+  const sortedModifiers = [];
+  let unsortedModifiers = [];
+  modifiers.forEach((modifier) => {
+    const isArbitraryVariant = modifier[0] === "[";
+    if (isArbitraryVariant) {
+      sortedModifiers.push(...unsortedModifiers.sort(), modifier);
+      unsortedModifiers = [];
+    } else {
+      unsortedModifiers.push(modifier);
+    }
+  });
+  sortedModifiers.push(...unsortedModifiers.sort());
+  return sortedModifiers;
+};
+const createConfigUtils = (config) => ({
+  cache: createLruCache(config.cacheSize),
+  parseClassName: createParseClassName(config),
+  ...createClassGroupUtils(config)
+});
+const SPLIT_CLASSES_REGEX = /\s+/;
+const mergeClassList = (classList, configUtils) => {
+  const {
+    parseClassName,
+    getClassGroupId,
+    getConflictingClassGroupIds
+  } = configUtils;
+  const classGroupsInConflict = [];
+  const classNames = classList.trim().split(SPLIT_CLASSES_REGEX);
+  let result = "";
+  for (let index2 = classNames.length - 1; index2 >= 0; index2 -= 1) {
+    const originalClassName = classNames[index2];
+    const {
+      modifiers,
+      hasImportantModifier,
+      baseClassName,
+      maybePostfixModifierPosition
+    } = parseClassName(originalClassName);
+    let hasPostfixModifier = Boolean(maybePostfixModifierPosition);
+    let classGroupId = getClassGroupId(hasPostfixModifier ? baseClassName.substring(0, maybePostfixModifierPosition) : baseClassName);
+    if (!classGroupId) {
+      if (!hasPostfixModifier) {
+        result = originalClassName + (result.length > 0 ? " " + result : result);
+        continue;
+      }
+      classGroupId = getClassGroupId(baseClassName);
+      if (!classGroupId) {
+        result = originalClassName + (result.length > 0 ? " " + result : result);
+        continue;
+      }
+      hasPostfixModifier = false;
+    }
+    const variantModifier = sortModifiers(modifiers).join(":");
+    const modifierId = hasImportantModifier ? variantModifier + IMPORTANT_MODIFIER : variantModifier;
+    const classId = modifierId + classGroupId;
+    if (classGroupsInConflict.includes(classId)) {
+      continue;
+    }
+    classGroupsInConflict.push(classId);
+    const conflictGroups = getConflictingClassGroupIds(classGroupId, hasPostfixModifier);
+    for (let i = 0; i < conflictGroups.length; ++i) {
+      const group = conflictGroups[i];
+      classGroupsInConflict.push(modifierId + group);
+    }
+    result = originalClassName + (result.length > 0 ? " " + result : result);
+  }
+  return result;
+};
+function twJoin() {
+  let index2 = 0;
+  let argument;
+  let resolvedValue;
+  let string = "";
+  while (index2 < arguments.length) {
+    if (argument = arguments[index2++]) {
+      if (resolvedValue = toValue(argument)) {
+        string && (string += " ");
+        string += resolvedValue;
+      }
+    }
+  }
+  return string;
+}
+const toValue = (mix) => {
+  if (typeof mix === "string") {
+    return mix;
+  }
+  let resolvedValue;
+  let string = "";
+  for (let k2 = 0; k2 < mix.length; k2++) {
+    if (mix[k2]) {
+      if (resolvedValue = toValue(mix[k2])) {
+        string && (string += " ");
+        string += resolvedValue;
+      }
+    }
+  }
+  return string;
+};
+function createTailwindMerge(createConfigFirst, ...createConfigRest) {
+  let configUtils;
+  let cacheGet;
+  let cacheSet;
+  let functionToCall = initTailwindMerge;
+  function initTailwindMerge(classList) {
+    const config = createConfigRest.reduce((previousConfig, createConfigCurrent) => createConfigCurrent(previousConfig), createConfigFirst());
+    configUtils = createConfigUtils(config);
+    cacheGet = configUtils.cache.get;
+    cacheSet = configUtils.cache.set;
+    functionToCall = tailwindMerge;
+    return tailwindMerge(classList);
+  }
+  function tailwindMerge(classList) {
+    const cachedResult = cacheGet(classList);
+    if (cachedResult) {
+      return cachedResult;
+    }
+    const result = mergeClassList(classList, configUtils);
+    cacheSet(classList, result);
+    return result;
+  }
+  return function callTailwindMerge() {
+    return functionToCall(twJoin.apply(null, arguments));
+  };
+}
+const fromTheme = (key) => {
+  const themeGetter = (theme) => theme[key] || [];
+  themeGetter.isThemeGetter = true;
+  return themeGetter;
+};
+const arbitraryValueRegex = /^\[(?:([a-z-]+):)?(.+)\]$/i;
+const fractionRegex = /^\d+\/\d+$/;
+const stringLengths = /* @__PURE__ */ new Set(["px", "full", "screen"]);
+const tshirtUnitRegex = /^(\d+(\.\d+)?)?(xs|sm|md|lg|xl)$/;
+const lengthUnitRegex = /\d+(%|px|r?em|[sdl]?v([hwib]|min|max)|pt|pc|in|cm|mm|cap|ch|ex|r?lh|cq(w|h|i|b|min|max))|\b(calc|min|max|clamp)\(.+\)|^0$/;
+const colorFunctionRegex = /^(rgba?|hsla?|hwb|(ok)?(lab|lch)|color-mix)\(.+\)$/;
+const shadowRegex = /^(inset_)?-?((\d+)?\.?(\d+)[a-z]+|0)_-?((\d+)?\.?(\d+)[a-z]+|0)/;
+const imageRegex = /^(url|image|image-set|cross-fade|element|(repeating-)?(linear|radial|conic)-gradient)\(.+\)$/;
+const isLength = (value) => isNumber(value) || stringLengths.has(value) || fractionRegex.test(value);
+const isArbitraryLength = (value) => getIsArbitraryValue(value, "length", isLengthOnly);
+const isNumber = (value) => Boolean(value) && !Number.isNaN(Number(value));
+const isArbitraryNumber = (value) => getIsArbitraryValue(value, "number", isNumber);
+const isInteger = (value) => Boolean(value) && Number.isInteger(Number(value));
+const isPercent = (value) => value.endsWith("%") && isNumber(value.slice(0, -1));
+const isArbitraryValue = (value) => arbitraryValueRegex.test(value);
+const isTshirtSize = (value) => tshirtUnitRegex.test(value);
+const sizeLabels = /* @__PURE__ */ new Set(["length", "size", "percentage"]);
+const isArbitrarySize = (value) => getIsArbitraryValue(value, sizeLabels, isNever);
+const isArbitraryPosition = (value) => getIsArbitraryValue(value, "position", isNever);
+const imageLabels = /* @__PURE__ */ new Set(["image", "url"]);
+const isArbitraryImage = (value) => getIsArbitraryValue(value, imageLabels, isImage);
+const isArbitraryShadow = (value) => getIsArbitraryValue(value, "", isShadow);
+const isAny = () => true;
+const getIsArbitraryValue = (value, label, testValue) => {
+  const result = arbitraryValueRegex.exec(value);
+  if (result) {
+    if (result[1]) {
+      return typeof label === "string" ? result[1] === label : label.has(result[1]);
+    }
+    return testValue(result[2]);
+  }
+  return false;
+};
+const isLengthOnly = (value) => (
+  // `colorFunctionRegex` check is necessary because color functions can have percentages in them which which would be incorrectly classified as lengths.
+  // For example, `hsl(0 0% 0%)` would be classified as a length without this check.
+  // I could also use lookbehind assertion in `lengthUnitRegex` but that isn't supported widely enough.
+  lengthUnitRegex.test(value) && !colorFunctionRegex.test(value)
+);
+const isNever = () => false;
+const isShadow = (value) => shadowRegex.test(value);
+const isImage = (value) => imageRegex.test(value);
+const getDefaultConfig = () => {
+  const colors = fromTheme("colors");
+  const spacing = fromTheme("spacing");
+  const blur = fromTheme("blur");
+  const brightness = fromTheme("brightness");
+  const borderColor = fromTheme("borderColor");
+  const borderRadius = fromTheme("borderRadius");
+  const borderSpacing = fromTheme("borderSpacing");
+  const borderWidth = fromTheme("borderWidth");
+  const contrast = fromTheme("contrast");
+  const grayscale = fromTheme("grayscale");
+  const hueRotate = fromTheme("hueRotate");
+  const invert2 = fromTheme("invert");
+  const gap = fromTheme("gap");
+  const gradientColorStops = fromTheme("gradientColorStops");
+  const gradientColorStopPositions = fromTheme("gradientColorStopPositions");
+  const inset = fromTheme("inset");
+  const margin = fromTheme("margin");
+  const opacity = fromTheme("opacity");
+  const padding = fromTheme("padding");
+  const saturate = fromTheme("saturate");
+  const scale = fromTheme("scale");
+  const sepia = fromTheme("sepia");
+  const skew = fromTheme("skew");
+  const space = fromTheme("space");
+  const translate = fromTheme("translate");
+  const getOverscroll = () => ["auto", "contain", "none"];
+  const getOverflow = () => ["auto", "hidden", "clip", "visible", "scroll"];
+  const getSpacingWithAutoAndArbitrary = () => ["auto", isArbitraryValue, spacing];
+  const getSpacingWithArbitrary = () => [isArbitraryValue, spacing];
+  const getLengthWithEmptyAndArbitrary = () => ["", isLength, isArbitraryLength];
+  const getNumberWithAutoAndArbitrary = () => ["auto", isNumber, isArbitraryValue];
+  const getPositions = () => ["bottom", "center", "left", "left-bottom", "left-top", "right", "right-bottom", "right-top", "top"];
+  const getLineStyles = () => ["solid", "dashed", "dotted", "double", "none"];
+  const getBlendModes = () => ["normal", "multiply", "screen", "overlay", "darken", "lighten", "color-dodge", "color-burn", "hard-light", "soft-light", "difference", "exclusion", "hue", "saturation", "color", "luminosity"];
+  const getAlign = () => ["start", "end", "center", "between", "around", "evenly", "stretch"];
+  const getZeroAndEmpty = () => ["", "0", isArbitraryValue];
+  const getBreaks = () => ["auto", "avoid", "all", "avoid-page", "page", "left", "right", "column"];
+  const getNumberAndArbitrary = () => [isNumber, isArbitraryValue];
+  return {
+    cacheSize: 500,
+    separator: ":",
+    theme: {
+      colors: [isAny],
+      spacing: [isLength, isArbitraryLength],
+      blur: ["none", "", isTshirtSize, isArbitraryValue],
+      brightness: getNumberAndArbitrary(),
+      borderColor: [colors],
+      borderRadius: ["none", "", "full", isTshirtSize, isArbitraryValue],
+      borderSpacing: getSpacingWithArbitrary(),
+      borderWidth: getLengthWithEmptyAndArbitrary(),
+      contrast: getNumberAndArbitrary(),
+      grayscale: getZeroAndEmpty(),
+      hueRotate: getNumberAndArbitrary(),
+      invert: getZeroAndEmpty(),
+      gap: getSpacingWithArbitrary(),
+      gradientColorStops: [colors],
+      gradientColorStopPositions: [isPercent, isArbitraryLength],
+      inset: getSpacingWithAutoAndArbitrary(),
+      margin: getSpacingWithAutoAndArbitrary(),
+      opacity: getNumberAndArbitrary(),
+      padding: getSpacingWithArbitrary(),
+      saturate: getNumberAndArbitrary(),
+      scale: getNumberAndArbitrary(),
+      sepia: getZeroAndEmpty(),
+      skew: getNumberAndArbitrary(),
+      space: getSpacingWithArbitrary(),
+      translate: getSpacingWithArbitrary()
+    },
+    classGroups: {
+      // Layout
+      /**
+       * Aspect Ratio
+       * @see https://tailwindcss.com/docs/aspect-ratio
+       */
+      aspect: [{
+        aspect: ["auto", "square", "video", isArbitraryValue]
+      }],
+      /**
+       * Container
+       * @see https://tailwindcss.com/docs/container
+       */
+      container: ["container"],
+      /**
+       * Columns
+       * @see https://tailwindcss.com/docs/columns
+       */
+      columns: [{
+        columns: [isTshirtSize]
+      }],
+      /**
+       * Break After
+       * @see https://tailwindcss.com/docs/break-after
+       */
+      "break-after": [{
+        "break-after": getBreaks()
+      }],
+      /**
+       * Break Before
+       * @see https://tailwindcss.com/docs/break-before
+       */
+      "break-before": [{
+        "break-before": getBreaks()
+      }],
+      /**
+       * Break Inside
+       * @see https://tailwindcss.com/docs/break-inside
+       */
+      "break-inside": [{
+        "break-inside": ["auto", "avoid", "avoid-page", "avoid-column"]
+      }],
+      /**
+       * Box Decoration Break
+       * @see https://tailwindcss.com/docs/box-decoration-break
+       */
+      "box-decoration": [{
+        "box-decoration": ["slice", "clone"]
+      }],
+      /**
+       * Box Sizing
+       * @see https://tailwindcss.com/docs/box-sizing
+       */
+      box: [{
+        box: ["border", "content"]
+      }],
+      /**
+       * Display
+       * @see https://tailwindcss.com/docs/display
+       */
+      display: ["block", "inline-block", "inline", "flex", "inline-flex", "table", "inline-table", "table-caption", "table-cell", "table-column", "table-column-group", "table-footer-group", "table-header-group", "table-row-group", "table-row", "flow-root", "grid", "inline-grid", "contents", "list-item", "hidden"],
+      /**
+       * Floats
+       * @see https://tailwindcss.com/docs/float
+       */
+      float: [{
+        float: ["right", "left", "none", "start", "end"]
+      }],
+      /**
+       * Clear
+       * @see https://tailwindcss.com/docs/clear
+       */
+      clear: [{
+        clear: ["left", "right", "both", "none", "start", "end"]
+      }],
+      /**
+       * Isolation
+       * @see https://tailwindcss.com/docs/isolation
+       */
+      isolation: ["isolate", "isolation-auto"],
+      /**
+       * Object Fit
+       * @see https://tailwindcss.com/docs/object-fit
+       */
+      "object-fit": [{
+        object: ["contain", "cover", "fill", "none", "scale-down"]
+      }],
+      /**
+       * Object Position
+       * @see https://tailwindcss.com/docs/object-position
+       */
+      "object-position": [{
+        object: [...getPositions(), isArbitraryValue]
+      }],
+      /**
+       * Overflow
+       * @see https://tailwindcss.com/docs/overflow
+       */
+      overflow: [{
+        overflow: getOverflow()
+      }],
+      /**
+       * Overflow X
+       * @see https://tailwindcss.com/docs/overflow
+       */
+      "overflow-x": [{
+        "overflow-x": getOverflow()
+      }],
+      /**
+       * Overflow Y
+       * @see https://tailwindcss.com/docs/overflow
+       */
+      "overflow-y": [{
+        "overflow-y": getOverflow()
+      }],
+      /**
+       * Overscroll Behavior
+       * @see https://tailwindcss.com/docs/overscroll-behavior
+       */
+      overscroll: [{
+        overscroll: getOverscroll()
+      }],
+      /**
+       * Overscroll Behavior X
+       * @see https://tailwindcss.com/docs/overscroll-behavior
+       */
+      "overscroll-x": [{
+        "overscroll-x": getOverscroll()
+      }],
+      /**
+       * Overscroll Behavior Y
+       * @see https://tailwindcss.com/docs/overscroll-behavior
+       */
+      "overscroll-y": [{
+        "overscroll-y": getOverscroll()
+      }],
+      /**
+       * Position
+       * @see https://tailwindcss.com/docs/position
+       */
+      position: ["static", "fixed", "absolute", "relative", "sticky"],
+      /**
+       * Top / Right / Bottom / Left
+       * @see https://tailwindcss.com/docs/top-right-bottom-left
+       */
+      inset: [{
+        inset: [inset]
+      }],
+      /**
+       * Right / Left
+       * @see https://tailwindcss.com/docs/top-right-bottom-left
+       */
+      "inset-x": [{
+        "inset-x": [inset]
+      }],
+      /**
+       * Top / Bottom
+       * @see https://tailwindcss.com/docs/top-right-bottom-left
+       */
+      "inset-y": [{
+        "inset-y": [inset]
+      }],
+      /**
+       * Start
+       * @see https://tailwindcss.com/docs/top-right-bottom-left
+       */
+      start: [{
+        start: [inset]
+      }],
+      /**
+       * End
+       * @see https://tailwindcss.com/docs/top-right-bottom-left
+       */
+      end: [{
+        end: [inset]
+      }],
+      /**
+       * Top
+       * @see https://tailwindcss.com/docs/top-right-bottom-left
+       */
+      top: [{
+        top: [inset]
+      }],
+      /**
+       * Right
+       * @see https://tailwindcss.com/docs/top-right-bottom-left
+       */
+      right: [{
+        right: [inset]
+      }],
+      /**
+       * Bottom
+       * @see https://tailwindcss.com/docs/top-right-bottom-left
+       */
+      bottom: [{
+        bottom: [inset]
+      }],
+      /**
+       * Left
+       * @see https://tailwindcss.com/docs/top-right-bottom-left
+       */
+      left: [{
+        left: [inset]
+      }],
+      /**
+       * Visibility
+       * @see https://tailwindcss.com/docs/visibility
+       */
+      visibility: ["visible", "invisible", "collapse"],
+      /**
+       * Z-Index
+       * @see https://tailwindcss.com/docs/z-index
+       */
+      z: [{
+        z: ["auto", isInteger, isArbitraryValue]
+      }],
+      // Flexbox and Grid
+      /**
+       * Flex Basis
+       * @see https://tailwindcss.com/docs/flex-basis
+       */
+      basis: [{
+        basis: getSpacingWithAutoAndArbitrary()
+      }],
+      /**
+       * Flex Direction
+       * @see https://tailwindcss.com/docs/flex-direction
+       */
+      "flex-direction": [{
+        flex: ["row", "row-reverse", "col", "col-reverse"]
+      }],
+      /**
+       * Flex Wrap
+       * @see https://tailwindcss.com/docs/flex-wrap
+       */
+      "flex-wrap": [{
+        flex: ["wrap", "wrap-reverse", "nowrap"]
+      }],
+      /**
+       * Flex
+       * @see https://tailwindcss.com/docs/flex
+       */
+      flex: [{
+        flex: ["1", "auto", "initial", "none", isArbitraryValue]
+      }],
+      /**
+       * Flex Grow
+       * @see https://tailwindcss.com/docs/flex-grow
+       */
+      grow: [{
+        grow: getZeroAndEmpty()
+      }],
+      /**
+       * Flex Shrink
+       * @see https://tailwindcss.com/docs/flex-shrink
+       */
+      shrink: [{
+        shrink: getZeroAndEmpty()
+      }],
+      /**
+       * Order
+       * @see https://tailwindcss.com/docs/order
+       */
+      order: [{
+        order: ["first", "last", "none", isInteger, isArbitraryValue]
+      }],
+      /**
+       * Grid Template Columns
+       * @see https://tailwindcss.com/docs/grid-template-columns
+       */
+      "grid-cols": [{
+        "grid-cols": [isAny]
+      }],
+      /**
+       * Grid Column Start / End
+       * @see https://tailwindcss.com/docs/grid-column
+       */
+      "col-start-end": [{
+        col: ["auto", {
+          span: ["full", isInteger, isArbitraryValue]
+        }, isArbitraryValue]
+      }],
+      /**
+       * Grid Column Start
+       * @see https://tailwindcss.com/docs/grid-column
+       */
+      "col-start": [{
+        "col-start": getNumberWithAutoAndArbitrary()
+      }],
+      /**
+       * Grid Column End
+       * @see https://tailwindcss.com/docs/grid-column
+       */
+      "col-end": [{
+        "col-end": getNumberWithAutoAndArbitrary()
+      }],
+      /**
+       * Grid Template Rows
+       * @see https://tailwindcss.com/docs/grid-template-rows
+       */
+      "grid-rows": [{
+        "grid-rows": [isAny]
+      }],
+      /**
+       * Grid Row Start / End
+       * @see https://tailwindcss.com/docs/grid-row
+       */
+      "row-start-end": [{
+        row: ["auto", {
+          span: [isInteger, isArbitraryValue]
+        }, isArbitraryValue]
+      }],
+      /**
+       * Grid Row Start
+       * @see https://tailwindcss.com/docs/grid-row
+       */
+      "row-start": [{
+        "row-start": getNumberWithAutoAndArbitrary()
+      }],
+      /**
+       * Grid Row End
+       * @see https://tailwindcss.com/docs/grid-row
+       */
+      "row-end": [{
+        "row-end": getNumberWithAutoAndArbitrary()
+      }],
+      /**
+       * Grid Auto Flow
+       * @see https://tailwindcss.com/docs/grid-auto-flow
+       */
+      "grid-flow": [{
+        "grid-flow": ["row", "col", "dense", "row-dense", "col-dense"]
+      }],
+      /**
+       * Grid Auto Columns
+       * @see https://tailwindcss.com/docs/grid-auto-columns
+       */
+      "auto-cols": [{
+        "auto-cols": ["auto", "min", "max", "fr", isArbitraryValue]
+      }],
+      /**
+       * Grid Auto Rows
+       * @see https://tailwindcss.com/docs/grid-auto-rows
+       */
+      "auto-rows": [{
+        "auto-rows": ["auto", "min", "max", "fr", isArbitraryValue]
+      }],
+      /**
+       * Gap
+       * @see https://tailwindcss.com/docs/gap
+       */
+      gap: [{
+        gap: [gap]
+      }],
+      /**
+       * Gap X
+       * @see https://tailwindcss.com/docs/gap
+       */
+      "gap-x": [{
+        "gap-x": [gap]
+      }],
+      /**
+       * Gap Y
+       * @see https://tailwindcss.com/docs/gap
+       */
+      "gap-y": [{
+        "gap-y": [gap]
+      }],
+      /**
+       * Justify Content
+       * @see https://tailwindcss.com/docs/justify-content
+       */
+      "justify-content": [{
+        justify: ["normal", ...getAlign()]
+      }],
+      /**
+       * Justify Items
+       * @see https://tailwindcss.com/docs/justify-items
+       */
+      "justify-items": [{
+        "justify-items": ["start", "end", "center", "stretch"]
+      }],
+      /**
+       * Justify Self
+       * @see https://tailwindcss.com/docs/justify-self
+       */
+      "justify-self": [{
+        "justify-self": ["auto", "start", "end", "center", "stretch"]
+      }],
+      /**
+       * Align Content
+       * @see https://tailwindcss.com/docs/align-content
+       */
+      "align-content": [{
+        content: ["normal", ...getAlign(), "baseline"]
+      }],
+      /**
+       * Align Items
+       * @see https://tailwindcss.com/docs/align-items
+       */
+      "align-items": [{
+        items: ["start", "end", "center", "baseline", "stretch"]
+      }],
+      /**
+       * Align Self
+       * @see https://tailwindcss.com/docs/align-self
+       */
+      "align-self": [{
+        self: ["auto", "start", "end", "center", "stretch", "baseline"]
+      }],
+      /**
+       * Place Content
+       * @see https://tailwindcss.com/docs/place-content
+       */
+      "place-content": [{
+        "place-content": [...getAlign(), "baseline"]
+      }],
+      /**
+       * Place Items
+       * @see https://tailwindcss.com/docs/place-items
+       */
+      "place-items": [{
+        "place-items": ["start", "end", "center", "baseline", "stretch"]
+      }],
+      /**
+       * Place Self
+       * @see https://tailwindcss.com/docs/place-self
+       */
+      "place-self": [{
+        "place-self": ["auto", "start", "end", "center", "stretch"]
+      }],
+      // Spacing
+      /**
+       * Padding
+       * @see https://tailwindcss.com/docs/padding
+       */
+      p: [{
+        p: [padding]
+      }],
+      /**
+       * Padding X
+       * @see https://tailwindcss.com/docs/padding
+       */
+      px: [{
+        px: [padding]
+      }],
+      /**
+       * Padding Y
+       * @see https://tailwindcss.com/docs/padding
+       */
+      py: [{
+        py: [padding]
+      }],
+      /**
+       * Padding Start
+       * @see https://tailwindcss.com/docs/padding
+       */
+      ps: [{
+        ps: [padding]
+      }],
+      /**
+       * Padding End
+       * @see https://tailwindcss.com/docs/padding
+       */
+      pe: [{
+        pe: [padding]
+      }],
+      /**
+       * Padding Top
+       * @see https://tailwindcss.com/docs/padding
+       */
+      pt: [{
+        pt: [padding]
+      }],
+      /**
+       * Padding Right
+       * @see https://tailwindcss.com/docs/padding
+       */
+      pr: [{
+        pr: [padding]
+      }],
+      /**
+       * Padding Bottom
+       * @see https://tailwindcss.com/docs/padding
+       */
+      pb: [{
+        pb: [padding]
+      }],
+      /**
+       * Padding Left
+       * @see https://tailwindcss.com/docs/padding
+       */
+      pl: [{
+        pl: [padding]
+      }],
+      /**
+       * Margin
+       * @see https://tailwindcss.com/docs/margin
+       */
+      m: [{
+        m: [margin]
+      }],
+      /**
+       * Margin X
+       * @see https://tailwindcss.com/docs/margin
+       */
+      mx: [{
+        mx: [margin]
+      }],
+      /**
+       * Margin Y
+       * @see https://tailwindcss.com/docs/margin
+       */
+      my: [{
+        my: [margin]
+      }],
+      /**
+       * Margin Start
+       * @see https://tailwindcss.com/docs/margin
+       */
+      ms: [{
+        ms: [margin]
+      }],
+      /**
+       * Margin End
+       * @see https://tailwindcss.com/docs/margin
+       */
+      me: [{
+        me: [margin]
+      }],
+      /**
+       * Margin Top
+       * @see https://tailwindcss.com/docs/margin
+       */
+      mt: [{
+        mt: [margin]
+      }],
+      /**
+       * Margin Right
+       * @see https://tailwindcss.com/docs/margin
+       */
+      mr: [{
+        mr: [margin]
+      }],
+      /**
+       * Margin Bottom
+       * @see https://tailwindcss.com/docs/margin
+       */
+      mb: [{
+        mb: [margin]
+      }],
+      /**
+       * Margin Left
+       * @see https://tailwindcss.com/docs/margin
+       */
+      ml: [{
+        ml: [margin]
+      }],
+      /**
+       * Space Between X
+       * @see https://tailwindcss.com/docs/space
+       */
+      "space-x": [{
+        "space-x": [space]
+      }],
+      /**
+       * Space Between X Reverse
+       * @see https://tailwindcss.com/docs/space
+       */
+      "space-x-reverse": ["space-x-reverse"],
+      /**
+       * Space Between Y
+       * @see https://tailwindcss.com/docs/space
+       */
+      "space-y": [{
+        "space-y": [space]
+      }],
+      /**
+       * Space Between Y Reverse
+       * @see https://tailwindcss.com/docs/space
+       */
+      "space-y-reverse": ["space-y-reverse"],
+      // Sizing
+      /**
+       * Width
+       * @see https://tailwindcss.com/docs/width
+       */
+      w: [{
+        w: ["auto", "min", "max", "fit", "svw", "lvw", "dvw", isArbitraryValue, spacing]
+      }],
+      /**
+       * Min-Width
+       * @see https://tailwindcss.com/docs/min-width
+       */
+      "min-w": [{
+        "min-w": [isArbitraryValue, spacing, "min", "max", "fit"]
+      }],
+      /**
+       * Max-Width
+       * @see https://tailwindcss.com/docs/max-width
+       */
+      "max-w": [{
+        "max-w": [isArbitraryValue, spacing, "none", "full", "min", "max", "fit", "prose", {
+          screen: [isTshirtSize]
+        }, isTshirtSize]
+      }],
+      /**
+       * Height
+       * @see https://tailwindcss.com/docs/height
+       */
+      h: [{
+        h: [isArbitraryValue, spacing, "auto", "min", "max", "fit", "svh", "lvh", "dvh"]
+      }],
+      /**
+       * Min-Height
+       * @see https://tailwindcss.com/docs/min-height
+       */
+      "min-h": [{
+        "min-h": [isArbitraryValue, spacing, "min", "max", "fit", "svh", "lvh", "dvh"]
+      }],
+      /**
+       * Max-Height
+       * @see https://tailwindcss.com/docs/max-height
+       */
+      "max-h": [{
+        "max-h": [isArbitraryValue, spacing, "min", "max", "fit", "svh", "lvh", "dvh"]
+      }],
+      /**
+       * Size
+       * @see https://tailwindcss.com/docs/size
+       */
+      size: [{
+        size: [isArbitraryValue, spacing, "auto", "min", "max", "fit"]
+      }],
+      // Typography
+      /**
+       * Font Size
+       * @see https://tailwindcss.com/docs/font-size
+       */
+      "font-size": [{
+        text: ["base", isTshirtSize, isArbitraryLength]
+      }],
+      /**
+       * Font Smoothing
+       * @see https://tailwindcss.com/docs/font-smoothing
+       */
+      "font-smoothing": ["antialiased", "subpixel-antialiased"],
+      /**
+       * Font Style
+       * @see https://tailwindcss.com/docs/font-style
+       */
+      "font-style": ["italic", "not-italic"],
+      /**
+       * Font Weight
+       * @see https://tailwindcss.com/docs/font-weight
+       */
+      "font-weight": [{
+        font: ["thin", "extralight", "light", "normal", "medium", "semibold", "bold", "extrabold", "black", isArbitraryNumber]
+      }],
+      /**
+       * Font Family
+       * @see https://tailwindcss.com/docs/font-family
+       */
+      "font-family": [{
+        font: [isAny]
+      }],
+      /**
+       * Font Variant Numeric
+       * @see https://tailwindcss.com/docs/font-variant-numeric
+       */
+      "fvn-normal": ["normal-nums"],
+      /**
+       * Font Variant Numeric
+       * @see https://tailwindcss.com/docs/font-variant-numeric
+       */
+      "fvn-ordinal": ["ordinal"],
+      /**
+       * Font Variant Numeric
+       * @see https://tailwindcss.com/docs/font-variant-numeric
+       */
+      "fvn-slashed-zero": ["slashed-zero"],
+      /**
+       * Font Variant Numeric
+       * @see https://tailwindcss.com/docs/font-variant-numeric
+       */
+      "fvn-figure": ["lining-nums", "oldstyle-nums"],
+      /**
+       * Font Variant Numeric
+       * @see https://tailwindcss.com/docs/font-variant-numeric
+       */
+      "fvn-spacing": ["proportional-nums", "tabular-nums"],
+      /**
+       * Font Variant Numeric
+       * @see https://tailwindcss.com/docs/font-variant-numeric
+       */
+      "fvn-fraction": ["diagonal-fractions", "stacked-fractions"],
+      /**
+       * Letter Spacing
+       * @see https://tailwindcss.com/docs/letter-spacing
+       */
+      tracking: [{
+        tracking: ["tighter", "tight", "normal", "wide", "wider", "widest", isArbitraryValue]
+      }],
+      /**
+       * Line Clamp
+       * @see https://tailwindcss.com/docs/line-clamp
+       */
+      "line-clamp": [{
+        "line-clamp": ["none", isNumber, isArbitraryNumber]
+      }],
+      /**
+       * Line Height
+       * @see https://tailwindcss.com/docs/line-height
+       */
+      leading: [{
+        leading: ["none", "tight", "snug", "normal", "relaxed", "loose", isLength, isArbitraryValue]
+      }],
+      /**
+       * List Style Image
+       * @see https://tailwindcss.com/docs/list-style-image
+       */
+      "list-image": [{
+        "list-image": ["none", isArbitraryValue]
+      }],
+      /**
+       * List Style Type
+       * @see https://tailwindcss.com/docs/list-style-type
+       */
+      "list-style-type": [{
+        list: ["none", "disc", "decimal", isArbitraryValue]
+      }],
+      /**
+       * List Style Position
+       * @see https://tailwindcss.com/docs/list-style-position
+       */
+      "list-style-position": [{
+        list: ["inside", "outside"]
+      }],
+      /**
+       * Placeholder Color
+       * @deprecated since Tailwind CSS v3.0.0
+       * @see https://tailwindcss.com/docs/placeholder-color
+       */
+      "placeholder-color": [{
+        placeholder: [colors]
+      }],
+      /**
+       * Placeholder Opacity
+       * @see https://tailwindcss.com/docs/placeholder-opacity
+       */
+      "placeholder-opacity": [{
+        "placeholder-opacity": [opacity]
+      }],
+      /**
+       * Text Alignment
+       * @see https://tailwindcss.com/docs/text-align
+       */
+      "text-alignment": [{
+        text: ["left", "center", "right", "justify", "start", "end"]
+      }],
+      /**
+       * Text Color
+       * @see https://tailwindcss.com/docs/text-color
+       */
+      "text-color": [{
+        text: [colors]
+      }],
+      /**
+       * Text Opacity
+       * @see https://tailwindcss.com/docs/text-opacity
+       */
+      "text-opacity": [{
+        "text-opacity": [opacity]
+      }],
+      /**
+       * Text Decoration
+       * @see https://tailwindcss.com/docs/text-decoration
+       */
+      "text-decoration": ["underline", "overline", "line-through", "no-underline"],
+      /**
+       * Text Decoration Style
+       * @see https://tailwindcss.com/docs/text-decoration-style
+       */
+      "text-decoration-style": [{
+        decoration: [...getLineStyles(), "wavy"]
+      }],
+      /**
+       * Text Decoration Thickness
+       * @see https://tailwindcss.com/docs/text-decoration-thickness
+       */
+      "text-decoration-thickness": [{
+        decoration: ["auto", "from-font", isLength, isArbitraryLength]
+      }],
+      /**
+       * Text Underline Offset
+       * @see https://tailwindcss.com/docs/text-underline-offset
+       */
+      "underline-offset": [{
+        "underline-offset": ["auto", isLength, isArbitraryValue]
+      }],
+      /**
+       * Text Decoration Color
+       * @see https://tailwindcss.com/docs/text-decoration-color
+       */
+      "text-decoration-color": [{
+        decoration: [colors]
+      }],
+      /**
+       * Text Transform
+       * @see https://tailwindcss.com/docs/text-transform
+       */
+      "text-transform": ["uppercase", "lowercase", "capitalize", "normal-case"],
+      /**
+       * Text Overflow
+       * @see https://tailwindcss.com/docs/text-overflow
+       */
+      "text-overflow": ["truncate", "text-ellipsis", "text-clip"],
+      /**
+       * Text Wrap
+       * @see https://tailwindcss.com/docs/text-wrap
+       */
+      "text-wrap": [{
+        text: ["wrap", "nowrap", "balance", "pretty"]
+      }],
+      /**
+       * Text Indent
+       * @see https://tailwindcss.com/docs/text-indent
+       */
+      indent: [{
+        indent: getSpacingWithArbitrary()
+      }],
+      /**
+       * Vertical Alignment
+       * @see https://tailwindcss.com/docs/vertical-align
+       */
+      "vertical-align": [{
+        align: ["baseline", "top", "middle", "bottom", "text-top", "text-bottom", "sub", "super", isArbitraryValue]
+      }],
+      /**
+       * Whitespace
+       * @see https://tailwindcss.com/docs/whitespace
+       */
+      whitespace: [{
+        whitespace: ["normal", "nowrap", "pre", "pre-line", "pre-wrap", "break-spaces"]
+      }],
+      /**
+       * Word Break
+       * @see https://tailwindcss.com/docs/word-break
+       */
+      break: [{
+        break: ["normal", "words", "all", "keep"]
+      }],
+      /**
+       * Hyphens
+       * @see https://tailwindcss.com/docs/hyphens
+       */
+      hyphens: [{
+        hyphens: ["none", "manual", "auto"]
+      }],
+      /**
+       * Content
+       * @see https://tailwindcss.com/docs/content
+       */
+      content: [{
+        content: ["none", isArbitraryValue]
+      }],
+      // Backgrounds
+      /**
+       * Background Attachment
+       * @see https://tailwindcss.com/docs/background-attachment
+       */
+      "bg-attachment": [{
+        bg: ["fixed", "local", "scroll"]
+      }],
+      /**
+       * Background Clip
+       * @see https://tailwindcss.com/docs/background-clip
+       */
+      "bg-clip": [{
+        "bg-clip": ["border", "padding", "content", "text"]
+      }],
+      /**
+       * Background Opacity
+       * @deprecated since Tailwind CSS v3.0.0
+       * @see https://tailwindcss.com/docs/background-opacity
+       */
+      "bg-opacity": [{
+        "bg-opacity": [opacity]
+      }],
+      /**
+       * Background Origin
+       * @see https://tailwindcss.com/docs/background-origin
+       */
+      "bg-origin": [{
+        "bg-origin": ["border", "padding", "content"]
+      }],
+      /**
+       * Background Position
+       * @see https://tailwindcss.com/docs/background-position
+       */
+      "bg-position": [{
+        bg: [...getPositions(), isArbitraryPosition]
+      }],
+      /**
+       * Background Repeat
+       * @see https://tailwindcss.com/docs/background-repeat
+       */
+      "bg-repeat": [{
+        bg: ["no-repeat", {
+          repeat: ["", "x", "y", "round", "space"]
+        }]
+      }],
+      /**
+       * Background Size
+       * @see https://tailwindcss.com/docs/background-size
+       */
+      "bg-size": [{
+        bg: ["auto", "cover", "contain", isArbitrarySize]
+      }],
+      /**
+       * Background Image
+       * @see https://tailwindcss.com/docs/background-image
+       */
+      "bg-image": [{
+        bg: ["none", {
+          "gradient-to": ["t", "tr", "r", "br", "b", "bl", "l", "tl"]
+        }, isArbitraryImage]
+      }],
+      /**
+       * Background Color
+       * @see https://tailwindcss.com/docs/background-color
+       */
+      "bg-color": [{
+        bg: [colors]
+      }],
+      /**
+       * Gradient Color Stops From Position
+       * @see https://tailwindcss.com/docs/gradient-color-stops
+       */
+      "gradient-from-pos": [{
+        from: [gradientColorStopPositions]
+      }],
+      /**
+       * Gradient Color Stops Via Position
+       * @see https://tailwindcss.com/docs/gradient-color-stops
+       */
+      "gradient-via-pos": [{
+        via: [gradientColorStopPositions]
+      }],
+      /**
+       * Gradient Color Stops To Position
+       * @see https://tailwindcss.com/docs/gradient-color-stops
+       */
+      "gradient-to-pos": [{
+        to: [gradientColorStopPositions]
+      }],
+      /**
+       * Gradient Color Stops From
+       * @see https://tailwindcss.com/docs/gradient-color-stops
+       */
+      "gradient-from": [{
+        from: [gradientColorStops]
+      }],
+      /**
+       * Gradient Color Stops Via
+       * @see https://tailwindcss.com/docs/gradient-color-stops
+       */
+      "gradient-via": [{
+        via: [gradientColorStops]
+      }],
+      /**
+       * Gradient Color Stops To
+       * @see https://tailwindcss.com/docs/gradient-color-stops
+       */
+      "gradient-to": [{
+        to: [gradientColorStops]
+      }],
+      // Borders
+      /**
+       * Border Radius
+       * @see https://tailwindcss.com/docs/border-radius
+       */
+      rounded: [{
+        rounded: [borderRadius]
+      }],
+      /**
+       * Border Radius Start
+       * @see https://tailwindcss.com/docs/border-radius
+       */
+      "rounded-s": [{
+        "rounded-s": [borderRadius]
+      }],
+      /**
+       * Border Radius End
+       * @see https://tailwindcss.com/docs/border-radius
+       */
+      "rounded-e": [{
+        "rounded-e": [borderRadius]
+      }],
+      /**
+       * Border Radius Top
+       * @see https://tailwindcss.com/docs/border-radius
+       */
+      "rounded-t": [{
+        "rounded-t": [borderRadius]
+      }],
+      /**
+       * Border Radius Right
+       * @see https://tailwindcss.com/docs/border-radius
+       */
+      "rounded-r": [{
+        "rounded-r": [borderRadius]
+      }],
+      /**
+       * Border Radius Bottom
+       * @see https://tailwindcss.com/docs/border-radius
+       */
+      "rounded-b": [{
+        "rounded-b": [borderRadius]
+      }],
+      /**
+       * Border Radius Left
+       * @see https://tailwindcss.com/docs/border-radius
+       */
+      "rounded-l": [{
+        "rounded-l": [borderRadius]
+      }],
+      /**
+       * Border Radius Start Start
+       * @see https://tailwindcss.com/docs/border-radius
+       */
+      "rounded-ss": [{
+        "rounded-ss": [borderRadius]
+      }],
+      /**
+       * Border Radius Start End
+       * @see https://tailwindcss.com/docs/border-radius
+       */
+      "rounded-se": [{
+        "rounded-se": [borderRadius]
+      }],
+      /**
+       * Border Radius End End
+       * @see https://tailwindcss.com/docs/border-radius
+       */
+      "rounded-ee": [{
+        "rounded-ee": [borderRadius]
+      }],
+      /**
+       * Border Radius End Start
+       * @see https://tailwindcss.com/docs/border-radius
+       */
+      "rounded-es": [{
+        "rounded-es": [borderRadius]
+      }],
+      /**
+       * Border Radius Top Left
+       * @see https://tailwindcss.com/docs/border-radius
+       */
+      "rounded-tl": [{
+        "rounded-tl": [borderRadius]
+      }],
+      /**
+       * Border Radius Top Right
+       * @see https://tailwindcss.com/docs/border-radius
+       */
+      "rounded-tr": [{
+        "rounded-tr": [borderRadius]
+      }],
+      /**
+       * Border Radius Bottom Right
+       * @see https://tailwindcss.com/docs/border-radius
+       */
+      "rounded-br": [{
+        "rounded-br": [borderRadius]
+      }],
+      /**
+       * Border Radius Bottom Left
+       * @see https://tailwindcss.com/docs/border-radius
+       */
+      "rounded-bl": [{
+        "rounded-bl": [borderRadius]
+      }],
+      /**
+       * Border Width
+       * @see https://tailwindcss.com/docs/border-width
+       */
+      "border-w": [{
+        border: [borderWidth]
+      }],
+      /**
+       * Border Width X
+       * @see https://tailwindcss.com/docs/border-width
+       */
+      "border-w-x": [{
+        "border-x": [borderWidth]
+      }],
+      /**
+       * Border Width Y
+       * @see https://tailwindcss.com/docs/border-width
+       */
+      "border-w-y": [{
+        "border-y": [borderWidth]
+      }],
+      /**
+       * Border Width Start
+       * @see https://tailwindcss.com/docs/border-width
+       */
+      "border-w-s": [{
+        "border-s": [borderWidth]
+      }],
+      /**
+       * Border Width End
+       * @see https://tailwindcss.com/docs/border-width
+       */
+      "border-w-e": [{
+        "border-e": [borderWidth]
+      }],
+      /**
+       * Border Width Top
+       * @see https://tailwindcss.com/docs/border-width
+       */
+      "border-w-t": [{
+        "border-t": [borderWidth]
+      }],
+      /**
+       * Border Width Right
+       * @see https://tailwindcss.com/docs/border-width
+       */
+      "border-w-r": [{
+        "border-r": [borderWidth]
+      }],
+      /**
+       * Border Width Bottom
+       * @see https://tailwindcss.com/docs/border-width
+       */
+      "border-w-b": [{
+        "border-b": [borderWidth]
+      }],
+      /**
+       * Border Width Left
+       * @see https://tailwindcss.com/docs/border-width
+       */
+      "border-w-l": [{
+        "border-l": [borderWidth]
+      }],
+      /**
+       * Border Opacity
+       * @see https://tailwindcss.com/docs/border-opacity
+       */
+      "border-opacity": [{
+        "border-opacity": [opacity]
+      }],
+      /**
+       * Border Style
+       * @see https://tailwindcss.com/docs/border-style
+       */
+      "border-style": [{
+        border: [...getLineStyles(), "hidden"]
+      }],
+      /**
+       * Divide Width X
+       * @see https://tailwindcss.com/docs/divide-width
+       */
+      "divide-x": [{
+        "divide-x": [borderWidth]
+      }],
+      /**
+       * Divide Width X Reverse
+       * @see https://tailwindcss.com/docs/divide-width
+       */
+      "divide-x-reverse": ["divide-x-reverse"],
+      /**
+       * Divide Width Y
+       * @see https://tailwindcss.com/docs/divide-width
+       */
+      "divide-y": [{
+        "divide-y": [borderWidth]
+      }],
+      /**
+       * Divide Width Y Reverse
+       * @see https://tailwindcss.com/docs/divide-width
+       */
+      "divide-y-reverse": ["divide-y-reverse"],
+      /**
+       * Divide Opacity
+       * @see https://tailwindcss.com/docs/divide-opacity
+       */
+      "divide-opacity": [{
+        "divide-opacity": [opacity]
+      }],
+      /**
+       * Divide Style
+       * @see https://tailwindcss.com/docs/divide-style
+       */
+      "divide-style": [{
+        divide: getLineStyles()
+      }],
+      /**
+       * Border Color
+       * @see https://tailwindcss.com/docs/border-color
+       */
+      "border-color": [{
+        border: [borderColor]
+      }],
+      /**
+       * Border Color X
+       * @see https://tailwindcss.com/docs/border-color
+       */
+      "border-color-x": [{
+        "border-x": [borderColor]
+      }],
+      /**
+       * Border Color Y
+       * @see https://tailwindcss.com/docs/border-color
+       */
+      "border-color-y": [{
+        "border-y": [borderColor]
+      }],
+      /**
+       * Border Color S
+       * @see https://tailwindcss.com/docs/border-color
+       */
+      "border-color-s": [{
+        "border-s": [borderColor]
+      }],
+      /**
+       * Border Color E
+       * @see https://tailwindcss.com/docs/border-color
+       */
+      "border-color-e": [{
+        "border-e": [borderColor]
+      }],
+      /**
+       * Border Color Top
+       * @see https://tailwindcss.com/docs/border-color
+       */
+      "border-color-t": [{
+        "border-t": [borderColor]
+      }],
+      /**
+       * Border Color Right
+       * @see https://tailwindcss.com/docs/border-color
+       */
+      "border-color-r": [{
+        "border-r": [borderColor]
+      }],
+      /**
+       * Border Color Bottom
+       * @see https://tailwindcss.com/docs/border-color
+       */
+      "border-color-b": [{
+        "border-b": [borderColor]
+      }],
+      /**
+       * Border Color Left
+       * @see https://tailwindcss.com/docs/border-color
+       */
+      "border-color-l": [{
+        "border-l": [borderColor]
+      }],
+      /**
+       * Divide Color
+       * @see https://tailwindcss.com/docs/divide-color
+       */
+      "divide-color": [{
+        divide: [borderColor]
+      }],
+      /**
+       * Outline Style
+       * @see https://tailwindcss.com/docs/outline-style
+       */
+      "outline-style": [{
+        outline: ["", ...getLineStyles()]
+      }],
+      /**
+       * Outline Offset
+       * @see https://tailwindcss.com/docs/outline-offset
+       */
+      "outline-offset": [{
+        "outline-offset": [isLength, isArbitraryValue]
+      }],
+      /**
+       * Outline Width
+       * @see https://tailwindcss.com/docs/outline-width
+       */
+      "outline-w": [{
+        outline: [isLength, isArbitraryLength]
+      }],
+      /**
+       * Outline Color
+       * @see https://tailwindcss.com/docs/outline-color
+       */
+      "outline-color": [{
+        outline: [colors]
+      }],
+      /**
+       * Ring Width
+       * @see https://tailwindcss.com/docs/ring-width
+       */
+      "ring-w": [{
+        ring: getLengthWithEmptyAndArbitrary()
+      }],
+      /**
+       * Ring Width Inset
+       * @see https://tailwindcss.com/docs/ring-width
+       */
+      "ring-w-inset": ["ring-inset"],
+      /**
+       * Ring Color
+       * @see https://tailwindcss.com/docs/ring-color
+       */
+      "ring-color": [{
+        ring: [colors]
+      }],
+      /**
+       * Ring Opacity
+       * @see https://tailwindcss.com/docs/ring-opacity
+       */
+      "ring-opacity": [{
+        "ring-opacity": [opacity]
+      }],
+      /**
+       * Ring Offset Width
+       * @see https://tailwindcss.com/docs/ring-offset-width
+       */
+      "ring-offset-w": [{
+        "ring-offset": [isLength, isArbitraryLength]
+      }],
+      /**
+       * Ring Offset Color
+       * @see https://tailwindcss.com/docs/ring-offset-color
+       */
+      "ring-offset-color": [{
+        "ring-offset": [colors]
+      }],
+      // Effects
+      /**
+       * Box Shadow
+       * @see https://tailwindcss.com/docs/box-shadow
+       */
+      shadow: [{
+        shadow: ["", "inner", "none", isTshirtSize, isArbitraryShadow]
+      }],
+      /**
+       * Box Shadow Color
+       * @see https://tailwindcss.com/docs/box-shadow-color
+       */
+      "shadow-color": [{
+        shadow: [isAny]
+      }],
+      /**
+       * Opacity
+       * @see https://tailwindcss.com/docs/opacity
+       */
+      opacity: [{
+        opacity: [opacity]
+      }],
+      /**
+       * Mix Blend Mode
+       * @see https://tailwindcss.com/docs/mix-blend-mode
+       */
+      "mix-blend": [{
+        "mix-blend": [...getBlendModes(), "plus-lighter", "plus-darker"]
+      }],
+      /**
+       * Background Blend Mode
+       * @see https://tailwindcss.com/docs/background-blend-mode
+       */
+      "bg-blend": [{
+        "bg-blend": getBlendModes()
+      }],
+      // Filters
+      /**
+       * Filter
+       * @deprecated since Tailwind CSS v3.0.0
+       * @see https://tailwindcss.com/docs/filter
+       */
+      filter: [{
+        filter: ["", "none"]
+      }],
+      /**
+       * Blur
+       * @see https://tailwindcss.com/docs/blur
+       */
+      blur: [{
+        blur: [blur]
+      }],
+      /**
+       * Brightness
+       * @see https://tailwindcss.com/docs/brightness
+       */
+      brightness: [{
+        brightness: [brightness]
+      }],
+      /**
+       * Contrast
+       * @see https://tailwindcss.com/docs/contrast
+       */
+      contrast: [{
+        contrast: [contrast]
+      }],
+      /**
+       * Drop Shadow
+       * @see https://tailwindcss.com/docs/drop-shadow
+       */
+      "drop-shadow": [{
+        "drop-shadow": ["", "none", isTshirtSize, isArbitraryValue]
+      }],
+      /**
+       * Grayscale
+       * @see https://tailwindcss.com/docs/grayscale
+       */
+      grayscale: [{
+        grayscale: [grayscale]
+      }],
+      /**
+       * Hue Rotate
+       * @see https://tailwindcss.com/docs/hue-rotate
+       */
+      "hue-rotate": [{
+        "hue-rotate": [hueRotate]
+      }],
+      /**
+       * Invert
+       * @see https://tailwindcss.com/docs/invert
+       */
+      invert: [{
+        invert: [invert2]
+      }],
+      /**
+       * Saturate
+       * @see https://tailwindcss.com/docs/saturate
+       */
+      saturate: [{
+        saturate: [saturate]
+      }],
+      /**
+       * Sepia
+       * @see https://tailwindcss.com/docs/sepia
+       */
+      sepia: [{
+        sepia: [sepia]
+      }],
+      /**
+       * Backdrop Filter
+       * @deprecated since Tailwind CSS v3.0.0
+       * @see https://tailwindcss.com/docs/backdrop-filter
+       */
+      "backdrop-filter": [{
+        "backdrop-filter": ["", "none"]
+      }],
+      /**
+       * Backdrop Blur
+       * @see https://tailwindcss.com/docs/backdrop-blur
+       */
+      "backdrop-blur": [{
+        "backdrop-blur": [blur]
+      }],
+      /**
+       * Backdrop Brightness
+       * @see https://tailwindcss.com/docs/backdrop-brightness
+       */
+      "backdrop-brightness": [{
+        "backdrop-brightness": [brightness]
+      }],
+      /**
+       * Backdrop Contrast
+       * @see https://tailwindcss.com/docs/backdrop-contrast
+       */
+      "backdrop-contrast": [{
+        "backdrop-contrast": [contrast]
+      }],
+      /**
+       * Backdrop Grayscale
+       * @see https://tailwindcss.com/docs/backdrop-grayscale
+       */
+      "backdrop-grayscale": [{
+        "backdrop-grayscale": [grayscale]
+      }],
+      /**
+       * Backdrop Hue Rotate
+       * @see https://tailwindcss.com/docs/backdrop-hue-rotate
+       */
+      "backdrop-hue-rotate": [{
+        "backdrop-hue-rotate": [hueRotate]
+      }],
+      /**
+       * Backdrop Invert
+       * @see https://tailwindcss.com/docs/backdrop-invert
+       */
+      "backdrop-invert": [{
+        "backdrop-invert": [invert2]
+      }],
+      /**
+       * Backdrop Opacity
+       * @see https://tailwindcss.com/docs/backdrop-opacity
+       */
+      "backdrop-opacity": [{
+        "backdrop-opacity": [opacity]
+      }],
+      /**
+       * Backdrop Saturate
+       * @see https://tailwindcss.com/docs/backdrop-saturate
+       */
+      "backdrop-saturate": [{
+        "backdrop-saturate": [saturate]
+      }],
+      /**
+       * Backdrop Sepia
+       * @see https://tailwindcss.com/docs/backdrop-sepia
+       */
+      "backdrop-sepia": [{
+        "backdrop-sepia": [sepia]
+      }],
+      // Tables
+      /**
+       * Border Collapse
+       * @see https://tailwindcss.com/docs/border-collapse
+       */
+      "border-collapse": [{
+        border: ["collapse", "separate"]
+      }],
+      /**
+       * Border Spacing
+       * @see https://tailwindcss.com/docs/border-spacing
+       */
+      "border-spacing": [{
+        "border-spacing": [borderSpacing]
+      }],
+      /**
+       * Border Spacing X
+       * @see https://tailwindcss.com/docs/border-spacing
+       */
+      "border-spacing-x": [{
+        "border-spacing-x": [borderSpacing]
+      }],
+      /**
+       * Border Spacing Y
+       * @see https://tailwindcss.com/docs/border-spacing
+       */
+      "border-spacing-y": [{
+        "border-spacing-y": [borderSpacing]
+      }],
+      /**
+       * Table Layout
+       * @see https://tailwindcss.com/docs/table-layout
+       */
+      "table-layout": [{
+        table: ["auto", "fixed"]
+      }],
+      /**
+       * Caption Side
+       * @see https://tailwindcss.com/docs/caption-side
+       */
+      caption: [{
+        caption: ["top", "bottom"]
+      }],
+      // Transitions and Animation
+      /**
+       * Tranisition Property
+       * @see https://tailwindcss.com/docs/transition-property
+       */
+      transition: [{
+        transition: ["none", "all", "", "colors", "opacity", "shadow", "transform", isArbitraryValue]
+      }],
+      /**
+       * Transition Duration
+       * @see https://tailwindcss.com/docs/transition-duration
+       */
+      duration: [{
+        duration: getNumberAndArbitrary()
+      }],
+      /**
+       * Transition Timing Function
+       * @see https://tailwindcss.com/docs/transition-timing-function
+       */
+      ease: [{
+        ease: ["linear", "in", "out", "in-out", isArbitraryValue]
+      }],
+      /**
+       * Transition Delay
+       * @see https://tailwindcss.com/docs/transition-delay
+       */
+      delay: [{
+        delay: getNumberAndArbitrary()
+      }],
+      /**
+       * Animation
+       * @see https://tailwindcss.com/docs/animation
+       */
+      animate: [{
+        animate: ["none", "spin", "ping", "pulse", "bounce", isArbitraryValue]
+      }],
+      // Transforms
+      /**
+       * Transform
+       * @see https://tailwindcss.com/docs/transform
+       */
+      transform: [{
+        transform: ["", "gpu", "none"]
+      }],
+      /**
+       * Scale
+       * @see https://tailwindcss.com/docs/scale
+       */
+      scale: [{
+        scale: [scale]
+      }],
+      /**
+       * Scale X
+       * @see https://tailwindcss.com/docs/scale
+       */
+      "scale-x": [{
+        "scale-x": [scale]
+      }],
+      /**
+       * Scale Y
+       * @see https://tailwindcss.com/docs/scale
+       */
+      "scale-y": [{
+        "scale-y": [scale]
+      }],
+      /**
+       * Rotate
+       * @see https://tailwindcss.com/docs/rotate
+       */
+      rotate: [{
+        rotate: [isInteger, isArbitraryValue]
+      }],
+      /**
+       * Translate X
+       * @see https://tailwindcss.com/docs/translate
+       */
+      "translate-x": [{
+        "translate-x": [translate]
+      }],
+      /**
+       * Translate Y
+       * @see https://tailwindcss.com/docs/translate
+       */
+      "translate-y": [{
+        "translate-y": [translate]
+      }],
+      /**
+       * Skew X
+       * @see https://tailwindcss.com/docs/skew
+       */
+      "skew-x": [{
+        "skew-x": [skew]
+      }],
+      /**
+       * Skew Y
+       * @see https://tailwindcss.com/docs/skew
+       */
+      "skew-y": [{
+        "skew-y": [skew]
+      }],
+      /**
+       * Transform Origin
+       * @see https://tailwindcss.com/docs/transform-origin
+       */
+      "transform-origin": [{
+        origin: ["center", "top", "top-right", "right", "bottom-right", "bottom", "bottom-left", "left", "top-left", isArbitraryValue]
+      }],
+      // Interactivity
+      /**
+       * Accent Color
+       * @see https://tailwindcss.com/docs/accent-color
+       */
+      accent: [{
+        accent: ["auto", colors]
+      }],
+      /**
+       * Appearance
+       * @see https://tailwindcss.com/docs/appearance
+       */
+      appearance: [{
+        appearance: ["none", "auto"]
+      }],
+      /**
+       * Cursor
+       * @see https://tailwindcss.com/docs/cursor
+       */
+      cursor: [{
+        cursor: ["auto", "default", "pointer", "wait", "text", "move", "help", "not-allowed", "none", "context-menu", "progress", "cell", "crosshair", "vertical-text", "alias", "copy", "no-drop", "grab", "grabbing", "all-scroll", "col-resize", "row-resize", "n-resize", "e-resize", "s-resize", "w-resize", "ne-resize", "nw-resize", "se-resize", "sw-resize", "ew-resize", "ns-resize", "nesw-resize", "nwse-resize", "zoom-in", "zoom-out", isArbitraryValue]
+      }],
+      /**
+       * Caret Color
+       * @see https://tailwindcss.com/docs/just-in-time-mode#caret-color-utilities
+       */
+      "caret-color": [{
+        caret: [colors]
+      }],
+      /**
+       * Pointer Events
+       * @see https://tailwindcss.com/docs/pointer-events
+       */
+      "pointer-events": [{
+        "pointer-events": ["none", "auto"]
+      }],
+      /**
+       * Resize
+       * @see https://tailwindcss.com/docs/resize
+       */
+      resize: [{
+        resize: ["none", "y", "x", ""]
+      }],
+      /**
+       * Scroll Behavior
+       * @see https://tailwindcss.com/docs/scroll-behavior
+       */
+      "scroll-behavior": [{
+        scroll: ["auto", "smooth"]
+      }],
+      /**
+       * Scroll Margin
+       * @see https://tailwindcss.com/docs/scroll-margin
+       */
+      "scroll-m": [{
+        "scroll-m": getSpacingWithArbitrary()
+      }],
+      /**
+       * Scroll Margin X
+       * @see https://tailwindcss.com/docs/scroll-margin
+       */
+      "scroll-mx": [{
+        "scroll-mx": getSpacingWithArbitrary()
+      }],
+      /**
+       * Scroll Margin Y
+       * @see https://tailwindcss.com/docs/scroll-margin
+       */
+      "scroll-my": [{
+        "scroll-my": getSpacingWithArbitrary()
+      }],
+      /**
+       * Scroll Margin Start
+       * @see https://tailwindcss.com/docs/scroll-margin
+       */
+      "scroll-ms": [{
+        "scroll-ms": getSpacingWithArbitrary()
+      }],
+      /**
+       * Scroll Margin End
+       * @see https://tailwindcss.com/docs/scroll-margin
+       */
+      "scroll-me": [{
+        "scroll-me": getSpacingWithArbitrary()
+      }],
+      /**
+       * Scroll Margin Top
+       * @see https://tailwindcss.com/docs/scroll-margin
+       */
+      "scroll-mt": [{
+        "scroll-mt": getSpacingWithArbitrary()
+      }],
+      /**
+       * Scroll Margin Right
+       * @see https://tailwindcss.com/docs/scroll-margin
+       */
+      "scroll-mr": [{
+        "scroll-mr": getSpacingWithArbitrary()
+      }],
+      /**
+       * Scroll Margin Bottom
+       * @see https://tailwindcss.com/docs/scroll-margin
+       */
+      "scroll-mb": [{
+        "scroll-mb": getSpacingWithArbitrary()
+      }],
+      /**
+       * Scroll Margin Left
+       * @see https://tailwindcss.com/docs/scroll-margin
+       */
+      "scroll-ml": [{
+        "scroll-ml": getSpacingWithArbitrary()
+      }],
+      /**
+       * Scroll Padding
+       * @see https://tailwindcss.com/docs/scroll-padding
+       */
+      "scroll-p": [{
+        "scroll-p": getSpacingWithArbitrary()
+      }],
+      /**
+       * Scroll Padding X
+       * @see https://tailwindcss.com/docs/scroll-padding
+       */
+      "scroll-px": [{
+        "scroll-px": getSpacingWithArbitrary()
+      }],
+      /**
+       * Scroll Padding Y
+       * @see https://tailwindcss.com/docs/scroll-padding
+       */
+      "scroll-py": [{
+        "scroll-py": getSpacingWithArbitrary()
+      }],
+      /**
+       * Scroll Padding Start
+       * @see https://tailwindcss.com/docs/scroll-padding
+       */
+      "scroll-ps": [{
+        "scroll-ps": getSpacingWithArbitrary()
+      }],
+      /**
+       * Scroll Padding End
+       * @see https://tailwindcss.com/docs/scroll-padding
+       */
+      "scroll-pe": [{
+        "scroll-pe": getSpacingWithArbitrary()
+      }],
+      /**
+       * Scroll Padding Top
+       * @see https://tailwindcss.com/docs/scroll-padding
+       */
+      "scroll-pt": [{
+        "scroll-pt": getSpacingWithArbitrary()
+      }],
+      /**
+       * Scroll Padding Right
+       * @see https://tailwindcss.com/docs/scroll-padding
+       */
+      "scroll-pr": [{
+        "scroll-pr": getSpacingWithArbitrary()
+      }],
+      /**
+       * Scroll Padding Bottom
+       * @see https://tailwindcss.com/docs/scroll-padding
+       */
+      "scroll-pb": [{
+        "scroll-pb": getSpacingWithArbitrary()
+      }],
+      /**
+       * Scroll Padding Left
+       * @see https://tailwindcss.com/docs/scroll-padding
+       */
+      "scroll-pl": [{
+        "scroll-pl": getSpacingWithArbitrary()
+      }],
+      /**
+       * Scroll Snap Align
+       * @see https://tailwindcss.com/docs/scroll-snap-align
+       */
+      "snap-align": [{
+        snap: ["start", "end", "center", "align-none"]
+      }],
+      /**
+       * Scroll Snap Stop
+       * @see https://tailwindcss.com/docs/scroll-snap-stop
+       */
+      "snap-stop": [{
+        snap: ["normal", "always"]
+      }],
+      /**
+       * Scroll Snap Type
+       * @see https://tailwindcss.com/docs/scroll-snap-type
+       */
+      "snap-type": [{
+        snap: ["none", "x", "y", "both"]
+      }],
+      /**
+       * Scroll Snap Type Strictness
+       * @see https://tailwindcss.com/docs/scroll-snap-type
+       */
+      "snap-strictness": [{
+        snap: ["mandatory", "proximity"]
+      }],
+      /**
+       * Touch Action
+       * @see https://tailwindcss.com/docs/touch-action
+       */
+      touch: [{
+        touch: ["auto", "none", "manipulation"]
+      }],
+      /**
+       * Touch Action X
+       * @see https://tailwindcss.com/docs/touch-action
+       */
+      "touch-x": [{
+        "touch-pan": ["x", "left", "right"]
+      }],
+      /**
+       * Touch Action Y
+       * @see https://tailwindcss.com/docs/touch-action
+       */
+      "touch-y": [{
+        "touch-pan": ["y", "up", "down"]
+      }],
+      /**
+       * Touch Action Pinch Zoom
+       * @see https://tailwindcss.com/docs/touch-action
+       */
+      "touch-pz": ["touch-pinch-zoom"],
+      /**
+       * User Select
+       * @see https://tailwindcss.com/docs/user-select
+       */
+      select: [{
+        select: ["none", "text", "all", "auto"]
+      }],
+      /**
+       * Will Change
+       * @see https://tailwindcss.com/docs/will-change
+       */
+      "will-change": [{
+        "will-change": ["auto", "scroll", "contents", "transform", isArbitraryValue]
+      }],
+      // SVG
+      /**
+       * Fill
+       * @see https://tailwindcss.com/docs/fill
+       */
+      fill: [{
+        fill: [colors, "none"]
+      }],
+      /**
+       * Stroke Width
+       * @see https://tailwindcss.com/docs/stroke-width
+       */
+      "stroke-w": [{
+        stroke: [isLength, isArbitraryLength, isArbitraryNumber]
+      }],
+      /**
+       * Stroke
+       * @see https://tailwindcss.com/docs/stroke
+       */
+      stroke: [{
+        stroke: [colors, "none"]
+      }],
+      // Accessibility
+      /**
+       * Screen Readers
+       * @see https://tailwindcss.com/docs/screen-readers
+       */
+      sr: ["sr-only", "not-sr-only"],
+      /**
+       * Forced Color Adjust
+       * @see https://tailwindcss.com/docs/forced-color-adjust
+       */
+      "forced-color-adjust": [{
+        "forced-color-adjust": ["auto", "none"]
+      }]
+    },
+    conflictingClassGroups: {
+      overflow: ["overflow-x", "overflow-y"],
+      overscroll: ["overscroll-x", "overscroll-y"],
+      inset: ["inset-x", "inset-y", "start", "end", "top", "right", "bottom", "left"],
+      "inset-x": ["right", "left"],
+      "inset-y": ["top", "bottom"],
+      flex: ["basis", "grow", "shrink"],
+      gap: ["gap-x", "gap-y"],
+      p: ["px", "py", "ps", "pe", "pt", "pr", "pb", "pl"],
+      px: ["pr", "pl"],
+      py: ["pt", "pb"],
+      m: ["mx", "my", "ms", "me", "mt", "mr", "mb", "ml"],
+      mx: ["mr", "ml"],
+      my: ["mt", "mb"],
+      size: ["w", "h"],
+      "font-size": ["leading"],
+      "fvn-normal": ["fvn-ordinal", "fvn-slashed-zero", "fvn-figure", "fvn-spacing", "fvn-fraction"],
+      "fvn-ordinal": ["fvn-normal"],
+      "fvn-slashed-zero": ["fvn-normal"],
+      "fvn-figure": ["fvn-normal"],
+      "fvn-spacing": ["fvn-normal"],
+      "fvn-fraction": ["fvn-normal"],
+      "line-clamp": ["display", "overflow"],
+      rounded: ["rounded-s", "rounded-e", "rounded-t", "rounded-r", "rounded-b", "rounded-l", "rounded-ss", "rounded-se", "rounded-ee", "rounded-es", "rounded-tl", "rounded-tr", "rounded-br", "rounded-bl"],
+      "rounded-s": ["rounded-ss", "rounded-es"],
+      "rounded-e": ["rounded-se", "rounded-ee"],
+      "rounded-t": ["rounded-tl", "rounded-tr"],
+      "rounded-r": ["rounded-tr", "rounded-br"],
+      "rounded-b": ["rounded-br", "rounded-bl"],
+      "rounded-l": ["rounded-tl", "rounded-bl"],
+      "border-spacing": ["border-spacing-x", "border-spacing-y"],
+      "border-w": ["border-w-s", "border-w-e", "border-w-t", "border-w-r", "border-w-b", "border-w-l"],
+      "border-w-x": ["border-w-r", "border-w-l"],
+      "border-w-y": ["border-w-t", "border-w-b"],
+      "border-color": ["border-color-s", "border-color-e", "border-color-t", "border-color-r", "border-color-b", "border-color-l"],
+      "border-color-x": ["border-color-r", "border-color-l"],
+      "border-color-y": ["border-color-t", "border-color-b"],
+      "scroll-m": ["scroll-mx", "scroll-my", "scroll-ms", "scroll-me", "scroll-mt", "scroll-mr", "scroll-mb", "scroll-ml"],
+      "scroll-mx": ["scroll-mr", "scroll-ml"],
+      "scroll-my": ["scroll-mt", "scroll-mb"],
+      "scroll-p": ["scroll-px", "scroll-py", "scroll-ps", "scroll-pe", "scroll-pt", "scroll-pr", "scroll-pb", "scroll-pl"],
+      "scroll-px": ["scroll-pr", "scroll-pl"],
+      "scroll-py": ["scroll-pt", "scroll-pb"],
+      touch: ["touch-x", "touch-y", "touch-pz"],
+      "touch-x": ["touch"],
+      "touch-y": ["touch"],
+      "touch-pz": ["touch"]
+    },
+    conflictingClassGroupModifiers: {
+      "font-size": ["leading"]
+    }
+  };
+};
+const twMerge = /* @__PURE__ */ createTailwindMerge(getDefaultConfig);
+function cn(...inputs) {
+  return twMerge(clsx(inputs));
+}
+function Dialog({
+  ...props
+}) {
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(Root, { "data-slot": "dialog", ...props });
+}
+function DialogPortal({
+  ...props
+}) {
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(Portal, { "data-slot": "dialog-portal", ...props });
+}
+function DialogOverlay({
+  className,
+  ...props
+}) {
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    Overlay,
+    {
+      "data-slot": "dialog-overlay",
+      className: cn(
+        "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/50",
+        className
+      ),
+      ...props
+    }
+  );
+}
+function DialogContent({
+  className,
+  children,
+  showCloseButton = true,
+  ...props
+}) {
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(DialogPortal, { "data-slot": "dialog-portal", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx(DialogOverlay, {}),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      Content,
+      {
+        "data-slot": "dialog-content",
+        className: cn(
+          "bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-lg border p-6 shadow-lg duration-200 sm:max-w-lg",
+          className
+        ),
+        ...props,
+        children: [
+          children,
+          showCloseButton && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            Close,
+            {
+              "data-slot": "dialog-close",
+              className: "ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-4 right-4 rounded-xs opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(X, {}),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "sr-only", children: "Close" })
+              ]
+            }
+          )
+        ]
+      }
+    )
+  ] });
+}
+function DialogHeader({ className, ...props }) {
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    "div",
+    {
+      "data-slot": "dialog-header",
+      className: cn("flex flex-col gap-2 text-center sm:text-left", className),
+      ...props
+    }
+  );
+}
+function DialogTitle({
+  className,
+  ...props
+}) {
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    Title,
+    {
+      "data-slot": "dialog-title",
+      className: cn("text-lg leading-none font-semibold", className),
+      ...props
+    }
+  );
+}
+function DialogDescription({
+  className,
+  ...props
+}) {
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    Description,
+    {
+      "data-slot": "dialog-description",
+      className: cn("text-muted-foreground text-sm", className),
+      ...props
+    }
+  );
+}
 const rows = [
   { stage: "Stage", value: "Genesis", note: "Building the roster from zero." },
   {
@@ -38684,93 +43889,451 @@ const rows = [
     note: "No over-promises. Work over announcements."
   }
 ];
-const NAKFeaturedArtist = () => {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("section", { id: "culture", className: "px-6 py-16 sm:py-20", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-5xl mx-auto", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "section-label mb-6", "data-ocid": "culture.section_label", children: "Culture · Now" }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 mb-3", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
-        "h2",
-        {
-          className: "text-[1.75rem] font-medium tracking-[-0.02em]",
-          style: { fontFamily: "var(--font-heading)" },
-          children: "July Jax$on"
-        }
-      ),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
-        "span",
-        {
-          className: "hairline inline-flex items-center px-2 py-0.5 text-[0.625rem] uppercase tracking-[0.14em] font-semibold text-muted-foreground",
-          "data-ocid": "culture.ai_artist_badge",
-          children: "AI Artist"
-        }
-      )
-    ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(
-      "p",
-      {
-        className: "font-mono text-[0.8125rem] text-muted-foreground mb-8",
-        "data-ocid": "culture.debut_line",
-        children: "Ruby Galaxy — debut project, out now"
+const DISCIPLINES = [
+  { value: Discipline.music, label: "Music" },
+  { value: Discipline.visualArt, label: "Visual Art" },
+  { value: Discipline.video, label: "Video" },
+  { value: Discipline.writing, label: "Writing" },
+  { value: Discipline.other, label: "Other" }
+];
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const EMPTY_FORM = {
+  name: "",
+  email: "",
+  discipline: "",
+  link: "",
+  message: "",
+  marketingConsent: false,
+  honeypot: ""
+};
+function validate(form) {
+  const errors = {};
+  if (!form.name.trim()) {
+    errors.name = "Name is required.";
+  }
+  if (!form.email.trim()) {
+    errors.email = "Email is required.";
+  } else if (!EMAIL_RE.test(form.email.trim())) {
+    errors.email = "Enter a valid email address.";
+  }
+  if (!form.discipline) {
+    errors.discipline = "Select a discipline.";
+  }
+  if (!form.link.trim()) {
+    errors.link = "Link to work is required.";
+  } else {
+    try {
+      const url = new URL(form.link.trim());
+      if (url.protocol !== "http:" && url.protocol !== "https:") {
+        errors.link = "Link must start with http:// or https://.";
       }
-    ),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "hairline surface overflow-hidden", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative w-full aspect-video", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-        "iframe",
-        {
-          className: "absolute inset-0 w-full h-full",
-          src: "https://www.youtube.com/embed/HkIOBvsSyOQ",
-          title: "Ruby Galaxy — July Jax$on",
-          frameBorder: "0",
-          allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture",
-          allowFullScreen: true,
-          "data-ocid": "culture.video_embed"
+    } catch {
+      errors.link = "Enter a valid URL.";
+    }
+  }
+  if (form.message.length > 1e3) {
+    errors.message = "Message must be 1000 characters or fewer.";
+  }
+  return errors;
+}
+const NAKFeaturedArtist = () => {
+  const [open, setOpen] = reactExports.useState(false);
+  const [form, setForm] = reactExports.useState(EMPTY_FORM);
+  const [errors, setErrors] = reactExports.useState({});
+  const [submitted, setSubmitted] = reactExports.useState(false);
+  const submit = useSubmitSubmission();
+  const setField = (key, value) => {
+    setForm((prev) => ({ ...prev, [key]: value }));
+    if (errors[key]) {
+      setErrors((prev) => ({ ...prev, [key]: void 0 }));
+    }
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (form.honeypot.trim() !== "") {
+      setSubmitted(true);
+      return;
+    }
+    const nextErrors = validate(form);
+    setErrors(nextErrors);
+    if (Object.keys(nextErrors).length > 0) return;
+    const marketingConsentAt = form.marketingConsent ? BigInt(Date.now()) * 1000000n : void 0;
+    submit.mutate(
+      {
+        name: form.name.trim(),
+        email: form.email.trim(),
+        discipline: form.discipline,
+        link: form.link.trim(),
+        message: form.message.trim() === "" ? void 0 : form.message.trim(),
+        marketingConsent: form.marketingConsent,
+        marketingConsentAt,
+        honeypot: form.honeypot
+      },
+      {
+        onSuccess: () => {
+          setSubmitted(true);
         }
-      ) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "hairline-strong border-t-0 flex items-center justify-between px-4 py-3", children: [
+      }
+    );
+  };
+  const handleClose = () => {
+    setOpen(false);
+    setForm(EMPTY_FORM);
+    setErrors({});
+    setSubmitted(false);
+  };
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { id: "culture", className: "px-6 py-16 sm:py-20", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-5xl mx-auto", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "section-label mb-6", "data-ocid": "culture.section_label", children: "Culture · Now" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 mb-3", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "span",
+          "h2",
           {
-            className: "font-mono text-[0.8125rem] text-muted-foreground",
-            "data-ocid": "culture.video_title",
-            children: "Ruby Galaxy · July Jax$on"
+            className: "text-[1.75rem] font-medium tracking-[-0.02em]",
+            style: { fontFamily: "var(--font-heading)" },
+            children: "July Jax$on"
           }
         ),
         /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "a",
+          "span",
           {
-            href: "https://youtu.be/HkIOBvsSyOQ",
-            target: "_blank",
-            rel: "noopener noreferrer",
-            className: "text-[0.8125rem] font-medium text-foreground hover:text-primary transition-colors",
-            "data-ocid": "culture.watch_link",
-            children: "Watch on YouTube"
+            className: "hairline inline-flex items-center px-2 py-0.5 text-[0.625rem] uppercase tracking-[0.14em] font-semibold text-muted-foreground",
+            "data-ocid": "culture.ai_artist_badge",
+            children: "AI Artist"
           }
         )
-      ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "p",
+        {
+          className: "font-mono text-[0.8125rem] text-muted-foreground mb-8",
+          "data-ocid": "culture.debut_line",
+          children: "Ruby Galaxy — debut project, out now"
+        }
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "hairline surface overflow-hidden", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative w-full aspect-video", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "iframe",
+          {
+            className: "absolute inset-0 w-full h-full",
+            src: "https://www.youtube.com/embed/HkIOBvsSyOQ",
+            title: "Ruby Galaxy — July Jax$on",
+            frameBorder: "0",
+            allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture",
+            allowFullScreen: true,
+            "data-ocid": "culture.video_embed"
+          }
+        ) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "hairline-strong border-t-0 flex items-center justify-between px-4 py-3", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "span",
+            {
+              className: "font-mono text-[0.8125rem] text-muted-foreground",
+              "data-ocid": "culture.video_title",
+              children: "Ruby Galaxy · July Jax$on"
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "a",
+            {
+              href: "https://youtu.be/HkIOBvsSyOQ",
+              target: "_blank",
+              rel: "noopener noreferrer",
+              className: "text-[0.8125rem] font-medium text-foreground hover:text-primary transition-colors",
+              "data-ocid": "culture.watch_link",
+              children: "Watch on YouTube"
+            }
+          )
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "hairline mt-10 grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-border", children: rows.map((row) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "div",
+        {
+          className: "px-4 py-5",
+          "data-ocid": `culture.row.${row.stage.toLowerCase()}`,
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "section-label mb-2", children: row.stage }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[1.0625rem] font-medium text-foreground mb-1", children: row.value }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[0.8125rem] text-muted-foreground", children: row.note })
+          ]
+        },
+        row.stage
+      )) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-10", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "button",
+        {
+          type: "button",
+          className: "btn btn-secondary",
+          "data-ocid": "culture.submit_button",
+          onClick: () => setOpen(true),
+          children: "Submit your work"
+        }
+      ) })
     ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "hairline mt-10 grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-border", children: rows.map((row) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
-      "div",
+    /* @__PURE__ */ jsxRuntimeExports.jsx(
+      Dialog,
       {
-        className: "px-4 py-5",
-        "data-ocid": `culture.row.${row.stage.toLowerCase()}`,
-        children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "section-label mb-2", children: row.stage }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[1.0625rem] font-medium text-foreground mb-1", children: row.value }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[0.8125rem] text-muted-foreground", children: row.note })
-        ]
-      },
-      row.stage
-    )) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-10", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-      "a",
-      {
-        href: "mailto:culture@newagekapital.com",
-        className: "btn btn-secondary",
-        "data-ocid": "culture.submit_button",
-        children: "Submit your work"
+        open,
+        onOpenChange: (next) => next ? setOpen(true) : handleClose(),
+        children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          DialogContent,
+          {
+            className: "sm:max-w-lg border-border bg-card",
+            "data-ocid": "culture.submit_modal",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs(DialogHeader, { children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(DialogTitle, { className: "section-heading text-lg", children: "Submit your work" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(DialogDescription, { className: "text-[0.8125rem] text-muted-foreground", children: "Share a piece for the roster. Reviewed on a rolling basis." })
+              ] }),
+              submitted ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "confirm-step", "data-ocid": "culture.submit_success", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "confirm-step-message", children: "Submission received. We'll be in touch if there's a fit." }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "confirm-step-actions", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "button",
+                  {
+                    type: "button",
+                    className: "btn",
+                    "data-ocid": "culture.submit_done_button",
+                    onClick: handleClose,
+                    children: "Done"
+                  }
+                ) })
+              ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("form", { onSubmit: handleSubmit, noValidate: true, children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "sr-only", "aria-hidden": "true", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("label", { htmlFor: "culture-honeypot", children: "Leave this field empty" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "input",
+                    {
+                      id: "culture-honeypot",
+                      type: "text",
+                      tabIndex: -1,
+                      autoComplete: "off",
+                      value: form.honeypot,
+                      onChange: (e) => setField("honeypot", e.target.value)
+                    }
+                  )
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid gap-4", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(
+                      "label",
+                      {
+                        htmlFor: "culture-name",
+                        className: "field-label mb-1.5 block",
+                        children: "Name / artist name"
+                      }
+                    ),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(
+                      "input",
+                      {
+                        id: "culture-name",
+                        type: "text",
+                        className: "field-input",
+                        value: form.name,
+                        onChange: (e) => setField("name", e.target.value),
+                        "data-ocid": "culture.name_input"
+                      }
+                    ),
+                    errors.name && /* @__PURE__ */ jsxRuntimeExports.jsx(
+                      "p",
+                      {
+                        className: "mt-1 text-[0.75rem] text-destructive",
+                        "data-ocid": "culture.name_error",
+                        children: errors.name
+                      }
+                    )
+                  ] }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(
+                      "label",
+                      {
+                        htmlFor: "culture-email",
+                        className: "field-label mb-1.5 block",
+                        children: "Email"
+                      }
+                    ),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(
+                      "input",
+                      {
+                        id: "culture-email",
+                        type: "email",
+                        className: "field-input",
+                        value: form.email,
+                        onChange: (e) => setField("email", e.target.value),
+                        "data-ocid": "culture.email_input"
+                      }
+                    ),
+                    errors.email && /* @__PURE__ */ jsxRuntimeExports.jsx(
+                      "p",
+                      {
+                        className: "mt-1 text-[0.75rem] text-destructive",
+                        "data-ocid": "culture.email_error",
+                        children: errors.email
+                      }
+                    )
+                  ] }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(
+                      "label",
+                      {
+                        htmlFor: "culture-discipline",
+                        className: "field-label mb-1.5 block",
+                        children: "Discipline"
+                      }
+                    ),
+                    /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                      "select",
+                      {
+                        id: "culture-discipline",
+                        className: "field-input",
+                        value: form.discipline,
+                        onChange: (e) => setField("discipline", e.target.value),
+                        "data-ocid": "culture.discipline_select",
+                        children: [
+                          /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "", disabled: true, children: "Select a discipline" }),
+                          DISCIPLINES.map((d2) => /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: d2.value, children: d2.label }, d2.value))
+                        ]
+                      }
+                    ),
+                    errors.discipline && /* @__PURE__ */ jsxRuntimeExports.jsx(
+                      "p",
+                      {
+                        className: "mt-1 text-[0.75rem] text-destructive",
+                        "data-ocid": "culture.discipline_error",
+                        children: errors.discipline
+                      }
+                    )
+                  ] }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(
+                      "label",
+                      {
+                        htmlFor: "culture-link",
+                        className: "field-label mb-1.5 block",
+                        children: "Link to work"
+                      }
+                    ),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(
+                      "input",
+                      {
+                        id: "culture-link",
+                        type: "url",
+                        className: "field-input",
+                        placeholder: "https://",
+                        value: form.link,
+                        onChange: (e) => setField("link", e.target.value),
+                        "data-ocid": "culture.link_input"
+                      }
+                    ),
+                    errors.link && /* @__PURE__ */ jsxRuntimeExports.jsx(
+                      "p",
+                      {
+                        className: "mt-1 text-[0.75rem] text-destructive",
+                        "data-ocid": "culture.link_error",
+                        children: errors.link
+                      }
+                    )
+                  ] }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                      "label",
+                      {
+                        htmlFor: "culture-message",
+                        className: "field-label mb-1.5 block",
+                        children: [
+                          "Message",
+                          " ",
+                          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-muted-foreground", children: "(optional)" })
+                        ]
+                      }
+                    ),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(
+                      "textarea",
+                      {
+                        id: "culture-message",
+                        className: "field-input min-h-24 resize-y",
+                        maxLength: 1e3,
+                        value: form.message,
+                        onChange: (e) => setField("message", e.target.value),
+                        "data-ocid": "culture.message_textarea"
+                      }
+                    ),
+                    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-1 flex items-center justify-between", children: [
+                      errors.message ? /* @__PURE__ */ jsxRuntimeExports.jsx(
+                        "p",
+                        {
+                          className: "text-[0.75rem] text-destructive",
+                          "data-ocid": "culture.message_error",
+                          children: errors.message
+                        }
+                      ) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", {}),
+                      /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "mono-num text-[0.6875rem] text-muted-foreground", children: [
+                        form.message.length,
+                        "/1000"
+                      ] })
+                    ] })
+                  ] }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                    "label",
+                    {
+                      htmlFor: "culture-consent",
+                      className: "flex cursor-pointer items-start gap-3 border border-border bg-card p-4",
+                      children: [
+                        /* @__PURE__ */ jsxRuntimeExports.jsx(
+                          "input",
+                          {
+                            id: "culture-consent",
+                            type: "checkbox",
+                            checked: form.marketingConsent,
+                            onChange: (e) => setField("marketingConsent", e.target.checked),
+                            className: "consent-checkbox mt-0.5",
+                            "data-ocid": "culture.consent_checkbox"
+                          }
+                        ),
+                        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-sm text-secondary-foreground", children: [
+                          "Keep me posted on future calls for work",
+                          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-muted-foreground", children: " (optional)" })
+                        ] })
+                      ]
+                    }
+                  ),
+                  submit.isError && /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "p",
+                    {
+                      className: "text-[0.8125rem] text-destructive",
+                      "data-ocid": "culture.submit_error",
+                      children: "Submission failed. Please try again."
+                    }
+                  ),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-end gap-2", children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(
+                      "button",
+                      {
+                        type: "button",
+                        className: "btn btn-secondary",
+                        "data-ocid": "culture.submit_cancel_button",
+                        onClick: handleClose,
+                        children: "Cancel"
+                      }
+                    ),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(
+                      "button",
+                      {
+                        type: "submit",
+                        className: "btn",
+                        disabled: submit.isPending,
+                        "data-ocid": "culture.submit_send_button",
+                        children: submit.isPending ? "Sending…" : "Submit"
+                      }
+                    )
+                  ] })
+                ] })
+              ] })
+            ]
+          }
+        )
       }
-    ) })
-  ] }) });
+    )
+  ] });
 };
 const NAV_GROUPS = [
   { key: "token", label: "Token", id: "metrics" },
@@ -38845,7 +44408,7 @@ const Navigation = ({
       setActiveSection(null);
       return;
     }
-    const handleScroll = () => {
+    const handleScroll2 = () => {
       const navHeight = 72;
       let current = null;
       for (const group of NAV_GROUPS) {
@@ -38856,9 +44419,9 @@ const Navigation = ({
       }
       setActiveSection(current);
     };
-    handleScroll();
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    handleScroll2();
+    window.addEventListener("scroll", handleScroll2);
+    return () => window.removeEventListener("scroll", handleScroll2);
   }, [currentPage]);
   const isUnderlineActive = (key) => hoveredGroup === key || activeSection === key;
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(
@@ -38870,7 +44433,7 @@ const Navigation = ({
         background: "rgba(8,9,10,0.9)",
         backdropFilter: "blur(12px)",
         WebkitBackdropFilter: "blur(12px)",
-        borderBottom: "1px solid var(--border)"
+        borderBottom: "1px solid var(--nak-border)"
       },
       children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "max-w-7xl mx-auto px-4 sm:px-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between h-[72px] min-w-0", children: [
@@ -38917,9 +44480,9 @@ const Navigation = ({
               {
                 className: "hidden min-[620px]:inline-flex items-center pl-[0.625rem]",
                 style: {
-                  borderLeft: "1px solid var(--border-strong)",
+                  borderLeft: "1px solid var(--nak-border-strong)",
                   fontSize: "0.6875rem",
-                  color: "var(--muted-foreground)",
+                  color: "var(--nak-text-muted)",
                   whiteSpace: "nowrap"
                 },
                 children: "New Age Kapital"
@@ -38940,7 +44503,7 @@ const Navigation = ({
                   fontSize: "0.8125rem",
                   fontWeight: 500,
                   letterSpacing: "0.01em",
-                  color: "var(--secondary-foreground)",
+                  color: "var(--nak-text-secondary)",
                   padding: "0.5rem 0.75rem"
                 },
                 "data-ocid": `nav.${group.key}`,
@@ -38957,7 +44520,7 @@ const Navigation = ({
                   className: "relative cursor-pointer bg-transparent border-0 p-2",
                   "aria-label": `Cart, ${itemCount} item${itemCount === 1 ? "" : "s"}`,
                   "data-ocid": "nav.cart_button",
-                  style: { color: "var(--secondary-foreground)" },
+                  style: { color: "var(--nak-text-secondary)" },
                   children: [
                     /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingCart, { className: "w-4 h-4" }),
                     itemCount > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -38965,9 +44528,9 @@ const Navigation = ({
                       {
                         className: "absolute -top-1 -right-1 min-w-[1rem] h-4 px-1 rounded-full text-[0.625rem] font-bold leading-4 text-center",
                         style: {
-                          background: "var(--card)",
-                          color: "var(--muted-foreground)",
-                          border: "1px solid var(--border)"
+                          background: "var(--nak-surface)",
+                          color: "var(--nak-text-muted)",
+                          border: "1px solid var(--nak-border)"
                         },
                         children: itemCount
                       }
@@ -38986,7 +44549,7 @@ const Navigation = ({
                     className: "cursor-pointer bg-transparent border-0 p-2",
                     "aria-label": "My orders",
                     "data-ocid": "nav.my_orders_button",
-                    style: { color: "var(--secondary-foreground)" },
+                    style: { color: "var(--nak-text-secondary)" },
                     children: /* @__PURE__ */ jsxRuntimeExports.jsx(Package, { className: "w-4 h-4" })
                   }
                 ),
@@ -38998,7 +44561,7 @@ const Navigation = ({
                     className: "cursor-pointer bg-transparent border-0 p-2",
                     "aria-label": "Sign out",
                     "data-ocid": "nav.sign_out_button",
-                    style: { color: "var(--secondary-foreground)" },
+                    style: { color: "var(--nak-text-secondary)" },
                     children: /* @__PURE__ */ jsxRuntimeExports.jsx(LogOut, { className: "w-4 h-4" })
                   }
                 )
@@ -39011,7 +44574,7 @@ const Navigation = ({
                   className: "cursor-pointer bg-transparent border-0 p-2 disabled:opacity-50 disabled:cursor-not-allowed",
                   "aria-label": "Sign in",
                   "data-ocid": "nav.sign_in_button",
-                  style: { color: "var(--secondary-foreground)" },
+                  style: { color: "var(--nak-text-secondary)" },
                   children: /* @__PURE__ */ jsxRuntimeExports.jsx(LogIn, { className: "w-4 h-4" })
                 }
               ),
@@ -39024,7 +44587,7 @@ const Navigation = ({
                   "data-ocid": "nav.shop_button",
                   style: {
                     background: "#ffffff",
-                    color: "#08090a",
+                    color: "var(--nak-bg)",
                     borderRadius: "var(--radius)",
                     padding: "0.5rem 1rem",
                     fontSize: "0.8125rem",
@@ -39046,9 +44609,9 @@ const Navigation = ({
               "data-ocid": "nav.menu_toggle",
               style: {
                 background: "transparent",
-                border: "1px solid var(--border)",
+                border: "1px solid var(--nak-border)",
                 borderRadius: "var(--radius)",
-                color: "var(--foreground)"
+                color: "var(--nak-text)"
               },
               children: isMenuOpen ? /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-5 h-5" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Menu, { className: "w-5 h-5" })
             }
@@ -39060,7 +44623,7 @@ const Navigation = ({
             className: "lg:hidden",
             style: {
               background: "rgba(8,9,10,0.98)",
-              borderTop: "1px solid var(--border)",
+              borderTop: "1px solid var(--nak-border)",
               maxHeight: "80vh",
               overflowY: "auto"
             },
@@ -39074,8 +44637,8 @@ const Navigation = ({
                   style: {
                     fontFamily: "var(--font-body)",
                     fontSize: "0.875rem",
-                    color: "var(--secondary-foreground)",
-                    borderBottom: "1px solid var(--border)"
+                    color: "var(--nak-text-secondary)",
+                    borderBottom: "1px solid var(--nak-border)"
                   },
                   "data-ocid": `nav.mobile_${group.key}`,
                   children: group.label
@@ -39092,7 +44655,7 @@ const Navigation = ({
                     "data-ocid": "nav.mobile_shop_button",
                     style: {
                       background: "#ffffff",
-                      color: "#08090a",
+                      color: "var(--nak-bg)",
                       borderRadius: "var(--radius)"
                     },
                     children: "Shop"
@@ -39107,7 +44670,7 @@ const Navigation = ({
                     style: {
                       fontFamily: "var(--font-body)",
                       fontSize: "0.875rem",
-                      color: "var(--secondary-foreground)"
+                      color: "var(--nak-text-secondary)"
                     },
                     "data-ocid": "nav.mobile_cart_button",
                     children: [
@@ -39118,9 +44681,9 @@ const Navigation = ({
                         {
                           className: "min-w-[1rem] h-4 px-1 rounded-full text-[0.625rem] font-bold leading-4 text-center",
                           style: {
-                            background: "var(--card)",
-                            color: "var(--muted-foreground)",
-                            border: "1px solid var(--border)"
+                            background: "var(--nak-surface)",
+                            color: "var(--nak-text-muted)",
+                            border: "1px solid var(--nak-border)"
                           },
                           children: itemCount
                         }
@@ -39141,7 +44704,7 @@ const Navigation = ({
                       style: {
                         fontFamily: "var(--font-body)",
                         fontSize: "0.875rem",
-                        color: "var(--secondary-foreground)"
+                        color: "var(--nak-text-secondary)"
                       },
                       "data-ocid": "nav.mobile_my_orders_button",
                       children: [
@@ -39162,7 +44725,7 @@ const Navigation = ({
                       style: {
                         fontFamily: "var(--font-body)",
                         fontSize: "0.875rem",
-                        color: "var(--secondary-foreground)"
+                        color: "var(--nak-text-secondary)"
                       },
                       "data-ocid": "nav.mobile_sign_out_button",
                       children: [
@@ -39181,7 +44744,7 @@ const Navigation = ({
                     style: {
                       fontFamily: "var(--font-body)",
                       fontSize: "0.875rem",
-                      color: "var(--secondary-foreground)"
+                      color: "var(--nak-text-secondary)"
                     },
                     "data-ocid": "nav.mobile_sign_in_button",
                     children: [
@@ -39226,26 +44789,10 @@ function formatTokenAmount$1(amount, decimals) {
   return `${whole.toLocaleString()}.${fractionStr}`;
 }
 const STATUS_META = {
-  paid: {
-    label: "Paid",
-    className: "text-success",
-    soft: "bg-success-soft"
-  },
-  pending: {
-    label: "Pending Payment",
-    className: "text-warning",
-    soft: "bg-warning-soft"
-  },
-  expired: {
-    label: "Expired",
-    className: "text-destructive",
-    soft: "bg-destructive-soft"
-  },
-  cancelled: {
-    label: "Cancelled",
-    className: "text-destructive",
-    soft: "bg-destructive-soft"
-  }
+  paid: { label: "Paid", tone: "positive" },
+  pending: { label: "Pending Payment", tone: "warning" },
+  expired: { label: "Expired", tone: "muted" },
+  cancelled: { label: "Cancelled", tone: "negative" }
 };
 function paymentMethodLabel$1(method) {
   switch (method) {
@@ -39262,22 +44809,22 @@ function paymentMethodLabel$1(method) {
   }
 }
 function OrderItems({ items }) {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("ul", { className: "divide-y divide-white/5", children: items.map((item, index2) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("ul", { className: "divide-y divide-[var(--border)]", children: items.map((item, index2) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
     "li",
     {
       "data-ocid": `order.item.${index2 + 1}`,
       className: "flex items-center justify-between gap-4 py-3",
       children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm font-medium text-white truncate", children: item.name }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-xs text-gray-400 mt-0.5", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm font-medium text-[var(--foreground)] truncate", children: item.name }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-xs text-[var(--muted-foreground)] mt-0.5", children: [
             "Qty ",
             item.quantity.toString(),
             " · ",
             item.variant_id
           ] })
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm font-mono-nak text-teal-bright whitespace-nowrap", children: formatPrice(item.unit_amount * item.quantity) })
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm mono-num text-[var(--foreground)] whitespace-nowrap", children: formatPrice(item.unit_amount * item.quantity) })
       ]
     },
     `${item.product_id}-${item.variant_id}-${index2}`
@@ -39288,7 +44835,6 @@ const OrderLookupPage = ({
 }) => {
   const [reference, setReference] = reactExports.useState("");
   const [submitted, setSubmitted] = reactExports.useState(null);
-  const [copied, setCopied] = reactExports.useState(false);
   reactExports.useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -39316,48 +44862,23 @@ const OrderLookupPage = ({
   };
   const isResumable = (resumeInfo == null ? void 0 : resumeInfo.status.__kind__) === "awaiting_payment" && Number(resumeInfo.expiresAt / 1000000n) - now2 > 0;
   const remainingMs = resumeInfo ? Number(resumeInfo.expiresAt / 1000000n) - now2 : 0;
-  const handleCopy = async (text) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2e3);
-    } catch {
-    }
-  };
   const statusMeta = order ? STATUS_META[order.payment_status] : void 0;
   return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "pt-24 sm:pt-32 pb-12 sm:pb-20 px-4 sm:px-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-5xl mx-auto", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center mb-10 sm:mb-14 px-2", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-4 mb-8", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Search, { className: "w-12 h-12 text-teal-400" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 rounded-full bg-teal-400/20 blur-xl animate-pulse" })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "h1",
-          {
-            className: "text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold leading-tight",
-            style: { fontFamily: "var(--font-heading)" },
-            children: "Order Lookup"
-          }
-        )
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-10 sm:mb-14 px-2", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 mb-4", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Search, { className: "w-5 h-5 text-[var(--primary)]" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "section-heading text-2xl sm:text-3xl", children: "Order Lookup" })
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm sm:text-base text-gray-300 max-w-2xl mx-auto", children: "Enter your order reference to check its status, items, total, and payment state." })
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-[var(--muted-foreground)] max-w-2xl", children: "Enter your order reference to check its status, items, total, and payment state." })
     ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative max-w-2xl mx-auto px-2 mb-10", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "max-w-2xl px-2 mb-10", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
       "form",
       {
         onSubmit: handleSubmit,
-        className: "relative card glass-card p-5 sm:p-6",
+        className: "surface p-5 sm:p-6",
         "data-ocid": "order.lookup_form",
         children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "label",
-            {
-              htmlFor: "order-reference",
-              className: "block text-sm font-medium text-gray-300 mb-2",
-              children: "Order Reference"
-            }
-          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { htmlFor: "order-reference", className: "field-label block mb-2", children: "Order Reference" }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col sm:flex-row gap-3", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(
               "input",
@@ -39367,7 +44888,7 @@ const OrderLookupPage = ({
                 value: reference,
                 onChange: (event) => setReference(event.target.value),
                 placeholder: "e.g. NAK-XXXXXX",
-                className: "flex-1 min-w-0 rounded-xl border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-purple-500/50",
+                className: "field-input flex-1 min-w-0",
                 "data-ocid": "order.reference_input"
               }
             ),
@@ -39387,11 +44908,11 @@ const OrderLookupPage = ({
         ]
       }
     ) }),
-    submitted && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative px-2", children: [
+    submitted && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-2", children: [
       isLoading && /* @__PURE__ */ jsxRuntimeExports.jsxs(
         "div",
         {
-          className: "card glass-card p-8 text-center",
+          className: "surface p-8 text-center",
           "data-ocid": "order.loading_state",
           children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "loading-shimmer h-4 w-40 mx-auto rounded mb-4" }),
@@ -39402,10 +44923,10 @@ const OrderLookupPage = ({
       !isLoading && isError && /* @__PURE__ */ jsxRuntimeExports.jsxs(
         "div",
         {
-          className: "card glass-card p-8 text-center",
+          className: "surface p-8 text-center",
           "data-ocid": "order.error_state",
           children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-destructive mb-4", children: "We couldn't look up that order. Please check the reference and try again." }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[var(--negative)] mb-4", children: "We couldn't look up that order. Please check the reference and try again." }),
             /* @__PURE__ */ jsxRuntimeExports.jsx(
               "button",
               {
@@ -39422,14 +44943,14 @@ const OrderLookupPage = ({
       !isLoading && !isError && !order && /* @__PURE__ */ jsxRuntimeExports.jsxs(
         "div",
         {
-          className: "card glass-card p-8 text-center",
+          className: "surface p-8 text-center",
           "data-ocid": "order.empty_state",
           children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Package, { className: "w-10 h-10 text-gray-500 mx-auto mb-4" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-gray-300", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Package, { className: "w-10 h-10 text-[var(--muted-foreground)] mx-auto mb-4" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-[var(--secondary-foreground)]", children: [
               "No order found for reference",
               " ",
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono-nak text-teal-bright", children: submitted }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num text-[var(--foreground)]", children: submitted }),
               "."
             ] })
           ]
@@ -39439,29 +44960,22 @@ const OrderLookupPage = ({
         /* @__PURE__ */ jsxRuntimeExports.jsxs(
           "div",
           {
-            className: "card glass-card p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4",
+            className: "surface p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4",
             "data-ocid": "order.status_banner",
             children: [
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-4", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                  "span",
-                  {
-                    className: `inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold ${statusMeta.soft} ${statusMeta.className}`,
-                    "data-ocid": "order.status",
-                    children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx(Clock, { className: "w-4 h-4" }),
-                      statusMeta.label
-                    ]
-                  }
-                ),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs(StatusPill, { tone: statusMeta.tone, children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(Clock, { className: "w-3.5 h-3.5" }),
+                  statusMeta.label
+                ] }),
                 /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-400", children: "Reference" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-mono-nak text-white", children: order.reference })
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "field-label mb-1", children: "Reference" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mono-num text-[var(--foreground)]", children: order.reference })
                 ] })
               ] }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-left sm:text-right", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-400", children: "Placed" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-300", children: formatTimestamp$1(order.created_at) })
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "field-label mb-1", children: "Placed" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-[var(--secondary-foreground)]", children: formatTimestamp$1(order.created_at) })
               ] })
             ]
           }
@@ -39469,17 +44983,17 @@ const OrderLookupPage = ({
         isResumable && resumeInfo && /* @__PURE__ */ jsxRuntimeExports.jsxs(
           "div",
           {
-            className: "deposit-surface relative p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4",
+            className: "surface p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4",
             "data-ocid": "order.resume_panel",
             children: [
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-4", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "flex h-12 w-12 items-center justify-center rounded-full bg-teal-soft text-teal-bright", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Wallet, { className: "h-6 w-6" }) }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "flex h-10 w-10 items-center justify-center rounded-[var(--radius)] border border-[var(--border-strong)] text-[var(--primary)]", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Wallet, { className: "h-5 w-5" }) }),
                 /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm font-semibold text-white", children: "This deposit is still open" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-gray-300", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "section-heading text-sm mb-1", children: "This deposit is still open" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-[var(--secondary-foreground)]", children: [
                     "Resume to complete your payment —",
                     " ",
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono-nak text-teal-bright", children: formatRemaining$1(remainingMs) }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num text-[var(--foreground)]", children: formatRemaining$1(remainingMs) }),
                     " ",
                     "remaining"
                   ] })
@@ -39502,66 +45016,52 @@ const OrderLookupPage = ({
           }
         ),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 lg:grid-cols-2 gap-6", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card glass-card p-6 sm:p-8", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "h3",
-              {
-                className: "text-lg font-semibold mb-4 flex items-center gap-2",
-                style: { fontFamily: "var(--font-heading)" },
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Package, { className: "w-5 h-5 text-purple-400" }),
-                  "Items"
-                ]
-              }
-            ),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "surface p-6 sm:p-8", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "section-heading text-base mb-4 flex items-center gap-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Package, { className: "w-4 h-4 text-[var(--primary)]" }),
+              "Items"
+            ] }),
             /* @__PURE__ */ jsxRuntimeExports.jsx(OrderItems, { items: order.items }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-4 pt-4 border-t border-white/10 space-y-2 text-sm", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-gray-400", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-4 pt-4 border-t border-[var(--border)] space-y-2 text-sm", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-[var(--muted-foreground)]", children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Subtotal" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono-nak", children: formatPrice(order.subtotal) })
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num text-[var(--foreground)]", children: formatPrice(order.subtotal) })
               ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-gray-400", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-[var(--muted-foreground)]", children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Shipping" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono-nak", children: formatPrice(order.shipping) })
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num text-[var(--foreground)]", children: formatPrice(order.shipping) })
               ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-gray-400", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-[var(--muted-foreground)]", children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Tax" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono-nak", children: formatPrice(order.tax) })
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num text-[var(--foreground)]", children: formatPrice(order.tax) })
               ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between items-center pt-2 border-t border-white/10", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-semibold text-white", children: "Total" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono-nak text-lg text-teal-bright", children: formatPrice(order.total) })
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between items-center pt-2 border-t border-[var(--border)]", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-medium text-[var(--foreground)]", children: "Total" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num text-base text-[var(--foreground)]", children: formatPrice(order.total) })
               ] })
             ] })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-6", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card glass-card p-6 sm:p-8", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                "h3",
-                {
-                  className: "text-lg font-semibold mb-4 flex items-center gap-2",
-                  style: { fontFamily: "var(--font-heading)" },
-                  children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(CreditCard, { className: "w-5 h-5 text-pink-400" }),
-                    "Payment"
-                  ]
-                }
-              ),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "surface p-6 sm:p-8", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "section-heading text-base mb-4 flex items-center gap-2", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(CreditCard, { className: "w-4 h-4 text-[var(--primary)]" }),
+                "Payment"
+              ] }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-3 text-sm", children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-gray-400", children: "Method" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white", children: paymentMethodLabel$1(order.payment_method) })
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[var(--muted-foreground)]", children: "Method" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[var(--foreground)]", children: paymentMethodLabel$1(order.payment_method) })
                 ] }),
                 /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-gray-400", children: "Status" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: statusMeta.className, children: statusMeta.label })
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[var(--muted-foreground)]", children: "Status" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num text-[var(--foreground)]", children: statusMeta.label })
                 ] }),
                 cryptoStatus && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-gray-400", children: "Payment State" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[var(--muted-foreground)]", children: "Payment State" }),
                   /* @__PURE__ */ jsxRuntimeExports.jsx(
                     "span",
                     {
-                      className: cryptoStatus.__kind__ === "paid" ? "text-success" : cryptoStatus.__kind__ === "expired" ? "text-destructive" : "text-warning",
+                      className: cryptoStatus.__kind__ === "paid" ? "text-[var(--positive)]" : cryptoStatus.__kind__ === "expired" ? "text-[var(--negative)]" : "text-[var(--nak-warning)]",
                       children: cryptoStatus.__kind__ === "paid" ? `Paid (block ${cryptoStatus.paid.blockIndex.toString()})` : cryptoStatus.__kind__ === "awaiting_payment" ? "Awaiting payment" : cryptoStatus.__kind__ === "expired" ? "Expired" : cryptoStatus.__kind__ === "overpayment" ? "Overpayment" : "Underpayment"
                     }
                   )
@@ -39571,28 +45071,21 @@ const OrderLookupPage = ({
             deposit && /* @__PURE__ */ jsxRuntimeExports.jsxs(
               "div",
               {
-                className: "deposit-surface relative p-6 sm:p-8",
+                className: "surface p-6 sm:p-8",
                 "data-ocid": "order.deposit_panel",
                 children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                    "h3",
-                    {
-                      className: "text-lg font-semibold mb-4 flex items-center gap-2",
-                      style: { fontFamily: "var(--font-heading)" },
-                      children: [
-                        /* @__PURE__ */ jsxRuntimeExports.jsx(Wallet, { className: "w-5 h-5 text-teal-bright" }),
-                        "Deposit Address"
-                      ]
-                    }
-                  ),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "section-heading text-base mb-4 flex items-center gap-2", children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(Wallet, { className: "w-4 h-4 text-[var(--primary)]" }),
+                    "Deposit Address"
+                  ] }),
                   /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-3 text-sm", children: [
                     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between", children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-gray-400", children: "Token" }),
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono-nak text-teal-bright", children: deposit.token })
+                      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[var(--muted-foreground)]", children: "Token" }),
+                      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num text-[var(--foreground)]", children: deposit.token })
                     ] }),
                     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between", children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-gray-400", children: "Amount Due" }),
-                      /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-mono-nak text-white", children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[var(--muted-foreground)]", children: "Amount Due" }),
+                      /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "mono-num text-[var(--foreground)]", children: [
                         formatTokenAmount$1(
                           deposit.amountDue,
                           deposit.decimals
@@ -39602,26 +45095,22 @@ const OrderLookupPage = ({
                       ] })
                     ] }),
                     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between", children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-gray-400", children: "Expires" }),
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-gray-300", children: formatTimestamp$1(deposit.expiresAt) })
+                      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[var(--muted-foreground)]", children: "Expires" }),
+                      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[var(--secondary-foreground)]", children: formatTimestamp$1(deposit.expiresAt) })
                     ] }),
                     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-gray-400 block mb-2", children: "Address" }),
-                      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 rounded-xl bg-black/40 border border-white/10 px-3 py-2", children: [
-                        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono-nak text-xs text-teal-bright break-all min-w-0", children: depositAccountString(deposit) }),
+                      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "field-label block mb-2", children: "Address" }),
+                      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
+                        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "inset-well flex-1 min-w-0", children: depositAccountString(deposit) }),
                         /* @__PURE__ */ jsxRuntimeExports.jsx(
-                          "button",
+                          CopyButton,
                           {
-                            type: "button",
-                            onClick: () => handleCopy(depositAccountString(deposit)),
-                            className: "shrink-0 p-2 rounded-lg hover:bg-white/5 transition-colors",
-                            "aria-label": "Copy deposit address",
-                            "data-ocid": "order.copy_address_button",
-                            children: /* @__PURE__ */ jsxRuntimeExports.jsx(Copy, { className: "w-4 h-4 text-gray-400" })
+                            text: depositAccountString(deposit),
+                            label: "Copy",
+                            className: "shrink-0"
                           }
                         )
-                      ] }),
-                      copied && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-success mt-2", children: "Address copied to clipboard." })
+                      ] })
                     ] })
                   ] })
                 ]
@@ -39629,24 +45118,17 @@ const OrderLookupPage = ({
             )
           ] })
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card glass-card p-6 sm:p-8", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "h3",
-            {
-              className: "text-lg font-semibold mb-4 flex items-center gap-2",
-              style: { fontFamily: "var(--font-heading)" },
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(MapPin, { className: "w-5 h-5 text-teal-400" }),
-                "Shipping"
-              ]
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-gray-300", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "surface p-6 sm:p-8", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "section-heading text-base mb-4 flex items-center gap-2", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(MapPin, { className: "w-4 h-4 text-[var(--primary)]" }),
+            "Shipping"
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-[var(--secondary-foreground)]", children: [
             order.customer_name,
             " · ",
             order.customer_email
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-gray-400 mt-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-[var(--muted-foreground)] mt-2", children: [
             order.shipping_address.line1,
             order.shipping_address.line2 ? `, ${order.shipping_address.line2}` : "",
             ", ",
@@ -39714,35 +45196,32 @@ const ProductPage = ({
     window.setTimeout(() => setAdded(false), 2e3);
   };
   return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "pt-24 sm:pt-32 pb-12 sm:pb-20 px-4 sm:px-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-7xl mx-auto", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center mb-10 sm:mb-14 px-2", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-4 mb-6", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingCart, { className: "w-10 h-10 text-teal-400" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 rounded-full bg-teal-400/20 blur-xl animate-pulse" })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "h1",
-          {
-            className: "text-3xl sm:text-4xl md:text-5xl font-semibold leading-tight",
-            style: { fontFamily: "var(--font-heading)" },
-            children: "Product"
-          }
-        )
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm sm:text-base text-gray-300 max-w-2xl mx-auto", children: "Official NAK STRATS merchandise and collectibles" })
-    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mb-8 sm:mb-10 px-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      "button",
+      {
+        type: "button",
+        onClick: onNavigateToShop,
+        className: "back-link",
+        "data-ocid": "product.back_link",
+        children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
+          "Back to Shop"
+        ]
+      }
+    ) }),
     isLoading && /* @__PURE__ */ jsxRuntimeExports.jsx(
       "div",
       {
         className: "relative max-w-5xl mx-auto px-2",
         "data-ocid": "product.loading_state",
-        children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "card glass-card p-6 sm:p-10", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "loading-shimmer rounded-2xl aspect-square" }),
+        children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "surface p-6 sm:p-10", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 min-[860px]:grid-cols-2 gap-8 md:gap-12", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "loading-shimmer aspect-square" }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "loading-shimmer h-8 w-3/4 rounded-lg" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "loading-shimmer h-4 w-full rounded-lg" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "loading-shimmer h-4 w-2/3 rounded-lg" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "loading-shimmer h-12 w-40 rounded-xl mt-6" })
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "loading-shimmer h-4 w-24" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "loading-shimmer h-8 w-3/4" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "loading-shimmer h-4 w-full" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "loading-shimmer h-4 w-2/3" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "loading-shimmer h-12 w-40 mt-6" })
           ] })
         ] }) })
       }
@@ -39752,16 +45231,16 @@ const ProductPage = ({
       {
         className: "relative max-w-4xl mx-auto px-2",
         "data-ocid": "product.error_state",
-        children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card glass-card p-6 sm:p-10 text-center", children: [
+        children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "surface p-6 sm:p-10 text-center", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-xl sm:text-2xl mb-3", children: "Couldn't load this product" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-gray-300 mb-8 max-w-md mx-auto", children: "Something went wrong while fetching the product details. Please try again or head back to the shop." }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-muted-foreground mb-8 max-w-md mx-auto", children: "Something went wrong while fetching the product details. Please try again or head back to the shop." }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center justify-center gap-4", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(
               "button",
               {
                 type: "button",
                 onClick: onNavigateToShop,
-                className: "btn px-8 py-4 text-base font-semibold",
+                className: "btn px-8 py-4 text-base",
                 "data-ocid": "product.back_to_shop_button",
                 children: "Back to Shop"
               }
@@ -39771,7 +45250,7 @@ const ProductPage = ({
               {
                 type: "button",
                 onClick: onNavigateToMain,
-                className: "btn px-8 py-4 text-base font-semibold",
+                className: "btn btn-secondary px-8 py-4 text-base",
                 "data-ocid": "product.back_to_main_button",
                 children: [
                   /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
@@ -39788,20 +45267,17 @@ const ProductPage = ({
       {
         className: "relative max-w-4xl mx-auto px-2",
         "data-ocid": "product.empty_state",
-        children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card glass-card p-6 sm:p-10 text-center", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative flex items-center justify-center gap-4 mb-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingCart, { className: "w-10 h-10 text-purple-400" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 rounded-full bg-purple-400/20 blur-xl animate-pulse" })
-          ] }) }),
+        children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "surface p-6 sm:p-10 text-center", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center justify-center gap-4 mb-6", children: /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingCart, { className: "w-10 h-10 text-muted-foreground" }) }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-xl sm:text-2xl mb-3", children: "Product not found" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-gray-300 mb-8 max-w-md mx-auto", children: "We couldn't find the product you were looking for. It may have been removed or the link is no longer valid." }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-muted-foreground mb-8 max-w-md mx-auto", children: "We couldn't find the product you were looking for. It may have been removed or the link is no longer valid." }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center justify-center gap-4", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(
               "button",
               {
                 type: "button",
                 onClick: onNavigateToShop,
-                className: "btn px-8 py-4 text-base font-semibold",
+                className: "btn px-8 py-4 text-base",
                 "data-ocid": "product.back_to_shop_button",
                 children: "Browse the Shop"
               }
@@ -39811,7 +45287,7 @@ const ProductPage = ({
               {
                 type: "button",
                 onClick: onNavigateToMain,
-                className: "btn px-8 py-4 text-base font-semibold",
+                className: "btn btn-secondary px-8 py-4 text-base",
                 "data-ocid": "product.back_to_main_button",
                 children: [
                   /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
@@ -39823,38 +45299,28 @@ const ProductPage = ({
         ] })
       }
     ),
-    !isLoading && !isError && product && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative max-w-6xl mx-auto px-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "card glass-card p-6 sm:p-8 lg:p-12", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 bg-gradient-to-br from-purple-600/20 via-teal-600/10 to-pink-600/20 rounded-3xl blur-2xl opacity-40" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative aspect-square rounded-3xl overflow-hidden bg-black/40 border border-white/10 flex items-center justify-center", children: image ? /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "img",
-          {
-            src: image,
-            alt: product.name,
-            className: "w-full h-full object-cover"
-          }
-        ) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center justify-center gap-3 text-gray-400", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Image, { className: "w-16 h-16 text-purple-400" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm", children: "No image available" })
-        ] }) })
-      ] }),
+    !isLoading && !isError && product && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative max-w-6xl mx-auto px-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "surface p-6 sm:p-8 lg:p-12", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 min-[860px]:grid-cols-2 gap-8 md:gap-12 items-start", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "product-well aspect-square", children: image ? /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: image, alt: product.name }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center justify-center gap-3 text-muted-foreground", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Image, { className: "w-16 h-16" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm", children: "No image available" })
+      ] }) }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs sm:text-sm uppercase tracking-widest text-teal-400 mb-2", children: product.category }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "section-label mb-3", children: product.category }),
         /* @__PURE__ */ jsxRuntimeExports.jsx(
           "h2",
           {
-            className: "text-2xl sm:text-3xl lg:text-4xl font-semibold text-white mb-3",
-            style: { fontFamily: "var(--font-heading)" },
+            className: "text-2xl sm:text-3xl lg:text-4xl mb-3",
+            style: { fontSize: "1.75rem" },
             children: product.name
           }
         ),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm sm:text-base text-gray-300 mb-6", children: product.description }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm sm:text-base text-secondary-foreground mb-8", children: product.description }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 mb-8", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-2xl sm:text-3xl font-bold text-teal-300", children: formatPrice(unitPrice) }),
-          maxInventory === 0n && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "px-3 py-1 rounded-full text-xs font-semibold bg-destructive-soft text-destructive", children: "Out of stock" })
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num text-2xl sm:text-3xl", children: formatPrice(unitPrice) }),
+          maxInventory === 0n && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "stock-pill stock-pill-soldout", children: "Sold out" })
         ] }),
         product.variants.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-8", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-sm font-semibold text-gray-300 mb-3", children: "Select Variant" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "section-label mb-3", children: "Select Variant" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-1 sm:grid-cols-2 gap-3", children: product.variants.map((variant) => {
             const isSelected = variant.id === selectedVariantId;
             const isSoldOut = variant.inventory === 0n;
@@ -39868,19 +45334,19 @@ const ProductPage = ({
                   setAdded(false);
                 },
                 disabled: isSoldOut,
-                className: `relative text-left px-4 py-3 rounded-xl border transition-all duration-300 ${isSelected ? "border-teal-400 bg-teal-soft shadow-[0_0_0_1px_var(--nak-teal-bright),0_4px_16px_rgba(34,211,238,0.2)]" : "border-white/10 bg-black/40 hover:border-white/25 hover:bg-white/5"} ${isSoldOut ? "opacity-45 cursor-not-allowed" : ""}`,
+                className: `bordered-select justify-between text-left ${isSelected ? "is-active" : ""} ${isSoldOut ? "opacity-45 cursor-not-allowed" : ""}`,
                 "data-ocid": `product.variant.${variant.id}`,
                 children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between gap-2", children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-semibold text-sm text-white", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "flex items-center gap-2", children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-medium text-sm", children: [
                       variant.name,
                       variant.size ? ` · ${variant.size}` : ""
                     ] }),
-                    isSelected && /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4 text-teal-400 shrink-0" })
+                    isSelected && /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4 shrink-0" })
                   ] }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between gap-2 mt-1", children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm text-teal-300", children: formatPrice(variant.price) }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-gray-400", children: isSoldOut ? "Sold out" : `${variant.inventory} in stock` })
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "flex items-center gap-3", children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num text-sm", children: formatPrice(variant.price) }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-muted-foreground", children: isSoldOut ? "Sold out" : `${variant.inventory} in stock` })
                   ] })
                 ]
               },
@@ -39889,11 +45355,11 @@ const ProductPage = ({
           }) })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-8", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-sm font-semibold text-gray-300 mb-3", children: "Quantity" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "section-label mb-3", children: "Quantity" }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs(
             "div",
             {
-              className: "inline-flex items-center gap-1 rounded-xl border border-white/10 bg-black/40 p-1",
+              className: "bordered-stepper",
               "data-ocid": "product.quantity",
               children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -39902,27 +45368,20 @@ const ProductPage = ({
                     type: "button",
                     onClick: () => setQuantity((q2) => Math.max(1, q2 - 1)),
                     disabled: quantity <= 1,
-                    className: "w-10 h-10 rounded-lg flex items-center justify-center hover:bg-white/10 transition-colors disabled:opacity-40 disabled:cursor-not-allowed",
+                    className: "disabled:opacity-40 disabled:cursor-not-allowed",
                     "aria-label": "Decrease quantity",
                     "data-ocid": "product.decrease_button",
                     children: /* @__PURE__ */ jsxRuntimeExports.jsx(Minus, { className: "w-4 h-4" })
                   }
                 ),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "span",
-                  {
-                    className: "w-10 text-center font-semibold",
-                    "aria-live": "polite",
-                    children: quantity
-                  }
-                ),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "stepper-value", "aria-live": "polite", children: quantity }),
                 /* @__PURE__ */ jsxRuntimeExports.jsx(
                   "button",
                   {
                     type: "button",
                     onClick: () => setQuantity((q2) => Math.min(maxQty, q2 + 1)),
                     disabled: quantity >= maxQty,
-                    className: "w-10 h-10 rounded-lg flex items-center justify-center hover:bg-white/10 transition-colors disabled:opacity-40 disabled:cursor-not-allowed",
+                    className: "disabled:opacity-40 disabled:cursor-not-allowed",
                     "aria-label": "Increase quantity",
                     "data-ocid": "product.increase_button",
                     children: /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { className: "w-4 h-4" })
@@ -39939,10 +45398,10 @@ const ProductPage = ({
               type: "button",
               onClick: handleAddToCart,
               disabled: maxInventory === 0n,
-              className: "btn px-8 py-4 text-base font-semibold disabled:opacity-50 disabled:cursor-not-allowed",
+              className: "btn px-8 py-4 text-base disabled:opacity-50 disabled:cursor-not-allowed",
               "data-ocid": "product.add_to_cart_button",
               children: added ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-teal-300" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-5 h-5" }),
                 "Added to Cart"
               ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingCart, { className: "w-5 h-5" }),
@@ -39955,7 +45414,7 @@ const ProductPage = ({
             {
               type: "button",
               onClick: onNavigateToShop,
-              className: "btn px-8 py-4 text-base font-semibold",
+              className: "btn btn-secondary px-8 py-4 text-base",
               "data-ocid": "product.continue_shopping_button",
               children: "Continue Shopping"
             }
@@ -39966,7 +45425,7 @@ const ProductPage = ({
           {
             type: "button",
             onClick: onNavigateToMain,
-            className: "btn inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold",
+            className: "back-link",
             "data-ocid": "product.back_to_main_button",
             children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
@@ -40561,7 +46020,7 @@ const ShopBanner = ({ onNavigateToShop }) => {
               {
                 className: "w-4 h-4",
                 style: {
-                  background: "var(--border-strong)",
+                  background: "var(--nak-border-strong)",
                   borderRadius: "2px"
                 }
               }
@@ -40570,14 +46029,14 @@ const ShopBanner = ({ onNavigateToShop }) => {
         ),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "flex-1 min-w-0 flex flex-col gap-0.5", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "section-label", children: "Product Line" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "truncate", style: { color: "var(--foreground)" }, children: "N.A.K. Fragrance — five colognes, settled in ckUSDC" })
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "truncate", style: { color: "var(--nak-text)" }, children: "N.A.K. Fragrance — five colognes, settled in ckUSDC" })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "flex-shrink-0 flex items-center gap-2", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx(
             "span",
             {
               className: "text-sm font-medium",
-              style: { color: "var(--foreground)" },
+              style: { color: "var(--nak-text)" },
               children: "Enter the shop"
             }
           ),
@@ -40608,6 +46067,11 @@ const ShopPage = ({ onNavigateToMain }) => {
         type: "button",
         onClick: onNavigateToMain,
         className: "back-link",
+        style: {
+          background: "transparent",
+          border: "none",
+          padding: 0
+        },
         "data-ocid": "shop.back_link",
         children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
@@ -40615,48 +46079,52 @@ const ShopPage = ({ onNavigateToMain }) => {
         ]
       }
     ) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center mb-12 sm:mb-16 px-2", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs sm:text-sm uppercase tracking-[0.3em] text-teal-400 mb-3", children: "Fragrance" }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-10 sm:mb-14 px-2", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "section-label mb-3", children: "Product Line" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(
         "h1",
         {
-          className: "text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold leading-tight",
-          style: { fontFamily: "var(--font-heading)" },
-          children: "The NAK STRATS Collection"
+          className: "text-[1.75rem] font-medium leading-tight",
+          style: { fontSize: "1.75rem", letterSpacing: "-0.015em" },
+          children: "Fragrance"
         }
       ),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm sm:text-base text-gray-300 max-w-2xl mx-auto mt-4", children: "Handcrafted colognes from the NAK STRATS collection — reserve yours before they sell out." })
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "p",
+        {
+          className: "text-sm mt-3 max-w-2xl",
+          style: { color: "var(--muted-foreground)" },
+          children: "Handcrafted colognes from the NAK STRATS collection — reserve yours before they sell out."
+        }
+      )
     ] }),
-    isLoading && /* @__PURE__ */ jsxRuntimeExports.jsx(
-      "div",
-      {
-        className: "grid gap-5",
-        style: {
-          gridTemplateColumns: "repeat(auto-fill, minmax(15rem, 1fr))"
-        },
-        "data-ocid": "shop.loading_state",
-        children: ["skeleton-0", "skeleton-1", "skeleton-2"].map((key) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "shop-card p-4", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "shop-well loading-shimmer mb-4" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "loading-shimmer h-6 w-3/4 rounded-lg mb-3" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "loading-shimmer h-4 w-full rounded-lg mb-3" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "loading-shimmer h-4 w-2/3 rounded-lg" })
-        ] }, key))
-      }
-    ),
+    isLoading && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "lattice", "data-ocid": "shop.loading_state", children: ["skeleton-0", "skeleton-1", "skeleton-2"].map((key) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "lattice-cell", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "product-well loading-shimmer" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "loading-shimmer h-5 w-3/4" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "loading-shimmer h-4 w-full" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "loading-shimmer h-4 w-2/3" })
+    ] }, key)) }),
     !isLoading && isError && /* @__PURE__ */ jsxRuntimeExports.jsxs(
       "div",
       {
-        className: "card glass-card p-6 sm:p-10 text-center max-w-4xl mx-auto",
+        className: "surface p-8 sm:p-10 text-center max-w-4xl mx-auto",
         "data-ocid": "shop.error_state",
         children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-xl sm:text-2xl mb-3", children: "Couldn't load the collection" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-gray-300 mb-8 max-w-md mx-auto", children: "Something went wrong while fetching the products. Please try again shortly." }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "p",
+            {
+              className: "text-sm mb-8 max-w-md mx-auto",
+              style: { color: "var(--muted-foreground)" },
+              children: "Something went wrong while fetching the products. Please try again shortly."
+            }
+          ),
           /* @__PURE__ */ jsxRuntimeExports.jsxs(
             "button",
             {
               type: "button",
               onClick: onNavigateToMain,
-              className: "btn px-8 py-4 text-base font-semibold",
+              className: "btn-secondary",
               "data-ocid": "shop.back_to_main_button",
               children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
@@ -40670,21 +46138,31 @@ const ShopPage = ({ onNavigateToMain }) => {
     !isLoading && !isError && (!products || products.length === 0) && /* @__PURE__ */ jsxRuntimeExports.jsxs(
       "div",
       {
-        className: "card glass-card p-6 sm:p-10 text-center max-w-4xl mx-auto",
+        className: "surface p-8 sm:p-10 text-center max-w-4xl mx-auto",
         "data-ocid": "shop.empty_state",
         children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative flex items-center justify-center gap-4 mb-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingCart, { className: "w-10 h-10 text-purple-400" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 rounded-full bg-purple-400/20 blur-xl animate-pulse" })
-          ] }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            Image,
+            {
+              className: "w-10 h-10 mx-auto mb-6",
+              style: { color: "var(--muted-foreground)" }
+            }
+          ),
           /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-xl sm:text-2xl mb-3", children: "The collection is being finalized" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-gray-300 mb-8 max-w-md mx-auto", children: "Our cologne lineup is being prepared. Check back soon for availability and pricing." }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "p",
+            {
+              className: "text-sm mb-8 max-w-md mx-auto",
+              style: { color: "var(--muted-foreground)" },
+              children: "Our cologne lineup is being prepared. Check back soon for availability and pricing."
+            }
+          ),
           /* @__PURE__ */ jsxRuntimeExports.jsxs(
             "button",
             {
               type: "button",
               onClick: onNavigateToMain,
-              className: "btn px-8 py-4 text-base font-semibold",
+              className: "btn-secondary",
               "data-ocid": "shop.back_to_main_button",
               children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
@@ -40695,82 +46173,97 @@ const ShopPage = ({ onNavigateToMain }) => {
         ]
       }
     ),
-    !isLoading && !isError && products && products.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx(
-      "div",
-      {
-        className: "grid gap-5",
-        style: {
-          gridTemplateColumns: "repeat(auto-fill, minmax(15rem, 1fr))"
+    !isLoading && !isError && products && products.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "lattice", "data-ocid": "shop.grid", children: products.map((product, index2) => {
+      var _a3, _b3;
+      const image = (_a3 = product.images) == null ? void 0 : _a3[0];
+      const inventory = Number(product.inventory);
+      const isSoldOut = inventory === 0;
+      const isLow = inventory > 0 && inventory <= 10;
+      const isAdded = addedId === (product.slug || String(product.id));
+      const size = (_b3 = product.variants[0]) == null ? void 0 : _b3.size;
+      return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "div",
+        {
+          className: `lattice-cell ${isSoldOut ? "is-soldout" : ""}`,
+          "data-ocid": `shop.item.${index2 + 1}`,
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "product-well", children: image ? /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: image, alt: product.name }) : /* @__PURE__ */ jsxRuntimeExports.jsx(
+              Image,
+              {
+                className: "w-12 h-12",
+                style: { color: "var(--muted-foreground)" }
+              }
+            ) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-baseline justify-between gap-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "h4",
+                {
+                  className: "text-[0.9375rem] font-medium leading-snug",
+                  style: {
+                    fontSize: "0.9375rem",
+                    letterSpacing: "-0.015em"
+                  },
+                  children: product.name
+                }
+              ),
+              size && /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "span",
+                {
+                  className: "mono-num text-[0.6875rem] whitespace-nowrap",
+                  style: { color: "var(--muted-foreground)" },
+                  children: size
+                }
+              )
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "p",
+              {
+                className: "text-[0.75rem] leading-relaxed",
+                style: { color: "var(--muted-foreground)" },
+                children: product.description
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "div",
+              {
+                className: "mt-auto",
+                style: { borderTop: "1px solid var(--border)" }
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between gap-2 pt-3", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num text-[0.9375rem]", children: formatPrice(product.price) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "button",
+                {
+                  type: "button",
+                  onClick: () => handleAddToCart(product),
+                  disabled: isSoldOut,
+                  className: "add-arrow",
+                  style: {
+                    background: "transparent",
+                    border: "none",
+                    padding: 0,
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "0.25rem"
+                  },
+                  "data-ocid": `shop.add_to_cart_button.${index2 + 1}`,
+                  children: isAdded ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4" }),
+                    "Added"
+                  ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: "Add →" })
+                }
+              )
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center justify-between", children: isSoldOut ? /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "stock-pill stock-pill-soldout", children: "Sold out" }) : isLow ? /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "stock-pill", children: [
+              inventory,
+              " left"
+            ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "stock-pill", children: "In stock" }) })
+          ]
         },
-        children: products.map((product, index2) => {
-          var _a3;
-          const image = (_a3 = product.images) == null ? void 0 : _a3[0];
-          const inventory = Number(product.inventory);
-          const isSoldOut = inventory === 0;
-          const isLow = inventory > 0 && inventory <= 10;
-          const isCritical = inventory > 0 && inventory <= 3;
-          const isAdded = addedId === (product.slug || String(product.id));
-          return /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "div",
-            {
-              className: `shop-card ${isSoldOut ? "shop-card-soldout" : ""} animate-fade-in-up`,
-              style: { animationDelay: `${(index2 + 1) * 0.1}s` },
-              "data-ocid": `shop.item.${index2 + 1}`,
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-4 pb-0", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "shop-well", children: image ? /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: image, alt: product.name }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Image, { className: "w-12 h-12 text-white/40" }) }) }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-4", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center justify-between gap-2 mb-2", children: isSoldOut ? /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "inventory-pill inventory-pill-soldout", children: "Sold out" }) : isLow ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                    "span",
-                    {
-                      className: `inventory-pill ${isCritical ? "inventory-pill-critical" : "inventory-pill-low"}`,
-                      children: [
-                        inventory,
-                        " left"
-                      ]
-                    }
-                  ) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "inventory-pill inventory-pill-low", children: "In stock" }) }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(
-                    "h4",
-                    {
-                      className: "text-lg sm:text-xl font-semibold mb-1 text-white",
-                      style: { fontFamily: "var(--font-heading)" },
-                      children: product.name
-                    }
-                  ),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs sm:text-sm text-gray-400 mb-3 line-clamp-2", children: product.description }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(
-                    "div",
-                    {
-                      className: "text-lg font-semibold text-teal-300 mb-4",
-                      style: { fontFamily: "var(--font-mono)" },
-                      children: formatPrice(product.price)
-                    }
-                  ),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(
-                    "button",
-                    {
-                      type: "button",
-                      onClick: () => handleAddToCart(product),
-                      disabled: isSoldOut,
-                      className: "add-to-cart",
-                      "data-ocid": `shop.add_to_cart_button.${index2 + 1}`,
-                      children: isAdded ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                        /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4" }),
-                        "Added"
-                      ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                        /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingCart, { className: "w-4 h-4" }),
-                        "Add to Cart"
-                      ] })
-                    }
-                  )
-                ] })
-              ]
-            },
-            product.slug || String(product.id)
-          );
-        })
-      }
-    )
+        product.slug || String(product.id)
+      );
+    }) })
   ] }) });
 };
 const SuccessPage = ({
@@ -40778,7 +46271,6 @@ const SuccessPage = ({
   onNavigateToMain,
   onNavigateToShop
 }) => {
-  const [copied, setCopied] = reactExports.useState(false);
   const confirm = useConfirmCardPayment();
   const { data: order } = useOrderStatus(orderReference || null);
   const { clearActiveOrderRef } = useActiveOrderRef();
@@ -40790,15 +46282,6 @@ const SuccessPage = ({
     if (!orderReference || !isCardOrder) return;
     confirm.mutate(orderReference);
   }, [orderReference, isCardOrder, confirm.mutate]);
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(orderReference);
-      setCopied(true);
-      window.setTimeout(() => setCopied(false), 2e3);
-    } catch {
-      setCopied(false);
-    }
-  };
   const handleRetry = () => {
     if (!orderReference || !isCardOrder) return;
     confirm.mutate(orderReference);
@@ -40832,67 +46315,96 @@ const SuccessPage = ({
       icon: Wallet,
       title: "Payment Confirmed",
       body: "Your payment was received and verified. Your order is now locked in.",
-      accent: "text-teal-bright",
-      soft: "bg-teal-soft"
+      accent: "text-positive"
     },
     {
       icon: PackageCheck,
       title: "Order Processing",
-      body: "Our team is preparing your items for dispatch. You will receive a shipping update shortly.",
-      accent: "text-pink-bright",
-      soft: "bg-pink-soft"
+      body: "Our team is preparing your items for dispatch. You will receive a shipping update when your order ships.",
+      accent: "text-primary"
     },
     {
       icon: ReceiptText,
       title: "Keep Your Reference",
       body: "Save your order reference above. Use it any time to look up your order status.",
-      accent: "text-purple-400",
-      soft: "bg-purple-900/20"
+      accent: "text-muted-foreground"
     }
   ];
+  const renderOrderReference = () => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-full max-w-md", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-2 mb-2", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(ReceiptText, { className: "w-4 h-4 text-muted-foreground" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "field-label", children: "Order Reference" })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "inset-well flex items-center justify-between gap-3", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num text-sm text-foreground break-all", children: orderReference }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(CopyButton, { text: orderReference, label: "Copy", className: "shrink-0" })
+    ] })
+  ] });
+  const renderOrderSummary = () => {
+    if (!order) return null;
+    return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-full max-w-md text-left", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-2 mb-4", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(PackageCheck, { className: "w-4 h-4 text-muted-foreground" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "field-label", children: "Order Summary" })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "summary-panel", children: [
+        order.items.map((item, index2) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "div",
+          {
+            className: "summary-row",
+            "data-ocid": `success.line_item.${index2 + 1}`,
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "min-w-0", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block truncate", children: item.name }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "block text-xs text-muted-foreground", children: [
+                  "Qty ",
+                  item.quantity.toString()
+                ] })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "summary-value shrink-0", children: formatPrice(item.unit_amount * item.quantity) })
+            ]
+          },
+          `${item.variant_id}-${index2}`
+        )),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "summary-row", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Subtotal" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "summary-value", children: formatPrice(order.subtotal) })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "summary-row", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Shipping" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "summary-value", children: formatPrice(order.shipping) })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "summary-row", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Tax" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "summary-value", children: formatPrice(order.tax) })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "summary-total", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Total" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "summary-value", children: formatPrice(order.total) })
+        ] })
+      ] })
+    ] });
+  };
   return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "pt-24 sm:pt-32 pb-12 sm:pb-20 px-4 sm:px-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-7xl mx-auto", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center mb-12 sm:mb-16 px-2", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-4 mb-8", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
-          isConfirmed ? /* @__PURE__ */ jsxRuntimeExports.jsx(CircleCheck, { className: "w-12 h-12 text-success" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-12 h-12 text-purple-400 animate-spin" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 rounded-full bg-success-soft blur-xl animate-pulse" })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "h1",
-          {
-            className: "text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold leading-tight",
-            style: { fontFamily: "var(--font-heading)" },
-            children: isConfirmed ? "Order Confirmed" : "Confirming Your Order"
-          }
-        )
+        isConfirmed ? /* @__PURE__ */ jsxRuntimeExports.jsx(CircleCheck, { className: "w-12 h-12 text-positive" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-12 h-12 text-primary animate-spin" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "section-heading text-3xl sm:text-4xl md:text-5xl", children: isConfirmed ? "Order Confirmed" : "Confirming Your Order" })
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm sm:text-base text-gray-300 max-w-2xl mx-auto", children: isConfirmed ? "Thank you for your purchase. Your payment was successful and your order is confirmed." : "We are confirming your payment with the payment service. This only takes a moment." })
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto", children: isConfirmed ? "Thank you for your purchase. Your payment was successful and your order is confirmed." : "We are confirming your payment with the payment service. This only takes a moment." })
     ] }),
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative max-w-4xl mx-auto px-2", children: confirm.isPending || isStillPending ? (
       /* Confirming state */
       /* @__PURE__ */ jsxRuntimeExports.jsx(
         "div",
         {
-          className: "relative card glass-card p-6 sm:p-10 text-center",
+          className: "surface p-6 sm:p-10 text-center",
           "data-ocid": "success.confirming_state",
           children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative mb-6", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-purple-900/20 flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-10 h-10 sm:w-12 sm:h-12 text-purple-400 animate-spin" }) }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "h2",
-              {
-                className: "text-2xl sm:text-3xl font-semibold text-white mb-3",
-                style: { fontFamily: "var(--font-heading)" },
-                children: "Confirming Payment"
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm sm:text-base text-gray-300 max-w-xl mx-auto mb-8", children: "We are checking your order status with the payment service. Your order is still pending until this confirmation completes." }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-full max-w-md deposit-surface p-5 sm:p-6", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-2 mb-2", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(ReceiptText, { className: "w-4 h-4 text-teal-bright" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs uppercase tracking-widest text-gray-400", children: "Order Reference" })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono-nak text-lg sm:text-xl text-teal-bright break-all", children: orderReference })
-            ] })
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mb-6", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-20 h-20 sm:w-24 sm:h-24 rounded-full surface-hover flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-10 h-10 sm:w-12 sm:h-12 text-primary animate-spin" }) }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "section-heading text-2xl sm:text-3xl mb-3", children: "Confirming Payment" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm sm:text-base text-muted-foreground max-w-xl mx-auto mb-8", children: "We are checking your order status with the payment service. Your order is still pending until this confirmation completes." }),
+            renderOrderReference()
           ] })
         }
       )
@@ -40901,26 +46413,13 @@ const SuccessPage = ({
       /* @__PURE__ */ jsxRuntimeExports.jsx(
         "div",
         {
-          className: "relative card glass-card p-6 sm:p-10 text-center",
+          className: "surface p-6 sm:p-10 text-center",
           "data-ocid": "success.error_state",
           children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative mb-6", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-destructive-soft flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(TriangleAlert, { className: "w-10 h-10 sm:w-12 sm:h-12 text-destructive" }) }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "h2",
-              {
-                className: "text-2xl sm:text-3xl font-semibold text-white mb-3",
-                style: { fontFamily: "var(--font-heading)" },
-                children: "Payment Not Confirmed"
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm sm:text-base text-gray-300 max-w-xl mx-auto mb-8", children: errorMessage }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-full max-w-md deposit-surface p-5 sm:p-6 mb-8", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-2 mb-2", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(ReceiptText, { className: "w-4 h-4 text-teal-bright" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs uppercase tracking-widest text-gray-400", children: "Order Reference" })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono-nak text-lg sm:text-xl text-teal-bright break-all", children: orderReference })
-            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mb-6", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-destructive-soft flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(TriangleAlert, { className: "w-10 h-10 sm:w-12 sm:h-12 text-destructive" }) }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "section-heading text-2xl sm:text-3xl mb-3", children: "Payment Not Confirmed" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm sm:text-base text-muted-foreground max-w-xl mx-auto mb-8", children: errorMessage }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mb-8", children: renderOrderReference() }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center justify-center gap-4", children: [
               /* @__PURE__ */ jsxRuntimeExports.jsxs(
                 "button",
@@ -40941,7 +46440,7 @@ const SuccessPage = ({
                   type: "button",
                   onClick: onNavigateToShop,
                   "data-ocid": "success.continue_shopping_button",
-                  className: "btn px-8 py-4 text-base font-semibold",
+                  className: "btn-secondary px-8 py-4 text-base font-semibold",
                   children: [
                     /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingBag, { className: "w-4 h-4" }),
                     "Continue Shopping"
@@ -40955,49 +46454,13 @@ const SuccessPage = ({
     ) : (
       /* Confirmed state */
       /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative card glass-card p-6 sm:p-10 mb-8 sm:mb-12", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center text-center", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative mb-6", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-success-soft flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(BadgeCheck, { className: "w-10 h-10 sm:w-12 sm:h-12 text-success" }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 rounded-full bg-success-soft blur-2xl animate-pulse" })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "h2",
-            {
-              className: "text-2xl sm:text-3xl font-semibold text-white mb-3",
-              style: { fontFamily: "var(--font-heading)" },
-              children: "Payment Successful"
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm sm:text-base text-gray-300 max-w-xl mx-auto mb-8", children: "Your order has been placed and your payment has been confirmed. A summary of your purchase is below." }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-full max-w-md deposit-surface p-5 sm:p-6 mb-8", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-2 mb-2", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(ReceiptText, { className: "w-4 h-4 text-teal-bright" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs uppercase tracking-widest text-gray-400", children: "Order Reference" })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-3", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono-nak text-lg sm:text-xl text-teal-bright break-all", children: orderReference }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "button",
-                {
-                  type: "button",
-                  onClick: handleCopy,
-                  "aria-label": "Copy order reference",
-                  "data-ocid": "success.copy_reference_button",
-                  className: "btn p-2.5 rounded-xl",
-                  children: /* @__PURE__ */ jsxRuntimeExports.jsx(Copy, { className: "w-4 h-4" })
-                }
-              )
-            ] }),
-            copied && /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "p",
-              {
-                className: "mt-2 text-xs text-success",
-                "data-ocid": "success.copy_confirmation",
-                children: "Reference copied to clipboard"
-              }
-            )
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center justify-center gap-4", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "surface p-6 sm:p-10 mb-8 sm:mb-12", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center text-center", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mb-6", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-success-soft flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(BadgeCheck, { className: "w-10 h-10 sm:w-12 sm:h-12 text-success" }) }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "section-heading text-2xl sm:text-3xl mb-3", children: "Payment Successful" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm sm:text-base text-muted-foreground max-w-xl mx-auto mb-8", children: "Your order has been placed and your payment has been confirmed. A summary of your purchase is below." }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mb-8", children: renderOrderReference() }),
+          renderOrderSummary(),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center justify-center gap-4 mt-8", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs(
               "button",
               {
@@ -41017,7 +46480,7 @@ const SuccessPage = ({
                 type: "button",
                 onClick: onNavigateToMain,
                 "data-ocid": "success.back_to_main_button",
-                className: "btn px-8 py-4 text-base font-semibold",
+                className: "btn-secondary px-8 py-4 text-base font-semibold",
                 children: [
                   /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
                   "Back to Main"
@@ -41026,50 +46489,30 @@ const SuccessPage = ({
             )
           ] })
         ] }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative card glass-card p-6 sm:p-10", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "surface p-6 sm:p-10", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-2 sm:gap-3 mb-6 sm:mb-8", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Clock, { className: "w-6 h-6 sm:w-7 sm:h-7 text-pink-400" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "h3",
-              {
-                className: "text-2xl sm:text-3xl font-semibold text-white",
-                style: { fontFamily: "var(--font-heading)" },
-                children: "What Happens Next"
-              }
-            )
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Clock, { className: "w-6 h-6 sm:w-7 sm:h-7 text-primary" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "section-heading text-2xl sm:text-3xl", children: "What Happens Next" })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6", children: nextSteps.map((step, index2) => {
             const Icon2 = step.icon;
             return /* @__PURE__ */ jsxRuntimeExports.jsxs(
               "div",
               {
-                className: "relative token-option p-5 sm:p-6",
+                className: "hairline p-5 sm:p-6",
                 "data-ocid": `success.next_step.${index2 + 1}`,
                 children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(
-                    "div",
-                    {
-                      className: `w-12 h-12 rounded-xl ${step.soft} flex items-center justify-center mb-4`,
-                      children: /* @__PURE__ */ jsxRuntimeExports.jsx(Icon2, { className: `w-6 h-6 ${step.accent}` })
-                    }
-                  ),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(
-                    "h4",
-                    {
-                      className: "text-lg font-semibold text-white mb-2",
-                      style: { fontFamily: "var(--font-heading)" },
-                      children: step.title
-                    }
-                  ),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-400", children: step.body })
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-12 h-12 rounded-md surface-hover flex items-center justify-center mb-4", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Icon2, { className: `w-6 h-6 ${step.accent}` }) }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("h4", { className: "section-heading text-lg mb-2", children: step.title }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-muted-foreground", children: step.body })
                 ]
               },
               step.title
             );
           }) }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-8 sm:mt-10 flex items-start justify-center gap-3 text-center", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Mail, { className: "w-4 h-4 text-purple-400 mt-0.5 shrink-0" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs sm:text-sm text-gray-400 max-w-xl", children: "Questions about your order? Reach out to our support team and reference your order number so we can help you faster." })
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Mail, { className: "w-4 h-4 text-muted-foreground mt-0.5 shrink-0" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs sm:text-sm text-muted-foreground max-w-xl", children: "Questions about your order? Reach out to our support team and reference your order number so we can help you faster." })
           ] })
         ] })
       ] })
@@ -41471,7 +46914,7 @@ function App() {
     "div",
     {
       className: "min-h-screen relative overflow-x-hidden",
-      style: { backgroundColor: "var(--nak-deep-black)" },
+      style: { backgroundColor: "var(--nak-bg)" },
       children: [
         currentPage !== "main" && /* @__PURE__ */ jsxRuntimeExports.jsx(BubbleBackground, {}),
         /* @__PURE__ */ jsxRuntimeExports.jsx(

@@ -111,7 +111,7 @@ const BubbleBackground: React.FC = () => {
           background: `
             radial-gradient(ellipse at 50% 0%, rgba(6, 182, 212, 0.02) 0%, transparent 60%),
             radial-gradient(ellipse at 0% 100%, rgba(139, 92, 246, 0.015) 0%, transparent 50%),
-            radial-gradient(ellipse at 100% 100%, rgba(236, 72, 153, 0.01) 0%, transparent 50%)
+            radial-gradient(ellipse at 100% 100%, rgba(139, 92, 246, 0.01) 0%, transparent 50%)
           `,
           backdropFilter: "blur(60px)",
         }}

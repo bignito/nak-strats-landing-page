@@ -43,6 +43,38 @@ type SweepError =
    sweepFailed: text;
    unauthorized;
  };
+type SubmissionRecord = 
+ record {
+   discipline: Discipline;
+   email: text;
+   id: text;
+   link: text;
+   marketingConsent: bool;
+   marketingConsentAt: opt int;
+   message: opt text;
+   name: text;
+   submittedAt: int;
+ };
+type SubmissionInput = 
+ record {
+   discipline: Discipline;
+   email: text;
+   honeypot: text;
+   link: text;
+   marketingConsent: bool;
+   marketingConsentAt: opt int;
+   message: opt text;
+   name: text;
+ };
+type SubmissionError = 
+ variant {
+   honeypot;
+   invalidInput: text;
+   invalidResponse: text;
+   notConfigured: text;
+   outcallFailed: text;
+   rateLimited;
+ };
 type SubaccountBalanceResult = 
  record {
    balance: nat;
@@ -78,22 +110,22 @@ type Result__1 =
  };
 type Result_9 = 
  variant {
-   err: RecoveryError;
-   ok: ResumeInfo;
+   err: PaymentError;
+   ok;
  };
 type Result_8 = 
  variant {
-   err: SweepError;
-   ok: SubaccountBalanceResult;
+   err: SubmissionError;
+   ok: vec SubmissionRecord;
  };
 type Result_7 = 
  variant {
-   err: PaymentError;
+   err: EmailError;
    ok;
  };
 type Result_6 = 
  variant {
-   err: EmailError;
+   err: SubmissionError;
    ok;
  };
 type Result_5 = 
@@ -111,55 +143,65 @@ type Result_3 =
    err: SweepError;
    ok: SweepSubaccountResult;
  };
+type Result_20 = 
+ variant {
+   err: PaymentServiceError;
+   ok: PaymentStatus;
+ };
 type Result_2 = 
  variant {
    err: ConsentError;
    ok;
  };
-type Result_18 = 
- variant {
-   err: PaymentServiceError;
-   ok: PaymentStatus;
- };
-type Result_17 = 
+type Result_19 = 
  variant {
    err: PaymentServiceError;
    ok: CheckoutSession;
  };
-type Result_16 = 
+type Result_18 = 
  variant {
    err: PaymentError;
    ok: CheckoutSession;
  };
-type Result_15 = 
+type Result_17 = 
  variant {
    err: OrderError;
    ok: Order;
  };
-type Result_14 = 
+type Result_16 = 
  variant {
    err: RecoveryError;
    ok: RecheckResult;
  };
-type Result_13 = 
+type Result_15 = 
  variant {
    err: ConsentError;
    ok: ConsentListExport;
  };
-type Result_12 = 
+type Result_14 = 
  variant {
    err: CryptoPaymentError;
    ok: DepositInfo;
  };
-type Result_11 = 
+type Result_13 = 
  variant {
    err: CryptoPaymentError;
    ok: CryptoPaymentStatus;
  };
-type Result_10 = 
+type Result_12 = 
  variant {
    err: RecoveryError;
    ok: nat;
+ };
+type Result_11 = 
+ variant {
+   err: RecoveryError;
+   ok: ResumeInfo;
+ };
+type Result_10 = 
+ variant {
+   err: SweepError;
+   ok: SubaccountBalanceResult;
  };
 type Result_1 = 
  variant {
@@ -342,6 +384,14 @@ type EmailError =
    outcallFailed: text;
    unauthorized;
  };
+type Discipline = 
+ variant {
+   music;
+   other;
+   video;
+   visualArt;
+   writing;
+ };
 type DepositInfo = 
  record {
    address: principal;
@@ -472,30 +522,30 @@ service : {
   adminGetOrderDetail: (reference: text) -> (opt AdminOrderDetail) query;
   adminListOrders: (filter: text) -> (vec AdminOrderView) query;
   cancelCardOrder: (reference: text) -> (Result_1);
-  checkCryptoPayment: (reference: text) -> (Result_11);
+  checkCryptoPayment: (reference: text) -> (Result_13);
   claimInitialAdmin: () -> (bool);
-  confirmCardPayment: (reference: text) -> (Result_18);
+  confirmCardPayment: (reference: text) -> (Result_20);
   consentServiceTransform: (input: TransformationInput) ->
    (TransformationOutput) query;
   createCardCheckoutSession: (reference: text, successUrl: text, cancelUrl:
-   text) -> (Result_17);
-  createCheckoutSession: (order: Order) -> (Result_16);
-  createOrder: (input: CreateOrderInput) -> (Result_15);
+   text) -> (Result_19);
+  createCheckoutSession: (order: Order) -> (Result_18);
+  createOrder: (input: CreateOrderInput) -> (Result_17);
   createProduct: (product: Product) -> (bool);
   emailTransform: (input: TransformationInput) ->
    (TransformationOutput) query;
   execute: (qJson: text) -> (Result__1) query;
-  forceRecheckPayment: (reference: text) -> (Result_14);
+  forceRecheckPayment: (reference: text) -> (Result_16);
   forceSweepOrder: (reference: text) -> (Result_4);
   getApiDoc: () -> (text) query;
   getCanisterId: () -> (principal) query;
-  getConsentListCsv: () -> (Result_13);
+  getConsentListCsv: () -> (Result_15);
   getCryptoConfig: () -> (CryptoConfigView) query;
-  getCryptoDepositInfo: (reference: text) -> (Result_12) query;
-  getCryptoPaymentStatus: (reference: text) -> (Result_11) query;
+  getCryptoDepositInfo: (reference: text) -> (Result_14) query;
+  getCryptoPaymentStatus: (reference: text) -> (Result_13) query;
   getCycleBalance: () -> (nat) query;
   getDashboardData: () -> (text);
-  getDefaultSubaccountBalance: () -> (Result_10);
+  getDefaultSubaccountBalance: () -> (Result_12);
   getMinimumOrder: () -> (nat) query;
   getMyOrders: () -> (vec Order) query;
   getNAKPrice: () -> (text);
@@ -503,27 +553,31 @@ service : {
   getPaymentServiceConfig: () -> (PaymentServiceConfigView) query;
   getPaymentStatus: (reference: text) -> (PaymentStatus);
   getProduct: (slugOrId: text) -> (opt Product) query;
-  getResumeInfo: (reference: text) -> (Result_9) query;
-  getSubaccountBalance: (subaccountIndex: nat) -> (Result_8);
+  getResumeInfo: (reference: text) -> (Result_11) query;
+  getSubaccountBalance: (subaccountIndex: nat) -> (Result_10);
   getTokenImage: (chainId: text, tokenAddress: text) -> (text);
   getTokenProfile: (chainId: text, tokenAddress: text) -> (text);
   getTreasuryTokens: () -> (text);
-  handlePaymentConfirmation: (payload: text) -> (Result_7);
+  handlePaymentConfirmation: (payload: text) -> (Result_9);
   isAdmin: () -> (bool) query;
   listAdmins: () -> (vec principal);
   listLatePayments: () -> (vec LatePayment);
   listOrdersForRecovery: () -> (vec OrderRecoveryView);
   listProducts: () -> (vec Product) query;
+  listSubmissions: () -> (Result_8);
   markLatePaymentReviewed: (reference: text) -> (bool);
-  markOrderShipped: (reference: text, trackingNumber: opt text) -> (Result_6);
+  markOrderShipped: (reference: text, trackingNumber: opt text) -> (Result_7);
   paymentServiceTransform: (input: TransformationInput) ->
    (TransformationOutput) query;
   releaseExpiredOrders: () -> (nat);
   removeAdmin: (p: principal) -> (bool);
-  resendConfirmationEmail: (reference: text) -> (Result_6);
+  resendConfirmationEmail: (reference: text) -> (Result_7);
   schema: () -> (text) query;
   startVerificationTimer: () -> (bool);
   stopVerificationTimer: () -> (bool);
+  submissionServiceTransform: (input: TransformationInput) ->
+   (TransformationOutput) query;
+  submitSubmission: (input: SubmissionInput) -> (Result_6);
   sweepCryptoToTreasury: (reference: text) -> (Result_5);
   sweepDefaultSubaccount: () -> (Result_4);
   sweepSubaccount: (subaccountIndex: nat) -> (Result_3);

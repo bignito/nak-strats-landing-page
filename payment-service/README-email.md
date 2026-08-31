@@ -18,6 +18,19 @@ canister or in this repo — canister state is replicated and not confidential.
 
   Requires `express` and `resend` (`npm install resend`).
 
+- `submissions-endpoints.js` — an Express router with the artist submission
+  endpoints (`POST /submissions`, `GET /submissions`). Mount it the same way:
+
+  ```js
+  import submissionsRouter from "./submissions-endpoints.js";
+  app.use(submissionsRouter);
+  ```
+
+  Requires `express`, `resend`, and `pg` (`npm install resend pg`).
+
+- `submissions-schema.sql` — the Postgres `CREATE TABLE` for submissions. Run
+  it once against your Railway Postgres (the service's `DATABASE_URL`).
+
 ## Environment variables
 
 | Variable | Required | Description |
@@ -28,6 +41,16 @@ canister or in this repo — canister state is replicated and not confidential.
 | `UNSUBSCRIBE_SECRET` | no | Secret used to sign unsubscribe tokens. Defaults to `PAYMENT_SERVICE_TOKEN`. |
 | `SHELL_LOGO_URL` | optional | Hosted URL for the shell logo. Defaults to a placeholder. |
 | `ORDER_LOOKUP_URL` | optional | Base URL of the order lookup page, used to build the payment-pending link and unsubscribe link. |
+
+### Submission endpoints env vars
+
+| Variable | Required | Description |
+| --- | --- | --- |
+| `DATABASE_URL` | yes | Postgres connection string (Railway). Used by the submissions endpoints. |
+| `SUBMISSIONS_ADMIN_EMAIL` | no | Internal notification recipient for new submissions. If unset, no internal notification is sent. |
+| `SUBMISSIONS_REPLY_TO` | no | Reply-to on the acknowledgement email. Defaults to `culture@naktoken.lol`. |
+| `SUBMISSIONS_RATE_LIMIT` | no | Max submissions per IP per window. Default `5`. |
+| `SUBMISSIONS_RATE_WINDOW_MS` | no | Rate-limit window in ms. Default `3600000` (1 hour). |
 
 ## Endpoints
 
@@ -100,6 +123,100 @@ Body:
   "trackingNumber": "1Z999AA10123456784"
 }
 ```
+
+## Artist submissions
+
+The submissions endpoints replace the old `mailto:` culture link (a domain we
+do NOT own — it must never appear). The canister routes the
+submission form through the payment service via HTTPS outcall authenticated
+with the shared bearer token, so the shared secret is never exposed to the
+browser. The canister sends the form payload to `POST /submissions`; the
+service validates it, stores it in Postgres, and sends the acknowledgement
+email.
+
+### POST /submissions
+
+Stores a submission and sends the transactional acknowledgement email to the
+submitter plus an internal notification to `SUBMISSIONS_ADMIN_EMAIL`.
+
+Body:
+
+```json
+{
+  "name": "Jane Doe",
+  "email": "artist@example.com",
+  "discipline": "Music",
+  "link": "https://soundcloud.com/jane/example",
+  "message": "Optional note, max 1000 characters.",
+  "consent": false,
+  "company": ""
+}
+```
+
+- `name` (required), `email` (required, validated format), `discipline`
+  (required, one of `Music` / `Visual Art` / `Video` / `Writing` / `Other`),
+  `link` (required, must parse as an `http(s)` URL), `message` (optional, max
+  1000 chars).
+- `consent` (optional boolean) is the marketing checkbox, UNTICKED by default.
+  When `true`, the service stores `consent = true` and a `consented_at`
+  timestamp on the submission. Submission addresses are NEVER added to any
+  marketing list — the consent flag is stored separately on the submission
+  only.
+- `company` is the HONEYPOT field. It is hidden from users; bots fill it in.
+  When it (or `website` / `homepage`) has a value, the service returns
+  `{ ok: true, honeypot: true }` without storing or emailing, so bots are not
+  tipped off.
+- Per-IP rate limiting: `SUBMISSIONS_RATE_LIMIT` submissions per
+  `SUBMISSIONS_RATE_WINDOW_MS`. Exceeding it returns HTTP 429
+  `{ error: "rate_limited" }`. No CAPTCHA.
+
+On success returns `{ ok: true, id }`. Validation failures return HTTP 400
+with `{ error }`.
+
+### GET /submissions
+
+Admin-only (requires the shared bearer token). Returns submissions for admin
+review, newest first:
+
+```json
+{
+  "submissions": [
+    {
+      "id": 1,
+      "name": "Jane Doe",
+      "email": "artist@example.com",
+      "discipline": "Music",
+      "link": "https://soundcloud.com/jane/example",
+      "message": null,
+      "consent": false,
+      "consented_at": null,
+      "created_at": "2026-08-31T12:00:00.000Z"
+    }
+  ]
+}
+```
+
+### Acknowledgement email
+
+- From: the configured `FROM_EMAIL` (e.g. `NAK STRATS <orders@naktoken.lol>`).
+- Reply-to: `SUBMISSIONS_REPLY_TO` (default `culture@naktoken.lol`).
+- Subject: `We received your submission — N.A.K.`
+- Body: confirms receipt, echoes back the submitter's name, discipline, and
+  link, and sets honest expectations ("We review submissions as we grow the
+  roster. We will reach out if there is a fit."). No response-time promise, no
+  implication of acceptance.
+- Template: dark institutional background, restrained, minimal, small shell
+  mark, simple HTML.
+
+This email is TRANSACTIONAL (a direct response to the submitter's action), so
+it does not require marketing consent. The internal notification to
+`SUBMISSIONS_ADMIN_EMAIL` is sent on every submission so the team knows one
+arrived.
+
+### Postgres schema
+
+See `submissions-schema.sql`. The table stores `name`, `email`, `discipline`,
+`link`, `message`, `consent` + `consented_at`, `honeypot`, and `created_at`.
 
 ## Branding
 

@@ -267,6 +267,25 @@ are transactional — never gated on marketing consent.
 - `unsubscribe(token : Text) : async Result<(), ConsentError>` — update. PUBLIC. Token-based unsubscribe. The token is minted by the payment service and embedded in the unsubscribe link of marketing emails; the canister forwards it to the payment service, which adds the address to its stored suppression list. Suppressed addresses are never sent marketing email; transactional emails remain exempt. The suppression list lives at the payment service.
 - `consentServiceTransform(input : TransformationInput) : async TransformationOutput` — query. The HTTP outcall response transform for the payment service consent endpoints: strips every response header so responses are identical across replicas.
 
+### Artist submissions (culture / submit your work)
+
+The backend has NO email capability of its own and holds NO email provider key.
+Artist submissions are stored OFF-canister in the external payment service's
+Postgres (an email address plus a personal name is PII with the same replication
+exposure as customer data, so it is never persisted in canister state). The
+canister proxies submissions to the payment service via HTTPS outcall,
+authenticated with the shared bearer token held in canister config — the token
+is NEVER shipped to the browser. On a successful submission the payment service
+sends a transactional acknowledgement email to the submitter (a direct response
+to their action, so it does not require marketing consent) and an internal
+notification to a configurable admin address. Submission addresses are NEVER
+added to any marketing list; the optional consent checkbox is stored separately
+(consent + timestamp) only when ticked.
+
+- `submitSubmission(input : SubmissionInput) : async Result<(), SubmissionError>` — update. PUBLIC. Submits an artist work for review. The `SubmissionInput` carries `name`, `email`, `discipline` (one of `#music`, `#visualArt`, `#video`, `#writing`, `#other`), `link`, an optional `message` (max 1000 characters), an optional `marketingConsent` flag with a `marketingConsentAt` timestamp (the checkbox is UNTICKED by default; the frontend sends the submitter's explicit choice), and a `honeypot` field. A submission whose `honeypot` field is filled is rejected with `#err(#honeypot)` BEFORE any outcall is made — it is a bot trap hidden from real users. Submissions are rate-limited per caller principal (the canister cannot see client IPs, so this complements the payment service's per-IP limit): a caller that exceeds the limit within the window receives `#err(#rateLimited)`. The input is validated server-side (`#err(#invalidInput)` for a missing name, malformed email, non-URL link, or a message over 1000 characters). On success the submission is forwarded to `{PAYMENT_SERVICE_URL}/submissions` and `#ok()` is returned; the payment service stores it and sends the acknowledgement email. Returns `#err(#notConfigured)` when the URL or token is unset, and `#err(#outcallFailed)` when the payment service is unreachable.
+- `listSubmissions() : async Result<[SubmissionRecord], SubmissionError>` — update. ADMIN-ONLY. Lists submissions for the admin review view, newest first. Binds the caller at the top, rejects the anonymous principal, and traps for a caller that is not a non-anonymous member of the admin allowlist. Each `SubmissionRecord` carries `id`, `name`, `email`, `discipline`, `link`, `message`, `marketingConsent`, `marketingConsentAt`, and `submittedAt`. The records are PII that lives off-canister; the canister only proxies them through and never persists them. Returns `#err(#notConfigured)` when the URL or token is unset, and `#err(#outcallFailed)` when the payment service is unreachable.
+- `submissionServiceTransform(input : TransformationInput) : async TransformationOutput` — query. The HTTP outcall response transform for the payment service submission endpoints: strips every response header so responses are identical across replicas.
+
 ### HTTP outcall helpers
 
 - `transform(input : TransformationInput) : async TransformationOutput` —
@@ -458,6 +477,10 @@ Admin-gated privileged methods (trap for a non-admin or anonymous caller):
   consenting-address mailing list (PII), so it is gated to admins.
   `unsubscribe` is PUBLIC — it is the token-based unsubscribe link embedded in
   marketing emails and requires no admin caller.
+- `listSubmissions` requires a non-anonymous admin caller: it lists artist
+  submissions (PII) for the admin review view, so it is gated to admins.
+  `submitSubmission` is PUBLIC — it is the artist submission form and requires
+  no admin caller.
 
 There is no registration gate and no role model beyond the admin allowlist: no
 method requires a signed-in (non-anonymous) caller for the public storefront
@@ -791,6 +814,20 @@ are never silently lost and are always flagged for admin recovery.
 - The card checkout transform (`paymentServiceTransform`) strips every response
   header (Date, request IDs, Stripe trace headers) so outcall responses are
   identical across replicas — required for IC consensus.
+- The submission methods return a `SubmissionError` variant for
+  caller-correctable problems: `#notConfigured(msg)`, `#outcallFailed(msg)`,
+  `#invalidResponse(msg)`, `#honeypot`, `#rateLimited`, and `#invalidInput(msg)`.
+  They do not trap on these. `submitSubmission` returns `#err(#honeypot)` when
+  the honeypot field is filled (a bot), `#err(#rateLimited)` when the caller
+  exceeds the per-principal rate limit, and `#err(#invalidInput)` for a missing
+  name, malformed email, non-URL link, or a message over 1000 characters.
+  `listSubmissions` is admin-only and TRAPS for a caller that is not a
+  non-anonymous member of the admin allowlist (and for the anonymous principal)
+  — an authorization failure, not a caller-correctable error.
+- Submission timestamps (`submittedAt`, `marketingConsentAt`) are `Int` values
+  in nanoseconds since the Unix epoch (`Time.now()`), parsed from the payment
+  service's ISO-8601 UTC timestamps. `marketingConsentAt` is `null` when the
+  submitter did not opt in to marketing.
 "
   };
 };

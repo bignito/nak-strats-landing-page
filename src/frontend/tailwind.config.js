@@ -16,38 +16,38 @@ export default {
         },
         extend: {
             colors: {
-                border: 'oklch(var(--border))',
-                input: 'oklch(var(--input))',
+                border: 'var(--border)',
+                input: 'var(--input)',
                 ring: 'oklch(var(--ring) / <alpha-value>)',
-                background: 'oklch(var(--background))',
-                foreground: 'oklch(var(--foreground))',
+                background: 'var(--background)',
+                foreground: 'var(--foreground)',
                 primary: {
-                    DEFAULT: 'oklch(var(--primary) / <alpha-value>)',
-                    foreground: 'oklch(var(--primary-foreground))'
+                    DEFAULT: 'var(--primary)',
+                    foreground: 'var(--primary-foreground)'
                 },
                 secondary: {
                     DEFAULT: 'oklch(var(--secondary) / <alpha-value>)',
-                    foreground: 'oklch(var(--secondary-foreground))'
+                    foreground: 'var(--secondary-foreground)'
                 },
                 destructive: {
                     DEFAULT: 'oklch(var(--destructive) / <alpha-value>)',
-                    foreground: 'oklch(var(--destructive-foreground))'
+                    foreground: 'var(--destructive-foreground)'
                 },
                 muted: {
                     DEFAULT: 'oklch(var(--muted) / <alpha-value>)',
-                    foreground: 'oklch(var(--muted-foreground) / <alpha-value>)'
+                    foreground: 'var(--muted-foreground)'
                 },
                 accent: {
                     DEFAULT: 'oklch(var(--accent) / <alpha-value>)',
-                    foreground: 'oklch(var(--accent-foreground))'
+                    foreground: 'var(--accent-foreground)'
                 },
                 popover: {
-                    DEFAULT: 'oklch(var(--popover))',
-                    foreground: 'oklch(var(--popover-foreground))'
+                    DEFAULT: 'var(--popover)',
+                    foreground: 'var(--popover-foreground)'
                 },
                 card: {
-                    DEFAULT: 'oklch(var(--card))',
-                    foreground: 'oklch(var(--card-foreground))'
+                    DEFAULT: 'var(--card)',
+                    foreground: 'var(--card-foreground)'
                 },
                 chart: {
                     1: 'oklch(var(--chart-1))',

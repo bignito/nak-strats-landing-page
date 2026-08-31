@@ -160,7 +160,7 @@ function App() {
     <CartProvider>
       <div
         className="min-h-screen relative overflow-x-hidden"
-        style={{ backgroundColor: "var(--nak-deep-black)" }}
+        style={{ backgroundColor: "var(--nak-bg)" }}
       >
         {/* Falling emoji rain renders on the sub-pages only — the main page
             uses the restrained institutional background. */}

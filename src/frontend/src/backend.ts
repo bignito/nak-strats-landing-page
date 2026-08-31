@@ -159,7 +159,7 @@ export type Result_7 = {
     ok: null;
 } | {
     __kind__: "err";
-    err: PaymentError;
+    err: EmailError;
 };
 export interface DepositInfo {
     decimals: number;
@@ -226,7 +226,7 @@ export type Result_6 = {
     ok: null;
 } | {
     __kind__: "err";
-    err: EmailError;
+    err: SubmissionError;
 };
 export interface ShippingAddress {
     region: string;
@@ -242,17 +242,17 @@ export interface CheckoutSession {
 }
 export type Result_12 = {
     __kind__: "ok";
-    ok: DepositInfo;
-} | {
-    __kind__: "err";
-    err: CryptoPaymentError;
-};
-export type Result_9 = {
-    __kind__: "ok";
-    ok: ResumeInfo;
+    ok: bigint;
 } | {
     __kind__: "err";
     err: RecoveryError;
+};
+export type Result_9 = {
+    __kind__: "ok";
+    ok: null;
+} | {
+    __kind__: "err";
+    err: PaymentError;
 };
 export interface Order {
     id: bigint;
@@ -283,6 +283,24 @@ export interface HttpHeader {
     value: string;
     name: string;
 }
+export interface SubmissionRecord {
+    id: string;
+    discipline: Discipline;
+    link: string;
+    name: string;
+    submittedAt: bigint;
+    email: string;
+    message?: string;
+    marketingConsentAt?: bigint;
+    marketingConsent: boolean;
+}
+export type Result_10 = {
+    __kind__: "ok";
+    ok: SubaccountBalanceResult;
+} | {
+    __kind__: "err";
+    err: SweepError;
+};
 export type Result = {
     __kind__: "ok";
     ok: null;
@@ -290,19 +308,12 @@ export type Result = {
     __kind__: "err";
     err: CryptoPaymentError;
 };
-export type Result_10 = {
-    __kind__: "ok";
-    ok: bigint;
-} | {
-    __kind__: "err";
-    err: RecoveryError;
-};
 export type Result_8 = {
     __kind__: "ok";
-    ok: SubaccountBalanceResult;
+    ok: Array<SubmissionRecord>;
 } | {
     __kind__: "err";
-    err: SweepError;
+    err: SubmissionError;
 };
 export interface CryptoConfigView {
     icp: LedgerConfig;
@@ -313,17 +324,17 @@ export interface CryptoConfigView {
 }
 export type Result_17 = {
     __kind__: "ok";
-    ok: CheckoutSession;
+    ok: Order;
 } | {
     __kind__: "err";
-    err: PaymentServiceError;
+    err: OrderError;
 };
 export type Result_13 = {
     __kind__: "ok";
-    ok: ConsentListExport;
+    ok: CryptoPaymentStatus;
 } | {
     __kind__: "err";
-    err: ConsentError;
+    err: CryptoPaymentError;
 };
 export interface OrderItem {
     product_id: ProductId;
@@ -350,16 +361,31 @@ export interface ResumeInfo {
     deposit?: DepositInfo;
     remainingNs: bigint;
 }
-export interface PaymentServiceConfigView {
-    url: string;
-    tokenSet: boolean;
-}
+export type SubmissionError = {
+    __kind__: "invalidInput";
+    invalidInput: string;
+} | {
+    __kind__: "notConfigured";
+    notConfigured: string;
+} | {
+    __kind__: "honeypot";
+    honeypot: null;
+} | {
+    __kind__: "rateLimited";
+    rateLimited: null;
+} | {
+    __kind__: "outcallFailed";
+    outcallFailed: string;
+} | {
+    __kind__: "invalidResponse";
+    invalidResponse: string;
+};
 export type Result_16 = {
     __kind__: "ok";
-    ok: CheckoutSession;
+    ok: RecheckResult;
 } | {
     __kind__: "err";
-    err: PaymentError;
+    err: RecoveryError;
 };
 export type Result_1 = {
     __kind__: "ok";
@@ -387,18 +413,39 @@ export type PaymentServiceError = {
     __kind__: "invalidResponse";
     invalidResponse: string;
 };
+export interface PaymentServiceConfigView {
+    url: string;
+    tokenSet: boolean;
+}
 export type Result_11 = {
     __kind__: "ok";
-    ok: CryptoPaymentStatus;
+    ok: ResumeInfo;
 } | {
     __kind__: "err";
-    err: CryptoPaymentError;
+    err: RecoveryError;
 };
+export interface SubmissionInput {
+    discipline: Discipline;
+    link: string;
+    name: string;
+    email: string;
+    message?: string;
+    honeypot: string;
+    marketingConsentAt?: bigint;
+    marketingConsent: boolean;
+}
 export interface SweepResult {
     reference?: string;
     error?: string;
     blockIndex?: bigint;
 }
+export type Result_19 = {
+    __kind__: "ok";
+    ok: CheckoutSession;
+} | {
+    __kind__: "err";
+    err: PaymentServiceError;
+};
 export interface TransformationInput {
     context: Uint8Array;
     response: HttpRequestResult;
@@ -414,10 +461,10 @@ export interface OrderRecoveryView {
 }
 export type Result_14 = {
     __kind__: "ok";
-    ok: RecheckResult;
+    ok: DepositInfo;
 } | {
     __kind__: "err";
-    err: RecoveryError;
+    err: CryptoPaymentError;
 };
 export type EmailError = {
     __kind__: "notConfigured";
@@ -482,10 +529,10 @@ export interface ProductVariant {
 }
 export type Result_18 = {
     __kind__: "ok";
-    ok: PaymentStatus;
+    ok: CheckoutSession;
 } | {
     __kind__: "err";
-    err: PaymentServiceError;
+    err: PaymentError;
 };
 export type PaymentError = {
     __kind__: "invalidOrder";
@@ -503,10 +550,10 @@ export type Result_3 = {
 };
 export type Result_15 = {
     __kind__: "ok";
-    ok: Order;
+    ok: ConsentListExport;
 } | {
     __kind__: "err";
-    err: OrderError;
+    err: ConsentError;
 };
 export interface AdminOrderDetail {
     customerName: string;
@@ -590,6 +637,13 @@ export type CryptoPaymentError = {
     __kind__: "belowMinimumOrder";
     belowMinimumOrder: bigint;
 };
+export type Result_20 = {
+    __kind__: "ok";
+    ok: PaymentStatus;
+} | {
+    __kind__: "err";
+    err: PaymentServiceError;
+};
 export interface Product {
     id: ProductId;
     updated_at: bigint;
@@ -605,6 +659,13 @@ export interface Product {
     category: string;
     price: bigint;
     images: Array<string>;
+}
+export enum Discipline {
+    music = "music",
+    other = "other",
+    video = "video",
+    visualArt = "visualArt",
+    writing = "writing"
 }
 export enum PaymentMethod {
     crypto_icp = "crypto_icp",
@@ -631,27 +692,27 @@ export interface backendInterface {
     adminGetOrderDetail(reference: string): Promise<AdminOrderDetail | null>;
     adminListOrders(filter: string): Promise<Array<AdminOrderView>>;
     cancelCardOrder(reference: string): Promise<Result_1>;
-    checkCryptoPayment(reference: string): Promise<Result_11>;
+    checkCryptoPayment(reference: string): Promise<Result_13>;
     claimInitialAdmin(): Promise<boolean>;
-    confirmCardPayment(reference: string): Promise<Result_18>;
+    confirmCardPayment(reference: string): Promise<Result_20>;
     consentServiceTransform(input: TransformationInput): Promise<TransformationOutput>;
-    createCardCheckoutSession(reference: string, successUrl: string, cancelUrl: string): Promise<Result_17>;
-    createCheckoutSession(order: Order): Promise<Result_16>;
-    createOrder(input: CreateOrderInput): Promise<Result_15>;
+    createCardCheckoutSession(reference: string, successUrl: string, cancelUrl: string): Promise<Result_19>;
+    createCheckoutSession(order: Order): Promise<Result_18>;
+    createOrder(input: CreateOrderInput): Promise<Result_17>;
     createProduct(product: Product): Promise<boolean>;
     emailTransform(input: TransformationInput): Promise<TransformationOutput>;
     execute(qJson: string): Promise<Result__1>;
-    forceRecheckPayment(reference: string): Promise<Result_14>;
+    forceRecheckPayment(reference: string): Promise<Result_16>;
     forceSweepOrder(reference: string): Promise<Result_4>;
     getApiDoc(): Promise<string>;
     getCanisterId(): Promise<Principal>;
-    getConsentListCsv(): Promise<Result_13>;
+    getConsentListCsv(): Promise<Result_15>;
     getCryptoConfig(): Promise<CryptoConfigView>;
-    getCryptoDepositInfo(reference: string): Promise<Result_12>;
-    getCryptoPaymentStatus(reference: string): Promise<Result_11>;
+    getCryptoDepositInfo(reference: string): Promise<Result_14>;
+    getCryptoPaymentStatus(reference: string): Promise<Result_13>;
     getCycleBalance(): Promise<bigint>;
     getDashboardData(): Promise<string>;
-    getDefaultSubaccountBalance(): Promise<Result_10>;
+    getDefaultSubaccountBalance(): Promise<Result_12>;
     getMinimumOrder(): Promise<bigint>;
     getMyOrders(): Promise<Array<Order>>;
     getNAKPrice(): Promise<string>;
@@ -659,26 +720,29 @@ export interface backendInterface {
     getPaymentServiceConfig(): Promise<PaymentServiceConfigView>;
     getPaymentStatus(reference: string): Promise<PaymentStatus>;
     getProduct(slugOrId: string): Promise<Product | null>;
-    getResumeInfo(reference: string): Promise<Result_9>;
-    getSubaccountBalance(subaccountIndex: bigint): Promise<Result_8>;
+    getResumeInfo(reference: string): Promise<Result_11>;
+    getSubaccountBalance(subaccountIndex: bigint): Promise<Result_10>;
     getTokenImage(chainId: string, tokenAddress: string): Promise<string>;
     getTokenProfile(chainId: string, tokenAddress: string): Promise<string>;
     getTreasuryTokens(): Promise<string>;
-    handlePaymentConfirmation(payload: string): Promise<Result_7>;
+    handlePaymentConfirmation(payload: string): Promise<Result_9>;
     isAdmin(): Promise<boolean>;
     listAdmins(): Promise<Array<Principal>>;
     listLatePayments(): Promise<Array<LatePayment>>;
     listOrdersForRecovery(): Promise<Array<OrderRecoveryView>>;
     listProducts(): Promise<Array<Product>>;
+    listSubmissions(): Promise<Result_8>;
     markLatePaymentReviewed(reference: string): Promise<boolean>;
-    markOrderShipped(reference: string, trackingNumber: string | null): Promise<Result_6>;
+    markOrderShipped(reference: string, trackingNumber: string | null): Promise<Result_7>;
     paymentServiceTransform(input: TransformationInput): Promise<TransformationOutput>;
     releaseExpiredOrders(): Promise<bigint>;
     removeAdmin(p: Principal): Promise<boolean>;
-    resendConfirmationEmail(reference: string): Promise<Result_6>;
+    resendConfirmationEmail(reference: string): Promise<Result_7>;
     schema(): Promise<string>;
     startVerificationTimer(): Promise<boolean>;
     stopVerificationTimer(): Promise<boolean>;
+    submissionServiceTransform(input: TransformationInput): Promise<TransformationOutput>;
+    submitSubmission(input: SubmissionInput): Promise<Result_6>;
     sweepCryptoToTreasury(reference: string): Promise<Result_5>;
     sweepDefaultSubaccount(): Promise<Result_4>;
     sweepSubaccount(subaccountIndex: bigint): Promise<Result_3>;
@@ -691,7 +755,7 @@ export interface backendInterface {
     updateProduct(product: Product): Promise<boolean>;
     updateTreasury(principal: Principal, subaccount: Uint8Array | null): Promise<Result>;
 }
-import type { AdminOrderDetail as _AdminOrderDetail, AdminOrderView as _AdminOrderView, Cell as _Cell, CheckoutSession as _CheckoutSession, ConsentError as _ConsentError, ConsentListExport as _ConsentListExport, CreateOrderInput as _CreateOrderInput, CreateOrderItem as _CreateOrderItem, CryptoConfigView as _CryptoConfigView, CryptoPaymentError as _CryptoPaymentError, CryptoPaymentStatus as _CryptoPaymentStatus, DepositAccount as _DepositAccount, DepositInfo as _DepositInfo, EmailError as _EmailError, LatePayment as _LatePayment, LedgerConfig as _LedgerConfig, Order as _Order, OrderError as _OrderError, OrderItem as _OrderItem, OrderRecoveryView as _OrderRecoveryView, PaymentError as _PaymentError, PaymentMethod as _PaymentMethod, PaymentServiceError as _PaymentServiceError, PaymentStatus as _PaymentStatus, Product as _Product, ProductId as _ProductId, RecheckResult as _RecheckResult, RecoveryError as _RecoveryError, Result as _Result, Result_1 as _Result_1, Result_10 as _Result_10, Result_11 as _Result_11, Result_12 as _Result_12, Result_13 as _Result_13, Result_14 as _Result_14, Result_15 as _Result_15, Result_16 as _Result_16, Result_17 as _Result_17, Result_18 as _Result_18, Result_2 as _Result_2, Result_3 as _Result_3, Result_4 as _Result_4, Result_5 as _Result_5, Result_6 as _Result_6, Result_7 as _Result_7, Result_8 as _Result_8, Result_9 as _Result_9, Result__1 as _Result__1, ResumeInfo as _ResumeInfo, ShippingAddress as _ShippingAddress, ShippingStatus as _ShippingStatus, SubaccountBalanceResult as _SubaccountBalanceResult, SweepError as _SweepError, SweepResult as _SweepResult, SweepSubaccountResult as _SweepSubaccountResult, Token as _Token, Value as _Value } from "./declarations/backend.did.d.ts";
+import type { AdminOrderDetail as _AdminOrderDetail, AdminOrderView as _AdminOrderView, Cell as _Cell, CheckoutSession as _CheckoutSession, ConsentError as _ConsentError, ConsentListExport as _ConsentListExport, CreateOrderInput as _CreateOrderInput, CreateOrderItem as _CreateOrderItem, CryptoConfigView as _CryptoConfigView, CryptoPaymentError as _CryptoPaymentError, CryptoPaymentStatus as _CryptoPaymentStatus, DepositAccount as _DepositAccount, DepositInfo as _DepositInfo, Discipline as _Discipline, EmailError as _EmailError, LatePayment as _LatePayment, LedgerConfig as _LedgerConfig, Order as _Order, OrderError as _OrderError, OrderItem as _OrderItem, OrderRecoveryView as _OrderRecoveryView, PaymentError as _PaymentError, PaymentMethod as _PaymentMethod, PaymentServiceError as _PaymentServiceError, PaymentStatus as _PaymentStatus, Product as _Product, ProductId as _ProductId, RecheckResult as _RecheckResult, RecoveryError as _RecoveryError, Result as _Result, Result_1 as _Result_1, Result_10 as _Result_10, Result_11 as _Result_11, Result_12 as _Result_12, Result_13 as _Result_13, Result_14 as _Result_14, Result_15 as _Result_15, Result_16 as _Result_16, Result_17 as _Result_17, Result_18 as _Result_18, Result_19 as _Result_19, Result_2 as _Result_2, Result_20 as _Result_20, Result_3 as _Result_3, Result_4 as _Result_4, Result_5 as _Result_5, Result_6 as _Result_6, Result_7 as _Result_7, Result_8 as _Result_8, Result_9 as _Result_9, Result__1 as _Result__1, ResumeInfo as _ResumeInfo, ShippingAddress as _ShippingAddress, ShippingStatus as _ShippingStatus, SubaccountBalanceResult as _SubaccountBalanceResult, SubmissionError as _SubmissionError, SubmissionInput as _SubmissionInput, SubmissionRecord as _SubmissionRecord, SweepError as _SweepError, SweepResult as _SweepResult, SweepSubaccountResult as _SweepSubaccountResult, Token as _Token, Value as _Value } from "./declarations/backend.did.d.ts";
 export class Backend implements backendInterface {
     constructor(private actor: ActorSubclass<_SERVICE>, private _uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, private _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, private processError?: (error: unknown) => never){}
     async addAdmin(arg0: Principal): Promise<boolean> {
@@ -750,18 +814,18 @@ export class Backend implements backendInterface {
             return from_candid_Result_1_n15(this._uploadFile, this._downloadFile, result);
         }
     }
-    async checkCryptoPayment(arg0: string): Promise<Result_11> {
+    async checkCryptoPayment(arg0: string): Promise<Result_13> {
         if (this.processError) {
             try {
                 const result = await this.actor.checkCryptoPayment(arg0);
-                return from_candid_Result_11_n19(this._uploadFile, this._downloadFile, result);
+                return from_candid_Result_13_n19(this._uploadFile, this._downloadFile, result);
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
             const result = await this.actor.checkCryptoPayment(arg0);
-            return from_candid_Result_11_n19(this._uploadFile, this._downloadFile, result);
+            return from_candid_Result_13_n19(this._uploadFile, this._downloadFile, result);
         }
     }
     async claimInitialAdmin(): Promise<boolean> {
@@ -778,18 +842,18 @@ export class Backend implements backendInterface {
             return result;
         }
     }
-    async confirmCardPayment(arg0: string): Promise<Result_18> {
+    async confirmCardPayment(arg0: string): Promise<Result_20> {
         if (this.processError) {
             try {
                 const result = await this.actor.confirmCardPayment(arg0);
-                return from_candid_Result_18_n23(this._uploadFile, this._downloadFile, result);
+                return from_candid_Result_20_n23(this._uploadFile, this._downloadFile, result);
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
             const result = await this.actor.confirmCardPayment(arg0);
-            return from_candid_Result_18_n23(this._uploadFile, this._downloadFile, result);
+            return from_candid_Result_20_n23(this._uploadFile, this._downloadFile, result);
         }
     }
     async consentServiceTransform(arg0: TransformationInput): Promise<TransformationOutput> {
@@ -806,46 +870,46 @@ export class Backend implements backendInterface {
             return result;
         }
     }
-    async createCardCheckoutSession(arg0: string, arg1: string, arg2: string): Promise<Result_17> {
+    async createCardCheckoutSession(arg0: string, arg1: string, arg2: string): Promise<Result_19> {
         if (this.processError) {
             try {
                 const result = await this.actor.createCardCheckoutSession(arg0, arg1, arg2);
-                return from_candid_Result_17_n25(this._uploadFile, this._downloadFile, result);
+                return from_candid_Result_19_n25(this._uploadFile, this._downloadFile, result);
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
             const result = await this.actor.createCardCheckoutSession(arg0, arg1, arg2);
-            return from_candid_Result_17_n25(this._uploadFile, this._downloadFile, result);
+            return from_candid_Result_19_n25(this._uploadFile, this._downloadFile, result);
         }
     }
-    async createCheckoutSession(arg0: Order): Promise<Result_16> {
+    async createCheckoutSession(arg0: Order): Promise<Result_18> {
         if (this.processError) {
             try {
                 const result = await this.actor.createCheckoutSession(to_candid_Order_n29(this._uploadFile, this._downloadFile, arg0));
-                return from_candid_Result_16_n39(this._uploadFile, this._downloadFile, result);
+                return from_candid_Result_18_n39(this._uploadFile, this._downloadFile, result);
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
             const result = await this.actor.createCheckoutSession(to_candid_Order_n29(this._uploadFile, this._downloadFile, arg0));
-            return from_candid_Result_16_n39(this._uploadFile, this._downloadFile, result);
+            return from_candid_Result_18_n39(this._uploadFile, this._downloadFile, result);
         }
     }
-    async createOrder(arg0: CreateOrderInput): Promise<Result_15> {
+    async createOrder(arg0: CreateOrderInput): Promise<Result_17> {
         if (this.processError) {
             try {
                 const result = await this.actor.createOrder(to_candid_CreateOrderInput_n43(this._uploadFile, this._downloadFile, arg0));
-                return from_candid_Result_15_n45(this._uploadFile, this._downloadFile, result);
+                return from_candid_Result_17_n45(this._uploadFile, this._downloadFile, result);
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
             const result = await this.actor.createOrder(to_candid_CreateOrderInput_n43(this._uploadFile, this._downloadFile, arg0));
-            return from_candid_Result_15_n45(this._uploadFile, this._downloadFile, result);
+            return from_candid_Result_17_n45(this._uploadFile, this._downloadFile, result);
         }
     }
     async createProduct(arg0: Product): Promise<boolean> {
@@ -890,18 +954,18 @@ export class Backend implements backendInterface {
             return from_candid_Result__1_n57(this._uploadFile, this._downloadFile, result);
         }
     }
-    async forceRecheckPayment(arg0: string): Promise<Result_14> {
+    async forceRecheckPayment(arg0: string): Promise<Result_16> {
         if (this.processError) {
             try {
                 const result = await this.actor.forceRecheckPayment(arg0);
-                return from_candid_Result_14_n65(this._uploadFile, this._downloadFile, result);
+                return from_candid_Result_16_n65(this._uploadFile, this._downloadFile, result);
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
             const result = await this.actor.forceRecheckPayment(arg0);
-            return from_candid_Result_14_n65(this._uploadFile, this._downloadFile, result);
+            return from_candid_Result_16_n65(this._uploadFile, this._downloadFile, result);
         }
     }
     async forceSweepOrder(arg0: string): Promise<Result_4> {
@@ -946,18 +1010,18 @@ export class Backend implements backendInterface {
             return result;
         }
     }
-    async getConsentListCsv(): Promise<Result_13> {
+    async getConsentListCsv(): Promise<Result_15> {
         if (this.processError) {
             try {
                 const result = await this.actor.getConsentListCsv();
-                return from_candid_Result_13_n76(this._uploadFile, this._downloadFile, result);
+                return from_candid_Result_15_n76(this._uploadFile, this._downloadFile, result);
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
             const result = await this.actor.getConsentListCsv();
-            return from_candid_Result_13_n76(this._uploadFile, this._downloadFile, result);
+            return from_candid_Result_15_n76(this._uploadFile, this._downloadFile, result);
         }
     }
     async getCryptoConfig(): Promise<CryptoConfigView> {
@@ -974,32 +1038,32 @@ export class Backend implements backendInterface {
             return from_candid_CryptoConfigView_n80(this._uploadFile, this._downloadFile, result);
         }
     }
-    async getCryptoDepositInfo(arg0: string): Promise<Result_12> {
+    async getCryptoDepositInfo(arg0: string): Promise<Result_14> {
         if (this.processError) {
             try {
                 const result = await this.actor.getCryptoDepositInfo(arg0);
-                return from_candid_Result_12_n83(this._uploadFile, this._downloadFile, result);
+                return from_candid_Result_14_n83(this._uploadFile, this._downloadFile, result);
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
             const result = await this.actor.getCryptoDepositInfo(arg0);
-            return from_candid_Result_12_n83(this._uploadFile, this._downloadFile, result);
+            return from_candid_Result_14_n83(this._uploadFile, this._downloadFile, result);
         }
     }
-    async getCryptoPaymentStatus(arg0: string): Promise<Result_11> {
+    async getCryptoPaymentStatus(arg0: string): Promise<Result_13> {
         if (this.processError) {
             try {
                 const result = await this.actor.getCryptoPaymentStatus(arg0);
-                return from_candid_Result_11_n19(this._uploadFile, this._downloadFile, result);
+                return from_candid_Result_13_n19(this._uploadFile, this._downloadFile, result);
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
             const result = await this.actor.getCryptoPaymentStatus(arg0);
-            return from_candid_Result_11_n19(this._uploadFile, this._downloadFile, result);
+            return from_candid_Result_13_n19(this._uploadFile, this._downloadFile, result);
         }
     }
     async getCycleBalance(): Promise<bigint> {
@@ -1030,18 +1094,18 @@ export class Backend implements backendInterface {
             return result;
         }
     }
-    async getDefaultSubaccountBalance(): Promise<Result_10> {
+    async getDefaultSubaccountBalance(): Promise<Result_12> {
         if (this.processError) {
             try {
                 const result = await this.actor.getDefaultSubaccountBalance();
-                return from_candid_Result_10_n89(this._uploadFile, this._downloadFile, result);
+                return from_candid_Result_12_n89(this._uploadFile, this._downloadFile, result);
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
             const result = await this.actor.getDefaultSubaccountBalance();
-            return from_candid_Result_10_n89(this._uploadFile, this._downloadFile, result);
+            return from_candid_Result_12_n89(this._uploadFile, this._downloadFile, result);
         }
     }
     async getMinimumOrder(): Promise<bigint> {
@@ -1142,32 +1206,32 @@ export class Backend implements backendInterface {
             return from_candid_opt_n93(this._uploadFile, this._downloadFile, result);
         }
     }
-    async getResumeInfo(arg0: string): Promise<Result_9> {
+    async getResumeInfo(arg0: string): Promise<Result_11> {
         if (this.processError) {
             try {
                 const result = await this.actor.getResumeInfo(arg0);
-                return from_candid_Result_9_n94(this._uploadFile, this._downloadFile, result);
+                return from_candid_Result_11_n94(this._uploadFile, this._downloadFile, result);
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
             const result = await this.actor.getResumeInfo(arg0);
-            return from_candid_Result_9_n94(this._uploadFile, this._downloadFile, result);
+            return from_candid_Result_11_n94(this._uploadFile, this._downloadFile, result);
         }
     }
-    async getSubaccountBalance(arg0: bigint): Promise<Result_8> {
+    async getSubaccountBalance(arg0: bigint): Promise<Result_10> {
         if (this.processError) {
             try {
                 const result = await this.actor.getSubaccountBalance(arg0);
-                return from_candid_Result_8_n99(this._uploadFile, this._downloadFile, result);
+                return from_candid_Result_10_n99(this._uploadFile, this._downloadFile, result);
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
             const result = await this.actor.getSubaccountBalance(arg0);
-            return from_candid_Result_8_n99(this._uploadFile, this._downloadFile, result);
+            return from_candid_Result_10_n99(this._uploadFile, this._downloadFile, result);
         }
     }
     async getTokenImage(arg0: string, arg1: string): Promise<string> {
@@ -1212,18 +1276,18 @@ export class Backend implements backendInterface {
             return result;
         }
     }
-    async handlePaymentConfirmation(arg0: string): Promise<Result_7> {
+    async handlePaymentConfirmation(arg0: string): Promise<Result_9> {
         if (this.processError) {
             try {
                 const result = await this.actor.handlePaymentConfirmation(arg0);
-                return from_candid_Result_7_n103(this._uploadFile, this._downloadFile, result);
+                return from_candid_Result_9_n103(this._uploadFile, this._downloadFile, result);
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
             const result = await this.actor.handlePaymentConfirmation(arg0);
-            return from_candid_Result_7_n103(this._uploadFile, this._downloadFile, result);
+            return from_candid_Result_9_n103(this._uploadFile, this._downloadFile, result);
         }
     }
     async isAdmin(): Promise<boolean> {
@@ -1296,6 +1360,20 @@ export class Backend implements backendInterface {
             return result;
         }
     }
+    async listSubmissions(): Promise<Result_8> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.listSubmissions();
+                return from_candid_Result_8_n112(this._uploadFile, this._downloadFile, result);
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.listSubmissions();
+            return from_candid_Result_8_n112(this._uploadFile, this._downloadFile, result);
+        }
+    }
     async markLatePaymentReviewed(arg0: string): Promise<boolean> {
         if (this.processError) {
             try {
@@ -1310,18 +1388,18 @@ export class Backend implements backendInterface {
             return result;
         }
     }
-    async markOrderShipped(arg0: string, arg1: string | null): Promise<Result_6> {
+    async markOrderShipped(arg0: string, arg1: string | null): Promise<Result_7> {
         if (this.processError) {
             try {
-                const result = await this.actor.markOrderShipped(arg0, to_candid_opt_n112(this._uploadFile, this._downloadFile, arg1));
-                return from_candid_Result_6_n113(this._uploadFile, this._downloadFile, result);
+                const result = await this.actor.markOrderShipped(arg0, to_candid_opt_n121(this._uploadFile, this._downloadFile, arg1));
+                return from_candid_Result_7_n122(this._uploadFile, this._downloadFile, result);
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
-            const result = await this.actor.markOrderShipped(arg0, to_candid_opt_n112(this._uploadFile, this._downloadFile, arg1));
-            return from_candid_Result_6_n113(this._uploadFile, this._downloadFile, result);
+            const result = await this.actor.markOrderShipped(arg0, to_candid_opt_n121(this._uploadFile, this._downloadFile, arg1));
+            return from_candid_Result_7_n122(this._uploadFile, this._downloadFile, result);
         }
     }
     async paymentServiceTransform(arg0: TransformationInput): Promise<TransformationOutput> {
@@ -1366,18 +1444,18 @@ export class Backend implements backendInterface {
             return result;
         }
     }
-    async resendConfirmationEmail(arg0: string): Promise<Result_6> {
+    async resendConfirmationEmail(arg0: string): Promise<Result_7> {
         if (this.processError) {
             try {
                 const result = await this.actor.resendConfirmationEmail(arg0);
-                return from_candid_Result_6_n113(this._uploadFile, this._downloadFile, result);
+                return from_candid_Result_7_n122(this._uploadFile, this._downloadFile, result);
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
             const result = await this.actor.resendConfirmationEmail(arg0);
-            return from_candid_Result_6_n113(this._uploadFile, this._downloadFile, result);
+            return from_candid_Result_7_n122(this._uploadFile, this._downloadFile, result);
         }
     }
     async schema(): Promise<string> {
@@ -1422,18 +1500,46 @@ export class Backend implements backendInterface {
             return result;
         }
     }
+    async submissionServiceTransform(arg0: TransformationInput): Promise<TransformationOutput> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.submissionServiceTransform(arg0);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.submissionServiceTransform(arg0);
+            return result;
+        }
+    }
+    async submitSubmission(arg0: SubmissionInput): Promise<Result_6> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.submitSubmission(to_candid_SubmissionInput_n126(this._uploadFile, this._downloadFile, arg0));
+                return from_candid_Result_6_n130(this._uploadFile, this._downloadFile, result);
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.submitSubmission(to_candid_SubmissionInput_n126(this._uploadFile, this._downloadFile, arg0));
+            return from_candid_Result_6_n130(this._uploadFile, this._downloadFile, result);
+        }
+    }
     async sweepCryptoToTreasury(arg0: string): Promise<Result_5> {
         if (this.processError) {
             try {
                 const result = await this.actor.sweepCryptoToTreasury(arg0);
-                return from_candid_Result_5_n117(this._uploadFile, this._downloadFile, result);
+                return from_candid_Result_5_n132(this._uploadFile, this._downloadFile, result);
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
             const result = await this.actor.sweepCryptoToTreasury(arg0);
-            return from_candid_Result_5_n117(this._uploadFile, this._downloadFile, result);
+            return from_candid_Result_5_n132(this._uploadFile, this._downloadFile, result);
         }
     }
     async sweepDefaultSubaccount(): Promise<Result_4> {
@@ -1454,14 +1560,14 @@ export class Backend implements backendInterface {
         if (this.processError) {
             try {
                 const result = await this.actor.sweepSubaccount(arg0);
-                return from_candid_Result_3_n119(this._uploadFile, this._downloadFile, result);
+                return from_candid_Result_3_n134(this._uploadFile, this._downloadFile, result);
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
             const result = await this.actor.sweepSubaccount(arg0);
-            return from_candid_Result_3_n119(this._uploadFile, this._downloadFile, result);
+            return from_candid_Result_3_n134(this._uploadFile, this._downloadFile, result);
         }
     }
     async transform(arg0: TransformationInput): Promise<TransformationOutput> {
@@ -1482,42 +1588,42 @@ export class Backend implements backendInterface {
         if (this.processError) {
             try {
                 const result = await this.actor.unsubscribe(arg0);
-                return from_candid_Result_2_n123(this._uploadFile, this._downloadFile, result);
+                return from_candid_Result_2_n138(this._uploadFile, this._downloadFile, result);
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
             const result = await this.actor.unsubscribe(arg0);
-            return from_candid_Result_2_n123(this._uploadFile, this._downloadFile, result);
+            return from_candid_Result_2_n138(this._uploadFile, this._downloadFile, result);
         }
     }
     async updateLedgerConfig(arg0: Token, arg1: Principal, arg2: number, arg3: bigint): Promise<Result> {
         if (this.processError) {
             try {
-                const result = await this.actor.updateLedgerConfig(to_candid_Token_n125(this._uploadFile, this._downloadFile, arg0), arg1, arg2, arg3);
-                return from_candid_Result_n127(this._uploadFile, this._downloadFile, result);
+                const result = await this.actor.updateLedgerConfig(to_candid_Token_n140(this._uploadFile, this._downloadFile, arg0), arg1, arg2, arg3);
+                return from_candid_Result_n142(this._uploadFile, this._downloadFile, result);
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
-            const result = await this.actor.updateLedgerConfig(to_candid_Token_n125(this._uploadFile, this._downloadFile, arg0), arg1, arg2, arg3);
-            return from_candid_Result_n127(this._uploadFile, this._downloadFile, result);
+            const result = await this.actor.updateLedgerConfig(to_candid_Token_n140(this._uploadFile, this._downloadFile, arg0), arg1, arg2, arg3);
+            return from_candid_Result_n142(this._uploadFile, this._downloadFile, result);
         }
     }
     async updateMinimumOrder(arg0: bigint): Promise<Result> {
         if (this.processError) {
             try {
                 const result = await this.actor.updateMinimumOrder(arg0);
-                return from_candid_Result_n127(this._uploadFile, this._downloadFile, result);
+                return from_candid_Result_n142(this._uploadFile, this._downloadFile, result);
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
             const result = await this.actor.updateMinimumOrder(arg0);
-            return from_candid_Result_n127(this._uploadFile, this._downloadFile, result);
+            return from_candid_Result_n142(this._uploadFile, this._downloadFile, result);
         }
     }
     async updatePaymentServiceToken(arg0: string): Promise<Result_1> {
@@ -1565,15 +1671,15 @@ export class Backend implements backendInterface {
     async updateTreasury(arg0: Principal, arg1: Uint8Array | null): Promise<Result> {
         if (this.processError) {
             try {
-                const result = await this.actor.updateTreasury(arg0, to_candid_opt_n129(this._uploadFile, this._downloadFile, arg1));
-                return from_candid_Result_n127(this._uploadFile, this._downloadFile, result);
+                const result = await this.actor.updateTreasury(arg0, to_candid_opt_n144(this._uploadFile, this._downloadFile, arg1));
+                return from_candid_Result_n142(this._uploadFile, this._downloadFile, result);
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
-            const result = await this.actor.updateTreasury(arg0, to_candid_opt_n129(this._uploadFile, this._downloadFile, arg1));
-            return from_candid_Result_n127(this._uploadFile, this._downloadFile, result);
+            const result = await this.actor.updateTreasury(arg0, to_candid_opt_n144(this._uploadFile, this._downloadFile, arg1));
+            return from_candid_Result_n142(this._uploadFile, this._downloadFile, result);
         }
     }
 }
@@ -1604,8 +1710,11 @@ function from_candid_CryptoPaymentStatus_n9(_uploadFile: (file: ExternalBlob) =>
 function from_candid_DepositInfo_n85(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _DepositInfo): DepositInfo {
     return from_candid_record_n86(_uploadFile, _downloadFile, value);
 }
-function from_candid_EmailError_n115(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _EmailError): EmailError {
-    return from_candid_variant_n116(_uploadFile, _downloadFile, value);
+function from_candid_Discipline_n117(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Discipline): Discipline {
+    return from_candid_variant_n118(_uploadFile, _downloadFile, value);
+}
+function from_candid_EmailError_n124(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _EmailError): EmailError {
+    return from_candid_variant_n125(_uploadFile, _downloadFile, value);
 }
 function from_candid_LatePayment_n106(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _LatePayment): LatePayment {
     return from_candid_record_n107(_uploadFile, _downloadFile, value);
@@ -1637,65 +1746,71 @@ function from_candid_RecheckResult_n67(_uploadFile: (file: ExternalBlob) => Prom
 function from_candid_RecoveryError_n69(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _RecoveryError): RecoveryError {
     return from_candid_variant_n70(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_10_n89(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Result_10): Result_10 {
+function from_candid_Result_10_n99(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Result_10): Result_10 {
+    return from_candid_variant_n100(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_11_n94(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Result_11): Result_11 {
+    return from_candid_variant_n95(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_12_n89(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Result_12): Result_12 {
     return from_candid_variant_n90(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_11_n19(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Result_11): Result_11 {
+function from_candid_Result_13_n19(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Result_13): Result_13 {
     return from_candid_variant_n20(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_12_n83(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Result_12): Result_12 {
+function from_candid_Result_14_n83(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Result_14): Result_14 {
     return from_candid_variant_n84(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_13_n76(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Result_13): Result_13 {
+function from_candid_Result_15_n76(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Result_15): Result_15 {
     return from_candid_variant_n77(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_14_n65(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Result_14): Result_14 {
+function from_candid_Result_16_n65(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Result_16): Result_16 {
     return from_candid_variant_n66(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_15_n45(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Result_15): Result_15 {
+function from_candid_Result_17_n45(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Result_17): Result_17 {
     return from_candid_variant_n46(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_16_n39(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Result_16): Result_16 {
+function from_candid_Result_18_n39(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Result_18): Result_18 {
     return from_candid_variant_n40(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_17_n25(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Result_17): Result_17 {
+function from_candid_Result_19_n25(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Result_19): Result_19 {
     return from_candid_variant_n26(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_18_n23(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Result_18): Result_18 {
-    return from_candid_variant_n24(_uploadFile, _downloadFile, value);
 }
 function from_candid_Result_1_n15(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Result_1): Result_1 {
     return from_candid_variant_n16(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_2_n123(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Result_2): Result_2 {
-    return from_candid_variant_n124(_uploadFile, _downloadFile, value);
+function from_candid_Result_20_n23(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Result_20): Result_20 {
+    return from_candid_variant_n24(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_3_n119(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Result_3): Result_3 {
-    return from_candid_variant_n120(_uploadFile, _downloadFile, value);
+function from_candid_Result_2_n138(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Result_2): Result_2 {
+    return from_candid_variant_n139(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_3_n134(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Result_3): Result_3 {
+    return from_candid_variant_n135(_uploadFile, _downloadFile, value);
 }
 function from_candid_Result_4_n71(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Result_4): Result_4 {
     return from_candid_variant_n72(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_5_n117(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Result_5): Result_5 {
-    return from_candid_variant_n118(_uploadFile, _downloadFile, value);
+function from_candid_Result_5_n132(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Result_5): Result_5 {
+    return from_candid_variant_n133(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_6_n113(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Result_6): Result_6 {
-    return from_candid_variant_n114(_uploadFile, _downloadFile, value);
+function from_candid_Result_6_n130(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Result_6): Result_6 {
+    return from_candid_variant_n131(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_7_n103(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Result_7): Result_7 {
+function from_candid_Result_7_n122(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Result_7): Result_7 {
+    return from_candid_variant_n123(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_8_n112(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Result_8): Result_8 {
+    return from_candid_variant_n113(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_9_n103(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Result_9): Result_9 {
     return from_candid_variant_n104(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_8_n99(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Result_8): Result_8 {
-    return from_candid_variant_n100(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_9_n94(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Result_9): Result_9 {
-    return from_candid_variant_n95(_uploadFile, _downloadFile, value);
 }
 function from_candid_Result__1_n57(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Result__1): Result__1 {
     return from_candid_record_n58(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_n127(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Result): Result {
-    return from_candid_variant_n128(_uploadFile, _downloadFile, value);
+function from_candid_Result_n142(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Result): Result {
+    return from_candid_variant_n143(_uploadFile, _downloadFile, value);
 }
 function from_candid_ResumeInfo_n96(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _ResumeInfo): ResumeInfo {
     return from_candid_record_n97(_uploadFile, _downloadFile, value);
@@ -1706,14 +1821,20 @@ function from_candid_ShippingAddress_n49(_uploadFile: (file: ExternalBlob) => Pr
 function from_candid_ShippingStatus_n52(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _ShippingStatus): ShippingStatus {
     return from_candid_variant_n53(_uploadFile, _downloadFile, value);
 }
+function from_candid_SubmissionError_n119(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _SubmissionError): SubmissionError {
+    return from_candid_variant_n120(_uploadFile, _downloadFile, value);
+}
+function from_candid_SubmissionRecord_n115(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _SubmissionRecord): SubmissionRecord {
+    return from_candid_record_n116(_uploadFile, _downloadFile, value);
+}
 function from_candid_SweepError_n101(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _SweepError): SweepError {
     return from_candid_variant_n102(_uploadFile, _downloadFile, value);
 }
 function from_candid_SweepResult_n73(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _SweepResult): SweepResult {
     return from_candid_record_n74(_uploadFile, _downloadFile, value);
 }
-function from_candid_SweepSubaccountResult_n121(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _SweepSubaccountResult): SweepSubaccountResult {
-    return from_candid_record_n122(_uploadFile, _downloadFile, value);
+function from_candid_SweepSubaccountResult_n136(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _SweepSubaccountResult): SweepSubaccountResult {
+    return from_candid_record_n137(_uploadFile, _downloadFile, value);
 }
 function from_candid_Token_n87(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Token): Token {
     return from_candid_variant_n88(_uploadFile, _downloadFile, value);
@@ -1805,7 +1926,40 @@ function from_candid_record_n110(_uploadFile: (file: ExternalBlob) => Promise<Ui
         liveBalance: value.liveBalance
     };
 }
-function from_candid_record_n122(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+function from_candid_record_n116(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+    id: string;
+    discipline: _Discipline;
+    link: string;
+    name: string;
+    submittedAt: bigint;
+    email: string;
+    message: [] | [string];
+    marketingConsentAt: [] | [bigint];
+    marketingConsent: boolean;
+}): {
+    id: string;
+    discipline: Discipline;
+    link: string;
+    name: string;
+    submittedAt: bigint;
+    email: string;
+    message?: string;
+    marketingConsentAt?: bigint;
+    marketingConsent: boolean;
+} {
+    return {
+        id: value.id,
+        discipline: from_candid_Discipline_n117(_uploadFile, _downloadFile, value.discipline),
+        link: value.link,
+        name: value.name,
+        submittedAt: value.submittedAt,
+        email: value.email,
+        message: record_opt_to_undefined(from_candid_opt_n11(_uploadFile, _downloadFile, value.message)),
+        marketingConsentAt: record_opt_to_undefined(from_candid_opt_n51(_uploadFile, _downloadFile, value.marketingConsentAt)),
+        marketingConsent: value.marketingConsent
+    };
+}
+function from_candid_record_n137(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     error: [] | [string];
     blockIndex: [] | [bigint];
     subaccountHex: string;
@@ -2282,7 +2436,90 @@ function from_candid_variant_n104(_uploadFile: (file: ExternalBlob) => Promise<U
         err: from_candid_PaymentError_n41(_uploadFile, _downloadFile, value.err)
     } : value;
 }
-function from_candid_variant_n114(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+function from_candid_variant_n113(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+    ok: Array<_SubmissionRecord>;
+} | {
+    err: _SubmissionError;
+}): {
+    __kind__: "ok";
+    ok: Array<SubmissionRecord>;
+} | {
+    __kind__: "err";
+    err: SubmissionError;
+} {
+    return "ok" in value ? {
+        __kind__: "ok",
+        ok: from_candid_vec_n114(_uploadFile, _downloadFile, value.ok)
+    } : "err" in value ? {
+        __kind__: "err",
+        err: from_candid_SubmissionError_n119(_uploadFile, _downloadFile, value.err)
+    } : value;
+}
+function from_candid_variant_n118(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+    music: null;
+} | {
+    other: null;
+} | {
+    video: null;
+} | {
+    visualArt: null;
+} | {
+    writing: null;
+}): Discipline {
+    return "music" in value ? Discipline.music : "other" in value ? Discipline.other : "video" in value ? Discipline.video : "visualArt" in value ? Discipline.visualArt : "writing" in value ? Discipline.writing : value;
+}
+function from_candid_variant_n120(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+    invalidInput: string;
+} | {
+    notConfigured: string;
+} | {
+    honeypot: null;
+} | {
+    rateLimited: null;
+} | {
+    outcallFailed: string;
+} | {
+    invalidResponse: string;
+}): {
+    __kind__: "invalidInput";
+    invalidInput: string;
+} | {
+    __kind__: "notConfigured";
+    notConfigured: string;
+} | {
+    __kind__: "honeypot";
+    honeypot: null;
+} | {
+    __kind__: "rateLimited";
+    rateLimited: null;
+} | {
+    __kind__: "outcallFailed";
+    outcallFailed: string;
+} | {
+    __kind__: "invalidResponse";
+    invalidResponse: string;
+} {
+    return "invalidInput" in value ? {
+        __kind__: "invalidInput",
+        invalidInput: value.invalidInput
+    } : "notConfigured" in value ? {
+        __kind__: "notConfigured",
+        notConfigured: value.notConfigured
+    } : "honeypot" in value ? {
+        __kind__: "honeypot",
+        honeypot: value.honeypot
+    } : "rateLimited" in value ? {
+        __kind__: "rateLimited",
+        rateLimited: value.rateLimited
+    } : "outcallFailed" in value ? {
+        __kind__: "outcallFailed",
+        outcallFailed: value.outcallFailed
+    } : "invalidResponse" in value ? {
+        __kind__: "invalidResponse",
+        invalidResponse: value.invalidResponse
+    } : value;
+}
+function from_candid_variant_n123(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     ok: null;
 } | {
     err: _EmailError;
@@ -2298,10 +2535,10 @@ function from_candid_variant_n114(_uploadFile: (file: ExternalBlob) => Promise<U
         ok: value.ok
     } : "err" in value ? {
         __kind__: "err",
-        err: from_candid_EmailError_n115(_uploadFile, _downloadFile, value.err)
+        err: from_candid_EmailError_n124(_uploadFile, _downloadFile, value.err)
     } : value;
 }
-function from_candid_variant_n116(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+function from_candid_variant_n125(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     notConfigured: string;
 } | {
     notShippable: null;
@@ -2352,7 +2589,26 @@ function from_candid_variant_n116(_uploadFile: (file: ExternalBlob) => Promise<U
         invalidResponse: value.invalidResponse
     } : value;
 }
-function from_candid_variant_n118(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+function from_candid_variant_n131(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+    ok: null;
+} | {
+    err: _SubmissionError;
+}): {
+    __kind__: "ok";
+    ok: null;
+} | {
+    __kind__: "err";
+    err: SubmissionError;
+} {
+    return "ok" in value ? {
+        __kind__: "ok",
+        ok: value.ok
+    } : "err" in value ? {
+        __kind__: "err",
+        err: from_candid_SubmissionError_n119(_uploadFile, _downloadFile, value.err)
+    } : value;
+}
+function from_candid_variant_n133(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     ok: bigint;
 } | {
     err: _CryptoPaymentError;
@@ -2371,7 +2627,7 @@ function from_candid_variant_n118(_uploadFile: (file: ExternalBlob) => Promise<U
         err: from_candid_CryptoPaymentError_n21(_uploadFile, _downloadFile, value.err)
     } : value;
 }
-function from_candid_variant_n120(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+function from_candid_variant_n135(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     ok: _SweepSubaccountResult;
 } | {
     err: _SweepError;
@@ -2384,13 +2640,13 @@ function from_candid_variant_n120(_uploadFile: (file: ExternalBlob) => Promise<U
 } {
     return "ok" in value ? {
         __kind__: "ok",
-        ok: from_candid_SweepSubaccountResult_n121(_uploadFile, _downloadFile, value.ok)
+        ok: from_candid_SweepSubaccountResult_n136(_uploadFile, _downloadFile, value.ok)
     } : "err" in value ? {
         __kind__: "err",
         err: from_candid_SweepError_n101(_uploadFile, _downloadFile, value.err)
     } : value;
 }
-function from_candid_variant_n124(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+function from_candid_variant_n139(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     ok: null;
 } | {
     err: _ConsentError;
@@ -2409,7 +2665,7 @@ function from_candid_variant_n124(_uploadFile: (file: ExternalBlob) => Promise<U
         err: from_candid_ConsentError_n78(_uploadFile, _downloadFile, value.err)
     } : value;
 }
-function from_candid_variant_n128(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+function from_candid_variant_n143(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     ok: null;
 } | {
     err: _CryptoPaymentError;
@@ -3091,6 +3347,9 @@ function from_candid_vec_n105(_uploadFile: (file: ExternalBlob) => Promise<Uint8
 function from_candid_vec_n108(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Array<_OrderRecoveryView>): Array<OrderRecoveryView> {
     return value.map((x)=>from_candid_OrderRecoveryView_n109(_uploadFile, _downloadFile, x));
 }
+function from_candid_vec_n114(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Array<_SubmissionRecord>): Array<SubmissionRecord> {
+    return value.map((x)=>from_candid_SubmissionRecord_n115(_uploadFile, _downloadFile, x));
+}
 function from_candid_vec_n12(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Array<_AdminOrderView>): Array<AdminOrderView> {
     return value.map((x)=>from_candid_AdminOrderView_n13(_uploadFile, _downloadFile, x));
 }
@@ -3105,6 +3364,9 @@ function from_candid_vec_n91(_uploadFile: (file: ExternalBlob) => Promise<Uint8A
 }
 function to_candid_CreateOrderInput_n43(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: CreateOrderInput): _CreateOrderInput {
     return to_candid_record_n44(_uploadFile, _downloadFile, value);
+}
+function to_candid_Discipline_n128(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Discipline): _Discipline {
+    return to_candid_variant_n129(_uploadFile, _downloadFile, value);
 }
 function to_candid_Order_n29(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Order): _Order {
     return to_candid_record_n30(_uploadFile, _downloadFile, value);
@@ -3121,14 +3383,47 @@ function to_candid_ShippingAddress_n31(_uploadFile: (file: ExternalBlob) => Prom
 function to_candid_ShippingStatus_n37(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: ShippingStatus): _ShippingStatus {
     return to_candid_variant_n38(_uploadFile, _downloadFile, value);
 }
-function to_candid_Token_n125(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Token): _Token {
-    return to_candid_variant_n126(_uploadFile, _downloadFile, value);
+function to_candid_SubmissionInput_n126(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: SubmissionInput): _SubmissionInput {
+    return to_candid_record_n127(_uploadFile, _downloadFile, value);
 }
-function to_candid_opt_n112(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: string | null): [] | [string] {
+function to_candid_Token_n140(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Token): _Token {
+    return to_candid_variant_n141(_uploadFile, _downloadFile, value);
+}
+function to_candid_opt_n121(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: string | null): [] | [string] {
     return value === null ? candid_none() : candid_some(value);
 }
-function to_candid_opt_n129(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Uint8Array | null): [] | [Uint8Array] {
+function to_candid_opt_n144(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Uint8Array | null): [] | [Uint8Array] {
     return value === null ? candid_none() : candid_some(value);
+}
+function to_candid_record_n127(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+    discipline: Discipline;
+    link: string;
+    name: string;
+    email: string;
+    message?: string;
+    honeypot: string;
+    marketingConsentAt?: bigint;
+    marketingConsent: boolean;
+}): {
+    discipline: _Discipline;
+    link: string;
+    name: string;
+    email: string;
+    message: [] | [string];
+    honeypot: string;
+    marketingConsentAt: [] | [bigint];
+    marketingConsent: boolean;
+} {
+    return {
+        discipline: to_candid_Discipline_n128(_uploadFile, _downloadFile, value.discipline),
+        link: value.link,
+        name: value.name,
+        email: value.email,
+        message: value.message ? candid_some(value.message) : candid_none(),
+        honeypot: value.honeypot,
+        marketingConsentAt: value.marketingConsentAt ? candid_some(value.marketingConsentAt) : candid_none(),
+        marketingConsent: value.marketingConsent
+    };
 }
 function to_candid_record_n30(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     id: bigint;
@@ -3253,7 +3548,30 @@ function to_candid_record_n44(_uploadFile: (file: ExternalBlob) => Promise<Uint8
         marketing_consent: value.marketing_consent
     };
 }
-function to_candid_variant_n126(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Token): {
+function to_candid_variant_n129(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Discipline): {
+    music: null;
+} | {
+    other: null;
+} | {
+    video: null;
+} | {
+    visualArt: null;
+} | {
+    writing: null;
+} {
+    return value == Discipline.music ? {
+        music: null
+    } : value == Discipline.other ? {
+        other: null
+    } : value == Discipline.video ? {
+        video: null
+    } : value == Discipline.visualArt ? {
+        visualArt: null
+    } : value == Discipline.writing ? {
+        writing: null
+    } : value;
+}
+function to_candid_variant_n141(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Token): {
     ICP: null;
 } | {
     ckUSDC: null;

@@ -46,6 +46,7 @@ export interface CheckoutSession { 'url' : [] | [string], 'reference' : string }
 export type ConsentError = { 'alreadyUnsubscribed' : null } |
   { 'notConfigured' : string } |
   { 'invalidToken' : null } |
+  { 'rateLimited' : null } |
   { 'outcallFailed' : string } |
   { 'unauthorized' : null } |
   { 'invalidResponse' : string };
@@ -62,6 +63,10 @@ export interface CreateOrderItem {
   'product_id' : ProductId,
   'variant_id' : string,
   'quantity' : bigint,
+}
+export interface CreateOrderResult {
+  'order' : Order,
+  'cancellationToken' : [] | [string],
 }
 export interface CryptoConfigView {
   'icp' : LedgerConfig,
@@ -164,10 +169,12 @@ export type OrderError = { 'outOfStock' : [ProductId, string] } |
   { 'unknownProduct' : ProductId } |
   { 'ckUSDCDisabled' : null } |
   { 'emptyOrder' : null } |
+  { 'rateLimited' : null } |
   { 'belowMinimumOrder' : bigint } |
   { 'productInactive' : ProductId } |
   { 'paymentFailed' : string } |
-  { 'invalidQuantity' : null };
+  { 'invalidQuantity' : null } |
+  { 'tooManyPendingOrders' : null };
 export interface OrderItem {
   'product_id' : ProductId,
   'unit_amount' : bigint,
@@ -197,6 +204,7 @@ export interface PaymentServiceConfigView {
 export type PaymentServiceError = { 'alreadyPaid' : null } |
   { 'notConfigured' : string } |
   { 'notFound' : null } |
+  { 'rateLimited' : null } |
   { 'outcallFailed' : string } |
   { 'unauthorized' : null } |
   { 'invalidResponse' : string };
@@ -282,7 +290,7 @@ export type Result_15 = { 'ok' : ConsentListExport } |
   { 'err' : ConsentError };
 export type Result_16 = { 'ok' : RecheckResult } |
   { 'err' : RecoveryError };
-export type Result_17 = { 'ok' : Order } |
+export type Result_17 = { 'ok' : CreateOrderResult } |
   { 'err' : OrderError };
 export type Result_18 = { 'ok' : CheckoutSession } |
   { 'err' : PaymentError };
@@ -391,6 +399,7 @@ export interface _SERVICE {
   'adminListOrders' : ActorMethod<[string], Array<AdminOrderView>>,
   'bootstrapOwner' : ActorMethod<[Principal], boolean>,
   'cancelCardOrder' : ActorMethod<[string], Result_1>,
+  'cancelGuestOrder' : ActorMethod<[string, string], Result_1>,
   'checkCryptoPayment' : ActorMethod<[string], Result_13>,
   'claimInitialAdmin' : ActorMethod<[], boolean>,
   'confirmCardPayment' : ActorMethod<[string], Result_20>,

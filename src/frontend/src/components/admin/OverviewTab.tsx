@@ -4,6 +4,7 @@ import {
   useGetTreasuryTokens,
   useProducts,
 } from "@/hooks/useQueries";
+import { formatPrice } from "@/lib/currency";
 import type { AdminTabBodyProps } from "@/types/routes";
 import { Loader2 } from "lucide-react";
 import { useMemo } from "react";
@@ -16,9 +17,9 @@ function timestampToMs(ts: bigint): number {
   return Number(ts / 1_000_000n);
 }
 
-/** Dense monetary figure — raw amount with its currency code. */
-function formatMoney(amount: bigint, currency: string): string {
-  return `${amount.toLocaleString("en-US")} ${currency}`;
+/** Dense monetary figure — integer cents rendered as USD dollars. */
+function formatMoney(amount: bigint): string {
+  return formatPrice(amount);
 }
 
 function formatCount(n: number): string {
@@ -121,7 +122,6 @@ export function OverviewTab({ session: _session }: AdminTabBodyProps) {
       failed,
       review,
       aov,
-      currency: paid[0]?.currency ?? "usd",
     };
   }, [orders]);
 
@@ -192,15 +192,15 @@ export function OverviewTab({ session: _session }: AdminTabBodyProps) {
       <div className="admin-stat-grid" data-ocid="admin.overview.revenue">
         <AdminStatCard
           label="Revenue crypto"
-          value={formatMoney(stats.cryptoRevenue, stats.currency)}
+          value={formatMoney(stats.cryptoRevenue)}
         />
         <AdminStatCard
           label="Revenue card"
-          value={formatMoney(stats.cardRevenue, stats.currency)}
+          value={formatMoney(stats.cardRevenue)}
         />
         <AdminStatCard
           label="Average order value"
-          value={formatMoney(stats.aov, stats.currency)}
+          value={formatMoney(stats.aov)}
         />
       </div>
 
@@ -231,7 +231,7 @@ export function OverviewTab({ session: _session }: AdminTabBodyProps) {
               key: "price",
               header: "Price",
               align: "right",
-              render: (r) => formatMoney(r.price, r.currency),
+              render: (r) => formatMoney(r.price),
             },
             {
               key: "inventory",

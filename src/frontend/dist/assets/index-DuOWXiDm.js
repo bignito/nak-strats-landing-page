@@ -34390,6 +34390,7 @@ const PaymentServiceError = Variant({
   "alreadyPaid": Null,
   "notConfigured": Text,
   "notFound": Null,
+  "rateLimited": Null,
   "outcallFailed": Text,
   "unauthorized": Null,
   "invalidResponse": Text
@@ -34492,18 +34493,27 @@ const CreateOrderInput = Record({
   "encrypted_shipping": Opt(Vec(Nat8)),
   "marketing_consent": Bool
 });
+const CreateOrderResult = Record({
+  "order": Order,
+  "cancellationToken": Opt(Text)
+});
 const OrderError = Variant({
   "outOfStock": Tuple(ProductId, Text),
   "unknownVariant": Tuple(ProductId, Text),
   "unknownProduct": ProductId,
   "ckUSDCDisabled": Null,
   "emptyOrder": Null,
+  "rateLimited": Null,
   "belowMinimumOrder": Nat,
   "productInactive": ProductId,
   "paymentFailed": Text,
-  "invalidQuantity": Null
+  "invalidQuantity": Null,
+  "tooManyPendingOrders": Null
 });
-const Result_17 = Variant({ "ok": Order, "err": OrderError });
+const Result_17 = Variant({
+  "ok": CreateOrderResult,
+  "err": OrderError
+});
 const ProductVariant = Record({
   "id": Text,
   "inventory": Nat,
@@ -34572,6 +34582,7 @@ const ConsentError = Variant({
   "alreadyUnsubscribed": Null,
   "notConfigured": Text,
   "invalidToken": Null,
+  "rateLimited": Null,
   "outcallFailed": Text,
   "unauthorized": Null,
   "invalidResponse": Text
@@ -34779,6 +34790,7 @@ Service({
   ),
   "bootstrapOwner": Func([Principal2], [Bool], []),
   "cancelCardOrder": Func([Text], [Result_1], []),
+  "cancelGuestOrder": Func([Text, Text], [Result_1], []),
   "checkCryptoPayment": Func([Text], [Result_13], []),
   "claimInitialAdmin": Func([], [Bool], []),
   "confirmCardPayment": Func([Text], [Result_20], []),
@@ -34961,6 +34973,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "alreadyPaid": IDL2.Null,
     "notConfigured": IDL2.Text,
     "notFound": IDL2.Null,
+    "rateLimited": IDL2.Null,
     "outcallFailed": IDL2.Text,
     "unauthorized": IDL2.Null,
     "invalidResponse": IDL2.Text
@@ -35063,18 +35076,27 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "encrypted_shipping": IDL2.Opt(IDL2.Vec(IDL2.Nat8)),
     "marketing_consent": IDL2.Bool
   });
+  const CreateOrderResult2 = IDL2.Record({
+    "order": Order2,
+    "cancellationToken": IDL2.Opt(IDL2.Text)
+  });
   const OrderError2 = IDL2.Variant({
     "outOfStock": IDL2.Tuple(ProductId2, IDL2.Text),
     "unknownVariant": IDL2.Tuple(ProductId2, IDL2.Text),
     "unknownProduct": ProductId2,
     "ckUSDCDisabled": IDL2.Null,
     "emptyOrder": IDL2.Null,
+    "rateLimited": IDL2.Null,
     "belowMinimumOrder": IDL2.Nat,
     "productInactive": ProductId2,
     "paymentFailed": IDL2.Text,
-    "invalidQuantity": IDL2.Null
+    "invalidQuantity": IDL2.Null,
+    "tooManyPendingOrders": IDL2.Null
   });
-  const Result_172 = IDL2.Variant({ "ok": Order2, "err": OrderError2 });
+  const Result_172 = IDL2.Variant({
+    "ok": CreateOrderResult2,
+    "err": OrderError2
+  });
   const ProductVariant2 = IDL2.Record({
     "id": IDL2.Text,
     "inventory": IDL2.Nat,
@@ -35140,6 +35162,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "alreadyUnsubscribed": IDL2.Null,
     "notConfigured": IDL2.Text,
     "invalidToken": IDL2.Null,
+    "rateLimited": IDL2.Null,
     "outcallFailed": IDL2.Text,
     "unauthorized": IDL2.Null,
     "invalidResponse": IDL2.Text
@@ -35335,6 +35358,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     ),
     "bootstrapOwner": IDL2.Func([IDL2.Principal], [IDL2.Bool], []),
     "cancelCardOrder": IDL2.Func([IDL2.Text], [Result_110], []),
+    "cancelGuestOrder": IDL2.Func([IDL2.Text, IDL2.Text], [Result_110], []),
     "checkCryptoPayment": IDL2.Func([IDL2.Text], [Result_132], []),
     "claimInitialAdmin": IDL2.Func([], [IDL2.Bool], []),
     "confirmCardPayment": IDL2.Func([IDL2.Text], [Result_202], []),
@@ -35598,6 +35622,20 @@ class Backend {
       return from_candid_Result_1_n16(this._uploadFile, this._downloadFile, result);
     }
   }
+  async cancelGuestOrder(arg0, arg1) {
+    if (this.processError) {
+      try {
+        const result = await this.actor.cancelGuestOrder(arg0, arg1);
+        return from_candid_Result_1_n16(this._uploadFile, this._downloadFile, result);
+      } catch (e) {
+        this.processError(e);
+        throw new Error("unreachable");
+      }
+    } else {
+      const result = await this.actor.cancelGuestOrder(arg0, arg1);
+      return from_candid_Result_1_n16(this._uploadFile, this._downloadFile, result);
+    }
+  }
   async checkCryptoPayment(arg0) {
     if (this.processError) {
       try {
@@ -35728,42 +35766,42 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.execute(arg0);
-        return from_candid_Result__1_n54(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result__1_n56(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.execute(arg0);
-      return from_candid_Result__1_n54(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result__1_n56(this._uploadFile, this._downloadFile, result);
     }
   }
   async forceRecheckPayment(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.forceRecheckPayment(arg0);
-        return from_candid_Result_16_n62(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_16_n64(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.forceRecheckPayment(arg0);
-      return from_candid_Result_16_n62(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_16_n64(this._uploadFile, this._downloadFile, result);
     }
   }
   async forceSweepOrder(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.forceSweepOrder(arg0);
-        return from_candid_Result_4_n68(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_4_n70(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.forceSweepOrder(arg0);
-      return from_candid_Result_4_n68(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_4_n70(this._uploadFile, this._downloadFile, result);
     }
   }
   async getApiDoc() {
@@ -35798,42 +35836,42 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.getConsentListCsv();
-        return from_candid_Result_15_n73(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_15_n75(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getConsentListCsv();
-      return from_candid_Result_15_n73(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_15_n75(this._uploadFile, this._downloadFile, result);
     }
   }
   async getCryptoConfig() {
     if (this.processError) {
       try {
         const result = await this.actor.getCryptoConfig();
-        return from_candid_CryptoConfigView_n77(this._uploadFile, this._downloadFile, result);
+        return from_candid_CryptoConfigView_n79(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getCryptoConfig();
-      return from_candid_CryptoConfigView_n77(this._uploadFile, this._downloadFile, result);
+      return from_candid_CryptoConfigView_n79(this._uploadFile, this._downloadFile, result);
     }
   }
   async getCryptoDepositInfo(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.getCryptoDepositInfo(arg0);
-        return from_candid_Result_14_n79(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_14_n81(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getCryptoDepositInfo(arg0);
-      return from_candid_Result_14_n79(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_14_n81(this._uploadFile, this._downloadFile, result);
     }
   }
   async getCryptoPaymentStatus(arg0) {
@@ -35882,14 +35920,14 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.getDefaultSubaccountBalance();
-        return from_candid_Result_12_n85(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_12_n87(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getDefaultSubaccountBalance();
-      return from_candid_Result_12_n85(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_12_n87(this._uploadFile, this._downloadFile, result);
     }
   }
   async getEncryptionRecipients() {
@@ -35952,28 +35990,28 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.getMyOrders();
-        return from_candid_vec_n87(this._uploadFile, this._downloadFile, result);
+        return from_candid_vec_n89(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getMyOrders();
-      return from_candid_vec_n87(this._uploadFile, this._downloadFile, result);
+      return from_candid_vec_n89(this._uploadFile, this._downloadFile, result);
     }
   }
   async getMyRole() {
     if (this.processError) {
       try {
         const result = await this.actor.getMyRole();
-        return from_candid_opt_n90(this._uploadFile, this._downloadFile, result);
+        return from_candid_opt_n92(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getMyRole();
-      return from_candid_opt_n90(this._uploadFile, this._downloadFile, result);
+      return from_candid_opt_n92(this._uploadFile, this._downloadFile, result);
     }
   }
   async getNAKPrice() {
@@ -35994,14 +36032,14 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.getOrderStatus(arg0);
-        return from_candid_opt_n93(this._uploadFile, this._downloadFile, result);
+        return from_candid_opt_n95(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getOrderStatus(arg0);
-      return from_candid_opt_n93(this._uploadFile, this._downloadFile, result);
+      return from_candid_opt_n95(this._uploadFile, this._downloadFile, result);
     }
   }
   async getPaymentServiceConfig() {
@@ -36036,42 +36074,42 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.getProduct(arg0);
-        return from_candid_opt_n94(this._uploadFile, this._downloadFile, result);
+        return from_candid_opt_n96(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getProduct(arg0);
-      return from_candid_opt_n94(this._uploadFile, this._downloadFile, result);
+      return from_candid_opt_n96(this._uploadFile, this._downloadFile, result);
     }
   }
   async getResumeInfo(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.getResumeInfo(arg0);
-        return from_candid_Result_11_n95(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_11_n97(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getResumeInfo(arg0);
-      return from_candid_Result_11_n95(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_11_n97(this._uploadFile, this._downloadFile, result);
     }
   }
   async getSubaccountBalance(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.getSubaccountBalance(arg0);
-        return from_candid_Result_10_n100(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_10_n102(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getSubaccountBalance(arg0);
-      return from_candid_Result_10_n100(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_10_n102(this._uploadFile, this._downloadFile, result);
     }
   }
   async getTokenImage(arg0, arg1) {
@@ -36119,14 +36157,14 @@ class Backend {
   async grantRole(arg0, arg1) {
     if (this.processError) {
       try {
-        const result = await this.actor.grantRole(arg0, to_candid_Role_n104(this._uploadFile, this._downloadFile, arg1));
+        const result = await this.actor.grantRole(arg0, to_candid_Role_n106(this._uploadFile, this._downloadFile, arg1));
         return result;
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
-      const result = await this.actor.grantRole(arg0, to_candid_Role_n104(this._uploadFile, this._downloadFile, arg1));
+      const result = await this.actor.grantRole(arg0, to_candid_Role_n106(this._uploadFile, this._downloadFile, arg1));
       return result;
     }
   }
@@ -36134,14 +36172,14 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.handlePaymentConfirmation(arg0);
-        return from_candid_Result_9_n106(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_9_n108(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.handlePaymentConfirmation(arg0);
-      return from_candid_Result_9_n106(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_9_n108(this._uploadFile, this._downloadFile, result);
     }
   }
   async isAdmin() {
@@ -36176,28 +36214,28 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.listLatePayments();
-        return from_candid_vec_n108(this._uploadFile, this._downloadFile, result);
+        return from_candid_vec_n110(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.listLatePayments();
-      return from_candid_vec_n108(this._uploadFile, this._downloadFile, result);
+      return from_candid_vec_n110(this._uploadFile, this._downloadFile, result);
     }
   }
   async listOrdersForRecovery() {
     if (this.processError) {
       try {
         const result = await this.actor.listOrdersForRecovery();
-        return from_candid_vec_n111(this._uploadFile, this._downloadFile, result);
+        return from_candid_vec_n113(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.listOrdersForRecovery();
-      return from_candid_vec_n111(this._uploadFile, this._downloadFile, result);
+      return from_candid_vec_n113(this._uploadFile, this._downloadFile, result);
     }
   }
   async listProducts() {
@@ -36218,28 +36256,28 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.listSubmissions();
-        return from_candid_Result_8_n115(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_8_n117(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.listSubmissions();
-      return from_candid_Result_8_n115(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_8_n117(this._uploadFile, this._downloadFile, result);
     }
   }
   async listUsers() {
     if (this.processError) {
       try {
         const result = await this.actor.listUsers();
-        return from_candid_vec_n124(this._uploadFile, this._downloadFile, result);
+        return from_candid_vec_n126(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.listUsers();
-      return from_candid_vec_n124(this._uploadFile, this._downloadFile, result);
+      return from_candid_vec_n126(this._uploadFile, this._downloadFile, result);
     }
   }
   async markLatePaymentReviewed(arg0) {
@@ -36259,15 +36297,15 @@ class Backend {
   async markOrderShipped(arg0, arg1) {
     if (this.processError) {
       try {
-        const result = await this.actor.markOrderShipped(arg0, to_candid_opt_n128(this._uploadFile, this._downloadFile, arg1));
-        return from_candid_Result_7_n129(this._uploadFile, this._downloadFile, result);
+        const result = await this.actor.markOrderShipped(arg0, to_candid_opt_n130(this._uploadFile, this._downloadFile, arg1));
+        return from_candid_Result_7_n131(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
-      const result = await this.actor.markOrderShipped(arg0, to_candid_opt_n128(this._uploadFile, this._downloadFile, arg1));
-      return from_candid_Result_7_n129(this._uploadFile, this._downloadFile, result);
+      const result = await this.actor.markOrderShipped(arg0, to_candid_opt_n130(this._uploadFile, this._downloadFile, arg1));
+      return from_candid_Result_7_n131(this._uploadFile, this._downloadFile, result);
     }
   }
   async paymentServiceTransform(arg0) {
@@ -36316,14 +36354,14 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.resendConfirmationEmail(arg0);
-        return from_candid_Result_7_n129(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_7_n131(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.resendConfirmationEmail(arg0);
-      return from_candid_Result_7_n129(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_7_n131(this._uploadFile, this._downloadFile, result);
     }
   }
   async resetAdminForMigration() {
@@ -36413,57 +36451,57 @@ class Backend {
   async submitSubmission(arg0) {
     if (this.processError) {
       try {
-        const result = await this.actor.submitSubmission(to_candid_SubmissionInput_n133(this._uploadFile, this._downloadFile, arg0));
-        return from_candid_Result_6_n137(this._uploadFile, this._downloadFile, result);
+        const result = await this.actor.submitSubmission(to_candid_SubmissionInput_n135(this._uploadFile, this._downloadFile, arg0));
+        return from_candid_Result_6_n139(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
-      const result = await this.actor.submitSubmission(to_candid_SubmissionInput_n133(this._uploadFile, this._downloadFile, arg0));
-      return from_candid_Result_6_n137(this._uploadFile, this._downloadFile, result);
+      const result = await this.actor.submitSubmission(to_candid_SubmissionInput_n135(this._uploadFile, this._downloadFile, arg0));
+      return from_candid_Result_6_n139(this._uploadFile, this._downloadFile, result);
     }
   }
   async sweepCryptoToTreasury(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.sweepCryptoToTreasury(arg0);
-        return from_candid_Result_5_n139(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_5_n141(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.sweepCryptoToTreasury(arg0);
-      return from_candid_Result_5_n139(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_5_n141(this._uploadFile, this._downloadFile, result);
     }
   }
   async sweepDefaultSubaccount() {
     if (this.processError) {
       try {
         const result = await this.actor.sweepDefaultSubaccount();
-        return from_candid_Result_4_n68(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_4_n70(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.sweepDefaultSubaccount();
-      return from_candid_Result_4_n68(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_4_n70(this._uploadFile, this._downloadFile, result);
     }
   }
   async sweepSubaccount(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.sweepSubaccount(arg0);
-        return from_candid_Result_3_n141(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_3_n143(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.sweepSubaccount(arg0);
-      return from_candid_Result_3_n141(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_3_n143(this._uploadFile, this._downloadFile, result);
     }
   }
   async transform(arg0) {
@@ -36484,42 +36522,42 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.unsubscribe(arg0);
-        return from_candid_Result_2_n145(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_2_n147(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.unsubscribe(arg0);
-      return from_candid_Result_2_n145(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_2_n147(this._uploadFile, this._downloadFile, result);
     }
   }
   async updateLedgerConfig(arg0, arg1, arg2, arg3) {
     if (this.processError) {
       try {
-        const result = await this.actor.updateLedgerConfig(to_candid_Token_n147(this._uploadFile, this._downloadFile, arg0), arg1, arg2, arg3);
-        return from_candid_Result_n149(this._uploadFile, this._downloadFile, result);
+        const result = await this.actor.updateLedgerConfig(to_candid_Token_n149(this._uploadFile, this._downloadFile, arg0), arg1, arg2, arg3);
+        return from_candid_Result_n151(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
-      const result = await this.actor.updateLedgerConfig(to_candid_Token_n147(this._uploadFile, this._downloadFile, arg0), arg1, arg2, arg3);
-      return from_candid_Result_n149(this._uploadFile, this._downloadFile, result);
+      const result = await this.actor.updateLedgerConfig(to_candid_Token_n149(this._uploadFile, this._downloadFile, arg0), arg1, arg2, arg3);
+      return from_candid_Result_n151(this._uploadFile, this._downloadFile, result);
     }
   }
   async updateMinimumOrder(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.updateMinimumOrder(arg0);
-        return from_candid_Result_n149(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_n151(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.updateMinimumOrder(arg0);
-      return from_candid_Result_n149(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_n151(this._uploadFile, this._downloadFile, result);
     }
   }
   async updatePaymentServiceToken(arg0) {
@@ -36567,15 +36605,15 @@ class Backend {
   async updateTreasury(arg0, arg1) {
     if (this.processError) {
       try {
-        const result = await this.actor.updateTreasury(arg0, to_candid_opt_n151(this._uploadFile, this._downloadFile, arg1));
-        return from_candid_Result_n149(this._uploadFile, this._downloadFile, result);
+        const result = await this.actor.updateTreasury(arg0, to_candid_opt_n153(this._uploadFile, this._downloadFile, arg1));
+        return from_candid_Result_n151(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
-      const result = await this.actor.updateTreasury(arg0, to_candid_opt_n151(this._uploadFile, this._downloadFile, arg1));
-      return from_candid_Result_n149(this._uploadFile, this._downloadFile, result);
+      const result = await this.actor.updateTreasury(arg0, to_candid_opt_n153(this._uploadFile, this._downloadFile, arg1));
+      return from_candid_Result_n151(this._uploadFile, this._downloadFile, result);
     }
   }
 }
@@ -36585,17 +36623,20 @@ function from_candid_AdminOrderDetail_n2(_uploadFile, _downloadFile, value) {
 function from_candid_AdminOrderView_n14(_uploadFile, _downloadFile, value) {
   return from_candid_record_n15(_uploadFile, _downloadFile, value);
 }
-function from_candid_Cell_n58(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n59(_uploadFile, _downloadFile, value);
+function from_candid_Cell_n60(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n61(_uploadFile, _downloadFile, value);
 }
 function from_candid_CheckoutSession_n28(_uploadFile, _downloadFile, value) {
   return from_candid_record_n29(_uploadFile, _downloadFile, value);
 }
-function from_candid_ConsentError_n75(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n76(_uploadFile, _downloadFile, value);
+function from_candid_ConsentError_n77(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n78(_uploadFile, _downloadFile, value);
 }
-function from_candid_CryptoConfigView_n77(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n78(_uploadFile, _downloadFile, value);
+function from_candid_CreateOrderResult_n46(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n47(_uploadFile, _downloadFile, value);
+}
+function from_candid_CryptoConfigView_n79(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n80(_uploadFile, _downloadFile, value);
 }
 function from_candid_CryptoPaymentError_n22(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n23(_uploadFile, _downloadFile, value);
@@ -36603,26 +36644,26 @@ function from_candid_CryptoPaymentError_n22(_uploadFile, _downloadFile, value) {
 function from_candid_CryptoPaymentStatus_n10(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n11(_uploadFile, _downloadFile, value);
 }
-function from_candid_DepositInfo_n81(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n82(_uploadFile, _downloadFile, value);
+function from_candid_DepositInfo_n83(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n84(_uploadFile, _downloadFile, value);
 }
-function from_candid_Discipline_n120(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n121(_uploadFile, _downloadFile, value);
+function from_candid_Discipline_n122(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n123(_uploadFile, _downloadFile, value);
 }
-function from_candid_EmailError_n131(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n132(_uploadFile, _downloadFile, value);
+function from_candid_EmailError_n133(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n134(_uploadFile, _downloadFile, value);
 }
-function from_candid_LatePayment_n109(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n110(_uploadFile, _downloadFile, value);
+function from_candid_LatePayment_n111(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n112(_uploadFile, _downloadFile, value);
 }
-function from_candid_OrderError_n52(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n53(_uploadFile, _downloadFile, value);
+function from_candid_OrderError_n54(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n55(_uploadFile, _downloadFile, value);
 }
-function from_candid_OrderRecoveryView_n112(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n113(_uploadFile, _downloadFile, value);
+function from_candid_OrderRecoveryView_n114(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n115(_uploadFile, _downloadFile, value);
 }
-function from_candid_Order_n46(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n47(_uploadFile, _downloadFile, value);
+function from_candid_Order_n48(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n49(_uploadFile, _downloadFile, value);
 }
 function from_candid_PaymentError_n40(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n41(_uploadFile, _downloadFile, value);
@@ -36636,35 +36677,35 @@ function from_candid_PaymentServiceError_n18(_uploadFile, _downloadFile, value) 
 function from_candid_PaymentStatus_n4(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n5(_uploadFile, _downloadFile, value);
 }
-function from_candid_PublicOrderView_n88(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n89(_uploadFile, _downloadFile, value);
+function from_candid_PublicOrderView_n90(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n91(_uploadFile, _downloadFile, value);
 }
-function from_candid_RecheckResult_n64(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n65(_uploadFile, _downloadFile, value);
+function from_candid_RecheckResult_n66(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n67(_uploadFile, _downloadFile, value);
 }
-function from_candid_RecoveryError_n66(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n67(_uploadFile, _downloadFile, value);
+function from_candid_RecoveryError_n68(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n69(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_10_n100(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n101(_uploadFile, _downloadFile, value);
+function from_candid_Result_10_n102(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n103(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_11_n95(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n96(_uploadFile, _downloadFile, value);
+function from_candid_Result_11_n97(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n98(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_12_n85(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n86(_uploadFile, _downloadFile, value);
+function from_candid_Result_12_n87(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n88(_uploadFile, _downloadFile, value);
 }
 function from_candid_Result_13_n20(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n21(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_14_n79(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n80(_uploadFile, _downloadFile, value);
+function from_candid_Result_14_n81(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n82(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_15_n73(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n74(_uploadFile, _downloadFile, value);
+function from_candid_Result_15_n75(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n76(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_16_n62(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n63(_uploadFile, _downloadFile, value);
+function from_candid_Result_16_n64(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n65(_uploadFile, _downloadFile, value);
 }
 function from_candid_Result_17_n44(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n45(_uploadFile, _downloadFile, value);
@@ -36681,85 +36722,88 @@ function from_candid_Result_1_n16(_uploadFile, _downloadFile, value) {
 function from_candid_Result_20_n24(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n25(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_2_n145(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n146(_uploadFile, _downloadFile, value);
+function from_candid_Result_2_n147(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n148(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_3_n141(_uploadFile, _downloadFile, value) {
+function from_candid_Result_3_n143(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n144(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_4_n70(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n71(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_5_n141(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n142(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_4_n68(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n69(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_5_n139(_uploadFile, _downloadFile, value) {
+function from_candid_Result_6_n139(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n140(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_6_n137(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n138(_uploadFile, _downloadFile, value);
+function from_candid_Result_7_n131(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n132(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_7_n129(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n130(_uploadFile, _downloadFile, value);
+function from_candid_Result_8_n117(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n118(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_8_n115(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n116(_uploadFile, _downloadFile, value);
+function from_candid_Result_9_n108(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n109(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_9_n106(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n107(_uploadFile, _downloadFile, value);
+function from_candid_Result__1_n56(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n57(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result__1_n54(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n55(_uploadFile, _downloadFile, value);
+function from_candid_Result_n151(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n152(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_n149(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n150(_uploadFile, _downloadFile, value);
+function from_candid_ResumeInfo_n99(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n100(_uploadFile, _downloadFile, value);
 }
-function from_candid_ResumeInfo_n97(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n98(_uploadFile, _downloadFile, value);
+function from_candid_Role_n93(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n94(_uploadFile, _downloadFile, value);
 }
-function from_candid_Role_n91(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n92(_uploadFile, _downloadFile, value);
+function from_candid_ShippingStatus_n51(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n52(_uploadFile, _downloadFile, value);
 }
-function from_candid_ShippingStatus_n49(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n50(_uploadFile, _downloadFile, value);
+function from_candid_SubmissionError_n124(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n125(_uploadFile, _downloadFile, value);
 }
-function from_candid_SubmissionError_n122(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n123(_uploadFile, _downloadFile, value);
+function from_candid_SubmissionRecord_n120(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n121(_uploadFile, _downloadFile, value);
 }
-function from_candid_SubmissionRecord_n118(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n119(_uploadFile, _downloadFile, value);
+function from_candid_SweepError_n104(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n105(_uploadFile, _downloadFile, value);
 }
-function from_candid_SweepError_n102(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n103(_uploadFile, _downloadFile, value);
+function from_candid_SweepResult_n72(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n73(_uploadFile, _downloadFile, value);
 }
-function from_candid_SweepResult_n70(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n71(_uploadFile, _downloadFile, value);
+function from_candid_SweepSubaccountResult_n145(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n146(_uploadFile, _downloadFile, value);
 }
-function from_candid_SweepSubaccountResult_n143(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n144(_uploadFile, _downloadFile, value);
+function from_candid_Token_n85(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n86(_uploadFile, _downloadFile, value);
 }
-function from_candid_Token_n83(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n84(_uploadFile, _downloadFile, value);
+function from_candid_UserRecord_n128(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n129(_uploadFile, _downloadFile, value);
 }
-function from_candid_UserRecord_n126(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n127(_uploadFile, _downloadFile, value);
-}
-function from_candid_Value_n60(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n61(_uploadFile, _downloadFile, value);
+function from_candid_Value_n62(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n63(_uploadFile, _downloadFile, value);
 }
 function from_candid_opt_n1(_uploadFile, _downloadFile, value) {
   return value.length === 0 ? null : from_candid_AdminOrderDetail_n2(_uploadFile, _downloadFile, value[0]);
 }
-function from_candid_opt_n114(_uploadFile, _downloadFile, value) {
+function from_candid_opt_n101(_uploadFile, _downloadFile, value) {
+  return value.length === 0 ? null : from_candid_DepositInfo_n83(_uploadFile, _downloadFile, value[0]);
+}
+function from_candid_opt_n116(_uploadFile, _downloadFile, value) {
   return value.length === 0 ? null : value[0];
 }
 function from_candid_opt_n12(_uploadFile, _downloadFile, value) {
   return value.length === 0 ? null : value[0];
 }
-function from_candid_opt_n48(_uploadFile, _downloadFile, value) {
+function from_candid_opt_n50(_uploadFile, _downloadFile, value) {
   return value.length === 0 ? null : value[0];
 }
-function from_candid_opt_n51(_uploadFile, _downloadFile, value) {
+function from_candid_opt_n53(_uploadFile, _downloadFile, value) {
   return value.length === 0 ? null : value[0];
 }
-function from_candid_opt_n72(_uploadFile, _downloadFile, value) {
+function from_candid_opt_n74(_uploadFile, _downloadFile, value) {
   return value.length === 0 ? null : value[0];
 }
 function from_candid_opt_n8(_uploadFile, _downloadFile, value) {
@@ -36768,21 +36812,27 @@ function from_candid_opt_n8(_uploadFile, _downloadFile, value) {
 function from_candid_opt_n9(_uploadFile, _downloadFile, value) {
   return value.length === 0 ? null : from_candid_CryptoPaymentStatus_n10(_uploadFile, _downloadFile, value[0]);
 }
-function from_candid_opt_n90(_uploadFile, _downloadFile, value) {
-  return value.length === 0 ? null : from_candid_Role_n91(_uploadFile, _downloadFile, value[0]);
+function from_candid_opt_n92(_uploadFile, _downloadFile, value) {
+  return value.length === 0 ? null : from_candid_Role_n93(_uploadFile, _downloadFile, value[0]);
 }
-function from_candid_opt_n93(_uploadFile, _downloadFile, value) {
-  return value.length === 0 ? null : from_candid_PublicOrderView_n88(_uploadFile, _downloadFile, value[0]);
+function from_candid_opt_n95(_uploadFile, _downloadFile, value) {
+  return value.length === 0 ? null : from_candid_PublicOrderView_n90(_uploadFile, _downloadFile, value[0]);
 }
-function from_candid_opt_n94(_uploadFile, _downloadFile, value) {
+function from_candid_opt_n96(_uploadFile, _downloadFile, value) {
   return value.length === 0 ? null : value[0];
 }
-function from_candid_opt_n99(_uploadFile, _downloadFile, value) {
-  return value.length === 0 ? null : from_candid_DepositInfo_n81(_uploadFile, _downloadFile, value[0]);
-}
-function from_candid_record_n110(_uploadFile, _downloadFile, value) {
+function from_candid_record_n100(_uploadFile, _downloadFile, value) {
   return {
-    token: from_candid_Token_n83(_uploadFile, _downloadFile, value.token),
+    status: from_candid_CryptoPaymentStatus_n10(_uploadFile, _downloadFile, value.status),
+    expiresAt: value.expiresAt,
+    reference: value.reference,
+    deposit: record_opt_to_undefined(from_candid_opt_n101(_uploadFile, _downloadFile, value.deposit)),
+    remainingNs: value.remainingNs
+  };
+}
+function from_candid_record_n112(_uploadFile, _downloadFile, value) {
+  return {
+    token: from_candid_Token_n85(_uploadFile, _downloadFile, value.token),
     reference: value.reference,
     receivedAmount: value.receivedAmount,
     receivedAt: value.receivedAt,
@@ -36790,40 +36840,40 @@ function from_candid_record_n110(_uploadFile, _downloadFile, value) {
     expectedAmount: value.expectedAmount
   };
 }
-function from_candid_record_n113(_uploadFile, _downloadFile, value) {
+function from_candid_record_n115(_uploadFile, _downloadFile, value) {
   return {
     status: from_candid_PaymentStatus_n4(_uploadFile, _downloadFile, value.status),
     paymentMethod: from_candid_PaymentMethod_n6(_uploadFile, _downloadFile, value.paymentMethod),
-    expiresAt: record_opt_to_undefined(from_candid_opt_n48(_uploadFile, _downloadFile, value.expiresAt)),
+    expiresAt: record_opt_to_undefined(from_candid_opt_n50(_uploadFile, _downloadFile, value.expiresAt)),
     reference: value.reference,
-    depositAccount: record_opt_to_undefined(from_candid_opt_n114(_uploadFile, _downloadFile, value.depositAccount)),
+    depositAccount: record_opt_to_undefined(from_candid_opt_n116(_uploadFile, _downloadFile, value.depositAccount)),
     amountOwed: value.amountOwed,
     liveBalance: value.liveBalance
   };
 }
-function from_candid_record_n119(_uploadFile, _downloadFile, value) {
+function from_candid_record_n121(_uploadFile, _downloadFile, value) {
   return {
     id: value.id,
-    discipline: from_candid_Discipline_n120(_uploadFile, _downloadFile, value.discipline),
+    discipline: from_candid_Discipline_n122(_uploadFile, _downloadFile, value.discipline),
     link: value.link,
     name: value.name,
     submittedAt: value.submittedAt,
     email: value.email,
     message: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.message)),
-    marketingConsentAt: record_opt_to_undefined(from_candid_opt_n48(_uploadFile, _downloadFile, value.marketingConsentAt)),
+    marketingConsentAt: record_opt_to_undefined(from_candid_opt_n50(_uploadFile, _downloadFile, value.marketingConsentAt)),
     marketingConsent: value.marketingConsent
   };
 }
-function from_candid_record_n127(_uploadFile, _downloadFile, value) {
+function from_candid_record_n129(_uploadFile, _downloadFile, value) {
   return {
     grantedAt: value.grantedAt,
-    role: from_candid_Role_n91(_uploadFile, _downloadFile, value.role)
+    role: from_candid_Role_n93(_uploadFile, _downloadFile, value.role)
   };
 }
-function from_candid_record_n144(_uploadFile, _downloadFile, value) {
+function from_candid_record_n146(_uploadFile, _downloadFile, value) {
   return {
     error: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.error)),
-    blockIndex: record_opt_to_undefined(from_candid_opt_n72(_uploadFile, _downloadFile, value.blockIndex)),
+    blockIndex: record_opt_to_undefined(from_candid_opt_n74(_uploadFile, _downloadFile, value.blockIndex)),
     subaccountHex: value.subaccountHex,
     subaccountIndex: value.subaccountIndex
   };
@@ -36871,6 +36921,12 @@ function from_candid_record_n3(_uploadFile, _downloadFile, value) {
 }
 function from_candid_record_n47(_uploadFile, _downloadFile, value) {
   return {
+    order: from_candid_Order_n48(_uploadFile, _downloadFile, value.order),
+    cancellationToken: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.cancellationToken))
+  };
+}
+function from_candid_record_n49(_uploadFile, _downloadFile, value) {
+  return {
     id: value.id,
     tax: value.tax,
     updated_at: value.updated_at,
@@ -36883,32 +36939,32 @@ function from_candid_record_n47(_uploadFile, _downloadFile, value) {
     payment_method: from_candid_PaymentMethod_n6(_uploadFile, _downloadFile, value.payment_method),
     tracking_number: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.tracking_number)),
     currency: value.currency,
-    marketing_consent_at: record_opt_to_undefined(from_candid_opt_n48(_uploadFile, _downloadFile, value.marketing_consent_at)),
-    shipping_status: from_candid_ShippingStatus_n49(_uploadFile, _downloadFile, value.shipping_status),
+    marketing_consent_at: record_opt_to_undefined(from_candid_opt_n50(_uploadFile, _downloadFile, value.marketing_consent_at)),
+    shipping_status: from_candid_ShippingStatus_n51(_uploadFile, _downloadFile, value.shipping_status),
     has_shipping_details: value.has_shipping_details,
     items: value.items,
     customer_email: value.customer_email,
     encrypted_shipping: record_opt_to_undefined(from_candid_opt_n8(_uploadFile, _downloadFile, value.encrypted_shipping)),
-    customer_principal: record_opt_to_undefined(from_candid_opt_n51(_uploadFile, _downloadFile, value.customer_principal)),
-    shipped_at: record_opt_to_undefined(from_candid_opt_n48(_uploadFile, _downloadFile, value.shipped_at)),
+    customer_principal: record_opt_to_undefined(from_candid_opt_n53(_uploadFile, _downloadFile, value.customer_principal)),
+    shipped_at: record_opt_to_undefined(from_candid_opt_n50(_uploadFile, _downloadFile, value.shipped_at)),
     marketing_consent: value.marketing_consent,
     payment_reference: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.payment_reference)),
     subtotal: value.subtotal
   };
 }
-function from_candid_record_n55(_uploadFile, _downloadFile, value) {
+function from_candid_record_n57(_uploadFile, _downloadFile, value) {
   return {
     hasMore: value.hasMore,
-    rows: from_candid_vec_n56(_uploadFile, _downloadFile, value.rows)
+    rows: from_candid_vec_n58(_uploadFile, _downloadFile, value.rows)
   };
 }
-function from_candid_record_n59(_uploadFile, _downloadFile, value) {
+function from_candid_record_n61(_uploadFile, _downloadFile, value) {
   return {
-    value: from_candid_Value_n60(_uploadFile, _downloadFile, value.value),
+    value: from_candid_Value_n62(_uploadFile, _downloadFile, value.value),
     name: value.name
   };
 }
-function from_candid_record_n65(_uploadFile, _downloadFile, value) {
+function from_candid_record_n67(_uploadFile, _downloadFile, value) {
   return {
     status: from_candid_CryptoPaymentStatus_n10(_uploadFile, _downloadFile, value.status),
     balance: value.balance,
@@ -36916,14 +36972,14 @@ function from_candid_record_n65(_uploadFile, _downloadFile, value) {
     error: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.error))
   };
 }
-function from_candid_record_n71(_uploadFile, _downloadFile, value) {
+function from_candid_record_n73(_uploadFile, _downloadFile, value) {
   return {
     reference: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.reference)),
     error: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.error)),
-    blockIndex: record_opt_to_undefined(from_candid_opt_n72(_uploadFile, _downloadFile, value.blockIndex))
+    blockIndex: record_opt_to_undefined(from_candid_opt_n74(_uploadFile, _downloadFile, value.blockIndex))
   };
 }
-function from_candid_record_n78(_uploadFile, _downloadFile, value) {
+function from_candid_record_n80(_uploadFile, _downloadFile, value) {
   return {
     icp: value.icp,
     ckUSDC: value.ckUSDC,
@@ -36933,10 +36989,10 @@ function from_candid_record_n78(_uploadFile, _downloadFile, value) {
     treasuryPrincipal: value.treasuryPrincipal
   };
 }
-function from_candid_record_n82(_uploadFile, _downloadFile, value) {
+function from_candid_record_n84(_uploadFile, _downloadFile, value) {
   return {
     decimals: value.decimals,
-    token: from_candid_Token_n83(_uploadFile, _downloadFile, value.token),
+    token: from_candid_Token_n85(_uploadFile, _downloadFile, value.token),
     expiresAt: value.expiresAt,
     qrPayload: value.qrPayload,
     subaccount: value.subaccount,
@@ -36945,7 +37001,7 @@ function from_candid_record_n82(_uploadFile, _downloadFile, value) {
     amountDue: value.amountDue
   };
 }
-function from_candid_record_n89(_uploadFile, _downloadFile, value) {
+function from_candid_record_n91(_uploadFile, _downloadFile, value) {
   return {
     id: value.id,
     tax: value.tax,
@@ -36959,43 +37015,34 @@ function from_candid_record_n89(_uploadFile, _downloadFile, value) {
     payment_method: from_candid_PaymentMethod_n6(_uploadFile, _downloadFile, value.payment_method),
     tracking_number: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.tracking_number)),
     currency: value.currency,
-    marketing_consent_at: record_opt_to_undefined(from_candid_opt_n48(_uploadFile, _downloadFile, value.marketing_consent_at)),
-    shipping_status: from_candid_ShippingStatus_n49(_uploadFile, _downloadFile, value.shipping_status),
+    marketing_consent_at: record_opt_to_undefined(from_candid_opt_n50(_uploadFile, _downloadFile, value.marketing_consent_at)),
+    shipping_status: from_candid_ShippingStatus_n51(_uploadFile, _downloadFile, value.shipping_status),
     has_shipping_details: value.has_shipping_details,
     items: value.items,
     encrypted_shipping: record_opt_to_undefined(from_candid_opt_n8(_uploadFile, _downloadFile, value.encrypted_shipping)),
-    customer_principal: record_opt_to_undefined(from_candid_opt_n51(_uploadFile, _downloadFile, value.customer_principal)),
-    shipped_at: record_opt_to_undefined(from_candid_opt_n48(_uploadFile, _downloadFile, value.shipped_at)),
+    customer_principal: record_opt_to_undefined(from_candid_opt_n53(_uploadFile, _downloadFile, value.customer_principal)),
+    shipped_at: record_opt_to_undefined(from_candid_opt_n50(_uploadFile, _downloadFile, value.shipped_at)),
     marketing_consent: value.marketing_consent,
     payment_reference: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.payment_reference)),
     subtotal: value.subtotal
   };
 }
-function from_candid_record_n98(_uploadFile, _downloadFile, value) {
-  return {
-    status: from_candid_CryptoPaymentStatus_n10(_uploadFile, _downloadFile, value.status),
-    expiresAt: value.expiresAt,
-    reference: value.reference,
-    deposit: record_opt_to_undefined(from_candid_opt_n99(_uploadFile, _downloadFile, value.deposit)),
-    remainingNs: value.remainingNs
-  };
-}
-function from_candid_tuple_n125(_uploadFile, _downloadFile, value) {
+function from_candid_tuple_n127(_uploadFile, _downloadFile, value) {
   return [
     value[0],
-    from_candid_UserRecord_n126(_uploadFile, _downloadFile, value[1])
+    from_candid_UserRecord_n128(_uploadFile, _downloadFile, value[1])
   ];
 }
-function from_candid_variant_n101(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n103(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
     ok: value.ok
   } : "err" in value ? {
     __kind__: "err",
-    err: from_candid_SweepError_n102(_uploadFile, _downloadFile, value.err)
+    err: from_candid_SweepError_n104(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function from_candid_variant_n103(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n105(_uploadFile, _downloadFile, value) {
   return "sweepFailed" in value ? {
     __kind__: "sweepFailed",
     sweepFailed: value.sweepFailed
@@ -37010,7 +37057,7 @@ function from_candid_variant_n103(_uploadFile, _downloadFile, value) {
     invalidConfig: value.invalidConfig
   } : value;
 }
-function from_candid_variant_n107(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n109(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
     ok: value.ok
@@ -37037,19 +37084,19 @@ function from_candid_variant_n11(_uploadFile, _downloadFile, value) {
     awaiting_payment: value.awaiting_payment
   } : value;
 }
-function from_candid_variant_n116(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n118(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
-    ok: from_candid_vec_n117(_uploadFile, _downloadFile, value.ok)
+    ok: from_candid_vec_n119(_uploadFile, _downloadFile, value.ok)
   } : "err" in value ? {
     __kind__: "err",
-    err: from_candid_SubmissionError_n122(_uploadFile, _downloadFile, value.err)
+    err: from_candid_SubmissionError_n124(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function from_candid_variant_n121(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n123(_uploadFile, _downloadFile, value) {
   return "music" in value ? "music" : "other" in value ? "other" : "video" in value ? "video" : "visualArt" in value ? "visualArt" : "writing" in value ? "writing" : value;
 }
-function from_candid_variant_n123(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n125(_uploadFile, _downloadFile, value) {
   return "invalidInput" in value ? {
     __kind__: "invalidInput",
     invalidInput: value.invalidInput
@@ -37070,16 +37117,16 @@ function from_candid_variant_n123(_uploadFile, _downloadFile, value) {
     invalidResponse: value.invalidResponse
   } : value;
 }
-function from_candid_variant_n130(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n132(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
     ok: value.ok
   } : "err" in value ? {
     __kind__: "err",
-    err: from_candid_EmailError_n131(_uploadFile, _downloadFile, value.err)
+    err: from_candid_EmailError_n133(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function from_candid_variant_n132(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n134(_uploadFile, _downloadFile, value) {
   return "notConfigured" in value ? {
     __kind__: "notConfigured",
     notConfigured: value.notConfigured
@@ -37100,16 +37147,16 @@ function from_candid_variant_n132(_uploadFile, _downloadFile, value) {
     invalidResponse: value.invalidResponse
   } : value;
 }
-function from_candid_variant_n138(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n140(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
     ok: value.ok
   } : "err" in value ? {
     __kind__: "err",
-    err: from_candid_SubmissionError_n122(_uploadFile, _downloadFile, value.err)
+    err: from_candid_SubmissionError_n124(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function from_candid_variant_n140(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n142(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
     ok: value.ok
@@ -37118,25 +37165,25 @@ function from_candid_variant_n140(_uploadFile, _downloadFile, value) {
     err: from_candid_CryptoPaymentError_n22(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function from_candid_variant_n142(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n144(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
-    ok: from_candid_SweepSubaccountResult_n143(_uploadFile, _downloadFile, value.ok)
+    ok: from_candid_SweepSubaccountResult_n145(_uploadFile, _downloadFile, value.ok)
   } : "err" in value ? {
     __kind__: "err",
-    err: from_candid_SweepError_n102(_uploadFile, _downloadFile, value.err)
+    err: from_candid_SweepError_n104(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function from_candid_variant_n146(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n148(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
     ok: value.ok
   } : "err" in value ? {
     __kind__: "err",
-    err: from_candid_ConsentError_n75(_uploadFile, _downloadFile, value.err)
+    err: from_candid_ConsentError_n77(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function from_candid_variant_n150(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n152(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
     ok: value.ok
@@ -37164,6 +37211,9 @@ function from_candid_variant_n19(_uploadFile, _downloadFile, value) {
   } : "notFound" in value ? {
     __kind__: "notFound",
     notFound: value.notFound
+  } : "rateLimited" in value ? {
+    __kind__: "rateLimited",
+    rateLimited: value.rateLimited
   } : "outcallFailed" in value ? {
     __kind__: "outcallFailed",
     outcallFailed: value.outcallFailed
@@ -37259,19 +37309,19 @@ function from_candid_variant_n41(_uploadFile, _downloadFile, value) {
 function from_candid_variant_n45(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
-    ok: from_candid_Order_n46(_uploadFile, _downloadFile, value.ok)
+    ok: from_candid_CreateOrderResult_n46(_uploadFile, _downloadFile, value.ok)
   } : "err" in value ? {
     __kind__: "err",
-    err: from_candid_OrderError_n52(_uploadFile, _downloadFile, value.err)
+    err: from_candid_OrderError_n54(_uploadFile, _downloadFile, value.err)
   } : value;
 }
 function from_candid_variant_n5(_uploadFile, _downloadFile, value) {
   return "cancelled" in value ? "cancelled" : "expired" in value ? "expired" : "pending" in value ? "pending" : "paid" in value ? "paid" : value;
 }
-function from_candid_variant_n50(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n52(_uploadFile, _downloadFile, value) {
   return "shipped" in value ? "shipped" : "pending" in value ? "pending" : value;
 }
-function from_candid_variant_n53(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n55(_uploadFile, _downloadFile, value) {
   return "outOfStock" in value ? {
     __kind__: "outOfStock",
     outOfStock: value.outOfStock
@@ -37287,6 +37337,9 @@ function from_candid_variant_n53(_uploadFile, _downloadFile, value) {
   } : "emptyOrder" in value ? {
     __kind__: "emptyOrder",
     emptyOrder: value.emptyOrder
+  } : "rateLimited" in value ? {
+    __kind__: "rateLimited",
+    rateLimited: value.rateLimited
   } : "belowMinimumOrder" in value ? {
     __kind__: "belowMinimumOrder",
     belowMinimumOrder: value.belowMinimumOrder
@@ -37299,9 +37352,12 @@ function from_candid_variant_n53(_uploadFile, _downloadFile, value) {
   } : "invalidQuantity" in value ? {
     __kind__: "invalidQuantity",
     invalidQuantity: value.invalidQuantity
+  } : "tooManyPendingOrders" in value ? {
+    __kind__: "tooManyPendingOrders",
+    tooManyPendingOrders: value.tooManyPendingOrders
   } : value;
 }
-function from_candid_variant_n61(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n63(_uploadFile, _downloadFile, value) {
   return "int" in value ? {
     __kind__: "int",
     int: value.int
@@ -37322,16 +37378,16 @@ function from_candid_variant_n61(_uploadFile, _downloadFile, value) {
     text: value.text
   } : value;
 }
-function from_candid_variant_n63(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n65(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
-    ok: from_candid_RecheckResult_n64(_uploadFile, _downloadFile, value.ok)
+    ok: from_candid_RecheckResult_n66(_uploadFile, _downloadFile, value.ok)
   } : "err" in value ? {
     __kind__: "err",
-    err: from_candid_RecoveryError_n66(_uploadFile, _downloadFile, value.err)
+    err: from_candid_RecoveryError_n68(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function from_candid_variant_n67(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n69(_uploadFile, _downloadFile, value) {
   return "sweepFailed" in value ? {
     __kind__: "sweepFailed",
     sweepFailed: value.sweepFailed
@@ -37352,28 +37408,28 @@ function from_candid_variant_n67(_uploadFile, _downloadFile, value) {
     invalidConfig: value.invalidConfig
   } : value;
 }
-function from_candid_variant_n69(_uploadFile, _downloadFile, value) {
-  return "ok" in value ? {
-    __kind__: "ok",
-    ok: from_candid_SweepResult_n70(_uploadFile, _downloadFile, value.ok)
-  } : "err" in value ? {
-    __kind__: "err",
-    err: from_candid_RecoveryError_n66(_uploadFile, _downloadFile, value.err)
-  } : value;
-}
 function from_candid_variant_n7(_uploadFile, _downloadFile, value) {
   return "crypto_icp" in value ? "crypto_icp" : "card_stripe" in value ? "card_stripe" : "crypto_ckusdc" in value ? "crypto_ckusdc" : "manual" in value ? "manual" : value;
 }
-function from_candid_variant_n74(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n71(_uploadFile, _downloadFile, value) {
+  return "ok" in value ? {
+    __kind__: "ok",
+    ok: from_candid_SweepResult_n72(_uploadFile, _downloadFile, value.ok)
+  } : "err" in value ? {
+    __kind__: "err",
+    err: from_candid_RecoveryError_n68(_uploadFile, _downloadFile, value.err)
+  } : value;
+}
+function from_candid_variant_n76(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
     ok: value.ok
   } : "err" in value ? {
     __kind__: "err",
-    err: from_candid_ConsentError_n75(_uploadFile, _downloadFile, value.err)
+    err: from_candid_ConsentError_n77(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function from_candid_variant_n76(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n78(_uploadFile, _downloadFile, value) {
   return "alreadyUnsubscribed" in value ? {
     __kind__: "alreadyUnsubscribed",
     alreadyUnsubscribed: value.alreadyUnsubscribed
@@ -37383,6 +37439,9 @@ function from_candid_variant_n76(_uploadFile, _downloadFile, value) {
   } : "invalidToken" in value ? {
     __kind__: "invalidToken",
     invalidToken: value.invalidToken
+  } : "rateLimited" in value ? {
+    __kind__: "rateLimited",
+    rateLimited: value.rateLimited
   } : "outcallFailed" in value ? {
     __kind__: "outcallFailed",
     outcallFailed: value.outcallFailed
@@ -37394,68 +37453,68 @@ function from_candid_variant_n76(_uploadFile, _downloadFile, value) {
     invalidResponse: value.invalidResponse
   } : value;
 }
-function from_candid_variant_n80(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n82(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
-    ok: from_candid_DepositInfo_n81(_uploadFile, _downloadFile, value.ok)
+    ok: from_candid_DepositInfo_n83(_uploadFile, _downloadFile, value.ok)
   } : "err" in value ? {
     __kind__: "err",
     err: from_candid_CryptoPaymentError_n22(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function from_candid_variant_n84(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n86(_uploadFile, _downloadFile, value) {
   return "ICP" in value ? "ICP" : "ckUSDC" in value ? "ckUSDC" : value;
 }
-function from_candid_variant_n86(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n88(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
     ok: value.ok
   } : "err" in value ? {
     __kind__: "err",
-    err: from_candid_RecoveryError_n66(_uploadFile, _downloadFile, value.err)
+    err: from_candid_RecoveryError_n68(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function from_candid_variant_n92(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n94(_uploadFile, _downloadFile, value) {
   return "admin" in value ? "admin" : "owner" in value ? "owner" : "staff" in value ? "staff" : value;
 }
-function from_candid_variant_n96(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n98(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
-    ok: from_candid_ResumeInfo_n97(_uploadFile, _downloadFile, value.ok)
+    ok: from_candid_ResumeInfo_n99(_uploadFile, _downloadFile, value.ok)
   } : "err" in value ? {
     __kind__: "err",
-    err: from_candid_RecoveryError_n66(_uploadFile, _downloadFile, value.err)
+    err: from_candid_RecoveryError_n68(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function from_candid_vec_n108(_uploadFile, _downloadFile, value) {
-  return value.map((x2) => from_candid_LatePayment_n109(_uploadFile, _downloadFile, x2));
+function from_candid_vec_n110(_uploadFile, _downloadFile, value) {
+  return value.map((x2) => from_candid_LatePayment_n111(_uploadFile, _downloadFile, x2));
 }
-function from_candid_vec_n111(_uploadFile, _downloadFile, value) {
-  return value.map((x2) => from_candid_OrderRecoveryView_n112(_uploadFile, _downloadFile, x2));
+function from_candid_vec_n113(_uploadFile, _downloadFile, value) {
+  return value.map((x2) => from_candid_OrderRecoveryView_n114(_uploadFile, _downloadFile, x2));
 }
-function from_candid_vec_n117(_uploadFile, _downloadFile, value) {
-  return value.map((x2) => from_candid_SubmissionRecord_n118(_uploadFile, _downloadFile, x2));
+function from_candid_vec_n119(_uploadFile, _downloadFile, value) {
+  return value.map((x2) => from_candid_SubmissionRecord_n120(_uploadFile, _downloadFile, x2));
 }
-function from_candid_vec_n124(_uploadFile, _downloadFile, value) {
-  return value.map((x2) => from_candid_tuple_n125(_uploadFile, _downloadFile, x2));
+function from_candid_vec_n126(_uploadFile, _downloadFile, value) {
+  return value.map((x2) => from_candid_tuple_n127(_uploadFile, _downloadFile, x2));
 }
 function from_candid_vec_n13(_uploadFile, _downloadFile, value) {
   return value.map((x2) => from_candid_AdminOrderView_n14(_uploadFile, _downloadFile, x2));
 }
-function from_candid_vec_n56(_uploadFile, _downloadFile, value) {
-  return value.map((x2) => from_candid_vec_n57(_uploadFile, _downloadFile, x2));
+function from_candid_vec_n58(_uploadFile, _downloadFile, value) {
+  return value.map((x2) => from_candid_vec_n59(_uploadFile, _downloadFile, x2));
 }
-function from_candid_vec_n57(_uploadFile, _downloadFile, value) {
-  return value.map((x2) => from_candid_Cell_n58(_uploadFile, _downloadFile, x2));
+function from_candid_vec_n59(_uploadFile, _downloadFile, value) {
+  return value.map((x2) => from_candid_Cell_n60(_uploadFile, _downloadFile, x2));
 }
-function from_candid_vec_n87(_uploadFile, _downloadFile, value) {
-  return value.map((x2) => from_candid_PublicOrderView_n88(_uploadFile, _downloadFile, x2));
+function from_candid_vec_n89(_uploadFile, _downloadFile, value) {
+  return value.map((x2) => from_candid_PublicOrderView_n90(_uploadFile, _downloadFile, x2));
 }
 function to_candid_CreateOrderInput_n42(_uploadFile, _downloadFile, value) {
   return to_candid_record_n43(_uploadFile, _downloadFile, value);
 }
-function to_candid_Discipline_n135(_uploadFile, _downloadFile, value) {
-  return to_candid_variant_n136(_uploadFile, _downloadFile, value);
+function to_candid_Discipline_n137(_uploadFile, _downloadFile, value) {
+  return to_candid_variant_n138(_uploadFile, _downloadFile, value);
 }
 function to_candid_Order_n30(_uploadFile, _downloadFile, value) {
   return to_candid_record_n31(_uploadFile, _downloadFile, value);
@@ -37466,27 +37525,27 @@ function to_candid_PaymentMethod_n34(_uploadFile, _downloadFile, value) {
 function to_candid_PaymentStatus_n32(_uploadFile, _downloadFile, value) {
   return to_candid_variant_n33(_uploadFile, _downloadFile, value);
 }
-function to_candid_Role_n104(_uploadFile, _downloadFile, value) {
-  return to_candid_variant_n105(_uploadFile, _downloadFile, value);
+function to_candid_Role_n106(_uploadFile, _downloadFile, value) {
+  return to_candid_variant_n107(_uploadFile, _downloadFile, value);
 }
 function to_candid_ShippingStatus_n36(_uploadFile, _downloadFile, value) {
   return to_candid_variant_n37(_uploadFile, _downloadFile, value);
 }
-function to_candid_SubmissionInput_n133(_uploadFile, _downloadFile, value) {
-  return to_candid_record_n134(_uploadFile, _downloadFile, value);
+function to_candid_SubmissionInput_n135(_uploadFile, _downloadFile, value) {
+  return to_candid_record_n136(_uploadFile, _downloadFile, value);
 }
-function to_candid_Token_n147(_uploadFile, _downloadFile, value) {
-  return to_candid_variant_n148(_uploadFile, _downloadFile, value);
+function to_candid_Token_n149(_uploadFile, _downloadFile, value) {
+  return to_candid_variant_n150(_uploadFile, _downloadFile, value);
 }
-function to_candid_opt_n128(_uploadFile, _downloadFile, value) {
+function to_candid_opt_n130(_uploadFile, _downloadFile, value) {
   return value === null ? candid_none() : candid_some(value);
 }
-function to_candid_opt_n151(_uploadFile, _downloadFile, value) {
+function to_candid_opt_n153(_uploadFile, _downloadFile, value) {
   return value === null ? candid_none() : candid_some(value);
 }
-function to_candid_record_n134(_uploadFile, _downloadFile, value) {
+function to_candid_record_n136(_uploadFile, _downloadFile, value) {
   return {
-    discipline: to_candid_Discipline_n135(_uploadFile, _downloadFile, value.discipline),
+    discipline: to_candid_Discipline_n137(_uploadFile, _downloadFile, value.discipline),
     link: value.link,
     name: value.name,
     email: value.email,
@@ -37533,7 +37592,7 @@ function to_candid_record_n43(_uploadFile, _downloadFile, value) {
     marketing_consent: value.marketing_consent
   };
 }
-function to_candid_variant_n105(_uploadFile, _downloadFile, value) {
+function to_candid_variant_n107(_uploadFile, _downloadFile, value) {
   return value == "admin" ? {
     admin: null
   } : value == "owner" ? {
@@ -37542,7 +37601,7 @@ function to_candid_variant_n105(_uploadFile, _downloadFile, value) {
     staff: null
   } : value;
 }
-function to_candid_variant_n136(_uploadFile, _downloadFile, value) {
+function to_candid_variant_n138(_uploadFile, _downloadFile, value) {
   return value == "music" ? {
     music: null
   } : value == "other" ? {
@@ -37555,7 +37614,7 @@ function to_candid_variant_n136(_uploadFile, _downloadFile, value) {
     writing: null
   } : value;
 }
-function to_candid_variant_n148(_uploadFile, _downloadFile, value) {
+function to_candid_variant_n150(_uploadFile, _downloadFile, value) {
   return value == "ICP" ? {
     ICP: null
   } : value == "ckUSDC" ? {
@@ -42632,6 +42691,24 @@ function useCancelCardOrder() {
     }
   });
 }
+function useCancelGuestOrder() {
+  const { actor, isFetching } = useActor(createActor$2);
+  const queryClient2 = useQueryClient();
+  return useMutation({
+    mutationFn: async (args) => {
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again"
+        );
+      return actor.cancelGuestOrder(args.reference, args.cancellationToken);
+    },
+    onSuccess: (_data, args) => {
+      void queryClient2.invalidateQueries({
+        queryKey: ["orderStatus", args.reference]
+      });
+    }
+  });
+}
 function useIsAdmin() {
   const { actor, isFetching } = useActor(createActor$2);
   return useQuery({
@@ -42665,6 +42742,11 @@ function useGetMyRole() {
     },
     enabled: !!actor && !isFetching && isAuthenticated
   });
+}
+function normalizePrincipalInput(input) {
+  const trimmed = input.trim();
+  const quoted = trimmed.startsWith('"') && trimmed.endsWith('"') || trimmed.startsWith("'") && trimmed.endsWith("'");
+  return quoted ? trimmed.slice(1, -1).trim() : trimmed;
 }
 function useListUsers() {
   const { actor, isFetching } = useActor(createActor$2);
@@ -43281,6 +43363,22 @@ function CanisterTab(_props) {
     ] }) })
   ] });
 }
+function formatPrice(value) {
+  const cents = Number(value);
+  return (cents / 100).toLocaleString("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
+}
+function dollarsToCents(input) {
+  const trimmed = input.trim();
+  if (!/^\d+(\.\d{1,2})?$/.test(trimmed)) return null;
+  const [whole, fraction = ""] = trimmed.split(".");
+  const cents = Number(whole) * 100 + Number(fraction.padEnd(2, "0"));
+  return cents;
+}
 function CopyButton({ text, label, className }) {
   const [copied, setCopied] = reactExports.useState(false);
   const timerRef = reactExports.useRef(null);
@@ -43519,7 +43617,7 @@ function OrderDetail({
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-1", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "field-label", children: "Amount owed" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num", children: formatTokenAmount$3(detail.amountOwed, decimals) })
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num", children: formatPrice(detail.amountOwed) })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-1", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "field-label", children: "Placed" }),
@@ -43575,7 +43673,7 @@ function OrderDetail({
                       /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: item.name }),
                       /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: item.variant_id }),
                       /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "num-col", children: item.quantity.toString() }),
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "num-col", children: formatTokenAmount$3(item.unit_amount, decimals) })
+                      /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "num-col", children: formatPrice(item.unit_amount) })
                     ]
                   },
                   `${item.name}-${item.variant_id}`
@@ -43834,7 +43932,7 @@ function OrdersTab({ session }) {
                   key: "amount",
                   header: "Amount",
                   align: "right",
-                  render: (row) => /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "num", children: row.amountOwed.toString() })
+                  render: (row) => /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "num", children: formatPrice(row.amountOwed) })
                 },
                 {
                   key: "items",
@@ -43882,8 +43980,8 @@ function OrdersTab({ session }) {
 function timestampToMs$1(ts2) {
   return Number(ts2 / 1000000n);
 }
-function formatMoney(amount, currency) {
-  return `${amount.toLocaleString("en-US")} ${currency}`;
+function formatMoney(amount) {
+  return formatPrice(amount);
 }
 function formatCount(n) {
   return n.toLocaleString("en-US");
@@ -43902,7 +44000,6 @@ function OverviewTab({ session: _session }) {
   const { data: products, isLoading: productsLoading } = useProducts();
   const { data: dashboardRaw } = useGetTreasuryTokens();
   const stats = reactExports.useMemo(() => {
-    var _a2;
     const list = orders ?? [];
     const now2 = Date.now();
     const dayMs = 864e5;
@@ -43940,8 +44037,7 @@ function OverviewTab({ session: _session }) {
       pending,
       failed,
       review,
-      aov,
-      currency: ((_a2 = paid[0]) == null ? void 0 : _a2.currency) ?? "usd"
+      aov
     };
   }, [orders]);
   const unitsByProduct = reactExports.useMemo(() => {
@@ -44009,21 +44105,21 @@ function OverviewTab({ session: _session }) {
         AdminStatCard,
         {
           label: "Revenue crypto",
-          value: formatMoney(stats.cryptoRevenue, stats.currency)
+          value: formatMoney(stats.cryptoRevenue)
         }
       ),
       /* @__PURE__ */ jsxRuntimeExports.jsx(
         AdminStatCard,
         {
           label: "Revenue card",
-          value: formatMoney(stats.cardRevenue, stats.currency)
+          value: formatMoney(stats.cardRevenue)
         }
       ),
       /* @__PURE__ */ jsxRuntimeExports.jsx(
         AdminStatCard,
         {
           label: "Average order value",
-          value: formatMoney(stats.aov, stats.currency)
+          value: formatMoney(stats.aov)
         }
       )
     ] }),
@@ -44063,7 +44159,7 @@ function OverviewTab({ session: _session }) {
             key: "price",
             header: "Price",
             align: "right",
-            render: (r2) => formatMoney(r2.price, r2.currency)
+            render: (r2) => formatMoney(r2.price)
           },
           {
             key: "inventory",
@@ -44409,22 +44505,6 @@ function Checkbox({
       )
     }
   );
-}
-function formatPrice(value) {
-  const cents = Number(value);
-  return (cents / 100).toLocaleString("en-US", {
-    style: "currency",
-    currency: "USD",
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  });
-}
-function dollarsToCents(input) {
-  const trimmed = input.trim();
-  if (!/^\d+(\.\d{1,2})?$/.test(trimmed)) return null;
-  const [whole, fraction = ""] = trimmed.split(".");
-  const cents = Number(whole) * 100 + Number(fraction.padEnd(2, "0"));
-  return cents;
 }
 const LOW_STOCK_THRESHOLD = 5;
 function blankProduct() {
@@ -46177,7 +46257,7 @@ function TreasuryTab({ session }) {
                 key: "amount",
                 header: "Amount owed",
                 align: "right",
-                render: (row) => /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "num", children: formatUnits(row.amountOwed, decimals) })
+                render: (row) => /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "num", children: formatPrice(row.amountOwed) })
               },
               {
                 key: "live",
@@ -46324,7 +46404,7 @@ function TreasuryTab({ session }) {
     )
   ] });
 }
-const ROLE_LABELS = {
+const ROLE_LABELS$1 = {
   [Role.owner]: "Owner",
   [Role.admin]: "Admin",
   [Role.staff]: "Staff"
@@ -46342,6 +46422,7 @@ function UsersTab({ session }) {
   const [principalInput, setPrincipalInput] = reactExports.useState("");
   const [grantRoleValue, setGrantRoleValue] = reactExports.useState(Role.staff);
   const [grantError, setGrantError] = reactExports.useState(null);
+  const normalizedInput = normalizePrincipalInput(principalInput);
   const rows2 = reactExports.useMemo(
     () => (users ?? []).map(([principal, record]) => ({
       principal,
@@ -46365,13 +46446,21 @@ function UsersTab({ session }) {
   const canManage = session.canManageUsers;
   const handleGrant = () => {
     setGrantError(null);
+    if (!normalizedInput) {
+      setGrantError("Enter a principal to grant a role.");
+      return;
+    }
     let principal;
     try {
-      principal = Principal$1.fromText(principalInput.trim());
+      principal = Principal$1.fromText(normalizedInput);
     } catch {
       setGrantError(
-        "Invalid principal — enter a valid Internet Computer principal."
+        "That is not a valid principal — check the text you pasted."
       );
+      return;
+    }
+    if (rows2.some((row) => row.principal.toText() === principal.toText())) {
+      setGrantError("That principal already has a role.");
       return;
     }
     grantRole.mutate(
@@ -46501,7 +46590,7 @@ function UsersTab({ session }) {
                   {
                     type: "button",
                     className: "btn btn-primary",
-                    disabled: !canManage || !principalInput.trim(),
+                    disabled: !canManage || !normalizedInput,
                     "data-ocid": "admin.users.grant_button",
                     children: [
                       /* @__PURE__ */ jsxRuntimeExports.jsx(UserPlus, { className: "w-4 h-4" }),
@@ -46510,13 +46599,13 @@ function UsersTab({ session }) {
                   }
                 ),
                 title: "Grant role",
-                description: `Grant ${ROLE_LABELS[grantRoleValue]} to ${principalInput.trim() || "this principal"}? This changes the account's access immediately.`,
+                description: `Grant ${ROLE_LABELS$1[grantRoleValue]} to ${normalizedInput || "this principal"}? This changes the account's access immediately.`,
                 confirmLabel: "Grant role",
                 cancelLabel: "Cancel",
                 tone: "warning",
                 onConfirm: handleGrant,
                 pending: grantPending,
-                disabled: !canManage || !principalInput.trim()
+                disabled: !canManage || !normalizedInput
               }
             ),
             grantPending && /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-4 h-4 animate-spin" })
@@ -46568,7 +46657,7 @@ function UsersTab({ session }) {
                   "span",
                   {
                     className: `status-pill ${row.role === Role.owner ? "status-pill-warning" : row.role === Role.admin ? "status-pill-positive" : "status-pill-neutral"}`,
-                    children: ROLE_LABELS[row.role]
+                    children: ROLE_LABELS$1[row.role]
                   }
                 )
               },
@@ -46594,7 +46683,7 @@ function UsersTab({ session }) {
                       }
                     ),
                     title: "Revoke role",
-                    description: `Revoke ${ROLE_LABELS[row.role]} from ${row.principal.toText()}? This removes the account's admin access immediately.`,
+                    description: `Revoke ${ROLE_LABELS$1[row.role]} from ${row.principal.toText()}? This removes the account's admin access immediately.`,
                     confirmLabel: "Revoke role",
                     cancelLabel: "Cancel",
                     tone: "negative",
@@ -47071,21 +47160,93 @@ const BubbleBackground = () => {
     )
   ] });
 };
+const CANCELLATION_TOKEN_KEY = "nak.cancellationToken";
+function useCancellationToken() {
+  const getCancellationToken = reactExports.useCallback(
+    (reference) => {
+      try {
+        const raw = window.localStorage.getItem(CANCELLATION_TOKEN_KEY);
+        if (!raw) return null;
+        const map = JSON.parse(raw);
+        return map[reference] ?? null;
+      } catch (error) {
+        console.error(
+          "[checkout] Failed to read cancellation token (ERR-CHK-007)",
+          error
+        );
+        return null;
+      }
+    },
+    []
+  );
+  const setCancellationToken = reactExports.useCallback(
+    (reference, token) => {
+      try {
+        const raw = window.localStorage.getItem(CANCELLATION_TOKEN_KEY);
+        const map = raw ? JSON.parse(raw) : {};
+        map[reference] = token;
+        window.localStorage.setItem(
+          CANCELLATION_TOKEN_KEY,
+          JSON.stringify(map)
+        );
+      } catch (error) {
+        console.error(
+          "[checkout] Failed to persist cancellation token (ERR-CHK-008)",
+          error
+        );
+      }
+    },
+    []
+  );
+  const clearCancellationToken = reactExports.useCallback((reference) => {
+    try {
+      const raw = window.localStorage.getItem(CANCELLATION_TOKEN_KEY);
+      if (!raw) return;
+      const map = JSON.parse(raw);
+      delete map[reference];
+      window.localStorage.setItem(CANCELLATION_TOKEN_KEY, JSON.stringify(map));
+    } catch (error) {
+      console.error(
+        "[checkout] Failed to clear cancellation token (ERR-CHK-009)",
+        error
+      );
+    }
+  }, []);
+  return { getCancellationToken, setCancellationToken, clearCancellationToken };
+}
 const CancelledPage = ({
   orderReference,
   onNavigateToMain,
   onNavigateToShop,
   onNavigateToCart
 }) => {
+  const { isAuthenticated } = useInternetIdentity();
+  const { getCancellationToken } = useCancellationToken();
   const cancelCardOrder = useCancelCardOrder();
+  const cancelGuestOrder = useCancelGuestOrder();
   reactExports.useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
   reactExports.useEffect(() => {
-    if (orderReference) {
+    if (!orderReference) return;
+    if (isAuthenticated) {
       cancelCardOrder.mutate(orderReference);
+    } else {
+      const token = getCancellationToken(orderReference);
+      if (token) {
+        cancelGuestOrder.mutate({
+          reference: orderReference,
+          cancellationToken: token
+        });
+      }
     }
-  }, [orderReference, cancelCardOrder.mutate]);
+  }, [
+    orderReference,
+    isAuthenticated,
+    getCancellationToken,
+    cancelCardOrder.mutate,
+    cancelGuestOrder.mutate
+  ]);
   return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "pt-24 sm:pt-32 pb-12 sm:pb-20 px-4 sm:px-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-7xl mx-auto", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-center mb-12 sm:mb-16 px-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "section-heading text-3xl sm:text-4xl md:text-5xl", children: "Checkout Cancelled" }) }),
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative max-w-4xl mx-auto px-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "surface p-6 sm:p-10 text-center", children: [
@@ -52758,6 +52919,7 @@ const CheckoutPage = ({
   const ckUSDCEnabled = useCkUSDCCheckoutEnabled();
   const effectivePaymentMethod = ckUSDCEnabled ? paymentMethod : "card";
   const { activeOrderRef, setActiveOrderRef, clearActiveOrderRef } = useActiveOrderRef();
+  const { setCancellationToken, clearCancellationToken } = useCancellationToken();
   const {
     data: resumeInfo,
     isError: resumeError,
@@ -52857,6 +53019,7 @@ const CheckoutPage = ({
                   if (confirmResult.__kind__ === "ok" && confirmResult.ok.__kind__ === "paid") {
                     setPaid(true);
                     clearActiveOrderRef();
+                    clearCancellationToken(depositReference);
                   }
                 }
               });
@@ -52864,6 +53027,7 @@ const CheckoutPage = ({
           } else if (result.__kind__ === "err" && result.err.__kind__ === "expired") {
             setExpired(true);
             clearActiveOrderRef();
+            clearCancellationToken(depositReference);
           }
         }
       });
@@ -52874,7 +53038,8 @@ const CheckoutPage = ({
     depositReference,
     checkPayment,
     confirmPayment,
-    clearActiveOrderRef
+    clearActiveOrderRef,
+    clearCancellationToken
   ]);
   reactExports.useEffect(() => {
     if (!paid || !(order == null ? void 0 : order.reference)) return;
@@ -52896,8 +53061,19 @@ const CheckoutPage = ({
     if (remainingSec <= 0 && depositData) {
       setExpired(true);
       clearActiveOrderRef();
+      if (depositReference) {
+        clearCancellationToken(depositReference);
+      }
     }
-  }, [step, paid, remainingSec, depositData, clearActiveOrderRef]);
+  }, [
+    step,
+    paid,
+    remainingSec,
+    depositData,
+    depositReference,
+    clearActiveOrderRef,
+    clearCancellationToken
+  ]);
   const ledgerUnset = reactExports.useMemo(() => {
     if (!cryptoConfig) return false;
     return cryptoConfig.ckUSDC.canisterId.toText() === "aaaaa-aa";
@@ -52959,9 +53135,16 @@ const CheckoutPage = ({
     createOrder.mutate(input, {
       onSuccess: (result) => {
         if (result.__kind__ === "ok") {
-          setOrder(result.ok);
+          const created = result.ok;
+          setOrder(created.order);
           setResumeMode(false);
-          setActiveOrderRef(result.ok.reference);
+          setActiveOrderRef(created.order.reference);
+          if (created.cancellationToken) {
+            setCancellationToken(
+              created.order.reference,
+              created.cancellationToken
+            );
+          }
           setStep("review");
         } else {
           setOrderError(
@@ -54276,9 +54459,20 @@ const STATUS_META$1 = {
 function itemSummary(items) {
   return items.map((item) => `${item.quantity.toString()}× ${item.name}`).join(", ");
 }
+function truncatePrincipal(principal) {
+  if (principal.length <= 12) return principal;
+  return `${principal.slice(0, 5)}…${principal.slice(-5)}`;
+}
+const ROLE_LABELS = {
+  [Role.owner]: "Owner",
+  [Role.admin]: "Admin",
+  [Role.staff]: "Staff"
+};
 const MyOrdersPage = ({ onNavigateToMain }) => {
-  const { isAuthenticated, login, isLoggingIn, isInitializing } = useInternetIdentity();
+  const { isAuthenticated, login, isLoggingIn, isInitializing, identity } = useInternetIdentity();
   const { data: orders, isLoading, isError, refetch } = useMyOrders();
+  const { data: role } = useGetMyRole();
+  const principalText = (identity == null ? void 0 : identity.getPrincipal().toString()) ?? null;
   reactExports.useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -54350,126 +54544,163 @@ const MyOrdersPage = ({ onNavigateToMain }) => {
           )
         ]
       }
-    ) : isLoading ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
-      "div",
-      {
-        className: "max-w-3xl mx-auto space-y-4",
-        "data-ocid": "myorders.loading_state",
-        children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "card glass-card p-6 loading-shimmer h-28" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "card glass-card p-6 loading-shimmer h-28" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "card glass-card p-6 loading-shimmer h-28" })
-        ]
-      }
-    ) : isError ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
-      "div",
-      {
-        className: "max-w-3xl mx-auto card glass-card p-8 text-center",
-        "data-ocid": "myorders.error_state",
-        children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-destructive mb-4", children: "We couldn't load your orders. Please try again." }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
-            {
-              type: "button",
-              onClick: () => void refetch(),
-              className: "btn px-6 py-3 text-sm font-semibold",
-              "data-ocid": "myorders.retry_button",
-              children: "Try Again"
-            }
-          )
-        ]
-      }
-    ) : !orders || orders.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
-      "div",
-      {
-        className: "max-w-3xl mx-auto card glass-card p-8 sm:p-12 text-center",
-        "data-ocid": "myorders.empty_state",
-        children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-4 mb-6", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(PackageOpen, { className: "w-10 h-10 text-purple-400" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 rounded-full bg-purple-400/20 blur-xl animate-pulse" })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "h2",
-              {
-                className: "text-2xl sm:text-3xl font-semibold text-white",
-                style: { fontFamily: "var(--font-heading)" },
-                children: "No orders yet"
-              }
-            )
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm sm:text-base text-gray-300 max-w-xl mx-auto mb-8", children: "You haven't placed any orders yet. When you do, they'll show up here so you can track them." }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              type: "button",
-              onClick: onNavigateToMain,
-              className: "btn px-8 py-3 text-sm font-semibold",
-              "data-ocid": "myorders.shop_button",
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingBag, { className: "w-4 h-4" }),
-                "Browse the Shop"
-              ]
-            }
-          )
-        ]
-      }
-    ) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "max-w-3xl mx-auto space-y-4", children: orders.map((order, index2) => {
-      const statusMeta = STATUS_META$1[order.payment_status];
-      return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+    ) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+      principalText && /* @__PURE__ */ jsxRuntimeExports.jsx(
         "div",
         {
-          className: "card glass-card p-6 sm:p-8",
-          "data-ocid": `myorders.order_item.${index2 + 1}`,
-          children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-4", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                  "span",
-                  {
-                    className: `inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold ${statusMeta.soft} ${statusMeta.className}`,
-                    "data-ocid": `myorders.status.${index2 + 1}`,
-                    children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx(Clock, { className: "w-4 h-4" }),
-                      statusMeta.label
-                    ]
-                  }
-                ),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-400", children: "Reference" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-mono-nak text-white", children: order.reference })
-                ] })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-left sm:text-right", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-400", children: "Placed" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-300", children: formatTimestamp$2(order.created_at) })
-              ] })
+          className: "max-w-3xl mx-auto mb-8",
+          "data-ocid": "myorders.account_section",
+          children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "surface p-6 sm:p-8", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col sm:flex-row sm:items-start justify-between gap-4", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "field-label mb-2", children: "Your principal" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-mono-nak text-sm text-white break-all", children: truncatePrincipal(principalText) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-3 text-sm text-muted-foreground", children: "Share this with an administrator to be granted access." })
             ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border-t border-white/10 pt-4", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "p",
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 shrink-0", children: [
+              role !== null && role !== void 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                "span",
                 {
-                  className: "text-sm text-gray-300",
-                  "data-ocid": `myorders.items.${index2 + 1}`,
-                  children: itemSummary(order.items)
+                  className: "status-pill status-pill-neutral",
+                  "data-ocid": "myorders.role_pill",
+                  children: [
+                    "Role: ",
+                    ROLE_LABELS[role]
+                  ]
                 }
               ),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-3 flex items-center justify-between", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-sm text-gray-400", children: [
-                  order.items.length,
-                  " ",
-                  order.items.length === 1 ? "item" : "items"
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono-nak text-lg text-teal-bright", children: formatPrice(order.total) })
-              ] })
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                CopyButton,
+                {
+                  text: principalText,
+                  label: "Copy",
+                  className: "shrink-0"
+                }
+              )
             ] })
+          ] }) })
+        }
+      ),
+      isLoading ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "div",
+        {
+          className: "max-w-3xl mx-auto space-y-4",
+          "data-ocid": "myorders.loading_state",
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "card glass-card p-6 loading-shimmer h-28" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "card glass-card p-6 loading-shimmer h-28" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "card glass-card p-6 loading-shimmer h-28" })
           ]
-        },
-        order.reference
-      );
-    }) }),
+        }
+      ) : isError ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "div",
+        {
+          className: "max-w-3xl mx-auto card glass-card p-8 text-center",
+          "data-ocid": "myorders.error_state",
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-destructive mb-4", children: "We couldn't load your orders. Please try again." }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                type: "button",
+                onClick: () => void refetch(),
+                className: "btn px-6 py-3 text-sm font-semibold",
+                "data-ocid": "myorders.retry_button",
+                children: "Try Again"
+              }
+            )
+          ]
+        }
+      ) : !orders || orders.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "div",
+        {
+          className: "max-w-3xl mx-auto card glass-card p-8 sm:p-12 text-center",
+          "data-ocid": "myorders.empty_state",
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-4 mb-6", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(PackageOpen, { className: "w-10 h-10 text-purple-400" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 rounded-full bg-purple-400/20 blur-xl animate-pulse" })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "h2",
+                {
+                  className: "text-2xl sm:text-3xl font-semibold text-white",
+                  style: { fontFamily: "var(--font-heading)" },
+                  children: "No orders yet"
+                }
+              )
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm sm:text-base text-gray-300 max-w-xl mx-auto mb-8", children: "You haven't placed any orders yet. When you do, they'll show up here so you can track them." }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "button",
+              {
+                type: "button",
+                onClick: onNavigateToMain,
+                className: "btn px-8 py-3 text-sm font-semibold",
+                "data-ocid": "myorders.shop_button",
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingBag, { className: "w-4 h-4" }),
+                  "Browse the Shop"
+                ]
+              }
+            )
+          ]
+        }
+      ) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "max-w-3xl mx-auto space-y-4", children: orders.map((order, index2) => {
+        const statusMeta = STATUS_META$1[order.payment_status];
+        return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "div",
+          {
+            className: "card glass-card p-6 sm:p-8",
+            "data-ocid": `myorders.order_item.${index2 + 1}`,
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-4", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                    "span",
+                    {
+                      className: `inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold ${statusMeta.soft} ${statusMeta.className}`,
+                      "data-ocid": `myorders.status.${index2 + 1}`,
+                      children: [
+                        /* @__PURE__ */ jsxRuntimeExports.jsx(Clock, { className: "w-4 h-4" }),
+                        statusMeta.label
+                      ]
+                    }
+                  ),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-400", children: "Reference" }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-mono-nak text-white", children: order.reference })
+                  ] })
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-left sm:text-right", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-400", children: "Placed" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-300", children: formatTimestamp$2(order.created_at) })
+                ] })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border-t border-white/10 pt-4", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "p",
+                  {
+                    className: "text-sm text-gray-300",
+                    "data-ocid": `myorders.items.${index2 + 1}`,
+                    children: itemSummary(order.items)
+                  }
+                ),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-3 flex items-center justify-between", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-sm text-gray-400", children: [
+                    order.items.length,
+                    " ",
+                    order.items.length === 1 ? "item" : "items"
+                  ] }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono-nak text-lg text-teal-bright", children: formatPrice(order.total) })
+                ] })
+              ] })
+            ]
+          },
+          order.reference
+        );
+      }) })
+    ] }),
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-center mt-10", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
       "button",
       {

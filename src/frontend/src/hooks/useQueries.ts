@@ -557,6 +557,35 @@ export function useCancelCardOrder() {
   });
 }
 
+/**
+ * Guest self-cancellation for anonymous callers. The backend rejects
+ * cancelCardOrder for anonymous guests, so a guest must present the
+ * short-lived cancellation token that was issued to their browser session when
+ * the order was created (single-use, 30-minute expiry). Signed-in customers
+ * keep using useCancelCardOrder as the order owner.
+ */
+export function useCancelGuestOrder() {
+  const { actor, isFetching } = useActor(createActor);
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (args: {
+      reference: string;
+      cancellationToken: string;
+    }) => {
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      return actor.cancelGuestOrder(args.reference, args.cancellationToken);
+    },
+    onSuccess: (_data, args) => {
+      void queryClient.invalidateQueries({
+        queryKey: ["orderStatus", args.reference],
+      });
+    },
+  });
+}
+
 export function useIsAdmin() {
   const { actor, isFetching } = useActor(createActor);
   return useQuery({
@@ -599,6 +628,20 @@ export function useGetMyRole() {
     },
     enabled: !!actor && !isFetching && isAuthenticated,
   });
+}
+
+/**
+ * Normalizes a principal pasted into an admin input: trims surrounding
+ * whitespace and strips one layer of surrounding single or double quotes
+ * (chat apps and email often wrap pasted principals in quotes). Returns the
+ * cleaned text, or "" when nothing usable remains.
+ */
+export function normalizePrincipalInput(input: string): string {
+  const trimmed = input.trim();
+  const quoted =
+    (trimmed.startsWith('"') && trimmed.endsWith('"')) ||
+    (trimmed.startsWith("'") && trimmed.endsWith("'"));
+  return quoted ? trimmed.slice(1, -1).trim() : trimmed;
 }
 
 /** Lists every user and their role (OWNER/ADMIN only). */

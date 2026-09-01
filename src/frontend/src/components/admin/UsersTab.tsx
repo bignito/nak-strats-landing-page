@@ -1,6 +1,7 @@
 import { Role } from "@/backend";
 import {
   adminErrorMessage,
+  normalizePrincipalInput,
   useAdminCount,
   useGrantRole,
   useListUsers,
@@ -49,6 +50,8 @@ export function UsersTab({ session }: AdminTabBodyProps) {
   const [grantRoleValue, setGrantRoleValue] = useState<Role>(Role.staff);
   const [grantError, setGrantError] = useState<string | null>(null);
 
+  const normalizedInput = normalizePrincipalInput(principalInput);
+
   const rows: UserRow[] = useMemo(
     () =>
       (users ?? []).map(([principal, record]) => ({
@@ -76,13 +79,21 @@ export function UsersTab({ session }: AdminTabBodyProps) {
 
   const handleGrant = () => {
     setGrantError(null);
+    if (!normalizedInput) {
+      setGrantError("Enter a principal to grant a role.");
+      return;
+    }
     let principal: Principal;
     try {
-      principal = Principal.fromText(principalInput.trim());
+      principal = Principal.fromText(normalizedInput);
     } catch {
       setGrantError(
-        "Invalid principal — enter a valid Internet Computer principal.",
+        "That is not a valid principal — check the text you pasted.",
       );
+      return;
+    }
+    if (rows.some((row) => row.principal.toText() === principal.toText())) {
+      setGrantError("That principal already has a role.");
       return;
     }
     grantRole.mutate(
@@ -204,7 +215,7 @@ export function UsersTab({ session }: AdminTabBodyProps) {
                 <button
                   type="button"
                   className="btn btn-primary"
-                  disabled={!canManage || !principalInput.trim()}
+                  disabled={!canManage || !normalizedInput}
                   data-ocid="admin.users.grant_button"
                 >
                   <UserPlus className="w-4 h-4" />
@@ -212,13 +223,13 @@ export function UsersTab({ session }: AdminTabBodyProps) {
                 </button>
               }
               title="Grant role"
-              description={`Grant ${ROLE_LABELS[grantRoleValue]} to ${principalInput.trim() || "this principal"}? This changes the account's access immediately.`}
+              description={`Grant ${ROLE_LABELS[grantRoleValue]} to ${normalizedInput || "this principal"}? This changes the account's access immediately.`}
               confirmLabel="Grant role"
               cancelLabel="Cancel"
               tone="warning"
               onConfirm={handleGrant}
               pending={grantPending}
-              disabled={!canManage || !principalInput.trim()}
+              disabled={!canManage || !normalizedInput}
             />
             {grantPending && <Loader2 className="w-4 h-4 animate-spin" />}
           </div>

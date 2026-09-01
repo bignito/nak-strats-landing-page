@@ -166,6 +166,9 @@ export type ConsentError = {
     __kind__: "invalidToken";
     invalidToken: null;
 } | {
+    __kind__: "rateLimited";
+    rateLimited: null;
+} | {
     __kind__: "outcallFailed";
     outcallFailed: string;
 } | {
@@ -229,6 +232,10 @@ export interface HttpHeader {
     value: string;
     name: string;
 }
+export interface CreateOrderResult {
+    order: Order;
+    cancellationToken?: string;
+}
 export interface SubmissionRecord {
     id: string;
     discipline: Discipline;
@@ -271,7 +278,7 @@ export interface CryptoConfigView {
 }
 export type Result_17 = {
     __kind__: "ok";
-    ok: Order;
+    ok: CreateOrderResult;
 } | {
     __kind__: "err";
     err: OrderError;
@@ -361,6 +368,9 @@ export type PaymentServiceError = {
 } | {
     __kind__: "notFound";
     notFound: null;
+} | {
+    __kind__: "rateLimited";
+    rateLimited: null;
 } | {
     __kind__: "outcallFailed";
     outcallFailed: string;
@@ -565,6 +575,9 @@ export type OrderError = {
     __kind__: "emptyOrder";
     emptyOrder: null;
 } | {
+    __kind__: "rateLimited";
+    rateLimited: null;
+} | {
     __kind__: "belowMinimumOrder";
     belowMinimumOrder: bigint;
 } | {
@@ -576,6 +589,9 @@ export type OrderError = {
 } | {
     __kind__: "invalidQuantity";
     invalidQuantity: null;
+} | {
+    __kind__: "tooManyPendingOrders";
+    tooManyPendingOrders: null;
 };
 export type CryptoPaymentError = {
     __kind__: "alreadyPaid";
@@ -679,6 +695,7 @@ export interface backendInterface {
     adminListOrders(filter: string): Promise<Array<AdminOrderView>>;
     bootstrapOwner(p: Principal): Promise<boolean>;
     cancelCardOrder(reference: string): Promise<Result_1>;
+    cancelGuestOrder(reference: string, cancellationToken: string): Promise<Result_1>;
     checkCryptoPayment(reference: string): Promise<Result_13>;
     claimInitialAdmin(): Promise<boolean>;
     confirmCardPayment(reference: string): Promise<Result_20>;

@@ -38,8 +38,8 @@ treasury/dashboard data from external services.
   the caller at the top of the function, rejects the anonymous principal, and
   traps for a caller that is not a non-anonymous ADMIN or OWNER. Returns `true`
   on success.
-- `createOrder(input : CreateOrderInput) : async Result<Order, OrderError>` —
-  update. Validates the order server-side (product exists and is active,
+- `createOrder(input : CreateOrderInput) : async Result<CreateOrderResult,
+  OrderError>` — update. Validates the order server-side (product exists and is active,
   variant exists, quantity is at least 1, stock is sufficient), computes the
   authoritative subtotal, tax (8%), shipping (free at or above 5000 units,
   otherwise 500), and total from the product records — never from
@@ -62,6 +62,25 @@ treasury/dashboard data from external services.
   call cannot create a new ckUSDC order even though the UI no longer offers the
   option. Existing ckUSDC orders are unaffected. Hidden (`admin_only`) test
   items ship free (no shipping cost), so the total is exactly the item price.
+  `createOrder` is rate limited per caller principal (the canister cannot see
+  client IPs, so this complements the payment service's per-IP limit): a caller
+  that exceeds the limit within the window receives
+  `#err(#rateLimited)`. It also caps concurrent pending (unpaid) reservations
+  per caller at a low limit — a caller that already has the maximum number of
+  pending orders receives `#err(#tooManyPendingOrders)`. A normal customer
+  (one order at a time, checked out promptly) never trips either limit. For
+  anonymous guests (who all share the anonymous principal) both limits are
+  effectively global, bounding how much of the catalogue a script can reserve
+  without paying. On success `createOrder` returns a `CreateOrderResult` record
+  wrapping the created `order` together with an optional `cancellationToken`.
+  When an anonymous guest creates an order, the backend issues a short-lived
+  cancellation token to the browser session that created it (stored keyed by
+  the order reference, generated from IC raw randomness) and returns it in the
+  `cancellationToken` field so the frontend can later call
+  `cancelGuestOrder(reference, token)`; this token is required for guest
+  self-cancellation (see `cancelGuestOrder`). Signed-in customers receive
+  `cancellationToken = null` and cancel via `cancelCardOrder` as the order
+  owner.
 - `getOrderStatus(reference : Text) : async ?Order` — query. Returns a
   public-safe view of the order with the given `reference`, or `null` if none
   exists. The view omits `customer_email` — the customer's email is never
@@ -316,18 +335,39 @@ keys will not match.
   `checkoutUrl` to redirect the customer to. Returns `#err(#notConfigured)`
   when the URL or token is unset, and `#err(#outcallFailed)` when the payment
   service is unreachable — the order is left `#pending`, never marked paid.
+  Rate limited per caller principal before the HTTPS outcall (a caller that
+  exceeds the limit within the window receives `#err(#rateLimited)`), so an
+  arbitrary caller cannot drain the canister's cycles by looping this endpoint.
 - `confirmCardPayment(reference : Text) : async Result<PaymentStatus,
   PaymentServiceError>` — update. Makes an HTTPS outcall GET to
   `{PAYMENT_SERVICE_URL}/order-status/{reference}` and marks the order `#paid`
   ONLY when the server-side status is `\"paid\"`. Records the returned
   `paymentReference` as the order's `payment_reference` and decrements
   inventory. Idempotent: confirming an already-paid order does not
-  double-decrement inventory or duplicate the order. Returns
-  `#err(#outcallFailed)` when the payment service is unreachable, leaving the
-  order `#pending`.
+  double-decrement inventory or duplicate the order. Short-circuits BEFORE the
+  rate limit and the outcall when the order is already `#paid`, `#cancelled`,
+  or `#expired` — repeat calls return the cached status and never trigger a
+  fresh outcall. Otherwise it is rate limited per caller principal (a caller
+  that exceeds the limit within the window receives `#err(#rateLimited)`).
+  Returns `#err(#outcallFailed)` when the payment service is unreachable,
+  leaving the order `#pending`.
 - `cancelCardOrder(reference : Text) : async Result<(), PaymentServiceError>` —
   update. Cancels a pending `#card_stripe` order and releases its reserved
-  inventory. Returns `#err(#notFound)` for an unknown reference.
+  inventory. Succeeds ONLY for (a) an ADMIN or OWNER caller, or (b) the order's
+  own `customer_principal` (proof of ownership). Any other caller — including
+  an anonymous guest who merely knows the order reference — receives
+  `#err(#unauthorized)`. A leaked order reference alone never confers the power
+  to cancel. Returns `#err(#notFound)` for an unknown reference.
+- `cancelGuestOrder(reference : Text, cancellationToken : Text) : async
+  Result<(), PaymentServiceError>` — update. Guest self-cancellation path for
+  anonymous orders. Cancels a pending order only when the caller presents the
+  short-lived cancellation token that was issued to the browser session that
+  created the order (see `createOrder`). The token is single-use (consumed on a
+  successful cancellation) and expires after 30 minutes. A signed-in customer's
+  order cannot be cancelled through this path (use `cancelCardOrder` with their
+  principal). Without a valid token the order is not cancelled and instead
+  expires naturally. Returns `#err(#unauthorized)` for a missing, mismatched, or
+  expired token, and `#err(#notFound)` for an unknown reference.
 - `paymentServiceTransform(input : TransformationInput) : async
   TransformationOutput` — query. The HTTP outcall response transform for the
   payment service: strips every response header (Date, request IDs, Stripe
@@ -375,7 +415,7 @@ marketing consent.
 ### Marketing consent (opt-in list and unsubscribe)
 
 - `getConsentListCsv() : async Result<ConsentListExport, ConsentError>` — update. ADMIN-OR-OWNER. Fetches the list of addresses WITH marketing consent from the external payment service and returns it as CSV, so a mailing list can be built without accidentally including customers who did not opt in. The addresses are PII that lives off-canister at the payment service; the canister only proxies them through and never persists them. Binds the caller at the top, rejects the anonymous principal, and traps for a caller that is not a non-anonymous ADMIN or OWNER.
-- `unsubscribe(token : Text) : async Result<(), ConsentError>` — update. PUBLIC. Token-based unsubscribe. The token is minted by the payment service and embedded in the unsubscribe link of marketing emails; the canister forwards it to the payment service, which adds the address to its stored suppression list. Suppressed addresses are never sent marketing email; transactional emails remain exempt. The suppression list lives at the payment service.
+- `unsubscribe(token : Text) : async Result<(), ConsentError>` — update. PUBLIC. Token-based unsubscribe. The token is minted by the payment service and embedded in the unsubscribe link of marketing emails; the canister forwards it to the payment service, which adds the address to its stored suppression list. Suppressed addresses are never sent marketing email; transactional emails remain exempt. The suppression list lives at the payment service. Unauthenticated is correct for an unsubscribe link, so the token space is protected by rate limiting per caller principal (the canister cannot see client IPs; anonymous callers all share the anonymous principal, so for them this is a global cap on unsubscribe attempts): a caller that exceeds the limit within the window receives `#err(#rateLimited)`. This bounds brute-forcing the token space to unsubscribe arbitrary addresses. Note on token entropy: the unsubscribe tokens are minted by the EXTERNAL payment service (off-canister), not by this canister, so their entropy is determined by the payment service and cannot be verified or regenerated from IC randomness here; the canister-side mitigation is the rate limit above.
 - `consentServiceTransform(input : TransformationInput) : async TransformationOutput` — query. The HTTP outcall response transform for the payment service consent endpoints: strips every response header so responses are identical across replicas.
 
 ### Artist submissions (culture / submit your work)
@@ -494,7 +534,17 @@ The storefront does not gate its public methods on a signed-in caller:
   in any public or customer-facing query.
 - `createOrder`, `createCheckoutSession`, `getPaymentStatus`, and
   `handlePaymentConfirmation` are update methods and are likewise not
-  restricted to a specific principal in the current source.
+  restricted to a specific principal in the current source. `createOrder` is
+  rate limited per caller principal and caps concurrent pending reservations
+  (see the Storefront section above). `cancelCardOrder` is NOT open to any
+  caller: it requires an ADMIN/OWNER role or the order's own
+  `customer_principal`; anonymous guests self-cancel only via
+  `cancelGuestOrder` with the short-lived cancellation token issued at order
+  creation. `createCardCheckoutSession` and `confirmCardPayment` are rate
+  limited per caller principal before their HTTPS outcalls, and
+  `confirmCardPayment` short-circuits to the cached status for orders that are
+  already `#paid`/`#cancelled`/`#expired` (see the Card checkout section
+  above).
 - The crypto checkout read methods (`getCryptoConfig`, `getMinimumOrder`,
   `getCryptoDepositInfo`, `getCryptoPaymentStatus`, `checkCryptoPayment`) are
   callable by any caller, including anonymous callers. `checkCryptoPayment` is

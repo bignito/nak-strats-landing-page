@@ -1,5 +1,6 @@
 import type { Order, OrderItem } from "@/backend";
-import { useMyOrders } from "@/hooks/useQueries";
+import { Role } from "@/backend";
+import { useGetMyRole, useMyOrders } from "@/hooks/useQueries";
 import { formatPrice } from "@/lib/currency";
 import type { PaymentStatus } from "@/types/storefront";
 import { useInternetIdentity } from "@caffeineai/core-infrastructure";
@@ -14,6 +15,7 @@ import {
 } from "lucide-react";
 import type React from "react";
 import { useEffect } from "react";
+import { CopyButton } from "./CopyButton";
 
 interface MyOrdersPageProps {
   onNavigateToMain: () => void;
@@ -63,10 +65,25 @@ function itemSummary(items: OrderItem[]): string {
     .join(", ");
 }
 
+/** Middle-ellipsis truncation: first 5 chars, ellipsis, last 5 chars. */
+function truncatePrincipal(principal: string): string {
+  if (principal.length <= 12) return principal;
+  return `${principal.slice(0, 5)}…${principal.slice(-5)}`;
+}
+
+const ROLE_LABELS: Record<Role, string> = {
+  [Role.owner]: "Owner",
+  [Role.admin]: "Admin",
+  [Role.staff]: "Staff",
+};
+
 const MyOrdersPage: React.FC<MyOrdersPageProps> = ({ onNavigateToMain }) => {
-  const { isAuthenticated, login, isLoggingIn, isInitializing } =
+  const { isAuthenticated, login, isLoggingIn, isInitializing, identity } =
     useInternetIdentity();
   const { data: orders, isLoading, isError, refetch } = useMyOrders();
+  const { data: role } = useGetMyRole();
+
+  const principalText = identity?.getPrincipal().toString() ?? null;
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -144,118 +161,161 @@ const MyOrdersPage: React.FC<MyOrdersPageProps> = ({ onNavigateToMain }) => {
               )}
             </button>
           </div>
-        ) : isLoading ? (
-          <div
-            className="max-w-3xl mx-auto space-y-4"
-            data-ocid="myorders.loading_state"
-          >
-            <div className="card glass-card p-6 loading-shimmer h-28" />
-            <div className="card glass-card p-6 loading-shimmer h-28" />
-            <div className="card glass-card p-6 loading-shimmer h-28" />
-          </div>
-        ) : isError ? (
-          <div
-            className="max-w-3xl mx-auto card glass-card p-8 text-center"
-            data-ocid="myorders.error_state"
-          >
-            <p className="text-destructive mb-4">
-              We couldn&apos;t load your orders. Please try again.
-            </p>
-            <button
-              type="button"
-              onClick={() => void refetch()}
-              className="btn px-6 py-3 text-sm font-semibold"
-              data-ocid="myorders.retry_button"
-            >
-              Try Again
-            </button>
-          </div>
-        ) : !orders || orders.length === 0 ? (
-          <div
-            className="max-w-3xl mx-auto card glass-card p-8 sm:p-12 text-center"
-            data-ocid="myorders.empty_state"
-          >
-            <div className="flex items-center justify-center gap-4 mb-6">
-              <div className="relative">
-                <PackageOpen className="w-10 h-10 text-purple-400" />
-                <div className="absolute inset-0 rounded-full bg-purple-400/20 blur-xl animate-pulse" />
-              </div>
-              <h2
-                className="text-2xl sm:text-3xl font-semibold text-white"
-                style={{ fontFamily: "var(--font-heading)" }}
-              >
-                No orders yet
-              </h2>
-            </div>
-            <p className="text-sm sm:text-base text-gray-300 max-w-xl mx-auto mb-8">
-              You haven&apos;t placed any orders yet. When you do, they&apos;ll
-              show up here so you can track them.
-            </p>
-            <button
-              type="button"
-              onClick={onNavigateToMain}
-              className="btn px-8 py-3 text-sm font-semibold"
-              data-ocid="myorders.shop_button"
-            >
-              <ShoppingBag className="w-4 h-4" />
-              Browse the Shop
-            </button>
-          </div>
         ) : (
-          <div className="max-w-3xl mx-auto space-y-4">
-            {orders.map((order, index) => {
-              const statusMeta = STATUS_META[order.payment_status];
-              return (
-                <div
-                  key={order.reference}
-                  className="card glass-card p-6 sm:p-8"
-                  data-ocid={`myorders.order_item.${index + 1}`}
-                >
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
-                    <div className="flex items-center gap-4">
-                      <span
-                        className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold ${statusMeta.soft} ${statusMeta.className}`}
-                        data-ocid={`myorders.status.${index + 1}`}
-                      >
-                        <Clock className="w-4 h-4" />
-                        {statusMeta.label}
-                      </span>
-                      <div>
-                        <p className="text-sm text-gray-400">Reference</p>
-                        <p className="font-mono-nak text-white">
-                          {order.reference}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="text-left sm:text-right">
-                      <p className="text-sm text-gray-400">Placed</p>
-                      <p className="text-sm text-gray-300">
-                        {formatTimestamp(order.created_at)}
+          <>
+            {/* Account — read-only identity panel, visible to any signed-in
+                principal (with or without a role). Shows only the caller's
+                own principal; never grants, requests, or escalates access. */}
+            {principalText && (
+              <div
+                className="max-w-3xl mx-auto mb-8"
+                data-ocid="myorders.account_section"
+              >
+                <div className="surface p-6 sm:p-8">
+                  <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+                    <div className="min-w-0">
+                      <p className="field-label mb-2">Your principal</p>
+                      <p className="font-mono-nak text-sm text-white break-all">
+                        {truncatePrincipal(principalText)}
+                      </p>
+                      <p className="mt-3 text-sm text-muted-foreground">
+                        Share this with an administrator to be granted access.
                       </p>
                     </div>
-                  </div>
-
-                  <div className="border-t border-white/10 pt-4">
-                    <p
-                      className="text-sm text-gray-300"
-                      data-ocid={`myorders.items.${index + 1}`}
-                    >
-                      {itemSummary(order.items)}
-                    </p>
-                    <div className="mt-3 flex items-center justify-between">
-                      <span className="text-sm text-gray-400">
-                        {order.items.length}{" "}
-                        {order.items.length === 1 ? "item" : "items"}
-                      </span>
-                      <span className="font-mono-nak text-lg text-teal-bright">
-                        {formatPrice(order.total)}
-                      </span>
+                    <div className="flex items-center gap-2 shrink-0">
+                      {role !== null && role !== undefined && (
+                        <span
+                          className="status-pill status-pill-neutral"
+                          data-ocid="myorders.role_pill"
+                        >
+                          Role: {ROLE_LABELS[role]}
+                        </span>
+                      )}
+                      <CopyButton
+                        text={principalText}
+                        label="Copy"
+                        className="shrink-0"
+                      />
                     </div>
                   </div>
                 </div>
-              );
-            })}
-          </div>
+              </div>
+            )}
+
+            {isLoading ? (
+              <div
+                className="max-w-3xl mx-auto space-y-4"
+                data-ocid="myorders.loading_state"
+              >
+                <div className="card glass-card p-6 loading-shimmer h-28" />
+                <div className="card glass-card p-6 loading-shimmer h-28" />
+                <div className="card glass-card p-6 loading-shimmer h-28" />
+              </div>
+            ) : isError ? (
+              <div
+                className="max-w-3xl mx-auto card glass-card p-8 text-center"
+                data-ocid="myorders.error_state"
+              >
+                <p className="text-destructive mb-4">
+                  We couldn&apos;t load your orders. Please try again.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => void refetch()}
+                  className="btn px-6 py-3 text-sm font-semibold"
+                  data-ocid="myorders.retry_button"
+                >
+                  Try Again
+                </button>
+              </div>
+            ) : !orders || orders.length === 0 ? (
+              <div
+                className="max-w-3xl mx-auto card glass-card p-8 sm:p-12 text-center"
+                data-ocid="myorders.empty_state"
+              >
+                <div className="flex items-center justify-center gap-4 mb-6">
+                  <div className="relative">
+                    <PackageOpen className="w-10 h-10 text-purple-400" />
+                    <div className="absolute inset-0 rounded-full bg-purple-400/20 blur-xl animate-pulse" />
+                  </div>
+                  <h2
+                    className="text-2xl sm:text-3xl font-semibold text-white"
+                    style={{ fontFamily: "var(--font-heading)" }}
+                  >
+                    No orders yet
+                  </h2>
+                </div>
+                <p className="text-sm sm:text-base text-gray-300 max-w-xl mx-auto mb-8">
+                  You haven&apos;t placed any orders yet. When you do,
+                  they&apos;ll show up here so you can track them.
+                </p>
+                <button
+                  type="button"
+                  onClick={onNavigateToMain}
+                  className="btn px-8 py-3 text-sm font-semibold"
+                  data-ocid="myorders.shop_button"
+                >
+                  <ShoppingBag className="w-4 h-4" />
+                  Browse the Shop
+                </button>
+              </div>
+            ) : (
+              <div className="max-w-3xl mx-auto space-y-4">
+                {orders.map((order, index) => {
+                  const statusMeta = STATUS_META[order.payment_status];
+                  return (
+                    <div
+                      key={order.reference}
+                      className="card glass-card p-6 sm:p-8"
+                      data-ocid={`myorders.order_item.${index + 1}`}
+                    >
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+                        <div className="flex items-center gap-4">
+                          <span
+                            className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold ${statusMeta.soft} ${statusMeta.className}`}
+                            data-ocid={`myorders.status.${index + 1}`}
+                          >
+                            <Clock className="w-4 h-4" />
+                            {statusMeta.label}
+                          </span>
+                          <div>
+                            <p className="text-sm text-gray-400">Reference</p>
+                            <p className="font-mono-nak text-white">
+                              {order.reference}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="text-left sm:text-right">
+                          <p className="text-sm text-gray-400">Placed</p>
+                          <p className="text-sm text-gray-300">
+                            {formatTimestamp(order.created_at)}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="border-t border-white/10 pt-4">
+                        <p
+                          className="text-sm text-gray-300"
+                          data-ocid={`myorders.items.${index + 1}`}
+                        >
+                          {itemSummary(order.items)}
+                        </p>
+                        <div className="mt-3 flex items-center justify-between">
+                          <span className="text-sm text-gray-400">
+                            {order.items.length}{" "}
+                            {order.items.length === 1 ? "item" : "items"}
+                          </span>
+                          <span className="font-mono-nak text-lg text-teal-bright">
+                            {formatPrice(order.total)}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </>
         )}
 
         <div className="text-center mt-10">

@@ -28,6 +28,8 @@ import ApiDocMixin "mixins/api-doc";
 import SubmissionTypes "types/submissions";
 import SubmissionsApi "mixins/submissions-api";
 import IbeApi "mixins/ibe-api";
+import RateLimitTypes "types/rate-limit";
+import CancellationTypes "types/cancellation";
 import Runtime "mo:core/Runtime";
 
 persistent actor Self {
@@ -314,6 +316,29 @@ persistent actor Self {
     // same principal, complementing the payment service's per-IP limit.
     let rateLimit : SubmissionTypes.RateLimitState;
 
+    // Per-principal rate-limit state for createOrder (stable, seeded by the
+    // migration chain). Mirrors the submissions pattern; anonymous callers all
+    // share the anonymous principal, so for guests this is a global throttle.
+    let orderRateLimit : RateLimitTypes.RateLimitState;
+
+    // Per-principal rate-limit state for the card payment endpoints
+    // (createCardCheckoutSession / confirmCardPayment) (stable, seeded by the
+    // migration chain). Bounds how many HTTPS outcalls an arbitrary caller can
+    // trigger, so a script cannot drain the canister's cycles.
+    let checkoutRateLimit : RateLimitTypes.RateLimitState;
+    let confirmRateLimit : RateLimitTypes.RateLimitState;
+
+    // Per-principal rate-limit state for unsubscribe attempts (stable, seeded
+    // by the migration chain). Protects the unsubscribe token space from
+    // brute-force by bounding attempts per caller.
+    let unsubscribeRateLimit : RateLimitTypes.RateLimitState;
+
+    // Short-lived cancellation tokens keyed by order reference (stable, seeded
+    // by the migration chain). Issued to the browser session that created an
+    // anonymous guest order; required for guest self-cancellation so a leaked
+    // order reference alone never confers the power to cancel.
+    let cancelTokens : Map.Map<Text, CancellationTypes.CancellationToken>;
+
     // Payment adapter (transient — recreated on restart, not persisted)
     transient let selfPrincipal = Principal.fromActor(Self);
     transient let paymentAdapter = CryptoPaymentsLib.cryptoAdapter(orders, products, cryptoPayments, cryptoConfig);
@@ -342,12 +367,12 @@ persistent actor Self {
     };
 
     include EmailApi(paymentServiceConfig, orders, adminUsers);
-    include ConsentApi(paymentServiceConfig, adminUsers);
+    include ConsentApi(paymentServiceConfig, adminUsers, unsubscribeRateLimit);
     include SweepApi(cryptoConfig, selfPrincipal, adminUsers, feeCache);
-    include StorefrontApi(products, orders, state, paymentAdapter, adminUsers, minimumOrder, paymentServiceConfig, emailTransform);
+    include StorefrontApi(products, orders, state, paymentAdapter, adminUsers, minimumOrder, paymentServiceConfig, emailTransform, orderRateLimit, cancelTokens);
     include PaymentAdapterApi(paymentAdapter);
     include CryptoPaymentsApi(orders, products, cryptoPayments, cryptoConfig, selfPrincipal, adminUsers, minimumOrder, feeCache);
-    include PaymentServiceApi(paymentServiceConfig, orders, products, adminUsers);
+    include PaymentServiceApi(paymentServiceConfig, orders, products, adminUsers, checkoutRateLimit, confirmRateLimit, cancelTokens);
     include AdminApi(adminUsers, initialAdminClaimed, selfPrincipal);
     include IbeApi(adminUsers, ibeKeyName);
     include RecoveryApi(orders, products, cryptoPayments, cryptoConfig, selfPrincipal, adminUsers, feeCache, latePayments, timerState, paymentServiceConfig, emailTransform);

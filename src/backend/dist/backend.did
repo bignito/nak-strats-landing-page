@@ -168,7 +168,7 @@ type Result_18 =
 type Result_17 = 
  variant {
    err: OrderError;
-   ok: Order;
+   ok: CreateOrderResult;
  };
 type Result_16 = 
  variant {
@@ -296,6 +296,7 @@ type PaymentServiceError =
    notConfigured: text;
    notFound;
    outcallFailed: text;
+   rateLimited;
    unauthorized;
  };
 type PaymentServiceConfigView = 
@@ -345,6 +346,8 @@ type OrderError =
                };
    paymentFailed: text;
    productInactive: ProductId;
+   rateLimited;
+   tooManyPendingOrders;
    unknownProduct: ProductId;
    unknownVariant: record {
                      ProductId;
@@ -480,6 +483,11 @@ type CryptoConfigView =
    treasuryPrincipal: principal;
    treasurySubaccount: opt blob;
  };
+type CreateOrderResult = 
+ record {
+   cancellationToken: opt text;
+   order: Order;
+ };
 type CreateOrderItem = 
  record {
    product_id: ProductId;
@@ -503,6 +511,7 @@ type ConsentError =
    invalidToken;
    notConfigured: text;
    outcallFailed: text;
+   rateLimited;
    unauthorized;
  };
 type CheckoutSession = 
@@ -555,6 +564,7 @@ service : {
   adminListOrders: (filter: text) -> (vec AdminOrderView) query;
   bootstrapOwner: (p: principal) -> (bool);
   cancelCardOrder: (reference: text) -> (Result_1);
+  cancelGuestOrder: (reference: text, cancellationToken: text) -> (Result_1);
   checkCryptoPayment: (reference: text) -> (Result_13);
   claimInitialAdmin: () -> (bool);
   confirmCardPayment: (reference: text) -> (Result_20);

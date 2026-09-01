@@ -20,6 +20,9 @@ module {
     #invalidResponse : Text;
     #unauthorized;
     #alreadyPaid;
+    // The caller exceeded the per-principal rate limit for a card payment
+    // endpoint within the window.
+    #rateLimited;
   };
 
   public type CheckoutSession = {

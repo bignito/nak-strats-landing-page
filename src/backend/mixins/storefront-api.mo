@@ -1,5 +1,7 @@
 import Result "mo:core/Result";
 import List "mo:core/List";
+import Map "mo:core/Map";
+import Principal "mo:core/Principal";
 import Types "../types/storefront";
 import PaymentServiceTypes "../types/payment-service";
 import StorefrontLib "../lib/storefront";
@@ -9,6 +11,10 @@ import AdminLib "../lib/admin-access-control";
 import AdminTypes "../types/admin-access-control";
 import AdminEmailLib "../lib/admin-email";
 import AdminEmailTypes "../types/admin-email";
+import RateLimitTypes "../types/rate-limit";
+import RateLimitLib "../lib/rate-limit";
+import CancellationTypes "../types/cancellation";
+import CancellationLib "../lib/cancellation";
 import OutCall "mo:caffeineai-http-outcalls/outcall";
 
 mixin (
@@ -20,6 +26,8 @@ mixin (
   minimumOrderState : { var minimumOrder : Nat },
   emailConfig : PaymentServiceTypes.PaymentServiceConfig,
   emailTransform : OutCall.Transform,
+  orderRateLimit : RateLimitTypes.RateLimitState,
+  cancelTokens : Map.Map<Text, CancellationTypes.CancellationToken>,
 ) {
   public query func listProducts() : async [Types.Product] {
     StorefrontLib.listActiveProducts(products);
@@ -53,7 +61,23 @@ mixin (
     StorefrontLib.getProduct(products, slugOrId, AdminLib.isAdminOrOwner(adminUsers, caller));
   };
 
-  public shared ({ caller }) func createOrder(input : Types.CreateOrderInput) : async Result.Result<Types.Order, Types.OrderError> {
+  public shared ({ caller }) func createOrder(input : Types.CreateOrderInput) : async Result.Result<Types.CreateOrderResult, Types.OrderError> {
+    // Rate limit per caller principal before any reservation is made. The
+    // canister cannot see client IPs, so this complements the payment service's
+    // per-IP limit; anonymous callers all share the anonymous principal, so for
+    // guests this is a global throttle.
+    if (not RateLimitLib.checkRateLimit(orderRateLimit, caller, RateLimitLib.ORDER_RATE_WINDOW_NANOS, RateLimitLib.ORDER_RATE_MAX)) {
+      return #err(#rateLimited);
+    };
+    // Cap concurrent pending (unpaid) reservations per caller. A normal
+    // customer creates one order at a time and checks out promptly, so this is
+    // never tripped by legitimate checkout. For anonymous guests (who all share
+    // the anonymous principal) this is a global cap on simultaneous pending
+    // orders, bounding how much of the catalogue a script can reserve without
+    // paying.
+    if (StorefrontLib.countPendingOrders(orders, caller) >= RateLimitLib.PENDING_ORDER_CAP) {
+      return #err(#tooManyPendingOrders);
+    };
     switch (await StorefrontLib.createOrder(products, orders, state, input, caller, minimumOrderState.minimumOrder)) {
       case (#ok order) {
         switch (await paymentAdapter.createCheckoutSession(order)) {
@@ -67,7 +91,20 @@ mixin (
               };
               case (_) {};
             };
-            #ok(order);
+            // Issue a short-lived cancellation token to the browser session
+            // that created this order when the caller is an anonymous guest,
+            // and RETURN it so the frontend can later call
+            // cancelGuestOrder(reference, token). The token is stored keyed by
+            // the order reference and is required for guest self-cancellation;
+            // a leaked order reference alone never confers the power to cancel.
+            // Signed-in customers prove ownership via customer_principal
+            // instead and receive no token.
+            if (caller.isAnonymous()) {
+              let token = await CancellationLib.issueToken(cancelTokens, order.reference);
+              #ok({ order; cancellationToken = ?token });
+            } else {
+              #ok({ order; cancellationToken = null });
+            };
           };
           case (#err e) { #err(#paymentFailed(debug_show(e))) };
         };

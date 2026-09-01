@@ -299,6 +299,10 @@ export const mockBackend: backendInterface = {
   adminCount: async () => 1n,
   bootstrapOwner: async () => true,
   cancelCardOrder: async () => ({ __kind__: "ok", ok: null }),
+  // Guest self-cancellation: the backend requires the short-lived token that
+  // was issued to the browser session at createOrder time. The mock accepts
+  // any reference/token pair and succeeds, mirroring the real Result_1 shape.
+  cancelGuestOrder: async () => ({ __kind__: "ok", ok: null }),
   claimInitialAdmin: async () => true,
   getMyRole: async () => Role.owner,
   grantRole: async () => true,
@@ -323,7 +327,14 @@ export const mockBackend: backendInterface = {
     __kind__: "ok",
     ok: { reference: "NAK-000001" },
   }),
-  createOrder: async () => ({ __kind__: "ok", ok: sampleOrder }),
+  // createOrder now returns CreateOrderResult: the order plus a short-lived
+  // cancellation token for anonymous (guest) callers. Signed-in callers get
+  // cancellationToken: undefined. The mock always issues a token so the guest
+  // cancellation flow can be exercised in dev.
+  createOrder: async () => ({
+    __kind__: "ok",
+    ok: { order: sampleOrder, cancellationToken: "mock-cancellation-token" },
+  }),
   createProduct: async () => true,
   execute: async () => ({ hasMore: false, rows: [] }),
   forceRecheckPayment: async () => ({

@@ -70,6 +70,7 @@ export const PaymentServiceError = IDL.Variant({
   'alreadyPaid' : IDL.Null,
   'notConfigured' : IDL.Text,
   'notFound' : IDL.Null,
+  'rateLimited' : IDL.Null,
   'outcallFailed' : IDL.Text,
   'unauthorized' : IDL.Null,
   'invalidResponse' : IDL.Text,
@@ -172,18 +173,27 @@ export const CreateOrderInput = IDL.Record({
   'encrypted_shipping' : IDL.Opt(IDL.Vec(IDL.Nat8)),
   'marketing_consent' : IDL.Bool,
 });
+export const CreateOrderResult = IDL.Record({
+  'order' : Order,
+  'cancellationToken' : IDL.Opt(IDL.Text),
+});
 export const OrderError = IDL.Variant({
   'outOfStock' : IDL.Tuple(ProductId, IDL.Text),
   'unknownVariant' : IDL.Tuple(ProductId, IDL.Text),
   'unknownProduct' : ProductId,
   'ckUSDCDisabled' : IDL.Null,
   'emptyOrder' : IDL.Null,
+  'rateLimited' : IDL.Null,
   'belowMinimumOrder' : IDL.Nat,
   'productInactive' : ProductId,
   'paymentFailed' : IDL.Text,
   'invalidQuantity' : IDL.Null,
+  'tooManyPendingOrders' : IDL.Null,
 });
-export const Result_17 = IDL.Variant({ 'ok' : Order, 'err' : OrderError });
+export const Result_17 = IDL.Variant({
+  'ok' : CreateOrderResult,
+  'err' : OrderError,
+});
 export const ProductVariant = IDL.Record({
   'id' : IDL.Text,
   'inventory' : IDL.Nat,
@@ -252,6 +262,7 @@ export const ConsentError = IDL.Variant({
   'alreadyUnsubscribed' : IDL.Null,
   'notConfigured' : IDL.Text,
   'invalidToken' : IDL.Null,
+  'rateLimited' : IDL.Null,
   'outcallFailed' : IDL.Text,
   'unauthorized' : IDL.Null,
   'invalidResponse' : IDL.Text,
@@ -460,6 +471,7 @@ export const idlService = IDL.Service({
     ),
   'bootstrapOwner' : IDL.Func([IDL.Principal], [IDL.Bool], []),
   'cancelCardOrder' : IDL.Func([IDL.Text], [Result_1], []),
+  'cancelGuestOrder' : IDL.Func([IDL.Text, IDL.Text], [Result_1], []),
   'checkCryptoPayment' : IDL.Func([IDL.Text], [Result_13], []),
   'claimInitialAdmin' : IDL.Func([], [IDL.Bool], []),
   'confirmCardPayment' : IDL.Func([IDL.Text], [Result_20], []),
@@ -645,6 +657,7 @@ export const idlFactory = ({ IDL }) => {
     'alreadyPaid' : IDL.Null,
     'notConfigured' : IDL.Text,
     'notFound' : IDL.Null,
+    'rateLimited' : IDL.Null,
     'outcallFailed' : IDL.Text,
     'unauthorized' : IDL.Null,
     'invalidResponse' : IDL.Text,
@@ -747,18 +760,27 @@ export const idlFactory = ({ IDL }) => {
     'encrypted_shipping' : IDL.Opt(IDL.Vec(IDL.Nat8)),
     'marketing_consent' : IDL.Bool,
   });
+  const CreateOrderResult = IDL.Record({
+    'order' : Order,
+    'cancellationToken' : IDL.Opt(IDL.Text),
+  });
   const OrderError = IDL.Variant({
     'outOfStock' : IDL.Tuple(ProductId, IDL.Text),
     'unknownVariant' : IDL.Tuple(ProductId, IDL.Text),
     'unknownProduct' : ProductId,
     'ckUSDCDisabled' : IDL.Null,
     'emptyOrder' : IDL.Null,
+    'rateLimited' : IDL.Null,
     'belowMinimumOrder' : IDL.Nat,
     'productInactive' : ProductId,
     'paymentFailed' : IDL.Text,
     'invalidQuantity' : IDL.Null,
+    'tooManyPendingOrders' : IDL.Null,
   });
-  const Result_17 = IDL.Variant({ 'ok' : Order, 'err' : OrderError });
+  const Result_17 = IDL.Variant({
+    'ok' : CreateOrderResult,
+    'err' : OrderError,
+  });
   const ProductVariant = IDL.Record({
     'id' : IDL.Text,
     'inventory' : IDL.Nat,
@@ -824,6 +846,7 @@ export const idlFactory = ({ IDL }) => {
     'alreadyUnsubscribed' : IDL.Null,
     'notConfigured' : IDL.Text,
     'invalidToken' : IDL.Null,
+    'rateLimited' : IDL.Null,
     'outcallFailed' : IDL.Text,
     'unauthorized' : IDL.Null,
     'invalidResponse' : IDL.Text,
@@ -1020,6 +1043,7 @@ export const idlFactory = ({ IDL }) => {
       ),
     'bootstrapOwner' : IDL.Func([IDL.Principal], [IDL.Bool], []),
     'cancelCardOrder' : IDL.Func([IDL.Text], [Result_1], []),
+    'cancelGuestOrder' : IDL.Func([IDL.Text, IDL.Text], [Result_1], []),
     'checkCryptoPayment' : IDL.Func([IDL.Text], [Result_13], []),
     'claimInitialAdmin' : IDL.Func([], [IDL.Bool], []),
     'confirmCardPayment' : IDL.Func([IDL.Text], [Result_20], []),

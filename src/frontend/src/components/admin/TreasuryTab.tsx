@@ -10,6 +10,7 @@ import {
   useGetTreasuryTokens,
   useSweepDefaultSubaccount,
 } from "@/hooks/useQueries";
+import { formatPrice } from "@/lib/currency";
 import type { AdminTabBodyProps } from "@/types/routes";
 import {
   type createActorFunction,
@@ -556,9 +557,7 @@ export function TreasuryTab({ session }: AdminTabBodyProps) {
                 header: "Amount owed",
                 align: "right",
                 render: (row) => (
-                  <span className="num">
-                    {formatUnits(row.amountOwed, decimals)}
-                  </span>
+                  <span className="num">{formatPrice(row.amountOwed)}</span>
                 ),
               },
               {

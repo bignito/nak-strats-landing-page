@@ -1,7 +1,9 @@
+import { useInternetIdentity } from "@caffeineai/core-infrastructure";
 import { ArrowLeft, ShoppingCart } from "lucide-react";
 import type React from "react";
 import { useEffect } from "react";
-import { useCancelCardOrder } from "../hooks/useQueries";
+import { useCancellationToken } from "../hooks/useCancellationToken";
+import { useCancelCardOrder, useCancelGuestOrder } from "../hooks/useQueries";
 
 interface CancelledPageProps {
   orderReference: string;
@@ -16,7 +18,10 @@ const CancelledPage: React.FC<CancelledPageProps> = ({
   onNavigateToShop,
   onNavigateToCart,
 }) => {
+  const { isAuthenticated } = useInternetIdentity();
+  const { getCancellationToken } = useCancellationToken();
   const cancelCardOrder = useCancelCardOrder();
+  const cancelGuestOrder = useCancelGuestOrder();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -24,11 +29,31 @@ const CancelledPage: React.FC<CancelledPageProps> = ({
 
   // When a card checkout was cancelled, release the inventory reservation and
   // mark the order cancelled so the reserved stock is freed for other buyers.
+  // Signed-in customers cancel as the order owner via cancelCardOrder.
+  // Anonymous guests cannot cancel by reference alone (cancelCardOrder now
+  // returns #unauthorized for them), so they must present the short-lived
+  // cancellation token issued to their browser session when the order was
+  // created, via cancelGuestOrder.
   useEffect(() => {
-    if (orderReference) {
+    if (!orderReference) return;
+    if (isAuthenticated) {
       cancelCardOrder.mutate(orderReference);
+    } else {
+      const token = getCancellationToken(orderReference);
+      if (token) {
+        cancelGuestOrder.mutate({
+          reference: orderReference,
+          cancellationToken: token,
+        });
+      }
     }
-  }, [orderReference, cancelCardOrder.mutate]);
+  }, [
+    orderReference,
+    isAuthenticated,
+    getCancellationToken,
+    cancelCardOrder.mutate,
+    cancelGuestOrder.mutate,
+  ]);
 
   return (
     <div className="pt-24 sm:pt-32 pb-12 sm:pb-20 px-4 sm:px-6">

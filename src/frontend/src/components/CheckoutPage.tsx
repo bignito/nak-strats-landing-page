@@ -26,6 +26,7 @@ import type React from "react";
 import { useEffect, useMemo, useState } from "react";
 import QRCode from "react-qr-code";
 import { useActiveOrderRef } from "../hooks/useActiveOrderRef";
+import { useCancellationToken } from "../hooks/useCancellationToken";
 import { useCart } from "../hooks/useCart";
 import {
   useCheckCryptoPayment,
@@ -242,6 +243,8 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
   // time) instead of starting a new order.
   const { activeOrderRef, setActiveOrderRef, clearActiveOrderRef } =
     useActiveOrderRef();
+  const { setCancellationToken, clearCancellationToken } =
+    useCancellationToken();
   const {
     data: resumeInfo,
     isError: resumeError,
@@ -398,6 +401,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
                   ) {
                     setPaid(true);
                     clearActiveOrderRef();
+                    clearCancellationToken(depositReference);
                   }
                 },
               });
@@ -409,6 +413,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
             // The backend reports the deposit has expired.
             setExpired(true);
             clearActiveOrderRef();
+            clearCancellationToken(depositReference);
           }
         },
       });
@@ -420,6 +425,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
     checkPayment,
     confirmPayment,
     clearActiveOrderRef,
+    clearCancellationToken,
   ]);
 
   // Navigate to success once paid, passing the real order reference.
@@ -450,8 +456,19 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
     if (remainingSec <= 0 && depositData) {
       setExpired(true);
       clearActiveOrderRef();
+      if (depositReference) {
+        clearCancellationToken(depositReference);
+      }
     }
-  }, [step, paid, remainingSec, depositData, clearActiveOrderRef]);
+  }, [
+    step,
+    paid,
+    remainingSec,
+    depositData,
+    depositReference,
+    clearActiveOrderRef,
+    clearCancellationToken,
+  ]);
 
   const ledgerUnset = useMemo(() => {
     if (!cryptoConfig) return false;
@@ -530,11 +547,23 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
     createOrder.mutate(input, {
       onSuccess: (result) => {
         if (result.__kind__ === "ok") {
-          setOrder(result.ok);
+          // createOrder returns CreateOrderResult: the order plus a
+          // short-lived cancellation token issued only to anonymous guests.
+          const created = result.ok;
+          setOrder(created.order);
           setResumeMode(false);
           // Remember this order so a returning customer can restore its
           // deposit screen (same address, amount, remaining time).
-          setActiveOrderRef(result.ok.reference);
+          setActiveOrderRef(created.order.reference);
+          // Persist the guest cancellation token per reference so it survives
+          // the card checkout redirect back to the cancelled page. Signed-in
+          // callers receive no token (null) and cancel as the order owner.
+          if (created.cancellationToken) {
+            setCancellationToken(
+              created.order.reference,
+              created.cancellationToken,
+            );
+          }
           setStep("review");
         } else {
           setOrderError(

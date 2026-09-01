@@ -24,6 +24,9 @@ module {
     #unauthorized;
     #invalidToken;
     #alreadyUnsubscribed;
+    // The caller exceeded the per-principal rate limit for unsubscribe attempts
+    // within the window.
+    #rateLimited;
   };
 
   // Result of a token-based unsubscribe. The token is minted by the payment

@@ -15,6 +15,7 @@ import {
   useGetSubaccountBalance,
   useMarkOrderShipped,
 } from "@/hooks/useQueries";
+import { formatPrice } from "@/lib/currency";
 import type { AdminTabBodyProps } from "@/types/routes";
 import {
   CheckCircle2,
@@ -251,9 +252,7 @@ function OrderDetail({
             </div>
             <div className="flex flex-col gap-1">
               <span className="field-label">Amount owed</span>
-              <span className="mono-num">
-                {formatTokenAmount(detail.amountOwed, decimals)}
-              </span>
+              <span className="mono-num">{formatPrice(detail.amountOwed)}</span>
             </div>
             <div className="flex flex-col gap-1">
               <span className="field-label">Placed</span>
@@ -341,7 +340,7 @@ function OrderDetail({
                       <td>{item.variant_id}</td>
                       <td className="num-col">{item.quantity.toString()}</td>
                       <td className="num-col">
-                        {formatTokenAmount(item.unit_amount, decimals)}
+                        {formatPrice(item.unit_amount)}
                       </td>
                     </tr>
                   ))}
@@ -605,7 +604,7 @@ export function OrdersTab({ session }: AdminTabBodyProps) {
                   header: "Amount",
                   align: "right",
                   render: (row) => (
-                    <span className="num">{row.amountOwed.toString()}</span>
+                    <span className="num">{formatPrice(row.amountOwed)}</span>
                   ),
                 },
                 {

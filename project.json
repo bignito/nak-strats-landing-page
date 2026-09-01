@@ -1,17 +1,16 @@
 {
-  "overview": "A landing page for the NAK STRATS token with a shop, checkout, crypto payments, and an embedded swap service.",
+  "overview": "A storefront app for NAK STRATS with product listings, guest checkout, and order management.",
   "features": [
-    "Shop and checkout with crypto payments",
-    "Admin order management",
-    "Embedded NAK Swap service",
-    "Token information and reserve dashboard"
+    "Browse and purchase products",
+    "Guest checkout with payment",
+    "Order status tracking",
+    "Admin order management"
   ],
-  "category": "landing-page",
+  "category": "storefront",
   "tags": [
-    "token",
-    "shop",
-    "crypto",
-    "landing-page"
+    "storefront",
+    "ecommerce",
+    "checkout"
   ],
-  "last_updated": "2026-09-01T12:17:21.636Z"
+  "last_updated": "2026-09-01T16:05:12.568Z"
 }

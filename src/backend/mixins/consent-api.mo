@@ -5,11 +5,14 @@ import PaymentServiceTypes "../types/payment-service";
 import ConsentLib "../lib/consent";
 import AdminLib "../lib/admin-access-control";
 import AdminTypes "../types/admin-access-control";
+import RateLimitTypes "../types/rate-limit";
+import RateLimitLib "../lib/rate-limit";
 import OutCall "mo:caffeineai-http-outcalls/outcall";
 
 mixin (
   config : PaymentServiceTypes.PaymentServiceConfig,
   adminUsers : AdminTypes.AdminUsers,
+  unsubscribeRateLimit : RateLimitTypes.RateLimitState,
 ) {
   // Admin-only: fetch the list of consenting addresses from the external
   // payment service and return it as CSV, so a mailing list can be built
@@ -26,7 +29,15 @@ mixin (
   // it to the payment service, which adds the address to its stored suppression
   // list. Suppressed addresses are never sent marketing email; transactional
   // emails remain exempt. The suppression list lives at the payment service.
-  public func unsubscribe(token : Text) : async Result.Result<(), Types.ConsentError> {
+  // Unauthenticated is correct for an unsubscribe link, so the token space is
+  // protected by rate limiting per caller principal (the canister cannot see
+  // client IPs; anonymous callers all share the anonymous principal, so for
+  // them this is a global cap on unsubscribe attempts) to prevent brute-forcing
+  // the token space to unsubscribe arbitrary addresses.
+  public shared ({ caller }) func unsubscribe(token : Text) : async Result.Result<(), Types.ConsentError> {
+    if (not RateLimitLib.checkRateLimit(unsubscribeRateLimit, caller, RateLimitLib.UNSUBSCRIBE_RATE_WINDOW_NANOS, RateLimitLib.UNSUBSCRIBE_RATE_MAX)) {
+      return #err(#rateLimited);
+    };
     await ConsentLib.unsubscribe(config, token, consentServiceTransform);
   };
 

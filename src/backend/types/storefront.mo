@@ -129,6 +129,16 @@ module {
     quantity : Nat;
   };
 
+  // Return type of createOrder. Wraps the created order together with an
+  // optional short-lived cancellation token. The token is present ONLY for
+  // anonymous guest callers (the browser session that created the order needs
+  // it to self-cancel via cancelGuestOrder); signed-in customers get null and
+  // cancel via cancelCardOrder as the order owner.
+  public type CreateOrderResult = {
+    order : Order;
+    cancellationToken : ?Text;
+  };
+
   public type CreateOrderInput = {
     items : [CreateOrderItem];
     // The customer's email address — the single documented exception that
@@ -168,5 +178,12 @@ module {
     // constant is false). New ckUSDC orders are rejected; existing ckUSDC
     // orders are unaffected.
     #ckUSDCDisabled;
+    // The caller exceeded the per-principal createOrder rate limit within the
+    // window (mirrors the submissions rate-limit pattern).
+    #rateLimited;
+    // The caller already has the maximum number of concurrent pending (unpaid)
+    // reservations. For anonymous guests this is a global cap on simultaneous
+    // pending orders, bounding how much of the catalogue a script can reserve.
+    #tooManyPendingOrders;
   };
 };

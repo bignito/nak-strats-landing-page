@@ -43,6 +43,23 @@ module {
     orders.find(func o = o.reference == reference);
   };
 
+  // Count the caller's concurrent pending (unpaid) orders. For a signed-in
+  // customer, counts their own pending orders. For the anonymous principal (all
+  // guests share it), counts ALL pending orders — bounding how much of the
+  // catalogue a script can reserve anonymously without paying.
+  public func countPendingOrders(orders : List.List<Types.Order>, caller : Principal) : Nat {
+    var count = 0;
+    for (o in orders.toArray().values()) {
+      if (o.payment_status == #pending) {
+        switch (o.customer_principal) {
+          case (?p) { if (p == caller) { count += 1 } };
+          case null { if (caller.isAnonymous()) { count += 1 } };
+        };
+      };
+    };
+    count;
+  };
+
   // Returns only the orders whose customer_principal matches the caller. The
   // caller is always derived from msg.caller server-side — never accepted as a
   // parameter. The anonymous principal is rejected (returns an empty list), so

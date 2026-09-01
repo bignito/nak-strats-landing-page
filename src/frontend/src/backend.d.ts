@@ -266,6 +266,7 @@ export interface CryptoConfigView {
     ckUSDC: LedgerConfig;
     treasurySubaccount?: Uint8Array;
     minimumOrder: bigint;
+    ckUSDCEnabled: boolean;
     treasuryPrincipal: Principal;
 }
 export type Result_17 = {
@@ -465,10 +466,35 @@ export interface AdminOrderView {
     currency: string;
     subaccountHex: string;
     sweepNote?: string;
+    customerEmail: string;
     depositAccountText: string;
 }
 export interface ConsentListExport {
     csv: string;
+}
+export interface PublicOrderView {
+    id: bigint;
+    tax: bigint;
+    updated_at: bigint;
+    total: bigint;
+    sweep_note?: string;
+    shipping: bigint;
+    reference: string;
+    created_at: bigint;
+    payment_status: PaymentStatus;
+    payment_method: PaymentMethod;
+    tracking_number?: string;
+    currency: string;
+    marketing_consent_at?: bigint;
+    shipping_status: ShippingStatus;
+    has_shipping_details: boolean;
+    items: Array<OrderItem>;
+    encrypted_shipping?: Uint8Array;
+    customer_principal?: Principal;
+    shipped_at?: bigint;
+    marketing_consent: boolean;
+    payment_reference?: string;
+    subtotal: bigint;
 }
 export interface ProductVariant {
     id: string;
@@ -532,6 +558,9 @@ export type OrderError = {
 } | {
     __kind__: "unknownProduct";
     unknownProduct: ProductId;
+} | {
+    __kind__: "ckUSDCDisabled";
+    ckUSDCDisabled: null;
 } | {
     __kind__: "emptyOrder";
     emptyOrder: null;
@@ -675,10 +704,10 @@ export interface backendInterface {
     getIbePublicKey(): Promise<Uint8Array>;
     getMinimumOrder(): Promise<bigint>;
     getMyEncryptedIbeKey(transportPublicKey: Uint8Array): Promise<Uint8Array>;
-    getMyOrders(): Promise<Array<Order>>;
+    getMyOrders(): Promise<Array<PublicOrderView>>;
     getMyRole(): Promise<Role | null>;
     getNAKPrice(): Promise<string>;
-    getOrderStatus(reference: string): Promise<Order | null>;
+    getOrderStatus(reference: string): Promise<PublicOrderView | null>;
     getPaymentServiceConfig(): Promise<PaymentServiceConfigView>;
     getPaymentStatus(reference: string): Promise<PaymentStatus>;
     getProduct(slugOrId: string): Promise<Product | null>;

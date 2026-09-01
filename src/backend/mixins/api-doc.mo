@@ -44,26 +44,39 @@ treasury/dashboard data from external services.
   authoritative subtotal, tax (8%), shipping (free at or above 5000 units,
   otherwise 500), and total from the product records — never from
   browser-submitted prices. Creates the order with `payment_status = #pending`
-  and a unique `reference` of the form `NAK-<id>`, then hands it to the
-  payment adapter's `createCheckoutSession`. On success returns the created
+  and a unique unguessable `reference` of the form `NAK-` followed by 12
+  characters drawn from an unambiguous uppercase alphanumeric alphabet
+  (excluding `0`, `O`, `1`, `I`, and `L`), generated from IC raw randomness
+  (`Random.blob()`) with collision checking — never from a counter, a
+  timestamp, or a hash of the order id — then hands it to the payment
+  adapter's `createCheckoutSession`. On success returns the created
   order; on failure returns an `OrderError` variant. For crypto payment methods
   (`#crypto_ckusdc`), the order total is checked server-side against the
   configured minimum order total (default $0.25): an order whose total is below
   the minimum is rejected with `#err(#belowMinimumOrder(minimum))` before any
   payment is created, because such an order cannot be swept to the treasury
-  after the ledger transfer fee is deducted. Hidden (`admin_only`) test items
-  ship free (no shipping cost), so the total is exactly the item price.
-- `getOrderStatus(reference : Text) : async ?Order` — query. Returns the order
-  with the given `reference`, or `null` if none exists. This is the guest
-  lookup path: a customer who did not sign in can reach their order status this
-  way using the reference shown at checkout.
+  after the ledger transfer fee is deducted. While the
+  `CKUSDC_CHECKOUT_ENABLED` flag is `false` (ckUSDC checkout temporarily
+  disabled), a `#crypto_ckusdc` order is rejected with
+  `#err(#ckUSDCDisabled)` before any payment is created — a direct canister
+  call cannot create a new ckUSDC order even though the UI no longer offers the
+  option. Existing ckUSDC orders are unaffected. Hidden (`admin_only`) test
+  items ship free (no shipping cost), so the total is exactly the item price.
+- `getOrderStatus(reference : Text) : async ?Order` — query. Returns a
+  public-safe view of the order with the given `reference`, or `null` if none
+  exists. The view omits `customer_email` — the customer's email is never
+  exposed through this public path. This is the guest lookup path: a customer
+  who did not sign in can reach their order status this way using the
+  reference shown at checkout. Lookup works for both legacy (`NAK-<id>`) and
+  new-format (`NAK-` + 12 random characters) references.
 - `getMyOrders() : async [Order]` — query. Returns ONLY the orders whose
   `customer_principal` matches the caller. The caller is derived from
   `msg.caller` server-side — never accepted as a parameter. It rejects the
   anonymous principal (returns an empty list), so a guest who did not sign in
   cannot read anyone's orders through this path, and one signed-in customer can
   never read another customer's orders. A signed-in customer's orders are
-  attributed to them at creation time via `customer_principal`.
+  attributed to them at creation time via `customer_principal`. Each returned
+  record is a public-safe view that omits `customer_email`.
 
 ### Payment adapter
 
@@ -71,7 +84,10 @@ treasury/dashboard data from external services.
   PaymentError>` — update. Delegates to the configured payment adapter. The
   default `cryptoAdapter` creates a crypto payment for `#crypto_ckusdc` orders,
   rejects `#crypto_icp` as disabled, and falls back to the manual adapter for
-  other payment methods.
+  other payment methods. While the `CKUSDC_CHECKOUT_ENABLED` flag is `false`,
+  the adapter rejects a `#crypto_ckusdc` order with a `#paymentFailed` error
+  before creating any payment, so a direct canister call cannot create a ckUSDC
+  checkout session either.
 - `getPaymentStatus(reference : Text) : async PaymentStatus` — update. Returns
   the current payment status of the order with the given `reference`, or
   `#pending` if no such order exists.
@@ -190,10 +206,16 @@ keys will not match.
 
 - `getCryptoConfig() : async CryptoConfigView` — query. Returns the current
   crypto configuration: the treasury principal and subaccount, the ckUSDC
-  and ICP ledger configurations (canister id, decimals, fee), and the current
-  `minimumOrder` (in USD cents) required for crypto checkout. ICP is present in
-  the config but is DISABLED for payments — no rate oracle is configured, so
-  ICP is never offered and any attempt to pay with ICP is rejected.
+  and ICP ledger configurations (canister id, decimals, fee), the current
+  `minimumOrder` (in USD cents) required for crypto checkout, and
+  `ckUSDCEnabled : Bool` — whether ckUSDC checkout is currently enabled. The
+  `ckUSDCEnabled` field mirrors the compile-time `CKUSDC_CHECKOUT_ENABLED`
+  constant: while it is `false`, the checkout UI must not offer ckUSDC and the
+  backend rejects NEW ckUSDC orders (see `createOrder` and
+  `createCheckoutSession`). Existing ckUSDC orders remain fully visible and
+  fulfillable. ICP is present in the config but is DISABLED for payments — no
+  rate oracle is configured, so ICP is never offered and any attempt to pay
+  with ICP is rejected.
 - `getMinimumOrder() : async Nat` — query. Public. Returns the current minimum
   order total (in USD cents) required for crypto checkout. Defaults to `25`
   ($0.25). Crypto orders whose total is below this are rejected server-side
@@ -251,8 +273,9 @@ keys will not match.
   top of the function, rejects the anonymous principal, and traps for a caller
   that is not a non-anonymous ADMIN or OWNER. Each returned view
   carries the order `reference`, `created_at`, `status`, `payment_method`,
-  amount owed, `currency`, item count, the per-order ICRC-1 subaccount as
-  lowercase hex, and the full ICRC-1 deposit account text. The `filter` argument
+  amount owed, `currency`, item count, the customer's email (`customerEmail`),
+  the per-order ICRC-1 subaccount as lowercase hex, and the full ICRC-1 deposit
+  account text. The `filter` argument
   selects which orders to return:
   - `all` — every order.
   - `awaiting_payment` — crypto orders still awaiting payment.
@@ -263,7 +286,8 @@ keys will not match.
     expired-but-funded, underpaid, overpaid, and sweep-failed.
 - `adminGetOrderDetail(reference : Text) : async ?AdminOrderDetail` — update.
   ADMIN-OR-OWNER. Returns the full detail of a single
-  order, including its line items, for the admin UI. Binds the caller at the top
+  order, including its line items and the customer's email (`customerEmail`),
+  for the admin UI. Binds the caller at the top
   of the function, rejects the anonymous principal, and traps for a caller that
   is not a non-anonymous ADMIN or OWNER. Returns
   `null` for an unknown reference.
@@ -463,6 +487,11 @@ The storefront does not gate its public methods on a signed-in caller:
   anonymous callers. `schema()` and `execute()` enforce per-entity
   authorization against the live caller (see \"OQL per-entity authorization\"
   below): private entities are readable only by the canister controller.
+- The public order lookups (`getOrderStatus`, `getMyOrders`) return
+  public-safe views that omit `customer_email`. The customer email is exposed
+  ONLY through the ADMIN/OWNER-gated `adminListOrders` and
+  `adminGetOrderDetail` (and the controller-only OQL `order` entity) — never
+  in any public or customer-facing query.
 - `createOrder`, `createCheckoutSession`, `getPaymentStatus`, and
   `handlePaymentConfirmation` are update methods and are likewise not
   restricted to a specific principal in the current source.
@@ -494,7 +523,8 @@ admin roles map. It is never required to browse, add to cart, check out, or pay
 - `getMyOrders()` returns only the orders whose `customer_principal` matches
   the caller. It filters by `msg.caller` server-side and never accepts a
   principal as a parameter, so one customer can never read another customer's
-  orders. It rejects the anonymous principal by returning an empty list.
+  orders. It rejects the anonymous principal by returning an empty list. The
+  returned records are public-safe views that omit `customer_email`.
 - A customer who did not sign in has no `customer_principal` on their orders,
   so `getMyOrders()` returns an empty list for them. Their only way back to an
   order's status is the guest lookup `getOrderStatus(reference)` using the
@@ -678,8 +708,8 @@ OQL authorization is per entity and is enforced against the live caller on both
 - `product` — `#public_`: any caller (including anonymous) reads every product
   row.
 - `order` — `#controllerOnly`: only the canister controller reads order rows;
-  all other callers are denied. Order rows are private and are not exposed to
-  end users through OQL.
+  all other callers are denied. Order rows carry `customer_email` but are
+  private and are never exposed to end users through OQL.
 - `cryptoPayment` — `#controllerOnly`: only the canister controller reads
   crypto payment rows. Each row carries the per-order ICRC-1 subaccount, the
   amount due, and the payment status, so it is never exposed to end users.
@@ -710,7 +740,12 @@ OQL authorization is per entity and is enforced against the live caller on both
 - **Timestamps**: `created_at` and `updated_at` are `Int` values in
   nanoseconds since the Unix epoch (`Time.now()`).
 - **Identifiers**: `Product.id` and `Order.id` are `Nat`. `Order.reference` is
-  a `Text` of the form `NAK-<id>` and is the stable public lookup key.
+  a `Text` of the form `NAK-` followed by 12 characters drawn from an
+  unambiguous uppercase alphanumeric alphabet (excluding `0`, `O`, `1`, `I`,
+  and `L`), generated from IC raw randomness with collision checking; it is the
+  stable public lookup key and is NOT derived from the order id. Orders created
+  before this scheme (legacy orders) keep their sequential `NAK-<id>`
+  references unchanged.
 - **Optional values**: `payment_reference` is `?Text` — `null` until a payment
   is recorded. `ShippingAddress.line2` is `?Text`. `shipped_at` is `?Int`
   (nanoseconds since epoch) — `null` until the order is shipped.
@@ -734,7 +769,9 @@ OQL authorization is per entity and is enforced against the live caller on both
   the amount due is `order.total * 10^4`). `DepositInfo.decimals` is the
   ledger's decimal count. `CryptoPayment.subaccount` is a 32-byte `Blob`
   (big-endian encoding of the order id) used as the ICRC-1 subaccount under
-  this canister's own principal.
+  this canister's own principal. The subaccount derivation is coupled to the
+  sequential order id — NOT to the display reference — so the random-reference
+  scheme leaves the derivation, existing orders, and the sweep logic unchanged.
 - **Crypto status**: `CryptoPaymentStatus` is one of `#awaiting_payment`,
   `#paid : { blockIndex : Nat }`, `#underpayment`, `#overpayment`, `#expired`.
   `blockIndex` is the on-ledger block index of the sweep transfer.
@@ -796,7 +833,12 @@ For a crypto order (`#crypto_ckusdc`), the lifecycle is:
 
 1. `createOrder` creates the order and, through the adapter, a
    `CryptoPayment` with status `#awaiting_payment` and a 30-minute deposit
-   window. Inventory is reserved (decremented) at order creation.
+   window. Inventory is reserved (decremented) at order creation. While the
+   `CKUSDC_CHECKOUT_ENABLED` flag is `false`, `createOrder` rejects a new
+   `#crypto_ckusdc` order with `#err(#ckUSDCDisabled)` and the adapter rejects
+   the checkout session, so no new ckUSDC payment is created. This flag governs
+   creation only: existing ckUSDC orders continue through the full lifecycle
+   below unchanged.
 2. The customer sends ckUSDC to the deposit address (this canister's principal)
    with the order's subaccount.
 3. The frontend polls `checkCryptoPayment(reference)` (or reads
@@ -911,9 +953,11 @@ are never silently lost and are always flagged for admin recovery.
 - `createOrder` returns an `OrderError` variant rather than trapping for
   caller-correctable problems: `#emptyOrder`, `#unknownProduct(id)`,
   `#productInactive(id)`, `#unknownVariant(id, variantId)`,
-  `#outOfStock(id, variantId)`, `#invalidQuantity`, `#paymentFailed(msg)`, and
+  `#outOfStock(id, variantId)`, `#invalidQuantity`, `#paymentFailed(msg)`,
   `#belowMinimumOrder(minimum)` (the crypto order total is below the configured
-  minimum order total, in cents).
+  minimum order total, in cents), and `#ckUSDCDisabled` (ckUSDC checkout is
+  temporarily disabled — the `CKUSDC_CHECKOUT_ENABLED` flag is `false`; a new
+  ckUSDC order is rejected while existing ckUSDC orders are unaffected).
 - `getProduct` returns `null` for an unknown slug or id — it does not trap.
 - `getOrderStatus` and `getPaymentStatus` return `null` / `#pending`
   respectively for an unknown reference — they do not trap.

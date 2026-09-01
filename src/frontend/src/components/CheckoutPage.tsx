@@ -29,6 +29,7 @@ import { useActiveOrderRef } from "../hooks/useActiveOrderRef";
 import { useCart } from "../hooks/useCart";
 import {
   useCheckCryptoPayment,
+  useCkUSDCCheckoutEnabled,
   useConfirmCryptoPayment,
   useCreateCardCheckoutSession,
   useCreateOrder,
@@ -224,21 +225,35 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
   const { items, subtotal } = useCart();
   const [step, setStep] = useState<Step>("shipping");
   const [order, setOrder] = useState<Order | null>(null);
-  const [paymentMethod, setPaymentMethod] = useState<"crypto" | "card">(
-    "crypto",
-  );
+  const [paymentMethod, setPaymentMethod] = useState<"crypto" | "card">("card");
   const [orderError, setOrderError] = useState<string | null>(null);
   const [paid, setPaid] = useState(false);
   const [expired, setExpired] = useState(false);
+
+  // ckUSDC checkout is gated by the backend flag (single source of truth).
+  // When disabled the payment method is always card and the chooser is hidden.
+  const ckUSDCEnabled = useCkUSDCCheckoutEnabled();
+  const effectivePaymentMethod: "crypto" | "card" = ckUSDCEnabled
+    ? paymentMethod
+    : "card";
 
   // Resume: a stored active order reference restores a returning customer's
   // in-progress deposit (same address, amount, and server-derived remaining
   // time) instead of starting a new order.
   const { activeOrderRef, setActiveOrderRef, clearActiveOrderRef } =
     useActiveOrderRef();
-  const { data: resumeInfo, isError: resumeError } =
-    useResumeInfo(activeOrderRef);
+  const {
+    data: resumeInfo,
+    isError: resumeError,
+    isSuccess: resumeSuccess,
+  } = useResumeInfo(activeOrderRef);
   const [resumeMode, setResumeMode] = useState(false);
+  // Local UI error surfaced when the resume lookup fails or never resolves, so
+  // the checkout never spins forever on a stale stored reference.
+  const [resumeFailed, setResumeFailed] = useState(false);
+  // Local UI error surfaced when the fresh-flow deposit query never resolves,
+  // so the deposit shimmer cannot spin forever.
+  const [depositFailed, setDepositFailed] = useState(false);
 
   // Shipping form draft (local UI state)
   const [name, setName] = useState("");
@@ -301,19 +316,52 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
     if (order !== null || step !== "shipping") return;
     if (!activeOrderRef) return;
     if (resumeError) {
+      // The lookup failed — clear the stale reference so the checkout is not
+      // stuck on the resume shimmer, and surface the failure to the customer.
       clearActiveOrderRef();
+      setResumeFailed(true);
       return;
     }
-    if (!resumeInfo) return;
-    if (
-      resumeInfo.status.__kind__ === "awaiting_payment" &&
-      resumeInfo.deposit
-    ) {
-      setResumeMode(true);
-      setStep("deposit");
-    } else {
-      clearActiveOrderRef();
+    // The query resolved: a valid awaiting-payment deposit restores the deposit
+    // screen; anything else (notFound/paid/expired -> null) clears the stale
+    // reference so checkingResume becomes false and the checkout proceeds to
+    // the shipping step instead of spinning forever.
+    if (resumeSuccess) {
+      if (
+        resumeInfo &&
+        resumeInfo.status.__kind__ === "awaiting_payment" &&
+        resumeInfo.deposit
+      ) {
+        setResumeMode(true);
+        setStep("deposit");
+      } else {
+        clearActiveOrderRef();
+      }
+      return;
     }
+    // Query still in flight — wait for it to resolve.
+  }, [
+    activeOrderRef,
+    resumeInfo,
+    resumeSuccess,
+    resumeError,
+    order,
+    step,
+    clearActiveOrderRef,
+  ]);
+
+  // Timeout guard: if the resume lookup never resolves (no data, no error),
+  // clear the stale reference and surface an error instead of an infinite
+  // spinner on the resume shimmer.
+  useEffect(() => {
+    if (order !== null || step !== "shipping") return;
+    if (!activeOrderRef) return;
+    if (resumeInfo || resumeError) return;
+    const t = setTimeout(() => {
+      setResumeFailed(true);
+      clearActiveOrderRef();
+    }, 12000);
+    return () => clearTimeout(t);
   }, [
     activeOrderRef,
     resumeInfo,
@@ -322,6 +370,15 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
     step,
     clearActiveOrderRef,
   ]);
+
+  // Timeout guard for the fresh-flow deposit query: if it never resolves, show
+  // the deposit error instead of an infinite shimmer.
+  useEffect(() => {
+    if (step !== "deposit" || resumeMode) return;
+    if (!depositInfo.isLoading) return;
+    const t = setTimeout(() => setDepositFailed(true), 15000);
+    return () => clearTimeout(t);
+  }, [step, resumeMode, depositInfo.isLoading]);
 
   // Poll on-ledger payment status while on the deposit screen.
   useEffect(() => {
@@ -461,7 +518,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
       has_shipping_details: true,
       encrypted_shipping: encryptedShipping,
       payment_method:
-        paymentMethod === "card"
+        effectivePaymentMethod === "card"
           ? PaymentMethod.card_stripe
           : PaymentMethod.crypto_ckusdc,
       items: items.map((item) => ({
@@ -493,6 +550,10 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
           );
         }
       },
+      onError: (error) => {
+        console.error("[checkout] Failed to place order (ERR-CHK-005)", error);
+        setOrderError("We could not place your order. Please try again.");
+      },
     });
   };
 
@@ -501,7 +562,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
   const handlePlaceOrder = () => {
     if (!order?.reference) return;
     setOrderError(null);
-    if (paymentMethod === "card") {
+    if (effectivePaymentMethod === "card") {
       const base = `${window.location.origin}${window.location.pathname}`;
       createCardSession.mutate(
         {
@@ -521,6 +582,13 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
                   : "We could not start card payment. Please try again.",
               );
             }
+          },
+          onError: (error) => {
+            console.error(
+              "[checkout] Failed to start card payment (ERR-CHK-006)",
+              error,
+            );
+            setOrderError("We could not start card payment. Please try again.");
           },
         },
       );
@@ -546,7 +614,12 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
   // Loading state for the deposit screen: the fresh flow waits on the deposit
   // query; resume mode waits on the resume info resolving before we know
   // whether to restore a deposit or show the normal flow.
-  const checkingResume = !!activeOrderRef && !resumeInfo && !resumeError;
+  const checkingResume =
+    !!activeOrderRef &&
+    !resumeInfo &&
+    !resumeError &&
+    !resumeSuccess &&
+    !resumeFailed;
   const depositLoading = resumeMode ? false : depositInfo.isLoading;
 
   const stepIndex = STEPS.findIndex((s) => s.key === step);
@@ -601,6 +674,30 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
               <div className="mx-auto mb-4 h-12 w-12 rounded-full bg-white/5 loading-shimmer" />
               <div className="mx-auto mb-3 h-6 w-48 rounded-xl bg-white/5 loading-shimmer" />
               <div className="mx-auto h-4 w-64 rounded-xl bg-white/5 loading-shimmer" />
+            </div>
+          </div>
+        ) : resumeFailed ? (
+          <div className="relative max-w-2xl mx-auto px-2">
+            <div
+              className="surface p-8 sm:p-12 text-center"
+              data-ocid="checkout.resume_error"
+            >
+              <AlertTriangle className="mx-auto mb-4 h-10 w-10 text-destructive" />
+              <h3 className="section-heading text-xl mb-3">
+                Could not restore your order
+              </h3>
+              <p className="text-muted-foreground mb-6">
+                We could not check the status of your previous order. You can
+                start a fresh checkout below.
+              </p>
+              <button
+                type="button"
+                onClick={() => setResumeFailed(false)}
+                data-ocid="checkout.resume_error_continue_button"
+                className="btn px-8 py-4 text-base font-semibold"
+              >
+                Continue Checkout
+              </button>
             </div>
           </div>
         ) : items.length === 0 && step !== "deposit" ? (
@@ -865,10 +962,12 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
                     Checkout Summary
                   </h2>
                   <p className="text-muted-foreground mb-8">
-                    Review your order and choose a payment token.
+                    {ckUSDCEnabled
+                      ? "Review your order and choose a payment token."
+                      : "Review your order and pay by card."}
                   </p>
 
-                  {ledgerUnset && (
+                  {ckUSDCEnabled && ledgerUnset && (
                     <div
                       className="mb-6 flex items-start gap-3 border border-warning/40 bg-warning-soft p-4 text-sm text-warning"
                       data-ocid="checkout.admin_warning"
@@ -892,61 +991,65 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
                   )}
 
                   {/* Payment method selection — crypto (ckUSDC) and card (Stripe) */}
-                  <div className="mb-8">
-                    <p className="field-label mb-3">Payment method</p>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <button
-                        type="button"
-                        onClick={() => setPaymentMethod("crypto")}
-                        data-ocid="checkout.method_crypto"
-                        className={`bordered-select flex items-center gap-4 p-4 text-left w-full ${
-                          paymentMethod === "crypto" ? "is-active" : ""
-                        }`}
-                      >
-                        <span className="flex h-10 w-10 items-center justify-center border border-border bg-card text-primary">
-                          <Wallet className="h-5 w-5" />
-                        </span>
-                        <span className="min-w-0">
-                          <span className="block text-sm font-semibold text-foreground">
-                            Pay with crypto
+                  {ckUSDCEnabled && (
+                    <div className="mb-8">
+                      <p className="field-label mb-3">Payment method</p>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <button
+                          type="button"
+                          onClick={() => setPaymentMethod("crypto")}
+                          data-ocid="checkout.method_crypto"
+                          className={`bordered-select flex items-center gap-4 p-4 text-left w-full ${
+                            paymentMethod === "crypto" ? "is-active" : ""
+                          }`}
+                        >
+                          <span className="flex h-10 w-10 items-center justify-center border border-border bg-card text-primary">
+                            <Wallet className="h-5 w-5" />
                           </span>
-                          <span className="block text-xs text-muted-foreground">
-                            ckUSDC deposit
+                          <span className="min-w-0">
+                            <span className="block text-sm font-semibold text-foreground">
+                              Pay with crypto
+                            </span>
+                            <span className="block text-xs text-muted-foreground">
+                              ckUSDC deposit
+                            </span>
                           </span>
-                        </span>
-                        {paymentMethod === "crypto" && (
-                          <Check className="ml-auto h-5 w-5 text-primary" />
-                        )}
-                      </button>
+                          {paymentMethod === "crypto" && (
+                            <Check className="ml-auto h-5 w-5 text-primary" />
+                          )}
+                        </button>
 
-                      <button
-                        type="button"
-                        onClick={() => cardEnabled && setPaymentMethod("card")}
-                        disabled={!cardEnabled}
-                        data-ocid="checkout.method_card"
-                        className={`bordered-select flex items-center gap-4 p-4 text-left w-full ${
-                          paymentMethod === "card" ? "is-active" : ""
-                        } ${!cardEnabled ? "opacity-45 cursor-not-allowed" : ""}`}
-                      >
-                        <span className="flex h-10 w-10 items-center justify-center border border-border bg-card text-primary">
-                          <CreditCard className="h-5 w-5" />
-                        </span>
-                        <span className="min-w-0">
-                          <span className="block text-sm font-semibold text-foreground">
-                            Pay with card
+                        <button
+                          type="button"
+                          onClick={() =>
+                            cardEnabled && setPaymentMethod("card")
+                          }
+                          disabled={!cardEnabled}
+                          data-ocid="checkout.method_card"
+                          className={`bordered-select flex items-center gap-4 p-4 text-left w-full ${
+                            paymentMethod === "card" ? "is-active" : ""
+                          } ${!cardEnabled ? "opacity-45 cursor-not-allowed" : ""}`}
+                        >
+                          <span className="flex h-10 w-10 items-center justify-center border border-border bg-card text-primary">
+                            <CreditCard className="h-5 w-5" />
                           </span>
-                          <span className="block text-xs text-muted-foreground">
-                            {cardEnabled
-                              ? "Stripe checkout"
-                              : "Unavailable — not configured"}
+                          <span className="min-w-0">
+                            <span className="block text-sm font-semibold text-foreground">
+                              Pay with card
+                            </span>
+                            <span className="block text-xs text-muted-foreground">
+                              {cardEnabled
+                                ? "Stripe checkout"
+                                : "Unavailable — not configured"}
+                            </span>
                           </span>
-                        </span>
-                        {paymentMethod === "card" && (
-                          <Check className="ml-auto h-5 w-5 text-primary" />
-                        )}
-                      </button>
+                          {paymentMethod === "card" && (
+                            <Check className="ml-auto h-5 w-5 text-primary" />
+                          )}
+                        </button>
+                      </div>
                     </div>
-                  </div>
+                  )}
 
                   <div className="flex flex-wrap items-center justify-between gap-4">
                     <button
@@ -1039,7 +1142,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
                         Back to Main
                       </button>
                     </div>
-                  ) : depositLoading ? (
+                  ) : depositLoading && !depositFailed ? (
                     <div
                       className="space-y-4"
                       data-ocid="checkout.deposit_loading"

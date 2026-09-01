@@ -1,17 +1,36 @@
 import { ArrowUpRight } from "lucide-react";
 import type React from "react";
+import { useEffect, useState } from "react";
+import { useCkUSDCCheckoutEnabled } from "../hooks/useQueries";
 
 const ICPSWAP_SWAP_URL =
   "https://app.icpswap.com/swap/pro?input=ryjl3-tyaaa-aaaaa-aaaba-cai&output=eig2s-waaaa-aaaam-qbg5a-cai";
 
-const specRows: { label: string; value: string }[] = [
-  { label: "Pair", value: "NAK / ICP" },
-  { label: "Venue", value: "ICPSwap" },
-  { label: "Bridge", value: "Houdiniswap" },
-  { label: "Settlement", value: "ckUSDC" },
-];
-
 const PurchaseNAK: React.FC = () => {
+  const ckUSDCEnabled = useCkUSDCCheckoutEnabled();
+  const [swapHeight, setSwapHeight] = useState(760);
+  const specRows: { label: string; value: string }[] = [
+    { label: "Pair", value: "NAK / ICP" },
+    { label: "Venue", value: "NAKSwap" },
+    { label: "Bridge", value: "Houdiniswap" },
+    ...(ckUSDCEnabled ? [{ label: "Settlement", value: "ckUSDC" }] : []),
+  ];
+
+  // Content-driven height: the embedded NAK Swap service posts its rendered
+  // height back to us. Only accept messages from the swap origin, and clamp
+  // the value so a malformed message cannot collapse or balloon the section.
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      if (event.origin !== "https://swap.naktoken.lol") return;
+      const data = event.data as { type?: string; height?: unknown };
+      if (data.type === "nakswap:height" && typeof data.height === "number") {
+        setSwapHeight(Math.min(Math.max(data.height, 400), 2000));
+      }
+    };
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
+  }, []);
+
   return (
     <section id="trade" className="px-6 py-20">
       <div className="max-w-7xl mx-auto">
@@ -51,30 +70,24 @@ const PurchaseNAK: React.FC = () => {
             </a>
           </div>
 
-          {/* Right column — embedded Houdiniswap widget */}
+          {/* Right column — embedded NAK Swap service */}
           <div className="surface hairline p-6">
-            <p className="section-label mb-4">Powered by Houdiniswap</p>
             <iframe
-              src="https://app.houdiniswap.com/widget?tokenOut=ICP&hideMultiswap=true&hideSend=true"
-              width="480"
-              height="640"
-              title="Houdini Exchange Widget"
+              src="https://swap.naktoken.lol/?embed=1"
+              title="NAK Swap"
               allow="clipboard-write"
-              className="block w-full max-w-full mx-auto"
+              className="block w-full max-w-full border-0"
+              style={{
+                width: "100%",
+                height: swapHeight,
+                border: 0,
+                display: "block",
+              }}
             />
             <p className="text-xs text-muted-foreground mt-4">
-              Swaps are executed by Houdiniswap, a third-party service. N.A.K.
-              does not custody funds or control the swap.
+              Swaps are routed through Houdini&apos;s infrastructure. N.A.K.
+              does not custody funds.
             </p>
-            <a
-              href="https://app.houdiniswap.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block mt-3 text-xs text-muted-foreground underline underline-offset-2 hover:text-foreground"
-              data-ocid="trade.houdiniswap_full_site_link"
-            >
-              Open the full Houdiniswap site
-            </a>
           </div>
         </div>
       </div>

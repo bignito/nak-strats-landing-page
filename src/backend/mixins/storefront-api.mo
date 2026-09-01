@@ -1,6 +1,5 @@
 import Result "mo:core/Result";
 import List "mo:core/List";
-import Principal "mo:core/Principal";
 import Types "../types/storefront";
 import PaymentServiceTypes "../types/payment-service";
 import StorefrontLib "../lib/storefront";
@@ -8,6 +7,8 @@ import PaymentAdapterLib "../lib/payment-adapter";
 import EmailLib "../lib/email";
 import AdminLib "../lib/admin-access-control";
 import AdminTypes "../types/admin-access-control";
+import AdminEmailLib "../lib/admin-email";
+import AdminEmailTypes "../types/admin-email";
 import OutCall "mo:caffeineai-http-outcalls/outcall";
 
 mixin (
@@ -53,7 +54,7 @@ mixin (
   };
 
   public shared ({ caller }) func createOrder(input : Types.CreateOrderInput) : async Result.Result<Types.Order, Types.OrderError> {
-    switch (StorefrontLib.createOrder(products, orders, state, input, caller, minimumOrderState.minimumOrder)) {
+    switch (await StorefrontLib.createOrder(products, orders, state, input, caller, minimumOrderState.minimumOrder)) {
       case (#ok order) {
         switch (await paymentAdapter.createCheckoutSession(order)) {
           case (#ok _) {
@@ -75,15 +76,24 @@ mixin (
     };
   };
 
-  public query func getOrderStatus(reference : Text) : async ?Types.Order {
-    StorefrontLib.getOrderByReference(orders, reference);
+  // Guest lookup path. Returns the order as a public-safe view that DROPS
+  // customer_email — the customer's email is plaintext PII that must never
+  // appear in a public or customer-facing query. Matches by Text equality, so
+  // both legacy sequential references (NAK-<id>) and new random references
+  // resolve.
+  public query func getOrderStatus(reference : Text) : async ?AdminEmailTypes.PublicOrderView {
+    switch (StorefrontLib.getOrderByReference(orders, reference)) {
+      case (?order) { ?AdminEmailLib.toPublicOrderView(order) };
+      case null { null };
+    };
   };
 
   // Lists only the orders whose customer_principal matches the caller. The
   // caller is derived from msg.caller server-side — never accepted as a
   // parameter. Rejects the anonymous principal (returns an empty list), so a
-  // guest cannot read anyone's orders through this path.
-  public shared query ({ caller }) func getMyOrders() : async [Types.Order] {
-    StorefrontLib.getMyOrders(orders, caller);
+  // guest cannot read anyone's orders through this path. Each order is
+  // returned as a public-safe view that DROPS customer_email.
+  public shared query ({ caller }) func getMyOrders() : async [AdminEmailTypes.PublicOrderView] {
+    StorefrontLib.getMyOrders(orders, caller).map(func o = AdminEmailLib.toPublicOrderView(o));
   };
 };

@@ -1,16 +1,17 @@
 {
-  "overview": "The NAK STRATS landing page and shop: artist showcase, product catalogue, crypto and card checkout, and a full admin operations dashboard.",
+  "overview": "A landing page for the NAK STRATS token with a shop, checkout, crypto payments, and an embedded swap service.",
   "features": [
-    "Artist showcase and institutional landing page",
-    "Shop with crypto and card checkout",
-    "Admin dashboard for orders, treasury, products, and users"
+    "Shop and checkout with crypto payments",
+    "Admin order management",
+    "Embedded NAK Swap service",
+    "Token information and reserve dashboard"
   ],
   "category": "landing-page",
   "tags": [
-    "music",
     "token",
     "shop",
-    "art"
+    "crypto",
+    "landing-page"
   ],
-  "last_updated": "2026-08-31T17:06:37.825Z"
+  "last_updated": "2026-09-01T12:17:21.636Z"
 }

@@ -6,6 +6,8 @@ import Text "mo:core/Text";
 import Nat "mo:core/Nat";
 import Principal "mo:core/Principal";
 import Types "../types/storefront";
+import CryptoTypes "../types/crypto-payments";
+import OrderReferencesLib "./order-references";
 
 module {
   public func listActiveProducts(products : List.List<Types.Product>) : [Types.Product] {
@@ -98,7 +100,7 @@ module {
     input : Types.CreateOrderInput,
     caller : Principal,
     minimumOrder : Nat,
-  ) : Result.Result<Types.Order, Types.OrderError> {
+  ) : async Result.Result<Types.Order, Types.OrderError> {
     if (input.items.size() == 0) { return #err(#emptyOrder) };
 
     var subtotal = 0;
@@ -158,6 +160,11 @@ module {
     let pm = input.payment_method;
     switch pm {
       case (#crypto_ckusdc) {
+        // Temporary-disable flag: while CKUSDC_CHECKOUT_ENABLED is false, new
+        // ckUSDC orders are rejected server-side so a direct canister call
+        // cannot create one even though the UI no longer offers the option.
+        // Existing ckUSDC orders are unaffected.
+        if (not CryptoTypes.CKUSDC_CHECKOUT_ENABLED) { return #err(#ckUSDCDisabled) };
         if (total < minimumOrder) { return #err(#belowMinimumOrder(minimumOrder)) };
       };
       case (#crypto_icp) {
@@ -166,9 +173,15 @@ module {
       case (_) {};
     };
 
+    // The display reference is a separate field from the sequential order id:
+    // it is drawn from IC raw randomness (unguessable, so order volume and
+    // enumerability never leak) and checked for collisions against existing
+    // references. The per-order ICRC-1 subaccount is derived from the
+    // sequential order id (deriveSubaccount in lib/crypto-payments.mo), so
+    // ledger verification, the sweep, and all existing orders are unaffected.
     let order : Types.Order = {
       id = state.nextOrderId;
-      reference = "NAK-" # state.nextOrderId.toText();
+      reference = await OrderReferencesLib.generateUniqueReference(orders);
       items = validatedItems;
       subtotal;
       tax;

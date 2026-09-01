@@ -231,6 +231,31 @@ type RecheckResult =
    reference: text;
    status: CryptoPaymentStatus;
  };
+type PublicOrderView = 
+ record {
+   created_at: int;
+   currency: text;
+   customer_principal: opt principal;
+   encrypted_shipping: opt blob;
+   has_shipping_details: bool;
+   id: nat;
+   items: vec OrderItem;
+   marketing_consent: bool;
+   marketing_consent_at: opt int;
+   payment_method: PaymentMethod;
+   payment_reference: opt text;
+   payment_status: PaymentStatus;
+   reference: text;
+   shipped_at: opt int;
+   shipping: nat;
+   shipping_status: ShippingStatus;
+   subtotal: nat;
+   sweep_note: opt text;
+   tax: nat;
+   total: nat;
+   tracking_number: opt text;
+   updated_at: int;
+ };
 type ProductVariant = 
  record {
    id: text;
@@ -311,6 +336,7 @@ type OrderItem =
 type OrderError = 
  variant {
    belowMinimumOrder: nat;
+   ckUSDCDisabled;
    emptyOrder;
    invalidQuantity;
    outOfStock: record {
@@ -448,6 +474,7 @@ type CryptoPaymentError =
 type CryptoConfigView = 
  record {
    ckUSDC: LedgerConfig;
+   ckUSDCEnabled: bool;
    icp: LedgerConfig;
    minimumOrder: nat;
    treasuryPrincipal: principal;
@@ -494,6 +521,7 @@ type AdminOrderView =
    createdAt: int;
    cryptoStatus: opt CryptoPaymentStatus;
    currency: text;
+   customerEmail: text;
    depositAccountText: text;
    itemCount: nat;
    paymentMethod: PaymentMethod;
@@ -555,10 +583,10 @@ service : {
   getIbePublicKey: () -> (blob);
   getMinimumOrder: () -> (nat) query;
   getMyEncryptedIbeKey: (transportPublicKey: blob) -> (blob);
-  getMyOrders: () -> (vec Order) query;
+  getMyOrders: () -> (vec PublicOrderView) query;
   getMyRole: () -> (opt Role) query;
   getNAKPrice: () -> (text);
-  getOrderStatus: (reference: text) -> (opt Order) query;
+  getOrderStatus: (reference: text) -> (opt PublicOrderView) query;
   getPaymentServiceConfig: () -> (PaymentServiceConfigView) query;
   getPaymentStatus: (reference: text) -> (PaymentStatus);
   getProduct: (slugOrId: text) -> (opt Product) query;

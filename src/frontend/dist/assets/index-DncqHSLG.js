@@ -34383,6 +34383,7 @@ const AdminOrderView = Record({
   "currency": Text,
   "subaccountHex": Text,
   "sweepNote": Opt(Text),
+  "customerEmail": Text,
   "depositAccountText": Text
 });
 const PaymentServiceError = Variant({
@@ -34495,6 +34496,7 @@ const OrderError = Variant({
   "outOfStock": Tuple(ProductId, Text),
   "unknownVariant": Tuple(ProductId, Text),
   "unknownProduct": ProductId,
+  "ckUSDCDisabled": Null,
   "emptyOrder": Null,
   "belowMinimumOrder": Nat,
   "productInactive": ProductId,
@@ -34588,6 +34590,7 @@ const CryptoConfigView = Record({
   "ckUSDC": LedgerConfig,
   "treasurySubaccount": Opt(Vec(Nat8)),
   "minimumOrder": Nat,
+  "ckUSDCEnabled": Bool,
   "treasuryPrincipal": Principal2
 });
 const Token$1 = Variant({ "ICP": Null, "ckUSDC": Null });
@@ -34606,6 +34609,30 @@ const Result_14 = Variant({
   "err": CryptoPaymentError
 });
 const Result_12 = Variant({ "ok": Nat, "err": RecoveryError });
+const PublicOrderView = Record({
+  "id": Nat,
+  "tax": Nat,
+  "updated_at": Int,
+  "total": Nat,
+  "sweep_note": Opt(Text),
+  "shipping": Nat,
+  "reference": Text,
+  "created_at": Int,
+  "payment_status": PaymentStatus$1,
+  "payment_method": PaymentMethod$1,
+  "tracking_number": Opt(Text),
+  "currency": Text,
+  "marketing_consent_at": Opt(Int),
+  "shipping_status": ShippingStatus,
+  "has_shipping_details": Bool,
+  "items": Vec(OrderItem),
+  "encrypted_shipping": Opt(Vec(Nat8)),
+  "customer_principal": Opt(Principal2),
+  "shipped_at": Opt(Int),
+  "marketing_consent": Bool,
+  "payment_reference": Opt(Text),
+  "subtotal": Nat
+});
 const Role$1 = Variant({
   "admin": Null,
   "owner": Null,
@@ -34793,10 +34820,14 @@ Service({
     [Vec(Nat8)],
     []
   ),
-  "getMyOrders": Func([], [Vec(Order)], ["query"]),
+  "getMyOrders": Func([], [Vec(PublicOrderView)], ["query"]),
   "getMyRole": Func([], [Opt(Role$1)], ["query"]),
   "getNAKPrice": Func([], [Text], []),
-  "getOrderStatus": Func([Text], [Opt(Order)], ["query"]),
+  "getOrderStatus": Func(
+    [Text],
+    [Opt(PublicOrderView)],
+    ["query"]
+  ),
   "getPaymentServiceConfig": Func(
     [],
     [PaymentServiceConfigView],
@@ -34923,6 +34954,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "currency": IDL2.Text,
     "subaccountHex": IDL2.Text,
     "sweepNote": IDL2.Opt(IDL2.Text),
+    "customerEmail": IDL2.Text,
     "depositAccountText": IDL2.Text
   });
   const PaymentServiceError2 = IDL2.Variant({
@@ -35035,6 +35067,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "outOfStock": IDL2.Tuple(ProductId2, IDL2.Text),
     "unknownVariant": IDL2.Tuple(ProductId2, IDL2.Text),
     "unknownProduct": ProductId2,
+    "ckUSDCDisabled": IDL2.Null,
     "emptyOrder": IDL2.Null,
     "belowMinimumOrder": IDL2.Nat,
     "productInactive": ProductId2,
@@ -35125,6 +35158,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "ckUSDC": LedgerConfig2,
     "treasurySubaccount": IDL2.Opt(IDL2.Vec(IDL2.Nat8)),
     "minimumOrder": IDL2.Nat,
+    "ckUSDCEnabled": IDL2.Bool,
     "treasuryPrincipal": IDL2.Principal
   });
   const Token2 = IDL2.Variant({ "ICP": IDL2.Null, "ckUSDC": IDL2.Null });
@@ -35143,6 +35177,30 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "err": CryptoPaymentError2
   });
   const Result_122 = IDL2.Variant({ "ok": IDL2.Nat, "err": RecoveryError2 });
+  const PublicOrderView2 = IDL2.Record({
+    "id": IDL2.Nat,
+    "tax": IDL2.Nat,
+    "updated_at": IDL2.Int,
+    "total": IDL2.Nat,
+    "sweep_note": IDL2.Opt(IDL2.Text),
+    "shipping": IDL2.Nat,
+    "reference": IDL2.Text,
+    "created_at": IDL2.Int,
+    "payment_status": PaymentStatus2,
+    "payment_method": PaymentMethod2,
+    "tracking_number": IDL2.Opt(IDL2.Text),
+    "currency": IDL2.Text,
+    "marketing_consent_at": IDL2.Opt(IDL2.Int),
+    "shipping_status": ShippingStatus2,
+    "has_shipping_details": IDL2.Bool,
+    "items": IDL2.Vec(OrderItem2),
+    "encrypted_shipping": IDL2.Opt(IDL2.Vec(IDL2.Nat8)),
+    "customer_principal": IDL2.Opt(IDL2.Principal),
+    "shipped_at": IDL2.Opt(IDL2.Int),
+    "marketing_consent": IDL2.Bool,
+    "payment_reference": IDL2.Opt(IDL2.Text),
+    "subtotal": IDL2.Nat
+  });
   const Role2 = IDL2.Variant({
     "admin": IDL2.Null,
     "owner": IDL2.Null,
@@ -35322,10 +35380,14 @@ const idlFactory = ({ IDL: IDL2 }) => {
       [IDL2.Vec(IDL2.Nat8)],
       []
     ),
-    "getMyOrders": IDL2.Func([], [IDL2.Vec(Order2)], ["query"]),
+    "getMyOrders": IDL2.Func([], [IDL2.Vec(PublicOrderView2)], ["query"]),
     "getMyRole": IDL2.Func([], [IDL2.Opt(Role2)], ["query"]),
     "getNAKPrice": IDL2.Func([], [IDL2.Text], []),
-    "getOrderStatus": IDL2.Func([IDL2.Text], [IDL2.Opt(Order2)], ["query"]),
+    "getOrderStatus": IDL2.Func(
+      [IDL2.Text],
+      [IDL2.Opt(PublicOrderView2)],
+      ["query"]
+    ),
     "getPaymentServiceConfig": IDL2.Func(
       [],
       [PaymentServiceConfigView2],
@@ -35904,14 +35966,14 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.getMyRole();
-        return from_candid_opt_n88(this._uploadFile, this._downloadFile, result);
+        return from_candid_opt_n90(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getMyRole();
-      return from_candid_opt_n88(this._uploadFile, this._downloadFile, result);
+      return from_candid_opt_n90(this._uploadFile, this._downloadFile, result);
     }
   }
   async getNAKPrice() {
@@ -35932,14 +35994,14 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.getOrderStatus(arg0);
-        return from_candid_opt_n91(this._uploadFile, this._downloadFile, result);
+        return from_candid_opt_n93(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getOrderStatus(arg0);
-      return from_candid_opt_n91(this._uploadFile, this._downloadFile, result);
+      return from_candid_opt_n93(this._uploadFile, this._downloadFile, result);
     }
   }
   async getPaymentServiceConfig() {
@@ -35974,42 +36036,42 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.getProduct(arg0);
-        return from_candid_opt_n92(this._uploadFile, this._downloadFile, result);
+        return from_candid_opt_n94(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getProduct(arg0);
-      return from_candid_opt_n92(this._uploadFile, this._downloadFile, result);
+      return from_candid_opt_n94(this._uploadFile, this._downloadFile, result);
     }
   }
   async getResumeInfo(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.getResumeInfo(arg0);
-        return from_candid_Result_11_n93(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_11_n95(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getResumeInfo(arg0);
-      return from_candid_Result_11_n93(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_11_n95(this._uploadFile, this._downloadFile, result);
     }
   }
   async getSubaccountBalance(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.getSubaccountBalance(arg0);
-        return from_candid_Result_10_n98(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_10_n100(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getSubaccountBalance(arg0);
-      return from_candid_Result_10_n98(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_10_n100(this._uploadFile, this._downloadFile, result);
     }
   }
   async getTokenImage(arg0, arg1) {
@@ -36057,14 +36119,14 @@ class Backend {
   async grantRole(arg0, arg1) {
     if (this.processError) {
       try {
-        const result = await this.actor.grantRole(arg0, to_candid_Role_n102(this._uploadFile, this._downloadFile, arg1));
+        const result = await this.actor.grantRole(arg0, to_candid_Role_n104(this._uploadFile, this._downloadFile, arg1));
         return result;
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
-      const result = await this.actor.grantRole(arg0, to_candid_Role_n102(this._uploadFile, this._downloadFile, arg1));
+      const result = await this.actor.grantRole(arg0, to_candid_Role_n104(this._uploadFile, this._downloadFile, arg1));
       return result;
     }
   }
@@ -36072,14 +36134,14 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.handlePaymentConfirmation(arg0);
-        return from_candid_Result_9_n104(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_9_n106(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.handlePaymentConfirmation(arg0);
-      return from_candid_Result_9_n104(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_9_n106(this._uploadFile, this._downloadFile, result);
     }
   }
   async isAdmin() {
@@ -36114,28 +36176,28 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.listLatePayments();
-        return from_candid_vec_n106(this._uploadFile, this._downloadFile, result);
+        return from_candid_vec_n108(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.listLatePayments();
-      return from_candid_vec_n106(this._uploadFile, this._downloadFile, result);
+      return from_candid_vec_n108(this._uploadFile, this._downloadFile, result);
     }
   }
   async listOrdersForRecovery() {
     if (this.processError) {
       try {
         const result = await this.actor.listOrdersForRecovery();
-        return from_candid_vec_n109(this._uploadFile, this._downloadFile, result);
+        return from_candid_vec_n111(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.listOrdersForRecovery();
-      return from_candid_vec_n109(this._uploadFile, this._downloadFile, result);
+      return from_candid_vec_n111(this._uploadFile, this._downloadFile, result);
     }
   }
   async listProducts() {
@@ -36156,28 +36218,28 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.listSubmissions();
-        return from_candid_Result_8_n113(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_8_n115(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.listSubmissions();
-      return from_candid_Result_8_n113(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_8_n115(this._uploadFile, this._downloadFile, result);
     }
   }
   async listUsers() {
     if (this.processError) {
       try {
         const result = await this.actor.listUsers();
-        return from_candid_vec_n122(this._uploadFile, this._downloadFile, result);
+        return from_candid_vec_n124(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.listUsers();
-      return from_candid_vec_n122(this._uploadFile, this._downloadFile, result);
+      return from_candid_vec_n124(this._uploadFile, this._downloadFile, result);
     }
   }
   async markLatePaymentReviewed(arg0) {
@@ -36197,15 +36259,15 @@ class Backend {
   async markOrderShipped(arg0, arg1) {
     if (this.processError) {
       try {
-        const result = await this.actor.markOrderShipped(arg0, to_candid_opt_n126(this._uploadFile, this._downloadFile, arg1));
-        return from_candid_Result_7_n127(this._uploadFile, this._downloadFile, result);
+        const result = await this.actor.markOrderShipped(arg0, to_candid_opt_n128(this._uploadFile, this._downloadFile, arg1));
+        return from_candid_Result_7_n129(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
-      const result = await this.actor.markOrderShipped(arg0, to_candid_opt_n126(this._uploadFile, this._downloadFile, arg1));
-      return from_candid_Result_7_n127(this._uploadFile, this._downloadFile, result);
+      const result = await this.actor.markOrderShipped(arg0, to_candid_opt_n128(this._uploadFile, this._downloadFile, arg1));
+      return from_candid_Result_7_n129(this._uploadFile, this._downloadFile, result);
     }
   }
   async paymentServiceTransform(arg0) {
@@ -36254,14 +36316,14 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.resendConfirmationEmail(arg0);
-        return from_candid_Result_7_n127(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_7_n129(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.resendConfirmationEmail(arg0);
-      return from_candid_Result_7_n127(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_7_n129(this._uploadFile, this._downloadFile, result);
     }
   }
   async resetAdminForMigration() {
@@ -36351,29 +36413,29 @@ class Backend {
   async submitSubmission(arg0) {
     if (this.processError) {
       try {
-        const result = await this.actor.submitSubmission(to_candid_SubmissionInput_n131(this._uploadFile, this._downloadFile, arg0));
-        return from_candid_Result_6_n135(this._uploadFile, this._downloadFile, result);
+        const result = await this.actor.submitSubmission(to_candid_SubmissionInput_n133(this._uploadFile, this._downloadFile, arg0));
+        return from_candid_Result_6_n137(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
-      const result = await this.actor.submitSubmission(to_candid_SubmissionInput_n131(this._uploadFile, this._downloadFile, arg0));
-      return from_candid_Result_6_n135(this._uploadFile, this._downloadFile, result);
+      const result = await this.actor.submitSubmission(to_candid_SubmissionInput_n133(this._uploadFile, this._downloadFile, arg0));
+      return from_candid_Result_6_n137(this._uploadFile, this._downloadFile, result);
     }
   }
   async sweepCryptoToTreasury(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.sweepCryptoToTreasury(arg0);
-        return from_candid_Result_5_n137(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_5_n139(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.sweepCryptoToTreasury(arg0);
-      return from_candid_Result_5_n137(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_5_n139(this._uploadFile, this._downloadFile, result);
     }
   }
   async sweepDefaultSubaccount() {
@@ -36394,14 +36456,14 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.sweepSubaccount(arg0);
-        return from_candid_Result_3_n139(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_3_n141(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.sweepSubaccount(arg0);
-      return from_candid_Result_3_n139(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_3_n141(this._uploadFile, this._downloadFile, result);
     }
   }
   async transform(arg0) {
@@ -36422,42 +36484,42 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.unsubscribe(arg0);
-        return from_candid_Result_2_n143(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_2_n145(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.unsubscribe(arg0);
-      return from_candid_Result_2_n143(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_2_n145(this._uploadFile, this._downloadFile, result);
     }
   }
   async updateLedgerConfig(arg0, arg1, arg2, arg3) {
     if (this.processError) {
       try {
-        const result = await this.actor.updateLedgerConfig(to_candid_Token_n145(this._uploadFile, this._downloadFile, arg0), arg1, arg2, arg3);
-        return from_candid_Result_n147(this._uploadFile, this._downloadFile, result);
+        const result = await this.actor.updateLedgerConfig(to_candid_Token_n147(this._uploadFile, this._downloadFile, arg0), arg1, arg2, arg3);
+        return from_candid_Result_n149(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
-      const result = await this.actor.updateLedgerConfig(to_candid_Token_n145(this._uploadFile, this._downloadFile, arg0), arg1, arg2, arg3);
-      return from_candid_Result_n147(this._uploadFile, this._downloadFile, result);
+      const result = await this.actor.updateLedgerConfig(to_candid_Token_n147(this._uploadFile, this._downloadFile, arg0), arg1, arg2, arg3);
+      return from_candid_Result_n149(this._uploadFile, this._downloadFile, result);
     }
   }
   async updateMinimumOrder(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.updateMinimumOrder(arg0);
-        return from_candid_Result_n147(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_n149(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.updateMinimumOrder(arg0);
-      return from_candid_Result_n147(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_n149(this._uploadFile, this._downloadFile, result);
     }
   }
   async updatePaymentServiceToken(arg0) {
@@ -36505,15 +36567,15 @@ class Backend {
   async updateTreasury(arg0, arg1) {
     if (this.processError) {
       try {
-        const result = await this.actor.updateTreasury(arg0, to_candid_opt_n149(this._uploadFile, this._downloadFile, arg1));
-        return from_candid_Result_n147(this._uploadFile, this._downloadFile, result);
+        const result = await this.actor.updateTreasury(arg0, to_candid_opt_n151(this._uploadFile, this._downloadFile, arg1));
+        return from_candid_Result_n149(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
-      const result = await this.actor.updateTreasury(arg0, to_candid_opt_n149(this._uploadFile, this._downloadFile, arg1));
-      return from_candid_Result_n147(this._uploadFile, this._downloadFile, result);
+      const result = await this.actor.updateTreasury(arg0, to_candid_opt_n151(this._uploadFile, this._downloadFile, arg1));
+      return from_candid_Result_n149(this._uploadFile, this._downloadFile, result);
     }
   }
 }
@@ -36544,20 +36606,20 @@ function from_candid_CryptoPaymentStatus_n10(_uploadFile, _downloadFile, value) 
 function from_candid_DepositInfo_n81(_uploadFile, _downloadFile, value) {
   return from_candid_record_n82(_uploadFile, _downloadFile, value);
 }
-function from_candid_Discipline_n118(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n119(_uploadFile, _downloadFile, value);
+function from_candid_Discipline_n120(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n121(_uploadFile, _downloadFile, value);
 }
-function from_candid_EmailError_n129(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n130(_uploadFile, _downloadFile, value);
+function from_candid_EmailError_n131(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n132(_uploadFile, _downloadFile, value);
 }
-function from_candid_LatePayment_n107(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n108(_uploadFile, _downloadFile, value);
+function from_candid_LatePayment_n109(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n110(_uploadFile, _downloadFile, value);
 }
 function from_candid_OrderError_n52(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n53(_uploadFile, _downloadFile, value);
 }
-function from_candid_OrderRecoveryView_n110(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n111(_uploadFile, _downloadFile, value);
+function from_candid_OrderRecoveryView_n112(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n113(_uploadFile, _downloadFile, value);
 }
 function from_candid_Order_n46(_uploadFile, _downloadFile, value) {
   return from_candid_record_n47(_uploadFile, _downloadFile, value);
@@ -36574,17 +36636,20 @@ function from_candid_PaymentServiceError_n18(_uploadFile, _downloadFile, value) 
 function from_candid_PaymentStatus_n4(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n5(_uploadFile, _downloadFile, value);
 }
+function from_candid_PublicOrderView_n88(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n89(_uploadFile, _downloadFile, value);
+}
 function from_candid_RecheckResult_n64(_uploadFile, _downloadFile, value) {
   return from_candid_record_n65(_uploadFile, _downloadFile, value);
 }
 function from_candid_RecoveryError_n66(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n67(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_10_n98(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n99(_uploadFile, _downloadFile, value);
+function from_candid_Result_10_n100(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n101(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_11_n93(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n94(_uploadFile, _downloadFile, value);
+function from_candid_Result_11_n95(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n96(_uploadFile, _downloadFile, value);
 }
 function from_candid_Result_12_n85(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n86(_uploadFile, _downloadFile, value);
@@ -36616,65 +36681,65 @@ function from_candid_Result_1_n16(_uploadFile, _downloadFile, value) {
 function from_candid_Result_20_n24(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n25(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_2_n143(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n144(_uploadFile, _downloadFile, value);
+function from_candid_Result_2_n145(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n146(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_3_n139(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n140(_uploadFile, _downloadFile, value);
+function from_candid_Result_3_n141(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n142(_uploadFile, _downloadFile, value);
 }
 function from_candid_Result_4_n68(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n69(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_5_n137(_uploadFile, _downloadFile, value) {
+function from_candid_Result_5_n139(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n140(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_6_n137(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n138(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_6_n135(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n136(_uploadFile, _downloadFile, value);
+function from_candid_Result_7_n129(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n130(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_7_n127(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n128(_uploadFile, _downloadFile, value);
+function from_candid_Result_8_n115(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n116(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_8_n113(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n114(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_9_n104(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n105(_uploadFile, _downloadFile, value);
+function from_candid_Result_9_n106(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n107(_uploadFile, _downloadFile, value);
 }
 function from_candid_Result__1_n54(_uploadFile, _downloadFile, value) {
   return from_candid_record_n55(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_n147(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n148(_uploadFile, _downloadFile, value);
+function from_candid_Result_n149(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n150(_uploadFile, _downloadFile, value);
 }
-function from_candid_ResumeInfo_n95(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n96(_uploadFile, _downloadFile, value);
+function from_candid_ResumeInfo_n97(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n98(_uploadFile, _downloadFile, value);
 }
-function from_candid_Role_n89(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n90(_uploadFile, _downloadFile, value);
+function from_candid_Role_n91(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n92(_uploadFile, _downloadFile, value);
 }
 function from_candid_ShippingStatus_n49(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n50(_uploadFile, _downloadFile, value);
 }
-function from_candid_SubmissionError_n120(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n121(_uploadFile, _downloadFile, value);
+function from_candid_SubmissionError_n122(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n123(_uploadFile, _downloadFile, value);
 }
-function from_candid_SubmissionRecord_n116(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n117(_uploadFile, _downloadFile, value);
+function from_candid_SubmissionRecord_n118(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n119(_uploadFile, _downloadFile, value);
 }
-function from_candid_SweepError_n100(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n101(_uploadFile, _downloadFile, value);
+function from_candid_SweepError_n102(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n103(_uploadFile, _downloadFile, value);
 }
 function from_candid_SweepResult_n70(_uploadFile, _downloadFile, value) {
   return from_candid_record_n71(_uploadFile, _downloadFile, value);
 }
-function from_candid_SweepSubaccountResult_n141(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n142(_uploadFile, _downloadFile, value);
+function from_candid_SweepSubaccountResult_n143(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n144(_uploadFile, _downloadFile, value);
 }
 function from_candid_Token_n83(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n84(_uploadFile, _downloadFile, value);
 }
-function from_candid_UserRecord_n124(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n125(_uploadFile, _downloadFile, value);
+function from_candid_UserRecord_n126(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n127(_uploadFile, _downloadFile, value);
 }
 function from_candid_Value_n60(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n61(_uploadFile, _downloadFile, value);
@@ -36682,7 +36747,7 @@ function from_candid_Value_n60(_uploadFile, _downloadFile, value) {
 function from_candid_opt_n1(_uploadFile, _downloadFile, value) {
   return value.length === 0 ? null : from_candid_AdminOrderDetail_n2(_uploadFile, _downloadFile, value[0]);
 }
-function from_candid_opt_n112(_uploadFile, _downloadFile, value) {
+function from_candid_opt_n114(_uploadFile, _downloadFile, value) {
   return value.length === 0 ? null : value[0];
 }
 function from_candid_opt_n12(_uploadFile, _downloadFile, value) {
@@ -36700,22 +36765,22 @@ function from_candid_opt_n72(_uploadFile, _downloadFile, value) {
 function from_candid_opt_n8(_uploadFile, _downloadFile, value) {
   return value.length === 0 ? null : value[0];
 }
-function from_candid_opt_n88(_uploadFile, _downloadFile, value) {
-  return value.length === 0 ? null : from_candid_Role_n89(_uploadFile, _downloadFile, value[0]);
-}
 function from_candid_opt_n9(_uploadFile, _downloadFile, value) {
   return value.length === 0 ? null : from_candid_CryptoPaymentStatus_n10(_uploadFile, _downloadFile, value[0]);
 }
-function from_candid_opt_n91(_uploadFile, _downloadFile, value) {
-  return value.length === 0 ? null : from_candid_Order_n46(_uploadFile, _downloadFile, value[0]);
+function from_candid_opt_n90(_uploadFile, _downloadFile, value) {
+  return value.length === 0 ? null : from_candid_Role_n91(_uploadFile, _downloadFile, value[0]);
 }
-function from_candid_opt_n92(_uploadFile, _downloadFile, value) {
+function from_candid_opt_n93(_uploadFile, _downloadFile, value) {
+  return value.length === 0 ? null : from_candid_PublicOrderView_n88(_uploadFile, _downloadFile, value[0]);
+}
+function from_candid_opt_n94(_uploadFile, _downloadFile, value) {
   return value.length === 0 ? null : value[0];
 }
-function from_candid_opt_n97(_uploadFile, _downloadFile, value) {
+function from_candid_opt_n99(_uploadFile, _downloadFile, value) {
   return value.length === 0 ? null : from_candid_DepositInfo_n81(_uploadFile, _downloadFile, value[0]);
 }
-function from_candid_record_n108(_uploadFile, _downloadFile, value) {
+function from_candid_record_n110(_uploadFile, _downloadFile, value) {
   return {
     token: from_candid_Token_n83(_uploadFile, _downloadFile, value.token),
     reference: value.reference,
@@ -36725,21 +36790,21 @@ function from_candid_record_n108(_uploadFile, _downloadFile, value) {
     expectedAmount: value.expectedAmount
   };
 }
-function from_candid_record_n111(_uploadFile, _downloadFile, value) {
+function from_candid_record_n113(_uploadFile, _downloadFile, value) {
   return {
     status: from_candid_PaymentStatus_n4(_uploadFile, _downloadFile, value.status),
     paymentMethod: from_candid_PaymentMethod_n6(_uploadFile, _downloadFile, value.paymentMethod),
     expiresAt: record_opt_to_undefined(from_candid_opt_n48(_uploadFile, _downloadFile, value.expiresAt)),
     reference: value.reference,
-    depositAccount: record_opt_to_undefined(from_candid_opt_n112(_uploadFile, _downloadFile, value.depositAccount)),
+    depositAccount: record_opt_to_undefined(from_candid_opt_n114(_uploadFile, _downloadFile, value.depositAccount)),
     amountOwed: value.amountOwed,
     liveBalance: value.liveBalance
   };
 }
-function from_candid_record_n117(_uploadFile, _downloadFile, value) {
+function from_candid_record_n119(_uploadFile, _downloadFile, value) {
   return {
     id: value.id,
-    discipline: from_candid_Discipline_n118(_uploadFile, _downloadFile, value.discipline),
+    discipline: from_candid_Discipline_n120(_uploadFile, _downloadFile, value.discipline),
     link: value.link,
     name: value.name,
     submittedAt: value.submittedAt,
@@ -36749,13 +36814,13 @@ function from_candid_record_n117(_uploadFile, _downloadFile, value) {
     marketingConsent: value.marketingConsent
   };
 }
-function from_candid_record_n125(_uploadFile, _downloadFile, value) {
+function from_candid_record_n127(_uploadFile, _downloadFile, value) {
   return {
     grantedAt: value.grantedAt,
-    role: from_candid_Role_n89(_uploadFile, _downloadFile, value.role)
+    role: from_candid_Role_n91(_uploadFile, _downloadFile, value.role)
   };
 }
-function from_candid_record_n142(_uploadFile, _downloadFile, value) {
+function from_candid_record_n144(_uploadFile, _downloadFile, value) {
   return {
     error: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.error)),
     blockIndex: record_opt_to_undefined(from_candid_opt_n72(_uploadFile, _downloadFile, value.blockIndex)),
@@ -36775,6 +36840,7 @@ function from_candid_record_n15(_uploadFile, _downloadFile, value) {
     currency: value.currency,
     subaccountHex: value.subaccountHex,
     sweepNote: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.sweepNote)),
+    customerEmail: value.customerEmail,
     depositAccountText: value.depositAccountText
   };
 }
@@ -36863,6 +36929,7 @@ function from_candid_record_n78(_uploadFile, _downloadFile, value) {
     ckUSDC: value.ckUSDC,
     treasurySubaccount: record_opt_to_undefined(from_candid_opt_n8(_uploadFile, _downloadFile, value.treasurySubaccount)),
     minimumOrder: value.minimumOrder,
+    ckUSDCEnabled: value.ckUSDCEnabled,
     treasuryPrincipal: value.treasuryPrincipal
   };
 }
@@ -36878,22 +36945,57 @@ function from_candid_record_n82(_uploadFile, _downloadFile, value) {
     amountDue: value.amountDue
   };
 }
-function from_candid_record_n96(_uploadFile, _downloadFile, value) {
+function from_candid_record_n89(_uploadFile, _downloadFile, value) {
+  return {
+    id: value.id,
+    tax: value.tax,
+    updated_at: value.updated_at,
+    total: value.total,
+    sweep_note: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.sweep_note)),
+    shipping: value.shipping,
+    reference: value.reference,
+    created_at: value.created_at,
+    payment_status: from_candid_PaymentStatus_n4(_uploadFile, _downloadFile, value.payment_status),
+    payment_method: from_candid_PaymentMethod_n6(_uploadFile, _downloadFile, value.payment_method),
+    tracking_number: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.tracking_number)),
+    currency: value.currency,
+    marketing_consent_at: record_opt_to_undefined(from_candid_opt_n48(_uploadFile, _downloadFile, value.marketing_consent_at)),
+    shipping_status: from_candid_ShippingStatus_n49(_uploadFile, _downloadFile, value.shipping_status),
+    has_shipping_details: value.has_shipping_details,
+    items: value.items,
+    encrypted_shipping: record_opt_to_undefined(from_candid_opt_n8(_uploadFile, _downloadFile, value.encrypted_shipping)),
+    customer_principal: record_opt_to_undefined(from_candid_opt_n51(_uploadFile, _downloadFile, value.customer_principal)),
+    shipped_at: record_opt_to_undefined(from_candid_opt_n48(_uploadFile, _downloadFile, value.shipped_at)),
+    marketing_consent: value.marketing_consent,
+    payment_reference: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.payment_reference)),
+    subtotal: value.subtotal
+  };
+}
+function from_candid_record_n98(_uploadFile, _downloadFile, value) {
   return {
     status: from_candid_CryptoPaymentStatus_n10(_uploadFile, _downloadFile, value.status),
     expiresAt: value.expiresAt,
     reference: value.reference,
-    deposit: record_opt_to_undefined(from_candid_opt_n97(_uploadFile, _downloadFile, value.deposit)),
+    deposit: record_opt_to_undefined(from_candid_opt_n99(_uploadFile, _downloadFile, value.deposit)),
     remainingNs: value.remainingNs
   };
 }
-function from_candid_tuple_n123(_uploadFile, _downloadFile, value) {
+function from_candid_tuple_n125(_uploadFile, _downloadFile, value) {
   return [
     value[0],
-    from_candid_UserRecord_n124(_uploadFile, _downloadFile, value[1])
+    from_candid_UserRecord_n126(_uploadFile, _downloadFile, value[1])
   ];
 }
 function from_candid_variant_n101(_uploadFile, _downloadFile, value) {
+  return "ok" in value ? {
+    __kind__: "ok",
+    ok: value.ok
+  } : "err" in value ? {
+    __kind__: "err",
+    err: from_candid_SweepError_n102(_uploadFile, _downloadFile, value.err)
+  } : value;
+}
+function from_candid_variant_n103(_uploadFile, _downloadFile, value) {
   return "sweepFailed" in value ? {
     __kind__: "sweepFailed",
     sweepFailed: value.sweepFailed
@@ -36908,7 +37010,7 @@ function from_candid_variant_n101(_uploadFile, _downloadFile, value) {
     invalidConfig: value.invalidConfig
   } : value;
 }
-function from_candid_variant_n105(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n107(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
     ok: value.ok
@@ -36935,19 +37037,19 @@ function from_candid_variant_n11(_uploadFile, _downloadFile, value) {
     awaiting_payment: value.awaiting_payment
   } : value;
 }
-function from_candid_variant_n114(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n116(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
-    ok: from_candid_vec_n115(_uploadFile, _downloadFile, value.ok)
+    ok: from_candid_vec_n117(_uploadFile, _downloadFile, value.ok)
   } : "err" in value ? {
     __kind__: "err",
-    err: from_candid_SubmissionError_n120(_uploadFile, _downloadFile, value.err)
+    err: from_candid_SubmissionError_n122(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function from_candid_variant_n119(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n121(_uploadFile, _downloadFile, value) {
   return "music" in value ? "music" : "other" in value ? "other" : "video" in value ? "video" : "visualArt" in value ? "visualArt" : "writing" in value ? "writing" : value;
 }
-function from_candid_variant_n121(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n123(_uploadFile, _downloadFile, value) {
   return "invalidInput" in value ? {
     __kind__: "invalidInput",
     invalidInput: value.invalidInput
@@ -36968,16 +37070,16 @@ function from_candid_variant_n121(_uploadFile, _downloadFile, value) {
     invalidResponse: value.invalidResponse
   } : value;
 }
-function from_candid_variant_n128(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n130(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
     ok: value.ok
   } : "err" in value ? {
     __kind__: "err",
-    err: from_candid_EmailError_n129(_uploadFile, _downloadFile, value.err)
+    err: from_candid_EmailError_n131(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function from_candid_variant_n130(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n132(_uploadFile, _downloadFile, value) {
   return "notConfigured" in value ? {
     __kind__: "notConfigured",
     notConfigured: value.notConfigured
@@ -36998,16 +37100,16 @@ function from_candid_variant_n130(_uploadFile, _downloadFile, value) {
     invalidResponse: value.invalidResponse
   } : value;
 }
-function from_candid_variant_n136(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n138(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
     ok: value.ok
   } : "err" in value ? {
     __kind__: "err",
-    err: from_candid_SubmissionError_n120(_uploadFile, _downloadFile, value.err)
+    err: from_candid_SubmissionError_n122(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function from_candid_variant_n138(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n140(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
     ok: value.ok
@@ -37016,16 +37118,16 @@ function from_candid_variant_n138(_uploadFile, _downloadFile, value) {
     err: from_candid_CryptoPaymentError_n22(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function from_candid_variant_n140(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n142(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
-    ok: from_candid_SweepSubaccountResult_n141(_uploadFile, _downloadFile, value.ok)
+    ok: from_candid_SweepSubaccountResult_n143(_uploadFile, _downloadFile, value.ok)
   } : "err" in value ? {
     __kind__: "err",
-    err: from_candid_SweepError_n100(_uploadFile, _downloadFile, value.err)
+    err: from_candid_SweepError_n102(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function from_candid_variant_n144(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n146(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
     ok: value.ok
@@ -37034,7 +37136,7 @@ function from_candid_variant_n144(_uploadFile, _downloadFile, value) {
     err: from_candid_ConsentError_n75(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function from_candid_variant_n148(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n150(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
     ok: value.ok
@@ -37179,6 +37281,9 @@ function from_candid_variant_n53(_uploadFile, _downloadFile, value) {
   } : "unknownProduct" in value ? {
     __kind__: "unknownProduct",
     unknownProduct: value.unknownProduct
+  } : "ckUSDCDisabled" in value ? {
+    __kind__: "ckUSDCDisabled",
+    ckUSDCDisabled: value.ckUSDCDisabled
   } : "emptyOrder" in value ? {
     __kind__: "emptyOrder",
     emptyOrder: value.emptyOrder
@@ -37310,38 +37415,29 @@ function from_candid_variant_n86(_uploadFile, _downloadFile, value) {
     err: from_candid_RecoveryError_n66(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function from_candid_variant_n90(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n92(_uploadFile, _downloadFile, value) {
   return "admin" in value ? "admin" : "owner" in value ? "owner" : "staff" in value ? "staff" : value;
 }
-function from_candid_variant_n94(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n96(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
-    ok: from_candid_ResumeInfo_n95(_uploadFile, _downloadFile, value.ok)
+    ok: from_candid_ResumeInfo_n97(_uploadFile, _downloadFile, value.ok)
   } : "err" in value ? {
     __kind__: "err",
     err: from_candid_RecoveryError_n66(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function from_candid_variant_n99(_uploadFile, _downloadFile, value) {
-  return "ok" in value ? {
-    __kind__: "ok",
-    ok: value.ok
-  } : "err" in value ? {
-    __kind__: "err",
-    err: from_candid_SweepError_n100(_uploadFile, _downloadFile, value.err)
-  } : value;
+function from_candid_vec_n108(_uploadFile, _downloadFile, value) {
+  return value.map((x2) => from_candid_LatePayment_n109(_uploadFile, _downloadFile, x2));
 }
-function from_candid_vec_n106(_uploadFile, _downloadFile, value) {
-  return value.map((x2) => from_candid_LatePayment_n107(_uploadFile, _downloadFile, x2));
+function from_candid_vec_n111(_uploadFile, _downloadFile, value) {
+  return value.map((x2) => from_candid_OrderRecoveryView_n112(_uploadFile, _downloadFile, x2));
 }
-function from_candid_vec_n109(_uploadFile, _downloadFile, value) {
-  return value.map((x2) => from_candid_OrderRecoveryView_n110(_uploadFile, _downloadFile, x2));
+function from_candid_vec_n117(_uploadFile, _downloadFile, value) {
+  return value.map((x2) => from_candid_SubmissionRecord_n118(_uploadFile, _downloadFile, x2));
 }
-function from_candid_vec_n115(_uploadFile, _downloadFile, value) {
-  return value.map((x2) => from_candid_SubmissionRecord_n116(_uploadFile, _downloadFile, x2));
-}
-function from_candid_vec_n122(_uploadFile, _downloadFile, value) {
-  return value.map((x2) => from_candid_tuple_n123(_uploadFile, _downloadFile, x2));
+function from_candid_vec_n124(_uploadFile, _downloadFile, value) {
+  return value.map((x2) => from_candid_tuple_n125(_uploadFile, _downloadFile, x2));
 }
 function from_candid_vec_n13(_uploadFile, _downloadFile, value) {
   return value.map((x2) => from_candid_AdminOrderView_n14(_uploadFile, _downloadFile, x2));
@@ -37353,13 +37449,13 @@ function from_candid_vec_n57(_uploadFile, _downloadFile, value) {
   return value.map((x2) => from_candid_Cell_n58(_uploadFile, _downloadFile, x2));
 }
 function from_candid_vec_n87(_uploadFile, _downloadFile, value) {
-  return value.map((x2) => from_candid_Order_n46(_uploadFile, _downloadFile, x2));
+  return value.map((x2) => from_candid_PublicOrderView_n88(_uploadFile, _downloadFile, x2));
 }
 function to_candid_CreateOrderInput_n42(_uploadFile, _downloadFile, value) {
   return to_candid_record_n43(_uploadFile, _downloadFile, value);
 }
-function to_candid_Discipline_n133(_uploadFile, _downloadFile, value) {
-  return to_candid_variant_n134(_uploadFile, _downloadFile, value);
+function to_candid_Discipline_n135(_uploadFile, _downloadFile, value) {
+  return to_candid_variant_n136(_uploadFile, _downloadFile, value);
 }
 function to_candid_Order_n30(_uploadFile, _downloadFile, value) {
   return to_candid_record_n31(_uploadFile, _downloadFile, value);
@@ -37370,27 +37466,27 @@ function to_candid_PaymentMethod_n34(_uploadFile, _downloadFile, value) {
 function to_candid_PaymentStatus_n32(_uploadFile, _downloadFile, value) {
   return to_candid_variant_n33(_uploadFile, _downloadFile, value);
 }
-function to_candid_Role_n102(_uploadFile, _downloadFile, value) {
-  return to_candid_variant_n103(_uploadFile, _downloadFile, value);
+function to_candid_Role_n104(_uploadFile, _downloadFile, value) {
+  return to_candid_variant_n105(_uploadFile, _downloadFile, value);
 }
 function to_candid_ShippingStatus_n36(_uploadFile, _downloadFile, value) {
   return to_candid_variant_n37(_uploadFile, _downloadFile, value);
 }
-function to_candid_SubmissionInput_n131(_uploadFile, _downloadFile, value) {
-  return to_candid_record_n132(_uploadFile, _downloadFile, value);
+function to_candid_SubmissionInput_n133(_uploadFile, _downloadFile, value) {
+  return to_candid_record_n134(_uploadFile, _downloadFile, value);
 }
-function to_candid_Token_n145(_uploadFile, _downloadFile, value) {
-  return to_candid_variant_n146(_uploadFile, _downloadFile, value);
+function to_candid_Token_n147(_uploadFile, _downloadFile, value) {
+  return to_candid_variant_n148(_uploadFile, _downloadFile, value);
 }
-function to_candid_opt_n126(_uploadFile, _downloadFile, value) {
+function to_candid_opt_n128(_uploadFile, _downloadFile, value) {
   return value === null ? candid_none() : candid_some(value);
 }
-function to_candid_opt_n149(_uploadFile, _downloadFile, value) {
+function to_candid_opt_n151(_uploadFile, _downloadFile, value) {
   return value === null ? candid_none() : candid_some(value);
 }
-function to_candid_record_n132(_uploadFile, _downloadFile, value) {
+function to_candid_record_n134(_uploadFile, _downloadFile, value) {
   return {
-    discipline: to_candid_Discipline_n133(_uploadFile, _downloadFile, value.discipline),
+    discipline: to_candid_Discipline_n135(_uploadFile, _downloadFile, value.discipline),
     link: value.link,
     name: value.name,
     email: value.email,
@@ -37437,7 +37533,7 @@ function to_candid_record_n43(_uploadFile, _downloadFile, value) {
     marketing_consent: value.marketing_consent
   };
 }
-function to_candid_variant_n103(_uploadFile, _downloadFile, value) {
+function to_candid_variant_n105(_uploadFile, _downloadFile, value) {
   return value == "admin" ? {
     admin: null
   } : value == "owner" ? {
@@ -37446,7 +37542,7 @@ function to_candid_variant_n103(_uploadFile, _downloadFile, value) {
     staff: null
   } : value;
 }
-function to_candid_variant_n134(_uploadFile, _downloadFile, value) {
+function to_candid_variant_n136(_uploadFile, _downloadFile, value) {
   return value == "music" ? {
     music: null
   } : value == "other" ? {
@@ -37459,7 +37555,7 @@ function to_candid_variant_n134(_uploadFile, _downloadFile, value) {
     writing: null
   } : value;
 }
-function to_candid_variant_n146(_uploadFile, _downloadFile, value) {
+function to_candid_variant_n148(_uploadFile, _downloadFile, value) {
   return value == "ICP" ? {
     ICP: null
   } : value == "ckUSDC" ? {
@@ -42266,6 +42362,10 @@ function useCryptoConfig() {
     enabled: !!actor && !isFetching
   });
 }
+function useCkUSDCCheckoutEnabled() {
+  const { data: cryptoConfig } = useCryptoConfig();
+  return (cryptoConfig == null ? void 0 : cryptoConfig.ckUSDCEnabled) ?? false;
+}
 function useCryptoDepositInfo(reference) {
   const { actor, isFetching } = useActor(createActor$2);
   return useQuery({
@@ -43181,6 +43281,39 @@ function CanisterTab(_props) {
     ] }) })
   ] });
 }
+function CopyButton({ text, label, className }) {
+  const [copied, setCopied] = reactExports.useState(false);
+  const timerRef = reactExports.useRef(null);
+  reactExports.useEffect(() => {
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, []);
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      if (timerRef.current) clearTimeout(timerRef.current);
+      timerRef.current = setTimeout(() => setCopied(false), 1800);
+    } catch (error) {
+      console.error("[copy] Clipboard write failed (ERR-CHK-005)", error);
+    }
+  };
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+    "button",
+    {
+      type: "button",
+      onClick: handleCopy,
+      className: `copy-btn ${copied ? "is-copied" : ""} ${className ?? ""}`,
+      "aria-label": label ?? "Copy to clipboard",
+      "data-ocid": "copy_button",
+      children: [
+        copied ? /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-3.5 h-3.5", "aria-hidden": "true" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Copy, { className: "w-3.5 h-3.5", "aria-hidden": "true" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: copied ? "Copied" : label ?? "Copy" })
+      ]
+    }
+  );
+}
 function AdminTable({
   columns,
   rows: rows2,
@@ -43407,7 +43540,10 @@ function OrderDetail({
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-1", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "field-label", children: "Customer email" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num", children: detail.customerEmail })
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "flex items-center gap-2", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num", children: detail.customerEmail }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(CopyButton, { text: detail.customerEmail, label: "Copy email" })
+          ] })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-1", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "field-label", children: "Shipping details" }),
@@ -43569,6 +43705,7 @@ function OrderDetail({
 }
 function OrdersTab({ session }) {
   const [filter, setFilter] = reactExports.useState("all");
+  const [search, setSearch] = reactExports.useState("");
   const [selectedRef, setSelectedRef] = reactExports.useState(null);
   const activeFilter = FILTERS.find((f2) => f2.id === filter) ?? FILTERS[0];
   const {
@@ -43577,6 +43714,14 @@ function OrdersTab({ session }) {
     error
   } = useAdminListOrders(activeFilter.backend);
   const listError = error ? adminErrorMessage(error) : null;
+  const visibleOrders = reactExports.useMemo(() => {
+    if (!orders) return [];
+    const query = search.trim().toLowerCase();
+    if (!query) return orders;
+    return orders.filter(
+      (order) => order.customerEmail.toLowerCase().includes(query) || order.reference.toLowerCase().includes(query)
+    );
+  }, [orders, search]);
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-4", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(
       "div",
@@ -43611,84 +43756,117 @@ function OrdersTab({ session }) {
             className: "text-xs",
             style: { color: "var(--muted-foreground)" },
             children: [
-              (orders == null ? void 0 : orders.length) ?? 0,
+              visibleOrders.length,
               " order",
-              ((orders == null ? void 0 : orders.length) ?? 0) === 1 ? "" : "s"
+              visibleOrders.length === 1 ? "" : "s"
             ]
           }
         ),
-        children: isLoading ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "div",
-          {
-            className: "flex items-center gap-3 py-8",
-            style: { color: "var(--muted-foreground)" },
-            "data-ocid": "admin.orders.loading_state",
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-4 h-4 animate-spin" }),
-              "Loading orders…"
-            ]
-          }
-        ) : /* @__PURE__ */ jsxRuntimeExports.jsx(
-          AdminTable,
-          {
-            columns: [
+        children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-3", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              Search,
               {
-                key: "reference",
-                header: "Reference",
-                render: (row) => /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "button",
-                  {
-                    type: "button",
-                    className: "admin-mono",
-                    style: {
-                      color: "var(--primary)",
-                      cursor: "pointer",
-                      textAlign: "left"
-                    },
-                    onClick: () => setSelectedRef(row.reference),
-                    "data-ocid": `admin.orders.open_detail.${row.reference}`,
-                    children: row.reference
-                  }
-                )
-              },
-              {
-                key: "status",
-                header: "Status",
-                render: (row) => /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `status-pill ${statusTone$1(row.status)}`, children: row.status })
-              },
-              {
-                key: "method",
-                header: "Method",
-                render: (row) => /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num", children: METHOD_LABELS[row.paymentMethod] ?? row.paymentMethod })
-              },
-              {
-                key: "amount",
-                header: "Amount",
-                align: "right",
-                render: (row) => /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "num", children: row.amountOwed.toString() })
-              },
-              {
-                key: "items",
-                header: "Items",
-                align: "right",
-                render: (row) => /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "num", children: row.itemCount.toString() })
-              },
-              {
-                key: "created",
-                header: "Created",
-                render: (row) => /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "num", children: formatTimestamp$3(row.createdAt) })
-              },
-              {
-                key: "crypto",
-                header: "Crypto",
-                render: (row) => row.cryptoStatus ? /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num", children: cryptoStatusLabel$1(row.cryptoStatus) }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { color: "var(--muted-foreground)" }, children: "—" })
+                className: "w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2",
+                style: { color: "var(--muted-foreground)" },
+                "aria-hidden": "true"
               }
-            ],
-            rows: orders ?? [],
-            rowKey: (row) => row.reference,
-            emptyMessage: "No orders match this filter."
-          }
-        )
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "input",
+              {
+                type: "search",
+                className: "field-input",
+                style: { paddingLeft: "2.25rem" },
+                placeholder: "Search by customer email or reference…",
+                value: search,
+                onChange: (e) => setSearch(e.target.value),
+                "aria-label": "Search orders by customer email or reference",
+                "data-ocid": "admin.orders.search_input"
+              }
+            )
+          ] }),
+          isLoading ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "div",
+            {
+              className: "flex items-center gap-3 py-8",
+              style: { color: "var(--muted-foreground)" },
+              "data-ocid": "admin.orders.loading_state",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-4 h-4 animate-spin" }),
+                "Loading orders…"
+              ]
+            }
+          ) : /* @__PURE__ */ jsxRuntimeExports.jsx(
+            AdminTable,
+            {
+              columns: [
+                {
+                  key: "reference",
+                  header: "Reference",
+                  render: (row) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "button",
+                    {
+                      type: "button",
+                      className: "admin-mono",
+                      style: {
+                        color: "var(--primary)",
+                        cursor: "pointer",
+                        textAlign: "left"
+                      },
+                      onClick: () => setSelectedRef(row.reference),
+                      "data-ocid": `admin.orders.open_detail.${row.reference}`,
+                      children: row.reference
+                    }
+                  )
+                },
+                {
+                  key: "status",
+                  header: "Status",
+                  render: (row) => /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `status-pill ${statusTone$1(row.status)}`, children: row.status })
+                },
+                {
+                  key: "method",
+                  header: "Method",
+                  render: (row) => /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num", children: METHOD_LABELS[row.paymentMethod] ?? row.paymentMethod })
+                },
+                {
+                  key: "amount",
+                  header: "Amount",
+                  align: "right",
+                  render: (row) => /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "num", children: row.amountOwed.toString() })
+                },
+                {
+                  key: "items",
+                  header: "Items",
+                  align: "right",
+                  render: (row) => /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "num", children: row.itemCount.toString() })
+                },
+                {
+                  key: "created",
+                  header: "Created",
+                  render: (row) => /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "num", children: formatTimestamp$3(row.createdAt) })
+                },
+                {
+                  key: "crypto",
+                  header: "Crypto",
+                  render: (row) => row.cryptoStatus ? /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num", children: cryptoStatusLabel$1(row.cryptoStatus) }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { color: "var(--muted-foreground)" }, children: "—" })
+                },
+                {
+                  key: "email",
+                  header: "Customer email",
+                  render: (row) => /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "flex items-center gap-2", children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num", children: row.customerEmail }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(CopyButton, { text: row.customerEmail, label: "Copy email" })
+                  ] })
+                }
+              ],
+              rows: visibleOrders,
+              rowKey: (row) => row.reference,
+              emptyMessage: search.trim() ? "No orders match this search." : "No orders match this filter."
+            }
+          )
+        ] })
       }
     ),
     selectedRef && /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -52442,39 +52620,6 @@ function depositAccountString(deposit) {
     subaccount: deposit.subaccount
   });
 }
-function CopyButton({ text, label, className }) {
-  const [copied, setCopied] = reactExports.useState(false);
-  const timerRef = reactExports.useRef(null);
-  reactExports.useEffect(() => {
-    return () => {
-      if (timerRef.current) clearTimeout(timerRef.current);
-    };
-  }, []);
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(text);
-      setCopied(true);
-      if (timerRef.current) clearTimeout(timerRef.current);
-      timerRef.current = setTimeout(() => setCopied(false), 1800);
-    } catch (error) {
-      console.error("[copy] Clipboard write failed (ERR-CHK-005)", error);
-    }
-  };
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs(
-    "button",
-    {
-      type: "button",
-      onClick: handleCopy,
-      className: `copy-btn ${copied ? "is-copied" : ""} ${className ?? ""}`,
-      "aria-label": label ?? "Copy to clipboard",
-      "data-ocid": "copy_button",
-      children: [
-        copied ? /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-3.5 h-3.5", "aria-hidden": "true" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Copy, { className: "w-3.5 h-3.5", "aria-hidden": "true" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: copied ? "Copied" : label ?? "Copy" })
-      ]
-    }
-  );
-}
 const createActor = createActor$3;
 const STEPS = [
   { key: "shipping", label: "Shipping" },
@@ -52606,15 +52751,21 @@ const CheckoutPage = ({
   const { items, subtotal } = useCart();
   const [step, setStep] = reactExports.useState("shipping");
   const [order, setOrder] = reactExports.useState(null);
-  const [paymentMethod, setPaymentMethod] = reactExports.useState(
-    "crypto"
-  );
+  const [paymentMethod, setPaymentMethod] = reactExports.useState("card");
   const [orderError, setOrderError] = reactExports.useState(null);
   const [paid, setPaid] = reactExports.useState(false);
   const [expired, setExpired] = reactExports.useState(false);
+  const ckUSDCEnabled = useCkUSDCCheckoutEnabled();
+  const effectivePaymentMethod = ckUSDCEnabled ? paymentMethod : "card";
   const { activeOrderRef, setActiveOrderRef, clearActiveOrderRef } = useActiveOrderRef();
-  const { data: resumeInfo, isError: resumeError } = useResumeInfo(activeOrderRef);
+  const {
+    data: resumeInfo,
+    isError: resumeError,
+    isSuccess: resumeSuccess
+  } = useResumeInfo(activeOrderRef);
   const [resumeMode, setResumeMode] = reactExports.useState(false);
+  const [resumeFailed, setResumeFailed] = reactExports.useState(false);
+  const [depositFailed, setDepositFailed] = reactExports.useState(false);
   const [name, setName] = reactExports.useState("");
   const [email, setEmail] = reactExports.useState("");
   const [marketingConsent, setMarketingConsent] = reactExports.useState(false);
@@ -52650,15 +52801,36 @@ const CheckoutPage = ({
     if (!activeOrderRef) return;
     if (resumeError) {
       clearActiveOrderRef();
+      setResumeFailed(true);
       return;
     }
-    if (!resumeInfo) return;
-    if (resumeInfo.status.__kind__ === "awaiting_payment" && resumeInfo.deposit) {
-      setResumeMode(true);
-      setStep("deposit");
-    } else {
-      clearActiveOrderRef();
+    if (resumeSuccess) {
+      if (resumeInfo && resumeInfo.status.__kind__ === "awaiting_payment" && resumeInfo.deposit) {
+        setResumeMode(true);
+        setStep("deposit");
+      } else {
+        clearActiveOrderRef();
+      }
+      return;
     }
+  }, [
+    activeOrderRef,
+    resumeInfo,
+    resumeSuccess,
+    resumeError,
+    order,
+    step,
+    clearActiveOrderRef
+  ]);
+  reactExports.useEffect(() => {
+    if (order !== null || step !== "shipping") return;
+    if (!activeOrderRef) return;
+    if (resumeInfo || resumeError) return;
+    const t = setTimeout(() => {
+      setResumeFailed(true);
+      clearActiveOrderRef();
+    }, 12e3);
+    return () => clearTimeout(t);
   }, [
     activeOrderRef,
     resumeInfo,
@@ -52667,6 +52839,12 @@ const CheckoutPage = ({
     step,
     clearActiveOrderRef
   ]);
+  reactExports.useEffect(() => {
+    if (step !== "deposit" || resumeMode) return;
+    if (!depositInfo.isLoading) return;
+    const t = setTimeout(() => setDepositFailed(true), 15e3);
+    return () => clearTimeout(t);
+  }, [step, resumeMode, depositInfo.isLoading]);
   reactExports.useEffect(() => {
     if (step !== "deposit" || !depositReference) return;
     const interval = setInterval(() => {
@@ -52771,7 +52949,7 @@ const CheckoutPage = ({
       marketing_consent: marketingConsent,
       has_shipping_details: true,
       encrypted_shipping: encryptedShipping,
-      payment_method: paymentMethod === "card" ? PaymentMethod.card_stripe : PaymentMethod.crypto_ckusdc,
+      payment_method: effectivePaymentMethod === "card" ? PaymentMethod.card_stripe : PaymentMethod.crypto_ckusdc,
       items: items.map((item) => ({
         product_id: item.product.id,
         variant_id: item.variantId,
@@ -52792,13 +52970,17 @@ const CheckoutPage = ({
             )} for crypto payment.` : "We could not place your order. Please try again."
           );
         }
+      },
+      onError: (error) => {
+        console.error("[checkout] Failed to place order (ERR-CHK-005)", error);
+        setOrderError("We could not place your order. Please try again.");
       }
     });
   };
   const handlePlaceOrder = () => {
     if (!(order == null ? void 0 : order.reference)) return;
     setOrderError(null);
-    if (paymentMethod === "card") {
+    if (effectivePaymentMethod === "card") {
       const base = `${window.location.origin}${window.location.pathname}`;
       createCardSession.mutate(
         {
@@ -52815,6 +52997,13 @@ const CheckoutPage = ({
                 result.__kind__ === "err" && result.err.__kind__ === "notConfigured" ? "Card payments are not configured yet." : "We could not start card payment. Please try again."
               );
             }
+          },
+          onError: (error) => {
+            console.error(
+              "[checkout] Failed to start card payment (ERR-CHK-006)",
+              error
+            );
+            setOrderError("We could not start card payment. Please try again.");
           }
         }
       );
@@ -52825,7 +53014,7 @@ const CheckoutPage = ({
   const shippingFormValid = name.trim() !== "" && email.trim() !== "" && line1.trim() !== "" && city.trim() !== "" && region.trim() !== "" && country.trim() !== "" && postalCode.trim() !== "";
   const depositAddress = depositData ? depositAccountString(depositData) : "";
   const amountOwed = depositData ? formatTokenAmount$2(depositData.amountDue, depositData.decimals) : "";
-  const checkingResume = !!activeOrderRef && !resumeInfo && !resumeError;
+  const checkingResume = !!activeOrderRef && !resumeInfo && !resumeError && !resumeSuccess && !resumeFailed;
   const depositLoading = resumeMode ? false : depositInfo.isLoading;
   const stepIndex = STEPS.findIndex((s) => s.key === step);
   return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "pt-24 sm:pt-32 pb-12 sm:pb-20 px-4 sm:px-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-6xl mx-auto", children: [
@@ -52867,6 +53056,27 @@ const CheckoutPage = ({
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mx-auto mb-4 h-12 w-12 rounded-full bg-white/5 loading-shimmer" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mx-auto mb-3 h-6 w-48 rounded-xl bg-white/5 loading-shimmer" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mx-auto h-4 w-64 rounded-xl bg-white/5 loading-shimmer" })
+        ]
+      }
+    ) }) : resumeFailed ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative max-w-2xl mx-auto px-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      "div",
+      {
+        className: "surface p-8 sm:p-12 text-center",
+        "data-ocid": "checkout.resume_error",
+        children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(TriangleAlert, { className: "mx-auto mb-4 h-10 w-10 text-destructive" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "section-heading text-xl mb-3", children: "Could not restore your order" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-muted-foreground mb-6", children: "We could not check the status of your previous order. You can start a fresh checkout below." }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              type: "button",
+              onClick: () => setResumeFailed(false),
+              "data-ocid": "checkout.resume_error_continue_button",
+              className: "btn px-8 py-4 text-base font-semibold",
+              children: "Continue Checkout"
+            }
+          )
         ]
       }
     ) }) : items.length === 0 && step !== "deposit" ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative max-w-2xl mx-auto px-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "surface p-8 sm:p-12 text-center", children: [
@@ -53158,8 +53368,8 @@ const CheckoutPage = ({
         ] })
       ] }) : step === "review" ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "surface p-6 sm:p-10", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "section-heading text-xl sm:text-2xl mb-2", children: "Checkout Summary" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-muted-foreground mb-8", children: "Review your order and choose a payment token." }),
-        ledgerUnset && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-muted-foreground mb-8", children: ckUSDCEnabled ? "Review your order and choose a payment token." : "Review your order and pay by card." }),
+        ckUSDCEnabled && ledgerUnset && /* @__PURE__ */ jsxRuntimeExports.jsxs(
           "div",
           {
             className: "mb-6 flex items-start gap-3 border border-warning/40 bg-warning-soft p-4 text-sm text-warning",
@@ -53181,7 +53391,7 @@ const CheckoutPage = ({
             ]
           }
         ),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-8", children: [
+        ckUSDCEnabled && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-8", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "field-label mb-3", children: "Payment method" }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 sm:grid-cols-2 gap-4", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs(
@@ -53307,7 +53517,7 @@ const CheckoutPage = ({
               )
             ]
           }
-        ) : depositLoading ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        ) : depositLoading && !depositFailed ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
           "div",
           {
             className: "space-y-4",
@@ -55544,10 +55754,6 @@ const OrderLookupPage = ({
             order.shipped_at && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between", children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[var(--muted-foreground)]", children: "Shipped" }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[var(--secondary-foreground)]", children: formatTimestamp$1(order.shipped_at) })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[var(--muted-foreground)]", children: "Contact" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[var(--foreground)]", children: order.customer_email })
             ] })
           ] })
         ] })
@@ -55846,13 +56052,26 @@ const ProductPage = ({
   ] }) });
 };
 const ICPSWAP_SWAP_URL = "https://app.icpswap.com/swap/pro?input=ryjl3-tyaaa-aaaaa-aaaba-cai&output=eig2s-waaaa-aaaam-qbg5a-cai";
-const specRows = [
-  { label: "Pair", value: "NAK / ICP" },
-  { label: "Venue", value: "ICPSwap" },
-  { label: "Bridge", value: "Houdiniswap" },
-  { label: "Settlement", value: "ckUSDC" }
-];
 const PurchaseNAK = () => {
+  const ckUSDCEnabled = useCkUSDCCheckoutEnabled();
+  const [swapHeight, setSwapHeight] = reactExports.useState(760);
+  const specRows = [
+    { label: "Pair", value: "NAK / ICP" },
+    { label: "Venue", value: "NAKSwap" },
+    { label: "Bridge", value: "Houdiniswap" },
+    ...ckUSDCEnabled ? [{ label: "Settlement", value: "ckUSDC" }] : []
+  ];
+  reactExports.useEffect(() => {
+    const handleMessage = (event) => {
+      if (event.origin !== "https://swap.naktoken.lol") return;
+      const data = event.data;
+      if (data.type === "nakswap:height" && typeof data.height === "number") {
+        setSwapHeight(Math.min(Math.max(data.height, 400), 2e3));
+      }
+    };
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
+  }, []);
   return /* @__PURE__ */ jsxRuntimeExports.jsx("section", { id: "trade", className: "px-6 py-20", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "max-w-7xl mx-auto", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 min-[860px]:grid-cols-2 gap-12 lg:gap-16 items-start", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-xl", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "section-label mb-4", children: "Acquire" }),
@@ -55878,30 +56097,22 @@ const PurchaseNAK = () => {
       )
     ] }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "surface hairline p-6", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "section-label mb-4", children: "Powered by Houdiniswap" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(
         "iframe",
         {
-          src: "https://app.houdiniswap.com/widget?tokenOut=ICP&hideMultiswap=true&hideSend=true",
-          width: "480",
-          height: "640",
-          title: "Houdini Exchange Widget",
+          src: "https://swap.naktoken.lol/?embed=1",
+          title: "NAK Swap",
           allow: "clipboard-write",
-          className: "block w-full max-w-full mx-auto"
+          className: "block w-full max-w-full border-0",
+          style: {
+            width: "100%",
+            height: swapHeight,
+            border: 0,
+            display: "block"
+          }
         }
       ),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-muted-foreground mt-4", children: "Swaps are executed by Houdiniswap, a third-party service. N.A.K. does not custody funds or control the swap." }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
-        "a",
-        {
-          href: "https://app.houdiniswap.com",
-          target: "_blank",
-          rel: "noopener noreferrer",
-          className: "inline-block mt-3 text-xs text-muted-foreground underline underline-offset-2 hover:text-foreground",
-          "data-ocid": "trade.houdiniswap_full_site_link",
-          children: "Open the full Houdiniswap site"
-        }
-      )
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-muted-foreground mt-4", children: "Swaps are routed through Houdini's infrastructure. N.A.K. does not custody funds." })
     ] })
   ] }) }) });
 };
@@ -56281,6 +56492,7 @@ function RecoveryPage({ onNavigateToAdmin }) {
 const CANISTER_ID = "eig2s-waaaa-aaaam-qbg5a-cai";
 const RESERVE_DASHBOARD_URL = "https://nakreserve-p6m.caffeine.xyz/";
 const ReserveTreasury = () => {
+  const ckUSDCEnabled = useCkUSDCCheckoutEnabled();
   const [copied, setCopied] = reactExports.useState(false);
   const handleCopy = async () => {
     try {
@@ -56320,7 +56532,7 @@ const ReserveTreasury = () => {
         /* @__PURE__ */ jsxRuntimeExports.jsx("th", { scope: "row", children: "Standard" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: "ICRC-1" })
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { children: [
+      ckUSDCEnabled && /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("th", { scope: "row", children: "Settlement" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: "ckUSDC" })
       ] }),
@@ -56419,6 +56631,7 @@ function ResumeBanner({ onResume }) {
   return null;
 }
 const ShopBanner = ({ onNavigateToShop }) => {
+  const ckUSDCEnabled = useCkUSDCCheckoutEnabled();
   return /* @__PURE__ */ jsxRuntimeExports.jsx("section", { className: "px-6 py-10", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "max-w-7xl mx-auto", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
     "button",
     {
@@ -56447,7 +56660,7 @@ const ShopBanner = ({ onNavigateToShop }) => {
         ),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "flex-1 min-w-0 flex flex-col gap-0.5", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "section-label", children: "Product Line" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "truncate", style: { color: "var(--nak-text)" }, children: "N.A.K. Fragrance — five colognes, settled in ckUSDC" })
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "truncate", style: { color: "var(--nak-text)" }, children: ckUSDCEnabled ? "N.A.K. Fragrance — five colognes, settled in ckUSDC" : "N.A.K. Fragrance — five colognes" })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "flex-shrink-0 flex items-center gap-2", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx(

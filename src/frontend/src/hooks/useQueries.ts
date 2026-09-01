@@ -14,6 +14,7 @@ import type {
   PaymentServiceConfigView,
   PaymentStatus,
   Product,
+  PublicOrderView,
   RecheckResult,
   ResumeInfo,
   Role,
@@ -177,7 +178,7 @@ export function useOrderStatus(reference: string | null) {
   const { actor, isFetching } = useActor(createActor);
   return useQuery({
     queryKey: ["orderStatus", reference],
-    queryFn: async (): Promise<Order | null> => {
+    queryFn: async (): Promise<PublicOrderView | null> => {
       if (!actor || !reference) return null;
       return actor.getOrderStatus(reference);
     },
@@ -233,6 +234,18 @@ export function useCryptoConfig() {
     },
     enabled: !!actor && !isFetching,
   });
+}
+
+/**
+ * Reads the ckUSDC checkout flag from the backend crypto config. The backend
+ * constant CKUSDC_CHECKOUT_ENABLED is the single source of truth — the
+ * frontend never defines its own copy. Returns false when the config is not
+ * loaded yet so ckUSDC checkout stays hidden by default. Every gating
+ * component uses this single hook; do not scatter the condition.
+ */
+export function useCkUSDCCheckoutEnabled(): boolean {
+  const { data: cryptoConfig } = useCryptoConfig();
+  return cryptoConfig?.ckUSDCEnabled ?? false;
 }
 
 export function useCryptoDepositInfo(reference: string | null) {
@@ -357,7 +370,7 @@ export function useOrderLookup(reference: string | null) {
   const { actor, isFetching } = useActor(createActor);
   return useQuery({
     queryKey: ["orderLookup", reference],
-    queryFn: async (): Promise<Order | null> => {
+    queryFn: async (): Promise<PublicOrderView | null> => {
       if (!actor || !reference) return null;
       return actor.getOrderStatus(reference);
     },
@@ -375,7 +388,7 @@ export function useMyOrders() {
   const { isAuthenticated } = useInternetIdentity();
   return useQuery({
     queryKey: ["myOrders"],
-    queryFn: async (): Promise<Order[]> => {
+    queryFn: async (): Promise<PublicOrderView[]> => {
       if (!actor) return [];
       return actor.getMyOrders();
     },

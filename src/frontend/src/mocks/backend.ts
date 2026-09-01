@@ -206,6 +206,7 @@ const sampleAdminOrder: AdminOrderView = {
   subaccountHex: "0000000000000000000000000000000000000000000000000000000000000005",
   depositAccountText:
     "icrc1:ckUSDC:vm5zh-yaaaa-aaaaj-qoaza-cai:0000000000000000000000000000000000000000000000000000000000000005",
+  customerEmail: "jane@example.com",
 };
 
 const sampleAdminOrderPaid: AdminOrderView = {
@@ -220,6 +221,7 @@ const sampleAdminOrderPaid: AdminOrderView = {
   subaccountHex: "0000000000000000000000000000000000000000000000000000000000000005",
   depositAccountText:
     "icrc1:ckUSDC:vm5zh-yaaaa-aaaaj-qoaza-cai:0000000000000000000000000000000000000000000000000000000000000005",
+  customerEmail: "alex@example.com",
 };
 
 // Sample role records so the USERS tab renders a populated table and the
@@ -346,6 +348,7 @@ export const mockBackend: backendInterface = {
       canisterId: "aaaaa-aa" as never,
     },
     minimumOrder: 25n,
+    ckUSDCEnabled: false,
     treasuryPrincipal: "aaaaa-aa" as never,
   }),
   getMinimumOrder: async () => 25n,

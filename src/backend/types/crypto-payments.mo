@@ -1,6 +1,14 @@
 import StorefrontTypes "./storefront";
 
 module {
+  // Temporary disable flag for ckUSDC checkout. When false, NEW ckUSDC orders
+  // are rejected server-side (createOrder returns #err(#ckUSDCDisabled) and the
+  // crypto adapter rejects #crypto_ckusdc checkout sessions) and the checkout
+  // UI hides the option. Existing ckUSDC orders remain fully visible and
+  // fulfillable — the flag governs creation only. Re-enable by flipping this
+  // single line to true.
+  public let CKUSDC_CHECKOUT_ENABLED : Bool = false;
+
   public type Token = {
     #ckUSDC;
     #ICP;
@@ -28,6 +36,11 @@ module {
     // Crypto orders below this are rejected server-side because they cannot be
     // swept to the treasury after the ledger transfer fee is deducted.
     minimumOrder : Nat;
+    // Whether ckUSDC checkout is currently enabled. Mirrors the compile-time
+    // CKUSDC_CHECKOUT_ENABLED constant so the checkout UI reads the same single
+    // value. When false, the UI must not offer ckUSDC and the backend rejects
+    // new ckUSDC orders.
+    ckUSDCEnabled : Bool;
   };
 
   // A single cached icrc1_fee value for one ledger, with the time it was
@@ -107,6 +120,12 @@ module {
     amountOwed : Nat;
     currency : Text;
     itemCount : Nat;
+    // The customer's email address (already stored plaintext on the order to
+    // route confirmation emails). Visible only through this ADMIN/OWNER-gated
+    // admin view so a payment can be reviewed or a customer contacted without
+    // decrypting the shipping blob. NEVER exposed in any public or
+    // customer-facing query.
+    customerEmail : Text;
     subaccountHex : Text;
     depositAccountText : Text;
     sweepNote : ?Text;

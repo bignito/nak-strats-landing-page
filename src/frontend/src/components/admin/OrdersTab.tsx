@@ -22,10 +22,12 @@ import {
   Mail,
   PackageCheck,
   RefreshCw,
+  Search,
   ShieldAlert,
   Truck,
 } from "lucide-react";
 import { useMemo, useState } from "react";
+import { CopyButton } from "../CopyButton";
 import { AdminConfirmDialog } from "./AdminConfirmDialog";
 import { AdminPanel } from "./AdminPanel";
 import { AdminTable } from "./AdminTable";
@@ -281,7 +283,10 @@ function OrderDetail({
           </div>
           <div className="flex flex-col gap-1">
             <span className="field-label">Customer email</span>
-            <span className="mono-num">{detail.customerEmail}</span>
+            <span className="flex items-center gap-2">
+              <span className="mono-num">{detail.customerEmail}</span>
+              <CopyButton text={detail.customerEmail} label="Copy email" />
+            </span>
           </div>
           <div className="flex flex-col gap-1">
             <span className="field-label">Shipping details</span>
@@ -466,6 +471,7 @@ function OrderDetail({
  */
 export function OrdersTab({ session }: AdminTabBodyProps) {
   const [filter, setFilter] = useState("all");
+  const [search, setSearch] = useState("");
   const [selectedRef, setSelectedRef] = useState<string | null>(null);
 
   const activeFilter = FILTERS.find((f) => f.id === filter) ?? FILTERS[0];
@@ -476,6 +482,17 @@ export function OrdersTab({ session }: AdminTabBodyProps) {
   } = useAdminListOrders(activeFilter.backend);
 
   const listError = error ? adminErrorMessage(error) : null;
+
+  const visibleOrders = useMemo(() => {
+    if (!orders) return [];
+    const query = search.trim().toLowerCase();
+    if (!query) return orders;
+    return orders.filter(
+      (order) =>
+        order.customerEmail.toLowerCase().includes(query) ||
+        order.reference.toLowerCase().includes(query),
+    );
+  }, [orders, search]);
 
   return (
     <div className="flex flex-col gap-4">
@@ -511,100 +528,138 @@ export function OrdersTab({ session }: AdminTabBodyProps) {
             className="text-xs"
             style={{ color: "var(--muted-foreground)" }}
           >
-            {orders?.length ?? 0} order{(orders?.length ?? 0) === 1 ? "" : "s"}
+            {visibleOrders.length} order
+            {visibleOrders.length === 1 ? "" : "s"}
           </span>
         }
       >
-        {isLoading ? (
-          <div
-            className="flex items-center gap-3 py-8"
-            style={{ color: "var(--muted-foreground)" }}
-            data-ocid="admin.orders.loading_state"
-          >
-            <Loader2 className="w-4 h-4 animate-spin" />
-            Loading orders…
+        <div className="flex flex-col gap-3">
+          <div className="relative">
+            <Search
+              className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2"
+              style={{ color: "var(--muted-foreground)" }}
+              aria-hidden="true"
+            />
+            <input
+              type="search"
+              className="field-input"
+              style={{ paddingLeft: "2.25rem" }}
+              placeholder="Search by customer email or reference…"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              aria-label="Search orders by customer email or reference"
+              data-ocid="admin.orders.search_input"
+            />
           </div>
-        ) : (
-          <AdminTable<AdminOrderView>
-            columns={[
-              {
-                key: "reference",
-                header: "Reference",
-                render: (row) => (
-                  <button
-                    type="button"
-                    className="admin-mono"
-                    style={{
-                      color: "var(--primary)",
-                      cursor: "pointer",
-                      textAlign: "left",
-                    }}
-                    onClick={() => setSelectedRef(row.reference)}
-                    data-ocid={`admin.orders.open_detail.${row.reference}`}
-                  >
-                    {row.reference}
-                  </button>
-                ),
-              },
-              {
-                key: "status",
-                header: "Status",
-                render: (row) => (
-                  <span className={`status-pill ${statusTone(row.status)}`}>
-                    {row.status}
-                  </span>
-                ),
-              },
-              {
-                key: "method",
-                header: "Method",
-                render: (row) => (
-                  <span className="mono-num">
-                    {METHOD_LABELS[row.paymentMethod] ?? row.paymentMethod}
-                  </span>
-                ),
-              },
-              {
-                key: "amount",
-                header: "Amount",
-                align: "right",
-                render: (row) => (
-                  <span className="num">{row.amountOwed.toString()}</span>
-                ),
-              },
-              {
-                key: "items",
-                header: "Items",
-                align: "right",
-                render: (row) => (
-                  <span className="num">{row.itemCount.toString()}</span>
-                ),
-              },
-              {
-                key: "created",
-                header: "Created",
-                render: (row) => (
-                  <span className="num">{formatTimestamp(row.createdAt)}</span>
-                ),
-              },
-              {
-                key: "crypto",
-                header: "Crypto",
-                render: (row) =>
-                  row.cryptoStatus ? (
-                    <span className="mono-num">
-                      {cryptoStatusLabel(row.cryptoStatus)}
-                    </span>
-                  ) : (
-                    <span style={{ color: "var(--muted-foreground)" }}>—</span>
+          {isLoading ? (
+            <div
+              className="flex items-center gap-3 py-8"
+              style={{ color: "var(--muted-foreground)" }}
+              data-ocid="admin.orders.loading_state"
+            >
+              <Loader2 className="w-4 h-4 animate-spin" />
+              Loading orders…
+            </div>
+          ) : (
+            <AdminTable<AdminOrderView>
+              columns={[
+                {
+                  key: "reference",
+                  header: "Reference",
+                  render: (row) => (
+                    <button
+                      type="button"
+                      className="admin-mono"
+                      style={{
+                        color: "var(--primary)",
+                        cursor: "pointer",
+                        textAlign: "left",
+                      }}
+                      onClick={() => setSelectedRef(row.reference)}
+                      data-ocid={`admin.orders.open_detail.${row.reference}`}
+                    >
+                      {row.reference}
+                    </button>
                   ),
-              },
-            ]}
-            rows={orders ?? []}
-            rowKey={(row) => row.reference}
-            emptyMessage="No orders match this filter."
-          />
-        )}
+                },
+                {
+                  key: "status",
+                  header: "Status",
+                  render: (row) => (
+                    <span className={`status-pill ${statusTone(row.status)}`}>
+                      {row.status}
+                    </span>
+                  ),
+                },
+                {
+                  key: "method",
+                  header: "Method",
+                  render: (row) => (
+                    <span className="mono-num">
+                      {METHOD_LABELS[row.paymentMethod] ?? row.paymentMethod}
+                    </span>
+                  ),
+                },
+                {
+                  key: "amount",
+                  header: "Amount",
+                  align: "right",
+                  render: (row) => (
+                    <span className="num">{row.amountOwed.toString()}</span>
+                  ),
+                },
+                {
+                  key: "items",
+                  header: "Items",
+                  align: "right",
+                  render: (row) => (
+                    <span className="num">{row.itemCount.toString()}</span>
+                  ),
+                },
+                {
+                  key: "created",
+                  header: "Created",
+                  render: (row) => (
+                    <span className="num">
+                      {formatTimestamp(row.createdAt)}
+                    </span>
+                  ),
+                },
+                {
+                  key: "crypto",
+                  header: "Crypto",
+                  render: (row) =>
+                    row.cryptoStatus ? (
+                      <span className="mono-num">
+                        {cryptoStatusLabel(row.cryptoStatus)}
+                      </span>
+                    ) : (
+                      <span style={{ color: "var(--muted-foreground)" }}>
+                        —
+                      </span>
+                    ),
+                },
+                {
+                  key: "email",
+                  header: "Customer email",
+                  render: (row) => (
+                    <span className="flex items-center gap-2">
+                      <span className="mono-num">{row.customerEmail}</span>
+                      <CopyButton text={row.customerEmail} label="Copy email" />
+                    </span>
+                  ),
+                },
+              ]}
+              rows={visibleOrders}
+              rowKey={(row) => row.reference}
+              emptyMessage={
+                search.trim()
+                  ? "No orders match this search."
+                  : "No orders match this filter."
+              }
+            />
+          )}
+        </div>
       </AdminPanel>
 
       {/* Per-order detail */}

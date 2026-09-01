@@ -164,5 +164,9 @@ module {
     // payload is the minimum in cents). Crypto orders below this cannot be
     // swept to the treasury after the ledger transfer fee is deducted.
     #belowMinimumOrder : Nat;
+    // ckUSDC checkout is temporarily disabled (the CKUSDC_CHECKOUT_ENABLED
+    // constant is false). New ckUSDC orders are rejected; existing ckUSDC
+    // orders are unaffected.
+    #ckUSDCDisabled;
   };
 };

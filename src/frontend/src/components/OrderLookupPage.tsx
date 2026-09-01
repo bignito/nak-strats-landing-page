@@ -521,14 +521,6 @@ const OrderLookupPage: React.FC<OrderLookupPageProps> = ({
                         </span>
                       </div>
                     )}
-                    <div className="flex justify-between">
-                      <span className="text-[var(--muted-foreground)]">
-                        Contact
-                      </span>
-                      <span className="text-[var(--foreground)]">
-                        {order.customer_email}
-                      </span>
-                    </div>
                   </div>
                 </div>
               </div>

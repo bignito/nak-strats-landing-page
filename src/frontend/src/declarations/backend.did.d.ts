@@ -38,6 +38,7 @@ export interface AdminOrderView {
   'currency' : string,
   'subaccountHex' : string,
   'sweepNote' : [] | [string],
+  'customerEmail' : string,
   'depositAccountText' : string,
 }
 export interface Cell { 'value' : Value, 'name' : string }
@@ -67,6 +68,7 @@ export interface CryptoConfigView {
   'ckUSDC' : LedgerConfig,
   'treasurySubaccount' : [] | [Uint8Array],
   'minimumOrder' : bigint,
+  'ckUSDCEnabled' : boolean,
   'treasuryPrincipal' : Principal,
 }
 export type CryptoPaymentError = { 'alreadyPaid' : null } |
@@ -160,6 +162,7 @@ export interface Order {
 export type OrderError = { 'outOfStock' : [ProductId, string] } |
   { 'unknownVariant' : [ProductId, string] } |
   { 'unknownProduct' : ProductId } |
+  { 'ckUSDCDisabled' : null } |
   { 'emptyOrder' : null } |
   { 'belowMinimumOrder' : bigint } |
   { 'productInactive' : ProductId } |
@@ -224,6 +227,30 @@ export interface ProductVariant {
   'name' : string,
   'size' : string,
   'price' : bigint,
+}
+export interface PublicOrderView {
+  'id' : bigint,
+  'tax' : bigint,
+  'updated_at' : bigint,
+  'total' : bigint,
+  'sweep_note' : [] | [string],
+  'shipping' : bigint,
+  'reference' : string,
+  'created_at' : bigint,
+  'payment_status' : PaymentStatus,
+  'payment_method' : PaymentMethod,
+  'tracking_number' : [] | [string],
+  'currency' : string,
+  'marketing_consent_at' : [] | [bigint],
+  'shipping_status' : ShippingStatus,
+  'has_shipping_details' : boolean,
+  'items' : Array<OrderItem>,
+  'encrypted_shipping' : [] | [Uint8Array],
+  'customer_principal' : [] | [Principal],
+  'shipped_at' : [] | [bigint],
+  'marketing_consent' : boolean,
+  'payment_reference' : [] | [string],
+  'subtotal' : bigint,
 }
 export interface RecheckResult {
   'status' : CryptoPaymentStatus,
@@ -395,10 +422,10 @@ export interface _SERVICE {
   'getIbePublicKey' : ActorMethod<[], Uint8Array>,
   'getMinimumOrder' : ActorMethod<[], bigint>,
   'getMyEncryptedIbeKey' : ActorMethod<[Uint8Array], Uint8Array>,
-  'getMyOrders' : ActorMethod<[], Array<Order>>,
+  'getMyOrders' : ActorMethod<[], Array<PublicOrderView>>,
   'getMyRole' : ActorMethod<[], [] | [Role]>,
   'getNAKPrice' : ActorMethod<[], string>,
-  'getOrderStatus' : ActorMethod<[string], [] | [Order]>,
+  'getOrderStatus' : ActorMethod<[string], [] | [PublicOrderView]>,
   'getPaymentServiceConfig' : ActorMethod<[], PaymentServiceConfigView>,
   'getPaymentStatus' : ActorMethod<[string], PaymentStatus>,
   'getProduct' : ActorMethod<[string], [] | [Product]>,

@@ -249,6 +249,7 @@ module {
       amountOwed = order.total;
       currency = order.currency;
       itemCount = order.items.size();
+      customerEmail = order.customer_email;
       subaccountHex;
       depositAccountText;
       sweepNote = order.sweep_note;
@@ -711,6 +712,12 @@ module {
         let pm = order.payment_method;
         switch pm {
           case (#crypto_ckusdc) {
+            // Temporary-disable flag: while CKUSDC_CHECKOUT_ENABLED is false,
+            // reject ckUSDC checkout sessions so a direct canister call cannot
+            // create a ckUSDC payment. Existing ckUSDC orders are unaffected.
+            if (not Types.CKUSDC_CHECKOUT_ENABLED) {
+              return #err(#paymentFailed("ckUSDC checkout is temporarily disabled"));
+            };
             switch (createPayment(cryptoPayments, order, #ckUSDC, config)) {
               case (#ok payment) { #ok({ reference = payment.reference; url = null }) };
               case (#err e) { #err(#paymentFailed(debug_show(e))) };

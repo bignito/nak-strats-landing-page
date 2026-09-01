@@ -26,6 +26,7 @@ mixin (
       ckUSDC = cryptoConfig.ckUSDC;
       icp = cryptoConfig.icp;
       minimumOrder = minimumOrderState.minimumOrder;
+      ckUSDCEnabled = Types.CKUSDC_CHECKOUT_ENABLED;
     };
   };
 

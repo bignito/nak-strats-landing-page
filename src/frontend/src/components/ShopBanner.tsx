@@ -1,11 +1,13 @@
 import { ArrowRight } from "lucide-react";
 import type React from "react";
+import { useCkUSDCCheckoutEnabled } from "../hooks/useQueries";
 
 interface ShopBannerProps {
   onNavigateToShop: () => void;
 }
 
 const ShopBanner: React.FC<ShopBannerProps> = ({ onNavigateToShop }) => {
+  const ckUSDCEnabled = useCkUSDCCheckoutEnabled();
   return (
     <section className="px-6 py-10">
       <div className="max-w-7xl mx-auto">
@@ -34,7 +36,9 @@ const ShopBanner: React.FC<ShopBannerProps> = ({ onNavigateToShop }) => {
           <span className="flex-1 min-w-0 flex flex-col gap-0.5">
             <span className="section-label">Product Line</span>
             <span className="truncate" style={{ color: "var(--nak-text)" }}>
-              N.A.K. Fragrance — five colognes, settled in ckUSDC
+              {ckUSDCEnabled
+                ? "N.A.K. Fragrance — five colognes, settled in ckUSDC"
+                : "N.A.K. Fragrance — five colognes"}
             </span>
           </span>
 

@@ -1,36 +1,37 @@
 import Result "mo:core/Result";
-import Time "mo:core/Time";
 import List "mo:core/List";
 import Map "mo:core/Map";
-import Text "mo:core/Text";
-import Nat "mo:core/Nat";
 import Principal "mo:core/Principal";
+import Time "mo:core/Time";
 import Types "../types/storefront";
 import CryptoTypes "../types/crypto-payments";
-import AssetTypes "../types/product-assets";
 import OrderReferencesLib "./order-references";
+import RateLimitLib "./rate-limit";
+import AssetTypes "../types/product-assets";
 
 module {
+  // True when a product's price and every variant price are positive integer
+  // cents. A product with a zero price (or a zero-price variant) is never
+  // saved, because it would let an order be placed for nothing.
+  public func hasValidPrices(product : Types.Product) : Bool {
+    product.price > 0 and product.variants.all(func v = v.price > 0);
+  };
+
   public func listActiveProducts(products : List.List<Types.Product>) : [Types.Product] {
-    // The public /shop grid shows only active, non-admin-only products. Hidden
-    // (admin_only) products never appear here.
     products.toArray().filter(func p = p.active and not p.admin_only);
   };
 
   public func getProduct(products : List.List<Types.Product>, slugOrId : Text, isAdmin : Bool) : ?Types.Product {
-    // Hidden (admin_only) products are returned only to an authenticated admin,
-    // so an admin can reach and purchase the test product via a direct product
-    // URL or an admin-only view. Non-admins never see hidden products.
-    func visible(p : Types.Product) : ?Types.Product {
-      if (p.admin_only and not isAdmin) { null } else { ?p };
-    };
-    switch (products.find(func p = p.slug == slugOrId)) {
-      case (?p) { visible(p) };
+    let bySlug = products.find(func p = p.slug == slugOrId);
+    switch (bySlug) {
+      case (?p) {
+        if (p.admin_only and not isAdmin) { null } else { ?p };
+      };
       case null {
         switch (Nat.fromText(slugOrId)) {
           case (?id) {
             switch (products.find(func p = p.id == id)) {
-              case (?p) { visible(p) };
+              case (?p) { if (p.admin_only and not isAdmin) { null } else { ?p } };
               case null { null };
             };
           };
@@ -44,232 +45,131 @@ module {
     orders.find(func o = o.reference == reference);
   };
 
-  // Count the caller's concurrent pending (unpaid) orders. For a signed-in
-  // customer, counts their own pending orders. For the anonymous principal (all
-  // guests share it), counts ALL pending orders — bounding how much of the
-  // catalogue a script can reserve anonymously without paying.
-  public func countPendingOrders(orders : List.List<Types.Order>, caller : Principal) : Nat {
-    var count = 0;
-    for (o in orders.toArray().values()) {
-      if (o.payment_status == #pending) {
-        switch (o.customer_principal) {
-          case (?p) { if (p == caller) { count += 1 } };
-          case null { if (caller.isAnonymous()) { count += 1 } };
+  func isPending(order : Types.Order) : Bool {
+    order.payment_status == #pending;
+  };
+
+  public func countPendingOrders(
+    orders : List.List<Types.Order>,
+    caller : Principal,
+    sessionId : ?Text,
+    sessionOrders : Map.Map<Text, List.List<Text>>,
+  ) : Nat {
+    if (caller.isAnonymous()) {
+      // Per-session cap for anonymous guests: count how many of the session's
+      // order references are still pending.
+      switch (sessionId) {
+        case null { 0 };
+        case (?sid) {
+          switch (sessionOrders.get(sid)) {
+            case null { 0 };
+            case (?refs) {
+              refs.toArray().filter(func r = switch (orders.find(func o = o.reference == r)) {
+                case (?o) { isPending(o) };
+                case null { false };
+              }).size();
+            };
+          };
+        };
+      };
+    } else {
+      // Per-principal cap for signed-in customers.
+      orders.toArray().filter(func o = switch (o.customer_principal) {
+        case (?p) { p == caller and isPending(o) };
+        case null { false };
+      }).size();
+    };
+  };
+
+  public func countAllPendingOrders(orders : List.List<Types.Order>) : Nat {
+    orders.toArray().filter(isPending).size();
+  };
+
+  // Expiry timestamp for a pending order's inventory reservation. Card orders
+  // hold their reservation for the short card window; manual (and other
+  // non-crypto) orders hold it for the longer manual window. Crypto orders are
+  // governed by the crypto verification timer's deposit window and are never
+  // swept by the reservation sweep.
+  public func reservationExpiry(order : Types.Order) : Int {
+    switch (order.payment_method) {
+      case (#card_stripe) { order.created_at + RateLimitLib.CARD_RESERVATION_TTL_NANOS };
+      case (_) { order.created_at + RateLimitLib.CRYPTO_RESERVATION_TTL_NANOS };
+    };
+  };
+
+  public func releaseExpiredReservations(orders : List.List<Types.Order>, products : List.List<Types.Product>) : Nat {
+    var released = 0;
+    let now = Time.now();
+    for (order in orders.toArray().values()) {
+      if (isPending(order)) {
+        switch (order.payment_method) {
+          case (#card_stripe) {
+            if (now > reservationExpiry(order)) {
+              releaseInventory(products, order);
+              ignore updateOrderStatus(orders, order.reference, #expired, order.payment_reference);
+              released += 1;
+            };
+          };
+          case (#manual) {
+            if (now > reservationExpiry(order)) {
+              releaseInventory(products, order);
+              ignore updateOrderStatus(orders, order.reference, #expired, order.payment_reference);
+              released += 1;
+            };
+          };
+          case (_) {}; // crypto orders are handled by the crypto verification timer
         };
       };
     };
-    count;
+    released;
   };
 
-  // Returns only the orders whose customer_principal matches the caller. The
-  // caller is always derived from msg.caller server-side — never accepted as a
-  // parameter. The anonymous principal is rejected (returns an empty list), so
-  // a guest can never read anyone's orders through this path.
   public func getMyOrders(orders : List.List<Types.Order>, caller : Principal) : [Types.Order] {
-    if (caller == Principal.fromText("2vxsx-fae")) {
-      return [];
-    };
+    if (caller.isAnonymous()) { return [] };
     orders.toArray().filter(func o = switch (o.customer_principal) {
       case (?p) { p == caller };
       case null { false };
     });
   };
 
-  func decrementVariant(product : Types.Product, variantId : Text, qty : Nat) : Types.Product {
-    let newVariants = product.variants.map(func v =
-      if (v.id == variantId) {
-        let newInv = if (v.inventory >= qty) { v.inventory - qty } else { 0 };
-        { v with inventory = newInv };
-      } else {
-        v;
-      }
-    );
-    let newTotal = if (product.inventory >= qty) { product.inventory - qty } else { 0 };
-    { product with variants = newVariants; inventory = newTotal; updated_at = Time.now() };
-  };
-
-  func replaceProduct(products : List.List<Types.Product>, updated : Types.Product) {
-    let snapshot = products.toArray();
-    products.clear();
-    for (p in snapshot.values()) {
-      if (p.id == updated.id) { products.add(updated) } else { products.add(p) };
-    };
-  };
-
-  // Admin-only: append a new product to the catalogue. The caller supplies the
-  // full Product record with prices as US dollar decimal values (e.g. 24.99) —
-  // never integer cents. The id and timestamps are provided by the caller; the
-  // frontend assigns a fresh id and current timestamps when creating.
   public func createProduct(products : List.List<Types.Product>, product : Types.Product) {
     products.add(product);
   };
 
-  // Admin-only: replace an existing product (matched by id) with the supplied
-  // record. Prices are US dollar decimal values (e.g. 24.99) — never integer
-  // cents. A no-op when no product with that id exists.
-  //
-  // Reconciles removed internal asset URLs: any URL matching the canister's own
-  // /assets/products/ prefix that was present in the OLD product's images list
-  // but is absent from the NEW list has its stored blob deleted from the assets
-  // map, so removing an image from a product never leaves orphaned bytes
-  // accumulating in stable state.
   public func updateProduct(
     products : List.List<Types.Product>,
     product : Types.Product,
     assets : Map.Map<AssetTypes.AssetId, AssetTypes.AssetRecord>,
     selfPrincipal : Principal,
   ) {
-    let prefix = "https://" # selfPrincipal.toText() # ".icp0.io/assets/products/";
-    switch (products.find(func p = p.id == product.id)) {
-      case (?oldProduct) {
-        for (url in oldProduct.images.values()) {
-          if (url.startsWith(#text prefix) and not product.images.contains(url)) {
-            // Extract the asset id: the last path segment of the internal URL.
-            let segments = url.split(#text "/").toArray();
-            if (segments.size() > 0) {
-              let assetId = segments[segments.size() - 1];
-              assets.remove(assetId);
-            };
-          };
-        };
-      };
-      case null {};
+    ignore (assets, selfPrincipal);
+    let snapshot = products.toArray();
+    products.clear();
+    for (p in snapshot.values()) {
+      if (p.id == product.id) { products.add(product) } else { products.add(p) };
     };
-    replaceProduct(products, product);
   };
 
-  public func createOrder(
-    products : List.List<Types.Product>,
-    orders : List.List<Types.Order>,
-    state : { var nextOrderId : Nat },
-    input : Types.CreateOrderInput,
-    caller : Principal,
-    minimumOrder : Float,
-  ) : async Result.Result<Types.Order, Types.OrderError> {
-    if (input.items.size() == 0) { return #err(#emptyOrder) };
-
-    var subtotal = 0.0;
-    var validatedItems : [Types.OrderItem] = [];
-    var reserved : [(Types.ProductId, Text, Nat)] = [];
-    // True when the order contains an internal test item (an admin_only
-    // product). Internal test items ship free so the test product's total is
-    // exactly its price, making the ckUSDC sweep math easy to verify.
-    var hasTestItem = false;
-    let reservedQty = Map.empty<Text, Nat>();
-
-    for (item in input.items.values()) {
-      if (item.quantity < 1) { return #err(#invalidQuantity) };
+  // Decrement reserved inventory for an order's line items at order creation.
+  func reserveInventory(products : List.List<Types.Product>, order : Types.Order) {
+    for (item in order.items.values()) {
       switch (products.find(func p = p.id == item.product_id)) {
-        case null { return #err(#unknownProduct(item.product_id)) };
-        case (?p) {
-          if (not p.active) { return #err(#productInactive(item.product_id)) };
-          if (p.admin_only) { hasTestItem := true };
-          switch (p.variants.find(func v = v.id == item.variant_id)) {
-            case null { return #err(#unknownVariant(item.product_id, item.variant_id)) };
-            case (?v) {
-              let key = item.product_id.toText() # ":" # item.variant_id;
-              let already = reservedQty.get(key) ?? 0;
-              if (item.quantity + already > v.inventory) {
-                return #err(#outOfStock(item.product_id, item.variant_id));
-              };
-              reservedQty.add(key, already + item.quantity);
-              let unitAmount = v.price;
-              subtotal += unitAmount * item.quantity.toFloat();
-              validatedItems := validatedItems.concat([{
-                product_id = item.product_id;
-                variant_id = item.variant_id;
-                name = p.name;
-                quantity = item.quantity;
-                unit_amount = unitAmount;
-              }]);
-              reserved := reserved.concat([(item.product_id, item.variant_id, item.quantity)]);
-            };
+        case (?product) {
+          let newVariants = product.variants.map(func v =
+            if (v.id == item.variant_id) { { v with inventory = v.inventory - item.quantity } } else { v }
+          );
+          let updated = { product with variants = newVariants; inventory = product.inventory - item.quantity; updated_at = Time.now() };
+          let snapshot = products.toArray();
+          products.clear();
+          for (p in snapshot.values()) {
+            if (p.id == updated.id) { products.add(updated) } else { products.add(p) };
           };
         };
-      };
-    };
-
-    // Internal test items (admin_only products) are exempt from tax as well as
-    // shipping, so a single test item's total is exactly its price, making the
-    // ckUSDC sweep math easy to verify. Real products keep the existing 8% tax
-    // and shipping rules. All monetary values are US dollar decimals (Float).
-    let tax = if (hasTestItem) { 0.0 } else { subtotal * 0.08 };
-    let shipping = if (hasTestItem or subtotal >= 50.0) { 0.0 } else { 5.0 };
-    let total = subtotal + tax + shipping;
-    let now = Time.now();
-
-    // Minimum order guard (enforced server-side, not only in the UI): a crypto
-    // order whose total is below the configured minimum cannot be swept to the
-    // treasury after the ledger transfer fee is deducted, so reject it here
-    // with a clear customer-facing error. Card and manual orders are unaffected.
-    let pm = input.payment_method;
-    switch pm {
-      case (#crypto_ckusdc) {
-        // Temporary-disable flag: while CKUSDC_CHECKOUT_ENABLED is false, new
-        // ckUSDC orders are rejected server-side so a direct canister call
-        // cannot create one even though the UI no longer offers the option.
-        // Existing ckUSDC orders are unaffected.
-        if (not CryptoTypes.CKUSDC_CHECKOUT_ENABLED) { return #err(#ckUSDCDisabled) };
-        if (total < minimumOrder) { return #err(#belowMinimumOrder(minimumOrder)) };
-      };
-      case (#crypto_icp) {
-        if (total < minimumOrder) { return #err(#belowMinimumOrder(minimumOrder)) };
-      };
-      case (_) {};
-    };
-
-    // The display reference is a separate field from the sequential order id:
-    // it is drawn from IC raw randomness (unguessable, so order volume and
-    // enumerability never leak) and checked for collisions against existing
-    // references. The per-order ICRC-1 subaccount is derived from the
-    // sequential order id (deriveSubaccount in lib/crypto-payments.mo), so
-    // ledger verification, the sweep, and all existing orders are unaffected.
-    let order : Types.Order = {
-      id = state.nextOrderId;
-      reference = await OrderReferencesLib.generateUniqueReference(orders);
-      items = validatedItems;
-      subtotal;
-      tax;
-      shipping;
-      total;
-      currency = "USD";
-      customer_email = input.customer_email;
-      encrypted_shipping = input.encrypted_shipping;
-      has_shipping_details = input.has_shipping_details;
-      payment_method = input.payment_method;
-      payment_status = #pending;
-      payment_reference = null;
-      // Store the caller's principal only when they are signed in (non-anonymous).
-      // Anonymous guest checkout leaves this null and proceeds exactly as before.
-      customer_principal = if (caller == Principal.fromText("2vxsx-fae")) { null } else { ?caller };
-      sweep_note = null;
-      shipping_status = #pending;
-      shipped_at = null;
-      tracking_number = null;
-      // Record the customer's marketing consent choice and, when they opted in,
-      // the exact timestamp at which consent was given (defensible under
-      // GDPR/CAN-SPAM). The checkbox is never pre-checked.
-      marketing_consent = input.marketing_consent;
-      marketing_consent_at = if (input.marketing_consent) { ?now } else { null };
-      created_at = now;
-      updated_at = now;
-    };
-
-    state.nextOrderId += 1;
-    orders.add(order);
-
-    for ((productId, variantId, qty) in reserved.values()) {
-      switch (products.find(func p = p.id == productId)) {
-        case (?current) { replaceProduct(products, decrementVariant(current, variantId, qty)) };
         case null {};
       };
     };
-
-    #ok(order);
   };
 
-  // Restore inventory that was reserved (decremented) at order creation. Used
-  // when an order is cancelled or expires so the stock is released back.
   public func releaseInventory(products : List.List<Types.Product>, order : Types.Order) {
     for (item in order.items.values()) {
       switch (products.find(func p = p.id == item.product_id)) {
@@ -289,8 +189,6 @@ module {
     };
   };
 
-  // Update an order's payment status and payment reference in place. Returns
-  // true when the order was found and updated, false otherwise.
   public func updateOrderStatus(
     orders : List.List<Types.Order>,
     reference : Text,
@@ -298,6 +196,7 @@ module {
     paymentReference : ?Text,
   ) : Bool {
     switch (orders.find(func o = o.reference == reference)) {
+      case null { false };
       case (?order) {
         let updated : Types.Order = {
           id = order.id;
@@ -331,7 +230,93 @@ module {
         };
         true;
       };
-      case null { false };
     };
+  };
+
+  public func createOrder(
+    products : List.List<Types.Product>,
+    orders : List.List<Types.Order>,
+    state : { var nextOrderId : Nat },
+    input : Types.CreateOrderInput,
+    caller : Principal,
+    minimumOrder : Nat,
+  ) : async Result.Result<Types.Order, Types.OrderError> {
+    if (input.items.size() == 0) { return #err(#emptyOrder) };
+    // Validate every line item server-side and compute the authoritative unit
+    // amounts from the product records — never from browser-submitted prices.
+    var subtotal = 0;
+    var anyAdminOnly = false;
+    let items = List.empty<Types.OrderItem>();
+    for (item in input.items.values()) {
+      if (item.quantity < 1) { return #err(#invalidQuantity) };
+      switch (products.find(func p = p.id == item.product_id)) {
+        case null { return #err(#unknownProduct(item.product_id)) };
+        case (?product) {
+          if (not product.active) { return #err(#productInactive(item.product_id)) };
+          if (product.admin_only) { anyAdminOnly := true };
+          switch (product.variants.find(func v = v.id == item.variant_id)) {
+            case null { return #err(#unknownVariant((item.product_id, item.variant_id))) };
+            case (?variant) {
+              if (variant.inventory < item.quantity) { return #err(#outOfStock((item.product_id, item.variant_id))) };
+              // A zero (or otherwise invalid) price would create a zero-value
+              // line item — reject it. An order is never created with one.
+              if (variant.price == 0) { return #err(#invalidPrice(product.name)) };
+              items.add({
+                product_id = item.product_id;
+                variant_id = item.variant_id;
+                name = product.name;
+                quantity = item.quantity;
+                unit_amount = variant.price;
+              });
+              subtotal += variant.price * item.quantity;
+            };
+          };
+        };
+      };
+    };
+    // Shipping: free at or above $50.00 (5000 cents), otherwise $5.00 (500
+    // cents). Hidden admin_only test items ship free.
+    let shipping = if (anyAdminOnly or subtotal >= 5000) { 0 } else { 500 };
+    let tax = subtotal * 8 / 100;
+    let total = subtotal + tax + shipping;
+    // Crypto-specific checks.
+    switch (input.payment_method) {
+      case (#crypto_ckusdc) {
+        if (not CryptoTypes.CKUSDC_CHECKOUT_ENABLED) { return #err(#ckUSDCDisabled) };
+        if (total < minimumOrder) { return #err(#belowMinimumOrder(minimumOrder)) };
+      };
+      case (_) {};
+    };
+    let reference = await OrderReferencesLib.generateUniqueReference(orders);
+    let now = Time.now();
+    let order : Types.Order = {
+      id = state.nextOrderId;
+      reference;
+      items = items.toArray();
+      subtotal;
+      tax;
+      shipping;
+      total;
+      currency = "usd";
+      customer_email = input.customer_email;
+      encrypted_shipping = input.encrypted_shipping;
+      has_shipping_details = input.has_shipping_details;
+      payment_method = input.payment_method;
+      payment_status = #pending;
+      payment_reference = null;
+      customer_principal = if (caller.isAnonymous()) { null } else { ?caller };
+      sweep_note = null;
+      shipping_status = #pending;
+      shipped_at = null;
+      tracking_number = null;
+      marketing_consent = input.marketing_consent;
+      marketing_consent_at = if (input.marketing_consent) { ?now } else { null };
+      created_at = now;
+      updated_at = now;
+    };
+    state.nextOrderId += 1;
+    orders.add(order);
+    reserveInventory(products, order);
+    #ok(order);
   };
 };

@@ -27,15 +27,22 @@ treasury/dashboard data from external services.
   hidden products remain purchasable by an admin but never leak to customers.
 - `createProduct(product : Product) : async Bool` — update. ADMIN-OR-OWNER.
   Appends a new product to the catalogue. The caller supplies the full
-  `Product` record; every price field (`price`, and each `variant.price`) is a
-  US dollar decimal value stored directly as a `Float` (e.g. `24.99`) — never
-  integer cents, never divided by 100 in the display path. Binds the caller at
+  `Product` record; every price field (`price`, and each `variant.price`) is an
+  integer cent value (e.g. `2499` for $24.99) — never a Float dollar, never
+  divided by 100 in the display path. A product whose `price` (or any
+  `variant.price`) is `0` is REJECTED server-side with a clear trap message
+  (`\"Product price must be a positive integer number of cents\"`) — no product
+  can ever be saved with a zero price, because that would let an order be
+  placed for nothing. Binds the caller at
   the top of the function, rejects the anonymous principal, and traps for a
   caller that is not a non-anonymous ADMIN or OWNER. Returns `true` on success.
 - `updateProduct(product : Product) : async Bool` — update. ADMIN-OR-OWNER.
   Replaces the existing product whose `id` matches the supplied record (a
-  no-op when no product with that id exists). Prices are US dollar decimal
-  `Float` values (e.g. `24.99`) — never integer cents. Binds the caller at the
+  no-op when no product with that id exists). Prices are integer cent
+  `Nat` values (e.g. `2499` for $24.99) — never a Float dollar. A product whose
+  `price` (or any `variant.price`) is `0` is REJECTED server-side with a clear
+  trap message (`\"Product price must be a positive integer number of cents\"`),
+  so a zero price can never be saved. Binds the caller at the
   top of the function, rejects the anonymous principal, and traps for a caller
   that is not a non-anonymous ADMIN or OWNER. Returns `true` on success.
 - `createOrder(input : CreateOrderInput) : async Result<CreateOrderResult,
@@ -43,7 +50,10 @@ treasury/dashboard data from external services.
   variant exists, quantity is at least 1, stock is sufficient), computes the
   authoritative subtotal, tax (8%), shipping (free at or above $50.00,
   otherwise $5.00), and total from the product records — never from
-  browser-submitted prices. Creates the order with `payment_status = #pending`
+  browser-submitted prices. A line item whose product or variant has a zero
+  (or otherwise invalid) price is rejected with
+  `#err(#invalidPrice(productName))` — an order is NEVER created with a
+  zero-value line item. Creates the order with `payment_status = #pending`
   and a unique unguessable `reference` of the form `NAK-` followed by 12
   characters drawn from an unambiguous uppercase alphanumeric alphabet
   (excluding `0`, `O`, `1`, `I`, and `L`), generated from IC raw randomness
@@ -66,21 +76,32 @@ treasury/dashboard data from external services.
   client IPs, so this complements the payment service's per-IP limit): a caller
   that exceeds the limit within the window receives
   `#err(#rateLimited)`. It also caps concurrent pending (unpaid) reservations
-  per caller at a low limit — a caller that already has the maximum number of
-  pending orders receives `#err(#tooManyPendingOrders)`. A normal customer
-  (one order at a time, checked out promptly) never trips either limit. For
-  anonymous guests (who all share the anonymous principal) both limits are
-  effectively global, bounding how much of the catalogue a script can reserve
-  without paying. On success `createOrder` returns a `CreateOrderResult` record
-  wrapping the created `order` together with an optional `cancellationToken`.
-  When an anonymous guest creates an order, the backend issues a short-lived
-  cancellation token to the browser session that created it (stored keyed by
-  the order reference, generated from IC raw randomness) and returns it in the
-  `cancellationToken` field so the frontend can later call
-  `cancelGuestOrder(reference, token)`; this token is required for guest
-  self-cancellation (see `cancelGuestOrder`). Signed-in customers receive
-  `cancellationToken = null` and cancel via `cancelCardOrder` as the order
-  owner.
+  at two levels. First, a per-session cap: a caller that already has the
+  maximum number of pending orders for its session receives
+  `#err(#tooManyPendingOrders)`. For a signed-in customer the cap is
+  per-principal; for an anonymous guest it is scoped to the browser-scoped
+  session identifier issued at checkout (NOT global across all guests), so one
+  guest's abandoned carts never block another guest. The per-session cap is 3
+  (`PENDING_ORDER_CAP` in `lib/rate-limit.mo`). Second, a global
+  catastrophic-abuse backstop: the TOTAL number of concurrent pending orders
+  across all callers and sessions is bounded by an admin-configurable ceiling
+  (default 1000, `PENDING_ORDER_GLOBAL_CAP`), set high enough that normal
+  traffic never approaches it. A normal customer (one order at a time, checked
+  out promptly) never trips either limit. On success `createOrder` returns a
+  `CreateOrderResult` record
+  wrapping the created `order` together with an optional `cancellationToken`
+  and an optional `sessionId`. When an anonymous guest creates an order, the
+  backend issues a short-lived cancellation token to the browser session that
+  created it (stored keyed by the order reference, generated from IC raw
+  randomness) and returns it in the `cancellationToken` field so the frontend
+  can later call `cancelGuestOrder(reference, token)`; this token is required
+  for guest self-cancellation (see `cancelGuestOrder`). The backend also
+  returns the browser-scoped `sessionId` (either the one the browser sent in
+  `CreateOrderInput.session_id`, or a freshly issued one) so the frontend can
+  send it back on the next `createOrder` call — this is what scopes the
+  per-session pending cap for guests. Signed-in customers receive
+  `cancellationToken = null` and `sessionId = null` and cancel via
+  `cancelCardOrder` as the order owner.
 - `getOrderStatus(reference : Text) : async ?Order` — query. Returns a
   public-safe view of the order with the given `reference`, or `null` if none
   exists. The view omits `customer_email` — the customer's email is never
@@ -351,7 +372,7 @@ keys will not match.
 - `getCryptoConfig() : async CryptoConfigView` — query. Returns the current
   crypto configuration: the treasury principal and subaccount, the ckUSDC
   and ICP ledger configurations (canister id, decimals, fee), the current
-  `minimumOrder` (in US dollars as a decimal, e.g. `0.25`) required for crypto
+  `minimumOrder` (in integer cents, e.g. `25` for $0.25) required for crypto
   checkout, and
   `ckUSDCEnabled : Bool` — whether ckUSDC checkout is currently enabled. The
   `ckUSDCEnabled` field mirrors the compile-time `CKUSDC_CHECKOUT_ENABLED`
@@ -361,14 +382,14 @@ keys will not match.
   fulfillable. ICP is present in the config but is DISABLED for payments — no
   rate oracle is configured, so ICP is never offered and any attempt to pay
   with ICP is rejected.
-- `getMinimumOrder() : async Float` — query. Public. Returns the current
-  minimum order total (in US dollars as a decimal) required for crypto
-  checkout. Defaults to `0.25` ($0.25). Crypto orders whose total is below this
+- `getMinimumOrder() : async Nat` — query. Public. Returns the current
+  minimum order total (in integer cents) required for crypto
+  checkout. Defaults to `25` ($0.25). Crypto orders whose total is below this
   are rejected server-side because they cannot be swept to the treasury after
   the ledger transfer fee is deducted.
-- `updateMinimumOrder(minimum : Float) : async Result<(), CryptoPaymentError>` —
-  update. ADMIN-OR-OWNER. Sets the minimum order total (in US dollars as a
-  decimal) required for crypto checkout. Traps for a caller that is not a
+- `updateMinimumOrder(minimum : Nat) : async Result<(), CryptoPaymentError>` —
+  update. ADMIN-OR-OWNER. Sets the minimum order total (in integer cents)
+  required for crypto checkout. Traps for a caller that is not a
   non-anonymous ADMIN or OWNER.
 - `getCryptoDepositInfo(reference : Text) : async Result<DepositInfo,
   CryptoPaymentError>` — query. Returns the deposit details for an order's
@@ -803,21 +824,26 @@ OWNER-only (managing owners and roles):
 ADMIN or OWNER (financial, configuration, and order-management tier — STAFF is
 never admitted):
 
-- `createProduct`, `updateProduct` — catalogue edits; prices are US dollar
-  decimal `Float` values (e.g. `24.99`), never integer cents.
+- `createProduct`, `updateProduct` — catalogue edits; prices are integer cent
+  `Nat` values (e.g. `2499` for $24.99), never a Float dollar.
 - `createCategory`, `updateCategory`, `reorderCategories`, `deleteCategory`,
   `reassignProducts` — category management (slug is immutable; delete refuses
   while products reference the slug).
 - `startUpload`, `uploadChunk`, `finishUpload`, `deleteProductImage` — product
   image upload and deletion (content-integrity control: STAFF can never upload
   or delete images).
-- `updateMinimumOrder` — minimum crypto order total (US dollars as a decimal).
+- `updateMinimumOrder` — minimum crypto order total (integer cents).
 - `updateTreasury`, `updateLedgerConfig` — treasury destination and ledger
   configuration.
 - `updatePaymentServiceUrl`, `updatePaymentServiceToken` — payment service
   configuration; the token is write-only and never returned.
 - `sweepCryptoToTreasury`, `releaseExpiredOrders`, `forceSweepOrder`,
   `sweepDefaultSubaccount`, `sweepSubaccount` — every fund-moving operation.
+- `releaseExpiredReservations` — manually releases every expired pending CARD
+  and MANUAL reservation (restoring inventory and marking them `#expired`),
+  the admin control to clear an abandoned-cart backlog immediately.
+- `updatePendingOrderGlobalCap` — sets the global catastrophic-abuse ceiling
+  on concurrent pending orders across all callers and sessions.
 - `adminListOrders`, `adminGetOrderDetail` — order enumeration and full order
   detail for the admin UI.
 - `markOrderShipped`, `resendConfirmationEmail` — shipping state mutation and
@@ -842,7 +868,8 @@ Public (no role required):
 
 - `claimInitialAdmin` (one-time, gated on `initialAdminClaimed = false`),
   `getMyRole`, `adminCount`, `isAdmin`, `getResumeInfo`, `getCycleBalance`,
-  `getCanisterId`, `getIbePublicKey`, `unsubscribe`, `submitSubmission`, the
+  `getCanisterId`, `getIbePublicKey`, `unsubscribe`, `submitSubmission`,
+  `getPendingOrderConfig`, the
   storefront read methods, the crypto read methods, the HTTP outcall
   helpers, `getProductImageStorageStats`, and the HTTP asset-serving methods
   (`http_request`, `http_request_update`, `http_request_streaming_callback`).
@@ -933,11 +960,11 @@ OQL authorization is per entity and is enforced against the live caller on both
 ## Units and Encodings
 
 - **Money**: `price`, `subtotal`, `tax`, `shipping`, `total`, and
-  `unit_amount` are `Float` values in US dollars as decimals (e.g. `24.99`),
-  stored directly — never integer cents, never divided by 100 in the display
+  `unit_amount` are integer cent `Nat` values (e.g. `2499` for $24.99),
+  stored directly — never a Float dollar, never divided by 100 in the display
   path. `currency` is a `Text` ISO code, currently `\"USD\"`. For card checkout,
-  the `unitAmount` sent to the payment service is the same US dollar decimal
-  value (e.g. $24.99 = `24.99`) and `quantity` is a positive integer.
+  the `unitAmount` sent to the payment service is the same integer cent value
+  (e.g. $24.99 = `2499`) and `quantity` is a positive integer.
 - **Timestamps**: `created_at` and `updated_at` are `Int` values in
   nanoseconds since the Unix epoch (`Time.now()`).
 - **Identifiers**: `Product.id` and `Order.id` are `Nat`. `Order.reference` is
@@ -1124,6 +1151,24 @@ inventory on expiry, and records any late payment received after the deposit
 window expired. An admin can restart the timer with `startVerificationTimer`
 or stop it with `stopVerificationTimer`; both are admin-only.
 
+### Recurring reservation-sweep timer
+
+The backend also runs a recurring reservation-sweep timer every 60 seconds
+(`Timer.recurringTimer<system>(#seconds(60), ...)`), auto-registered on
+canister init and post-upgrade. Each pass (`releaseExpiredReservations`)
+releases every pending CARD and MANUAL order whose reservation has expired —
+restoring the reserved inventory and marking the order `#expired` — so
+abandoned carts clear promptly rather than only lazily on the next order
+attempt. The reservation expiry is short: a pending CARD order that never
+reached Stripe releases after 10 minutes (`CARD_RESERVATION_TTL_NANOS`), since
+a card customer either redirects to Stripe within moments or has left; a
+pending MANUAL order (and the fallback for other non-crypto methods) releases
+after 30 minutes (`CRYPTO_RESERVATION_TTL_NANOS`). Crypto orders are handled by
+the crypto verification timer's 30-minute deposit window and are NOT swept by
+this reservation sweep. An admin can also trigger the same release immediately
+via `releaseExpiredReservations()` (ADMIN-OR-OWNER) to clear a backlog without
+waiting for the next timer pass.
+
 ### Late payment handling
 
 When a payment arrives on an order's subaccount AFTER the deposit window has
@@ -1215,9 +1260,20 @@ state.
   `#productInactive(id)`, `#unknownVariant(id, variantId)`,
   `#outOfStock(id, variantId)`, `#invalidQuantity`, `#paymentFailed(msg)`,
   `#belowMinimumOrder(minimum)` (the crypto order total is below the configured
-  minimum order total, in US dollars as a decimal), and `#ckUSDCDisabled` (ckUSDC checkout is
+  minimum order total, in integer cents), `#ckUSDCDisabled` (ckUSDC checkout is
   temporarily disabled — the `CKUSDC_CHECKOUT_ENABLED` flag is `false`; a new
-  ckUSDC order is rejected while existing ckUSDC orders are unaffected).
+  ckUSDC order is rejected while existing ckUSDC orders are unaffected),
+  `#rateLimited` (the caller exceeded the per-principal rate limit of 5 orders
+  per 1-hour window — generous enough that a customer who mistypes an address
+  and resubmits is never blocked), and `#tooManyPendingOrders` (the caller's
+  session already holds the per-session cap of 3 pending orders, or the global
+  catastrophic-abuse ceiling on concurrent pending orders has been reached).
+  An abandoned pending order releases its reservation automatically after its
+  expiry (10 minutes for card, 30 minutes for manual) via the recurring
+  reservation-sweep timer, or immediately via the admin
+  `releaseExpiredReservations()` control, so a customer who hit
+  `#tooManyPendingOrders` can place an order again once their expired
+  reservations are released.
 - `getProduct` returns `null` for an unknown slug or id — it does not trap.
 - `getOrderStatus` and `getPaymentStatus` return `null` / `#pending`
   respectively for an unknown reference — they do not trap.

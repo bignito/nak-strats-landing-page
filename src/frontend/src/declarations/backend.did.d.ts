@@ -17,7 +17,7 @@ export interface AdminOrderDetail {
   'cryptoStatus' : [] | [CryptoPaymentStatus],
   'createdAt' : bigint,
   'reference' : string,
-  'amountOwed' : number,
+  'amountOwed' : bigint,
   'updatedAt' : bigint,
   'currency' : string,
   'hasShippingDetails' : boolean,
@@ -34,7 +34,7 @@ export interface AdminOrderView {
   'createdAt' : bigint,
   'itemCount' : bigint,
   'reference' : string,
-  'amountOwed' : number,
+  'amountOwed' : bigint,
   'currency' : string,
   'subaccountHex' : string,
   'sweepNote' : [] | [string],
@@ -73,6 +73,7 @@ export type ConsentError = { 'alreadyUnsubscribed' : null } |
   { 'invalidResponse' : string };
 export interface ConsentListExport { 'csv' : string }
 export interface CreateOrderInput {
+  'session_id' : [] | [string],
   'payment_method' : PaymentMethod,
   'has_shipping_details' : boolean,
   'items' : Array<CreateOrderItem>,
@@ -88,12 +89,13 @@ export interface CreateOrderItem {
 export interface CreateOrderResult {
   'order' : Order,
   'cancellationToken' : [] | [string],
+  'sessionId' : [] | [string],
 }
 export interface CryptoConfigView {
   'icp' : LedgerConfig,
   'ckUSDC' : LedgerConfig,
   'treasurySubaccount' : [] | [Uint8Array],
-  'minimumOrder' : number,
+  'minimumOrder' : bigint,
   'ckUSDCEnabled' : boolean,
   'treasuryPrincipal' : Principal,
 }
@@ -107,7 +109,7 @@ export type CryptoPaymentError = { 'alreadyPaid' : null } |
   { 'notCryptoOrder' : null } |
   { 'unauthorized' : null } |
   { 'invalidConfig' : string } |
-  { 'belowMinimumOrder' : number };
+  { 'belowMinimumOrder' : bigint };
 export type CryptoPaymentStatus = {
     'overpayment' : { 'expected' : bigint, 'received' : bigint }
   } |
@@ -174,11 +176,11 @@ export interface LedgerConfig {
 }
 export interface Order {
   'id' : bigint,
-  'tax' : number,
+  'tax' : bigint,
   'updated_at' : bigint,
-  'total' : number,
+  'total' : bigint,
   'sweep_note' : [] | [string],
-  'shipping' : number,
+  'shipping' : bigint,
   'reference' : string,
   'created_at' : bigint,
   'payment_status' : PaymentStatus,
@@ -195,22 +197,23 @@ export interface Order {
   'shipped_at' : [] | [bigint],
   'marketing_consent' : boolean,
   'payment_reference' : [] | [string],
-  'subtotal' : number,
+  'subtotal' : bigint,
 }
 export type OrderError = { 'outOfStock' : [ProductId, string] } |
+  { 'invalidPrice' : string } |
   { 'unknownVariant' : [ProductId, string] } |
   { 'unknownProduct' : ProductId } |
   { 'ckUSDCDisabled' : null } |
   { 'emptyOrder' : null } |
   { 'rateLimited' : null } |
-  { 'belowMinimumOrder' : number } |
+  { 'belowMinimumOrder' : bigint } |
   { 'productInactive' : ProductId } |
   { 'paymentFailed' : string } |
   { 'invalidQuantity' : null } |
   { 'tooManyPendingOrders' : null };
 export interface OrderItem {
   'product_id' : ProductId,
-  'unit_amount' : number,
+  'unit_amount' : bigint,
   'name' : string,
   'variant_id' : string,
   'quantity' : bigint,
@@ -221,7 +224,7 @@ export interface OrderRecoveryView {
   'expiresAt' : [] | [bigint],
   'reference' : string,
   'depositAccount' : [] | [DepositAccount],
-  'amountOwed' : number,
+  'amountOwed' : bigint,
   'liveBalance' : bigint,
 }
 export type PaymentError = { 'invalidOrder' : null } |
@@ -258,7 +261,7 @@ export interface Product {
   'currency' : string,
   'admin_only' : boolean,
   'category' : string,
-  'price' : number,
+  'price' : bigint,
   'images' : Array<string>,
 }
 export type ProductId = bigint;
@@ -267,7 +270,7 @@ export interface ProductVariant {
   'inventory' : bigint,
   'name' : string,
   'size' : string,
-  'price' : number,
+  'price' : bigint,
 }
 export interface PublicOrderView {
   'id' : bigint,
@@ -507,7 +510,7 @@ export interface _SERVICE {
   'getDefaultSubaccountBalance' : ActorMethod<[], Result_17>,
   'getEncryptionRecipients' : ActorMethod<[], Array<Principal>>,
   'getIbePublicKey' : ActorMethod<[], Uint8Array>,
-  'getMinimumOrder' : ActorMethod<[], number>,
+  'getMinimumOrder' : ActorMethod<[], bigint>,
   'getMyEncryptedIbeKey' : ActorMethod<[Uint8Array], Uint8Array>,
   'getMyOrders' : ActorMethod<[], Array<PublicOrderView>>,
   'getMyRole' : ActorMethod<[], [] | [Role]>,
@@ -515,6 +518,10 @@ export interface _SERVICE {
   'getOrderStatus' : ActorMethod<[string], [] | [PublicOrderView]>,
   'getPaymentServiceConfig' : ActorMethod<[], PaymentServiceConfigView>,
   'getPaymentStatus' : ActorMethod<[string], PaymentStatus>,
+  'getPendingOrderConfig' : ActorMethod<
+    [],
+    { 'globalCap' : bigint, 'perSessionCap' : bigint }
+  >,
   'getProduct' : ActorMethod<[string], [] | [Product]>,
   'getProductImageStorageStats' : ActorMethod<[], StorageStats>,
   'getResumeInfo' : ActorMethod<[string], Result_16>,
@@ -546,6 +553,7 @@ export interface _SERVICE {
   >,
   'reassignProducts' : ActorMethod<[string, string], Result_12>,
   'releaseExpiredOrders' : ActorMethod<[], bigint>,
+  'releaseExpiredReservations' : ActorMethod<[], bigint>,
   'removeAdmin' : ActorMethod<[Principal], boolean>,
   'reorderCategories' : ActorMethod<[Array<CategoryId>], Result_11>,
   'resendConfirmationEmail' : ActorMethod<[string], Result_10>,
@@ -574,9 +582,10 @@ export interface _SERVICE {
     [Token, Principal, number, bigint],
     Result_1
   >,
-  'updateMinimumOrder' : ActorMethod<[number], Result_1>,
+  'updateMinimumOrder' : ActorMethod<[bigint], Result_1>,
   'updatePaymentServiceToken' : ActorMethod<[string], Result_2>,
   'updatePaymentServiceUrl' : ActorMethod<[string], Result_2>,
+  'updatePendingOrderGlobalCap' : ActorMethod<[bigint], bigint>,
   'updateProduct' : ActorMethod<[Product], boolean>,
   'updateTreasury' : ActorMethod<[Principal, [] | [Uint8Array]], Result_1>,
   'uploadChunk' : ActorMethod<[string, bigint, Uint8Array], Result>,

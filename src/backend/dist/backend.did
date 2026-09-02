@@ -324,7 +324,7 @@ type ProductVariant =
    id: text;
    inventory: nat;
    name: text;
-   price: float64;
+   price: nat;
    size: text;
  };
 type ProductId = nat;
@@ -340,7 +340,7 @@ type Product =
    images: vec text;
    inventory: nat;
    name: text;
-   price: float64;
+   price: nat;
    slug: text;
    updated_at: int;
    variants: vec ProductVariant;
@@ -381,7 +381,7 @@ type PaymentError =
  };
 type OrderRecoveryView = 
  record {
-   amountOwed: float64;
+   amountOwed: nat;
    depositAccount: opt DepositAccount;
    expiresAt: opt int;
    liveBalance: nat;
@@ -394,14 +394,15 @@ type OrderItem =
    name: text;
    product_id: ProductId;
    quantity: nat;
-   unit_amount: float64;
+   unit_amount: nat;
    variant_id: text;
  };
 type OrderError = 
  variant {
-   belowMinimumOrder: float64;
+   belowMinimumOrder: nat;
    ckUSDCDisabled;
    emptyOrder;
+   invalidPrice: text;
    invalidQuantity;
    outOfStock: record {
                  ProductId;
@@ -434,12 +435,12 @@ type Order =
    payment_status: PaymentStatus;
    reference: text;
    shipped_at: opt int;
-   shipping: float64;
+   shipping: nat;
    shipping_status: ShippingStatus;
-   subtotal: float64;
+   subtotal: nat;
    sweep_note: opt text;
-   tax: float64;
-   total: float64;
+   tax: nat;
+   total: nat;
    tracking_number: opt text;
    updated_at: int;
  };
@@ -540,7 +541,7 @@ type CryptoPaymentStatus =
 type CryptoPaymentError = 
  variant {
    alreadyPaid;
-   belowMinimumOrder: float64;
+   belowMinimumOrder: nat;
    expired;
    invalidConfig: text;
    ledgerError: text;
@@ -562,7 +563,7 @@ type CryptoConfigView =
    ckUSDC: LedgerConfig;
    ckUSDCEnabled: bool;
    icp: LedgerConfig;
-   minimumOrder: float64;
+   minimumOrder: nat;
    treasuryPrincipal: principal;
    treasurySubaccount: opt blob;
  };
@@ -570,6 +571,7 @@ type CreateOrderResult =
  record {
    cancellationToken: opt text;
    order: Order;
+   sessionId: opt text;
  };
 type CreateOrderItem = 
  record {
@@ -585,6 +587,7 @@ type CreateOrderInput =
    items: vec CreateOrderItem;
    marketing_consent: bool;
    payment_method: PaymentMethod;
+   session_id: opt text;
  };
 type ConsentListExport = record {csv: text;};
 type ConsentError = 
@@ -638,7 +641,7 @@ type Category =
  };
 type AdminOrderView = 
  record {
-   amountOwed: float64;
+   amountOwed: nat;
    createdAt: int;
    cryptoStatus: opt CryptoPaymentStatus;
    currency: text;
@@ -653,7 +656,7 @@ type AdminOrderView =
  };
 type AdminOrderDetail = 
  record {
-   amountOwed: float64;
+   amountOwed: nat;
    createdAt: int;
    cryptoStatus: opt CryptoPaymentStatus;
    currency: text;
@@ -707,7 +710,7 @@ service : {
   getDefaultSubaccountBalance: () -> (Result_17);
   getEncryptionRecipients: () -> (vec principal) query;
   getIbePublicKey: () -> (blob);
-  getMinimumOrder: () -> (float64) query;
+  getMinimumOrder: () -> (nat) query;
   getMyEncryptedIbeKey: (transportPublicKey: blob) -> (blob);
   getMyOrders: () -> (vec PublicOrderView) query;
   getMyRole: () -> (opt Role) query;
@@ -715,6 +718,11 @@ service : {
   getOrderStatus: (reference: text) -> (opt PublicOrderView) query;
   getPaymentServiceConfig: () -> (PaymentServiceConfigView) query;
   getPaymentStatus: (reference: text) -> (PaymentStatus);
+  getPendingOrderConfig: () ->
+   (record {
+      globalCap: nat;
+      perSessionCap: nat;
+    }) query;
   getProduct: (slugOrId: text) -> (opt Product) query;
   getProductImageStorageStats: () -> (StorageStats) query;
   getResumeInfo: (reference: text) -> (Result_16) query;
@@ -746,6 +754,7 @@ service : {
    (TransformationOutput) query;
   reassignProducts: (fromSlug: text, toSlug: text) -> (Result_12);
   releaseExpiredOrders: () -> (nat);
+  releaseExpiredReservations: () -> (nat);
   removeAdmin: (p: principal) -> (bool);
   reorderCategories: (orderedIds: vec CategoryId) -> (Result_11);
   resendConfirmationEmail: (reference: text) -> (Result_10);
@@ -768,9 +777,10 @@ service : {
    sortOrder: nat, active: bool, showWhenEmpty: bool) -> (Result_3);
   updateLedgerConfig: (token: Token, canisterId: principal, decimals: 
    nat8, fee: nat) -> (Result_1);
-  updateMinimumOrder: (minimum: float64) -> (Result_1);
+  updateMinimumOrder: (minimum: nat) -> (Result_1);
   updatePaymentServiceToken: (token: text) -> (Result_2);
   updatePaymentServiceUrl: (url: text) -> (Result_2);
+  updatePendingOrderGlobalCap: (cap: nat) -> (nat);
   updateProduct: (product: Product) -> (bool);
   updateTreasury: ("principal": principal, subaccount: opt blob) ->
    (Result_1);

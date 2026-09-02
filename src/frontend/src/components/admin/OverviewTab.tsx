@@ -45,7 +45,7 @@ function needsReview(
 interface ProductRow {
   name: string;
   category: string;
-  price: number;
+  price: bigint;
   currency: string;
   inventory: bigint;
   units: number;
@@ -84,10 +84,10 @@ export function OverviewTab({ session: _session }: AdminTabBodyProps) {
           o.paymentMethod === PaymentMethod.crypto_icp ||
           o.paymentMethod === PaymentMethod.crypto_ckusdc,
       )
-      .reduce((sum, o) => sum + o.amountOwed, 0);
+      .reduce((sum, o) => sum + o.amountOwed, 0n);
     const cardRevenue = paid
       .filter((o) => o.paymentMethod === PaymentMethod.card_stripe)
-      .reduce((sum, o) => sum + o.amountOwed, 0);
+      .reduce((sum, o) => sum + o.amountOwed, 0n);
 
     const pending = list.filter(
       (o) => o.status === PaymentStatus.pending,
@@ -103,7 +103,7 @@ export function OverviewTab({ session: _session }: AdminTabBodyProps) {
 
     const aov =
       paid.length > 0
-        ? paid.reduce((sum, o) => sum + o.amountOwed, 0) / paid.length
+        ? Number(paid.reduce((sum, o) => sum + o.amountOwed, 0n)) / paid.length
         : 0;
 
     return {

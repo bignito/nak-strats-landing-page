@@ -638,6 +638,36 @@ export function useReleaseExpiredOrders(intervalMs = 60_000) {
 }
 
 /**
+ * Manually release reserved inventory for all expired pending orders. This is
+ * the admin-facing trigger for the same backend `releaseExpiredReservations`
+ * method the frontend also drives on an interval; unlike `useReleaseExpiredOrders` it
+ * does not auto-fire, so an operator can run it on demand from the admin
+ * orders surface and see how many reservations were released.
+ */
+export function useAdminReleaseExpiredOrders() {
+  const { actor, isFetching } = useActor(createActor);
+  const { isActorReady } = useActorReady();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (): Promise<bigint> => {
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      if (!isActorReady)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      return actor.releaseExpiredReservations();
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["adminOrders"] });
+      void queryClient.invalidateQueries({ queryKey: ["products"] });
+    },
+  });
+}
+
+/**
  * Reads the payment service config view (url + tokenSet boolean). The token
  * value itself is write-only on the backend and is never exposed here.
  */
@@ -1067,15 +1097,15 @@ export function useGetEncryptionRecipients() {
 }
 
 /**
- * Reads the configured minimum crypto order total. The backend stores it as a
- * Float US dollar decimal (e.g. 25), rendered directly with two decimals.
+ * Reads the configured minimum crypto order total. The backend stores it as
+ * integer cents (bigint), rendered via formatPrice.
  */
 export function useGetMinimumOrder() {
   const { actor, isFetching } = useActor(createActor);
   return useQuery({
     queryKey: ["minimumOrder"],
-    queryFn: async (): Promise<number> => {
-      if (!actor) return 25;
+    queryFn: async (): Promise<bigint> => {
+      if (!actor) return 25n;
       return actor.getMinimumOrder();
     },
     enabled: !!actor && !isFetching,
@@ -1083,15 +1113,15 @@ export function useGetMinimumOrder() {
 }
 
 /**
- * Updates the minimum crypto order total. The backend expects a Float US
- * dollar decimal (e.g. 25), stored directly — no cents conversion.
+ * Updates the minimum crypto order total. The backend expects integer cents
+ * (bigint) — no float dollars.
  */
 export function useUpdateMinimumOrder() {
   const { actor, isFetching } = useActor(createActor);
   const { isActorReady } = useActorReady();
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (minimum: number) => {
+    mutationFn: async (minimum: bigint) => {
       if (!actor || isFetching)
         throw new Error(
           "Session not ready — please wait a moment and try again",

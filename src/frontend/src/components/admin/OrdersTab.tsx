@@ -9,6 +9,7 @@ import {
   adminErrorMessage,
   useAdminGetOrderDetail,
   useAdminListOrders,
+  useAdminReleaseExpiredOrders,
   useCryptoConfig,
   useForceRecheckPayment,
   useForceSweepOrder,
@@ -472,6 +473,9 @@ export function OrdersTab({ session }: AdminTabBodyProps) {
   const [filter, setFilter] = useState("all");
   const [search, setSearch] = useState("");
   const [selectedRef, setSelectedRef] = useState<string | null>(null);
+  const [releaseError, setReleaseError] = useState<string | null>(null);
+
+  const releaseExpired = useAdminReleaseExpiredOrders();
 
   const activeFilter = FILTERS.find((f) => f.id === filter) ?? FILTERS[0];
   const {
@@ -481,6 +485,13 @@ export function OrdersTab({ session }: AdminTabBodyProps) {
   } = useAdminListOrders(activeFilter.backend);
 
   const listError = error ? adminErrorMessage(error) : null;
+
+  const handleReleaseExpired = () => {
+    setReleaseError(null);
+    releaseExpired.mutate(undefined, {
+      onError: (err) => setReleaseError(adminErrorMessage(err)),
+    });
+  };
 
   const visibleOrders = useMemo(() => {
     if (!orders) return [];
@@ -516,6 +527,39 @@ export function OrdersTab({ session }: AdminTabBodyProps) {
           </button>
         ))}
       </div>
+
+      {/* Manual release of expired pending reservations (ADMIN/OWNER only) */}
+      {session.canManage && (
+        <div
+          className="flex flex-wrap items-center gap-3"
+          data-ocid="admin.orders.release_expired"
+        >
+          <button
+            type="button"
+            className="btn-recheck"
+            onClick={handleReleaseExpired}
+            disabled={releaseExpired.isPending}
+            data-ocid="admin.orders.release_expired_button"
+          >
+            <RefreshCw className="w-3 h-3" />
+            {releaseExpired.isPending
+              ? "Releasing…"
+              : "Release expired reservations"}
+          </button>
+          {releaseExpired.isSuccess && (
+            <span
+              className="flex items-center gap-1.5 text-xs"
+              style={{ color: "var(--positive)" }}
+              data-ocid="admin.orders.release_expired_success"
+            >
+              <CheckCircle2 className="w-3.5 h-3.5" />
+              Released {releaseExpired.data.toString()} expired reservation
+              {releaseExpired.data === 1n ? "" : "s"}.
+            </span>
+          )}
+          {releaseError && <ErrorPanel message={releaseError} />}
+        </div>
+      )}
 
       {listError && <ErrorPanel message={listError} />}
 

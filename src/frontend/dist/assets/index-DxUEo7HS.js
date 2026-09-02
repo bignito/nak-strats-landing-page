@@ -34429,7 +34429,7 @@ const CryptoPaymentStatus = Variant({
 const ProductId = Nat;
 const OrderItem = Record({
   "product_id": ProductId,
-  "unit_amount": Float64,
+  "unit_amount": Nat,
   "name": Text,
   "variant_id": Text,
   "quantity": Nat
@@ -34441,7 +34441,7 @@ const AdminOrderDetail = Record({
   "cryptoStatus": Opt(CryptoPaymentStatus),
   "createdAt": Int,
   "reference": Text,
-  "amountOwed": Float64,
+  "amountOwed": Nat,
   "updatedAt": Int,
   "currency": Text,
   "hasShippingDetails": Bool,
@@ -34458,7 +34458,7 @@ const AdminOrderView = Record({
   "createdAt": Int,
   "itemCount": Nat,
   "reference": Text,
-  "amountOwed": Float64,
+  "amountOwed": Nat,
   "currency": Text,
   "subaccountHex": Text,
   "sweepNote": Opt(Text),
@@ -34489,7 +34489,7 @@ const CryptoPaymentError = Variant({
   "notCryptoOrder": Null,
   "unauthorized": Null,
   "invalidConfig": Text,
-  "belowMinimumOrder": Float64
+  "belowMinimumOrder": Nat
 });
 const Result_18 = Variant({
   "ok": CryptoPaymentStatus,
@@ -34548,11 +34548,11 @@ const ShippingStatus = Variant({
 });
 const Order = Record({
   "id": Nat,
-  "tax": Float64,
+  "tax": Nat,
   "updated_at": Int,
-  "total": Float64,
+  "total": Nat,
   "sweep_note": Opt(Text),
-  "shipping": Float64,
+  "shipping": Nat,
   "reference": Text,
   "created_at": Int,
   "payment_status": PaymentStatus$1,
@@ -34569,7 +34569,7 @@ const Order = Record({
   "shipped_at": Opt(Int),
   "marketing_consent": Bool,
   "payment_reference": Opt(Text),
-  "subtotal": Float64
+  "subtotal": Nat
 });
 const PaymentError = Variant({
   "invalidOrder": Null,
@@ -34585,6 +34585,7 @@ const CreateOrderItem = Record({
   "quantity": Nat
 });
 const CreateOrderInput = Record({
+  "session_id": Opt(Text),
   "payment_method": PaymentMethod$1,
   "has_shipping_details": Bool,
   "items": Vec(CreateOrderItem),
@@ -34594,16 +34595,18 @@ const CreateOrderInput = Record({
 });
 const CreateOrderResult = Record({
   "order": Order,
-  "cancellationToken": Opt(Text)
+  "cancellationToken": Opt(Text),
+  "sessionId": Opt(Text)
 });
 const OrderError = Variant({
   "outOfStock": Tuple(ProductId, Text),
+  "invalidPrice": Text,
   "unknownVariant": Tuple(ProductId, Text),
   "unknownProduct": ProductId,
   "ckUSDCDisabled": Null,
   "emptyOrder": Null,
   "rateLimited": Null,
-  "belowMinimumOrder": Float64,
+  "belowMinimumOrder": Nat,
   "productInactive": ProductId,
   "paymentFailed": Text,
   "invalidQuantity": Null,
@@ -34618,7 +34621,7 @@ const ProductVariant = Record({
   "inventory": Nat,
   "name": Text,
   "size": Text,
-  "price": Float64
+  "price": Nat
 });
 const Product = Record({
   "id": ProductId,
@@ -34633,7 +34636,7 @@ const Product = Record({
   "currency": Text,
   "admin_only": Bool,
   "category": Text,
-  "price": Float64,
+  "price": Nat,
   "images": Vec(Text)
 });
 const Result_11 = Variant({
@@ -34717,7 +34720,7 @@ const CryptoConfigView = Record({
   "icp": LedgerConfig,
   "ckUSDC": LedgerConfig,
   "treasurySubaccount": Opt(Vec(Nat8)),
-  "minimumOrder": Float64,
+  "minimumOrder": Nat,
   "ckUSDCEnabled": Bool,
   "treasuryPrincipal": Principal2
 });
@@ -34857,7 +34860,7 @@ const OrderRecoveryView = Record({
   "expiresAt": Opt(Int),
   "reference": Text,
   "depositAccount": Opt(DepositAccount),
-  "amountOwed": Float64,
+  "amountOwed": Nat,
   "liveBalance": Nat
 });
 const Discipline$1 = Variant({
@@ -34989,7 +34992,7 @@ Service({
   "getDefaultSubaccountBalance": Func([], [Result_17], []),
   "getEncryptionRecipients": Func([], [Vec(Principal2)], ["query"]),
   "getIbePublicKey": Func([], [Vec(Nat8)], []),
-  "getMinimumOrder": Func([], [Float64], ["query"]),
+  "getMinimumOrder": Func([], [Nat], ["query"]),
   "getMyEncryptedIbeKey": Func(
     [Vec(Nat8)],
     [Vec(Nat8)],
@@ -35009,6 +35012,11 @@ Service({
     ["query"]
   ),
   "getPaymentStatus": Func([Text], [PaymentStatus$1], []),
+  "getPendingOrderConfig": Func(
+    [],
+    [Record({ "globalCap": Nat, "perSessionCap": Nat })],
+    ["query"]
+  ),
   "getProduct": Func([Text], [Opt(Product)], ["query"]),
   "getProductImageStorageStats": Func([], [StorageStats], ["query"]),
   "getResumeInfo": Func([Text], [Result_16], ["query"]),
@@ -35046,6 +35054,7 @@ Service({
   ),
   "reassignProducts": Func([Text, Text], [Result_12], []),
   "releaseExpiredOrders": Func([], [Nat], []),
+  "releaseExpiredReservations": Func([], [Nat], []),
   "removeAdmin": Func([Principal2], [Bool], []),
   "reorderCategories": Func([Vec(CategoryId)], [Result_11], []),
   "resendConfirmationEmail": Func([Text], [Result_10], []),
@@ -35081,9 +35090,10 @@ Service({
     [Result_1],
     []
   ),
-  "updateMinimumOrder": Func([Float64], [Result_1], []),
+  "updateMinimumOrder": Func([Nat], [Result_1], []),
   "updatePaymentServiceToken": Func([Text], [Result_2], []),
   "updatePaymentServiceUrl": Func([Text], [Result_2], []),
+  "updatePendingOrderGlobalCap": Func([Nat], [Nat], []),
   "updateProduct": Func([Product], [Bool], []),
   "updateTreasury": Func(
     [Principal2, Opt(Vec(Nat8))],
@@ -35119,7 +35129,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
   const ProductId2 = IDL2.Nat;
   const OrderItem2 = IDL2.Record({
     "product_id": ProductId2,
-    "unit_amount": IDL2.Float64,
+    "unit_amount": IDL2.Nat,
     "name": IDL2.Text,
     "variant_id": IDL2.Text,
     "quantity": IDL2.Nat
@@ -35131,7 +35141,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "cryptoStatus": IDL2.Opt(CryptoPaymentStatus2),
     "createdAt": IDL2.Int,
     "reference": IDL2.Text,
-    "amountOwed": IDL2.Float64,
+    "amountOwed": IDL2.Nat,
     "updatedAt": IDL2.Int,
     "currency": IDL2.Text,
     "hasShippingDetails": IDL2.Bool,
@@ -35148,7 +35158,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "createdAt": IDL2.Int,
     "itemCount": IDL2.Nat,
     "reference": IDL2.Text,
-    "amountOwed": IDL2.Float64,
+    "amountOwed": IDL2.Nat,
     "currency": IDL2.Text,
     "subaccountHex": IDL2.Text,
     "sweepNote": IDL2.Opt(IDL2.Text),
@@ -35179,7 +35189,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "notCryptoOrder": IDL2.Null,
     "unauthorized": IDL2.Null,
     "invalidConfig": IDL2.Text,
-    "belowMinimumOrder": IDL2.Float64
+    "belowMinimumOrder": IDL2.Nat
   });
   const Result_182 = IDL2.Variant({
     "ok": CryptoPaymentStatus2,
@@ -35238,11 +35248,11 @@ const idlFactory = ({ IDL: IDL2 }) => {
   });
   const Order2 = IDL2.Record({
     "id": IDL2.Nat,
-    "tax": IDL2.Float64,
+    "tax": IDL2.Nat,
     "updated_at": IDL2.Int,
-    "total": IDL2.Float64,
+    "total": IDL2.Nat,
     "sweep_note": IDL2.Opt(IDL2.Text),
-    "shipping": IDL2.Float64,
+    "shipping": IDL2.Nat,
     "reference": IDL2.Text,
     "created_at": IDL2.Int,
     "payment_status": PaymentStatus2,
@@ -35259,7 +35269,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "shipped_at": IDL2.Opt(IDL2.Int),
     "marketing_consent": IDL2.Bool,
     "payment_reference": IDL2.Opt(IDL2.Text),
-    "subtotal": IDL2.Float64
+    "subtotal": IDL2.Nat
   });
   const PaymentError2 = IDL2.Variant({
     "invalidOrder": IDL2.Null,
@@ -35275,6 +35285,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "quantity": IDL2.Nat
   });
   const CreateOrderInput2 = IDL2.Record({
+    "session_id": IDL2.Opt(IDL2.Text),
     "payment_method": PaymentMethod2,
     "has_shipping_details": IDL2.Bool,
     "items": IDL2.Vec(CreateOrderItem2),
@@ -35284,16 +35295,18 @@ const idlFactory = ({ IDL: IDL2 }) => {
   });
   const CreateOrderResult2 = IDL2.Record({
     "order": Order2,
-    "cancellationToken": IDL2.Opt(IDL2.Text)
+    "cancellationToken": IDL2.Opt(IDL2.Text),
+    "sessionId": IDL2.Opt(IDL2.Text)
   });
   const OrderError2 = IDL2.Variant({
     "outOfStock": IDL2.Tuple(ProductId2, IDL2.Text),
+    "invalidPrice": IDL2.Text,
     "unknownVariant": IDL2.Tuple(ProductId2, IDL2.Text),
     "unknownProduct": ProductId2,
     "ckUSDCDisabled": IDL2.Null,
     "emptyOrder": IDL2.Null,
     "rateLimited": IDL2.Null,
-    "belowMinimumOrder": IDL2.Float64,
+    "belowMinimumOrder": IDL2.Nat,
     "productInactive": ProductId2,
     "paymentFailed": IDL2.Text,
     "invalidQuantity": IDL2.Null,
@@ -35308,7 +35321,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "inventory": IDL2.Nat,
     "name": IDL2.Text,
     "size": IDL2.Text,
-    "price": IDL2.Float64
+    "price": IDL2.Nat
   });
   const Product2 = IDL2.Record({
     "id": ProductId2,
@@ -35323,7 +35336,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "currency": IDL2.Text,
     "admin_only": IDL2.Bool,
     "category": IDL2.Text,
-    "price": IDL2.Float64,
+    "price": IDL2.Nat,
     "images": IDL2.Vec(IDL2.Text)
   });
   const Result_112 = IDL2.Variant({ "ok": IDL2.Null, "err": CategoryError2 });
@@ -35401,7 +35414,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "icp": LedgerConfig2,
     "ckUSDC": LedgerConfig2,
     "treasurySubaccount": IDL2.Opt(IDL2.Vec(IDL2.Nat8)),
-    "minimumOrder": IDL2.Float64,
+    "minimumOrder": IDL2.Nat,
     "ckUSDCEnabled": IDL2.Bool,
     "treasuryPrincipal": IDL2.Principal
   });
@@ -35538,7 +35551,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "expiresAt": IDL2.Opt(IDL2.Int),
     "reference": IDL2.Text,
     "depositAccount": IDL2.Opt(DepositAccount2),
-    "amountOwed": IDL2.Float64,
+    "amountOwed": IDL2.Nat,
     "liveBalance": IDL2.Nat
   });
   const Discipline2 = IDL2.Variant({
@@ -35665,7 +35678,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
       ["query"]
     ),
     "getIbePublicKey": IDL2.Func([], [IDL2.Vec(IDL2.Nat8)], []),
-    "getMinimumOrder": IDL2.Func([], [IDL2.Float64], ["query"]),
+    "getMinimumOrder": IDL2.Func([], [IDL2.Nat], ["query"]),
     "getMyEncryptedIbeKey": IDL2.Func(
       [IDL2.Vec(IDL2.Nat8)],
       [IDL2.Vec(IDL2.Nat8)],
@@ -35685,6 +35698,11 @@ const idlFactory = ({ IDL: IDL2 }) => {
       ["query"]
     ),
     "getPaymentStatus": IDL2.Func([IDL2.Text], [PaymentStatus2], []),
+    "getPendingOrderConfig": IDL2.Func(
+      [],
+      [IDL2.Record({ "globalCap": IDL2.Nat, "perSessionCap": IDL2.Nat })],
+      ["query"]
+    ),
     "getProduct": IDL2.Func([IDL2.Text], [IDL2.Opt(Product2)], ["query"]),
     "getProductImageStorageStats": IDL2.Func([], [StorageStats2], ["query"]),
     "getResumeInfo": IDL2.Func([IDL2.Text], [Result_162], ["query"]),
@@ -35726,6 +35744,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     ),
     "reassignProducts": IDL2.Func([IDL2.Text, IDL2.Text], [Result_122], []),
     "releaseExpiredOrders": IDL2.Func([], [IDL2.Nat], []),
+    "releaseExpiredReservations": IDL2.Func([], [IDL2.Nat], []),
     "removeAdmin": IDL2.Func([IDL2.Principal], [IDL2.Bool], []),
     "reorderCategories": IDL2.Func([IDL2.Vec(CategoryId2)], [Result_112], []),
     "resendConfirmationEmail": IDL2.Func([IDL2.Text], [Result_102], []),
@@ -35761,9 +35780,10 @@ const idlFactory = ({ IDL: IDL2 }) => {
       [Result_110],
       []
     ),
-    "updateMinimumOrder": IDL2.Func([IDL2.Float64], [Result_110], []),
+    "updateMinimumOrder": IDL2.Func([IDL2.Nat], [Result_110], []),
     "updatePaymentServiceToken": IDL2.Func([IDL2.Text], [Result_26], []),
     "updatePaymentServiceUrl": IDL2.Func([IDL2.Text], [Result_26], []),
+    "updatePendingOrderGlobalCap": IDL2.Func([IDL2.Nat], [IDL2.Nat], []),
     "updateProduct": IDL2.Func([Product2], [IDL2.Bool], []),
     "updateTreasury": IDL2.Func(
       [IDL2.Principal, IDL2.Opt(IDL2.Vec(IDL2.Nat8))],
@@ -36416,6 +36436,20 @@ class Backend {
       return from_candid_PaymentStatus_n4(this._uploadFile, this._downloadFile, result);
     }
   }
+  async getPendingOrderConfig() {
+    if (this.processError) {
+      try {
+        const result = await this.actor.getPendingOrderConfig();
+        return result;
+      } catch (e) {
+        this.processError(e);
+        throw new Error("unreachable");
+      }
+    } else {
+      const result = await this.actor.getPendingOrderConfig();
+      return result;
+    }
+  }
   async getProduct(arg0) {
     if (this.processError) {
       try {
@@ -36766,6 +36800,20 @@ class Backend {
       return result;
     }
   }
+  async releaseExpiredReservations() {
+    if (this.processError) {
+      try {
+        const result = await this.actor.releaseExpiredReservations();
+        return result;
+      } catch (e) {
+        this.processError(e);
+        throw new Error("unreachable");
+      }
+    } else {
+      const result = await this.actor.releaseExpiredReservations();
+      return result;
+    }
+  }
   async removeAdmin(arg0) {
     if (this.processError) {
       try {
@@ -37072,6 +37120,20 @@ class Backend {
     } else {
       const result = await this.actor.updatePaymentServiceUrl(arg0);
       return from_candid_Result_2_n16(this._uploadFile, this._downloadFile, result);
+    }
+  }
+  async updatePendingOrderGlobalCap(arg0) {
+    if (this.processError) {
+      try {
+        const result = await this.actor.updatePendingOrderGlobalCap(arg0);
+        return result;
+      } catch (e) {
+        this.processError(e);
+        throw new Error("unreachable");
+      }
+    } else {
+      const result = await this.actor.updatePendingOrderGlobalCap(arg0);
+      return result;
     }
   }
   async updateProduct(arg0) {
@@ -37540,7 +37602,8 @@ function from_candid_record_n34(_uploadFile, _downloadFile, value) {
 function from_candid_record_n54(_uploadFile, _downloadFile, value) {
   return {
     order: from_candid_Order_n55(_uploadFile, _downloadFile, value.order),
-    cancellationToken: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.cancellationToken))
+    cancellationToken: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.cancellationToken)),
+    sessionId: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.sessionId))
   };
 }
 function from_candid_record_n56(_uploadFile, _downloadFile, value) {
@@ -37983,6 +38046,9 @@ function from_candid_variant_n62(_uploadFile, _downloadFile, value) {
   return "outOfStock" in value ? {
     __kind__: "outOfStock",
     outOfStock: value.outOfStock
+  } : "invalidPrice" in value ? {
+    __kind__: "invalidPrice",
+    invalidPrice: value.invalidPrice
   } : "unknownVariant" in value ? {
     __kind__: "unknownVariant",
     unknownVariant: value.unknownVariant
@@ -38262,6 +38328,7 @@ function to_candid_record_n38(_uploadFile, _downloadFile, value) {
 }
 function to_candid_record_n50(_uploadFile, _downloadFile, value) {
   return {
+    session_id: value.session_id ? candid_some(value.session_id) : candid_none(),
     payment_method: to_candid_PaymentMethod_n41(_uploadFile, _downloadFile, value.payment_method),
     has_shipping_details: value.has_shipping_details,
     items: value.items,
@@ -43453,6 +43520,28 @@ function useReleaseExpiredOrders(intervalMs = 6e4) {
   }, [isActorReady, intervalMs, mutation]);
   return mutation;
 }
+function useAdminReleaseExpiredOrders() {
+  const { actor, isFetching } = useActor(createActor$2);
+  const { isActorReady } = useActorReady();
+  const queryClient2 = useQueryClient();
+  return useMutation({
+    mutationFn: async () => {
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again"
+        );
+      if (!isActorReady)
+        throw new Error(
+          "Session not ready — please wait a moment and try again"
+        );
+      return actor.releaseExpiredReservations();
+    },
+    onSuccess: () => {
+      void queryClient2.invalidateQueries({ queryKey: ["adminOrders"] });
+      void queryClient2.invalidateQueries({ queryKey: ["products"] });
+    }
+  });
+}
 function usePaymentServiceConfig() {
   const { actor, isFetching } = useActor(createActor$2);
   return useQuery({
@@ -43717,7 +43806,7 @@ function useGetMinimumOrder() {
   return useQuery({
     queryKey: ["minimumOrder"],
     queryFn: async () => {
-      if (!actor) return 25;
+      if (!actor) return 25n;
       return actor.getMinimumOrder();
     },
     enabled: !!actor && !isFetching
@@ -49281,17 +49370,18 @@ function CategoriesTab({ session }) {
   ] });
 }
 function formatPrice(value) {
-  return value.toLocaleString("en-US", {
-    style: "currency",
-    currency: "USD",
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  });
+  const cents = typeof value === "bigint" ? value : BigInt(Math.round(value));
+  const dollars = cents / 100n;
+  const remainder = cents % 100n;
+  const centsPart = remainder.toString().padStart(2, "0");
+  return `$${dollars.toString()}.${centsPart}`;
 }
 function parseDollars(input) {
   const trimmed = input.trim();
   if (!/^\d+(\.\d{1,2})?$/.test(trimmed)) return null;
-  return Number(trimmed);
+  const [whole, fraction = ""] = trimmed.split(".");
+  const cents = BigInt(whole) * 100n + BigInt(fraction.padEnd(2, "0"));
+  return cents;
 }
 const FILTERS = [
   { id: "all", label: "All", backend: "all" },
@@ -49650,6 +49740,8 @@ function OrdersTab({ session }) {
   const [filter, setFilter] = reactExports.useState("all");
   const [search, setSearch] = reactExports.useState("");
   const [selectedRef, setSelectedRef] = reactExports.useState(null);
+  const [releaseError, setReleaseError] = reactExports.useState(null);
+  const releaseExpired = useAdminReleaseExpiredOrders();
   const activeFilter = FILTERS.find((f2) => f2.id === filter) ?? FILTERS[0];
   const {
     data: orders,
@@ -49657,6 +49749,12 @@ function OrdersTab({ session }) {
     error
   } = useAdminListOrders(activeFilter.backend);
   const listError = error ? adminErrorMessage(error) : null;
+  const handleReleaseExpired = () => {
+    setReleaseError(null);
+    releaseExpired.mutate(void 0, {
+      onError: (err) => setReleaseError(adminErrorMessage(err))
+    });
+  };
   const visibleOrders = reactExports.useMemo(() => {
     if (!orders) return [];
     const query = search.trim().toLowerCase();
@@ -49686,6 +49784,46 @@ function OrdersTab({ session }) {
           },
           f2.id
         ))
+      }
+    ),
+    session.canManage && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      "div",
+      {
+        className: "flex flex-wrap items-center gap-3",
+        "data-ocid": "admin.orders.release_expired",
+        children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "button",
+            {
+              type: "button",
+              className: "btn-recheck",
+              onClick: handleReleaseExpired,
+              disabled: releaseExpired.isPending,
+              "data-ocid": "admin.orders.release_expired_button",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { className: "w-3 h-3" }),
+                releaseExpired.isPending ? "Releasing…" : "Release expired reservations"
+              ]
+            }
+          ),
+          releaseExpired.isSuccess && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "span",
+            {
+              className: "flex items-center gap-1.5 text-xs",
+              style: { color: "var(--positive)" },
+              "data-ocid": "admin.orders.release_expired_success",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(CircleCheck, { className: "w-3.5 h-3.5" }),
+                "Released ",
+                releaseExpired.data.toString(),
+                " expired reservation",
+                releaseExpired.data === 1n ? "" : "s",
+                "."
+              ]
+            }
+          ),
+          releaseError && /* @__PURE__ */ jsxRuntimeExports.jsx(ErrorPanel$1, { message: releaseError })
+        ]
       }
     ),
     listError && /* @__PURE__ */ jsxRuntimeExports.jsx(ErrorPanel$1, { message: listError }),
@@ -49857,8 +49995,8 @@ function OverviewTab({ session: _session }) {
     const paid = list.filter((o) => o.status === PaymentStatus.paid);
     const cryptoRevenue = paid.filter(
       (o) => o.paymentMethod === PaymentMethod.crypto_icp || o.paymentMethod === PaymentMethod.crypto_ckusdc
-    ).reduce((sum, o) => sum + o.amountOwed, 0);
-    const cardRevenue = paid.filter((o) => o.paymentMethod === PaymentMethod.card_stripe).reduce((sum, o) => sum + o.amountOwed, 0);
+    ).reduce((sum, o) => sum + o.amountOwed, 0n);
+    const cardRevenue = paid.filter((o) => o.paymentMethod === PaymentMethod.card_stripe).reduce((sum, o) => sum + o.amountOwed, 0n);
     const pending = list.filter(
       (o) => o.status === PaymentStatus.pending
     ).length;
@@ -49868,7 +50006,7 @@ function OverviewTab({ session: _session }) {
     const review = list.filter(
       (o) => needsReview(o.status, o.cryptoStatus)
     ).length;
-    const aov = paid.length > 0 ? paid.reduce((sum, o) => sum + o.amountOwed, 0) / paid.length : 0;
+    const aov = paid.length > 0 ? Number(paid.reduce((sum, o) => sum + o.amountOwed, 0n)) / paid.length : 0;
     return {
       total: list.length,
       today,
@@ -50042,16 +50180,18 @@ function blankProduct() {
     description: "",
     category: "",
     currency: "usd",
-    price: 0,
+    price: 0n,
     images: [],
     variants: []
   };
 }
 function toDraft(p2) {
+  const dollars = p2.price / 100n;
+  const cents = p2.price % 100n;
   return {
     name: p2.name,
     category: p2.category,
-    priceDollars: p2.price.toFixed(2),
+    priceDollars: `${dollars}.${cents.toString().padStart(2, "0")}`,
     inventory: String(p2.inventory),
     active: p2.active,
     hidden: p2.admin_only
@@ -50893,12 +51033,12 @@ function SettingsTab({ session }) {
   };
   const handleUpdateMinimum = () => {
     setMinimumError(null);
-    const dollars = Number(minimumInput.trim());
-    if (!Number.isFinite(dollars) || dollars < 0) {
+    const cents = parseDollars(minimumInput);
+    if (cents === null) {
       setMinimumError("Minimum must be a non-negative dollar amount.");
       return;
     }
-    updateMinimumOrder.mutate(dollars, {
+    updateMinimumOrder.mutate(cents, {
       onError: (err) => setMinimumError(adminErrorMessage(err)),
       onSuccess: () => setMinimumInput("")
     });
@@ -51535,7 +51675,7 @@ function SettingsTab({ session }) {
                 id: "settings-minimum",
                 className: "field-input",
                 inputMode: "decimal",
-                placeholder: (minimumOrder ?? 0).toFixed(2),
+                placeholder: formatPrice(minimumOrder ?? 0n),
                 value: minimumInput,
                 onChange: (e) => setMinimumInput(e.target.value),
                 disabled: !canManage,
@@ -58705,6 +58845,25 @@ function depositAccountString(deposit) {
   });
 }
 const createActor = createActor$3;
+const SESSION_ID_KEY = "nak.checkoutSessionId";
+function getSessionId() {
+  try {
+    return window.localStorage.getItem(SESSION_ID_KEY);
+  } catch (error) {
+    console.error("[checkout] Failed to read session id (ERR-CHK-010)", error);
+    return null;
+  }
+}
+function setSessionId(sessionId) {
+  try {
+    window.localStorage.setItem(SESSION_ID_KEY, sessionId);
+  } catch (error) {
+    console.error(
+      "[checkout] Failed to persist session id (ERR-CHK-011)",
+      error
+    );
+  }
+}
 const STEPS = [
   { key: "shipping", label: "Shipping" },
   { key: "review", label: "Review" },
@@ -58769,7 +58928,7 @@ function OrderSummary({
                 item.quantity.toString()
               ] })
             ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num text-sm text-secondary-foreground", children: formatPrice(item.unit_amount * Number(item.quantity)) })
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num text-sm text-secondary-foreground", children: formatPrice(item.unit_amount * item.quantity) })
           ]
         },
         item.variant_id
@@ -58811,7 +58970,7 @@ function OrderSummary({
                   item.quantity
                 ] })
               ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num text-sm text-secondary-foreground", children: formatPrice(unitPrice * item.quantity) })
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num text-sm text-secondary-foreground", children: formatPrice(unitPrice * BigInt(item.quantity)) })
             ]
           },
           `${item.product.id}-${item.variantId}`
@@ -59048,6 +59207,9 @@ const CheckoutPage = ({
       marketing_consent: marketingConsent,
       has_shipping_details: true,
       encrypted_shipping: encryptedShipping,
+      // Reuse the browser-scoped session id so the backend's per-session
+      // pending-order cap (3) applies across orders from the same guest.
+      session_id: getSessionId() ?? void 0,
       payment_method: effectivePaymentMethod === "card" ? PaymentMethod.card_stripe : PaymentMethod.crypto_ckusdc,
       items: items.map((item) => ({
         product_id: item.product.id,
@@ -59061,6 +59223,9 @@ const CheckoutPage = ({
           const created = result.ok;
           setOrder(created.order);
           setResumeMode(false);
+          if (created.sessionId) {
+            setSessionId(created.sessionId);
+          }
           setActiveOrderRef(created.order.reference);
           if (created.cancellationToken) {
             setCancellationToken(
@@ -59070,11 +59235,50 @@ const CheckoutPage = ({
           }
           setStep("review");
         } else {
-          setOrderError(
-            result.err.__kind__ === "outOfStock" ? "One or more items are out of stock." : result.err.__kind__ === "emptyOrder" ? "Your cart is empty." : result.err.__kind__ === "belowMinimumOrder" ? `Orders must be at least ${formatPrice(
-              result.err.belowMinimumOrder
-            )} for crypto payment.` : "We could not place your order. Please try again."
-          );
+          console.error("[checkout] createOrder returned", result.err);
+          const err = result.err;
+          let message;
+          switch (err.__kind__) {
+            case "emptyOrder":
+              message = "Your cart is empty.";
+              break;
+            case "unknownProduct":
+              message = "One of the items in your cart is no longer available.";
+              break;
+            case "productInactive":
+              message = "One of the items in your cart is no longer for sale.";
+              break;
+            case "unknownVariant":
+              message = "One of the items in your cart has an option that is no longer available.";
+              break;
+            case "outOfStock":
+              message = "One or more items are out of stock.";
+              break;
+            case "invalidQuantity":
+              message = "One of the items in your cart has an invalid quantity.";
+              break;
+            case "paymentFailed":
+              message = "Your payment could not be processed. Please try again.";
+              break;
+            case "belowMinimumOrder":
+              message = `Orders must be at least ${formatPrice(
+                err.belowMinimumOrder
+              )} for crypto payment.`;
+              break;
+            case "ckUSDCDisabled":
+              message = "Crypto payment is not available right now. Please pay by card.";
+              break;
+            case "rateLimited":
+              message = "You are placing orders too quickly. Please wait a moment and try again.";
+              break;
+            case "tooManyPendingOrders":
+              message = "You have too many pending orders. Please complete or cancel them before placing a new one.";
+              break;
+            default:
+              message = "We could not place your order. Please try again.";
+              break;
+          }
+          setOrderError(message);
         }
       },
       onError: (error) => {
@@ -59099,6 +59303,12 @@ const CheckoutPage = ({
             if (result.__kind__ === "ok" && result.ok.url) {
               window.location.href = result.ok.url;
             } else {
+              if (result.__kind__ === "err") {
+                console.error(
+                  "[checkout] createCardCheckoutSession returned",
+                  result.err
+                );
+              }
               setOrderError(
                 result.__kind__ === "err" && result.err.__kind__ === "notConfigured" ? "Card payments are not configured yet." : "We could not start card payment. Please try again."
               );
@@ -61597,7 +61807,7 @@ function OrderItems({ items }) {
             item.variant_id
           ] })
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm mono-num text-[var(--foreground)] whitespace-nowrap", children: formatPrice(item.unit_amount * Number(item.quantity)) })
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm mono-num text-[var(--foreground)] whitespace-nowrap", children: formatPrice(item.unit_amount * item.quantity) })
       ]
     },
     `${item.product_id}-${item.variant_id}-${index2}`
@@ -63252,7 +63462,7 @@ const SuccessPage = ({
                   item.quantity.toString()
                 ] })
               ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "summary-value shrink-0", children: formatPrice(item.unit_amount * Number(item.quantity)) })
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "summary-value shrink-0", children: formatPrice(item.unit_amount * item.quantity) })
             ]
           },
           `${item.variant_id}-${index2}`

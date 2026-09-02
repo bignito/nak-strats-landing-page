@@ -10,7 +10,7 @@ import {
   useUpdatePaymentServiceUrl,
   useUpdateTreasury,
 } from "@/hooks/useQueries";
-import { formatPrice } from "@/lib/currency";
+import { formatPrice, parseDollars } from "@/lib/currency";
 import type { AdminTabBodyProps } from "@/types/routes";
 import { Principal } from "@icp-sdk/core/principal";
 import { Loader2, ShieldAlert } from "lucide-react";
@@ -180,12 +180,12 @@ export function SettingsTab({ session }: AdminTabBodyProps) {
 
   const handleUpdateMinimum = () => {
     setMinimumError(null);
-    const dollars = Number(minimumInput.trim());
-    if (!Number.isFinite(dollars) || dollars < 0) {
+    const cents = parseDollars(minimumInput);
+    if (cents === null) {
       setMinimumError("Minimum must be a non-negative dollar amount.");
       return;
     }
-    updateMinimumOrder.mutate(dollars, {
+    updateMinimumOrder.mutate(cents, {
       onError: (err) => setMinimumError(adminErrorMessage(err)),
       onSuccess: () => setMinimumInput(""),
     });
@@ -821,7 +821,7 @@ export function SettingsTab({ session }: AdminTabBodyProps) {
                 id="settings-minimum"
                 className="field-input"
                 inputMode="decimal"
-                placeholder={(minimumOrder ?? 0).toFixed(2)}
+                placeholder={formatPrice(minimumOrder ?? 0n)}
                 value={minimumInput}
                 onChange={(e) => setMinimumInput(e.target.value)}
                 disabled={!canManage}

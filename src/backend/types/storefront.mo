@@ -5,8 +5,8 @@ module {
     id : Text;
     name : Text;
     size : Text;
-    // US dollar decimal value (e.g. 24.99). Never integer cents.
-    price : Float;
+    // Price in integer cents (e.g. 2499 for $24.99). Never a Float dollar.
+    price : Nat;
     inventory : Nat;
   };
 
@@ -15,8 +15,8 @@ module {
     name : Text;
     slug : Text;
     description : Text;
-    // US dollar decimal value (e.g. 24.99). Never integer cents.
-    price : Float;
+    // Price in integer cents (e.g. 2499 for $24.99). Never a Float dollar.
+    price : Nat;
     currency : Text;
     images : [Text];
     category : Text;
@@ -36,8 +36,8 @@ module {
     variant_id : Text;
     name : Text;
     quantity : Nat;
-    // US dollar decimal value (e.g. 24.99). Never integer cents.
-    unit_amount : Float;
+    // Unit price in integer cents (e.g. 2499 for $24.99). Never a Float dollar.
+    unit_amount : Nat;
   };
 
   public type PaymentStatus = {
@@ -64,12 +64,12 @@ module {
     id : Nat;
     reference : Text;
     items : [OrderItem];
-    // All monetary fields are US dollar decimal values (e.g. 24.99), never
-    // integer cents.
-    subtotal : Float;
-    tax : Float;
-    shipping : Float;
-    total : Float;
+    // All monetary fields are integer cents (e.g. 2499 for $24.99), never
+    // Float dollars.
+    subtotal : Nat;
+    tax : Nat;
+    shipping : Nat;
+    total : Nat;
     currency : Text;
     // The customer's email address. This is the ONE documented exception to
     // the "no plaintext PII in canister state" rule: it must reach the email
@@ -142,6 +142,14 @@ module {
   public type CreateOrderResult = {
     order : Order;
     cancellationToken : ?Text;
+    // The browser-scoped session identifier used for this order. Present ONLY
+    // for anonymous guest callers: the backend issues one at checkout (or reuses
+    // the one the browser sent in CreateOrderInput.session_id) and returns it so
+    // the frontend can persist it and send it back on the next createOrder call.
+    // The per-session pending-order cap is scoped to this identifier, so one
+    // guest's abandoned carts never block another guest. Signed-in customers get
+    // null and are tracked by customer_principal instead.
+    sessionId : ?Text;
   };
 
   public type CreateOrderInput = {
@@ -165,6 +173,14 @@ module {
     // Whether the customer opted in to marketing email. The checkbox is NEVER
     // pre-checked; the frontend sends the customer's explicit choice.
     marketing_consent : Bool;
+    // The browser-scoped session identifier for an anonymous guest checkout.
+    // The backend issues one on the first createOrder call and returns it in
+    // CreateOrderResult.sessionId; the frontend persists it and sends it back
+    // here on subsequent createOrder calls so the per-session pending-order cap
+    // can be scoped to this browser session. `null` for signed-in customers
+    // (they are tracked by customer_principal) and for a first-time guest who
+    // has not yet been issued a session id.
+    session_id : ?Text;
   };
 
   public type OrderError = {
@@ -174,12 +190,17 @@ module {
     #unknownVariant : (ProductId, Text);
     #outOfStock : (ProductId, Text);
     #invalidQuantity;
+    // A line item has no valid positive price: the product or variant price is
+    // zero (or otherwise invalid), so the order would carry a zero-value line
+    // item. The payload is the offending product's name so the failure is
+    // diagnosable without reading server logs. An order is NEVER created with a
+    // zero-value line item.
+    #invalidPrice : Text;
     #paymentFailed : Text;
     // The crypto order total is below the configured minimum order total (the
-    // payload is the minimum in US dollars as a decimal). Crypto orders below
-    // this cannot be swept to the treasury after the ledger transfer fee is
-    // deducted.
-    #belowMinimumOrder : Float;
+    // payload is the minimum in integer cents). Crypto orders below this cannot
+    // be swept to the treasury after the ledger transfer fee is deducted.
+    #belowMinimumOrder : Nat;
     // ckUSDC checkout is temporarily disabled (the CKUSDC_CHECKOUT_ENABLED
     // constant is false). New ckUSDC orders are rejected; existing ckUSDC
     // orders are unaffected.
@@ -188,8 +209,11 @@ module {
     // window (mirrors the submissions rate-limit pattern).
     #rateLimited;
     // The caller already has the maximum number of concurrent pending (unpaid)
-    // reservations. For anonymous guests this is a global cap on simultaneous
-    // pending orders, bounding how much of the catalogue a script can reserve.
+    // reservations. For a signed-in customer this is per-principal; for an
+    // anonymous guest it is PER SESSION (scoped to the browser-scoped session
+    // identifier issued at checkout), so one guest's abandoned carts never block
+    // another guest. A separate, much higher global ceiling acts as a
+    // catastrophic-abuse backstop (see the pending-order config).
     #tooManyPendingOrders;
   };
 

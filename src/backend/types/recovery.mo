@@ -28,7 +28,8 @@ module {
     reference : Text;
     status : StorefrontTypes.PaymentStatus;
     paymentMethod : StorefrontTypes.PaymentMethod;
-    amountOwed : Float;
+    // Amount owed in integer cents (e.g. 2499 for $24.99). Never a Float dollar.
+    amountOwed : Nat;
     depositAccount : ?DepositAccount;
     liveBalance : Nat;
     expiresAt : ?Int;

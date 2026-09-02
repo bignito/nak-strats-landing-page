@@ -91,7 +91,7 @@ export type CryptoPaymentError = {
     invalidConfig: string;
 } | {
     __kind__: "belowMinimumOrder";
-    belowMinimumOrder: number;
+    belowMinimumOrder: bigint;
 };
 export type SweepError = {
     __kind__: "sweepFailed";
@@ -187,7 +187,7 @@ export interface AdminOrderDetail {
     cryptoStatus?: CryptoPaymentStatus;
     createdAt: bigint;
     reference: string;
-    amountOwed: number;
+    amountOwed: bigint;
     updatedAt: bigint;
     currency: string;
     hasShippingDetails: boolean;
@@ -234,6 +234,7 @@ export interface DepositInfo {
     amountDue: bigint;
 }
 export interface CreateOrderInput {
+    session_id?: string;
     payment_method: PaymentMethod;
     has_shipping_details: boolean;
     items: Array<CreateOrderItem>;
@@ -313,11 +314,11 @@ export type Result_9 = {
 };
 export interface Order {
     id: bigint;
-    tax: number;
+    tax: bigint;
     updated_at: bigint;
-    total: number;
+    total: bigint;
     sweep_note?: string;
-    shipping: number;
+    shipping: bigint;
     reference: string;
     created_at: bigint;
     payment_status: PaymentStatus;
@@ -334,7 +335,7 @@ export interface Order {
     shipped_at?: bigint;
     marketing_consent: boolean;
     payment_reference?: string;
-    subtotal: number;
+    subtotal: bigint;
 }
 export interface HttpHeader {
     value: string;
@@ -343,6 +344,7 @@ export interface HttpHeader {
 export interface CreateOrderResult {
     order: Order;
     cancellationToken?: string;
+    sessionId?: string;
 }
 export type StreamingStrategy = {
     __kind__: "Callback";
@@ -406,7 +408,7 @@ export interface CryptoConfigView {
     icp: LedgerConfig;
     ckUSDC: LedgerConfig;
     treasurySubaccount?: Uint8Array;
-    minimumOrder: number;
+    minimumOrder: bigint;
     ckUSDCEnabled: boolean;
     treasuryPrincipal: Principal;
 }
@@ -433,7 +435,7 @@ export type Result_25 = {
 };
 export interface OrderItem {
     product_id: ProductId;
-    unit_amount: number;
+    unit_amount: bigint;
     name: string;
     variant_id: string;
     quantity: bigint;
@@ -580,7 +582,7 @@ export interface OrderRecoveryView {
     expiresAt?: bigint;
     reference: string;
     depositAccount?: DepositAccount;
-    amountOwed: number;
+    amountOwed: bigint;
     liveBalance: bigint;
 }
 export type Value = {
@@ -651,7 +653,7 @@ export interface AdminOrderView {
     createdAt: bigint;
     itemCount: bigint;
     reference: string;
-    amountOwed: number;
+    amountOwed: bigint;
     currency: string;
     subaccountHex: string;
     sweepNote?: string;
@@ -694,7 +696,7 @@ export interface ProductVariant {
     inventory: bigint;
     name: string;
     size: string;
-    price: number;
+    price: bigint;
 }
 export type Result_18 = {
     __kind__: "ok";
@@ -747,6 +749,9 @@ export type OrderError = {
     __kind__: "outOfStock";
     outOfStock: [ProductId, string];
 } | {
+    __kind__: "invalidPrice";
+    invalidPrice: string;
+} | {
     __kind__: "unknownVariant";
     unknownVariant: [ProductId, string];
 } | {
@@ -763,7 +768,7 @@ export type OrderError = {
     rateLimited: null;
 } | {
     __kind__: "belowMinimumOrder";
-    belowMinimumOrder: number;
+    belowMinimumOrder: bigint;
 } | {
     __kind__: "productInactive";
     productInactive: ProductId;
@@ -803,7 +808,7 @@ export interface Product {
     currency: string;
     admin_only: boolean;
     category: string;
-    price: number;
+    price: bigint;
     images: Array<string>;
 }
 export enum Discipline {
@@ -885,7 +890,7 @@ export interface backendInterface {
     getDefaultSubaccountBalance(): Promise<Result_17>;
     getEncryptionRecipients(): Promise<Array<Principal>>;
     getIbePublicKey(): Promise<Uint8Array>;
-    getMinimumOrder(): Promise<number>;
+    getMinimumOrder(): Promise<bigint>;
     getMyEncryptedIbeKey(transportPublicKey: Uint8Array): Promise<Uint8Array>;
     getMyOrders(): Promise<Array<PublicOrderView>>;
     getMyRole(): Promise<Role | null>;
@@ -893,6 +898,10 @@ export interface backendInterface {
     getOrderStatus(reference: string): Promise<PublicOrderView | null>;
     getPaymentServiceConfig(): Promise<PaymentServiceConfigView>;
     getPaymentStatus(reference: string): Promise<PaymentStatus>;
+    getPendingOrderConfig(): Promise<{
+        globalCap: bigint;
+        perSessionCap: bigint;
+    }>;
     getProduct(slugOrId: string): Promise<Product | null>;
     getProductImageStorageStats(): Promise<StorageStats>;
     getResumeInfo(reference: string): Promise<Result_16>;
@@ -918,6 +927,7 @@ export interface backendInterface {
     paymentServiceTransform(input: TransformationInput): Promise<TransformationOutput>;
     reassignProducts(fromSlug: string, toSlug: string): Promise<Result_12>;
     releaseExpiredOrders(): Promise<bigint>;
+    releaseExpiredReservations(): Promise<bigint>;
     removeAdmin(p: Principal): Promise<boolean>;
     reorderCategories(orderedIds: Array<CategoryId>): Promise<Result_11>;
     resendConfirmationEmail(reference: string): Promise<Result_10>;
@@ -937,9 +947,10 @@ export interface backendInterface {
     unsubscribe(token: string): Promise<Result_4>;
     updateCategory(id: CategoryId, name: string, description: string | null, sortOrder: bigint, active: boolean, showWhenEmpty: boolean): Promise<Result_3>;
     updateLedgerConfig(token: Token, canisterId: Principal, decimals: number, fee: bigint): Promise<Result_1>;
-    updateMinimumOrder(minimum: number): Promise<Result_1>;
+    updateMinimumOrder(minimum: bigint): Promise<Result_1>;
     updatePaymentServiceToken(token: string): Promise<Result_2>;
     updatePaymentServiceUrl(url: string): Promise<Result_2>;
+    updatePendingOrderGlobalCap(cap: bigint): Promise<bigint>;
     updateProduct(product: Product): Promise<boolean>;
     updateTreasury(principal: Principal, subaccount: Uint8Array | null): Promise<Result_1>;
     uploadChunk(uploadId: string, index: bigint, blob: Uint8Array): Promise<Result>;
@@ -1423,7 +1434,7 @@ export class Backend implements backendInterface {
             return result;
         }
     }
-    async getMinimumOrder(): Promise<number> {
+    async getMinimumOrder(): Promise<bigint> {
         if (this.processError) {
             try {
                 const result = await this.actor.getMinimumOrder();
@@ -1533,6 +1544,23 @@ export class Backend implements backendInterface {
         } else {
             const result = await this.actor.getPaymentStatus(arg0);
             return from_candid_PaymentStatus_n4(this._uploadFile, this._downloadFile, result);
+        }
+    }
+    async getPendingOrderConfig(): Promise<{
+        globalCap: bigint;
+        perSessionCap: bigint;
+    }> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getPendingOrderConfig();
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getPendingOrderConfig();
+            return result;
         }
     }
     async getProduct(arg0: string): Promise<Product | null> {
@@ -1885,6 +1913,20 @@ export class Backend implements backendInterface {
             return result;
         }
     }
+    async releaseExpiredReservations(): Promise<bigint> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.releaseExpiredReservations();
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.releaseExpiredReservations();
+            return result;
+        }
+    }
     async removeAdmin(arg0: Principal): Promise<boolean> {
         if (this.processError) {
             try {
@@ -2151,7 +2193,7 @@ export class Backend implements backendInterface {
             return from_candid_Result_1_n183(this._uploadFile, this._downloadFile, result);
         }
     }
-    async updateMinimumOrder(arg0: number): Promise<Result_1> {
+    async updateMinimumOrder(arg0: bigint): Promise<Result_1> {
         if (this.processError) {
             try {
                 const result = await this.actor.updateMinimumOrder(arg0);
@@ -2191,6 +2233,20 @@ export class Backend implements backendInterface {
         } else {
             const result = await this.actor.updatePaymentServiceUrl(arg0);
             return from_candid_Result_2_n16(this._uploadFile, this._downloadFile, result);
+        }
+    }
+    async updatePendingOrderGlobalCap(arg0: bigint): Promise<bigint> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.updatePendingOrderGlobalCap(arg0);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.updatePendingOrderGlobalCap(arg0);
+            return result;
         }
     }
     async updateProduct(arg0: Product): Promise<boolean> {
@@ -2680,7 +2736,7 @@ function from_candid_record_n146(_uploadFile: (file: ExternalBlob) => Promise<Ui
     expiresAt: [] | [bigint];
     reference: string;
     depositAccount: [] | [_DepositAccount];
-    amountOwed: number;
+    amountOwed: bigint;
     liveBalance: bigint;
 }): {
     status: PaymentStatus;
@@ -2688,7 +2744,7 @@ function from_candid_record_n146(_uploadFile: (file: ExternalBlob) => Promise<Ui
     expiresAt?: bigint;
     reference: string;
     depositAccount?: DepositAccount;
-    amountOwed: number;
+    amountOwed: bigint;
     liveBalance: bigint;
 } {
     return {
@@ -2708,7 +2764,7 @@ function from_candid_record_n15(_uploadFile: (file: ExternalBlob) => Promise<Uin
     createdAt: bigint;
     itemCount: bigint;
     reference: string;
-    amountOwed: number;
+    amountOwed: bigint;
     currency: string;
     subaccountHex: string;
     sweepNote: [] | [string];
@@ -2721,7 +2777,7 @@ function from_candid_record_n15(_uploadFile: (file: ExternalBlob) => Promise<Uin
     createdAt: bigint;
     itemCount: bigint;
     reference: string;
-    amountOwed: number;
+    amountOwed: bigint;
     currency: string;
     subaccountHex: string;
     sweepNote?: string;
@@ -2825,7 +2881,7 @@ function from_candid_record_n3(_uploadFile: (file: ExternalBlob) => Promise<Uint
     cryptoStatus: [] | [_CryptoPaymentStatus];
     createdAt: bigint;
     reference: string;
-    amountOwed: number;
+    amountOwed: bigint;
     updatedAt: bigint;
     currency: string;
     hasShippingDetails: boolean;
@@ -2841,7 +2897,7 @@ function from_candid_record_n3(_uploadFile: (file: ExternalBlob) => Promise<Uint
     cryptoStatus?: CryptoPaymentStatus;
     createdAt: bigint;
     reference: string;
-    amountOwed: number;
+    amountOwed: bigint;
     updatedAt: bigint;
     currency: string;
     hasShippingDetails: boolean;
@@ -2905,22 +2961,25 @@ function from_candid_record_n34(_uploadFile: (file: ExternalBlob) => Promise<Uin
 function from_candid_record_n54(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     order: _Order;
     cancellationToken: [] | [string];
+    sessionId: [] | [string];
 }): {
     order: Order;
     cancellationToken?: string;
+    sessionId?: string;
 } {
     return {
         order: from_candid_Order_n55(_uploadFile, _downloadFile, value.order),
-        cancellationToken: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.cancellationToken))
+        cancellationToken: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.cancellationToken)),
+        sessionId: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.sessionId))
     };
 }
 function from_candid_record_n56(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     id: bigint;
-    tax: number;
+    tax: bigint;
     updated_at: bigint;
-    total: number;
+    total: bigint;
     sweep_note: [] | [string];
-    shipping: number;
+    shipping: bigint;
     reference: string;
     created_at: bigint;
     payment_status: _PaymentStatus;
@@ -2937,14 +2996,14 @@ function from_candid_record_n56(_uploadFile: (file: ExternalBlob) => Promise<Uin
     shipped_at: [] | [bigint];
     marketing_consent: boolean;
     payment_reference: [] | [string];
-    subtotal: number;
+    subtotal: bigint;
 }): {
     id: bigint;
-    tax: number;
+    tax: bigint;
     updated_at: bigint;
-    total: number;
+    total: bigint;
     sweep_note?: string;
-    shipping: number;
+    shipping: bigint;
     reference: string;
     created_at: bigint;
     payment_status: PaymentStatus;
@@ -2961,7 +3020,7 @@ function from_candid_record_n56(_uploadFile: (file: ExternalBlob) => Promise<Uin
     shipped_at?: bigint;
     marketing_consent: boolean;
     payment_reference?: string;
-    subtotal: number;
+    subtotal: bigint;
 } {
     return {
         id: value.id,
@@ -3050,14 +3109,14 @@ function from_candid_record_n95(_uploadFile: (file: ExternalBlob) => Promise<Uin
     icp: _LedgerConfig;
     ckUSDC: _LedgerConfig;
     treasurySubaccount: [] | [Uint8Array];
-    minimumOrder: number;
+    minimumOrder: bigint;
     ckUSDCEnabled: boolean;
     treasuryPrincipal: Principal;
 }): {
     icp: LedgerConfig;
     ckUSDC: LedgerConfig;
     treasurySubaccount?: Uint8Array;
-    minimumOrder: number;
+    minimumOrder: bigint;
     ckUSDCEnabled: boolean;
     treasuryPrincipal: Principal;
 } {
@@ -3700,7 +3759,7 @@ function from_candid_variant_n23(_uploadFile: (file: ExternalBlob) => Promise<Ui
 } | {
     invalidConfig: string;
 } | {
-    belowMinimumOrder: number;
+    belowMinimumOrder: bigint;
 }): {
     __kind__: "alreadyPaid";
     alreadyPaid: null;
@@ -3739,7 +3798,7 @@ function from_candid_variant_n23(_uploadFile: (file: ExternalBlob) => Promise<Ui
     invalidConfig: string;
 } | {
     __kind__: "belowMinimumOrder";
-    belowMinimumOrder: number;
+    belowMinimumOrder: bigint;
 } {
     return "alreadyPaid" in value ? {
         __kind__: "alreadyPaid",
@@ -3960,6 +4019,8 @@ function from_candid_variant_n59(_uploadFile: (file: ExternalBlob) => Promise<Ui
 function from_candid_variant_n62(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     outOfStock: [_ProductId, string];
 } | {
+    invalidPrice: string;
+} | {
     unknownVariant: [_ProductId, string];
 } | {
     unknownProduct: _ProductId;
@@ -3970,7 +4031,7 @@ function from_candid_variant_n62(_uploadFile: (file: ExternalBlob) => Promise<Ui
 } | {
     rateLimited: null;
 } | {
-    belowMinimumOrder: number;
+    belowMinimumOrder: bigint;
 } | {
     productInactive: _ProductId;
 } | {
@@ -3982,6 +4043,9 @@ function from_candid_variant_n62(_uploadFile: (file: ExternalBlob) => Promise<Ui
 }): {
     __kind__: "outOfStock";
     outOfStock: [ProductId, string];
+} | {
+    __kind__: "invalidPrice";
+    invalidPrice: string;
 } | {
     __kind__: "unknownVariant";
     unknownVariant: [ProductId, string];
@@ -3999,7 +4063,7 @@ function from_candid_variant_n62(_uploadFile: (file: ExternalBlob) => Promise<Ui
     rateLimited: null;
 } | {
     __kind__: "belowMinimumOrder";
-    belowMinimumOrder: number;
+    belowMinimumOrder: bigint;
 } | {
     __kind__: "productInactive";
     productInactive: ProductId;
@@ -4016,6 +4080,9 @@ function from_candid_variant_n62(_uploadFile: (file: ExternalBlob) => Promise<Ui
     return "outOfStock" in value ? {
         __kind__: "outOfStock",
         outOfStock: value.outOfStock
+    } : "invalidPrice" in value ? {
+        __kind__: "invalidPrice",
+        invalidPrice: value.invalidPrice
     } : "unknownVariant" in value ? {
         __kind__: "unknownVariant",
         unknownVariant: value.unknownVariant
@@ -4489,11 +4556,11 @@ function to_candid_record_n168(_uploadFile: (file: ExternalBlob) => Promise<Uint
 }
 function to_candid_record_n38(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     id: bigint;
-    tax: number;
+    tax: bigint;
     updated_at: bigint;
-    total: number;
+    total: bigint;
     sweep_note?: string;
-    shipping: number;
+    shipping: bigint;
     reference: string;
     created_at: bigint;
     payment_status: PaymentStatus;
@@ -4510,14 +4577,14 @@ function to_candid_record_n38(_uploadFile: (file: ExternalBlob) => Promise<Uint8
     shipped_at?: bigint;
     marketing_consent: boolean;
     payment_reference?: string;
-    subtotal: number;
+    subtotal: bigint;
 }): {
     id: bigint;
-    tax: number;
+    tax: bigint;
     updated_at: bigint;
-    total: number;
+    total: bigint;
     sweep_note: [] | [string];
-    shipping: number;
+    shipping: bigint;
     reference: string;
     created_at: bigint;
     payment_status: _PaymentStatus;
@@ -4534,7 +4601,7 @@ function to_candid_record_n38(_uploadFile: (file: ExternalBlob) => Promise<Uint8
     shipped_at: [] | [bigint];
     marketing_consent: boolean;
     payment_reference: [] | [string];
-    subtotal: number;
+    subtotal: bigint;
 } {
     return {
         id: value.id,
@@ -4563,6 +4630,7 @@ function to_candid_record_n38(_uploadFile: (file: ExternalBlob) => Promise<Uint8
     };
 }
 function to_candid_record_n50(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+    session_id?: string;
     payment_method: PaymentMethod;
     has_shipping_details: boolean;
     items: Array<CreateOrderItem>;
@@ -4570,6 +4638,7 @@ function to_candid_record_n50(_uploadFile: (file: ExternalBlob) => Promise<Uint8
     encrypted_shipping?: Uint8Array;
     marketing_consent: boolean;
 }): {
+    session_id: [] | [string];
     payment_method: _PaymentMethod;
     has_shipping_details: boolean;
     items: Array<_CreateOrderItem>;
@@ -4578,6 +4647,7 @@ function to_candid_record_n50(_uploadFile: (file: ExternalBlob) => Promise<Uint8
     marketing_consent: boolean;
 } {
     return {
+        session_id: value.session_id ? candid_some(value.session_id) : candid_none(),
         payment_method: to_candid_PaymentMethod_n41(_uploadFile, _downloadFile, value.payment_method),
         has_shipping_details: value.has_shipping_details,
         items: value.items,

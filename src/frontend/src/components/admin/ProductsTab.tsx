@@ -72,7 +72,7 @@ function blankProduct(): Product {
     description: "",
     category: "",
     currency: "usd",
-    price: 0,
+    price: 0n,
     images: [],
     variants: [],
   };
@@ -88,10 +88,12 @@ interface Draft {
 }
 
 function toDraft(p: Product): Draft {
+  const dollars = p.price / 100n;
+  const cents = p.price % 100n;
   return {
     name: p.name,
     category: p.category,
-    priceDollars: p.price.toFixed(2),
+    priceDollars: `${dollars}.${cents.toString().padStart(2, "0")}`,
     inventory: String(p.inventory),
     active: p.active,
     hidden: p.admin_only,

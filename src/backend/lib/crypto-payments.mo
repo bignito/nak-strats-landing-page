@@ -170,10 +170,12 @@ module {
   };
 
   public func computeAmountDue(order : StorefrontTypes.Order, decimals : Nat8) : Nat {
-    // order.total is in US dollars (Float); convert to the token's smallest units.
-    // ckUSDC has 6 decimals -> scale = 10^6.
+    // order.total is in integer cents (e.g. 2499 for $24.99); convert to the
+    // token's smallest units. ckUSDC has 6 decimals -> scale = 10^6, so
+    // amountDue = cents * 10^(decimals-2). Integer arithmetic only — prices are
+    // never Float.
     let scale = pow10(decimals.toNat());
-    (order.total * scale.toFloat()).toInt().toNat();
+    order.total * scale / 100;
   };
 
   public func createPayment(
@@ -703,7 +705,7 @@ module {
 
   public func cryptoAdapter(
     orders : List.List<StorefrontTypes.Order>,
-    products : List.List<StorefrontTypes.Product>,
+    _products : List.List<StorefrontTypes.Product>,
     cryptoPayments : Map.Map<Text, Types.CryptoPayment>,
     config : Types.CryptoConfig,
   ) : PaymentAdapterLib.PaymentAdapter {

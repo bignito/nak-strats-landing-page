@@ -30,7 +30,7 @@ module {
           case null { #pending };
         };
       };
-      handlePaymentConfirmation = func(payload : Text) : async Result.Result<(), PaymentError> {
+      handlePaymentConfirmation = func(_payload : Text) : async Result.Result<(), PaymentError> {
         #ok();
       };
     };

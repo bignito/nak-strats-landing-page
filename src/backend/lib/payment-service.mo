@@ -82,6 +82,16 @@ module {
     switch (orders.find(func o = o.reference == reference)) {
       case null { #err(#notFound) };
       case (?order) {
+        // Pre-outcall guard: every line item must carry a positive integer
+        // unit_amount (integer cents). A zero (or otherwise invalid) unit
+        // amount would be rejected by the payment service with a 500, so fail
+        // fast with a specific, customer-understandable error naming the
+        // offending product rather than making a doomed outcall that wastes
+        // cycles.
+        switch (order.items.find(func i = i.unit_amount == 0)) {
+          case (?bad) { return #err(#invalidResponse("Cannot start card payment: \"" # bad.name # "\" has no valid price")) };
+          case null {};
+        };
         let body = buildCreateSessionBody(order, successUrl, cancelUrl);
         let headers = [
           { name = "Content-Type"; value = "application/json" },

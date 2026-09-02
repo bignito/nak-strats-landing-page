@@ -12,4 +12,14 @@ module {
   public type RateLimitState = {
     var calls : Map.Map<Principal, [Int]>;
   };
+
+  // Admin-configurable pending-order ceiling. The per-session cap (PENDING_ORDER_CAP
+  // in lib/rate-limit.mo) bounds how many concurrent pending orders ONE browser
+  // session may hold; this global ceiling bounds how many concurrent pending
+  // orders may exist across ALL callers combined, purely as a catastrophic-abuse
+  // backstop. It is set high enough that normal traffic never approaches it and
+  // is adjustable by an admin at runtime.
+  public type PendingOrderConfig = {
+    var globalCap : Nat;
+  };
 };

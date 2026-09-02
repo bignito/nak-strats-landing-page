@@ -45,7 +45,7 @@ export type CryptoPaymentError = {
     invalidConfig: string;
 } | {
     __kind__: "belowMinimumOrder";
-    belowMinimumOrder: number;
+    belowMinimumOrder: bigint;
 };
 export type SweepError = {
     __kind__: "sweepFailed";
@@ -141,7 +141,7 @@ export interface AdminOrderDetail {
     cryptoStatus?: CryptoPaymentStatus;
     createdAt: bigint;
     reference: string;
-    amountOwed: number;
+    amountOwed: bigint;
     updatedAt: bigint;
     currency: string;
     hasShippingDetails: boolean;
@@ -188,6 +188,7 @@ export interface DepositInfo {
     amountDue: bigint;
 }
 export interface CreateOrderInput {
+    session_id?: string;
     payment_method: PaymentMethod;
     has_shipping_details: boolean;
     items: Array<CreateOrderItem>;
@@ -267,11 +268,11 @@ export type Result_9 = {
 };
 export interface Order {
     id: bigint;
-    tax: number;
+    tax: bigint;
     updated_at: bigint;
-    total: number;
+    total: bigint;
     sweep_note?: string;
-    shipping: number;
+    shipping: bigint;
     reference: string;
     created_at: bigint;
     payment_status: PaymentStatus;
@@ -288,7 +289,7 @@ export interface Order {
     shipped_at?: bigint;
     marketing_consent: boolean;
     payment_reference?: string;
-    subtotal: number;
+    subtotal: bigint;
 }
 export interface HttpHeader {
     value: string;
@@ -297,6 +298,7 @@ export interface HttpHeader {
 export interface CreateOrderResult {
     order: Order;
     cancellationToken?: string;
+    sessionId?: string;
 }
 export type StreamingStrategy = {
     __kind__: "Callback";
@@ -360,7 +362,7 @@ export interface CryptoConfigView {
     icp: LedgerConfig;
     ckUSDC: LedgerConfig;
     treasurySubaccount?: Uint8Array;
-    minimumOrder: number;
+    minimumOrder: bigint;
     ckUSDCEnabled: boolean;
     treasuryPrincipal: Principal;
 }
@@ -387,7 +389,7 @@ export type Result_25 = {
 };
 export interface OrderItem {
     product_id: ProductId;
-    unit_amount: number;
+    unit_amount: bigint;
     name: string;
     variant_id: string;
     quantity: bigint;
@@ -534,7 +536,7 @@ export interface OrderRecoveryView {
     expiresAt?: bigint;
     reference: string;
     depositAccount?: DepositAccount;
-    amountOwed: number;
+    amountOwed: bigint;
     liveBalance: bigint;
 }
 export type Value = {
@@ -605,7 +607,7 @@ export interface AdminOrderView {
     createdAt: bigint;
     itemCount: bigint;
     reference: string;
-    amountOwed: number;
+    amountOwed: bigint;
     currency: string;
     subaccountHex: string;
     sweepNote?: string;
@@ -648,7 +650,7 @@ export interface ProductVariant {
     inventory: bigint;
     name: string;
     size: string;
-    price: number;
+    price: bigint;
 }
 export type Result_18 = {
     __kind__: "ok";
@@ -701,6 +703,9 @@ export type OrderError = {
     __kind__: "outOfStock";
     outOfStock: [ProductId, string];
 } | {
+    __kind__: "invalidPrice";
+    invalidPrice: string;
+} | {
     __kind__: "unknownVariant";
     unknownVariant: [ProductId, string];
 } | {
@@ -717,7 +722,7 @@ export type OrderError = {
     rateLimited: null;
 } | {
     __kind__: "belowMinimumOrder";
-    belowMinimumOrder: number;
+    belowMinimumOrder: bigint;
 } | {
     __kind__: "productInactive";
     productInactive: ProductId;
@@ -757,7 +762,7 @@ export interface Product {
     currency: string;
     admin_only: boolean;
     category: string;
-    price: number;
+    price: bigint;
     images: Array<string>;
 }
 export enum Discipline {
@@ -839,7 +844,7 @@ export interface backendInterface {
     getDefaultSubaccountBalance(): Promise<Result_17>;
     getEncryptionRecipients(): Promise<Array<Principal>>;
     getIbePublicKey(): Promise<Uint8Array>;
-    getMinimumOrder(): Promise<number>;
+    getMinimumOrder(): Promise<bigint>;
     getMyEncryptedIbeKey(transportPublicKey: Uint8Array): Promise<Uint8Array>;
     getMyOrders(): Promise<Array<PublicOrderView>>;
     getMyRole(): Promise<Role | null>;
@@ -847,6 +852,10 @@ export interface backendInterface {
     getOrderStatus(reference: string): Promise<PublicOrderView | null>;
     getPaymentServiceConfig(): Promise<PaymentServiceConfigView>;
     getPaymentStatus(reference: string): Promise<PaymentStatus>;
+    getPendingOrderConfig(): Promise<{
+        globalCap: bigint;
+        perSessionCap: bigint;
+    }>;
     getProduct(slugOrId: string): Promise<Product | null>;
     getProductImageStorageStats(): Promise<StorageStats>;
     getResumeInfo(reference: string): Promise<Result_16>;
@@ -872,6 +881,7 @@ export interface backendInterface {
     paymentServiceTransform(input: TransformationInput): Promise<TransformationOutput>;
     reassignProducts(fromSlug: string, toSlug: string): Promise<Result_12>;
     releaseExpiredOrders(): Promise<bigint>;
+    releaseExpiredReservations(): Promise<bigint>;
     removeAdmin(p: Principal): Promise<boolean>;
     reorderCategories(orderedIds: Array<CategoryId>): Promise<Result_11>;
     resendConfirmationEmail(reference: string): Promise<Result_10>;
@@ -891,9 +901,10 @@ export interface backendInterface {
     unsubscribe(token: string): Promise<Result_4>;
     updateCategory(id: CategoryId, name: string, description: string | null, sortOrder: bigint, active: boolean, showWhenEmpty: boolean): Promise<Result_3>;
     updateLedgerConfig(token: Token, canisterId: Principal, decimals: number, fee: bigint): Promise<Result_1>;
-    updateMinimumOrder(minimum: number): Promise<Result_1>;
+    updateMinimumOrder(minimum: bigint): Promise<Result_1>;
     updatePaymentServiceToken(token: string): Promise<Result_2>;
     updatePaymentServiceUrl(url: string): Promise<Result_2>;
+    updatePendingOrderGlobalCap(cap: bigint): Promise<bigint>;
     updateProduct(product: Product): Promise<boolean>;
     updateTreasury(principal: Principal, subaccount: Uint8Array | null): Promise<Result_1>;
     uploadChunk(uploadId: string, index: bigint, blob: Uint8Array): Promise<Result>;

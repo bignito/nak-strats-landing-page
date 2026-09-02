@@ -153,7 +153,7 @@ const SuccessPage: React.FC<SuccessPageProps> = ({
                 </span>
               </span>
               <span className="summary-value shrink-0">
-                {formatPrice(item.unit_amount * Number(item.quantity))}
+                {formatPrice(item.unit_amount * item.quantity)}
               </span>
             </div>
           ))}

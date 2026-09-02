@@ -1,15 +1,16 @@
 {
-  "overview": "A storefront landing page for NAK STRATS cologne products with a shop grid, product detail, cart, and checkout.",
+  "overview": "A storefront landing page for NAK STRATS colognes with a browsable catalogue, cart, and card checkout.",
   "features": [
-    "Browse a catalog of cologne products",
-    "View product details and prices",
-    "Add products to cart and check out"
+    "Browse the cologne catalogue by category",
+    "Add products to a cart and place orders",
+    "Pay by card through the checkout flow",
+    "Admin product management with access control"
   ],
   "category": "ecommerce",
   "tags": [
     "storefront",
-    "cologne",
-    "ecommerce"
+    "ecommerce",
+    "colognes"
   ],
-  "last_updated": "2026-09-02T09:49:06.470Z"
+  "last_updated": "2026-09-02T17:14:22.880Z"
 }

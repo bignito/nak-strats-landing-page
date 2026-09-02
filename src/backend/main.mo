@@ -8,6 +8,7 @@ import Types "types/storefront";
 import CryptoTypes "types/crypto-payments";
 import RecoveryTypes "types/recovery";
 import StorefrontApi "mixins/storefront-api";
+import StorefrontLib "lib/storefront";
 import CategoriesApi "mixins/categories-api";
 import PaymentAdapterApi "mixins/payment-adapter-api";
 import CryptoPaymentsApi "mixins/crypto-payments-api";
@@ -83,7 +84,7 @@ persistent actor Self {
         ("name", #text(p.name)),
         ("slug", #text(p.slug)),
         ("description", #text(p.description)),
-        ("price", #float(p.price)),
+        ("price", #nat(p.price)),
         ("currency", #text(p.currency)),
         ("images", #text(p.images.values().join(","))),
         ("category", #text(p.category)),
@@ -101,10 +102,10 @@ persistent actor Self {
         ("id", #nat(o.id)),
         ("reference", #text(o.reference)),
         ("items", #nat(o.items.size())),
-        ("subtotal", #float(o.subtotal)),
-        ("tax", #float(o.tax)),
-        ("shipping", #float(o.shipping)),
-        ("total", #float(o.total)),
+        ("subtotal", #nat(o.subtotal)),
+        ("tax", #nat(o.tax)),
+        ("shipping", #nat(o.shipping)),
+        ("total", #nat(o.total)),
         ("currency", #text(o.currency)),
         ("customer_email", #text(o.customer_email)),
         ("encrypted_shipping", #text(optBlobToText(o.encrypted_shipping))),
@@ -325,12 +326,12 @@ persistent actor Self {
     // empty), so an emptied allowlist can never silently reopen ownership.
     let initialAdminClaimed : { var initialAdminClaimed : Bool };
 
-    // Minimum order total (in US dollars as a decimal) required for crypto
-    // checkout (stable, seeded by the migration chain, default $0.25). Crypto
+    // Minimum order total (in integer cents, e.g. 25 for $0.25) required for
+    // crypto checkout (stable, seeded by the migration chain, default 25). Crypto
     // orders below this are rejected server-side because they cannot be swept
     // to the treasury after the ledger transfer fee is deducted.
     // Admin-configurable.
-    let minimumOrder : { var minimumOrder : Float };
+    let minimumOrder : { var minimumOrder : Nat };
 
     // Runtime icrc1_fee cache (stable, seeded by the migration chain). The
     // sweep queries icrc1_fee on the configured ledger at runtime and caches it
@@ -370,6 +371,19 @@ persistent actor Self {
     // anonymous guest order; required for guest self-cancellation so a leaked
     // order reference alone never confers the power to cancel.
     let cancelTokens : Map.Map<Text, CancellationTypes.CancellationToken>;
+
+    // Browser-scoped session identifiers for anonymous guest checkout (stable,
+    // seeded by the migration chain). Maps a session id to the list of order
+    // references created by that browser session. The per-session pending-order
+    // cap is scoped to this identifier, so one guest's abandoned carts never
+    // block another guest. Non-pending references are pruned during counting.
+    let sessionOrders : Map.Map<Text, List.List<Text>>;
+
+    // Admin-configurable pending-order ceiling (stable, seeded by the migration
+    // chain). The globalCap is the catastrophic-abuse backstop on concurrent
+    // pending orders across all callers and sessions; the per-session cap is a
+    // compile-time constant (PENDING_ORDER_CAP in lib/rate-limit.mo).
+    let pendingOrderConfig : RateLimitTypes.PendingOrderConfig;
 
     // Product image assets stored in canister stable state (stable, seeded by
     // the migration chain). Maps an immutable asset id to the stored blob and
@@ -429,10 +443,24 @@ persistent actor Self {
       id
     };
 
+    // Auto-register the recurring reservation-sweep timer on every (re)start.
+    // Transient fields are re-initialized on canister init AND post-upgrade, and
+    // timers are not persisted across upgrades, so this re-registers the timer
+    // after every upgrade. It releases expired pending CARD and MANUAL
+    // reservations (restoring inventory and marking them #expired) promptly
+    // rather than only lazily on the next order attempt, so abandoned carts
+    // clear quickly and never accumulate into a self-inflicted outage.
+    transient let _reservationSweepTimer = do {
+      let id = Timer.recurringTimer<system>(#seconds(60), func() : async () {
+        ignore (StorefrontLib.releaseExpiredReservations(orders, products));
+      });
+      id
+    };
+
     include EmailApi(paymentServiceConfig, orders, adminUsers);
     include ConsentApi(paymentServiceConfig, adminUsers, unsubscribeRateLimit);
     include SweepApi(cryptoConfig, selfPrincipal, adminUsers, feeCache);
-    include StorefrontApi(products, orders, state, paymentAdapter, adminUsers, minimumOrder, paymentServiceConfig, emailTransform, orderRateLimit, cancelTokens, assets, selfPrincipal);
+    include StorefrontApi(products, orders, state, paymentAdapter, adminUsers, minimumOrder, paymentServiceConfig, emailTransform, orderRateLimit, cancelTokens, assets, selfPrincipal, sessionOrders, pendingOrderConfig);
     include CategoriesApi(categories, products, adminUsers);
     include ProductAssetsApi(assets, uploads, adminUsers, products, selfPrincipal);
     include PaymentAdapterApi(paymentAdapter);
@@ -452,7 +480,7 @@ persistent actor Self {
         name = "";
         slug = "";
         description = "";
-        price = 0.0;
+        price = 0;
         currency = "";
         images = [];
         category = "";
@@ -460,8 +488,8 @@ persistent actor Self {
         inventory = 0;
         active = true;
         admin_only = false;
-        created_at = 0;
-        updated_at = 0;
+        created_at = 0 : Int;
+        updated_at = 0 : Int;
       }
     )));
     // Categories are a public catalogue: the shop derives its filter chips and
@@ -487,18 +515,18 @@ persistent actor Self {
         id = 0;
         reference = "";
         items = [];
-        subtotal = 0.0;
-        tax = 0.0;
-        shipping = 0.0;
-        total = 0.0;
+        subtotal = 0;
+        tax = 0;
+        shipping = 0;
+        total = 0;
         currency = "";
         customer_email = "";
         encrypted_shipping = null : ?Blob;
         has_shipping_details = false;
         payment_method = #manual;
         payment_status = #pending;
-        payment_reference = null;
-        customer_principal = null;
+        payment_reference = null : ?Text;
+        customer_principal = null : ?Principal;
         sweep_note = null : ?Text;
         shipping_status = #pending;
         shipped_at = null : ?Int;

@@ -50,6 +50,32 @@ import { CopyButton } from "./CopyButton";
 // signature that does not match createActorFunction<Backend> directly.
 const createActor = createActorImpl as unknown as createActorFunction<Backend>;
 
+// Storage key for the browser-scoped checkout session id. The backend enforces
+// a per-session pending-order cap (3), so anonymous guests must send a stable
+// session_id on every createOrder call. The id is minted once per browser and
+// reused across orders in the same session so the cap actually trips.
+const SESSION_ID_KEY = "nak.checkoutSessionId";
+
+function getSessionId(): string | null {
+  try {
+    return window.localStorage.getItem(SESSION_ID_KEY);
+  } catch (error) {
+    console.error("[checkout] Failed to read session id (ERR-CHK-010)", error);
+    return null;
+  }
+}
+
+function setSessionId(sessionId: string) {
+  try {
+    window.localStorage.setItem(SESSION_ID_KEY, sessionId);
+  } catch (error) {
+    console.error(
+      "[checkout] Failed to persist session id (ERR-CHK-011)",
+      error,
+    );
+  }
+}
+
 interface CheckoutPageProps {
   onNavigateToMain: () => void;
   onNavigateToCart: () => void;
@@ -142,7 +168,7 @@ function OrderSummary({
                   </p>
                 </div>
                 <span className="mono-num text-sm text-secondary-foreground">
-                  {formatPrice(item.unit_amount * Number(item.quantity))}
+                  {formatPrice(item.unit_amount * item.quantity)}
                 </span>
               </div>
             ))}
@@ -194,7 +220,7 @@ function OrderSummary({
                     </p>
                   </div>
                   <span className="mono-num text-sm text-secondary-foreground">
-                    {formatPrice(unitPrice * item.quantity)}
+                    {formatPrice(unitPrice * BigInt(item.quantity))}
                   </span>
                 </div>
               );
@@ -532,6 +558,9 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
       marketing_consent: marketingConsent,
       has_shipping_details: true,
       encrypted_shipping: encryptedShipping,
+      // Reuse the browser-scoped session id so the backend's per-session
+      // pending-order cap (3) applies across orders from the same guest.
+      session_id: getSessionId() ?? undefined,
       payment_method:
         effectivePaymentMethod === "card"
           ? PaymentMethod.card_stripe
@@ -550,6 +579,12 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
           const created = result.ok;
           setOrder(created.order);
           setResumeMode(false);
+          // Persist the session id returned by the backend so subsequent
+          // orders in this browser reuse the same session and count toward the
+          // same per-session pending cap.
+          if (created.sessionId) {
+            setSessionId(created.sessionId);
+          }
           // Remember this order so a returning customer can restore its
           // deposit screen (same address, amount, remaining time).
           setActiveOrderRef(created.order.reference);
@@ -564,17 +599,60 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
           }
           setStep("review");
         } else {
-          setOrderError(
-            result.err.__kind__ === "outOfStock"
-              ? "One or more items are out of stock."
-              : result.err.__kind__ === "emptyOrder"
-                ? "Your cart is empty."
-                : result.err.__kind__ === "belowMinimumOrder"
-                  ? `Orders must be at least ${formatPrice(
-                      result.err.belowMinimumOrder,
-                    )} for crypto payment.`
-                  : "We could not place your order. Please try again.",
-          );
+          // Log the actual error variant so operators can diagnose checkout
+          // failures precisely instead of guessing from a generic message.
+          console.error("[checkout] createOrder returned", result.err);
+          const err = result.err;
+          let message: string;
+          switch (err.__kind__) {
+            case "emptyOrder":
+              message = "Your cart is empty.";
+              break;
+            case "unknownProduct":
+              message = "One of the items in your cart is no longer available.";
+              break;
+            case "productInactive":
+              message = "One of the items in your cart is no longer for sale.";
+              break;
+            case "unknownVariant":
+              message =
+                "One of the items in your cart has an option that is no longer available.";
+              break;
+            case "outOfStock":
+              message = "One or more items are out of stock.";
+              break;
+            case "invalidQuantity":
+              message =
+                "One of the items in your cart has an invalid quantity.";
+              break;
+            case "paymentFailed":
+              message =
+                "Your payment could not be processed. Please try again.";
+              break;
+            case "belowMinimumOrder":
+              message = `Orders must be at least ${formatPrice(
+                err.belowMinimumOrder,
+              )} for crypto payment.`;
+              break;
+            case "ckUSDCDisabled":
+              message =
+                "Crypto payment is not available right now. Please pay by card.";
+              break;
+            case "rateLimited":
+              message =
+                "You are placing orders too quickly. Please wait a moment and try again.";
+              break;
+            case "tooManyPendingOrders":
+              message =
+                "You have too many pending orders. Please complete or cancel them before placing a new one.";
+              break;
+            default:
+              // Exhaustive — every OrderError variant is handled above, so a
+              // normal customer can never reach this fallback.
+              message = "We could not place your order. Please try again.";
+              break;
+          }
+          setOrderError(message);
         }
       },
       onError: (error) => {
@@ -602,6 +680,15 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
             if (result.__kind__ === "ok" && result.ok.url) {
               window.location.href = result.ok.url;
             } else {
+              // Log the actual error variant so operators can diagnose card
+              // checkout failures precisely instead of guessing from a generic
+              // message.
+              if (result.__kind__ === "err") {
+                console.error(
+                  "[checkout] createCardCheckoutSession returned",
+                  result.err,
+                );
+              }
               setOrderError(
                 result.__kind__ === "err" &&
                   result.err.__kind__ === "notConfigured"

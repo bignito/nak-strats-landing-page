@@ -1,4 +1,5 @@
 import { Role } from "@/backend";
+import { CopyButton } from "@/components/CopyButton";
 import {
   adminErrorMessage,
   normalizePrincipalInput,
@@ -273,7 +274,14 @@ export function UsersTab({ session }: AdminTabBodyProps) {
                 key: "principal",
                 header: "Principal",
                 render: (row) => (
-                  <code className="admin-mono">{row.principal.toText()}</code>
+                  <div className="flex items-center gap-2 min-w-0">
+                    <code className="admin-mono">{row.principal.toText()}</code>
+                    <CopyButton
+                      text={row.principal.toText()}
+                      label="Copy"
+                      className="shrink-0"
+                    />
+                  </div>
                 ),
               },
               {

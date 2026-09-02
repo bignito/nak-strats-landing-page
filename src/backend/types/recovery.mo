@@ -28,7 +28,7 @@ module {
     reference : Text;
     status : StorefrontTypes.PaymentStatus;
     paymentMethod : StorefrontTypes.PaymentMethod;
-    amountOwed : Nat;
+    amountOwed : Float;
     depositAccount : ?DepositAccount;
     liveBalance : Nat;
     expiresAt : ?Int;

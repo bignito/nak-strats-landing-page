@@ -1,20 +1,26 @@
 /**
- * Shared currency helpers for the storefront.
+ * Shared currency helpers.
  *
- * Product prices are stored as integer cents. formatPrice divides by 100 and
- * always renders exactly two decimal places, so 3500 shows as "$35.00" rather
- * than "$35". Token amounts (ckUSDC/ICP) are a different unit and keep their
- * own formatter.
+ * ALL USD dollar values across the app — storefront AND admin — must render
+ * through formatPrice. Product prices, order totals, subtotals, tax, shipping,
+ * revenue, average order value, minimum order total, and amountOwed are all
+ * stored as Float US dollar decimals (e.g. 24.99). formatPrice renders the
+ * dollar value directly with exactly two decimal places, so 24.99 shows as
+ * "$24.99" rather than "$24.99" being divided by 100. There is NO cents
+ * conversion anywhere in the display path.
+ *
+ * Token base units are a different unit and use their own formatters: ckUSDC
+ * uses 6 decimals (1_000_000 base units = $1.00) and ICP uses 8 decimals
+ * (e8s). These must NOT be divided by 100.
  */
 
 /**
- * Format an integer cent amount as a USD string with exactly two decimal
- * places. Accepts either a bigint (backend prices) or a number (cart
- * arithmetic).
+ * Format a Float US dollar amount as a USD string with exactly two decimal
+ * places. The value is already in dollars (e.g. 24.99), so it is rendered
+ * directly — never divided by 100.
  */
-export function formatPrice(value: bigint | number): string {
-  const cents = Number(value);
-  return (cents / 100).toLocaleString("en-US", {
+export function formatPrice(value: number): string {
+  return value.toLocaleString("en-US", {
     style: "currency",
     currency: "USD",
     minimumFractionDigits: 2,
@@ -23,13 +29,13 @@ export function formatPrice(value: bigint | number): string {
 }
 
 /**
- * Parse a dollar string like "35.00" or "78.54" into a whole number of cents.
- * Returns null for invalid input or values with more than two decimal places.
+ * Parse a dollar string like "35.00" or "78.54" into a Float US dollar value
+ * (e.g. 35 or 78.54). Returns null for invalid input or values with more than
+ * two decimal places. The returned value is stored directly as dollars — no
+ * cents conversion.
  */
-export function dollarsToCents(input: string): number | null {
+export function parseDollars(input: string): number | null {
   const trimmed = input.trim();
   if (!/^\d+(\.\d{1,2})?$/.test(trimmed)) return null;
-  const [whole, fraction = ""] = trimmed.split(".");
-  const cents = Number(whole) * 100 + Number(fraction.padEnd(2, "0"));
-  return cents;
+  return Number(trimmed);
 }

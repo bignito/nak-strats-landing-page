@@ -3,6 +3,8 @@ import type {
   AdminOrderDetail,
   AdminOrderView,
   Backend,
+  CategoryId,
+  CategoryWithCount,
   ConsentListExport,
   CreateOrderInput,
   CryptoConfigView,
@@ -18,6 +20,7 @@ import type {
   RecheckResult,
   ResumeInfo,
   Role,
+  StorageStats,
   SubaccountBalanceResult,
   SubmissionInput,
   SubmissionRecord,
@@ -99,6 +102,206 @@ export function useProducts() {
     },
     enabled: !!actor && !isFetching,
   });
+}
+
+/**
+ * Lists every category with its product count. The admin Products tab uses this
+ * to populate the category dropdown; the shop derives its filter chips and
+ * section headings from the same stored category data (never hardcoded names).
+ */
+export function useCategories() {
+  const { actor, isFetching } = useActor(createActor);
+  return useQuery({
+    queryKey: ["categories"],
+    queryFn: async (): Promise<CategoryWithCount[]> => {
+      if (!actor) return [];
+      return actor.listCategories();
+    },
+    enabled: !!actor && !isFetching,
+  });
+}
+
+/** Creates a category. The backend derives the slug from the name. */
+export function useCreateCategory() {
+  const { actor, isFetching } = useActor(createActor);
+  const { isActorReady } = useActorReady();
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: async (args: { name: string; description: string | null }) => {
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      if (!isActorReady)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      const result = await actor.createCategory(args.name, args.description);
+      if (result.__kind__ === "err") throw result.err;
+      return result.ok;
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["categories"] });
+    },
+  });
+  return {
+    ...mutation,
+    mutateAsync: (name: string, description: string | null) =>
+      mutation.mutateAsync({ name, description }),
+  };
+}
+
+/** Updates a category's name, description, sort order, and visibility flags. */
+export function useUpdateCategory() {
+  const { actor, isFetching } = useActor(createActor);
+  const { isActorReady } = useActorReady();
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: async (args: {
+      id: CategoryId;
+      name: string;
+      description: string | null;
+      sortOrder: bigint;
+      active: boolean;
+      showWhenEmpty: boolean;
+    }) => {
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      if (!isActorReady)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      const result = await actor.updateCategory(
+        args.id,
+        args.name,
+        args.description,
+        args.sortOrder,
+        args.active,
+        args.showWhenEmpty,
+      );
+      if (result.__kind__ === "err") throw result.err;
+      return result.ok;
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["categories"] });
+    },
+  });
+  return {
+    ...mutation,
+    mutateAsync: (
+      id: CategoryId,
+      name: string,
+      description: string | null,
+      sortOrder: bigint,
+      active: boolean,
+      showWhenEmpty: boolean,
+    ) =>
+      mutation.mutateAsync({
+        id,
+        name,
+        description,
+        sortOrder,
+        active,
+        showWhenEmpty,
+      }),
+  };
+}
+
+/** Persists a new category display order from a full id list. */
+export function useReorderCategories() {
+  const { actor, isFetching } = useActor(createActor);
+  const { isActorReady } = useActorReady();
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: async (args: { orderedIds: CategoryId[] }) => {
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      if (!isActorReady)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      const result = await actor.reorderCategories(args.orderedIds);
+      if (result.__kind__ === "err") throw result.err;
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["categories"] });
+    },
+  });
+  return {
+    ...mutation,
+    mutateAsync: (orderedIds: CategoryId[]) =>
+      mutation.mutateAsync({ orderedIds }),
+  };
+}
+
+/**
+ * Deletes a category. Throws the raw `CategoryError` variant so the caller can
+ * detect `productsReferenced` and route into the reassign-before-delete flow.
+ */
+export function useDeleteCategory() {
+  const { actor, isFetching } = useActor(createActor);
+  const { isActorReady } = useActorReady();
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: async (args: { id: CategoryId }) => {
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      if (!isActorReady)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      const result = await actor.deleteCategory(args.id);
+      if (result.__kind__ === "err") throw result.err;
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["categories"] });
+      void queryClient.invalidateQueries({ queryKey: ["products"] });
+    },
+  });
+  return {
+    ...mutation,
+    mutateAsync: (id: CategoryId) => mutation.mutateAsync({ id }),
+  };
+}
+
+/**
+ * Moves every product from one category slug to another before a delete, so
+ * products are never silently orphaned. Invalidates both lists on success.
+ */
+export function useReassignProducts() {
+  const { actor, isFetching } = useActor(createActor);
+  const { isActorReady } = useActorReady();
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: async (args: { fromSlug: string; toSlug: string }) => {
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      if (!isActorReady)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      const result = await actor.reassignProducts(args.fromSlug, args.toSlug);
+      if (result.__kind__ === "err") throw result.err;
+      return result.ok;
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["categories"] });
+      void queryClient.invalidateQueries({ queryKey: ["products"] });
+    },
+  });
+  return {
+    ...mutation,
+    mutateAsync: (fromSlug: string, toSlug: string) =>
+      mutation.mutateAsync({ fromSlug, toSlug }),
+  };
 }
 
 export function useProduct(slugOrId: string | null) {
@@ -864,15 +1067,15 @@ export function useGetEncryptionRecipients() {
 }
 
 /**
- * Reads the configured minimum crypto order total. The backend stores it in USD
- * units (25 = $0.25), so callers divide by 100 for display.
+ * Reads the configured minimum crypto order total. The backend stores it as a
+ * Float US dollar decimal (e.g. 25), rendered directly with two decimals.
  */
 export function useGetMinimumOrder() {
   const { actor, isFetching } = useActor(createActor);
   return useQuery({
     queryKey: ["minimumOrder"],
-    queryFn: async (): Promise<bigint> => {
-      if (!actor) return 25n;
+    queryFn: async (): Promise<number> => {
+      if (!actor) return 25;
       return actor.getMinimumOrder();
     },
     enabled: !!actor && !isFetching,
@@ -880,15 +1083,15 @@ export function useGetMinimumOrder() {
 }
 
 /**
- * Updates the minimum crypto order total. The backend expects USD units
- * (dollars * 100), so callers multiply the entered dollars by 100.
+ * Updates the minimum crypto order total. The backend expects a Float US
+ * dollar decimal (e.g. 25), stored directly — no cents conversion.
  */
 export function useUpdateMinimumOrder() {
   const { actor, isFetching } = useActor(createActor);
   const { isActorReady } = useActorReady();
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (minimum: bigint) => {
+    mutationFn: async (minimum: number) => {
       if (!actor || isFetching)
         throw new Error(
           "Session not ready — please wait a moment and try again",
@@ -1327,6 +1530,150 @@ export function useListSubmissions() {
       const result = await actor.listSubmissions();
       if (result.__kind__ === "err") throw result.err;
       return result.ok;
+    },
+    enabled: !!actor && !isFetching,
+  });
+}
+
+/* ============================================================
+   Product image upload hooks (chunked canister storage)
+   ============================================================ */
+
+/**
+ * Begins a chunked product-image upload. Returns the upload id on success, or
+ * throws the mapped `UploadError` message on failure so the caller surfaces the
+ * real error. The upload id is consumed by `useUploadChunk` / `useFinishUpload`.
+ */
+export function useStartUpload() {
+  const { actor, isFetching } = useActor(createActor);
+  const { isActorReady } = useActorReady();
+  return useMutation({
+    mutationFn: async (args: {
+      contentType: string;
+      totalSize: bigint;
+    }): Promise<string> => {
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      if (!isActorReady)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      const result = await actor.startUpload(args.contentType, args.totalSize);
+      if (result.__kind__ === "err") throw result.err;
+      return result.ok;
+    },
+  });
+}
+
+/**
+ * Uploads a single chunk of an in-progress upload. Throws the mapped
+ * `UploadError` message on failure. The chunk index is zero-based and must be
+ * sent in order.
+ */
+export function useUploadChunk() {
+  const { actor, isFetching } = useActor(createActor);
+  const { isActorReady } = useActorReady();
+  return useMutation({
+    mutationFn: async (args: {
+      uploadId: string;
+      index: bigint;
+      blob: Uint8Array;
+    }): Promise<void> => {
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      if (!isActorReady)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      const result = await actor.uploadChunk(
+        args.uploadId,
+        args.index,
+        args.blob,
+      );
+      if (result.__kind__ === "err") throw result.err;
+    },
+  });
+}
+
+/**
+ * Finalises an upload and attaches the resulting image to a product. Returns
+ * the new asset id on success, or throws the mapped `UploadError` message.
+ */
+export function useFinishUpload() {
+  const { actor, isFetching } = useActor(createActor);
+  const { isActorReady } = useActorReady();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (args: {
+      uploadId: string;
+      productId: bigint;
+    }): Promise<string> => {
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      if (!isActorReady)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      const result = await actor.finishUpload(args.uploadId, args.productId);
+      if (result.__kind__ === "err") throw result.err;
+      return result.ok;
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["products"] });
+      void queryClient.invalidateQueries({
+        queryKey: ["productImageStorageStats"],
+      });
+    },
+  });
+}
+
+/**
+ * Deletes a product image by asset id. Throws the mapped `UploadError` message
+ * on failure. Invalidates the product list and storage stats on success.
+ */
+export function useDeleteProductImage() {
+  const { actor, isFetching } = useActor(createActor);
+  const { isActorReady } = useActorReady();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (assetId: string): Promise<void> => {
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      if (!isActorReady)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      const result = await actor.deleteProductImage(assetId);
+      if (result.__kind__ === "err") throw result.err;
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["products"] });
+      void queryClient.invalidateQueries({
+        queryKey: ["productImageStorageStats"],
+      });
+    },
+  });
+}
+
+/**
+ * Reads the total bytes used by product images and the image count. The admin
+ * Canister tab uses this to show storage usage and the ongoing cycle burn rate.
+ */
+export function useGetProductImageStorageStats() {
+  const { actor, isFetching } = useActor(createActor);
+  return useQuery({
+    queryKey: ["productImageStorageStats"],
+    queryFn: async (): Promise<StorageStats | null> => {
+      if (!actor) return null;
+      return actor.getProductImageStorageStats();
     },
     enabled: !!actor && !isFetching,
   });

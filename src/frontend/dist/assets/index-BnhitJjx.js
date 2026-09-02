@@ -528,9 +528,9 @@ function aexists(instance, checkFinished = true) {
 }
 function aoutput(out, instance) {
   abytes(out);
-  const min = instance.outputLen;
-  if (out.length < min) {
-    throw new Error("digestInto() expects output buffer of length at least " + min);
+  const min2 = instance.outputLen;
+  if (out.length < min2) {
+    throw new Error("digestInto() expects output buffer of length at least " + min2);
   }
 }
 function clean(...arrays) {
@@ -541,8 +541,8 @@ function clean(...arrays) {
 function createView(arr) {
   return new DataView(arr.buffer, arr.byteOffset, arr.byteLength);
 }
-function rotr(word, shift) {
-  return word << 32 - shift | word >>> shift;
+function rotr(word, shift2) {
+  return word << 32 - shift2 | word >>> shift2;
 }
 const hasHexBuiltin = /* @__PURE__ */ (() => (
   // @ts-ignore
@@ -908,9 +908,9 @@ class SHA256 extends HashMD {
     this.G = G2 | 0;
     this.H = H2 | 0;
   }
-  process(view, offset) {
-    for (let i = 0; i < 16; i++, offset += 4)
-      SHA256_W[i] = view.getUint32(offset, false);
+  process(view, offset2) {
+    for (let i = 0; i < 16; i++, offset2 += 4)
+      SHA256_W[i] = view.getUint32(offset2, false);
     for (let i = 16; i < 64; i++) {
       const W15 = SHA256_W[i - 15];
       const W2 = SHA256_W[i - 2];
@@ -1094,10 +1094,10 @@ class SHA512 extends HashMD {
     this.Hh = Hh | 0;
     this.Hl = Hl | 0;
   }
-  process(view, offset) {
-    for (let i = 0; i < 16; i++, offset += 4) {
-      SHA512_W_H[i] = view.getUint32(offset);
-      SHA512_W_L[i] = view.getUint32(offset += 4);
+  process(view, offset2) {
+    for (let i = 0; i < 16; i++, offset2 += 4) {
+      SHA512_W_H[i] = view.getUint32(offset2);
+      SHA512_W_L[i] = view.getUint32(offset2 += 4);
     }
     for (let i = 16; i < 80; i++) {
       const W15h = SHA512_W_H[i - 15] | 0;
@@ -2051,13 +2051,13 @@ class PipeArrayBuffer {
     if (!(buf instanceof Uint8Array)) {
       throw new Error("Buffer must be a Uint8Array");
     }
-    const offset = this._view.byteLength;
+    const offset2 = this._view.byteLength;
     if (this._view.byteOffset + this._view.byteLength + buf.byteLength >= this._buffer.byteLength) {
       this.alloc(buf.byteLength);
     } else {
       this._view = new Uint8Array(this._buffer.buffer, this._view.byteOffset, this._view.byteLength + buf.byteLength);
     }
-    this._view.set(buf, offset);
+    this._view.set(buf, offset2);
   }
   /**
    * Whether or not there is more data to read from the buffer
@@ -2866,15 +2866,15 @@ class FixedIntClass extends PrimitiveType {
     return v2.visitFixedInt(this, d2);
   }
   covariant(x2) {
-    const min = iexp2(this._bits - 1) * BigInt(-1);
-    const max = iexp2(this._bits - 1) - BigInt(1);
+    const min2 = iexp2(this._bits - 1) * BigInt(-1);
+    const max2 = iexp2(this._bits - 1) - BigInt(1);
     if (typeof x2 === "bigint") {
-      if (x2 >= min && x2 <= max) {
+      if (x2 >= min2 && x2 <= max2) {
         return true;
       }
     } else if (Number.isInteger(x2)) {
       const v2 = BigInt(x2);
-      if (v2 >= min && v2 <= max) {
+      if (v2 >= min2 && v2 <= max2) {
         return true;
       }
     }
@@ -2884,8 +2884,8 @@ class FixedIntClass extends PrimitiveType {
     return writeIntLE(x2, this._bits / 8);
   }
   encodeType() {
-    const offset = Math.log2(this._bits) - 3;
-    return slebEncode(-9 - offset);
+    const offset2 = Math.log2(this._bits) - 3;
+    return slebEncode(-9 - offset2);
   }
   decodeValue(b2, t) {
     this.checkType(t);
@@ -2917,14 +2917,14 @@ class FixedNatClass extends PrimitiveType {
     return v2.visitFixedNat(this, d2);
   }
   covariant(x2) {
-    const max = iexp2(this._bits);
+    const max2 = iexp2(this._bits);
     if (typeof x2 === "bigint" && x2 >= BigInt(0)) {
-      if (x2 < max) {
+      if (x2 < max2) {
         return true;
       }
     } else if (Number.isInteger(x2) && x2 >= 0) {
       const v2 = BigInt(x2);
-      if (v2 < max) {
+      if (v2 < max2) {
         return true;
       }
     }
@@ -2934,8 +2934,8 @@ class FixedNatClass extends PrimitiveType {
     return writeUIntLE(x2, this._bits / 8);
   }
   encodeType() {
-    const offset = Math.log2(this._bits) - 3;
-    return slebEncode(-5 - offset);
+    const offset2 = Math.log2(this._bits) - 3;
+    return slebEncode(-5 - offset2);
   }
   decodeValue(b2, t) {
     this.checkType(t);
@@ -4967,12 +4967,12 @@ function copyBytes(bytes) {
   return Uint8Array.from(bytes);
 }
 const isPosBig = (n) => typeof n === "bigint" && _0n$7 <= n;
-function inRange(n, min, max) {
-  return isPosBig(n) && isPosBig(min) && isPosBig(max) && min <= n && n < max;
+function inRange(n, min2, max2) {
+  return isPosBig(n) && isPosBig(min2) && isPosBig(max2) && min2 <= n && n < max2;
 }
-function aInRange(title, n, min, max) {
-  if (!inRange(n, min, max))
-    throw new Error("expected valid " + title + ": " + min + " <= n < " + max + ", got " + n);
+function aInRange(title, n, min2, max2) {
+  if (!inRange(n, min2, max2))
+    throw new Error("expected valid " + title + ": " + min2 + " <= n < " + max2 + ", got " + n);
 }
 function bitLen(n) {
   let len;
@@ -5385,12 +5385,12 @@ function calcOffsets(n, window2, wOpts) {
     nextN += _1n$6;
   }
   const offsetStart = window2 * windowSize;
-  const offset = offsetStart + Math.abs(wbits) - 1;
+  const offset2 = offsetStart + Math.abs(wbits) - 1;
   const isZero = wbits === 0;
   const isNeg = wbits < 0;
   const isNegF = window2 % 2 !== 0;
   const offsetF = offsetStart;
-  return { nextN, offset, isZero, isNeg, isNegF, offsetF };
+  return { nextN, offset: offset2, isZero, isNeg, isNegF, offsetF };
 }
 function validateMSMPoints(points, c2) {
   if (!Array.isArray(points))
@@ -5477,12 +5477,12 @@ class wNAF {
     let f2 = this.BASE;
     const wo = calcWOpts(W2, this.bits);
     for (let window2 = 0; window2 < wo.windows; window2++) {
-      const { nextN, offset, isZero, isNeg, isNegF, offsetF } = calcOffsets(n, window2, wo);
+      const { nextN, offset: offset2, isZero, isNeg, isNegF, offsetF } = calcOffsets(n, window2, wo);
       n = nextN;
       if (isZero) {
         f2 = f2.add(negateCt(isNegF, precomputes[offsetF]));
       } else {
-        p2 = p2.add(negateCt(isNeg, precomputes[offset]));
+        p2 = p2.add(negateCt(isNeg, precomputes[offset2]));
       }
     }
     assert0(n);
@@ -5498,12 +5498,12 @@ class wNAF {
     for (let window2 = 0; window2 < wo.windows; window2++) {
       if (n === _0n$5)
         break;
-      const { nextN, offset, isZero, isNeg } = calcOffsets(n, window2, wo);
+      const { nextN, offset: offset2, isZero, isNeg } = calcOffsets(n, window2, wo);
       n = nextN;
       if (isZero) {
         continue;
       } else {
-        const item = precomputes[offset];
+        const item = precomputes[offset2];
         acc = acc.add(isNeg ? item.negate() : item);
       }
     }
@@ -8848,8 +8848,8 @@ function edwards(params, extraOpts = {}) {
   if (!isEdValidXY(Fp3, CURVE, CURVE.Gx, CURVE.Gy))
     throw new Error("bad curve params: generator point");
   function acoord(title, n, banZero = false) {
-    const min = banZero ? _1n$1 : _0n;
-    aInRange("coordinate " + title, n, min, MASK);
+    const min2 = banZero ? _1n$1 : _0n;
+    aInRange("coordinate " + title, n, min2, MASK);
     return n;
   }
   function aextpoint(other) {
@@ -8919,8 +8919,8 @@ function edwards(params, extraOpts = {}) {
       const lastByte = bytes[len - 1];
       normed[len - 1] = lastByte & -129;
       const y2 = bytesToNumberLE(normed);
-      const max = zip215 ? MASK : Fp3.ORDER;
-      aInRange("point.y", y2, _0n, max);
+      const max2 = zip215 ? MASK : Fp3.ORDER;
+      aInRange("point.y", y2, _0n, max2);
       const y22 = modP(y2 * y2);
       const u2 = modP(y22 - _1n$1);
       const v2 = modP(d2 * y22 - a2);
@@ -9233,18 +9233,18 @@ function eddsa(Point, cHash, eddsaOpts = {}) {
      */
     toMontgomery(publicKey) {
       const { y: y2 } = Point.fromBytes(publicKey);
-      const size = lengths.publicKey;
-      const is25519 = size === 32;
-      if (!is25519 && size !== 57)
+      const size2 = lengths.publicKey;
+      const is25519 = size2 === 32;
+      if (!is25519 && size2 !== 57)
         throw new Error("only defined for 25519 and 448");
       const u2 = is25519 ? Fp3.div(_1n$1 + y2, _1n$1 - y2) : Fp3.div(y2 - _1n$1, y2 + _1n$1);
       return Fp3.toBytes(u2);
     },
     toMontgomerySecret(secretKey) {
-      const size = lengths.secretKey;
-      _abytes2(secretKey, size);
-      const hashed = cHash(secretKey.subarray(0, size));
-      return adjustScalarBytes2(hashed).subarray(0, size);
+      const size2 = lengths.secretKey;
+      _abytes2(secretKey, size2);
+      const hashed = cHash(secretKey.subarray(0, size2));
+      return adjustScalarBytes2(hashed).subarray(0, size2);
     },
     /** @deprecated */
     randomPrivateKey: randomSecretKey,
@@ -9563,62 +9563,62 @@ const encodeLenBytes = (len) => {
   }
   throw InputError.fromCode(new DerEncodeErrorCode("Length too long (> 4 bytes)"));
 };
-const encodeLen = (buf, offset, len) => {
+const encodeLen = (buf, offset2, len) => {
   if (len <= 127) {
-    buf[offset] = len;
+    buf[offset2] = len;
     return 1;
   }
   if (len <= 255) {
-    buf[offset] = 129;
-    buf[offset + 1] = len;
+    buf[offset2] = 129;
+    buf[offset2 + 1] = len;
     return 2;
   }
   if (len <= 65535) {
-    buf[offset] = 130;
-    buf[offset + 1] = len >> 8;
-    buf[offset + 2] = len;
+    buf[offset2] = 130;
+    buf[offset2 + 1] = len >> 8;
+    buf[offset2 + 2] = len;
     return 3;
   }
   if (len <= 16777215) {
-    buf[offset] = 131;
-    buf[offset + 1] = len >> 16;
-    buf[offset + 2] = len >> 8;
-    buf[offset + 3] = len;
+    buf[offset2] = 131;
+    buf[offset2 + 1] = len >> 16;
+    buf[offset2 + 2] = len >> 8;
+    buf[offset2 + 3] = len;
     return 4;
   }
   throw InputError.fromCode(new DerEncodeErrorCode("Length too long (> 4 bytes)"));
 };
-const decodeLenBytes = (buf, offset) => {
-  if (buf[offset] < 128) {
+const decodeLenBytes = (buf, offset2) => {
+  if (buf[offset2] < 128) {
     return 1;
   }
-  if (buf[offset] === 128) {
+  if (buf[offset2] === 128) {
     throw InputError.fromCode(new DerDecodeErrorCode("Invalid length 0"));
   }
-  if (buf[offset] === 129) {
+  if (buf[offset2] === 129) {
     return 2;
   }
-  if (buf[offset] === 130) {
+  if (buf[offset2] === 130) {
     return 3;
   }
-  if (buf[offset] === 131) {
+  if (buf[offset2] === 131) {
     return 4;
   }
   throw InputError.fromCode(new DerDecodeErrorCode("Length too long (> 4 bytes)"));
 };
-const decodeLen = (buf, offset) => {
-  const lenBytes = decodeLenBytes(buf, offset);
+const decodeLen = (buf, offset2) => {
+  const lenBytes = decodeLenBytes(buf, offset2);
   if (lenBytes === 1) {
-    return buf[offset];
+    return buf[offset2];
   }
   if (lenBytes === 2) {
-    return buf[offset + 1];
+    return buf[offset2 + 1];
   }
   if (lenBytes === 3) {
-    return (buf[offset + 1] << 8) + buf[offset + 2];
+    return (buf[offset2 + 1] << 8) + buf[offset2 + 2];
   }
   if (lenBytes === 4) {
-    return (buf[offset + 1] << 16) + (buf[offset + 2] << 8) + buf[offset + 3];
+    return (buf[offset2 + 1] << 16) + (buf[offset2 + 2] << 8) + buf[offset2 + 3];
   }
   throw InputError.fromCode(new DerDecodeErrorCode("Length too long (> 4 bytes)"));
 };
@@ -9663,37 +9663,37 @@ Uint8Array.from([
 function wrapDER(payload, oid) {
   const bitStringHeaderLength = 2 + encodeLenBytes(payload.byteLength + 1);
   const len = oid.byteLength + bitStringHeaderLength + payload.byteLength;
-  let offset = 0;
+  let offset2 = 0;
   const buf = new Uint8Array(1 + encodeLenBytes(len) + len);
-  buf[offset++] = 48;
-  offset += encodeLen(buf, offset, len);
-  buf.set(oid, offset);
-  offset += oid.byteLength;
-  buf[offset++] = 3;
-  offset += encodeLen(buf, offset, payload.byteLength + 1);
-  buf[offset++] = 0;
-  buf.set(new Uint8Array(payload), offset);
+  buf[offset2++] = 48;
+  offset2 += encodeLen(buf, offset2, len);
+  buf.set(oid, offset2);
+  offset2 += oid.byteLength;
+  buf[offset2++] = 3;
+  offset2 += encodeLen(buf, offset2, payload.byteLength + 1);
+  buf[offset2++] = 0;
+  buf.set(new Uint8Array(payload), offset2);
   return buf;
 }
 const unwrapDER = (derEncoded, oid) => {
-  let offset = 0;
+  let offset2 = 0;
   const expect = (n, msg) => {
-    if (buf[offset++] !== n) {
-      throw InputError.fromCode(new DerDecodeErrorCode(`Expected ${msg} at offset ${offset}`));
+    if (buf[offset2++] !== n) {
+      throw InputError.fromCode(new DerDecodeErrorCode(`Expected ${msg} at offset ${offset2}`));
     }
   };
   const buf = new Uint8Array(derEncoded);
   expect(48, "sequence");
-  offset += decodeLenBytes(buf, offset);
-  if (!uint8Equals(buf.slice(offset, offset + oid.byteLength), oid)) {
+  offset2 += decodeLenBytes(buf, offset2);
+  if (!uint8Equals(buf.slice(offset2, offset2 + oid.byteLength), oid)) {
     throw InputError.fromCode(new DerDecodeErrorCode("Not the expected OID."));
   }
-  offset += oid.byteLength;
+  offset2 += oid.byteLength;
   expect(3, "bit string");
-  const payloadLen = decodeLen(buf, offset) - 1;
-  offset += decodeLenBytes(buf, offset);
+  const payloadLen = decodeLen(buf, offset2) - 1;
+  offset2 += decodeLenBytes(buf, offset2);
   expect(0, "0 padding");
-  const result = buf.slice(offset);
+  const result = buf.slice(offset2);
   if (payloadLen !== result.length) {
     throw InputError.fromCode(new DerDecodeLengthMismatchErrorCode(payloadLen, result.length));
   }
@@ -9808,9 +9808,9 @@ const _ExponentialBackoff = class _ExponentialBackoff {
   }
   get randomValueFromInterval() {
     const delta = __privateGet(this, _randomizationFactor) * __privateGet(this, _currentInterval);
-    const min = __privateGet(this, _currentInterval) - delta;
-    const max = __privateGet(this, _currentInterval) + delta;
-    return Math.random() * (max - min) + min;
+    const min2 = __privateGet(this, _currentInterval) - delta;
+    const max2 = __privateGet(this, _currentInterval) + delta;
+    return Math.random() * (max2 - min2) + min2;
   }
   incrementCurrentInterval() {
     __privateSet(this, _currentInterval, Math.min(__privateGet(this, _currentInterval) * __privateGet(this, _multiplier), __privateGet(this, _maxInterval)));
@@ -10983,8 +10983,8 @@ readStateInner_fn = async function(url, principal, transformedRequest, requestId
   }
 };
 setTimeDiffMsecs_fn = function(callTime, replicaTimes) {
-  const maxReplicaTime = replicaTimes.reduce((max, current) => {
-    return typeof current === "number" && current > max ? current : max;
+  const maxReplicaTime = replicaTimes.reduce((max2, current) => {
+    return typeof current === "number" && current > max2 ? current : max2;
   }, 0);
   if (maxReplicaTime > 0) {
     __privateSet(this, _timeDiffMsecs, maxReplicaTime - callTime);
@@ -11576,72 +11576,72 @@ function dv(array) {
 }
 const UINT8 = {
   len: 1,
-  get(array, offset) {
-    return dv(array).getUint8(offset);
+  get(array, offset2) {
+    return dv(array).getUint8(offset2);
   },
-  put(array, offset, value) {
-    dv(array).setUint8(offset, value);
-    return offset + 1;
+  put(array, offset2, value) {
+    dv(array).setUint8(offset2, value);
+    return offset2 + 1;
   }
 };
 const UINT16_LE = {
   len: 2,
-  get(array, offset) {
-    return dv(array).getUint16(offset, true);
+  get(array, offset2) {
+    return dv(array).getUint16(offset2, true);
   },
-  put(array, offset, value) {
-    dv(array).setUint16(offset, value, true);
-    return offset + 2;
+  put(array, offset2, value) {
+    dv(array).setUint16(offset2, value, true);
+    return offset2 + 2;
   }
 };
 const UINT16_BE = {
   len: 2,
-  get(array, offset) {
-    return dv(array).getUint16(offset);
+  get(array, offset2) {
+    return dv(array).getUint16(offset2);
   },
-  put(array, offset, value) {
-    dv(array).setUint16(offset, value);
-    return offset + 2;
+  put(array, offset2, value) {
+    dv(array).setUint16(offset2, value);
+    return offset2 + 2;
   }
 };
 const UINT32_LE = {
   len: 4,
-  get(array, offset) {
-    return dv(array).getUint32(offset, true);
+  get(array, offset2) {
+    return dv(array).getUint32(offset2, true);
   },
-  put(array, offset, value) {
-    dv(array).setUint32(offset, value, true);
-    return offset + 4;
+  put(array, offset2, value) {
+    dv(array).setUint32(offset2, value, true);
+    return offset2 + 4;
   }
 };
 const UINT32_BE = {
   len: 4,
-  get(array, offset) {
-    return dv(array).getUint32(offset);
+  get(array, offset2) {
+    return dv(array).getUint32(offset2);
   },
-  put(array, offset, value) {
-    dv(array).setUint32(offset, value);
-    return offset + 4;
+  put(array, offset2, value) {
+    dv(array).setUint32(offset2, value);
+    return offset2 + 4;
   }
 };
 const INT32_BE = {
   len: 4,
-  get(array, offset) {
-    return dv(array).getInt32(offset);
+  get(array, offset2) {
+    return dv(array).getInt32(offset2);
   },
-  put(array, offset, value) {
-    dv(array).setInt32(offset, value);
-    return offset + 4;
+  put(array, offset2, value) {
+    dv(array).setInt32(offset2, value);
+    return offset2 + 4;
   }
 };
 const UINT64_LE = {
   len: 8,
-  get(array, offset) {
-    return dv(array).getBigUint64(offset, true);
+  get(array, offset2) {
+    return dv(array).getBigUint64(offset2, true);
   },
-  put(array, offset, value) {
-    dv(array).setBigUint64(offset, value, true);
-    return offset + 8;
+  put(array, offset2, value) {
+    dv(array).setBigUint64(offset2, value, true);
+    return offset2 + 8;
   }
 };
 class StringType {
@@ -11649,8 +11649,8 @@ class StringType {
     this.len = len;
     this.encoding = encoding;
   }
-  get(data, offset = 0) {
-    const bytes = data.subarray(offset, offset + this.len);
+  get(data, offset2 = 0) {
+    const bytes = data.subarray(offset2, offset2 + this.len);
     return textDecode(bytes, this.encoding);
   }
 }
@@ -12726,10 +12726,10 @@ class ZipHandler {
     }
     debug("Reading central-directory...");
     const pos = this.tokenizer.position;
-    const offset = await this.findEndOfCentralDirectoryLocator();
-    if (offset > 0) {
+    const offset2 = await this.findEndOfCentralDirectoryLocator();
+    if (offset2 > 0) {
       debug("Central-directory 32-bit signature found");
-      const eocdHeader = await this.tokenizer.readToken(EndOfCentralDirectoryRecordToken, offset);
+      const eocdHeader = await this.tokenizer.readToken(EndOfCentralDirectoryRecordToken, offset2);
       const files = [];
       this.tokenizer.setPosition(eocdHeader.offsetOfStartOfCd);
       for (let n = 0; n < eocdHeader.nrOfEntriesOfSize; ++n) {
@@ -12770,13 +12770,13 @@ class ZipHandler {
         while (nextHeaderIndex < 0 && len === syncBufferSize) {
           len = await this.tokenizer.peekBuffer(this.syncBuffer, { mayBeLess: true });
           nextHeaderIndex = indexOf(this.syncBuffer.subarray(0, len), ddSignatureArray);
-          const size = nextHeaderIndex >= 0 ? nextHeaderIndex : len;
+          const size2 = nextHeaderIndex >= 0 ? nextHeaderIndex : len;
           if (next.handler) {
-            const data = new Uint8Array(size);
+            const data = new Uint8Array(size2);
             await this.tokenizer.readBuffer(data);
             chunks.push(data);
           } else {
-            await this.tokenizer.ignore(size);
+            await this.tokenizer.ignore(size2);
           }
         }
         debug(`Found data-descriptor-signature at pos=${this.tokenizer.position}`);
@@ -12887,10 +12887,10 @@ function indexOf(buffer, portion) {
 function mergeArrays(chunks) {
   const totalLength = chunks.reduce((acc, curr) => acc + curr.length, 0);
   const mergedArray = new Uint8Array(totalLength);
-  let offset = 0;
+  let offset2 = 0;
   for (const chunk of chunks) {
-    mergedArray.set(chunk, offset);
-    offset += chunk.length;
+    mergedArray.set(chunk, offset2);
+    offset2 += chunk.length;
   }
   return mergedArray;
 }
@@ -12903,12 +12903,12 @@ class GzipHandler {
     return new ReadableStream({
       async pull(controller) {
         const buffer = new Uint8Array(1024);
-        const size = await tokenizer.readBuffer(buffer, { mayBeLess: true });
-        if (size === 0) {
+        const size2 = await tokenizer.readBuffer(buffer, { mayBeLess: true });
+        if (size2 === 0) {
           controller.close();
           return;
         }
-        controller.enqueue(buffer.subarray(0, size));
+        controller.enqueue(buffer.subarray(0, size2));
       }
     }).pipeThrough(new DecompressionStream("gzip"));
   }
@@ -12958,22 +12958,22 @@ function stringToBytes(string, encoding) {
   }
   return [...string].map((character) => character.charCodeAt(0));
 }
-function tarHeaderChecksumMatches(arrayBuffer, offset = 0) {
+function tarHeaderChecksumMatches(arrayBuffer, offset2 = 0) {
   const readSum = Number.parseInt(new StringType(6).get(arrayBuffer, 148).replace(/\0.*$/, "").trim(), 8);
   if (Number.isNaN(readSum)) {
     return false;
   }
   let sum = 8 * 32;
-  for (let index2 = offset; index2 < offset + 148; index2++) {
+  for (let index2 = offset2; index2 < offset2 + 148; index2++) {
     sum += arrayBuffer[index2];
   }
-  for (let index2 = offset + 156; index2 < offset + 512; index2++) {
+  for (let index2 = offset2 + 156; index2 < offset2 + 512; index2++) {
     sum += arrayBuffer[index2];
   }
   return readSum === sum;
 }
 const uint32SyncSafeToken = {
-  get: (buffer, offset) => buffer[offset + 3] & 127 | buffer[offset + 2] << 7 | buffer[offset + 1] << 14 | buffer[offset] << 21,
+  get: (buffer, offset2) => buffer[offset2 + 3] & 127 | buffer[offset2 + 2] << 7 | buffer[offset2 + 1] << 14 | buffer[offset2] << 21,
   len: 4
 };
 const extensions = [
@@ -13449,10 +13449,10 @@ async function decompressDeflateRawWithLimit(data, { maximumLength = maximumZipE
     reader.releaseLock();
   }
   const uncompressedData = new Uint8Array(totalLength);
-  let offset = 0;
+  let offset2 = 0;
   for (const chunk of chunks) {
-    uncompressedData.set(chunk, offset);
-    offset += chunk.length;
+    uncompressedData.set(chunk, offset2);
+    offset2 += chunk.length;
   }
   return uncompressedData;
 }
@@ -13476,10 +13476,10 @@ function isPngAncillaryChunk(type) {
 }
 function mergeByteChunks(chunks, totalLength) {
   const merged = new Uint8Array(totalLength);
-  let offset = 0;
+  let offset2 = 0;
   for (const chunk of chunks) {
-    merged.set(chunk, offset);
-    offset += chunk.length;
+    merged.set(chunk, offset2);
+    offset2 += chunk.length;
   }
   return merged;
 }
@@ -13874,8 +13874,8 @@ function isRecoverableZipError(error) {
 }
 function canReadZipEntryForDetection(zipHeader, maximumSize = maximumZipEntrySizeInBytes) {
   const sizes = [zipHeader.compressedSize, zipHeader.uncompressedSize];
-  for (const size of sizes) {
-    if (!Number.isFinite(size) || size < 0 || size > maximumSize) {
+  for (const size2 of sizes) {
+    if (!Number.isFinite(size2) || size2 < 0 || size2 > maximumSize) {
       return false;
     }
   }
@@ -15513,10 +15513,10 @@ class FileTypeParser {
   	@param offset - Offset to scan for sync-preamble.
   	@returns {{ext: string, mime: string}}
   	*/
-  scanMpeg(offset) {
-    if (this.check([255, 224], { offset, mask: [255, 224] })) {
-      if (this.check([16], { offset: offset + 1, mask: [22] })) {
-        if (this.check([8], { offset: offset + 1, mask: [8] })) {
+  scanMpeg(offset2) {
+    if (this.check([255, 224], { offset: offset2, mask: [255, 224] })) {
+      if (this.check([16], { offset: offset2 + 1, mask: [22] })) {
+        if (this.check([8], { offset: offset2 + 1, mask: [8] })) {
           return {
             ext: "aac",
             mime: "audio/aac"
@@ -15527,19 +15527,19 @@ class FileTypeParser {
           mime: "audio/aac"
         };
       }
-      if (this.check([2], { offset: offset + 1, mask: [6] })) {
+      if (this.check([2], { offset: offset2 + 1, mask: [6] })) {
         return {
           ext: "mp3",
           mime: "audio/mpeg"
         };
       }
-      if (this.check([4], { offset: offset + 1, mask: [6] })) {
+      if (this.check([4], { offset: offset2 + 1, mask: [6] })) {
         return {
           ext: "mp2",
           mime: "audio/mpeg"
         };
       }
-      if (this.check([6], { offset: offset + 1, mask: [6] })) {
+      if (this.check([6], { offset: offset2 + 1, mask: [6] })) {
         return {
           ext: "mp1",
           mime: "audio/mpeg"
@@ -15644,10 +15644,10 @@ class YHash {
     const rightBytes = right instanceof YHash ? right.bytes : new TextEncoder().encode("UNBALANCED");
     const combined = new Uint8Array(DOMAIN_SEPARATOR_FOR_NODES.length + leftBytes.length + rightBytes.length);
     const arrays = [DOMAIN_SEPARATOR_FOR_NODES, leftBytes, rightBytes];
-    let offset = 0;
+    let offset2 = 0;
     for (const data of arrays) {
-      combined.set(data, offset);
-      offset += data.length;
+      combined.set(data, offset2);
+      offset2 += data.length;
     }
     const hashBuffer = await crypto.subtle.digest(HASH_ALGORITHM, combined);
     return new YHash(new Uint8Array(hashBuffer));
@@ -16206,7 +16206,7 @@ function systemSetTimeoutZero(callback) {
   setTimeout(callback, 0);
 }
 var isServer = typeof window === "undefined" || "Deno" in globalThis;
-function noop$6() {
+function noop$7() {
 }
 function functionalUpdate(updater, input) {
   return typeof updater === "function" ? updater(input) : updater;
@@ -16391,13 +16391,13 @@ function replaceData(prevData, data, options) {
   }
   return data;
 }
-function addToEnd(items, item, max = 0) {
+function addToEnd(items, item, max2 = 0) {
   const newItems = [...items, item];
-  return max && newItems.length > max ? newItems.slice(1) : newItems;
+  return max2 && newItems.length > max2 ? newItems.slice(1) : newItems;
 }
-function addToStart(items, item, max = 0) {
+function addToStart(items, item, max2 = 0) {
   const newItems = [item, ...items];
-  return max && newItems.length > max ? newItems.slice(0, -1) : newItems;
+  return max2 && newItems.length > max2 ? newItems.slice(0, -1) : newItems;
 }
 var skipToken = /* @__PURE__ */ Symbol();
 function ensureQueryFn(options, fetchOptions) {
@@ -16829,7 +16829,7 @@ var Query = (_f = class extends Removable {
     var _a2, _b2;
     const promise = (_a2 = __privateGet(this, _retryer)) == null ? void 0 : _a2.promise;
     (_b2 = __privateGet(this, _retryer)) == null ? void 0 : _b2.cancel(options);
-    return promise ? promise.then(noop$6).catch(noop$6) : Promise.resolve();
+    return promise ? promise.then(noop$7).catch(noop$7) : Promise.resolve();
   }
   destroy() {
     super.destroy();
@@ -17534,7 +17534,7 @@ var QueryObserver = (_g = class extends Subscribable {
     fetchOptions
   );
   if (!(fetchOptions == null ? void 0 : fetchOptions.throwOnError)) {
-    promise = promise.catch(noop$6);
+    promise = promise.catch(noop$7);
   }
   return promise;
 }, updateStaleTimeout_fn = function() {
@@ -18123,7 +18123,7 @@ var MutationCache = (_i = class extends Subscribable {
     const pausedMutations = this.getAll().filter((x2) => x2.state.isPaused);
     return notifyManager.batch(
       () => Promise.all(
-        pausedMutations.map((mutation) => mutation.continue().catch(noop$6))
+        pausedMutations.map((mutation) => mutation.continue().catch(noop$7))
       )
     );
   }
@@ -18684,7 +18684,7 @@ var QueryClient = (_m = class {
     const promises = notifyManager.batch(
       () => __privateGet(this, _queryCache).findAll(filters).map((query) => query.cancel(defaultedCancelOptions))
     );
-    return Promise.all(promises).then(noop$6).catch(noop$6);
+    return Promise.all(promises).then(noop$7).catch(noop$7);
   }
   invalidateQueries(filters, options = {}) {
     return notifyManager.batch(() => {
@@ -18712,12 +18712,12 @@ var QueryClient = (_m = class {
       () => __privateGet(this, _queryCache).findAll(filters).filter((query) => !query.isDisabled() && !query.isStatic()).map((query) => {
         let promise = query.fetch(void 0, fetchOptions);
         if (!fetchOptions.throwOnError) {
-          promise = promise.catch(noop$6);
+          promise = promise.catch(noop$7);
         }
         return query.state.fetchStatus === "paused" ? Promise.resolve() : promise;
       })
     );
-    return Promise.all(promises).then(noop$6);
+    return Promise.all(promises).then(noop$7);
   }
   fetchQuery(options) {
     const defaultedOptions = this.defaultQueryOptions(options);
@@ -18730,14 +18730,14 @@ var QueryClient = (_m = class {
     ) ? query.fetch(defaultedOptions) : Promise.resolve(query.state.data);
   }
   prefetchQuery(options) {
-    return this.fetchQuery(options).then(noop$6).catch(noop$6);
+    return this.fetchQuery(options).then(noop$7).catch(noop$7);
   }
   fetchInfiniteQuery(options) {
     options.behavior = infiniteQueryBehavior(options.pages);
     return this.fetchQuery(options);
   }
   prefetchInfiniteQuery(options) {
-    return this.fetchInfiniteQuery(options).then(noop$6).catch(noop$6);
+    return this.fetchInfiniteQuery(options).then(noop$7).catch(noop$7);
   }
   ensureInfiniteQueryData(options) {
     options.behavior = infiniteQueryBehavior(options.pages);
@@ -19072,7 +19072,7 @@ var reportGlobalError$1 = "function" === typeof reportError ? reportError : func
   }
   console.error(error);
 };
-function noop$5() {
+function noop$6() {
 }
 react_production.Children = {
   map: mapChildren,
@@ -19114,8 +19114,8 @@ react_production.Suspense = REACT_SUSPENSE_TYPE$1;
 react_production.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE = ReactSharedInternals$2;
 react_production.__COMPILER_RUNTIME = {
   __proto__: null,
-  c: function(size) {
-    return ReactSharedInternals$2.H.useMemoCache(size);
+  c: function(size2) {
+    return ReactSharedInternals$2.H.useMemoCache(size2);
   }
 };
 react_production.cache = function(fn2) {
@@ -19201,7 +19201,7 @@ react_production.startTransition = function(scope) {
   try {
     var returnValue = scope(), onStartTransitionFinish = ReactSharedInternals$2.S;
     null !== onStartTransitionFinish && onStartTransitionFinish(currentTransition, returnValue);
-    "object" === typeof returnValue && null !== returnValue && "function" === typeof returnValue.then && returnValue.then(noop$5, reportGlobalError$1);
+    "object" === typeof returnValue && null !== returnValue && "function" === typeof returnValue.then && returnValue.then(noop$6, reportGlobalError$1);
   } catch (error) {
     reportGlobalError$1(error);
   } finally {
@@ -19349,9 +19349,9 @@ var getHasError = ({
 var ensureSuspenseTimers = (defaultedOptions) => {
   if (defaultedOptions.suspense) {
     const MIN_SUSPENSE_TIME_MS = 1e3;
-    const clamp = (value) => value === "static" ? value : Math.max(value ?? MIN_SUSPENSE_TIME_MS, MIN_SUSPENSE_TIME_MS);
+    const clamp2 = (value) => value === "static" ? value : Math.max(value ?? MIN_SUSPENSE_TIME_MS, MIN_SUSPENSE_TIME_MS);
     const originalStaleTime = defaultedOptions.staleTime;
-    defaultedOptions.staleTime = typeof originalStaleTime === "function" ? (...args) => clamp(originalStaleTime(...args)) : clamp(originalStaleTime);
+    defaultedOptions.staleTime = typeof originalStaleTime === "function" ? (...args) => clamp2(originalStaleTime(...args)) : clamp2(originalStaleTime);
     if (typeof defaultedOptions.gcTime === "number") {
       defaultedOptions.gcTime = Math.max(
         defaultedOptions.gcTime,
@@ -19402,7 +19402,7 @@ function useQueries({
   const shouldSubscribe = !isRestoring && options.subscribed !== false;
   reactExports.useSyncExternalStore(
     reactExports.useCallback(
-      (onStoreChange) => shouldSubscribe ? observer.subscribe(notifyManager.batchCalls(onStoreChange)) : noop$6,
+      (onStoreChange) => shouldSubscribe ? observer.subscribe(notifyManager.batchCalls(onStoreChange)) : noop$7,
       [observer, shouldSubscribe]
     ),
     () => observer.getCurrentResult(),
@@ -19472,7 +19472,7 @@ function useBaseQuery(options, Observer, queryClient2) {
   reactExports.useSyncExternalStore(
     reactExports.useCallback(
       (onStoreChange) => {
-        const unsubscribe = shouldSubscribe ? observer.subscribe(notifyManager.batchCalls(onStoreChange)) : noop$6;
+        const unsubscribe = shouldSubscribe ? observer.subscribe(notifyManager.batchCalls(onStoreChange)) : noop$7;
         observer.updateResult();
         return unsubscribe;
       },
@@ -19509,7 +19509,7 @@ function useBaseQuery(options, Observer, queryClient2) {
       // subscribe to the "cache promise" so that we can finalize the currentThenable once data comes in
       query == null ? void 0 : query.promise
     );
-    promise == null ? void 0 : promise.catch(noop$6).finally(() => {
+    promise == null ? void 0 : promise.catch(noop$7).finally(() => {
       observer.updateResult();
     });
   }
@@ -19539,7 +19539,7 @@ function useMutation(options, queryClient2) {
   );
   const mutate = reactExports.useCallback(
     (variables, mutateOptions) => {
-      observer.mutate(variables, mutateOptions).catch(noop$6);
+      observer.mutate(variables, mutateOptions).catch(noop$7);
     },
     [observer]
   );
@@ -22297,21 +22297,21 @@ function formatProdErrorMessage$1(code) {
   }
   return "Minified React error #" + code + "; visit " + url + " for the full message or use the non-minified dev environment for full errors and additional helpful warnings.";
 }
-function noop$4() {
+function noop$5() {
 }
 var Internals = {
   d: {
-    f: noop$4,
+    f: noop$5,
     r: function() {
       throw Error(formatProdErrorMessage$1(522));
     },
-    D: noop$4,
-    C: noop$4,
-    L: noop$4,
-    m: noop$4,
-    X: noop$4,
-    S: noop$4,
-    M: noop$4
+    D: noop$5,
+    C: noop$5,
+    L: noop$5,
+    m: noop$5,
+    X: noop$5,
+    S: noop$5,
+    M: noop$5
   },
   p: 0,
   findDOMNode: null
@@ -22626,16 +22626,16 @@ var isArrayImpl = Array.isArray, ReactSharedInternals = React.__CLIENT_INTERNALS
   data: null,
   method: null,
   action: null
-}, valueStack = [], index = -1;
+}, valueStack = [], index$1 = -1;
 function createCursor(defaultValue) {
   return { current: defaultValue };
 }
 function pop(cursor) {
-  0 > index || (cursor.current = valueStack[index], valueStack[index] = null, index--);
+  0 > index$1 || (cursor.current = valueStack[index$1], valueStack[index$1] = null, index$1--);
 }
 function push(cursor, value) {
-  index++;
-  valueStack[index] = cursor.current;
+  index$1++;
+  valueStack[index$1] = cursor.current;
   cursor.current = value;
 }
 var contextStackCursor = createCursor(null), contextFiberStackCursor = createCursor(null), rootInstanceStackCursor = createCursor(null), hostTransitionProviderCursor = createCursor(null);
@@ -23972,14 +23972,14 @@ function getLeafNode(node) {
   for (; node && node.firstChild; ) node = node.firstChild;
   return node;
 }
-function getNodeForCharacterOffset(root2, offset) {
+function getNodeForCharacterOffset(root2, offset2) {
   var node = getLeafNode(root2);
   root2 = 0;
   for (var nodeEnd; node; ) {
     if (3 === node.nodeType) {
       nodeEnd = root2 + node.textContent.length;
-      if (root2 <= offset && nodeEnd >= offset)
-        return { node, offset: offset - root2 };
+      if (root2 <= offset2 && nodeEnd >= offset2)
+        return { node, offset: offset2 - root2 };
       root2 = nodeEnd;
     }
     a: {
@@ -25085,7 +25085,7 @@ function use(usable) {
   }
   throw Error(formatProdErrorMessage(438, String(usable)));
 }
-function useMemoCache(size) {
+function useMemoCache(size2) {
   var memoCache = null, updateQueue = currentlyRenderingFiber.updateQueue;
   null !== updateQueue && (memoCache = updateQueue.memoCache);
   if (null == memoCache) {
@@ -25102,7 +25102,7 @@ function useMemoCache(size) {
   updateQueue.memoCache = memoCache;
   updateQueue = memoCache.data[memoCache.index];
   if (void 0 === updateQueue)
-    for (updateQueue = memoCache.data[memoCache.index] = Array(size), current = 0; current < size; current++)
+    for (updateQueue = memoCache.data[memoCache.index] = Array(size2), current = 0; current < size2; current++)
       updateQueue[current] = REACT_MEMO_CACHE_SENTINEL;
   memoCache.index++;
   return updateQueue;
@@ -29903,7 +29903,7 @@ function commitRootWhenReady(root2, finishedWork, recoverableErrors, transitions
   root2.timeoutHandle = -1;
   suspendedCommitReason = finishedWork.subtreeFlags;
   if (suspendedCommitReason & 8192 || 16785408 === (suspendedCommitReason & 16785408)) {
-    if (suspendedState = { stylesheets: null, count: 0, unsuspend: noop }, accumulateSuspenseyCommitOnFiber(finishedWork), suspendedCommitReason = waitForCommitToBeReady(), null !== suspendedCommitReason) {
+    if (suspendedState = { stylesheets: null, count: 0, unsuspend: noop$4 }, accumulateSuspenseyCommitOnFiber(finishedWork), suspendedCommitReason = waitForCommitToBeReady(), null !== suspendedCommitReason) {
       root2.cancelPendingCommit = suspendedCommitReason(
         commitRoot.bind(
           null,
@@ -32755,7 +32755,7 @@ function preloadResource(resource) {
   return "stylesheet" === resource.type && 0 === (resource.state.loading & 3) ? false : true;
 }
 var suspendedState = null;
-function noop() {
+function noop$4() {
 }
 function suspendResource(hoistableRoot, resource, props) {
   if (null === suspendedState) throw Error(formatProdErrorMessage(475));
@@ -33566,10 +33566,10 @@ var defaultAttributes = {
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const Icon = reactExports.forwardRef(
+const Icon$1 = reactExports.forwardRef(
   ({
     color = "currentColor",
-    size = 24,
+    size: size2 = 24,
     strokeWidth = 2,
     absoluteStrokeWidth,
     className = "",
@@ -33581,10 +33581,10 @@ const Icon = reactExports.forwardRef(
     {
       ref,
       ...defaultAttributes,
-      width: size,
-      height: size,
+      width: size2,
+      height: size2,
       stroke: color,
-      strokeWidth: absoluteStrokeWidth ? Number(strokeWidth) * 24 / Number(size) : strokeWidth,
+      strokeWidth: absoluteStrokeWidth ? Number(strokeWidth) * 24 / Number(size2) : strokeWidth,
       className: mergeClasses("lucide", className),
       ...!children && !hasA11yProp(rest) && { "aria-hidden": "true" },
       ...rest
@@ -33603,7 +33603,7 @@ const Icon = reactExports.forwardRef(
  */
 const createLucideIcon = (iconName, iconNode) => {
   const Component2 = reactExports.forwardRef(
-    ({ className, ...props }, ref) => reactExports.createElement(Icon, {
+    ({ className, ...props }, ref) => reactExports.createElement(Icon$1, {
       ref,
       iconNode,
       className: mergeClasses(
@@ -33623,40 +33623,62 @@ const createLucideIcon = (iconName, iconNode) => {
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$N = [
+const __iconNode$U = [
+  ["path", { d: "M12 5v14", key: "s699le" }],
+  ["path", { d: "m19 12-7 7-7-7", key: "1idqje" }]
+];
+const ArrowDown = createLucideIcon("arrow-down", __iconNode$U);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$T = [
   ["path", { d: "m12 19-7-7 7-7", key: "1l729n" }],
   ["path", { d: "M19 12H5", key: "x3x0zl" }]
 ];
-const ArrowLeft = createLucideIcon("arrow-left", __iconNode$N);
+const ArrowLeft = createLucideIcon("arrow-left", __iconNode$T);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$M = [
+const __iconNode$S = [
   ["path", { d: "M5 12h14", key: "1ays0h" }],
   ["path", { d: "m12 5 7 7-7 7", key: "xquz4c" }]
 ];
-const ArrowRight = createLucideIcon("arrow-right", __iconNode$M);
+const ArrowRight = createLucideIcon("arrow-right", __iconNode$S);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$L = [
+const __iconNode$R = [
   ["path", { d: "M7 7h10v10", key: "1tivn9" }],
   ["path", { d: "M7 17 17 7", key: "1vkiza" }]
 ];
-const ArrowUpRight = createLucideIcon("arrow-up-right", __iconNode$L);
+const ArrowUpRight = createLucideIcon("arrow-up-right", __iconNode$R);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$K = [
+const __iconNode$Q = [
+  ["path", { d: "m5 12 7-7 7 7", key: "hav0vg" }],
+  ["path", { d: "M12 19V5", key: "x0mq9r" }]
+];
+const ArrowUp = createLucideIcon("arrow-up", __iconNode$Q);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$P = [
   [
     "path",
     {
@@ -33666,15 +33688,65 @@ const __iconNode$K = [
   ],
   ["path", { d: "m9 12 2 2 4-4", key: "dzmm74" }]
 ];
-const BadgeCheck = createLucideIcon("badge-check", __iconNode$K);
+const BadgeCheck = createLucideIcon("badge-check", __iconNode$P);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$J = [["path", { d: "M20 6 9 17l-5-5", key: "1gmf2c" }]];
-const Check = createLucideIcon("check", __iconNode$J);
+const __iconNode$O = [["path", { d: "M20 6 9 17l-5-5", key: "1gmf2c" }]];
+const Check = createLucideIcon("check", __iconNode$O);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$N = [["path", { d: "m6 9 6 6 6-6", key: "qrunsl" }]];
+const ChevronDown = createLucideIcon("chevron-down", __iconNode$N);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$M = [["path", { d: "m18 15-6-6-6 6", key: "153udz" }]];
+const ChevronUp = createLucideIcon("chevron-up", __iconNode$M);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$L = [
+  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
+  ["path", { d: "m9 12 2 2 4-4", key: "dzmm74" }]
+];
+const CircleCheck = createLucideIcon("circle-check", __iconNode$L);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$K = [
+  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
+  ["path", { d: "m15 9-6 6", key: "1uzhvr" }],
+  ["path", { d: "m9 9 6 6", key: "z0biqf" }]
+];
+const CircleX = createLucideIcon("circle-x", __iconNode$K);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$J = [
+  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
+  ["polyline", { points: "12 6 12 12 16 14", key: "68esgv" }]
+];
+const Clock = createLucideIcon("clock", __iconNode$J);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -33682,10 +33754,12 @@ const Check = createLucideIcon("check", __iconNode$J);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$I = [
-  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
-  ["path", { d: "m9 12 2 2 4-4", key: "dzmm74" }]
+  ["circle", { cx: "8", cy: "8", r: "6", key: "3yglwk" }],
+  ["path", { d: "M18.09 10.37A6 6 0 1 1 10.34 18", key: "t5s6rm" }],
+  ["path", { d: "M7 6h1v4", key: "1obek4" }],
+  ["path", { d: "m16.71 13.88.7.71-2.82 2.82", key: "1rbuyh" }]
 ];
-const CircleCheck = createLucideIcon("circle-check", __iconNode$I);
+const Coins = createLucideIcon("coins", __iconNode$I);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -33693,11 +33767,10 @@ const CircleCheck = createLucideIcon("circle-check", __iconNode$I);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$H = [
-  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
-  ["path", { d: "m15 9-6 6", key: "1uzhvr" }],
-  ["path", { d: "m9 9 6 6", key: "z0biqf" }]
+  ["rect", { width: "14", height: "14", x: "8", y: "8", rx: "2", ry: "2", key: "17jyea" }],
+  ["path", { d: "M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2", key: "zix9uf" }]
 ];
-const CircleX = createLucideIcon("circle-x", __iconNode$H);
+const Copy = createLucideIcon("copy", __iconNode$H);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -33705,10 +33778,10 @@ const CircleX = createLucideIcon("circle-x", __iconNode$H);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$G = [
-  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
-  ["polyline", { points: "12 6 12 12 16 14", key: "68esgv" }]
+  ["rect", { width: "20", height: "14", x: "2", y: "5", rx: "2", key: "ynyp8z" }],
+  ["line", { x1: "2", x2: "22", y1: "10", y2: "10", key: "1b3vmo" }]
 ];
-const Clock = createLucideIcon("clock", __iconNode$G);
+const CreditCard = createLucideIcon("credit-card", __iconNode$G);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -33716,12 +33789,10 @@ const Clock = createLucideIcon("clock", __iconNode$G);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$F = [
-  ["circle", { cx: "8", cy: "8", r: "6", key: "3yglwk" }],
-  ["path", { d: "M18.09 10.37A6 6 0 1 1 10.34 18", key: "t5s6rm" }],
-  ["path", { d: "M7 6h1v4", key: "1obek4" }],
-  ["path", { d: "m16.71 13.88.7.71-2.82 2.82", key: "1rbuyh" }]
+  ["line", { x1: "12", x2: "12", y1: "2", y2: "22", key: "7eqyqh" }],
+  ["path", { d: "M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6", key: "1b0p4s" }]
 ];
-const Coins = createLucideIcon("coins", __iconNode$F);
+const DollarSign = createLucideIcon("dollar-sign", __iconNode$F);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -33729,10 +33800,11 @@ const Coins = createLucideIcon("coins", __iconNode$F);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$E = [
-  ["rect", { width: "14", height: "14", x: "8", y: "8", rx: "2", ry: "2", key: "17jyea" }],
-  ["path", { d: "M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2", key: "zix9uf" }]
+  ["path", { d: "M15 3h6v6", key: "1q9fwt" }],
+  ["path", { d: "M10 14 21 3", key: "gplh6r" }],
+  ["path", { d: "M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6", key: "a6xqqp" }]
 ];
-const Copy = createLucideIcon("copy", __iconNode$E);
+const ExternalLink = createLucideIcon("external-link", __iconNode$E);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -33740,40 +33812,6 @@ const Copy = createLucideIcon("copy", __iconNode$E);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$D = [
-  ["rect", { width: "20", height: "14", x: "2", y: "5", rx: "2", key: "ynyp8z" }],
-  ["line", { x1: "2", x2: "22", y1: "10", y2: "10", key: "1b3vmo" }]
-];
-const CreditCard = createLucideIcon("credit-card", __iconNode$D);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$C = [
-  ["line", { x1: "12", x2: "12", y1: "2", y2: "22", key: "7eqyqh" }],
-  ["path", { d: "M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6", key: "1b0p4s" }]
-];
-const DollarSign = createLucideIcon("dollar-sign", __iconNode$C);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$B = [
-  ["path", { d: "M15 3h6v6", key: "1q9fwt" }],
-  ["path", { d: "M10 14 21 3", key: "gplh6r" }],
-  ["path", { d: "M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6", key: "a6xqqp" }]
-];
-const ExternalLink = createLucideIcon("external-link", __iconNode$B);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$A = [
   ["rect", { width: "18", height: "18", x: "3", y: "3", rx: "2", key: "afitv7" }],
   ["path", { d: "M7 3v18", key: "bbkbws" }],
   ["path", { d: "M3 7.5h4", key: "zfgn84" }],
@@ -33783,14 +33821,14 @@ const __iconNode$A = [
   ["path", { d: "M17 7.5h4", key: "myr1c1" }],
   ["path", { d: "M17 16.5h4", key: "go4c1d" }]
 ];
-const Film = createLucideIcon("film", __iconNode$A);
+const Film = createLucideIcon("film", __iconNode$D);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$z = [
+const __iconNode$C = [
   ["rect", { x: "3", y: "8", width: "18", height: "4", rx: "1", key: "bkv52" }],
   ["path", { d: "M12 8v13", key: "1c76mn" }],
   ["path", { d: "M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7", key: "6wjy6b" }],
@@ -33802,26 +33840,41 @@ const __iconNode$z = [
     }
   ]
 ];
-const Gift = createLucideIcon("gift", __iconNode$z);
+const Gift = createLucideIcon("gift", __iconNode$C);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$y = [
+const __iconNode$B = [
   ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
   ["path", { d: "M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20", key: "13o1zl" }],
   ["path", { d: "M2 12h20", key: "9i4pu4" }]
 ];
-const Globe = createLucideIcon("globe", __iconNode$y);
+const Globe = createLucideIcon("globe", __iconNode$B);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$x = [
+const __iconNode$A = [
+  ["circle", { cx: "9", cy: "12", r: "1", key: "1vctgf" }],
+  ["circle", { cx: "9", cy: "5", r: "1", key: "hp0tcf" }],
+  ["circle", { cx: "9", cy: "19", r: "1", key: "fkjjf6" }],
+  ["circle", { cx: "15", cy: "12", r: "1", key: "1tmaij" }],
+  ["circle", { cx: "15", cy: "5", r: "1", key: "19l28e" }],
+  ["circle", { cx: "15", cy: "19", r: "1", key: "f4zoj3" }]
+];
+const GripVertical = createLucideIcon("grip-vertical", __iconNode$A);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$z = [
   [
     "path",
     {
@@ -33830,7 +33883,27 @@ const __iconNode$x = [
     }
   ]
 ];
-const Heart = createLucideIcon("heart", __iconNode$x);
+const Heart = createLucideIcon("heart", __iconNode$z);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$y = [
+  ["rect", { width: "18", height: "18", x: "3", y: "3", rx: "2", ry: "2", key: "1m3agn" }],
+  ["circle", { cx: "9", cy: "9", r: "2", key: "af1f0g" }],
+  ["path", { d: "m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21", key: "1xmnt7" }]
+];
+const Image = createLucideIcon("image", __iconNode$y);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$x = [["path", { d: "M21 12a9 9 0 1 1-6.219-8.56", key: "13zald" }]];
+const LoaderCircle = createLucideIcon("loader-circle", __iconNode$x);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -33838,19 +33911,22 @@ const Heart = createLucideIcon("heart", __iconNode$x);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$w = [
-  ["rect", { width: "18", height: "18", x: "3", y: "3", rx: "2", ry: "2", key: "1m3agn" }],
-  ["circle", { cx: "9", cy: "9", r: "2", key: "af1f0g" }],
-  ["path", { d: "m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21", key: "1xmnt7" }]
+  ["rect", { width: "18", height: "11", x: "3", y: "11", rx: "2", ry: "2", key: "1w4ew1" }],
+  ["path", { d: "M7 11V7a5 5 0 0 1 10 0v4", key: "fwvmzm" }]
 ];
-const Image = createLucideIcon("image", __iconNode$w);
+const Lock = createLucideIcon("lock", __iconNode$w);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$v = [["path", { d: "M21 12a9 9 0 1 1-6.219-8.56", key: "13zald" }]];
-const LoaderCircle = createLucideIcon("loader-circle", __iconNode$v);
+const __iconNode$v = [
+  ["path", { d: "m10 17 5-5-5-5", key: "1bsop3" }],
+  ["path", { d: "M15 12H3", key: "6jk70r" }],
+  ["path", { d: "M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4", key: "u53s6r" }]
+];
+const LogIn = createLucideIcon("log-in", __iconNode$v);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -33858,10 +33934,11 @@ const LoaderCircle = createLucideIcon("loader-circle", __iconNode$v);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$u = [
-  ["rect", { width: "18", height: "11", x: "3", y: "11", rx: "2", ry: "2", key: "1w4ew1" }],
-  ["path", { d: "M7 11V7a5 5 0 0 1 10 0v4", key: "fwvmzm" }]
+  ["path", { d: "m16 17 5-5-5-5", key: "1bji2h" }],
+  ["path", { d: "M21 12H9", key: "dn1m92" }],
+  ["path", { d: "M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4", key: "1uf3rs" }]
 ];
-const Lock = createLucideIcon("lock", __iconNode$u);
+const LogOut = createLucideIcon("log-out", __iconNode$u);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -33869,11 +33946,10 @@ const Lock = createLucideIcon("lock", __iconNode$u);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$t = [
-  ["path", { d: "m10 17 5-5-5-5", key: "1bsop3" }],
-  ["path", { d: "M15 12H3", key: "6jk70r" }],
-  ["path", { d: "M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4", key: "u53s6r" }]
+  ["path", { d: "m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7", key: "132q7q" }],
+  ["rect", { x: "2", y: "4", width: "20", height: "16", rx: "2", key: "izxlao" }]
 ];
-const LogIn = createLucideIcon("log-in", __iconNode$t);
+const Mail = createLucideIcon("mail", __iconNode$t);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -33881,29 +33957,6 @@ const LogIn = createLucideIcon("log-in", __iconNode$t);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$s = [
-  ["path", { d: "m16 17 5-5-5-5", key: "1bji2h" }],
-  ["path", { d: "M21 12H9", key: "dn1m92" }],
-  ["path", { d: "M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4", key: "1uf3rs" }]
-];
-const LogOut = createLucideIcon("log-out", __iconNode$s);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$r = [
-  ["path", { d: "m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7", key: "132q7q" }],
-  ["rect", { x: "2", y: "4", width: "20", height: "16", rx: "2", key: "izxlao" }]
-];
-const Mail = createLucideIcon("mail", __iconNode$r);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$q = [
   [
     "path",
     {
@@ -33913,7 +33966,27 @@ const __iconNode$q = [
   ],
   ["circle", { cx: "12", cy: "10", r: "3", key: "ilqhr7" }]
 ];
-const MapPin = createLucideIcon("map-pin", __iconNode$q);
+const MapPin = createLucideIcon("map-pin", __iconNode$s);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$r = [
+  ["path", { d: "M4 12h16", key: "1lakjw" }],
+  ["path", { d: "M4 18h16", key: "19g7jn" }],
+  ["path", { d: "M4 6h16", key: "1o0s65" }]
+];
+const Menu = createLucideIcon("menu", __iconNode$r);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$q = [["path", { d: "M5 12h14", key: "1ays0h" }]];
+const Minus = createLucideIcon("minus", __iconNode$q);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -33921,26 +33994,6 @@ const MapPin = createLucideIcon("map-pin", __iconNode$q);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$p = [
-  ["path", { d: "M4 12h16", key: "1lakjw" }],
-  ["path", { d: "M4 18h16", key: "19g7jn" }],
-  ["path", { d: "M4 6h16", key: "1o0s65" }]
-];
-const Menu = createLucideIcon("menu", __iconNode$p);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$o = [["path", { d: "M5 12h14", key: "1ays0h" }]];
-const Minus = createLucideIcon("minus", __iconNode$o);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$n = [
   ["path", { d: "m16 16 2 2 4-4", key: "gfu2re" }],
   [
     "path",
@@ -33953,14 +34006,14 @@ const __iconNode$n = [
   ["polyline", { points: "3.29 7 12 12 20.71 7", key: "ousv84" }],
   ["line", { x1: "12", x2: "12", y1: "22", y2: "12", key: "a4e8g8" }]
 ];
-const PackageCheck = createLucideIcon("package-check", __iconNode$n);
+const PackageCheck = createLucideIcon("package-check", __iconNode$p);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$m = [
+const __iconNode$o = [
   ["path", { d: "M12 22v-9", key: "x3hkom" }],
   [
     "path",
@@ -33984,14 +34037,14 @@ const __iconNode$m = [
     }
   ]
 ];
-const PackageOpen = createLucideIcon("package-open", __iconNode$m);
+const PackageOpen = createLucideIcon("package-open", __iconNode$o);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$l = [
+const __iconNode$n = [
   [
     "path",
     {
@@ -34003,14 +34056,14 @@ const __iconNode$l = [
   ["polyline", { points: "3.29 7 12 12 20.71 7", key: "ousv84" }],
   ["path", { d: "m7.5 4.27 9 5.15", key: "1c824w" }]
 ];
-const Package = createLucideIcon("package", __iconNode$l);
+const Package = createLucideIcon("package", __iconNode$n);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$k = [
+const __iconNode$m = [
   [
     "path",
     {
@@ -34020,25 +34073,25 @@ const __iconNode$k = [
   ],
   ["path", { d: "m15 5 4 4", key: "1mk7zo" }]
 ];
-const Pencil = createLucideIcon("pencil", __iconNode$k);
+const Pencil = createLucideIcon("pencil", __iconNode$m);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$j = [
+const __iconNode$l = [
   ["path", { d: "M5 12h14", key: "1ays0h" }],
   ["path", { d: "M12 5v14", key: "s699le" }]
 ];
-const Plus = createLucideIcon("plus", __iconNode$j);
+const Plus = createLucideIcon("plus", __iconNode$l);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$i = [
+const __iconNode$k = [
   [
     "path",
     { d: "M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z", key: "q3az6g" }
@@ -34047,7 +34100,31 @@ const __iconNode$i = [
   ["path", { d: "M16 12H8", key: "1fr5h0" }],
   ["path", { d: "M13 16H8", key: "wsln4y" }]
 ];
-const ReceiptText = createLucideIcon("receipt-text", __iconNode$i);
+const ReceiptText = createLucideIcon("receipt-text", __iconNode$k);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$j = [
+  ["path", { d: "M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8", key: "v9h5vc" }],
+  ["path", { d: "M21 3v5h-5", key: "1q7to0" }],
+  ["path", { d: "M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16", key: "3uifl3" }],
+  ["path", { d: "M8 16H3v5", key: "1cv678" }]
+];
+const RefreshCw = createLucideIcon("refresh-cw", __iconNode$j);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$i = [
+  ["path", { d: "m21 21-4.34-4.34", key: "14j7rj" }],
+  ["circle", { cx: "11", cy: "11", r: "8", key: "4ej97u" }]
+];
+const Search = createLucideIcon("search", __iconNode$i);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -34055,30 +34132,6 @@ const ReceiptText = createLucideIcon("receipt-text", __iconNode$i);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$h = [
-  ["path", { d: "M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8", key: "v9h5vc" }],
-  ["path", { d: "M21 3v5h-5", key: "1q7to0" }],
-  ["path", { d: "M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16", key: "3uifl3" }],
-  ["path", { d: "M8 16H3v5", key: "1cv678" }]
-];
-const RefreshCw = createLucideIcon("refresh-cw", __iconNode$h);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$g = [
-  ["path", { d: "m21 21-4.34-4.34", key: "14j7rj" }],
-  ["circle", { cx: "11", cy: "11", r: "8", key: "4ej97u" }]
-];
-const Search = createLucideIcon("search", __iconNode$g);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$f = [
   [
     "path",
     {
@@ -34089,14 +34142,14 @@ const __iconNode$f = [
   ["path", { d: "M12 8v4", key: "1got3b" }],
   ["path", { d: "M12 16h.01", key: "1drbdi" }]
 ];
-const ShieldAlert = createLucideIcon("shield-alert", __iconNode$f);
+const ShieldAlert = createLucideIcon("shield-alert", __iconNode$h);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$e = [
+const __iconNode$g = [
   [
     "path",
     {
@@ -34106,26 +34159,26 @@ const __iconNode$e = [
   ],
   ["path", { d: "m9 12 2 2 4-4", key: "dzmm74" }]
 ];
-const ShieldCheck = createLucideIcon("shield-check", __iconNode$e);
+const ShieldCheck = createLucideIcon("shield-check", __iconNode$g);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$d = [
+const __iconNode$f = [
   ["path", { d: "M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z", key: "hou9p0" }],
   ["path", { d: "M3 6h18", key: "d0wm0j" }],
   ["path", { d: "M16 10a4 4 0 0 1-8 0", key: "1ltviw" }]
 ];
-const ShoppingBag = createLucideIcon("shopping-bag", __iconNode$d);
+const ShoppingBag = createLucideIcon("shopping-bag", __iconNode$f);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$c = [
+const __iconNode$e = [
   ["circle", { cx: "8", cy: "21", r: "1", key: "jimo8o" }],
   ["circle", { cx: "19", cy: "21", r: "1", key: "13723u" }],
   [
@@ -34136,14 +34189,14 @@ const __iconNode$c = [
     }
   ]
 ];
-const ShoppingCart = createLucideIcon("shopping-cart", __iconNode$c);
+const ShoppingCart = createLucideIcon("shopping-cart", __iconNode$e);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$b = [
+const __iconNode$d = [
   [
     "path",
     {
@@ -34156,14 +34209,14 @@ const __iconNode$b = [
   ["path", { d: "M4 17v2", key: "vumght" }],
   ["path", { d: "M5 18H3", key: "zchphs" }]
 ];
-const Sparkles = createLucideIcon("sparkles", __iconNode$b);
+const Sparkles = createLucideIcon("sparkles", __iconNode$d);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$a = [
+const __iconNode$c = [
   ["path", { d: "M2 10s3-3 3-8", key: "3xiif0" }],
   ["path", { d: "M22 10s-3-3-3-8", key: "ioaa5q" }],
   ["path", { d: "M10 2c0 4.4-3.6 8-8 8", key: "16fkpi" }],
@@ -34174,14 +34227,28 @@ const __iconNode$a = [
   ["path", { d: "M2 22v-1a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1", key: "1vsc2m" }],
   ["path", { d: "M14 22v-1a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1", key: "hrha4u" }]
 ];
-const Theater = createLucideIcon("theater", __iconNode$a);
+const Theater = createLucideIcon("theater", __iconNode$c);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$9 = [
+const __iconNode$b = [
+  ["path", { d: "M3 6h18", key: "d0wm0j" }],
+  ["path", { d: "M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6", key: "4alrt4" }],
+  ["path", { d: "M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2", key: "v07s0e" }],
+  ["line", { x1: "10", x2: "10", y1: "11", y2: "17", key: "1uufr5" }],
+  ["line", { x1: "14", x2: "14", y1: "11", y2: "17", key: "xtxkd" }]
+];
+const Trash2 = createLucideIcon("trash-2", __iconNode$b);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$a = [
   [
     "path",
     {
@@ -34192,14 +34259,14 @@ const __iconNode$9 = [
   ["path", { d: "M12 9v4", key: "juzpu7" }],
   ["path", { d: "M12 17h.01", key: "p32p05" }]
 ];
-const TriangleAlert = createLucideIcon("triangle-alert", __iconNode$9);
+const TriangleAlert = createLucideIcon("triangle-alert", __iconNode$a);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$8 = [
+const __iconNode$9 = [
   ["path", { d: "M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2", key: "wrbu53" }],
   ["path", { d: "M15 18H9", key: "1lyqi6" }],
   [
@@ -34212,14 +34279,14 @@ const __iconNode$8 = [
   ["circle", { cx: "17", cy: "18", r: "2", key: "332jqn" }],
   ["circle", { cx: "7", cy: "18", r: "2", key: "19iecd" }]
 ];
-const Truck = createLucideIcon("truck", __iconNode$8);
+const Truck = createLucideIcon("truck", __iconNode$9);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$7 = [
+const __iconNode$8 = [
   [
     "path",
     {
@@ -34228,7 +34295,19 @@ const __iconNode$7 = [
     }
   ]
 ];
-const Twitter = createLucideIcon("twitter", __iconNode$7);
+const Twitter = createLucideIcon("twitter", __iconNode$8);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$7 = [
+  ["path", { d: "M12 3v12", key: "1x0j5s" }],
+  ["path", { d: "m17 8-5-5-5 5", key: "7q97r8" }],
+  ["path", { d: "M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4", key: "ih7n3h" }]
+];
+const Upload = createLucideIcon("upload", __iconNode$7);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -34350,7 +34429,7 @@ const CryptoPaymentStatus = Variant({
 const ProductId = Nat;
 const OrderItem = Record({
   "product_id": ProductId,
-  "unit_amount": Nat,
+  "unit_amount": Float64,
   "name": Text,
   "variant_id": Text,
   "quantity": Nat
@@ -34362,7 +34441,7 @@ const AdminOrderDetail = Record({
   "cryptoStatus": Opt(CryptoPaymentStatus),
   "createdAt": Int,
   "reference": Text,
-  "amountOwed": Nat,
+  "amountOwed": Float64,
   "updatedAt": Int,
   "currency": Text,
   "hasShippingDetails": Bool,
@@ -34379,7 +34458,7 @@ const AdminOrderView = Record({
   "createdAt": Int,
   "itemCount": Nat,
   "reference": Text,
-  "amountOwed": Nat,
+  "amountOwed": Float64,
   "currency": Text,
   "subaccountHex": Text,
   "sweepNote": Opt(Text),
@@ -34395,7 +34474,7 @@ const PaymentServiceError = Variant({
   "unauthorized": Null,
   "invalidResponse": Text
 });
-const Result_1 = Variant({
+const Result_2 = Variant({
   "ok": Null,
   "err": PaymentServiceError
 });
@@ -34410,13 +34489,13 @@ const CryptoPaymentError = Variant({
   "notCryptoOrder": Null,
   "unauthorized": Null,
   "invalidConfig": Text,
-  "belowMinimumOrder": Nat
+  "belowMinimumOrder": Float64
 });
-const Result_13 = Variant({
+const Result_18 = Variant({
   "ok": CryptoPaymentStatus,
   "err": CryptoPaymentError
 });
-const Result_20 = Variant({
+const Result_25 = Variant({
   "ok": PaymentStatus$1,
   "err": PaymentServiceError
 });
@@ -34439,21 +34518,41 @@ const CheckoutSession = Record({
   "url": Opt(Text),
   "reference": Text
 });
-const Result_19 = Variant({
+const Result_24 = Variant({
   "ok": CheckoutSession,
   "err": PaymentServiceError
 });
+const CategoryId = Nat;
+const Category = Record({
+  "id": CategoryId,
+  "updated_at": Int,
+  "active": Bool,
+  "sortOrder": Nat,
+  "name": Text,
+  "slug": Text,
+  "description": Opt(Text),
+  "created_at": Int,
+  "showWhenEmpty": Bool
+});
+const CategoryError = Variant({
+  "emptyName": Null,
+  "targetCategoryNotFound": Text,
+  "notFound": CategoryId,
+  "productsReferenced": Record({ "count": Nat, "slug": Text }),
+  "slugCollision": Text
+});
+const Result_3 = Variant({ "ok": Category, "err": CategoryError });
 const ShippingStatus = Variant({
   "shipped": Null,
   "pending": Null
 });
 const Order = Record({
   "id": Nat,
-  "tax": Nat,
+  "tax": Float64,
   "updated_at": Int,
-  "total": Nat,
+  "total": Float64,
   "sweep_note": Opt(Text),
-  "shipping": Nat,
+  "shipping": Float64,
   "reference": Text,
   "created_at": Int,
   "payment_status": PaymentStatus$1,
@@ -34470,13 +34569,13 @@ const Order = Record({
   "shipped_at": Opt(Int),
   "marketing_consent": Bool,
   "payment_reference": Opt(Text),
-  "subtotal": Nat
+  "subtotal": Float64
 });
 const PaymentError = Variant({
   "invalidOrder": Null,
   "paymentFailed": Text
 });
-const Result_18 = Variant({
+const Result_23 = Variant({
   "ok": CheckoutSession,
   "err": PaymentError
 });
@@ -34504,13 +34603,13 @@ const OrderError = Variant({
   "ckUSDCDisabled": Null,
   "emptyOrder": Null,
   "rateLimited": Null,
-  "belowMinimumOrder": Nat,
+  "belowMinimumOrder": Float64,
   "productInactive": ProductId,
   "paymentFailed": Text,
   "invalidQuantity": Null,
   "tooManyPendingOrders": Null
 });
-const Result_17 = Variant({
+const Result_22 = Variant({
   "ok": CreateOrderResult,
   "err": OrderError
 });
@@ -34519,7 +34618,7 @@ const ProductVariant = Record({
   "inventory": Nat,
   "name": Text,
   "size": Text,
-  "price": Nat
+  "price": Float64
 });
 const Product = Record({
   "id": ProductId,
@@ -34534,10 +34633,27 @@ const Product = Record({
   "currency": Text,
   "admin_only": Bool,
   "category": Text,
-  "price": Nat,
+  "price": Float64,
   "images": Vec(Text)
 });
-const Value = Variant({
+const Result_11 = Variant({
+  "ok": Null,
+  "err": CategoryError
+});
+const UploadError = Variant({
+  "tooManyImages": Null,
+  "tooLarge": Null,
+  "magicByteMismatch": Null,
+  "sizeMismatch": Null,
+  "invalidContentType": Null,
+  "notFound": Null,
+  "uploadExpired": Null,
+  "svgNotAllowed": Null,
+  "chunkOutOfOrder": Null,
+  "unauthorized": Null
+});
+const Result = Variant({ "ok": Null, "err": UploadError });
+const Value$1 = Variant({
   "int": Int,
   "nat": Nat,
   "float": Float64,
@@ -34545,11 +34661,12 @@ const Value = Variant({
   "null": Null,
   "text": Text
 });
-const Cell = Record({ "value": Value, "name": Text });
+const Cell = Record({ "value": Value$1, "name": Text });
 const Result__1 = Record({
   "hasMore": Bool,
   "rows": Vec(Vec(Cell))
 });
+const Result_9 = Variant({ "ok": Text, "err": UploadError });
 const RecheckResult = Record({
   "status": CryptoPaymentStatus,
   "balance": Nat,
@@ -34564,7 +34681,7 @@ const RecoveryError = Variant({
   "unauthorized": Null,
   "invalidConfig": Text
 });
-const Result_16 = Variant({
+const Result_21 = Variant({
   "ok": RecheckResult,
   "err": RecoveryError
 });
@@ -34573,7 +34690,7 @@ const SweepResult = Record({
   "error": Opt(Text),
   "blockIndex": Opt(Nat)
 });
-const Result_4 = Variant({
+const Result_6 = Variant({
   "ok": SweepResult,
   "err": RecoveryError
 });
@@ -34587,7 +34704,7 @@ const ConsentError = Variant({
   "unauthorized": Null,
   "invalidResponse": Text
 });
-const Result_15 = Variant({
+const Result_20 = Variant({
   "ok": ConsentListExport,
   "err": ConsentError
 });
@@ -34600,7 +34717,7 @@ const CryptoConfigView = Record({
   "icp": LedgerConfig,
   "ckUSDC": LedgerConfig,
   "treasurySubaccount": Opt(Vec(Nat8)),
-  "minimumOrder": Nat,
+  "minimumOrder": Float64,
   "ckUSDCEnabled": Bool,
   "treasuryPrincipal": Principal2
 });
@@ -34615,18 +34732,18 @@ const DepositInfo = Record({
   "address": Principal2,
   "amountDue": Nat
 });
-const Result_14 = Variant({
+const Result_19 = Variant({
   "ok": DepositInfo,
   "err": CryptoPaymentError
 });
-const Result_12 = Variant({ "ok": Nat, "err": RecoveryError });
+const Result_17 = Variant({ "ok": Nat, "err": RecoveryError });
 const PublicOrderView = Record({
   "id": Nat,
-  "tax": Nat,
+  "tax": Float64,
   "updated_at": Int,
-  "total": Nat,
+  "total": Float64,
   "sweep_note": Opt(Text),
-  "shipping": Nat,
+  "shipping": Float64,
   "reference": Text,
   "created_at": Int,
   "payment_status": PaymentStatus$1,
@@ -34642,7 +34759,7 @@ const PublicOrderView = Record({
   "shipped_at": Opt(Int),
   "marketing_consent": Bool,
   "payment_reference": Opt(Text),
-  "subtotal": Nat
+  "subtotal": Float64
 });
 const Role$1 = Variant({
   "admin": Null,
@@ -34653,6 +34770,10 @@ const PaymentServiceConfigView = Record({
   "url": Text,
   "tokenSet": Bool
 });
+const StorageStats = Record({
+  "count": Nat,
+  "totalBytes": Nat
+});
 const ResumeInfo = Record({
   "status": CryptoPaymentStatus,
   "expiresAt": Int,
@@ -34660,7 +34781,7 @@ const ResumeInfo = Record({
   "deposit": Opt(DepositInfo),
   "remainingNs": Int
 });
-const Result_11 = Variant({
+const Result_16 = Variant({
   "ok": ResumeInfo,
   "err": RecoveryError
 });
@@ -34675,11 +34796,48 @@ const SweepError = Variant({
   "unauthorized": Null,
   "invalidConfig": Text
 });
-const Result_10 = Variant({
+const Result_15 = Variant({
   "ok": SubaccountBalanceResult,
   "err": SweepError
 });
-const Result_9 = Variant({ "ok": Null, "err": PaymentError });
+const Result_14 = Variant({ "ok": Null, "err": PaymentError });
+const HttpRequest = Record({
+  "url": Text,
+  "method": Text,
+  "body": Vec(Nat8),
+  "headers": Vec(Tuple(Text, Text))
+});
+const StreamingCallbackToken = Record({
+  "key": Text,
+  "sha256": Opt(Vec(Nat8)),
+  "index": Nat,
+  "content_encoding": Text
+});
+const StreamingCallbackResponse = Record({
+  "token": Opt(StreamingCallbackToken),
+  "body": Vec(Nat8)
+});
+const StreamingCallback = Func(
+  [StreamingCallbackToken],
+  [StreamingCallbackResponse],
+  ["query"]
+);
+const StreamingStrategy = Variant({
+  "Callback": Record({
+    "token": StreamingCallbackToken,
+    "callback": StreamingCallback
+  })
+});
+const HttpResponse = Record({
+  "body": Vec(Nat8),
+  "headers": Vec(Tuple(Text, Text)),
+  "streaming_strategy": Opt(StreamingStrategy),
+  "status_code": Nat16
+});
+const CategoryWithCount = Record({
+  "productCount": Nat,
+  "category": Category
+});
 const LatePayment = Record({
   "token": Token$1,
   "reference": Text,
@@ -34699,7 +34857,7 @@ const OrderRecoveryView = Record({
   "expiresAt": Opt(Int),
   "reference": Text,
   "depositAccount": Opt(DepositAccount),
-  "amountOwed": Nat,
+  "amountOwed": Float64,
   "liveBalance": Nat
 });
 const Discipline$1 = Variant({
@@ -34728,7 +34886,7 @@ const SubmissionError = Variant({
   "outcallFailed": Text,
   "invalidResponse": Text
 });
-const Result_8 = Variant({
+const Result_13 = Variant({
   "ok": Vec(SubmissionRecord),
   "err": SubmissionError
 });
@@ -34741,7 +34899,8 @@ const EmailError = Variant({
   "unauthorized": Null,
   "invalidResponse": Text
 });
-const Result_7 = Variant({ "ok": Null, "err": EmailError });
+const Result_10 = Variant({ "ok": Null, "err": EmailError });
+const Result_12 = Variant({ "ok": Nat, "err": CategoryError });
 const SubmissionInput = Record({
   "discipline": Discipline$1,
   "link": Text,
@@ -34752,11 +34911,11 @@ const SubmissionInput = Record({
   "marketingConsentAt": Opt(Int),
   "marketingConsent": Bool
 });
-const Result_6 = Variant({
+const Result_8 = Variant({
   "ok": Null,
   "err": SubmissionError
 });
-const Result_5 = Variant({
+const Result_7 = Variant({
   "ok": Nat,
   "err": CryptoPaymentError
 });
@@ -34766,12 +34925,12 @@ const SweepSubaccountResult = Record({
   "subaccountHex": Text,
   "subaccountIndex": Nat
 });
-const Result_3 = Variant({
+const Result_5 = Variant({
   "ok": SweepSubaccountResult,
   "err": SweepError
 });
-const Result_2 = Variant({ "ok": Null, "err": ConsentError });
-const Result = Variant({
+const Result_4 = Variant({ "ok": Null, "err": ConsentError });
+const Result_1 = Variant({
   "ok": Null,
   "err": CryptoPaymentError
 });
@@ -34789,11 +34948,11 @@ Service({
     ["query"]
   ),
   "bootstrapOwner": Func([Principal2], [Bool], []),
-  "cancelCardOrder": Func([Text], [Result_1], []),
-  "cancelGuestOrder": Func([Text, Text], [Result_1], []),
-  "checkCryptoPayment": Func([Text], [Result_13], []),
+  "cancelCardOrder": Func([Text], [Result_2], []),
+  "cancelGuestOrder": Func([Text, Text], [Result_2], []),
+  "checkCryptoPayment": Func([Text], [Result_18], []),
   "claimInitialAdmin": Func([], [Bool], []),
-  "confirmCardPayment": Func([Text], [Result_20], []),
+  "confirmCardPayment": Func([Text], [Result_25], []),
   "consentServiceTransform": Func(
     [TransformationInput],
     [TransformationOutput],
@@ -34801,32 +34960,36 @@ Service({
   ),
   "createCardCheckoutSession": Func(
     [Text, Text, Text],
-    [Result_19],
+    [Result_24],
     []
   ),
-  "createCheckoutSession": Func([Order], [Result_18], []),
-  "createOrder": Func([CreateOrderInput], [Result_17], []),
+  "createCategory": Func([Text, Opt(Text)], [Result_3], []),
+  "createCheckoutSession": Func([Order], [Result_23], []),
+  "createOrder": Func([CreateOrderInput], [Result_22], []),
   "createProduct": Func([Product], [Bool], []),
+  "deleteCategory": Func([CategoryId], [Result_11], []),
+  "deleteProductImage": Func([Text], [Result], []),
   "emailTransform": Func(
     [TransformationInput],
     [TransformationOutput],
     ["query"]
   ),
   "execute": Func([Text], [Result__1], ["query"]),
-  "forceRecheckPayment": Func([Text], [Result_16], []),
-  "forceSweepOrder": Func([Text], [Result_4], []),
+  "finishUpload": Func([Text, Nat], [Result_9], []),
+  "forceRecheckPayment": Func([Text], [Result_21], []),
+  "forceSweepOrder": Func([Text], [Result_6], []),
   "getApiDoc": Func([], [Text], ["query"]),
   "getCanisterId": Func([], [Principal2], ["query"]),
-  "getConsentListCsv": Func([], [Result_15], []),
+  "getConsentListCsv": Func([], [Result_20], []),
   "getCryptoConfig": Func([], [CryptoConfigView], ["query"]),
-  "getCryptoDepositInfo": Func([Text], [Result_14], ["query"]),
-  "getCryptoPaymentStatus": Func([Text], [Result_13], ["query"]),
+  "getCryptoDepositInfo": Func([Text], [Result_19], ["query"]),
+  "getCryptoPaymentStatus": Func([Text], [Result_18], ["query"]),
   "getCycleBalance": Func([], [Nat], ["query"]),
   "getDashboardData": Func([], [Text], []),
-  "getDefaultSubaccountBalance": Func([], [Result_12], []),
+  "getDefaultSubaccountBalance": Func([], [Result_17], []),
   "getEncryptionRecipients": Func([], [Vec(Principal2)], ["query"]),
   "getIbePublicKey": Func([], [Vec(Nat8)], []),
-  "getMinimumOrder": Func([], [Nat], ["query"]),
+  "getMinimumOrder": Func([], [Float64], ["query"]),
   "getMyEncryptedIbeKey": Func(
     [Vec(Nat8)],
     [Vec(Nat8)],
@@ -34847,37 +35010,49 @@ Service({
   ),
   "getPaymentStatus": Func([Text], [PaymentStatus$1], []),
   "getProduct": Func([Text], [Opt(Product)], ["query"]),
-  "getResumeInfo": Func([Text], [Result_11], ["query"]),
-  "getSubaccountBalance": Func([Nat], [Result_10], []),
+  "getProductImageStorageStats": Func([], [StorageStats], ["query"]),
+  "getResumeInfo": Func([Text], [Result_16], ["query"]),
+  "getSubaccountBalance": Func([Nat], [Result_15], []),
   "getTokenImage": Func([Text, Text], [Text], []),
   "getTokenProfile": Func([Text, Text], [Text], []),
   "getTreasuryTokens": Func([], [Text], []),
   "grantRole": Func([Principal2, Role$1], [Bool], []),
-  "handlePaymentConfirmation": Func([Text], [Result_9], []),
+  "handlePaymentConfirmation": Func([Text], [Result_14], []),
+  "http_request": Func([HttpRequest], [HttpResponse], ["query"]),
+  "http_request_streaming_callback": Func(
+    [StreamingCallbackToken],
+    [StreamingCallbackResponse],
+    ["query"]
+  ),
+  "http_request_update": Func([HttpRequest], [HttpResponse], ["query"]),
   "isAdmin": Func([], [Bool], ["query"]),
   "listAdmins": Func([], [Vec(Principal2)], []),
+  "listCategories": Func([], [Vec(CategoryWithCount)], ["query"]),
   "listLatePayments": Func([], [Vec(LatePayment)], []),
   "listOrdersForRecovery": Func([], [Vec(OrderRecoveryView)], []),
   "listProducts": Func([], [Vec(Product)], ["query"]),
-  "listSubmissions": Func([], [Result_8], []),
+  "listSubmissions": Func([], [Result_13], []),
   "listUsers": Func(
     [],
     [Vec(Tuple(Principal2, UserRecord))],
     []
   ),
   "markLatePaymentReviewed": Func([Text], [Bool], []),
-  "markOrderShipped": Func([Text, Opt(Text)], [Result_7], []),
+  "markOrderShipped": Func([Text, Opt(Text)], [Result_10], []),
   "paymentServiceTransform": Func(
     [TransformationInput],
     [TransformationOutput],
     ["query"]
   ),
+  "reassignProducts": Func([Text, Text], [Result_12], []),
   "releaseExpiredOrders": Func([], [Nat], []),
   "removeAdmin": Func([Principal2], [Bool], []),
-  "resendConfirmationEmail": Func([Text], [Result_7], []),
+  "reorderCategories": Func([Vec(CategoryId)], [Result_11], []),
+  "resendConfirmationEmail": Func([Text], [Result_10], []),
   "resetAdminForMigration": Func([], [Bool], []),
   "revokeRole": Func([Principal2], [Bool], []),
   "schema": Func([], [Text], ["query"]),
+  "startUpload": Func([Text, Nat], [Result_9], []),
   "startVerificationTimer": Func([], [Bool], []),
   "stopVerificationTimer": Func([], [Bool], []),
   "submissionServiceTransform": Func(
@@ -34885,27 +35060,38 @@ Service({
     [TransformationOutput],
     ["query"]
   ),
-  "submitSubmission": Func([SubmissionInput], [Result_6], []),
-  "sweepCryptoToTreasury": Func([Text], [Result_5], []),
-  "sweepDefaultSubaccount": Func([], [Result_4], []),
-  "sweepSubaccount": Func([Nat], [Result_3], []),
+  "submitSubmission": Func([SubmissionInput], [Result_8], []),
+  "sweepCryptoToTreasury": Func([Text], [Result_7], []),
+  "sweepDefaultSubaccount": Func([], [Result_6], []),
+  "sweepExpiredUploads": Func([], [], []),
+  "sweepSubaccount": Func([Nat], [Result_5], []),
   "transform": Func(
     [TransformationInput],
     [TransformationOutput],
     ["query"]
   ),
-  "unsubscribe": Func([Text], [Result_2], []),
-  "updateLedgerConfig": Func(
-    [Token$1, Principal2, Nat8, Nat],
-    [Result],
+  "unsubscribe": Func([Text], [Result_4], []),
+  "updateCategory": Func(
+    [CategoryId, Text, Opt(Text), Nat, Bool, Bool],
+    [Result_3],
     []
   ),
-  "updateMinimumOrder": Func([Nat], [Result], []),
-  "updatePaymentServiceToken": Func([Text], [Result_1], []),
-  "updatePaymentServiceUrl": Func([Text], [Result_1], []),
+  "updateLedgerConfig": Func(
+    [Token$1, Principal2, Nat8, Nat],
+    [Result_1],
+    []
+  ),
+  "updateMinimumOrder": Func([Float64], [Result_1], []),
+  "updatePaymentServiceToken": Func([Text], [Result_2], []),
+  "updatePaymentServiceUrl": Func([Text], [Result_2], []),
   "updateProduct": Func([Product], [Bool], []),
   "updateTreasury": Func(
     [Principal2, Opt(Vec(Nat8))],
+    [Result_1],
+    []
+  ),
+  "uploadChunk": Func(
+    [Text, Nat, Vec(Nat8)],
     [Result],
     []
   )
@@ -34933,7 +35119,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
   const ProductId2 = IDL2.Nat;
   const OrderItem2 = IDL2.Record({
     "product_id": ProductId2,
-    "unit_amount": IDL2.Nat,
+    "unit_amount": IDL2.Float64,
     "name": IDL2.Text,
     "variant_id": IDL2.Text,
     "quantity": IDL2.Nat
@@ -34945,7 +35131,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "cryptoStatus": IDL2.Opt(CryptoPaymentStatus2),
     "createdAt": IDL2.Int,
     "reference": IDL2.Text,
-    "amountOwed": IDL2.Nat,
+    "amountOwed": IDL2.Float64,
     "updatedAt": IDL2.Int,
     "currency": IDL2.Text,
     "hasShippingDetails": IDL2.Bool,
@@ -34962,7 +35148,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "createdAt": IDL2.Int,
     "itemCount": IDL2.Nat,
     "reference": IDL2.Text,
-    "amountOwed": IDL2.Nat,
+    "amountOwed": IDL2.Float64,
     "currency": IDL2.Text,
     "subaccountHex": IDL2.Text,
     "sweepNote": IDL2.Opt(IDL2.Text),
@@ -34978,7 +35164,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "unauthorized": IDL2.Null,
     "invalidResponse": IDL2.Text
   });
-  const Result_110 = IDL2.Variant({
+  const Result_26 = IDL2.Variant({
     "ok": IDL2.Null,
     "err": PaymentServiceError2
   });
@@ -34993,13 +35179,13 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "notCryptoOrder": IDL2.Null,
     "unauthorized": IDL2.Null,
     "invalidConfig": IDL2.Text,
-    "belowMinimumOrder": IDL2.Nat
+    "belowMinimumOrder": IDL2.Float64
   });
-  const Result_132 = IDL2.Variant({
+  const Result_182 = IDL2.Variant({
     "ok": CryptoPaymentStatus2,
     "err": CryptoPaymentError2
   });
-  const Result_202 = IDL2.Variant({
+  const Result_252 = IDL2.Variant({
     "ok": PaymentStatus2,
     "err": PaymentServiceError2
   });
@@ -35022,21 +35208,41 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "url": IDL2.Opt(IDL2.Text),
     "reference": IDL2.Text
   });
-  const Result_192 = IDL2.Variant({
+  const Result_242 = IDL2.Variant({
     "ok": CheckoutSession2,
     "err": PaymentServiceError2
   });
+  const CategoryId2 = IDL2.Nat;
+  const Category2 = IDL2.Record({
+    "id": CategoryId2,
+    "updated_at": IDL2.Int,
+    "active": IDL2.Bool,
+    "sortOrder": IDL2.Nat,
+    "name": IDL2.Text,
+    "slug": IDL2.Text,
+    "description": IDL2.Opt(IDL2.Text),
+    "created_at": IDL2.Int,
+    "showWhenEmpty": IDL2.Bool
+  });
+  const CategoryError2 = IDL2.Variant({
+    "emptyName": IDL2.Null,
+    "targetCategoryNotFound": IDL2.Text,
+    "notFound": CategoryId2,
+    "productsReferenced": IDL2.Record({ "count": IDL2.Nat, "slug": IDL2.Text }),
+    "slugCollision": IDL2.Text
+  });
+  const Result_32 = IDL2.Variant({ "ok": Category2, "err": CategoryError2 });
   const ShippingStatus2 = IDL2.Variant({
     "shipped": IDL2.Null,
     "pending": IDL2.Null
   });
   const Order2 = IDL2.Record({
     "id": IDL2.Nat,
-    "tax": IDL2.Nat,
+    "tax": IDL2.Float64,
     "updated_at": IDL2.Int,
-    "total": IDL2.Nat,
+    "total": IDL2.Float64,
     "sweep_note": IDL2.Opt(IDL2.Text),
-    "shipping": IDL2.Nat,
+    "shipping": IDL2.Float64,
     "reference": IDL2.Text,
     "created_at": IDL2.Int,
     "payment_status": PaymentStatus2,
@@ -35053,13 +35259,13 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "shipped_at": IDL2.Opt(IDL2.Int),
     "marketing_consent": IDL2.Bool,
     "payment_reference": IDL2.Opt(IDL2.Text),
-    "subtotal": IDL2.Nat
+    "subtotal": IDL2.Float64
   });
   const PaymentError2 = IDL2.Variant({
     "invalidOrder": IDL2.Null,
     "paymentFailed": IDL2.Text
   });
-  const Result_182 = IDL2.Variant({
+  const Result_232 = IDL2.Variant({
     "ok": CheckoutSession2,
     "err": PaymentError2
   });
@@ -35087,13 +35293,13 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "ckUSDCDisabled": IDL2.Null,
     "emptyOrder": IDL2.Null,
     "rateLimited": IDL2.Null,
-    "belowMinimumOrder": IDL2.Nat,
+    "belowMinimumOrder": IDL2.Float64,
     "productInactive": ProductId2,
     "paymentFailed": IDL2.Text,
     "invalidQuantity": IDL2.Null,
     "tooManyPendingOrders": IDL2.Null
   });
-  const Result_172 = IDL2.Variant({
+  const Result_222 = IDL2.Variant({
     "ok": CreateOrderResult2,
     "err": OrderError2
   });
@@ -35102,7 +35308,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "inventory": IDL2.Nat,
     "name": IDL2.Text,
     "size": IDL2.Text,
-    "price": IDL2.Nat
+    "price": IDL2.Float64
   });
   const Product2 = IDL2.Record({
     "id": ProductId2,
@@ -35117,9 +35323,23 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "currency": IDL2.Text,
     "admin_only": IDL2.Bool,
     "category": IDL2.Text,
-    "price": IDL2.Nat,
+    "price": IDL2.Float64,
     "images": IDL2.Vec(IDL2.Text)
   });
+  const Result_112 = IDL2.Variant({ "ok": IDL2.Null, "err": CategoryError2 });
+  const UploadError2 = IDL2.Variant({
+    "tooManyImages": IDL2.Null,
+    "tooLarge": IDL2.Null,
+    "magicByteMismatch": IDL2.Null,
+    "sizeMismatch": IDL2.Null,
+    "invalidContentType": IDL2.Null,
+    "notFound": IDL2.Null,
+    "uploadExpired": IDL2.Null,
+    "svgNotAllowed": IDL2.Null,
+    "chunkOutOfOrder": IDL2.Null,
+    "unauthorized": IDL2.Null
+  });
+  const Result2 = IDL2.Variant({ "ok": IDL2.Null, "err": UploadError2 });
   const Value2 = IDL2.Variant({
     "int": IDL2.Int,
     "nat": IDL2.Nat,
@@ -35133,6 +35353,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "hasMore": IDL2.Bool,
     "rows": IDL2.Vec(IDL2.Vec(Cell2))
   });
+  const Result_92 = IDL2.Variant({ "ok": IDL2.Text, "err": UploadError2 });
   const RecheckResult2 = IDL2.Record({
     "status": CryptoPaymentStatus2,
     "balance": IDL2.Nat,
@@ -35147,7 +35368,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "unauthorized": IDL2.Null,
     "invalidConfig": IDL2.Text
   });
-  const Result_162 = IDL2.Variant({
+  const Result_212 = IDL2.Variant({
     "ok": RecheckResult2,
     "err": RecoveryError2
   });
@@ -35156,7 +35377,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "error": IDL2.Opt(IDL2.Text),
     "blockIndex": IDL2.Opt(IDL2.Nat)
   });
-  const Result_42 = IDL2.Variant({ "ok": SweepResult2, "err": RecoveryError2 });
+  const Result_62 = IDL2.Variant({ "ok": SweepResult2, "err": RecoveryError2 });
   const ConsentListExport2 = IDL2.Record({ "csv": IDL2.Text });
   const ConsentError2 = IDL2.Variant({
     "alreadyUnsubscribed": IDL2.Null,
@@ -35167,7 +35388,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "unauthorized": IDL2.Null,
     "invalidResponse": IDL2.Text
   });
-  const Result_152 = IDL2.Variant({
+  const Result_202 = IDL2.Variant({
     "ok": ConsentListExport2,
     "err": ConsentError2
   });
@@ -35180,7 +35401,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "icp": LedgerConfig2,
     "ckUSDC": LedgerConfig2,
     "treasurySubaccount": IDL2.Opt(IDL2.Vec(IDL2.Nat8)),
-    "minimumOrder": IDL2.Nat,
+    "minimumOrder": IDL2.Float64,
     "ckUSDCEnabled": IDL2.Bool,
     "treasuryPrincipal": IDL2.Principal
   });
@@ -35195,18 +35416,18 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "address": IDL2.Principal,
     "amountDue": IDL2.Nat
   });
-  const Result_142 = IDL2.Variant({
+  const Result_192 = IDL2.Variant({
     "ok": DepositInfo2,
     "err": CryptoPaymentError2
   });
-  const Result_122 = IDL2.Variant({ "ok": IDL2.Nat, "err": RecoveryError2 });
+  const Result_172 = IDL2.Variant({ "ok": IDL2.Nat, "err": RecoveryError2 });
   const PublicOrderView2 = IDL2.Record({
     "id": IDL2.Nat,
-    "tax": IDL2.Nat,
+    "tax": IDL2.Float64,
     "updated_at": IDL2.Int,
-    "total": IDL2.Nat,
+    "total": IDL2.Float64,
     "sweep_note": IDL2.Opt(IDL2.Text),
-    "shipping": IDL2.Nat,
+    "shipping": IDL2.Float64,
     "reference": IDL2.Text,
     "created_at": IDL2.Int,
     "payment_status": PaymentStatus2,
@@ -35222,7 +35443,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "shipped_at": IDL2.Opt(IDL2.Int),
     "marketing_consent": IDL2.Bool,
     "payment_reference": IDL2.Opt(IDL2.Text),
-    "subtotal": IDL2.Nat
+    "subtotal": IDL2.Float64
   });
   const Role2 = IDL2.Variant({
     "admin": IDL2.Null,
@@ -35233,6 +35454,10 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "url": IDL2.Text,
     "tokenSet": IDL2.Bool
   });
+  const StorageStats2 = IDL2.Record({
+    "count": IDL2.Nat,
+    "totalBytes": IDL2.Nat
+  });
   const ResumeInfo2 = IDL2.Record({
     "status": CryptoPaymentStatus2,
     "expiresAt": IDL2.Int,
@@ -35240,7 +35465,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "deposit": IDL2.Opt(DepositInfo2),
     "remainingNs": IDL2.Int
   });
-  const Result_112 = IDL2.Variant({ "ok": ResumeInfo2, "err": RecoveryError2 });
+  const Result_162 = IDL2.Variant({ "ok": ResumeInfo2, "err": RecoveryError2 });
   const SubaccountBalanceResult2 = IDL2.Record({
     "balance": IDL2.Nat,
     "subaccountHex": IDL2.Text,
@@ -35252,11 +35477,48 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "unauthorized": IDL2.Null,
     "invalidConfig": IDL2.Text
   });
-  const Result_102 = IDL2.Variant({
+  const Result_152 = IDL2.Variant({
     "ok": SubaccountBalanceResult2,
     "err": SweepError2
   });
-  const Result_92 = IDL2.Variant({ "ok": IDL2.Null, "err": PaymentError2 });
+  const Result_142 = IDL2.Variant({ "ok": IDL2.Null, "err": PaymentError2 });
+  const HttpRequest2 = IDL2.Record({
+    "url": IDL2.Text,
+    "method": IDL2.Text,
+    "body": IDL2.Vec(IDL2.Nat8),
+    "headers": IDL2.Vec(IDL2.Tuple(IDL2.Text, IDL2.Text))
+  });
+  const StreamingCallbackToken2 = IDL2.Record({
+    "key": IDL2.Text,
+    "sha256": IDL2.Opt(IDL2.Vec(IDL2.Nat8)),
+    "index": IDL2.Nat,
+    "content_encoding": IDL2.Text
+  });
+  const StreamingCallbackResponse2 = IDL2.Record({
+    "token": IDL2.Opt(StreamingCallbackToken2),
+    "body": IDL2.Vec(IDL2.Nat8)
+  });
+  const StreamingCallback2 = IDL2.Func(
+    [StreamingCallbackToken2],
+    [StreamingCallbackResponse2],
+    ["query"]
+  );
+  const StreamingStrategy2 = IDL2.Variant({
+    "Callback": IDL2.Record({
+      "token": StreamingCallbackToken2,
+      "callback": StreamingCallback2
+    })
+  });
+  const HttpResponse2 = IDL2.Record({
+    "body": IDL2.Vec(IDL2.Nat8),
+    "headers": IDL2.Vec(IDL2.Tuple(IDL2.Text, IDL2.Text)),
+    "streaming_strategy": IDL2.Opt(StreamingStrategy2),
+    "status_code": IDL2.Nat16
+  });
+  const CategoryWithCount2 = IDL2.Record({
+    "productCount": IDL2.Nat,
+    "category": Category2
+  });
   const LatePayment2 = IDL2.Record({
     "token": Token2,
     "reference": IDL2.Text,
@@ -35276,7 +35538,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "expiresAt": IDL2.Opt(IDL2.Int),
     "reference": IDL2.Text,
     "depositAccount": IDL2.Opt(DepositAccount2),
-    "amountOwed": IDL2.Nat,
+    "amountOwed": IDL2.Float64,
     "liveBalance": IDL2.Nat
   });
   const Discipline2 = IDL2.Variant({
@@ -35305,7 +35567,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "outcallFailed": IDL2.Text,
     "invalidResponse": IDL2.Text
   });
-  const Result_82 = IDL2.Variant({
+  const Result_132 = IDL2.Variant({
     "ok": IDL2.Vec(SubmissionRecord2),
     "err": SubmissionError2
   });
@@ -35318,7 +35580,8 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "unauthorized": IDL2.Null,
     "invalidResponse": IDL2.Text
   });
-  const Result_72 = IDL2.Variant({ "ok": IDL2.Null, "err": EmailError2 });
+  const Result_102 = IDL2.Variant({ "ok": IDL2.Null, "err": EmailError2 });
+  const Result_122 = IDL2.Variant({ "ok": IDL2.Nat, "err": CategoryError2 });
   const SubmissionInput2 = IDL2.Record({
     "discipline": Discipline2,
     "link": IDL2.Text,
@@ -35329,20 +35592,20 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "marketingConsentAt": IDL2.Opt(IDL2.Int),
     "marketingConsent": IDL2.Bool
   });
-  const Result_62 = IDL2.Variant({ "ok": IDL2.Null, "err": SubmissionError2 });
-  const Result_52 = IDL2.Variant({ "ok": IDL2.Nat, "err": CryptoPaymentError2 });
+  const Result_82 = IDL2.Variant({ "ok": IDL2.Null, "err": SubmissionError2 });
+  const Result_72 = IDL2.Variant({ "ok": IDL2.Nat, "err": CryptoPaymentError2 });
   const SweepSubaccountResult2 = IDL2.Record({
     "error": IDL2.Opt(IDL2.Text),
     "blockIndex": IDL2.Opt(IDL2.Nat),
     "subaccountHex": IDL2.Text,
     "subaccountIndex": IDL2.Nat
   });
-  const Result_32 = IDL2.Variant({
+  const Result_52 = IDL2.Variant({
     "ok": SweepSubaccountResult2,
     "err": SweepError2
   });
-  const Result_22 = IDL2.Variant({ "ok": IDL2.Null, "err": ConsentError2 });
-  const Result2 = IDL2.Variant({ "ok": IDL2.Null, "err": CryptoPaymentError2 });
+  const Result_42 = IDL2.Variant({ "ok": IDL2.Null, "err": ConsentError2 });
+  const Result_110 = IDL2.Variant({ "ok": IDL2.Null, "err": CryptoPaymentError2 });
   return IDL2.Service({
     "addAdmin": IDL2.Func([IDL2.Principal], [IDL2.Bool], []),
     "adminCount": IDL2.Func([], [IDL2.Nat], ["query"]),
@@ -35357,11 +35620,11 @@ const idlFactory = ({ IDL: IDL2 }) => {
       ["query"]
     ),
     "bootstrapOwner": IDL2.Func([IDL2.Principal], [IDL2.Bool], []),
-    "cancelCardOrder": IDL2.Func([IDL2.Text], [Result_110], []),
-    "cancelGuestOrder": IDL2.Func([IDL2.Text, IDL2.Text], [Result_110], []),
-    "checkCryptoPayment": IDL2.Func([IDL2.Text], [Result_132], []),
+    "cancelCardOrder": IDL2.Func([IDL2.Text], [Result_26], []),
+    "cancelGuestOrder": IDL2.Func([IDL2.Text, IDL2.Text], [Result_26], []),
+    "checkCryptoPayment": IDL2.Func([IDL2.Text], [Result_182], []),
     "claimInitialAdmin": IDL2.Func([], [IDL2.Bool], []),
-    "confirmCardPayment": IDL2.Func([IDL2.Text], [Result_202], []),
+    "confirmCardPayment": IDL2.Func([IDL2.Text], [Result_252], []),
     "consentServiceTransform": IDL2.Func(
       [TransformationInput2],
       [TransformationOutput2],
@@ -35369,36 +35632,40 @@ const idlFactory = ({ IDL: IDL2 }) => {
     ),
     "createCardCheckoutSession": IDL2.Func(
       [IDL2.Text, IDL2.Text, IDL2.Text],
-      [Result_192],
+      [Result_242],
       []
     ),
-    "createCheckoutSession": IDL2.Func([Order2], [Result_182], []),
-    "createOrder": IDL2.Func([CreateOrderInput2], [Result_172], []),
+    "createCategory": IDL2.Func([IDL2.Text, IDL2.Opt(IDL2.Text)], [Result_32], []),
+    "createCheckoutSession": IDL2.Func([Order2], [Result_232], []),
+    "createOrder": IDL2.Func([CreateOrderInput2], [Result_222], []),
     "createProduct": IDL2.Func([Product2], [IDL2.Bool], []),
+    "deleteCategory": IDL2.Func([CategoryId2], [Result_112], []),
+    "deleteProductImage": IDL2.Func([IDL2.Text], [Result2], []),
     "emailTransform": IDL2.Func(
       [TransformationInput2],
       [TransformationOutput2],
       ["query"]
     ),
     "execute": IDL2.Func([IDL2.Text], [Result__12], ["query"]),
-    "forceRecheckPayment": IDL2.Func([IDL2.Text], [Result_162], []),
-    "forceSweepOrder": IDL2.Func([IDL2.Text], [Result_42], []),
+    "finishUpload": IDL2.Func([IDL2.Text, IDL2.Nat], [Result_92], []),
+    "forceRecheckPayment": IDL2.Func([IDL2.Text], [Result_212], []),
+    "forceSweepOrder": IDL2.Func([IDL2.Text], [Result_62], []),
     "getApiDoc": IDL2.Func([], [IDL2.Text], ["query"]),
     "getCanisterId": IDL2.Func([], [IDL2.Principal], ["query"]),
-    "getConsentListCsv": IDL2.Func([], [Result_152], []),
+    "getConsentListCsv": IDL2.Func([], [Result_202], []),
     "getCryptoConfig": IDL2.Func([], [CryptoConfigView2], ["query"]),
-    "getCryptoDepositInfo": IDL2.Func([IDL2.Text], [Result_142], ["query"]),
-    "getCryptoPaymentStatus": IDL2.Func([IDL2.Text], [Result_132], ["query"]),
+    "getCryptoDepositInfo": IDL2.Func([IDL2.Text], [Result_192], ["query"]),
+    "getCryptoPaymentStatus": IDL2.Func([IDL2.Text], [Result_182], ["query"]),
     "getCycleBalance": IDL2.Func([], [IDL2.Nat], ["query"]),
     "getDashboardData": IDL2.Func([], [IDL2.Text], []),
-    "getDefaultSubaccountBalance": IDL2.Func([], [Result_122], []),
+    "getDefaultSubaccountBalance": IDL2.Func([], [Result_172], []),
     "getEncryptionRecipients": IDL2.Func(
       [],
       [IDL2.Vec(IDL2.Principal)],
       ["query"]
     ),
     "getIbePublicKey": IDL2.Func([], [IDL2.Vec(IDL2.Nat8)], []),
-    "getMinimumOrder": IDL2.Func([], [IDL2.Nat], ["query"]),
+    "getMinimumOrder": IDL2.Func([], [IDL2.Float64], ["query"]),
     "getMyEncryptedIbeKey": IDL2.Func(
       [IDL2.Vec(IDL2.Nat8)],
       [IDL2.Vec(IDL2.Nat8)],
@@ -35419,19 +35686,28 @@ const idlFactory = ({ IDL: IDL2 }) => {
     ),
     "getPaymentStatus": IDL2.Func([IDL2.Text], [PaymentStatus2], []),
     "getProduct": IDL2.Func([IDL2.Text], [IDL2.Opt(Product2)], ["query"]),
-    "getResumeInfo": IDL2.Func([IDL2.Text], [Result_112], ["query"]),
-    "getSubaccountBalance": IDL2.Func([IDL2.Nat], [Result_102], []),
+    "getProductImageStorageStats": IDL2.Func([], [StorageStats2], ["query"]),
+    "getResumeInfo": IDL2.Func([IDL2.Text], [Result_162], ["query"]),
+    "getSubaccountBalance": IDL2.Func([IDL2.Nat], [Result_152], []),
     "getTokenImage": IDL2.Func([IDL2.Text, IDL2.Text], [IDL2.Text], []),
     "getTokenProfile": IDL2.Func([IDL2.Text, IDL2.Text], [IDL2.Text], []),
     "getTreasuryTokens": IDL2.Func([], [IDL2.Text], []),
     "grantRole": IDL2.Func([IDL2.Principal, Role2], [IDL2.Bool], []),
-    "handlePaymentConfirmation": IDL2.Func([IDL2.Text], [Result_92], []),
+    "handlePaymentConfirmation": IDL2.Func([IDL2.Text], [Result_142], []),
+    "http_request": IDL2.Func([HttpRequest2], [HttpResponse2], ["query"]),
+    "http_request_streaming_callback": IDL2.Func(
+      [StreamingCallbackToken2],
+      [StreamingCallbackResponse2],
+      ["query"]
+    ),
+    "http_request_update": IDL2.Func([HttpRequest2], [HttpResponse2], ["query"]),
     "isAdmin": IDL2.Func([], [IDL2.Bool], ["query"]),
     "listAdmins": IDL2.Func([], [IDL2.Vec(IDL2.Principal)], []),
+    "listCategories": IDL2.Func([], [IDL2.Vec(CategoryWithCount2)], ["query"]),
     "listLatePayments": IDL2.Func([], [IDL2.Vec(LatePayment2)], []),
     "listOrdersForRecovery": IDL2.Func([], [IDL2.Vec(OrderRecoveryView2)], []),
     "listProducts": IDL2.Func([], [IDL2.Vec(Product2)], ["query"]),
-    "listSubmissions": IDL2.Func([], [Result_82], []),
+    "listSubmissions": IDL2.Func([], [Result_132], []),
     "listUsers": IDL2.Func(
       [],
       [IDL2.Vec(IDL2.Tuple(IDL2.Principal, UserRecord2))],
@@ -35440,7 +35716,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "markLatePaymentReviewed": IDL2.Func([IDL2.Text], [IDL2.Bool], []),
     "markOrderShipped": IDL2.Func(
       [IDL2.Text, IDL2.Opt(IDL2.Text)],
-      [Result_72],
+      [Result_102],
       []
     ),
     "paymentServiceTransform": IDL2.Func(
@@ -35448,12 +35724,15 @@ const idlFactory = ({ IDL: IDL2 }) => {
       [TransformationOutput2],
       ["query"]
     ),
+    "reassignProducts": IDL2.Func([IDL2.Text, IDL2.Text], [Result_122], []),
     "releaseExpiredOrders": IDL2.Func([], [IDL2.Nat], []),
     "removeAdmin": IDL2.Func([IDL2.Principal], [IDL2.Bool], []),
-    "resendConfirmationEmail": IDL2.Func([IDL2.Text], [Result_72], []),
+    "reorderCategories": IDL2.Func([IDL2.Vec(CategoryId2)], [Result_112], []),
+    "resendConfirmationEmail": IDL2.Func([IDL2.Text], [Result_102], []),
     "resetAdminForMigration": IDL2.Func([], [IDL2.Bool], []),
     "revokeRole": IDL2.Func([IDL2.Principal], [IDL2.Bool], []),
     "schema": IDL2.Func([], [IDL2.Text], ["query"]),
+    "startUpload": IDL2.Func([IDL2.Text, IDL2.Nat], [Result_92], []),
     "startVerificationTimer": IDL2.Func([], [IDL2.Bool], []),
     "stopVerificationTimer": IDL2.Func([], [IDL2.Bool], []),
     "submissionServiceTransform": IDL2.Func(
@@ -35461,27 +35740,38 @@ const idlFactory = ({ IDL: IDL2 }) => {
       [TransformationOutput2],
       ["query"]
     ),
-    "submitSubmission": IDL2.Func([SubmissionInput2], [Result_62], []),
-    "sweepCryptoToTreasury": IDL2.Func([IDL2.Text], [Result_52], []),
-    "sweepDefaultSubaccount": IDL2.Func([], [Result_42], []),
-    "sweepSubaccount": IDL2.Func([IDL2.Nat], [Result_32], []),
+    "submitSubmission": IDL2.Func([SubmissionInput2], [Result_82], []),
+    "sweepCryptoToTreasury": IDL2.Func([IDL2.Text], [Result_72], []),
+    "sweepDefaultSubaccount": IDL2.Func([], [Result_62], []),
+    "sweepExpiredUploads": IDL2.Func([], [], []),
+    "sweepSubaccount": IDL2.Func([IDL2.Nat], [Result_52], []),
     "transform": IDL2.Func(
       [TransformationInput2],
       [TransformationOutput2],
       ["query"]
     ),
-    "unsubscribe": IDL2.Func([IDL2.Text], [Result_22], []),
-    "updateLedgerConfig": IDL2.Func(
-      [Token2, IDL2.Principal, IDL2.Nat8, IDL2.Nat],
-      [Result2],
+    "unsubscribe": IDL2.Func([IDL2.Text], [Result_42], []),
+    "updateCategory": IDL2.Func(
+      [CategoryId2, IDL2.Text, IDL2.Opt(IDL2.Text), IDL2.Nat, IDL2.Bool, IDL2.Bool],
+      [Result_32],
       []
     ),
-    "updateMinimumOrder": IDL2.Func([IDL2.Nat], [Result2], []),
-    "updatePaymentServiceToken": IDL2.Func([IDL2.Text], [Result_110], []),
-    "updatePaymentServiceUrl": IDL2.Func([IDL2.Text], [Result_110], []),
+    "updateLedgerConfig": IDL2.Func(
+      [Token2, IDL2.Principal, IDL2.Nat8, IDL2.Nat],
+      [Result_110],
+      []
+    ),
+    "updateMinimumOrder": IDL2.Func([IDL2.Float64], [Result_110], []),
+    "updatePaymentServiceToken": IDL2.Func([IDL2.Text], [Result_26], []),
+    "updatePaymentServiceUrl": IDL2.Func([IDL2.Text], [Result_26], []),
     "updateProduct": IDL2.Func([Product2], [IDL2.Bool], []),
     "updateTreasury": IDL2.Func(
       [IDL2.Principal, IDL2.Opt(IDL2.Vec(IDL2.Nat8))],
+      [Result_110],
+      []
+    ),
+    "uploadChunk": IDL2.Func(
+      [IDL2.Text, IDL2.Nat, IDL2.Vec(IDL2.Nat8)],
       [Result2],
       []
     )
@@ -35612,42 +35902,42 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.cancelCardOrder(arg0);
-        return from_candid_Result_1_n16(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_2_n16(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.cancelCardOrder(arg0);
-      return from_candid_Result_1_n16(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_2_n16(this._uploadFile, this._downloadFile, result);
     }
   }
   async cancelGuestOrder(arg0, arg1) {
     if (this.processError) {
       try {
         const result = await this.actor.cancelGuestOrder(arg0, arg1);
-        return from_candid_Result_1_n16(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_2_n16(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.cancelGuestOrder(arg0, arg1);
-      return from_candid_Result_1_n16(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_2_n16(this._uploadFile, this._downloadFile, result);
     }
   }
   async checkCryptoPayment(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.checkCryptoPayment(arg0);
-        return from_candid_Result_13_n20(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_18_n20(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.checkCryptoPayment(arg0);
-      return from_candid_Result_13_n20(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_18_n20(this._uploadFile, this._downloadFile, result);
     }
   }
   async claimInitialAdmin() {
@@ -35668,14 +35958,14 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.confirmCardPayment(arg0);
-        return from_candid_Result_20_n24(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_25_n24(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.confirmCardPayment(arg0);
-      return from_candid_Result_20_n24(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_25_n24(this._uploadFile, this._downloadFile, result);
     }
   }
   async consentServiceTransform(arg0) {
@@ -35696,42 +35986,56 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.createCardCheckoutSession(arg0, arg1, arg2);
-        return from_candid_Result_19_n26(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_24_n26(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.createCardCheckoutSession(arg0, arg1, arg2);
-      return from_candid_Result_19_n26(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_24_n26(this._uploadFile, this._downloadFile, result);
+    }
+  }
+  async createCategory(arg0, arg1) {
+    if (this.processError) {
+      try {
+        const result = await this.actor.createCategory(arg0, to_candid_opt_n30(this._uploadFile, this._downloadFile, arg1));
+        return from_candid_Result_3_n31(this._uploadFile, this._downloadFile, result);
+      } catch (e) {
+        this.processError(e);
+        throw new Error("unreachable");
+      }
+    } else {
+      const result = await this.actor.createCategory(arg0, to_candid_opt_n30(this._uploadFile, this._downloadFile, arg1));
+      return from_candid_Result_3_n31(this._uploadFile, this._downloadFile, result);
     }
   }
   async createCheckoutSession(arg0) {
     if (this.processError) {
       try {
-        const result = await this.actor.createCheckoutSession(to_candid_Order_n30(this._uploadFile, this._downloadFile, arg0));
-        return from_candid_Result_18_n38(this._uploadFile, this._downloadFile, result);
+        const result = await this.actor.createCheckoutSession(to_candid_Order_n37(this._uploadFile, this._downloadFile, arg0));
+        return from_candid_Result_23_n45(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
-      const result = await this.actor.createCheckoutSession(to_candid_Order_n30(this._uploadFile, this._downloadFile, arg0));
-      return from_candid_Result_18_n38(this._uploadFile, this._downloadFile, result);
+      const result = await this.actor.createCheckoutSession(to_candid_Order_n37(this._uploadFile, this._downloadFile, arg0));
+      return from_candid_Result_23_n45(this._uploadFile, this._downloadFile, result);
     }
   }
   async createOrder(arg0) {
     if (this.processError) {
       try {
-        const result = await this.actor.createOrder(to_candid_CreateOrderInput_n42(this._uploadFile, this._downloadFile, arg0));
-        return from_candid_Result_17_n44(this._uploadFile, this._downloadFile, result);
+        const result = await this.actor.createOrder(to_candid_CreateOrderInput_n49(this._uploadFile, this._downloadFile, arg0));
+        return from_candid_Result_22_n51(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
-      const result = await this.actor.createOrder(to_candid_CreateOrderInput_n42(this._uploadFile, this._downloadFile, arg0));
-      return from_candid_Result_17_n44(this._uploadFile, this._downloadFile, result);
+      const result = await this.actor.createOrder(to_candid_CreateOrderInput_n49(this._uploadFile, this._downloadFile, arg0));
+      return from_candid_Result_22_n51(this._uploadFile, this._downloadFile, result);
     }
   }
   async createProduct(arg0) {
@@ -35746,6 +36050,34 @@ class Backend {
     } else {
       const result = await this.actor.createProduct(arg0);
       return result;
+    }
+  }
+  async deleteCategory(arg0) {
+    if (this.processError) {
+      try {
+        const result = await this.actor.deleteCategory(arg0);
+        return from_candid_Result_11_n63(this._uploadFile, this._downloadFile, result);
+      } catch (e) {
+        this.processError(e);
+        throw new Error("unreachable");
+      }
+    } else {
+      const result = await this.actor.deleteCategory(arg0);
+      return from_candid_Result_11_n63(this._uploadFile, this._downloadFile, result);
+    }
+  }
+  async deleteProductImage(arg0) {
+    if (this.processError) {
+      try {
+        const result = await this.actor.deleteProductImage(arg0);
+        return from_candid_Result_n65(this._uploadFile, this._downloadFile, result);
+      } catch (e) {
+        this.processError(e);
+        throw new Error("unreachable");
+      }
+    } else {
+      const result = await this.actor.deleteProductImage(arg0);
+      return from_candid_Result_n65(this._uploadFile, this._downloadFile, result);
     }
   }
   async emailTransform(arg0) {
@@ -35766,42 +36098,56 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.execute(arg0);
-        return from_candid_Result__1_n56(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result__1_n69(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.execute(arg0);
-      return from_candid_Result__1_n56(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result__1_n69(this._uploadFile, this._downloadFile, result);
+    }
+  }
+  async finishUpload(arg0, arg1) {
+    if (this.processError) {
+      try {
+        const result = await this.actor.finishUpload(arg0, arg1);
+        return from_candid_Result_9_n77(this._uploadFile, this._downloadFile, result);
+      } catch (e) {
+        this.processError(e);
+        throw new Error("unreachable");
+      }
+    } else {
+      const result = await this.actor.finishUpload(arg0, arg1);
+      return from_candid_Result_9_n77(this._uploadFile, this._downloadFile, result);
     }
   }
   async forceRecheckPayment(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.forceRecheckPayment(arg0);
-        return from_candid_Result_16_n64(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_21_n79(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.forceRecheckPayment(arg0);
-      return from_candid_Result_16_n64(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_21_n79(this._uploadFile, this._downloadFile, result);
     }
   }
   async forceSweepOrder(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.forceSweepOrder(arg0);
-        return from_candid_Result_4_n70(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_6_n85(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.forceSweepOrder(arg0);
-      return from_candid_Result_4_n70(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_6_n85(this._uploadFile, this._downloadFile, result);
     }
   }
   async getApiDoc() {
@@ -35836,56 +36182,56 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.getConsentListCsv();
-        return from_candid_Result_15_n75(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_20_n90(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getConsentListCsv();
-      return from_candid_Result_15_n75(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_20_n90(this._uploadFile, this._downloadFile, result);
     }
   }
   async getCryptoConfig() {
     if (this.processError) {
       try {
         const result = await this.actor.getCryptoConfig();
-        return from_candid_CryptoConfigView_n79(this._uploadFile, this._downloadFile, result);
+        return from_candid_CryptoConfigView_n94(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getCryptoConfig();
-      return from_candid_CryptoConfigView_n79(this._uploadFile, this._downloadFile, result);
+      return from_candid_CryptoConfigView_n94(this._uploadFile, this._downloadFile, result);
     }
   }
   async getCryptoDepositInfo(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.getCryptoDepositInfo(arg0);
-        return from_candid_Result_14_n81(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_19_n96(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getCryptoDepositInfo(arg0);
-      return from_candid_Result_14_n81(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_19_n96(this._uploadFile, this._downloadFile, result);
     }
   }
   async getCryptoPaymentStatus(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.getCryptoPaymentStatus(arg0);
-        return from_candid_Result_13_n20(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_18_n20(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getCryptoPaymentStatus(arg0);
-      return from_candid_Result_13_n20(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_18_n20(this._uploadFile, this._downloadFile, result);
     }
   }
   async getCycleBalance() {
@@ -35920,14 +36266,14 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.getDefaultSubaccountBalance();
-        return from_candid_Result_12_n87(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_17_n102(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getDefaultSubaccountBalance();
-      return from_candid_Result_12_n87(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_17_n102(this._uploadFile, this._downloadFile, result);
     }
   }
   async getEncryptionRecipients() {
@@ -35990,28 +36336,28 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.getMyOrders();
-        return from_candid_vec_n89(this._uploadFile, this._downloadFile, result);
+        return from_candid_vec_n104(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getMyOrders();
-      return from_candid_vec_n89(this._uploadFile, this._downloadFile, result);
+      return from_candid_vec_n104(this._uploadFile, this._downloadFile, result);
     }
   }
   async getMyRole() {
     if (this.processError) {
       try {
         const result = await this.actor.getMyRole();
-        return from_candid_opt_n92(this._uploadFile, this._downloadFile, result);
+        return from_candid_opt_n107(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getMyRole();
-      return from_candid_opt_n92(this._uploadFile, this._downloadFile, result);
+      return from_candid_opt_n107(this._uploadFile, this._downloadFile, result);
     }
   }
   async getNAKPrice() {
@@ -36032,14 +36378,14 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.getOrderStatus(arg0);
-        return from_candid_opt_n95(this._uploadFile, this._downloadFile, result);
+        return from_candid_opt_n110(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getOrderStatus(arg0);
-      return from_candid_opt_n95(this._uploadFile, this._downloadFile, result);
+      return from_candid_opt_n110(this._uploadFile, this._downloadFile, result);
     }
   }
   async getPaymentServiceConfig() {
@@ -36074,42 +36420,56 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.getProduct(arg0);
-        return from_candid_opt_n96(this._uploadFile, this._downloadFile, result);
+        return from_candid_opt_n111(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getProduct(arg0);
-      return from_candid_opt_n96(this._uploadFile, this._downloadFile, result);
+      return from_candid_opt_n111(this._uploadFile, this._downloadFile, result);
+    }
+  }
+  async getProductImageStorageStats() {
+    if (this.processError) {
+      try {
+        const result = await this.actor.getProductImageStorageStats();
+        return result;
+      } catch (e) {
+        this.processError(e);
+        throw new Error("unreachable");
+      }
+    } else {
+      const result = await this.actor.getProductImageStorageStats();
+      return result;
     }
   }
   async getResumeInfo(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.getResumeInfo(arg0);
-        return from_candid_Result_11_n97(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_16_n112(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getResumeInfo(arg0);
-      return from_candid_Result_11_n97(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_16_n112(this._uploadFile, this._downloadFile, result);
     }
   }
   async getSubaccountBalance(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.getSubaccountBalance(arg0);
-        return from_candid_Result_10_n102(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_15_n117(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getSubaccountBalance(arg0);
-      return from_candid_Result_10_n102(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_15_n117(this._uploadFile, this._downloadFile, result);
     }
   }
   async getTokenImage(arg0, arg1) {
@@ -36157,14 +36517,14 @@ class Backend {
   async grantRole(arg0, arg1) {
     if (this.processError) {
       try {
-        const result = await this.actor.grantRole(arg0, to_candid_Role_n106(this._uploadFile, this._downloadFile, arg1));
+        const result = await this.actor.grantRole(arg0, to_candid_Role_n121(this._uploadFile, this._downloadFile, arg1));
         return result;
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
-      const result = await this.actor.grantRole(arg0, to_candid_Role_n106(this._uploadFile, this._downloadFile, arg1));
+      const result = await this.actor.grantRole(arg0, to_candid_Role_n121(this._uploadFile, this._downloadFile, arg1));
       return result;
     }
   }
@@ -36172,14 +36532,56 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.handlePaymentConfirmation(arg0);
-        return from_candid_Result_9_n108(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_14_n123(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.handlePaymentConfirmation(arg0);
-      return from_candid_Result_9_n108(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_14_n123(this._uploadFile, this._downloadFile, result);
+    }
+  }
+  async http_request(arg0) {
+    if (this.processError) {
+      try {
+        const result = await this.actor.http_request(arg0);
+        return from_candid_HttpResponse_n125(this._uploadFile, this._downloadFile, result);
+      } catch (e) {
+        this.processError(e);
+        throw new Error("unreachable");
+      }
+    } else {
+      const result = await this.actor.http_request(arg0);
+      return from_candid_HttpResponse_n125(this._uploadFile, this._downloadFile, result);
+    }
+  }
+  async http_request_streaming_callback(arg0) {
+    if (this.processError) {
+      try {
+        const result = await this.actor.http_request_streaming_callback(to_candid_StreamingCallbackToken_n133(this._uploadFile, this._downloadFile, arg0));
+        return from_candid_StreamingCallbackResponse_n135(this._uploadFile, this._downloadFile, result);
+      } catch (e) {
+        this.processError(e);
+        throw new Error("unreachable");
+      }
+    } else {
+      const result = await this.actor.http_request_streaming_callback(to_candid_StreamingCallbackToken_n133(this._uploadFile, this._downloadFile, arg0));
+      return from_candid_StreamingCallbackResponse_n135(this._uploadFile, this._downloadFile, result);
+    }
+  }
+  async http_request_update(arg0) {
+    if (this.processError) {
+      try {
+        const result = await this.actor.http_request_update(arg0);
+        return from_candid_HttpResponse_n125(this._uploadFile, this._downloadFile, result);
+      } catch (e) {
+        this.processError(e);
+        throw new Error("unreachable");
+      }
+    } else {
+      const result = await this.actor.http_request_update(arg0);
+      return from_candid_HttpResponse_n125(this._uploadFile, this._downloadFile, result);
     }
   }
   async isAdmin() {
@@ -36210,32 +36612,46 @@ class Backend {
       return result;
     }
   }
+  async listCategories() {
+    if (this.processError) {
+      try {
+        const result = await this.actor.listCategories();
+        return from_candid_vec_n138(this._uploadFile, this._downloadFile, result);
+      } catch (e) {
+        this.processError(e);
+        throw new Error("unreachable");
+      }
+    } else {
+      const result = await this.actor.listCategories();
+      return from_candid_vec_n138(this._uploadFile, this._downloadFile, result);
+    }
+  }
   async listLatePayments() {
     if (this.processError) {
       try {
         const result = await this.actor.listLatePayments();
-        return from_candid_vec_n110(this._uploadFile, this._downloadFile, result);
+        return from_candid_vec_n141(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.listLatePayments();
-      return from_candid_vec_n110(this._uploadFile, this._downloadFile, result);
+      return from_candid_vec_n141(this._uploadFile, this._downloadFile, result);
     }
   }
   async listOrdersForRecovery() {
     if (this.processError) {
       try {
         const result = await this.actor.listOrdersForRecovery();
-        return from_candid_vec_n113(this._uploadFile, this._downloadFile, result);
+        return from_candid_vec_n144(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.listOrdersForRecovery();
-      return from_candid_vec_n113(this._uploadFile, this._downloadFile, result);
+      return from_candid_vec_n144(this._uploadFile, this._downloadFile, result);
     }
   }
   async listProducts() {
@@ -36256,28 +36672,28 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.listSubmissions();
-        return from_candid_Result_8_n117(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_13_n148(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.listSubmissions();
-      return from_candid_Result_8_n117(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_13_n148(this._uploadFile, this._downloadFile, result);
     }
   }
   async listUsers() {
     if (this.processError) {
       try {
         const result = await this.actor.listUsers();
-        return from_candid_vec_n126(this._uploadFile, this._downloadFile, result);
+        return from_candid_vec_n157(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.listUsers();
-      return from_candid_vec_n126(this._uploadFile, this._downloadFile, result);
+      return from_candid_vec_n157(this._uploadFile, this._downloadFile, result);
     }
   }
   async markLatePaymentReviewed(arg0) {
@@ -36297,15 +36713,15 @@ class Backend {
   async markOrderShipped(arg0, arg1) {
     if (this.processError) {
       try {
-        const result = await this.actor.markOrderShipped(arg0, to_candid_opt_n130(this._uploadFile, this._downloadFile, arg1));
-        return from_candid_Result_7_n131(this._uploadFile, this._downloadFile, result);
+        const result = await this.actor.markOrderShipped(arg0, to_candid_opt_n30(this._uploadFile, this._downloadFile, arg1));
+        return from_candid_Result_10_n161(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
-      const result = await this.actor.markOrderShipped(arg0, to_candid_opt_n130(this._uploadFile, this._downloadFile, arg1));
-      return from_candid_Result_7_n131(this._uploadFile, this._downloadFile, result);
+      const result = await this.actor.markOrderShipped(arg0, to_candid_opt_n30(this._uploadFile, this._downloadFile, arg1));
+      return from_candid_Result_10_n161(this._uploadFile, this._downloadFile, result);
     }
   }
   async paymentServiceTransform(arg0) {
@@ -36320,6 +36736,20 @@ class Backend {
     } else {
       const result = await this.actor.paymentServiceTransform(arg0);
       return result;
+    }
+  }
+  async reassignProducts(arg0, arg1) {
+    if (this.processError) {
+      try {
+        const result = await this.actor.reassignProducts(arg0, arg1);
+        return from_candid_Result_12_n165(this._uploadFile, this._downloadFile, result);
+      } catch (e) {
+        this.processError(e);
+        throw new Error("unreachable");
+      }
+    } else {
+      const result = await this.actor.reassignProducts(arg0, arg1);
+      return from_candid_Result_12_n165(this._uploadFile, this._downloadFile, result);
     }
   }
   async releaseExpiredOrders() {
@@ -36350,18 +36780,32 @@ class Backend {
       return result;
     }
   }
+  async reorderCategories(arg0) {
+    if (this.processError) {
+      try {
+        const result = await this.actor.reorderCategories(arg0);
+        return from_candid_Result_11_n63(this._uploadFile, this._downloadFile, result);
+      } catch (e) {
+        this.processError(e);
+        throw new Error("unreachable");
+      }
+    } else {
+      const result = await this.actor.reorderCategories(arg0);
+      return from_candid_Result_11_n63(this._uploadFile, this._downloadFile, result);
+    }
+  }
   async resendConfirmationEmail(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.resendConfirmationEmail(arg0);
-        return from_candid_Result_7_n131(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_10_n161(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.resendConfirmationEmail(arg0);
-      return from_candid_Result_7_n131(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_10_n161(this._uploadFile, this._downloadFile, result);
     }
   }
   async resetAdminForMigration() {
@@ -36404,6 +36848,20 @@ class Backend {
     } else {
       const result = await this.actor.schema();
       return result;
+    }
+  }
+  async startUpload(arg0, arg1) {
+    if (this.processError) {
+      try {
+        const result = await this.actor.startUpload(arg0, arg1);
+        return from_candid_Result_9_n77(this._uploadFile, this._downloadFile, result);
+      } catch (e) {
+        this.processError(e);
+        throw new Error("unreachable");
+      }
+    } else {
+      const result = await this.actor.startUpload(arg0, arg1);
+      return from_candid_Result_9_n77(this._uploadFile, this._downloadFile, result);
     }
   }
   async startVerificationTimer() {
@@ -36451,57 +36909,71 @@ class Backend {
   async submitSubmission(arg0) {
     if (this.processError) {
       try {
-        const result = await this.actor.submitSubmission(to_candid_SubmissionInput_n135(this._uploadFile, this._downloadFile, arg0));
-        return from_candid_Result_6_n139(this._uploadFile, this._downloadFile, result);
+        const result = await this.actor.submitSubmission(to_candid_SubmissionInput_n167(this._uploadFile, this._downloadFile, arg0));
+        return from_candid_Result_8_n171(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
-      const result = await this.actor.submitSubmission(to_candid_SubmissionInput_n135(this._uploadFile, this._downloadFile, arg0));
-      return from_candid_Result_6_n139(this._uploadFile, this._downloadFile, result);
+      const result = await this.actor.submitSubmission(to_candid_SubmissionInput_n167(this._uploadFile, this._downloadFile, arg0));
+      return from_candid_Result_8_n171(this._uploadFile, this._downloadFile, result);
     }
   }
   async sweepCryptoToTreasury(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.sweepCryptoToTreasury(arg0);
-        return from_candid_Result_5_n141(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_7_n173(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.sweepCryptoToTreasury(arg0);
-      return from_candid_Result_5_n141(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_7_n173(this._uploadFile, this._downloadFile, result);
     }
   }
   async sweepDefaultSubaccount() {
     if (this.processError) {
       try {
         const result = await this.actor.sweepDefaultSubaccount();
-        return from_candid_Result_4_n70(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_6_n85(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.sweepDefaultSubaccount();
-      return from_candid_Result_4_n70(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_6_n85(this._uploadFile, this._downloadFile, result);
+    }
+  }
+  async sweepExpiredUploads() {
+    if (this.processError) {
+      try {
+        const result = await this.actor.sweepExpiredUploads();
+        return result;
+      } catch (e) {
+        this.processError(e);
+        throw new Error("unreachable");
+      }
+    } else {
+      const result = await this.actor.sweepExpiredUploads();
+      return result;
     }
   }
   async sweepSubaccount(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.sweepSubaccount(arg0);
-        return from_candid_Result_3_n143(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_5_n175(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.sweepSubaccount(arg0);
-      return from_candid_Result_3_n143(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_5_n175(this._uploadFile, this._downloadFile, result);
     }
   }
   async transform(arg0) {
@@ -36522,70 +36994,84 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.unsubscribe(arg0);
-        return from_candid_Result_2_n147(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_4_n179(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.unsubscribe(arg0);
-      return from_candid_Result_2_n147(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_4_n179(this._uploadFile, this._downloadFile, result);
     }
   }
-  async updateLedgerConfig(arg0, arg1, arg2, arg3) {
+  async updateCategory(arg0, arg1, arg2, arg3, arg4, arg5) {
     if (this.processError) {
       try {
-        const result = await this.actor.updateLedgerConfig(to_candid_Token_n149(this._uploadFile, this._downloadFile, arg0), arg1, arg2, arg3);
-        return from_candid_Result_n151(this._uploadFile, this._downloadFile, result);
+        const result = await this.actor.updateCategory(arg0, arg1, to_candid_opt_n30(this._uploadFile, this._downloadFile, arg2), arg3, arg4, arg5);
+        return from_candid_Result_3_n31(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
-      const result = await this.actor.updateLedgerConfig(to_candid_Token_n149(this._uploadFile, this._downloadFile, arg0), arg1, arg2, arg3);
-      return from_candid_Result_n151(this._uploadFile, this._downloadFile, result);
+      const result = await this.actor.updateCategory(arg0, arg1, to_candid_opt_n30(this._uploadFile, this._downloadFile, arg2), arg3, arg4, arg5);
+      return from_candid_Result_3_n31(this._uploadFile, this._downloadFile, result);
+    }
+  }
+  async updateLedgerConfig(arg0, arg1, arg2, arg3) {
+    if (this.processError) {
+      try {
+        const result = await this.actor.updateLedgerConfig(to_candid_Token_n181(this._uploadFile, this._downloadFile, arg0), arg1, arg2, arg3);
+        return from_candid_Result_1_n183(this._uploadFile, this._downloadFile, result);
+      } catch (e) {
+        this.processError(e);
+        throw new Error("unreachable");
+      }
+    } else {
+      const result = await this.actor.updateLedgerConfig(to_candid_Token_n181(this._uploadFile, this._downloadFile, arg0), arg1, arg2, arg3);
+      return from_candid_Result_1_n183(this._uploadFile, this._downloadFile, result);
     }
   }
   async updateMinimumOrder(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.updateMinimumOrder(arg0);
-        return from_candid_Result_n151(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_1_n183(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.updateMinimumOrder(arg0);
-      return from_candid_Result_n151(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_1_n183(this._uploadFile, this._downloadFile, result);
     }
   }
   async updatePaymentServiceToken(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.updatePaymentServiceToken(arg0);
-        return from_candid_Result_1_n16(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_2_n16(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.updatePaymentServiceToken(arg0);
-      return from_candid_Result_1_n16(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_2_n16(this._uploadFile, this._downloadFile, result);
     }
   }
   async updatePaymentServiceUrl(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.updatePaymentServiceUrl(arg0);
-        return from_candid_Result_1_n16(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_2_n16(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.updatePaymentServiceUrl(arg0);
-      return from_candid_Result_1_n16(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_2_n16(this._uploadFile, this._downloadFile, result);
     }
   }
   async updateProduct(arg0) {
@@ -36605,15 +37091,29 @@ class Backend {
   async updateTreasury(arg0, arg1) {
     if (this.processError) {
       try {
-        const result = await this.actor.updateTreasury(arg0, to_candid_opt_n153(this._uploadFile, this._downloadFile, arg1));
-        return from_candid_Result_n151(this._uploadFile, this._downloadFile, result);
+        const result = await this.actor.updateTreasury(arg0, to_candid_opt_n185(this._uploadFile, this._downloadFile, arg1));
+        return from_candid_Result_1_n183(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
-      const result = await this.actor.updateTreasury(arg0, to_candid_opt_n153(this._uploadFile, this._downloadFile, arg1));
-      return from_candid_Result_n151(this._uploadFile, this._downloadFile, result);
+      const result = await this.actor.updateTreasury(arg0, to_candid_opt_n185(this._uploadFile, this._downloadFile, arg1));
+      return from_candid_Result_1_n183(this._uploadFile, this._downloadFile, result);
+    }
+  }
+  async uploadChunk(arg0, arg1, arg2) {
+    if (this.processError) {
+      try {
+        const result = await this.actor.uploadChunk(arg0, arg1, arg2);
+        return from_candid_Result_n65(this._uploadFile, this._downloadFile, result);
+      } catch (e) {
+        this.processError(e);
+        throw new Error("unreachable");
+      }
+    } else {
+      const result = await this.actor.uploadChunk(arg0, arg1, arg2);
+      return from_candid_Result_n65(this._uploadFile, this._downloadFile, result);
     }
   }
 }
@@ -36623,20 +37123,29 @@ function from_candid_AdminOrderDetail_n2(_uploadFile, _downloadFile, value) {
 function from_candid_AdminOrderView_n14(_uploadFile, _downloadFile, value) {
   return from_candid_record_n15(_uploadFile, _downloadFile, value);
 }
-function from_candid_Cell_n60(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n61(_uploadFile, _downloadFile, value);
+function from_candid_CategoryError_n35(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n36(_uploadFile, _downloadFile, value);
+}
+function from_candid_CategoryWithCount_n139(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n140(_uploadFile, _downloadFile, value);
+}
+function from_candid_Category_n33(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n34(_uploadFile, _downloadFile, value);
+}
+function from_candid_Cell_n73(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n74(_uploadFile, _downloadFile, value);
 }
 function from_candid_CheckoutSession_n28(_uploadFile, _downloadFile, value) {
   return from_candid_record_n29(_uploadFile, _downloadFile, value);
 }
-function from_candid_ConsentError_n77(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n78(_uploadFile, _downloadFile, value);
+function from_candid_ConsentError_n92(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n93(_uploadFile, _downloadFile, value);
 }
-function from_candid_CreateOrderResult_n46(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n47(_uploadFile, _downloadFile, value);
+function from_candid_CreateOrderResult_n53(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n54(_uploadFile, _downloadFile, value);
 }
-function from_candid_CryptoConfigView_n79(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n80(_uploadFile, _downloadFile, value);
+function from_candid_CryptoConfigView_n94(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n95(_uploadFile, _downloadFile, value);
 }
 function from_candid_CryptoPaymentError_n22(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n23(_uploadFile, _downloadFile, value);
@@ -36644,29 +37153,32 @@ function from_candid_CryptoPaymentError_n22(_uploadFile, _downloadFile, value) {
 function from_candid_CryptoPaymentStatus_n10(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n11(_uploadFile, _downloadFile, value);
 }
-function from_candid_DepositInfo_n83(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n84(_uploadFile, _downloadFile, value);
+function from_candid_DepositInfo_n98(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n99(_uploadFile, _downloadFile, value);
 }
-function from_candid_Discipline_n122(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n123(_uploadFile, _downloadFile, value);
+function from_candid_Discipline_n153(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n154(_uploadFile, _downloadFile, value);
 }
-function from_candid_EmailError_n133(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n134(_uploadFile, _downloadFile, value);
+function from_candid_EmailError_n163(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n164(_uploadFile, _downloadFile, value);
 }
-function from_candid_LatePayment_n111(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n112(_uploadFile, _downloadFile, value);
+function from_candid_HttpResponse_n125(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n126(_uploadFile, _downloadFile, value);
 }
-function from_candid_OrderError_n54(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n55(_uploadFile, _downloadFile, value);
+function from_candid_LatePayment_n142(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n143(_uploadFile, _downloadFile, value);
 }
-function from_candid_OrderRecoveryView_n114(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n115(_uploadFile, _downloadFile, value);
+function from_candid_OrderError_n61(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n62(_uploadFile, _downloadFile, value);
 }
-function from_candid_Order_n48(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n49(_uploadFile, _downloadFile, value);
+function from_candid_OrderRecoveryView_n145(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n146(_uploadFile, _downloadFile, value);
 }
-function from_candid_PaymentError_n40(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n41(_uploadFile, _downloadFile, value);
+function from_candid_Order_n55(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n56(_uploadFile, _downloadFile, value);
+}
+function from_candid_PaymentError_n47(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n48(_uploadFile, _downloadFile, value);
 }
 function from_candid_PaymentMethod_n6(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n7(_uploadFile, _downloadFile, value);
@@ -36677,162 +37189,255 @@ function from_candid_PaymentServiceError_n18(_uploadFile, _downloadFile, value) 
 function from_candid_PaymentStatus_n4(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n5(_uploadFile, _downloadFile, value);
 }
-function from_candid_PublicOrderView_n90(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n91(_uploadFile, _downloadFile, value);
+function from_candid_PublicOrderView_n105(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n106(_uploadFile, _downloadFile, value);
 }
-function from_candid_RecheckResult_n66(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n67(_uploadFile, _downloadFile, value);
+function from_candid_RecheckResult_n81(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n82(_uploadFile, _downloadFile, value);
 }
-function from_candid_RecoveryError_n68(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n69(_uploadFile, _downloadFile, value);
+function from_candid_RecoveryError_n83(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n84(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_10_n102(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n103(_uploadFile, _downloadFile, value);
+function from_candid_Result_10_n161(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n162(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_11_n97(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n98(_uploadFile, _downloadFile, value);
+function from_candid_Result_11_n63(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n64(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_12_n87(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n88(_uploadFile, _downloadFile, value);
+function from_candid_Result_12_n165(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n166(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_13_n20(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n21(_uploadFile, _downloadFile, value);
+function from_candid_Result_13_n148(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n149(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_14_n81(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n82(_uploadFile, _downloadFile, value);
+function from_candid_Result_14_n123(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n124(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_15_n75(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n76(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_16_n64(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n65(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_17_n44(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n45(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_18_n38(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n39(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_19_n26(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n27(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_1_n16(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n17(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_20_n24(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n25(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_2_n147(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n148(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_3_n143(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n144(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_4_n70(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n71(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_5_n141(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n142(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_6_n139(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n140(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_7_n131(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n132(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_8_n117(_uploadFile, _downloadFile, value) {
+function from_candid_Result_15_n117(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n118(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_9_n108(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n109(_uploadFile, _downloadFile, value);
+function from_candid_Result_16_n112(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n113(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result__1_n56(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n57(_uploadFile, _downloadFile, value);
+function from_candid_Result_17_n102(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n103(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_n151(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n152(_uploadFile, _downloadFile, value);
+function from_candid_Result_18_n20(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n21(_uploadFile, _downloadFile, value);
 }
-function from_candid_ResumeInfo_n99(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n100(_uploadFile, _downloadFile, value);
+function from_candid_Result_19_n96(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n97(_uploadFile, _downloadFile, value);
 }
-function from_candid_Role_n93(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n94(_uploadFile, _downloadFile, value);
+function from_candid_Result_1_n183(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n184(_uploadFile, _downloadFile, value);
 }
-function from_candid_ShippingStatus_n51(_uploadFile, _downloadFile, value) {
+function from_candid_Result_20_n90(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n91(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_21_n79(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n80(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_22_n51(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n52(_uploadFile, _downloadFile, value);
 }
-function from_candid_SubmissionError_n124(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n125(_uploadFile, _downloadFile, value);
+function from_candid_Result_23_n45(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n46(_uploadFile, _downloadFile, value);
 }
-function from_candid_SubmissionRecord_n120(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n121(_uploadFile, _downloadFile, value);
+function from_candid_Result_24_n26(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n27(_uploadFile, _downloadFile, value);
 }
-function from_candid_SweepError_n104(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n105(_uploadFile, _downloadFile, value);
+function from_candid_Result_25_n24(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n25(_uploadFile, _downloadFile, value);
 }
-function from_candid_SweepResult_n72(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n73(_uploadFile, _downloadFile, value);
+function from_candid_Result_2_n16(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n17(_uploadFile, _downloadFile, value);
 }
-function from_candid_SweepSubaccountResult_n145(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n146(_uploadFile, _downloadFile, value);
+function from_candid_Result_3_n31(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n32(_uploadFile, _downloadFile, value);
 }
-function from_candid_Token_n85(_uploadFile, _downloadFile, value) {
+function from_candid_Result_4_n179(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n180(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_5_n175(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n176(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_6_n85(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n86(_uploadFile, _downloadFile, value);
 }
-function from_candid_UserRecord_n128(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n129(_uploadFile, _downloadFile, value);
+function from_candid_Result_7_n173(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n174(_uploadFile, _downloadFile, value);
 }
-function from_candid_Value_n62(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n63(_uploadFile, _downloadFile, value);
+function from_candid_Result_8_n171(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n172(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_9_n77(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n78(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result__1_n69(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n70(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_n65(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n66(_uploadFile, _downloadFile, value);
+}
+function from_candid_ResumeInfo_n114(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n115(_uploadFile, _downloadFile, value);
+}
+function from_candid_Role_n108(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n109(_uploadFile, _downloadFile, value);
+}
+function from_candid_ShippingStatus_n58(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n59(_uploadFile, _downloadFile, value);
+}
+function from_candid_StreamingCallbackResponse_n135(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n136(_uploadFile, _downloadFile, value);
+}
+function from_candid_StreamingCallbackToken_n131(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n132(_uploadFile, _downloadFile, value);
+}
+function from_candid_StreamingStrategy_n128(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n129(_uploadFile, _downloadFile, value);
+}
+function from_candid_SubmissionError_n155(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n156(_uploadFile, _downloadFile, value);
+}
+function from_candid_SubmissionRecord_n151(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n152(_uploadFile, _downloadFile, value);
+}
+function from_candid_SweepError_n119(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n120(_uploadFile, _downloadFile, value);
+}
+function from_candid_SweepResult_n87(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n88(_uploadFile, _downloadFile, value);
+}
+function from_candid_SweepSubaccountResult_n177(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n178(_uploadFile, _downloadFile, value);
+}
+function from_candid_Token_n100(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n101(_uploadFile, _downloadFile, value);
+}
+function from_candid_UploadError_n67(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n68(_uploadFile, _downloadFile, value);
+}
+function from_candid_UserRecord_n159(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n160(_uploadFile, _downloadFile, value);
+}
+function from_candid_Value_n75(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n76(_uploadFile, _downloadFile, value);
 }
 function from_candid_opt_n1(_uploadFile, _downloadFile, value) {
   return value.length === 0 ? null : from_candid_AdminOrderDetail_n2(_uploadFile, _downloadFile, value[0]);
 }
-function from_candid_opt_n101(_uploadFile, _downloadFile, value) {
-  return value.length === 0 ? null : from_candid_DepositInfo_n83(_uploadFile, _downloadFile, value[0]);
+function from_candid_opt_n107(_uploadFile, _downloadFile, value) {
+  return value.length === 0 ? null : from_candid_Role_n108(_uploadFile, _downloadFile, value[0]);
+}
+function from_candid_opt_n110(_uploadFile, _downloadFile, value) {
+  return value.length === 0 ? null : from_candid_PublicOrderView_n105(_uploadFile, _downloadFile, value[0]);
+}
+function from_candid_opt_n111(_uploadFile, _downloadFile, value) {
+  return value.length === 0 ? null : value[0];
 }
 function from_candid_opt_n116(_uploadFile, _downloadFile, value) {
-  return value.length === 0 ? null : value[0];
+  return value.length === 0 ? null : from_candid_DepositInfo_n98(_uploadFile, _downloadFile, value[0]);
 }
 function from_candid_opt_n12(_uploadFile, _downloadFile, value) {
   return value.length === 0 ? null : value[0];
 }
-function from_candid_opt_n50(_uploadFile, _downloadFile, value) {
+function from_candid_opt_n127(_uploadFile, _downloadFile, value) {
+  return value.length === 0 ? null : from_candid_StreamingStrategy_n128(_uploadFile, _downloadFile, value[0]);
+}
+function from_candid_opt_n137(_uploadFile, _downloadFile, value) {
+  return value.length === 0 ? null : from_candid_StreamingCallbackToken_n131(_uploadFile, _downloadFile, value[0]);
+}
+function from_candid_opt_n147(_uploadFile, _downloadFile, value) {
   return value.length === 0 ? null : value[0];
 }
-function from_candid_opt_n53(_uploadFile, _downloadFile, value) {
+function from_candid_opt_n57(_uploadFile, _downloadFile, value) {
   return value.length === 0 ? null : value[0];
 }
-function from_candid_opt_n74(_uploadFile, _downloadFile, value) {
+function from_candid_opt_n60(_uploadFile, _downloadFile, value) {
   return value.length === 0 ? null : value[0];
 }
 function from_candid_opt_n8(_uploadFile, _downloadFile, value) {
   return value.length === 0 ? null : value[0];
 }
+function from_candid_opt_n89(_uploadFile, _downloadFile, value) {
+  return value.length === 0 ? null : value[0];
+}
 function from_candid_opt_n9(_uploadFile, _downloadFile, value) {
   return value.length === 0 ? null : from_candid_CryptoPaymentStatus_n10(_uploadFile, _downloadFile, value[0]);
 }
-function from_candid_opt_n92(_uploadFile, _downloadFile, value) {
-  return value.length === 0 ? null : from_candid_Role_n93(_uploadFile, _downloadFile, value[0]);
+function from_candid_record_n106(_uploadFile, _downloadFile, value) {
+  return {
+    id: value.id,
+    tax: value.tax,
+    updated_at: value.updated_at,
+    total: value.total,
+    sweep_note: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.sweep_note)),
+    shipping: value.shipping,
+    reference: value.reference,
+    created_at: value.created_at,
+    payment_status: from_candid_PaymentStatus_n4(_uploadFile, _downloadFile, value.payment_status),
+    payment_method: from_candid_PaymentMethod_n6(_uploadFile, _downloadFile, value.payment_method),
+    tracking_number: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.tracking_number)),
+    currency: value.currency,
+    marketing_consent_at: record_opt_to_undefined(from_candid_opt_n57(_uploadFile, _downloadFile, value.marketing_consent_at)),
+    shipping_status: from_candid_ShippingStatus_n58(_uploadFile, _downloadFile, value.shipping_status),
+    has_shipping_details: value.has_shipping_details,
+    items: value.items,
+    encrypted_shipping: record_opt_to_undefined(from_candid_opt_n8(_uploadFile, _downloadFile, value.encrypted_shipping)),
+    customer_principal: record_opt_to_undefined(from_candid_opt_n60(_uploadFile, _downloadFile, value.customer_principal)),
+    shipped_at: record_opt_to_undefined(from_candid_opt_n57(_uploadFile, _downloadFile, value.shipped_at)),
+    marketing_consent: value.marketing_consent,
+    payment_reference: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.payment_reference)),
+    subtotal: value.subtotal
+  };
 }
-function from_candid_opt_n95(_uploadFile, _downloadFile, value) {
-  return value.length === 0 ? null : from_candid_PublicOrderView_n90(_uploadFile, _downloadFile, value[0]);
-}
-function from_candid_opt_n96(_uploadFile, _downloadFile, value) {
-  return value.length === 0 ? null : value[0];
-}
-function from_candid_record_n100(_uploadFile, _downloadFile, value) {
+function from_candid_record_n115(_uploadFile, _downloadFile, value) {
   return {
     status: from_candid_CryptoPaymentStatus_n10(_uploadFile, _downloadFile, value.status),
     expiresAt: value.expiresAt,
     reference: value.reference,
-    deposit: record_opt_to_undefined(from_candid_opt_n101(_uploadFile, _downloadFile, value.deposit)),
+    deposit: record_opt_to_undefined(from_candid_opt_n116(_uploadFile, _downloadFile, value.deposit)),
     remainingNs: value.remainingNs
   };
 }
-function from_candid_record_n112(_uploadFile, _downloadFile, value) {
+function from_candid_record_n126(_uploadFile, _downloadFile, value) {
   return {
-    token: from_candid_Token_n85(_uploadFile, _downloadFile, value.token),
+    body: value.body,
+    headers: value.headers,
+    streaming_strategy: record_opt_to_undefined(from_candid_opt_n127(_uploadFile, _downloadFile, value.streaming_strategy)),
+    status_code: value.status_code
+  };
+}
+function from_candid_record_n130(_uploadFile, _downloadFile, value) {
+  return {
+    token: from_candid_StreamingCallbackToken_n131(_uploadFile, _downloadFile, value.token),
+    callback: value.callback
+  };
+}
+function from_candid_record_n132(_uploadFile, _downloadFile, value) {
+  return {
+    key: value.key,
+    sha256: record_opt_to_undefined(from_candid_opt_n8(_uploadFile, _downloadFile, value.sha256)),
+    index: value.index,
+    content_encoding: value.content_encoding
+  };
+}
+function from_candid_record_n136(_uploadFile, _downloadFile, value) {
+  return {
+    token: record_opt_to_undefined(from_candid_opt_n137(_uploadFile, _downloadFile, value.token)),
+    body: value.body
+  };
+}
+function from_candid_record_n140(_uploadFile, _downloadFile, value) {
+  return {
+    productCount: value.productCount,
+    category: from_candid_Category_n33(_uploadFile, _downloadFile, value.category)
+  };
+}
+function from_candid_record_n143(_uploadFile, _downloadFile, value) {
+  return {
+    token: from_candid_Token_n100(_uploadFile, _downloadFile, value.token),
     reference: value.reference,
     receivedAmount: value.receivedAmount,
     receivedAt: value.receivedAt,
@@ -36840,42 +37445,15 @@ function from_candid_record_n112(_uploadFile, _downloadFile, value) {
     expectedAmount: value.expectedAmount
   };
 }
-function from_candid_record_n115(_uploadFile, _downloadFile, value) {
+function from_candid_record_n146(_uploadFile, _downloadFile, value) {
   return {
     status: from_candid_PaymentStatus_n4(_uploadFile, _downloadFile, value.status),
     paymentMethod: from_candid_PaymentMethod_n6(_uploadFile, _downloadFile, value.paymentMethod),
-    expiresAt: record_opt_to_undefined(from_candid_opt_n50(_uploadFile, _downloadFile, value.expiresAt)),
+    expiresAt: record_opt_to_undefined(from_candid_opt_n57(_uploadFile, _downloadFile, value.expiresAt)),
     reference: value.reference,
-    depositAccount: record_opt_to_undefined(from_candid_opt_n116(_uploadFile, _downloadFile, value.depositAccount)),
+    depositAccount: record_opt_to_undefined(from_candid_opt_n147(_uploadFile, _downloadFile, value.depositAccount)),
     amountOwed: value.amountOwed,
     liveBalance: value.liveBalance
-  };
-}
-function from_candid_record_n121(_uploadFile, _downloadFile, value) {
-  return {
-    id: value.id,
-    discipline: from_candid_Discipline_n122(_uploadFile, _downloadFile, value.discipline),
-    link: value.link,
-    name: value.name,
-    submittedAt: value.submittedAt,
-    email: value.email,
-    message: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.message)),
-    marketingConsentAt: record_opt_to_undefined(from_candid_opt_n50(_uploadFile, _downloadFile, value.marketingConsentAt)),
-    marketingConsent: value.marketingConsent
-  };
-}
-function from_candid_record_n129(_uploadFile, _downloadFile, value) {
-  return {
-    grantedAt: value.grantedAt,
-    role: from_candid_Role_n93(_uploadFile, _downloadFile, value.role)
-  };
-}
-function from_candid_record_n146(_uploadFile, _downloadFile, value) {
-  return {
-    error: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.error)),
-    blockIndex: record_opt_to_undefined(from_candid_opt_n74(_uploadFile, _downloadFile, value.blockIndex)),
-    subaccountHex: value.subaccountHex,
-    subaccountIndex: value.subaccountIndex
   };
 }
 function from_candid_record_n15(_uploadFile, _downloadFile, value) {
@@ -36892,6 +37470,33 @@ function from_candid_record_n15(_uploadFile, _downloadFile, value) {
     sweepNote: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.sweepNote)),
     customerEmail: value.customerEmail,
     depositAccountText: value.depositAccountText
+  };
+}
+function from_candid_record_n152(_uploadFile, _downloadFile, value) {
+  return {
+    id: value.id,
+    discipline: from_candid_Discipline_n153(_uploadFile, _downloadFile, value.discipline),
+    link: value.link,
+    name: value.name,
+    submittedAt: value.submittedAt,
+    email: value.email,
+    message: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.message)),
+    marketingConsentAt: record_opt_to_undefined(from_candid_opt_n57(_uploadFile, _downloadFile, value.marketingConsentAt)),
+    marketingConsent: value.marketingConsent
+  };
+}
+function from_candid_record_n160(_uploadFile, _downloadFile, value) {
+  return {
+    grantedAt: value.grantedAt,
+    role: from_candid_Role_n108(_uploadFile, _downloadFile, value.role)
+  };
+}
+function from_candid_record_n178(_uploadFile, _downloadFile, value) {
+  return {
+    error: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.error)),
+    blockIndex: record_opt_to_undefined(from_candid_opt_n89(_uploadFile, _downloadFile, value.blockIndex)),
+    subaccountHex: value.subaccountHex,
+    subaccountIndex: value.subaccountIndex
   };
 }
 function from_candid_record_n29(_uploadFile, _downloadFile, value) {
@@ -36919,13 +37524,26 @@ function from_candid_record_n3(_uploadFile, _downloadFile, value) {
     depositAccountText: value.depositAccountText
   };
 }
-function from_candid_record_n47(_uploadFile, _downloadFile, value) {
+function from_candid_record_n34(_uploadFile, _downloadFile, value) {
   return {
-    order: from_candid_Order_n48(_uploadFile, _downloadFile, value.order),
+    id: value.id,
+    updated_at: value.updated_at,
+    active: value.active,
+    sortOrder: value.sortOrder,
+    name: value.name,
+    slug: value.slug,
+    description: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.description)),
+    created_at: value.created_at,
+    showWhenEmpty: value.showWhenEmpty
+  };
+}
+function from_candid_record_n54(_uploadFile, _downloadFile, value) {
+  return {
+    order: from_candid_Order_n55(_uploadFile, _downloadFile, value.order),
     cancellationToken: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.cancellationToken))
   };
 }
-function from_candid_record_n49(_uploadFile, _downloadFile, value) {
+function from_candid_record_n56(_uploadFile, _downloadFile, value) {
   return {
     id: value.id,
     tax: value.tax,
@@ -36939,32 +37557,32 @@ function from_candid_record_n49(_uploadFile, _downloadFile, value) {
     payment_method: from_candid_PaymentMethod_n6(_uploadFile, _downloadFile, value.payment_method),
     tracking_number: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.tracking_number)),
     currency: value.currency,
-    marketing_consent_at: record_opt_to_undefined(from_candid_opt_n50(_uploadFile, _downloadFile, value.marketing_consent_at)),
-    shipping_status: from_candid_ShippingStatus_n51(_uploadFile, _downloadFile, value.shipping_status),
+    marketing_consent_at: record_opt_to_undefined(from_candid_opt_n57(_uploadFile, _downloadFile, value.marketing_consent_at)),
+    shipping_status: from_candid_ShippingStatus_n58(_uploadFile, _downloadFile, value.shipping_status),
     has_shipping_details: value.has_shipping_details,
     items: value.items,
     customer_email: value.customer_email,
     encrypted_shipping: record_opt_to_undefined(from_candid_opt_n8(_uploadFile, _downloadFile, value.encrypted_shipping)),
-    customer_principal: record_opt_to_undefined(from_candid_opt_n53(_uploadFile, _downloadFile, value.customer_principal)),
-    shipped_at: record_opt_to_undefined(from_candid_opt_n50(_uploadFile, _downloadFile, value.shipped_at)),
+    customer_principal: record_opt_to_undefined(from_candid_opt_n60(_uploadFile, _downloadFile, value.customer_principal)),
+    shipped_at: record_opt_to_undefined(from_candid_opt_n57(_uploadFile, _downloadFile, value.shipped_at)),
     marketing_consent: value.marketing_consent,
     payment_reference: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.payment_reference)),
     subtotal: value.subtotal
   };
 }
-function from_candid_record_n57(_uploadFile, _downloadFile, value) {
+function from_candid_record_n70(_uploadFile, _downloadFile, value) {
   return {
     hasMore: value.hasMore,
-    rows: from_candid_vec_n58(_uploadFile, _downloadFile, value.rows)
+    rows: from_candid_vec_n71(_uploadFile, _downloadFile, value.rows)
   };
 }
-function from_candid_record_n61(_uploadFile, _downloadFile, value) {
+function from_candid_record_n74(_uploadFile, _downloadFile, value) {
   return {
-    value: from_candid_Value_n62(_uploadFile, _downloadFile, value.value),
+    value: from_candid_Value_n75(_uploadFile, _downloadFile, value.value),
     name: value.name
   };
 }
-function from_candid_record_n67(_uploadFile, _downloadFile, value) {
+function from_candid_record_n82(_uploadFile, _downloadFile, value) {
   return {
     status: from_candid_CryptoPaymentStatus_n10(_uploadFile, _downloadFile, value.status),
     balance: value.balance,
@@ -36972,14 +37590,14 @@ function from_candid_record_n67(_uploadFile, _downloadFile, value) {
     error: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.error))
   };
 }
-function from_candid_record_n73(_uploadFile, _downloadFile, value) {
+function from_candid_record_n88(_uploadFile, _downloadFile, value) {
   return {
     reference: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.reference)),
     error: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.error)),
-    blockIndex: record_opt_to_undefined(from_candid_opt_n74(_uploadFile, _downloadFile, value.blockIndex))
+    blockIndex: record_opt_to_undefined(from_candid_opt_n89(_uploadFile, _downloadFile, value.blockIndex))
   };
 }
-function from_candid_record_n80(_uploadFile, _downloadFile, value) {
+function from_candid_record_n95(_uploadFile, _downloadFile, value) {
   return {
     icp: value.icp,
     ckUSDC: value.ckUSDC,
@@ -36989,10 +37607,10 @@ function from_candid_record_n80(_uploadFile, _downloadFile, value) {
     treasuryPrincipal: value.treasuryPrincipal
   };
 }
-function from_candid_record_n84(_uploadFile, _downloadFile, value) {
+function from_candid_record_n99(_uploadFile, _downloadFile, value) {
   return {
     decimals: value.decimals,
-    token: from_candid_Token_n85(_uploadFile, _downloadFile, value.token),
+    token: from_candid_Token_n100(_uploadFile, _downloadFile, value.token),
     expiresAt: value.expiresAt,
     qrPayload: value.qrPayload,
     subaccount: value.subaccount,
@@ -37001,37 +37619,14 @@ function from_candid_record_n84(_uploadFile, _downloadFile, value) {
     amountDue: value.amountDue
   };
 }
-function from_candid_record_n91(_uploadFile, _downloadFile, value) {
-  return {
-    id: value.id,
-    tax: value.tax,
-    updated_at: value.updated_at,
-    total: value.total,
-    sweep_note: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.sweep_note)),
-    shipping: value.shipping,
-    reference: value.reference,
-    created_at: value.created_at,
-    payment_status: from_candid_PaymentStatus_n4(_uploadFile, _downloadFile, value.payment_status),
-    payment_method: from_candid_PaymentMethod_n6(_uploadFile, _downloadFile, value.payment_method),
-    tracking_number: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.tracking_number)),
-    currency: value.currency,
-    marketing_consent_at: record_opt_to_undefined(from_candid_opt_n50(_uploadFile, _downloadFile, value.marketing_consent_at)),
-    shipping_status: from_candid_ShippingStatus_n51(_uploadFile, _downloadFile, value.shipping_status),
-    has_shipping_details: value.has_shipping_details,
-    items: value.items,
-    encrypted_shipping: record_opt_to_undefined(from_candid_opt_n8(_uploadFile, _downloadFile, value.encrypted_shipping)),
-    customer_principal: record_opt_to_undefined(from_candid_opt_n53(_uploadFile, _downloadFile, value.customer_principal)),
-    shipped_at: record_opt_to_undefined(from_candid_opt_n50(_uploadFile, _downloadFile, value.shipped_at)),
-    marketing_consent: value.marketing_consent,
-    payment_reference: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.payment_reference)),
-    subtotal: value.subtotal
-  };
-}
-function from_candid_tuple_n127(_uploadFile, _downloadFile, value) {
+function from_candid_tuple_n158(_uploadFile, _downloadFile, value) {
   return [
     value[0],
-    from_candid_UserRecord_n128(_uploadFile, _downloadFile, value[1])
+    from_candid_UserRecord_n159(_uploadFile, _downloadFile, value[1])
   ];
+}
+function from_candid_variant_n101(_uploadFile, _downloadFile, value) {
+  return "ICP" in value ? "ICP" : "ckUSDC" in value ? "ckUSDC" : value;
 }
 function from_candid_variant_n103(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
@@ -37039,32 +37634,11 @@ function from_candid_variant_n103(_uploadFile, _downloadFile, value) {
     ok: value.ok
   } : "err" in value ? {
     __kind__: "err",
-    err: from_candid_SweepError_n104(_uploadFile, _downloadFile, value.err)
-  } : value;
-}
-function from_candid_variant_n105(_uploadFile, _downloadFile, value) {
-  return "sweepFailed" in value ? {
-    __kind__: "sweepFailed",
-    sweepFailed: value.sweepFailed
-  } : "ledgerError" in value ? {
-    __kind__: "ledgerError",
-    ledgerError: value.ledgerError
-  } : "unauthorized" in value ? {
-    __kind__: "unauthorized",
-    unauthorized: value.unauthorized
-  } : "invalidConfig" in value ? {
-    __kind__: "invalidConfig",
-    invalidConfig: value.invalidConfig
+    err: from_candid_RecoveryError_n83(_uploadFile, _downloadFile, value.err)
   } : value;
 }
 function from_candid_variant_n109(_uploadFile, _downloadFile, value) {
-  return "ok" in value ? {
-    __kind__: "ok",
-    ok: value.ok
-  } : "err" in value ? {
-    __kind__: "err",
-    err: from_candid_PaymentError_n40(_uploadFile, _downloadFile, value.err)
-  } : value;
+  return "admin" in value ? "admin" : "owner" in value ? "owner" : "staff" in value ? "staff" : value;
 }
 function from_candid_variant_n11(_uploadFile, _downloadFile, value) {
   return "overpayment" in value ? {
@@ -37084,19 +37658,67 @@ function from_candid_variant_n11(_uploadFile, _downloadFile, value) {
     awaiting_payment: value.awaiting_payment
   } : value;
 }
+function from_candid_variant_n113(_uploadFile, _downloadFile, value) {
+  return "ok" in value ? {
+    __kind__: "ok",
+    ok: from_candid_ResumeInfo_n114(_uploadFile, _downloadFile, value.ok)
+  } : "err" in value ? {
+    __kind__: "err",
+    err: from_candid_RecoveryError_n83(_uploadFile, _downloadFile, value.err)
+  } : value;
+}
 function from_candid_variant_n118(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
-    ok: from_candid_vec_n119(_uploadFile, _downloadFile, value.ok)
+    ok: value.ok
   } : "err" in value ? {
     __kind__: "err",
-    err: from_candid_SubmissionError_n124(_uploadFile, _downloadFile, value.err)
+    err: from_candid_SweepError_n119(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function from_candid_variant_n123(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n120(_uploadFile, _downloadFile, value) {
+  return "sweepFailed" in value ? {
+    __kind__: "sweepFailed",
+    sweepFailed: value.sweepFailed
+  } : "ledgerError" in value ? {
+    __kind__: "ledgerError",
+    ledgerError: value.ledgerError
+  } : "unauthorized" in value ? {
+    __kind__: "unauthorized",
+    unauthorized: value.unauthorized
+  } : "invalidConfig" in value ? {
+    __kind__: "invalidConfig",
+    invalidConfig: value.invalidConfig
+  } : value;
+}
+function from_candid_variant_n124(_uploadFile, _downloadFile, value) {
+  return "ok" in value ? {
+    __kind__: "ok",
+    ok: value.ok
+  } : "err" in value ? {
+    __kind__: "err",
+    err: from_candid_PaymentError_n47(_uploadFile, _downloadFile, value.err)
+  } : value;
+}
+function from_candid_variant_n129(_uploadFile, _downloadFile, value) {
+  return "Callback" in value ? {
+    __kind__: "Callback",
+    Callback: from_candid_record_n130(_uploadFile, _downloadFile, value.Callback)
+  } : value;
+}
+function from_candid_variant_n149(_uploadFile, _downloadFile, value) {
+  return "ok" in value ? {
+    __kind__: "ok",
+    ok: from_candid_vec_n150(_uploadFile, _downloadFile, value.ok)
+  } : "err" in value ? {
+    __kind__: "err",
+    err: from_candid_SubmissionError_n155(_uploadFile, _downloadFile, value.err)
+  } : value;
+}
+function from_candid_variant_n154(_uploadFile, _downloadFile, value) {
   return "music" in value ? "music" : "other" in value ? "other" : "video" in value ? "video" : "visualArt" in value ? "visualArt" : "writing" in value ? "writing" : value;
 }
-function from_candid_variant_n125(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n156(_uploadFile, _downloadFile, value) {
   return "invalidInput" in value ? {
     __kind__: "invalidInput",
     invalidInput: value.invalidInput
@@ -37117,16 +37739,16 @@ function from_candid_variant_n125(_uploadFile, _downloadFile, value) {
     invalidResponse: value.invalidResponse
   } : value;
 }
-function from_candid_variant_n132(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n162(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
     ok: value.ok
   } : "err" in value ? {
     __kind__: "err",
-    err: from_candid_EmailError_n133(_uploadFile, _downloadFile, value.err)
+    err: from_candid_EmailError_n163(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function from_candid_variant_n134(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n164(_uploadFile, _downloadFile, value) {
   return "notConfigured" in value ? {
     __kind__: "notConfigured",
     notConfigured: value.notConfigured
@@ -37147,49 +37769,13 @@ function from_candid_variant_n134(_uploadFile, _downloadFile, value) {
     invalidResponse: value.invalidResponse
   } : value;
 }
-function from_candid_variant_n140(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n166(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
     ok: value.ok
   } : "err" in value ? {
     __kind__: "err",
-    err: from_candid_SubmissionError_n124(_uploadFile, _downloadFile, value.err)
-  } : value;
-}
-function from_candid_variant_n142(_uploadFile, _downloadFile, value) {
-  return "ok" in value ? {
-    __kind__: "ok",
-    ok: value.ok
-  } : "err" in value ? {
-    __kind__: "err",
-    err: from_candid_CryptoPaymentError_n22(_uploadFile, _downloadFile, value.err)
-  } : value;
-}
-function from_candid_variant_n144(_uploadFile, _downloadFile, value) {
-  return "ok" in value ? {
-    __kind__: "ok",
-    ok: from_candid_SweepSubaccountResult_n145(_uploadFile, _downloadFile, value.ok)
-  } : "err" in value ? {
-    __kind__: "err",
-    err: from_candid_SweepError_n104(_uploadFile, _downloadFile, value.err)
-  } : value;
-}
-function from_candid_variant_n148(_uploadFile, _downloadFile, value) {
-  return "ok" in value ? {
-    __kind__: "ok",
-    ok: value.ok
-  } : "err" in value ? {
-    __kind__: "err",
-    err: from_candid_ConsentError_n77(_uploadFile, _downloadFile, value.err)
-  } : value;
-}
-function from_candid_variant_n152(_uploadFile, _downloadFile, value) {
-  return "ok" in value ? {
-    __kind__: "ok",
-    ok: value.ok
-  } : "err" in value ? {
-    __kind__: "err",
-    err: from_candid_CryptoPaymentError_n22(_uploadFile, _downloadFile, value.err)
+    err: from_candid_CategoryError_n35(_uploadFile, _downloadFile, value.err)
   } : value;
 }
 function from_candid_variant_n17(_uploadFile, _downloadFile, value) {
@@ -37199,6 +37785,51 @@ function from_candid_variant_n17(_uploadFile, _downloadFile, value) {
   } : "err" in value ? {
     __kind__: "err",
     err: from_candid_PaymentServiceError_n18(_uploadFile, _downloadFile, value.err)
+  } : value;
+}
+function from_candid_variant_n172(_uploadFile, _downloadFile, value) {
+  return "ok" in value ? {
+    __kind__: "ok",
+    ok: value.ok
+  } : "err" in value ? {
+    __kind__: "err",
+    err: from_candid_SubmissionError_n155(_uploadFile, _downloadFile, value.err)
+  } : value;
+}
+function from_candid_variant_n174(_uploadFile, _downloadFile, value) {
+  return "ok" in value ? {
+    __kind__: "ok",
+    ok: value.ok
+  } : "err" in value ? {
+    __kind__: "err",
+    err: from_candid_CryptoPaymentError_n22(_uploadFile, _downloadFile, value.err)
+  } : value;
+}
+function from_candid_variant_n176(_uploadFile, _downloadFile, value) {
+  return "ok" in value ? {
+    __kind__: "ok",
+    ok: from_candid_SweepSubaccountResult_n177(_uploadFile, _downloadFile, value.ok)
+  } : "err" in value ? {
+    __kind__: "err",
+    err: from_candid_SweepError_n119(_uploadFile, _downloadFile, value.err)
+  } : value;
+}
+function from_candid_variant_n180(_uploadFile, _downloadFile, value) {
+  return "ok" in value ? {
+    __kind__: "ok",
+    ok: value.ok
+  } : "err" in value ? {
+    __kind__: "err",
+    err: from_candid_ConsentError_n92(_uploadFile, _downloadFile, value.err)
+  } : value;
+}
+function from_candid_variant_n184(_uploadFile, _downloadFile, value) {
+  return "ok" in value ? {
+    __kind__: "ok",
+    ok: value.ok
+  } : "err" in value ? {
+    __kind__: "err",
+    err: from_candid_CryptoPaymentError_n22(_uploadFile, _downloadFile, value.err)
   } : value;
 }
 function from_candid_variant_n19(_uploadFile, _downloadFile, value) {
@@ -37288,16 +37919,43 @@ function from_candid_variant_n27(_uploadFile, _downloadFile, value) {
     err: from_candid_PaymentServiceError_n18(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function from_candid_variant_n39(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n32(_uploadFile, _downloadFile, value) {
+  return "ok" in value ? {
+    __kind__: "ok",
+    ok: from_candid_Category_n33(_uploadFile, _downloadFile, value.ok)
+  } : "err" in value ? {
+    __kind__: "err",
+    err: from_candid_CategoryError_n35(_uploadFile, _downloadFile, value.err)
+  } : value;
+}
+function from_candid_variant_n36(_uploadFile, _downloadFile, value) {
+  return "emptyName" in value ? {
+    __kind__: "emptyName",
+    emptyName: value.emptyName
+  } : "targetCategoryNotFound" in value ? {
+    __kind__: "targetCategoryNotFound",
+    targetCategoryNotFound: value.targetCategoryNotFound
+  } : "notFound" in value ? {
+    __kind__: "notFound",
+    notFound: value.notFound
+  } : "productsReferenced" in value ? {
+    __kind__: "productsReferenced",
+    productsReferenced: value.productsReferenced
+  } : "slugCollision" in value ? {
+    __kind__: "slugCollision",
+    slugCollision: value.slugCollision
+  } : value;
+}
+function from_candid_variant_n46(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
     ok: from_candid_CheckoutSession_n28(_uploadFile, _downloadFile, value.ok)
   } : "err" in value ? {
     __kind__: "err",
-    err: from_candid_PaymentError_n40(_uploadFile, _downloadFile, value.err)
+    err: from_candid_PaymentError_n47(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function from_candid_variant_n41(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n48(_uploadFile, _downloadFile, value) {
   return "invalidOrder" in value ? {
     __kind__: "invalidOrder",
     invalidOrder: value.invalidOrder
@@ -37306,22 +37964,22 @@ function from_candid_variant_n41(_uploadFile, _downloadFile, value) {
     paymentFailed: value.paymentFailed
   } : value;
 }
-function from_candid_variant_n45(_uploadFile, _downloadFile, value) {
-  return "ok" in value ? {
-    __kind__: "ok",
-    ok: from_candid_CreateOrderResult_n46(_uploadFile, _downloadFile, value.ok)
-  } : "err" in value ? {
-    __kind__: "err",
-    err: from_candid_OrderError_n54(_uploadFile, _downloadFile, value.err)
-  } : value;
-}
 function from_candid_variant_n5(_uploadFile, _downloadFile, value) {
   return "cancelled" in value ? "cancelled" : "expired" in value ? "expired" : "pending" in value ? "pending" : "paid" in value ? "paid" : value;
 }
 function from_candid_variant_n52(_uploadFile, _downloadFile, value) {
+  return "ok" in value ? {
+    __kind__: "ok",
+    ok: from_candid_CreateOrderResult_n53(_uploadFile, _downloadFile, value.ok)
+  } : "err" in value ? {
+    __kind__: "err",
+    err: from_candid_OrderError_n61(_uploadFile, _downloadFile, value.err)
+  } : value;
+}
+function from_candid_variant_n59(_uploadFile, _downloadFile, value) {
   return "shipped" in value ? "shipped" : "pending" in value ? "pending" : value;
 }
-function from_candid_variant_n55(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n62(_uploadFile, _downloadFile, value) {
   return "outOfStock" in value ? {
     __kind__: "outOfStock",
     outOfStock: value.outOfStock
@@ -37357,7 +38015,31 @@ function from_candid_variant_n55(_uploadFile, _downloadFile, value) {
     tooManyPendingOrders: value.tooManyPendingOrders
   } : value;
 }
-function from_candid_variant_n63(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n64(_uploadFile, _downloadFile, value) {
+  return "ok" in value ? {
+    __kind__: "ok",
+    ok: value.ok
+  } : "err" in value ? {
+    __kind__: "err",
+    err: from_candid_CategoryError_n35(_uploadFile, _downloadFile, value.err)
+  } : value;
+}
+function from_candid_variant_n66(_uploadFile, _downloadFile, value) {
+  return "ok" in value ? {
+    __kind__: "ok",
+    ok: value.ok
+  } : "err" in value ? {
+    __kind__: "err",
+    err: from_candid_UploadError_n67(_uploadFile, _downloadFile, value.err)
+  } : value;
+}
+function from_candid_variant_n68(_uploadFile, _downloadFile, value) {
+  return "tooManyImages" in value ? "tooManyImages" : "tooLarge" in value ? "tooLarge" : "magicByteMismatch" in value ? "magicByteMismatch" : "sizeMismatch" in value ? "sizeMismatch" : "invalidContentType" in value ? "invalidContentType" : "notFound" in value ? "notFound" : "uploadExpired" in value ? "uploadExpired" : "svgNotAllowed" in value ? "svgNotAllowed" : "chunkOutOfOrder" in value ? "chunkOutOfOrder" : "unauthorized" in value ? "unauthorized" : value;
+}
+function from_candid_variant_n7(_uploadFile, _downloadFile, value) {
+  return "crypto_icp" in value ? "crypto_icp" : "card_stripe" in value ? "card_stripe" : "crypto_ckusdc" in value ? "crypto_ckusdc" : "manual" in value ? "manual" : value;
+}
+function from_candid_variant_n76(_uploadFile, _downloadFile, value) {
   return "int" in value ? {
     __kind__: "int",
     int: value.int
@@ -37378,16 +38060,25 @@ function from_candid_variant_n63(_uploadFile, _downloadFile, value) {
     text: value.text
   } : value;
 }
-function from_candid_variant_n65(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n78(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
-    ok: from_candid_RecheckResult_n66(_uploadFile, _downloadFile, value.ok)
+    ok: value.ok
   } : "err" in value ? {
     __kind__: "err",
-    err: from_candid_RecoveryError_n68(_uploadFile, _downloadFile, value.err)
+    err: from_candid_UploadError_n67(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function from_candid_variant_n69(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n80(_uploadFile, _downloadFile, value) {
+  return "ok" in value ? {
+    __kind__: "ok",
+    ok: from_candid_RecheckResult_n81(_uploadFile, _downloadFile, value.ok)
+  } : "err" in value ? {
+    __kind__: "err",
+    err: from_candid_RecoveryError_n83(_uploadFile, _downloadFile, value.err)
+  } : value;
+}
+function from_candid_variant_n84(_uploadFile, _downloadFile, value) {
   return "sweepFailed" in value ? {
     __kind__: "sweepFailed",
     sweepFailed: value.sweepFailed
@@ -37408,28 +38099,25 @@ function from_candid_variant_n69(_uploadFile, _downloadFile, value) {
     invalidConfig: value.invalidConfig
   } : value;
 }
-function from_candid_variant_n7(_uploadFile, _downloadFile, value) {
-  return "crypto_icp" in value ? "crypto_icp" : "card_stripe" in value ? "card_stripe" : "crypto_ckusdc" in value ? "crypto_ckusdc" : "manual" in value ? "manual" : value;
-}
-function from_candid_variant_n71(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n86(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
-    ok: from_candid_SweepResult_n72(_uploadFile, _downloadFile, value.ok)
+    ok: from_candid_SweepResult_n87(_uploadFile, _downloadFile, value.ok)
   } : "err" in value ? {
     __kind__: "err",
-    err: from_candid_RecoveryError_n68(_uploadFile, _downloadFile, value.err)
+    err: from_candid_RecoveryError_n83(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function from_candid_variant_n76(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n91(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
     ok: value.ok
   } : "err" in value ? {
     __kind__: "err",
-    err: from_candid_ConsentError_n77(_uploadFile, _downloadFile, value.err)
+    err: from_candid_ConsentError_n92(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function from_candid_variant_n78(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n93(_uploadFile, _downloadFile, value) {
   return "alreadyUnsubscribed" in value ? {
     __kind__: "alreadyUnsubscribed",
     alreadyUnsubscribed: value.alreadyUnsubscribed
@@ -37453,99 +38141,89 @@ function from_candid_variant_n78(_uploadFile, _downloadFile, value) {
     invalidResponse: value.invalidResponse
   } : value;
 }
-function from_candid_variant_n82(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n97(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
-    ok: from_candid_DepositInfo_n83(_uploadFile, _downloadFile, value.ok)
+    ok: from_candid_DepositInfo_n98(_uploadFile, _downloadFile, value.ok)
   } : "err" in value ? {
     __kind__: "err",
     err: from_candid_CryptoPaymentError_n22(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function from_candid_variant_n86(_uploadFile, _downloadFile, value) {
-  return "ICP" in value ? "ICP" : "ckUSDC" in value ? "ckUSDC" : value;
-}
-function from_candid_variant_n88(_uploadFile, _downloadFile, value) {
-  return "ok" in value ? {
-    __kind__: "ok",
-    ok: value.ok
-  } : "err" in value ? {
-    __kind__: "err",
-    err: from_candid_RecoveryError_n68(_uploadFile, _downloadFile, value.err)
-  } : value;
-}
-function from_candid_variant_n94(_uploadFile, _downloadFile, value) {
-  return "admin" in value ? "admin" : "owner" in value ? "owner" : "staff" in value ? "staff" : value;
-}
-function from_candid_variant_n98(_uploadFile, _downloadFile, value) {
-  return "ok" in value ? {
-    __kind__: "ok",
-    ok: from_candid_ResumeInfo_n99(_uploadFile, _downloadFile, value.ok)
-  } : "err" in value ? {
-    __kind__: "err",
-    err: from_candid_RecoveryError_n68(_uploadFile, _downloadFile, value.err)
-  } : value;
-}
-function from_candid_vec_n110(_uploadFile, _downloadFile, value) {
-  return value.map((x2) => from_candid_LatePayment_n111(_uploadFile, _downloadFile, x2));
-}
-function from_candid_vec_n113(_uploadFile, _downloadFile, value) {
-  return value.map((x2) => from_candid_OrderRecoveryView_n114(_uploadFile, _downloadFile, x2));
-}
-function from_candid_vec_n119(_uploadFile, _downloadFile, value) {
-  return value.map((x2) => from_candid_SubmissionRecord_n120(_uploadFile, _downloadFile, x2));
-}
-function from_candid_vec_n126(_uploadFile, _downloadFile, value) {
-  return value.map((x2) => from_candid_tuple_n127(_uploadFile, _downloadFile, x2));
+function from_candid_vec_n104(_uploadFile, _downloadFile, value) {
+  return value.map((x2) => from_candid_PublicOrderView_n105(_uploadFile, _downloadFile, x2));
 }
 function from_candid_vec_n13(_uploadFile, _downloadFile, value) {
   return value.map((x2) => from_candid_AdminOrderView_n14(_uploadFile, _downloadFile, x2));
 }
-function from_candid_vec_n58(_uploadFile, _downloadFile, value) {
-  return value.map((x2) => from_candid_vec_n59(_uploadFile, _downloadFile, x2));
+function from_candid_vec_n138(_uploadFile, _downloadFile, value) {
+  return value.map((x2) => from_candid_CategoryWithCount_n139(_uploadFile, _downloadFile, x2));
 }
-function from_candid_vec_n59(_uploadFile, _downloadFile, value) {
-  return value.map((x2) => from_candid_Cell_n60(_uploadFile, _downloadFile, x2));
+function from_candid_vec_n141(_uploadFile, _downloadFile, value) {
+  return value.map((x2) => from_candid_LatePayment_n142(_uploadFile, _downloadFile, x2));
 }
-function from_candid_vec_n89(_uploadFile, _downloadFile, value) {
-  return value.map((x2) => from_candid_PublicOrderView_n90(_uploadFile, _downloadFile, x2));
+function from_candid_vec_n144(_uploadFile, _downloadFile, value) {
+  return value.map((x2) => from_candid_OrderRecoveryView_n145(_uploadFile, _downloadFile, x2));
 }
-function to_candid_CreateOrderInput_n42(_uploadFile, _downloadFile, value) {
-  return to_candid_record_n43(_uploadFile, _downloadFile, value);
+function from_candid_vec_n150(_uploadFile, _downloadFile, value) {
+  return value.map((x2) => from_candid_SubmissionRecord_n151(_uploadFile, _downloadFile, x2));
 }
-function to_candid_Discipline_n137(_uploadFile, _downloadFile, value) {
-  return to_candid_variant_n138(_uploadFile, _downloadFile, value);
+function from_candid_vec_n157(_uploadFile, _downloadFile, value) {
+  return value.map((x2) => from_candid_tuple_n158(_uploadFile, _downloadFile, x2));
 }
-function to_candid_Order_n30(_uploadFile, _downloadFile, value) {
-  return to_candid_record_n31(_uploadFile, _downloadFile, value);
+function from_candid_vec_n71(_uploadFile, _downloadFile, value) {
+  return value.map((x2) => from_candid_vec_n72(_uploadFile, _downloadFile, x2));
 }
-function to_candid_PaymentMethod_n34(_uploadFile, _downloadFile, value) {
-  return to_candid_variant_n35(_uploadFile, _downloadFile, value);
+function from_candid_vec_n72(_uploadFile, _downloadFile, value) {
+  return value.map((x2) => from_candid_Cell_n73(_uploadFile, _downloadFile, x2));
 }
-function to_candid_PaymentStatus_n32(_uploadFile, _downloadFile, value) {
-  return to_candid_variant_n33(_uploadFile, _downloadFile, value);
+function to_candid_CreateOrderInput_n49(_uploadFile, _downloadFile, value) {
+  return to_candid_record_n50(_uploadFile, _downloadFile, value);
 }
-function to_candid_Role_n106(_uploadFile, _downloadFile, value) {
-  return to_candid_variant_n107(_uploadFile, _downloadFile, value);
+function to_candid_Discipline_n169(_uploadFile, _downloadFile, value) {
+  return to_candid_variant_n170(_uploadFile, _downloadFile, value);
 }
-function to_candid_ShippingStatus_n36(_uploadFile, _downloadFile, value) {
-  return to_candid_variant_n37(_uploadFile, _downloadFile, value);
+function to_candid_Order_n37(_uploadFile, _downloadFile, value) {
+  return to_candid_record_n38(_uploadFile, _downloadFile, value);
 }
-function to_candid_SubmissionInput_n135(_uploadFile, _downloadFile, value) {
-  return to_candid_record_n136(_uploadFile, _downloadFile, value);
+function to_candid_PaymentMethod_n41(_uploadFile, _downloadFile, value) {
+  return to_candid_variant_n42(_uploadFile, _downloadFile, value);
 }
-function to_candid_Token_n149(_uploadFile, _downloadFile, value) {
-  return to_candid_variant_n150(_uploadFile, _downloadFile, value);
+function to_candid_PaymentStatus_n39(_uploadFile, _downloadFile, value) {
+  return to_candid_variant_n40(_uploadFile, _downloadFile, value);
 }
-function to_candid_opt_n130(_uploadFile, _downloadFile, value) {
+function to_candid_Role_n121(_uploadFile, _downloadFile, value) {
+  return to_candid_variant_n122(_uploadFile, _downloadFile, value);
+}
+function to_candid_ShippingStatus_n43(_uploadFile, _downloadFile, value) {
+  return to_candid_variant_n44(_uploadFile, _downloadFile, value);
+}
+function to_candid_StreamingCallbackToken_n133(_uploadFile, _downloadFile, value) {
+  return to_candid_record_n134(_uploadFile, _downloadFile, value);
+}
+function to_candid_SubmissionInput_n167(_uploadFile, _downloadFile, value) {
+  return to_candid_record_n168(_uploadFile, _downloadFile, value);
+}
+function to_candid_Token_n181(_uploadFile, _downloadFile, value) {
+  return to_candid_variant_n182(_uploadFile, _downloadFile, value);
+}
+function to_candid_opt_n185(_uploadFile, _downloadFile, value) {
   return value === null ? candid_none() : candid_some(value);
 }
-function to_candid_opt_n153(_uploadFile, _downloadFile, value) {
+function to_candid_opt_n30(_uploadFile, _downloadFile, value) {
   return value === null ? candid_none() : candid_some(value);
 }
-function to_candid_record_n136(_uploadFile, _downloadFile, value) {
+function to_candid_record_n134(_uploadFile, _downloadFile, value) {
   return {
-    discipline: to_candid_Discipline_n137(_uploadFile, _downloadFile, value.discipline),
+    key: value.key,
+    sha256: value.sha256 ? candid_some(value.sha256) : candid_none(),
+    index: value.index,
+    content_encoding: value.content_encoding
+  };
+}
+function to_candid_record_n168(_uploadFile, _downloadFile, value) {
+  return {
+    discipline: to_candid_Discipline_n169(_uploadFile, _downloadFile, value.discipline),
     link: value.link,
     name: value.name,
     email: value.email,
@@ -37555,7 +38233,7 @@ function to_candid_record_n136(_uploadFile, _downloadFile, value) {
     marketingConsent: value.marketingConsent
   };
 }
-function to_candid_record_n31(_uploadFile, _downloadFile, value) {
+function to_candid_record_n38(_uploadFile, _downloadFile, value) {
   return {
     id: value.id,
     tax: value.tax,
@@ -37565,12 +38243,12 @@ function to_candid_record_n31(_uploadFile, _downloadFile, value) {
     shipping: value.shipping,
     reference: value.reference,
     created_at: value.created_at,
-    payment_status: to_candid_PaymentStatus_n32(_uploadFile, _downloadFile, value.payment_status),
-    payment_method: to_candid_PaymentMethod_n34(_uploadFile, _downloadFile, value.payment_method),
+    payment_status: to_candid_PaymentStatus_n39(_uploadFile, _downloadFile, value.payment_status),
+    payment_method: to_candid_PaymentMethod_n41(_uploadFile, _downloadFile, value.payment_method),
     tracking_number: value.tracking_number ? candid_some(value.tracking_number) : candid_none(),
     currency: value.currency,
     marketing_consent_at: value.marketing_consent_at ? candid_some(value.marketing_consent_at) : candid_none(),
-    shipping_status: to_candid_ShippingStatus_n36(_uploadFile, _downloadFile, value.shipping_status),
+    shipping_status: to_candid_ShippingStatus_n43(_uploadFile, _downloadFile, value.shipping_status),
     has_shipping_details: value.has_shipping_details,
     items: value.items,
     customer_email: value.customer_email,
@@ -37582,9 +38260,9 @@ function to_candid_record_n31(_uploadFile, _downloadFile, value) {
     subtotal: value.subtotal
   };
 }
-function to_candid_record_n43(_uploadFile, _downloadFile, value) {
+function to_candid_record_n50(_uploadFile, _downloadFile, value) {
   return {
-    payment_method: to_candid_PaymentMethod_n34(_uploadFile, _downloadFile, value.payment_method),
+    payment_method: to_candid_PaymentMethod_n41(_uploadFile, _downloadFile, value.payment_method),
     has_shipping_details: value.has_shipping_details,
     items: value.items,
     customer_email: value.customer_email,
@@ -37592,7 +38270,7 @@ function to_candid_record_n43(_uploadFile, _downloadFile, value) {
     marketing_consent: value.marketing_consent
   };
 }
-function to_candid_variant_n107(_uploadFile, _downloadFile, value) {
+function to_candid_variant_n122(_uploadFile, _downloadFile, value) {
   return value == "admin" ? {
     admin: null
   } : value == "owner" ? {
@@ -37601,7 +38279,7 @@ function to_candid_variant_n107(_uploadFile, _downloadFile, value) {
     staff: null
   } : value;
 }
-function to_candid_variant_n138(_uploadFile, _downloadFile, value) {
+function to_candid_variant_n170(_uploadFile, _downloadFile, value) {
   return value == "music" ? {
     music: null
   } : value == "other" ? {
@@ -37614,14 +38292,14 @@ function to_candid_variant_n138(_uploadFile, _downloadFile, value) {
     writing: null
   } : value;
 }
-function to_candid_variant_n150(_uploadFile, _downloadFile, value) {
+function to_candid_variant_n182(_uploadFile, _downloadFile, value) {
   return value == "ICP" ? {
     ICP: null
   } : value == "ckUSDC" ? {
     ckUSDC: null
   } : value;
 }
-function to_candid_variant_n33(_uploadFile, _downloadFile, value) {
+function to_candid_variant_n40(_uploadFile, _downloadFile, value) {
   return value == "cancelled" ? {
     cancelled: null
   } : value == "expired" ? {
@@ -37632,7 +38310,7 @@ function to_candid_variant_n33(_uploadFile, _downloadFile, value) {
     paid: null
   } : value;
 }
-function to_candid_variant_n35(_uploadFile, _downloadFile, value) {
+function to_candid_variant_n42(_uploadFile, _downloadFile, value) {
   return value == "crypto_icp" ? {
     crypto_icp: null
   } : value == "card_stripe" ? {
@@ -37643,7 +38321,7 @@ function to_candid_variant_n35(_uploadFile, _downloadFile, value) {
     manual: null
   } : value;
 }
-function to_candid_variant_n37(_uploadFile, _downloadFile, value) {
+function to_candid_variant_n44(_uploadFile, _downloadFile, value) {
   return value == "shipped" ? {
     shipped: null
   } : value == "pending" ? {
@@ -37663,6 +38341,39 @@ function createActor$3(canisterId, _uploadFile, _downloadFile, options = {}) {
     ...options.actorOptions
   });
   return new Backend(actor, _uploadFile, _downloadFile, options.processError);
+}
+function CopyButton({ text, label, className }) {
+  const [copied, setCopied] = reactExports.useState(false);
+  const timerRef = reactExports.useRef(null);
+  reactExports.useEffect(() => {
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, []);
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      if (timerRef.current) clearTimeout(timerRef.current);
+      timerRef.current = setTimeout(() => setCopied(false), 1800);
+    } catch (error) {
+      console.error("[copy] Clipboard write failed (ERR-CHK-005)", error);
+    }
+  };
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+    "button",
+    {
+      type: "button",
+      onClick: handleCopy,
+      className: `copy-btn ${copied ? "is-copied" : ""} ${className ?? ""}`,
+      "aria-label": label ?? "Copy to clipboard",
+      "data-ocid": "copy_button",
+      children: [
+        copied ? /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-3.5 h-3.5", "aria-hidden": "true" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Copy, { className: "w-3.5 h-3.5", "aria-hidden": "true" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: copied ? "Copied" : label ?? "Copy" })
+      ]
+    }
+  );
 }
 function composeEventHandlers(originalEventHandler, ourEventHandler, { checkForDefaultPrevented = true } = {}) {
   return function handleEvent(event) {
@@ -38399,8 +39110,8 @@ function arrayRemove(array, item) {
 function removeLinks(items) {
   return items.filter((item) => item.tagName !== "A");
 }
-var PORTAL_NAME$1 = "Portal";
-var Portal$1 = reactExports.forwardRef((props, forwardedRef) => {
+var PORTAL_NAME$2 = "Portal";
+var Portal$2 = reactExports.forwardRef((props, forwardedRef) => {
   var _a2;
   const { container: containerProp, ...portalProps } = props;
   const [mounted, setMounted] = reactExports.useState(false);
@@ -38408,7 +39119,7 @@ var Portal$1 = reactExports.forwardRef((props, forwardedRef) => {
   const container = containerProp || mounted && ((_a2 = globalThis == null ? void 0 : globalThis.document) == null ? void 0 : _a2.body);
   return container ? ReactDOM$2.createPortal(/* @__PURE__ */ jsxRuntimeExports.jsx(Primitive.div, { ...portalProps, ref: forwardedRef }), container) : null;
 });
-Portal$1.displayName = PORTAL_NAME$1;
+Portal$2.displayName = PORTAL_NAME$2;
 function useStateMachine(initialState, machine) {
   return reactExports.useReducer((state, event) => {
     const nextState = machine[state][event];
@@ -39374,11 +40085,11 @@ var Dialog$1 = (props) => {
   );
 };
 Dialog$1.displayName = DIALOG_NAME;
-var TRIGGER_NAME$1 = "DialogTrigger";
+var TRIGGER_NAME$2 = "DialogTrigger";
 var DialogTrigger$1 = reactExports.forwardRef(
   (props, forwardedRef) => {
     const { __scopeDialog, ...triggerProps } = props;
-    const context = useDialogContext(TRIGGER_NAME$1, __scopeDialog);
+    const context = useDialogContext(TRIGGER_NAME$2, __scopeDialog);
     const composedTriggerRef = useComposedRefs(forwardedRef, context.triggerRef);
     return /* @__PURE__ */ jsxRuntimeExports.jsx(
       Primitive.button,
@@ -39387,7 +40098,7 @@ var DialogTrigger$1 = reactExports.forwardRef(
         "aria-haspopup": "dialog",
         "aria-expanded": context.open,
         "aria-controls": context.contentId,
-        "data-state": getState$1(context.open),
+        "data-state": getState$2(context.open),
         ...triggerProps,
         ref: composedTriggerRef,
         onClick: composeEventHandlers(props.onClick, context.onOpenToggle)
@@ -39395,17 +40106,17 @@ var DialogTrigger$1 = reactExports.forwardRef(
     );
   }
 );
-DialogTrigger$1.displayName = TRIGGER_NAME$1;
-var PORTAL_NAME = "DialogPortal";
-var [PortalProvider, usePortalContext] = createDialogContext(PORTAL_NAME, {
+DialogTrigger$1.displayName = TRIGGER_NAME$2;
+var PORTAL_NAME$1 = "DialogPortal";
+var [PortalProvider, usePortalContext] = createDialogContext(PORTAL_NAME$1, {
   forceMount: void 0
 });
 var DialogPortal$1 = (props) => {
   const { __scopeDialog, forceMount, children, container } = props;
-  const context = useDialogContext(PORTAL_NAME, __scopeDialog);
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(PortalProvider, { scope: __scopeDialog, forceMount, children: reactExports.Children.map(children, (child) => /* @__PURE__ */ jsxRuntimeExports.jsx(Presence, { present: forceMount || context.open, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Portal$1, { asChild: true, container, children: child }) })) });
+  const context = useDialogContext(PORTAL_NAME$1, __scopeDialog);
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(PortalProvider, { scope: __scopeDialog, forceMount, children: reactExports.Children.map(children, (child) => /* @__PURE__ */ jsxRuntimeExports.jsx(Presence, { present: forceMount || context.open, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Portal$2, { asChild: true, container, children: child }) })) });
 };
-DialogPortal$1.displayName = PORTAL_NAME;
+DialogPortal$1.displayName = PORTAL_NAME$1;
 var OVERLAY_NAME = "DialogOverlay";
 var DialogOverlay$1 = reactExports.forwardRef(
   (props, forwardedRef) => {
@@ -39416,7 +40127,7 @@ var DialogOverlay$1 = reactExports.forwardRef(
   }
 );
 DialogOverlay$1.displayName = OVERLAY_NAME;
-var Slot = /* @__PURE__ */ createSlot("DialogOverlay.RemoveScroll");
+var Slot$1 = /* @__PURE__ */ createSlot("DialogOverlay.RemoveScroll");
 var DialogOverlayImpl = reactExports.forwardRef(
   (props, forwardedRef) => {
     const { __scopeDialog, ...overlayProps } = props;
@@ -39424,10 +40135,10 @@ var DialogOverlayImpl = reactExports.forwardRef(
     return (
       // Make sure `Content` is scrollable even when it doesn't live inside `RemoveScroll`
       // ie. when `Overlay` and `Content` are siblings
-      /* @__PURE__ */ jsxRuntimeExports.jsx(ReactRemoveScroll, { as: Slot, allowPinchZoom: true, shards: [context.contentRef], children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+      /* @__PURE__ */ jsxRuntimeExports.jsx(ReactRemoveScroll, { as: Slot$1, allowPinchZoom: true, shards: [context.contentRef], children: /* @__PURE__ */ jsxRuntimeExports.jsx(
         Primitive.div,
         {
-          "data-state": getState$1(context.open),
+          "data-state": getState$2(context.open),
           ...overlayProps,
           ref: forwardedRef,
           style: { pointerEvents: "auto", ...overlayProps.style }
@@ -39436,19 +40147,19 @@ var DialogOverlayImpl = reactExports.forwardRef(
     );
   }
 );
-var CONTENT_NAME = "DialogContent";
+var CONTENT_NAME$2 = "DialogContent";
 var DialogContent$1 = reactExports.forwardRef(
   (props, forwardedRef) => {
-    const portalContext = usePortalContext(CONTENT_NAME, props.__scopeDialog);
+    const portalContext = usePortalContext(CONTENT_NAME$2, props.__scopeDialog);
     const { forceMount = portalContext.forceMount, ...contentProps } = props;
-    const context = useDialogContext(CONTENT_NAME, props.__scopeDialog);
+    const context = useDialogContext(CONTENT_NAME$2, props.__scopeDialog);
     return /* @__PURE__ */ jsxRuntimeExports.jsx(Presence, { present: forceMount || context.open, children: context.modal ? /* @__PURE__ */ jsxRuntimeExports.jsx(DialogContentModal, { ...contentProps, ref: forwardedRef }) : /* @__PURE__ */ jsxRuntimeExports.jsx(DialogContentNonModal, { ...contentProps, ref: forwardedRef }) });
   }
 );
-DialogContent$1.displayName = CONTENT_NAME;
+DialogContent$1.displayName = CONTENT_NAME$2;
 var DialogContentModal = reactExports.forwardRef(
   (props, forwardedRef) => {
-    const context = useDialogContext(CONTENT_NAME, props.__scopeDialog);
+    const context = useDialogContext(CONTENT_NAME$2, props.__scopeDialog);
     const contentRef = reactExports.useRef(null);
     const composedRefs = useComposedRefs(forwardedRef, context.contentRef, contentRef);
     reactExports.useEffect(() => {
@@ -39483,7 +40194,7 @@ var DialogContentModal = reactExports.forwardRef(
 );
 var DialogContentNonModal = reactExports.forwardRef(
   (props, forwardedRef) => {
-    const context = useDialogContext(CONTENT_NAME, props.__scopeDialog);
+    const context = useDialogContext(CONTENT_NAME$2, props.__scopeDialog);
     const hasInteractedOutsideRef = reactExports.useRef(false);
     const hasPointerDownOutsideRef = reactExports.useRef(false);
     return /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -39526,7 +40237,7 @@ var DialogContentNonModal = reactExports.forwardRef(
 var DialogContentImpl = reactExports.forwardRef(
   (props, forwardedRef) => {
     const { __scopeDialog, trapFocus, onOpenAutoFocus, onCloseAutoFocus, ...contentProps } = props;
-    const context = useDialogContext(CONTENT_NAME, __scopeDialog);
+    const context = useDialogContext(CONTENT_NAME$2, __scopeDialog);
     const contentRef = reactExports.useRef(null);
     const composedRefs = useComposedRefs(forwardedRef, contentRef);
     useFocusGuards();
@@ -39546,7 +40257,7 @@ var DialogContentImpl = reactExports.forwardRef(
               id: context.contentId,
               "aria-describedby": context.descriptionId,
               "aria-labelledby": context.titleId,
-              "data-state": getState$1(context.open),
+              "data-state": getState$2(context.open),
               ...contentProps,
               ref: composedRefs,
               onDismiss: () => context.onOpenChange(false)
@@ -39596,12 +40307,12 @@ var DialogClose = reactExports.forwardRef(
   }
 );
 DialogClose.displayName = CLOSE_NAME;
-function getState$1(open) {
+function getState$2(open) {
   return open ? "open" : "closed";
 }
 var TITLE_WARNING_NAME = "DialogTitleWarning";
 var [WarningProvider, useWarningContext] = createContext2(TITLE_WARNING_NAME, {
-  contentName: CONTENT_NAME,
+  contentName: CONTENT_NAME$2,
   titleName: TITLE_NAME,
   docsSlug: "dialog"
 });
@@ -39634,11 +40345,11 @@ var DescriptionWarning = ({ contentRef, descriptionId }) => {
   }, [MESSAGE, contentRef, descriptionId]);
   return null;
 };
-var Root = Dialog$1;
-var Trigger = DialogTrigger$1;
-var Portal = DialogPortal$1;
+var Root$2 = Dialog$1;
+var Trigger$1 = DialogTrigger$1;
+var Portal$1 = DialogPortal$1;
 var Overlay = DialogOverlay$1;
-var Content = DialogContent$1;
+var Content$1 = DialogContent$1;
 var Title = DialogTitle$1;
 var Description = DialogDescription$1;
 var Close = DialogClose;
@@ -42120,17 +42831,17 @@ function cn$1(...inputs) {
 function Dialog({
   ...props
 }) {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(Root, { "data-slot": "dialog", ...props });
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(Root$2, { "data-slot": "dialog", ...props });
 }
 function DialogTrigger({
   ...props
 }) {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(Trigger, { "data-slot": "dialog-trigger", ...props });
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(Trigger$1, { "data-slot": "dialog-trigger", ...props });
 }
 function DialogPortal({
   ...props
 }) {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(Portal, { "data-slot": "dialog-portal", ...props });
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(Portal$1, { "data-slot": "dialog-portal", ...props });
 }
 function DialogOverlay({
   className,
@@ -42157,7 +42868,7 @@ function DialogContent({
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(DialogPortal, { "data-slot": "dialog-portal", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(DialogOverlay, {}),
     /* @__PURE__ */ jsxRuntimeExports.jsxs(
-      Content,
+      Content$1,
       {
         "data-slot": "dialog-content",
         className: cn$1(
@@ -42329,6 +43040,166 @@ function useProducts() {
     },
     enabled: !!actor && !isFetching
   });
+}
+function useCategories() {
+  const { actor, isFetching } = useActor(createActor$2);
+  return useQuery({
+    queryKey: ["categories"],
+    queryFn: async () => {
+      if (!actor) return [];
+      return actor.listCategories();
+    },
+    enabled: !!actor && !isFetching
+  });
+}
+function useCreateCategory() {
+  const { actor, isFetching } = useActor(createActor$2);
+  const { isActorReady } = useActorReady();
+  const queryClient2 = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: async (args) => {
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again"
+        );
+      if (!isActorReady)
+        throw new Error(
+          "Session not ready — please wait a moment and try again"
+        );
+      const result = await actor.createCategory(args.name, args.description);
+      if (result.__kind__ === "err") throw result.err;
+      return result.ok;
+    },
+    onSuccess: () => {
+      void queryClient2.invalidateQueries({ queryKey: ["categories"] });
+    }
+  });
+  return {
+    ...mutation,
+    mutateAsync: (name, description) => mutation.mutateAsync({ name, description })
+  };
+}
+function useUpdateCategory() {
+  const { actor, isFetching } = useActor(createActor$2);
+  const { isActorReady } = useActorReady();
+  const queryClient2 = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: async (args) => {
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again"
+        );
+      if (!isActorReady)
+        throw new Error(
+          "Session not ready — please wait a moment and try again"
+        );
+      const result = await actor.updateCategory(
+        args.id,
+        args.name,
+        args.description,
+        args.sortOrder,
+        args.active,
+        args.showWhenEmpty
+      );
+      if (result.__kind__ === "err") throw result.err;
+      return result.ok;
+    },
+    onSuccess: () => {
+      void queryClient2.invalidateQueries({ queryKey: ["categories"] });
+    }
+  });
+  return {
+    ...mutation,
+    mutateAsync: (id, name, description, sortOrder, active, showWhenEmpty) => mutation.mutateAsync({
+      id,
+      name,
+      description,
+      sortOrder,
+      active,
+      showWhenEmpty
+    })
+  };
+}
+function useReorderCategories() {
+  const { actor, isFetching } = useActor(createActor$2);
+  const { isActorReady } = useActorReady();
+  const queryClient2 = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: async (args) => {
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again"
+        );
+      if (!isActorReady)
+        throw new Error(
+          "Session not ready — please wait a moment and try again"
+        );
+      const result = await actor.reorderCategories(args.orderedIds);
+      if (result.__kind__ === "err") throw result.err;
+    },
+    onSuccess: () => {
+      void queryClient2.invalidateQueries({ queryKey: ["categories"] });
+    }
+  });
+  return {
+    ...mutation,
+    mutateAsync: (orderedIds) => mutation.mutateAsync({ orderedIds })
+  };
+}
+function useDeleteCategory() {
+  const { actor, isFetching } = useActor(createActor$2);
+  const { isActorReady } = useActorReady();
+  const queryClient2 = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: async (args) => {
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again"
+        );
+      if (!isActorReady)
+        throw new Error(
+          "Session not ready — please wait a moment and try again"
+        );
+      const result = await actor.deleteCategory(args.id);
+      if (result.__kind__ === "err") throw result.err;
+    },
+    onSuccess: () => {
+      void queryClient2.invalidateQueries({ queryKey: ["categories"] });
+      void queryClient2.invalidateQueries({ queryKey: ["products"] });
+    }
+  });
+  return {
+    ...mutation,
+    mutateAsync: (id) => mutation.mutateAsync({ id })
+  };
+}
+function useReassignProducts() {
+  const { actor, isFetching } = useActor(createActor$2);
+  const { isActorReady } = useActorReady();
+  const queryClient2 = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: async (args) => {
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again"
+        );
+      if (!isActorReady)
+        throw new Error(
+          "Session not ready — please wait a moment and try again"
+        );
+      const result = await actor.reassignProducts(args.fromSlug, args.toSlug);
+      if (result.__kind__ === "err") throw result.err;
+      return result.ok;
+    },
+    onSuccess: () => {
+      void queryClient2.invalidateQueries({ queryKey: ["categories"] });
+      void queryClient2.invalidateQueries({ queryKey: ["products"] });
+    }
+  });
+  return {
+    ...mutation,
+    mutateAsync: (fromSlug, toSlug) => mutation.mutateAsync({ fromSlug, toSlug })
+  };
 }
 function useProduct(slugOrId) {
   const { actor, isFetching } = useActor(createActor$2);
@@ -42846,7 +43717,7 @@ function useGetMinimumOrder() {
   return useQuery({
     queryKey: ["minimumOrder"],
     queryFn: async () => {
-      if (!actor) return 25n;
+      if (!actor) return 25;
       return actor.getMinimumOrder();
     },
     enabled: !!actor && !isFetching
@@ -43158,6 +44029,239 @@ function useListSubmissions() {
     enabled: !!actor && !isFetching
   });
 }
+function useStartUpload() {
+  const { actor, isFetching } = useActor(createActor$2);
+  const { isActorReady } = useActorReady();
+  return useMutation({
+    mutationFn: async (args) => {
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again"
+        );
+      if (!isActorReady)
+        throw new Error(
+          "Session not ready — please wait a moment and try again"
+        );
+      const result = await actor.startUpload(args.contentType, args.totalSize);
+      if (result.__kind__ === "err") throw result.err;
+      return result.ok;
+    }
+  });
+}
+function useUploadChunk() {
+  const { actor, isFetching } = useActor(createActor$2);
+  const { isActorReady } = useActorReady();
+  return useMutation({
+    mutationFn: async (args) => {
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again"
+        );
+      if (!isActorReady)
+        throw new Error(
+          "Session not ready — please wait a moment and try again"
+        );
+      const result = await actor.uploadChunk(
+        args.uploadId,
+        args.index,
+        args.blob
+      );
+      if (result.__kind__ === "err") throw result.err;
+    }
+  });
+}
+function useFinishUpload() {
+  const { actor, isFetching } = useActor(createActor$2);
+  const { isActorReady } = useActorReady();
+  const queryClient2 = useQueryClient();
+  return useMutation({
+    mutationFn: async (args) => {
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again"
+        );
+      if (!isActorReady)
+        throw new Error(
+          "Session not ready — please wait a moment and try again"
+        );
+      const result = await actor.finishUpload(args.uploadId, args.productId);
+      if (result.__kind__ === "err") throw result.err;
+      return result.ok;
+    },
+    onSuccess: () => {
+      void queryClient2.invalidateQueries({ queryKey: ["products"] });
+      void queryClient2.invalidateQueries({
+        queryKey: ["productImageStorageStats"]
+      });
+    }
+  });
+}
+function useDeleteProductImage() {
+  const { actor, isFetching } = useActor(createActor$2);
+  const { isActorReady } = useActorReady();
+  const queryClient2 = useQueryClient();
+  return useMutation({
+    mutationFn: async (assetId) => {
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again"
+        );
+      if (!isActorReady)
+        throw new Error(
+          "Session not ready — please wait a moment and try again"
+        );
+      const result = await actor.deleteProductImage(assetId);
+      if (result.__kind__ === "err") throw result.err;
+    },
+    onSuccess: () => {
+      void queryClient2.invalidateQueries({ queryKey: ["products"] });
+      void queryClient2.invalidateQueries({
+        queryKey: ["productImageStorageStats"]
+      });
+    }
+  });
+}
+function useGetProductImageStorageStats() {
+  const { actor, isFetching } = useActor(createActor$2);
+  return useQuery({
+    queryKey: ["productImageStorageStats"],
+    queryFn: async () => {
+      if (!actor) return null;
+      return actor.getProductImageStorageStats();
+    },
+    enabled: !!actor && !isFetching
+  });
+}
+const MAX_IMAGE_EDGE = 1200;
+const WEBP_QUALITY = 0.85;
+const UPLOAD_CHUNK_BYTES = 1024 * 1024;
+function uploadErrorMessage(error) {
+  if (error && typeof error === "object") {
+    const record = error;
+    const kind = record.__kind__;
+    if (typeof kind === "string") {
+      switch (kind) {
+        case "unauthorized":
+          return "Your session was not attached — sign in again and retry.";
+        case "notFound":
+          return "The upload session was not found. It may have expired — start a new upload.";
+        case "invalidContentType":
+          return "This file type is not supported. Upload a JPEG, PNG, or WebP image.";
+        case "svgNotAllowed":
+          return "SVG files are not allowed for security reasons. Upload a raster image.";
+        case "tooLarge":
+          return "The image is too large. Compress it further and try again.";
+        case "sizeMismatch":
+          return "The uploaded size did not match the declared size. Start the upload again.";
+        case "magicByteMismatch":
+          return "The file content does not match its declared type. Upload a valid image.";
+        case "tooManyImages":
+          return "This product already has the maximum number of images. Remove one first.";
+        case "chunkOutOfOrder":
+          return "Upload chunks arrived out of order. Start the upload again.";
+        case "uploadExpired":
+          return "The upload session expired before it finished. Start a new upload.";
+        default:
+          return `Upload failed: ${kind}.`;
+      }
+    }
+  }
+  if (error instanceof Error) {
+    if (/anonymous|not attached|session/i.test(error.message)) {
+      return "Your session was not attached — sign in again and retry.";
+    }
+    return error.message;
+  }
+  return "Upload failed. Please try again.";
+}
+async function resizeAndCompressImage(file) {
+  const originalBytes = file.size;
+  const bitmap = await createImageBitmap(file);
+  try {
+    const { width, height } = bitmap;
+    const scale = Math.min(1, MAX_IMAGE_EDGE / Math.max(width, height));
+    const targetWidth = Math.max(1, Math.round(width * scale));
+    const targetHeight = Math.max(1, Math.round(height * scale));
+    const canvas = document.createElement("canvas");
+    canvas.width = targetWidth;
+    canvas.height = targetHeight;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) {
+      throw new Error("Could not create an image canvas in this browser.");
+    }
+    ctx.drawImage(bitmap, 0, 0, targetWidth, targetHeight);
+    const webpSupported = typeof HTMLCanvasElement.prototype.toBlob === "function" && canvas.toDataURL("image/webp").startsWith("data:image/webp");
+    let blob;
+    let mimeType;
+    if (webpSupported) {
+      blob = await canvasToBlob(canvas, "image/webp", WEBP_QUALITY);
+      mimeType = "image/webp";
+    } else {
+      blob = await canvasToBlob(canvas, "image/jpeg", 0.85);
+      mimeType = "image/jpeg";
+    }
+    return {
+      blob,
+      originalBytes,
+      compressedBytes: blob.size,
+      mimeType
+    };
+  } finally {
+    bitmap.close();
+  }
+}
+function canvasToBlob(canvas, type, quality) {
+  return new Promise((resolve, reject) => {
+    canvas.toBlob(
+      (blob) => {
+        if (blob) resolve(blob);
+        else reject(new Error(`Could not encode image as ${type}.`));
+      },
+      type,
+      quality
+    );
+  });
+}
+async function uploadProductImage(args) {
+  const { blob, contentType, productId, methods, onProgress } = args;
+  const totalBytes = blob.size;
+  const started = await methods.startUpload(contentType, BigInt(totalBytes));
+  if (started.__kind__ === "err") {
+    throw uploadErrorMessage(started.err);
+  }
+  const uploadId = started.ok;
+  const bytes = new Uint8Array(await blob.arrayBuffer());
+  let offset2 = 0;
+  let index2 = 0n;
+  while (offset2 < bytes.length) {
+    const end = Math.min(offset2 + UPLOAD_CHUNK_BYTES, bytes.length);
+    const chunk = bytes.slice(offset2, end);
+    const result = await methods.uploadChunk(uploadId, index2, chunk);
+    if (result.__kind__ === "err") {
+      throw uploadErrorMessage(result.err);
+    }
+    offset2 = end;
+    index2 += 1n;
+    onProgress == null ? void 0 : onProgress({
+      bytesUploaded: offset2,
+      totalBytes,
+      percent: totalBytes === 0 ? 100 : offset2 / totalBytes * 100
+    });
+  }
+  const finished = await methods.finishUpload(uploadId, productId);
+  if (finished.__kind__ === "err") {
+    throw uploadErrorMessage(finished.err);
+  }
+  return finished.ok;
+}
+function buildAssetUrl(canisterId, assetId) {
+  return `https://${canisterId}.icp0.io/assets/products/${assetId}`;
+}
+function formatBytes(bytes) {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
 function AdminPanel({
   title,
   actions,
@@ -43208,6 +44312,7 @@ function formatTrillions(balance) {
 function CanisterTab(_props) {
   const { data: cycleBalance, isLoading: cyclesLoading } = useGetCycleBalance();
   const { data: canisterId, isLoading: idLoading } = useGetCanisterId();
+  const { data: storageStats, isError: storageError } = useGetProductImageStorageStats();
   const [copied, setCopied] = reactExports.useState(false);
   const band = reactExports.useMemo(
     () => cycleBalance !== void 0 ? bandFor(cycleBalance) : null,
@@ -43360,55 +44465,4101 @@ function CanisterTab(_props) {
           ]
         }
       )
+    ] }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(AdminPanel, { title: "Product image storage", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-4", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "div",
+        {
+          className: "admin-stat-grid",
+          "data-ocid": "admin.canister.storage_stats",
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              AdminStatCard,
+              {
+                label: "Total bytes",
+                value: storageStats ? formatBytes(Number(storageStats.totalBytes)) : "—",
+                delta: storageStats ? `${storageStats.totalBytes.toLocaleString("en-US")} bytes` : void 0
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              AdminStatCard,
+              {
+                label: "Images",
+                value: storageStats ? storageStats.count.toLocaleString("en-US") : "—"
+              }
+            )
+          ]
+        }
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "p",
+        {
+          className: "text-xs leading-relaxed",
+          style: { color: "var(--muted-foreground)" },
+          children: "Product images are stored in the canister and consume cycles continuously. Every byte held in storage increases the ongoing cycle burn rate, so the balance above drains faster as more images are uploaded."
+        }
+      ),
+      storageError && /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "p",
+        {
+          className: "text-xs",
+          style: { color: "var(--destructive)" },
+          "data-ocid": "admin.canister.storage_error",
+          children: "Could not read product image storage usage."
+        }
+      )
     ] }) })
   ] });
 }
-function formatPrice(value) {
-  const cents = Number(value);
-  return (cents / 100).toLocaleString("en-US", {
-    style: "currency",
-    currency: "USD",
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
+function usePrevious(value) {
+  const ref = reactExports.useRef({ value, previous: value });
+  return reactExports.useMemo(() => {
+    if (ref.current.value !== value) {
+      ref.current.previous = ref.current.value;
+      ref.current.value = value;
+    }
+    return ref.current.previous;
+  }, [value]);
+}
+function useSize(element) {
+  const [size2, setSize] = reactExports.useState(void 0);
+  useLayoutEffect2(() => {
+    if (element) {
+      setSize({ width: element.offsetWidth, height: element.offsetHeight });
+      const resizeObserver = new ResizeObserver((entries) => {
+        if (!Array.isArray(entries)) {
+          return;
+        }
+        if (!entries.length) {
+          return;
+        }
+        const entry = entries[0];
+        let width;
+        let height;
+        if ("borderBoxSize" in entry) {
+          const borderSizeEntry = entry["borderBoxSize"];
+          const borderSize = Array.isArray(borderSizeEntry) ? borderSizeEntry[0] : borderSizeEntry;
+          width = borderSize["inlineSize"];
+          height = borderSize["blockSize"];
+        } else {
+          width = element.offsetWidth;
+          height = element.offsetHeight;
+        }
+        setSize({ width, height });
+      });
+      resizeObserver.observe(element, { box: "border-box" });
+      return () => resizeObserver.unobserve(element);
+    } else {
+      setSize(void 0);
+    }
+  }, [element]);
+  return size2;
+}
+var CHECKBOX_NAME = "Checkbox";
+var [createCheckboxContext] = createContextScope(CHECKBOX_NAME);
+var [CheckboxProviderImpl, useCheckboxContext] = createCheckboxContext(CHECKBOX_NAME);
+function CheckboxProvider(props) {
+  const {
+    __scopeCheckbox,
+    checked: checkedProp,
+    children,
+    defaultChecked,
+    disabled,
+    form,
+    name,
+    onCheckedChange,
+    required,
+    value = "on",
+    // @ts-expect-error
+    internal_do_not_use_render
+  } = props;
+  const [checked, setChecked] = useControllableState({
+    prop: checkedProp,
+    defaultProp: defaultChecked ?? false,
+    onChange: onCheckedChange,
+    caller: CHECKBOX_NAME
   });
+  const [control, setControl] = reactExports.useState(null);
+  const [bubbleInput, setBubbleInput] = reactExports.useState(null);
+  const hasConsumerStoppedPropagationRef = reactExports.useRef(false);
+  const isFormControl = control ? !!form || !!control.closest("form") : (
+    // We set this to true by default so that events bubble to forms without JS (SSR)
+    true
+  );
+  const context = {
+    checked,
+    disabled,
+    setChecked,
+    control,
+    setControl,
+    name,
+    form,
+    value,
+    hasConsumerStoppedPropagationRef,
+    required,
+    defaultChecked: isIndeterminate(defaultChecked) ? false : defaultChecked,
+    isFormControl,
+    bubbleInput,
+    setBubbleInput
+  };
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    CheckboxProviderImpl,
+    {
+      scope: __scopeCheckbox,
+      ...context,
+      children: isFunction(internal_do_not_use_render) ? internal_do_not_use_render(context) : children
+    }
+  );
 }
-function dollarsToCents(input) {
-  const trimmed = input.trim();
-  if (!/^\d+(\.\d{1,2})?$/.test(trimmed)) return null;
-  const [whole, fraction = ""] = trimmed.split(".");
-  const cents = Number(whole) * 100 + Number(fraction.padEnd(2, "0"));
-  return cents;
+var TRIGGER_NAME$1 = "CheckboxTrigger";
+var CheckboxTrigger = reactExports.forwardRef(
+  ({ __scopeCheckbox, onKeyDown, onClick, ...checkboxProps }, forwardedRef) => {
+    const {
+      control,
+      value,
+      disabled,
+      checked,
+      required,
+      setControl,
+      setChecked,
+      hasConsumerStoppedPropagationRef,
+      isFormControl,
+      bubbleInput
+    } = useCheckboxContext(TRIGGER_NAME$1, __scopeCheckbox);
+    const composedRefs = useComposedRefs(forwardedRef, setControl);
+    const initialCheckedStateRef = reactExports.useRef(checked);
+    reactExports.useEffect(() => {
+      const form = control == null ? void 0 : control.form;
+      if (form) {
+        const reset = () => setChecked(initialCheckedStateRef.current);
+        form.addEventListener("reset", reset);
+        return () => form.removeEventListener("reset", reset);
+      }
+    }, [control, setChecked]);
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(
+      Primitive.button,
+      {
+        type: "button",
+        role: "checkbox",
+        "aria-checked": isIndeterminate(checked) ? "mixed" : checked,
+        "aria-required": required,
+        "data-state": getState$1(checked),
+        "data-disabled": disabled ? "" : void 0,
+        disabled,
+        value,
+        ...checkboxProps,
+        ref: composedRefs,
+        onKeyDown: composeEventHandlers(onKeyDown, (event) => {
+          if (event.key === "Enter") event.preventDefault();
+        }),
+        onClick: composeEventHandlers(onClick, (event) => {
+          setChecked((prevChecked) => isIndeterminate(prevChecked) ? true : !prevChecked);
+          if (bubbleInput && isFormControl) {
+            hasConsumerStoppedPropagationRef.current = event.isPropagationStopped();
+            if (!hasConsumerStoppedPropagationRef.current) event.stopPropagation();
+          }
+        })
+      }
+    );
+  }
+);
+CheckboxTrigger.displayName = TRIGGER_NAME$1;
+var Checkbox$1 = reactExports.forwardRef(
+  (props, forwardedRef) => {
+    const {
+      __scopeCheckbox,
+      name,
+      checked,
+      defaultChecked,
+      required,
+      disabled,
+      value,
+      onCheckedChange,
+      form,
+      ...checkboxProps
+    } = props;
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(
+      CheckboxProvider,
+      {
+        __scopeCheckbox,
+        checked,
+        defaultChecked,
+        disabled,
+        required,
+        onCheckedChange,
+        name,
+        form,
+        value,
+        internal_do_not_use_render: ({ isFormControl }) => /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            CheckboxTrigger,
+            {
+              ...checkboxProps,
+              ref: forwardedRef,
+              __scopeCheckbox
+            }
+          ),
+          isFormControl && /* @__PURE__ */ jsxRuntimeExports.jsx(
+            CheckboxBubbleInput,
+            {
+              __scopeCheckbox
+            }
+          )
+        ] })
+      }
+    );
+  }
+);
+Checkbox$1.displayName = CHECKBOX_NAME;
+var INDICATOR_NAME = "CheckboxIndicator";
+var CheckboxIndicator = reactExports.forwardRef(
+  (props, forwardedRef) => {
+    const { __scopeCheckbox, forceMount, ...indicatorProps } = props;
+    const context = useCheckboxContext(INDICATOR_NAME, __scopeCheckbox);
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(
+      Presence,
+      {
+        present: forceMount || isIndeterminate(context.checked) || context.checked === true,
+        children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+          Primitive.span,
+          {
+            "data-state": getState$1(context.checked),
+            "data-disabled": context.disabled ? "" : void 0,
+            ...indicatorProps,
+            ref: forwardedRef,
+            style: { pointerEvents: "none", ...props.style }
+          }
+        )
+      }
+    );
+  }
+);
+CheckboxIndicator.displayName = INDICATOR_NAME;
+var BUBBLE_INPUT_NAME$2 = "CheckboxBubbleInput";
+var CheckboxBubbleInput = reactExports.forwardRef(
+  ({ __scopeCheckbox, ...props }, forwardedRef) => {
+    const {
+      control,
+      hasConsumerStoppedPropagationRef,
+      checked,
+      defaultChecked,
+      required,
+      disabled,
+      name,
+      value,
+      form,
+      bubbleInput,
+      setBubbleInput
+    } = useCheckboxContext(BUBBLE_INPUT_NAME$2, __scopeCheckbox);
+    const composedRefs = useComposedRefs(forwardedRef, setBubbleInput);
+    const prevChecked = usePrevious(checked);
+    const controlSize = useSize(control);
+    reactExports.useEffect(() => {
+      const input = bubbleInput;
+      if (!input) return;
+      const inputProto = window.HTMLInputElement.prototype;
+      const descriptor = Object.getOwnPropertyDescriptor(
+        inputProto,
+        "checked"
+      );
+      const setChecked = descriptor.set;
+      const bubbles = !hasConsumerStoppedPropagationRef.current;
+      if (prevChecked !== checked && setChecked) {
+        const event = new Event("click", { bubbles });
+        input.indeterminate = isIndeterminate(checked);
+        setChecked.call(input, isIndeterminate(checked) ? false : checked);
+        input.dispatchEvent(event);
+      }
+    }, [bubbleInput, prevChecked, checked, hasConsumerStoppedPropagationRef]);
+    const defaultCheckedRef = reactExports.useRef(isIndeterminate(checked) ? false : checked);
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(
+      Primitive.input,
+      {
+        type: "checkbox",
+        "aria-hidden": true,
+        defaultChecked: defaultChecked ?? defaultCheckedRef.current,
+        required,
+        disabled,
+        name,
+        value,
+        form,
+        ...props,
+        tabIndex: -1,
+        ref: composedRefs,
+        style: {
+          ...props.style,
+          ...controlSize,
+          position: "absolute",
+          pointerEvents: "none",
+          opacity: 0,
+          margin: 0,
+          // We transform because the input is absolutely positioned but we have
+          // rendered it **after** the button. This pulls it back to sit on top
+          // of the button.
+          transform: "translateX(-100%)"
+        }
+      }
+    );
+  }
+);
+CheckboxBubbleInput.displayName = BUBBLE_INPUT_NAME$2;
+function isFunction(value) {
+  return typeof value === "function";
 }
-function CopyButton({ text, label, className }) {
-  const [copied, setCopied] = reactExports.useState(false);
-  const timerRef = reactExports.useRef(null);
-  reactExports.useEffect(() => {
-    return () => {
-      if (timerRef.current) clearTimeout(timerRef.current);
+function isIndeterminate(checked) {
+  return checked === "indeterminate";
+}
+function getState$1(checked) {
+  return isIndeterminate(checked) ? "indeterminate" : checked ? "checked" : "unchecked";
+}
+function Checkbox({
+  className,
+  ...props
+}) {
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    Checkbox$1,
+    {
+      "data-slot": "checkbox",
+      className: cn$1(
+        "peer border-input dark:bg-input/30 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground dark:data-[state=checked]:bg-primary data-[state=checked]:border-primary focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive size-4 shrink-0 rounded-[4px] border shadow-xs transition-shadow outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50",
+        className
+      ),
+      ...props,
+      children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+        CheckboxIndicator,
+        {
+          "data-slot": "checkbox-indicator",
+          className: "flex items-center justify-center text-current transition-none",
+          children: /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "size-3.5" })
+        }
+      )
+    }
+  );
+}
+function clamp$1(value, [min2, max2]) {
+  return Math.min(max2, Math.max(min2, value));
+}
+function createCollection(name) {
+  const PROVIDER_NAME = name + "CollectionProvider";
+  const [createCollectionContext, createCollectionScope2] = createContextScope(PROVIDER_NAME);
+  const [CollectionProviderImpl, useCollectionContext] = createCollectionContext(
+    PROVIDER_NAME,
+    { collectionRef: { current: null }, itemMap: /* @__PURE__ */ new Map() }
+  );
+  const CollectionProvider = (props) => {
+    const { scope, children } = props;
+    const ref = React$2.useRef(null);
+    const itemMap = React$2.useRef(/* @__PURE__ */ new Map()).current;
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(CollectionProviderImpl, { scope, itemMap, collectionRef: ref, children });
+  };
+  CollectionProvider.displayName = PROVIDER_NAME;
+  const COLLECTION_SLOT_NAME = name + "CollectionSlot";
+  const CollectionSlotImpl = /* @__PURE__ */ createSlot(COLLECTION_SLOT_NAME);
+  const CollectionSlot = React$2.forwardRef(
+    (props, forwardedRef) => {
+      const { scope, children } = props;
+      const context = useCollectionContext(COLLECTION_SLOT_NAME, scope);
+      const composedRefs = useComposedRefs(forwardedRef, context.collectionRef);
+      return /* @__PURE__ */ jsxRuntimeExports.jsx(CollectionSlotImpl, { ref: composedRefs, children });
+    }
+  );
+  CollectionSlot.displayName = COLLECTION_SLOT_NAME;
+  const ITEM_SLOT_NAME = name + "CollectionItemSlot";
+  const ITEM_DATA_ATTR = "data-radix-collection-item";
+  const CollectionItemSlotImpl = /* @__PURE__ */ createSlot(ITEM_SLOT_NAME);
+  const CollectionItemSlot = React$2.forwardRef(
+    (props, forwardedRef) => {
+      const { scope, children, ...itemData } = props;
+      const ref = React$2.useRef(null);
+      const composedRefs = useComposedRefs(forwardedRef, ref);
+      const context = useCollectionContext(ITEM_SLOT_NAME, scope);
+      React$2.useEffect(() => {
+        context.itemMap.set(ref, { ref, ...itemData });
+        return () => void context.itemMap.delete(ref);
+      });
+      return /* @__PURE__ */ jsxRuntimeExports.jsx(CollectionItemSlotImpl, { ...{ [ITEM_DATA_ATTR]: "" }, ref: composedRefs, children });
+    }
+  );
+  CollectionItemSlot.displayName = ITEM_SLOT_NAME;
+  function useCollection2(scope) {
+    const context = useCollectionContext(name + "CollectionConsumer", scope);
+    const getItems = React$2.useCallback(() => {
+      const collectionNode = context.collectionRef.current;
+      if (!collectionNode) return [];
+      const orderedNodes = Array.from(collectionNode.querySelectorAll(`[${ITEM_DATA_ATTR}]`));
+      const items = Array.from(context.itemMap.values());
+      const orderedItems = items.sort(
+        (a2, b2) => orderedNodes.indexOf(a2.ref.current) - orderedNodes.indexOf(b2.ref.current)
+      );
+      return orderedItems;
+    }, [context.collectionRef, context.itemMap]);
+    return getItems;
+  }
+  return [
+    { Provider: CollectionProvider, Slot: CollectionSlot, ItemSlot: CollectionItemSlot },
+    useCollection2,
+    createCollectionScope2
+  ];
+}
+var DirectionContext = reactExports.createContext(void 0);
+function useDirection(localDir) {
+  const globalDir = reactExports.useContext(DirectionContext);
+  return localDir || globalDir || "ltr";
+}
+const sides = ["top", "right", "bottom", "left"];
+const min = Math.min;
+const max = Math.max;
+const round = Math.round;
+const floor = Math.floor;
+const createCoords = (v2) => ({
+  x: v2,
+  y: v2
+});
+const oppositeSideMap = {
+  left: "right",
+  right: "left",
+  bottom: "top",
+  top: "bottom"
+};
+function clamp(start, value, end) {
+  return max(start, min(value, end));
+}
+function evaluate(value, param) {
+  return typeof value === "function" ? value(param) : value;
+}
+function getSide(placement) {
+  return placement.split("-")[0];
+}
+function getAlignment(placement) {
+  return placement.split("-")[1];
+}
+function getOppositeAxis(axis) {
+  return axis === "x" ? "y" : "x";
+}
+function getAxisLength(axis) {
+  return axis === "y" ? "height" : "width";
+}
+function getSideAxis(placement) {
+  const firstChar = placement[0];
+  return firstChar === "t" || firstChar === "b" ? "y" : "x";
+}
+function getAlignmentAxis(placement) {
+  return getOppositeAxis(getSideAxis(placement));
+}
+function getAlignmentSides(placement, rects, rtl) {
+  if (rtl === void 0) {
+    rtl = false;
+  }
+  const alignment = getAlignment(placement);
+  const alignmentAxis = getAlignmentAxis(placement);
+  const length = getAxisLength(alignmentAxis);
+  let mainAlignmentSide = alignmentAxis === "x" ? alignment === (rtl ? "end" : "start") ? "right" : "left" : alignment === "start" ? "bottom" : "top";
+  if (rects.reference[length] > rects.floating[length]) {
+    mainAlignmentSide = getOppositePlacement(mainAlignmentSide);
+  }
+  return [mainAlignmentSide, getOppositePlacement(mainAlignmentSide)];
+}
+function getExpandedPlacements(placement) {
+  const oppositePlacement = getOppositePlacement(placement);
+  return [getOppositeAlignmentPlacement(placement), oppositePlacement, getOppositeAlignmentPlacement(oppositePlacement)];
+}
+function getOppositeAlignmentPlacement(placement) {
+  return placement.includes("start") ? placement.replace("start", "end") : placement.replace("end", "start");
+}
+const lrPlacement = ["left", "right"];
+const rlPlacement = ["right", "left"];
+const tbPlacement = ["top", "bottom"];
+const btPlacement = ["bottom", "top"];
+function getSideList(side, isStart, rtl) {
+  switch (side) {
+    case "top":
+    case "bottom":
+      if (rtl) return isStart ? rlPlacement : lrPlacement;
+      return isStart ? lrPlacement : rlPlacement;
+    case "left":
+    case "right":
+      return isStart ? tbPlacement : btPlacement;
+    default:
+      return [];
+  }
+}
+function getOppositeAxisPlacements(placement, flipAlignment, direction, rtl) {
+  const alignment = getAlignment(placement);
+  let list = getSideList(getSide(placement), direction === "start", rtl);
+  if (alignment) {
+    list = list.map((side) => side + "-" + alignment);
+    if (flipAlignment) {
+      list = list.concat(list.map(getOppositeAlignmentPlacement));
+    }
+  }
+  return list;
+}
+function getOppositePlacement(placement) {
+  const side = getSide(placement);
+  return oppositeSideMap[side] + placement.slice(side.length);
+}
+function expandPaddingObject(padding) {
+  return {
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    ...padding
+  };
+}
+function getPaddingObject(padding) {
+  return typeof padding !== "number" ? expandPaddingObject(padding) : {
+    top: padding,
+    right: padding,
+    bottom: padding,
+    left: padding
+  };
+}
+function rectToClientRect(rect) {
+  const {
+    x: x2,
+    y: y2,
+    width,
+    height
+  } = rect;
+  return {
+    width,
+    height,
+    top: y2,
+    left: x2,
+    right: x2 + width,
+    bottom: y2 + height,
+    x: x2,
+    y: y2
+  };
+}
+function computeCoordsFromPlacement(_ref, placement, rtl) {
+  let {
+    reference,
+    floating
+  } = _ref;
+  const sideAxis = getSideAxis(placement);
+  const alignmentAxis = getAlignmentAxis(placement);
+  const alignLength = getAxisLength(alignmentAxis);
+  const side = getSide(placement);
+  const isVertical = sideAxis === "y";
+  const commonX = reference.x + reference.width / 2 - floating.width / 2;
+  const commonY = reference.y + reference.height / 2 - floating.height / 2;
+  const commonAlign = reference[alignLength] / 2 - floating[alignLength] / 2;
+  let coords;
+  switch (side) {
+    case "top":
+      coords = {
+        x: commonX,
+        y: reference.y - floating.height
+      };
+      break;
+    case "bottom":
+      coords = {
+        x: commonX,
+        y: reference.y + reference.height
+      };
+      break;
+    case "right":
+      coords = {
+        x: reference.x + reference.width,
+        y: commonY
+      };
+      break;
+    case "left":
+      coords = {
+        x: reference.x - floating.width,
+        y: commonY
+      };
+      break;
+    default:
+      coords = {
+        x: reference.x,
+        y: reference.y
+      };
+  }
+  switch (getAlignment(placement)) {
+    case "start":
+      coords[alignmentAxis] -= commonAlign * (rtl && isVertical ? -1 : 1);
+      break;
+    case "end":
+      coords[alignmentAxis] += commonAlign * (rtl && isVertical ? -1 : 1);
+      break;
+  }
+  return coords;
+}
+async function detectOverflow(state, options) {
+  var _await$platform$isEle;
+  if (options === void 0) {
+    options = {};
+  }
+  const {
+    x: x2,
+    y: y2,
+    platform: platform2,
+    rects,
+    elements,
+    strategy
+  } = state;
+  const {
+    boundary = "clippingAncestors",
+    rootBoundary = "viewport",
+    elementContext = "floating",
+    altBoundary = false,
+    padding = 0
+  } = evaluate(options, state);
+  const paddingObject = getPaddingObject(padding);
+  const altContext = elementContext === "floating" ? "reference" : "floating";
+  const element = elements[altBoundary ? altContext : elementContext];
+  const clippingClientRect = rectToClientRect(await platform2.getClippingRect({
+    element: ((_await$platform$isEle = await (platform2.isElement == null ? void 0 : platform2.isElement(element))) != null ? _await$platform$isEle : true) ? element : element.contextElement || await (platform2.getDocumentElement == null ? void 0 : platform2.getDocumentElement(elements.floating)),
+    boundary,
+    rootBoundary,
+    strategy
+  }));
+  const rect = elementContext === "floating" ? {
+    x: x2,
+    y: y2,
+    width: rects.floating.width,
+    height: rects.floating.height
+  } : rects.reference;
+  const offsetParent = await (platform2.getOffsetParent == null ? void 0 : platform2.getOffsetParent(elements.floating));
+  const offsetScale = await (platform2.isElement == null ? void 0 : platform2.isElement(offsetParent)) ? await (platform2.getScale == null ? void 0 : platform2.getScale(offsetParent)) || {
+    x: 1,
+    y: 1
+  } : {
+    x: 1,
+    y: 1
+  };
+  const elementClientRect = rectToClientRect(platform2.convertOffsetParentRelativeRectToViewportRelativeRect ? await platform2.convertOffsetParentRelativeRectToViewportRelativeRect({
+    elements,
+    rect,
+    offsetParent,
+    strategy
+  }) : rect);
+  return {
+    top: (clippingClientRect.top - elementClientRect.top + paddingObject.top) / offsetScale.y,
+    bottom: (elementClientRect.bottom - clippingClientRect.bottom + paddingObject.bottom) / offsetScale.y,
+    left: (clippingClientRect.left - elementClientRect.left + paddingObject.left) / offsetScale.x,
+    right: (elementClientRect.right - clippingClientRect.right + paddingObject.right) / offsetScale.x
+  };
+}
+const MAX_RESET_COUNT = 50;
+const computePosition$1 = async (reference, floating, config) => {
+  const {
+    placement = "bottom",
+    strategy = "absolute",
+    middleware = [],
+    platform: platform2
+  } = config;
+  const platformWithDetectOverflow = platform2.detectOverflow ? platform2 : {
+    ...platform2,
+    detectOverflow
+  };
+  const rtl = await (platform2.isRTL == null ? void 0 : platform2.isRTL(floating));
+  let rects = await platform2.getElementRects({
+    reference,
+    floating,
+    strategy
+  });
+  let {
+    x: x2,
+    y: y2
+  } = computeCoordsFromPlacement(rects, placement, rtl);
+  let statefulPlacement = placement;
+  let resetCount = 0;
+  const middlewareData = {};
+  for (let i = 0; i < middleware.length; i++) {
+    const currentMiddleware = middleware[i];
+    if (!currentMiddleware) {
+      continue;
+    }
+    const {
+      name,
+      fn: fn2
+    } = currentMiddleware;
+    const {
+      x: nextX,
+      y: nextY,
+      data,
+      reset
+    } = await fn2({
+      x: x2,
+      y: y2,
+      initialPlacement: placement,
+      placement: statefulPlacement,
+      strategy,
+      middlewareData,
+      rects,
+      platform: platformWithDetectOverflow,
+      elements: {
+        reference,
+        floating
+      }
+    });
+    x2 = nextX != null ? nextX : x2;
+    y2 = nextY != null ? nextY : y2;
+    middlewareData[name] = {
+      ...middlewareData[name],
+      ...data
     };
-  }, []);
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(text);
-      setCopied(true);
-      if (timerRef.current) clearTimeout(timerRef.current);
-      timerRef.current = setTimeout(() => setCopied(false), 1800);
-    } catch (error) {
-      console.error("[copy] Clipboard write failed (ERR-CHK-005)", error);
+    if (reset && resetCount < MAX_RESET_COUNT) {
+      resetCount++;
+      if (typeof reset === "object") {
+        if (reset.placement) {
+          statefulPlacement = reset.placement;
+        }
+        if (reset.rects) {
+          rects = reset.rects === true ? await platform2.getElementRects({
+            reference,
+            floating,
+            strategy
+          }) : reset.rects;
+        }
+        ({
+          x: x2,
+          y: y2
+        } = computeCoordsFromPlacement(rects, statefulPlacement, rtl));
+      }
+      i = -1;
+    }
+  }
+  return {
+    x: x2,
+    y: y2,
+    placement: statefulPlacement,
+    strategy,
+    middlewareData
+  };
+};
+const arrow$3 = (options) => ({
+  name: "arrow",
+  options,
+  async fn(state) {
+    const {
+      x: x2,
+      y: y2,
+      placement,
+      rects,
+      platform: platform2,
+      elements,
+      middlewareData
+    } = state;
+    const {
+      element,
+      padding = 0
+    } = evaluate(options, state) || {};
+    if (element == null) {
+      return {};
+    }
+    const paddingObject = getPaddingObject(padding);
+    const coords = {
+      x: x2,
+      y: y2
+    };
+    const axis = getAlignmentAxis(placement);
+    const length = getAxisLength(axis);
+    const arrowDimensions = await platform2.getDimensions(element);
+    const isYAxis = axis === "y";
+    const minProp = isYAxis ? "top" : "left";
+    const maxProp = isYAxis ? "bottom" : "right";
+    const clientProp = isYAxis ? "clientHeight" : "clientWidth";
+    const endDiff = rects.reference[length] + rects.reference[axis] - coords[axis] - rects.floating[length];
+    const startDiff = coords[axis] - rects.reference[axis];
+    const arrowOffsetParent = await (platform2.getOffsetParent == null ? void 0 : platform2.getOffsetParent(element));
+    let clientSize = arrowOffsetParent ? arrowOffsetParent[clientProp] : 0;
+    if (!clientSize || !await (platform2.isElement == null ? void 0 : platform2.isElement(arrowOffsetParent))) {
+      clientSize = elements.floating[clientProp] || rects.floating[length];
+    }
+    const centerToReference = endDiff / 2 - startDiff / 2;
+    const largestPossiblePadding = clientSize / 2 - arrowDimensions[length] / 2 - 1;
+    const minPadding = min(paddingObject[minProp], largestPossiblePadding);
+    const maxPadding = min(paddingObject[maxProp], largestPossiblePadding);
+    const min$1 = minPadding;
+    const max2 = clientSize - arrowDimensions[length] - maxPadding;
+    const center = clientSize / 2 - arrowDimensions[length] / 2 + centerToReference;
+    const offset2 = clamp(min$1, center, max2);
+    const shouldAddOffset = !middlewareData.arrow && getAlignment(placement) != null && center !== offset2 && rects.reference[length] / 2 - (center < min$1 ? minPadding : maxPadding) - arrowDimensions[length] / 2 < 0;
+    const alignmentOffset = shouldAddOffset ? center < min$1 ? center - min$1 : center - max2 : 0;
+    return {
+      [axis]: coords[axis] + alignmentOffset,
+      data: {
+        [axis]: offset2,
+        centerOffset: center - offset2 - alignmentOffset,
+        ...shouldAddOffset && {
+          alignmentOffset
+        }
+      },
+      reset: shouldAddOffset
+    };
+  }
+});
+const flip$2 = function(options) {
+  if (options === void 0) {
+    options = {};
+  }
+  return {
+    name: "flip",
+    options,
+    async fn(state) {
+      var _middlewareData$arrow, _middlewareData$flip;
+      const {
+        placement,
+        middlewareData,
+        rects,
+        initialPlacement,
+        platform: platform2,
+        elements
+      } = state;
+      const {
+        mainAxis: checkMainAxis = true,
+        crossAxis: checkCrossAxis = true,
+        fallbackPlacements: specifiedFallbackPlacements,
+        fallbackStrategy = "bestFit",
+        fallbackAxisSideDirection = "none",
+        flipAlignment = true,
+        ...detectOverflowOptions
+      } = evaluate(options, state);
+      if ((_middlewareData$arrow = middlewareData.arrow) != null && _middlewareData$arrow.alignmentOffset) {
+        return {};
+      }
+      const side = getSide(placement);
+      const initialSideAxis = getSideAxis(initialPlacement);
+      const isBasePlacement = getSide(initialPlacement) === initialPlacement;
+      const rtl = await (platform2.isRTL == null ? void 0 : platform2.isRTL(elements.floating));
+      const fallbackPlacements = specifiedFallbackPlacements || (isBasePlacement || !flipAlignment ? [getOppositePlacement(initialPlacement)] : getExpandedPlacements(initialPlacement));
+      const hasFallbackAxisSideDirection = fallbackAxisSideDirection !== "none";
+      if (!specifiedFallbackPlacements && hasFallbackAxisSideDirection) {
+        fallbackPlacements.push(...getOppositeAxisPlacements(initialPlacement, flipAlignment, fallbackAxisSideDirection, rtl));
+      }
+      const placements = [initialPlacement, ...fallbackPlacements];
+      const overflow = await platform2.detectOverflow(state, detectOverflowOptions);
+      const overflows = [];
+      let overflowsData = ((_middlewareData$flip = middlewareData.flip) == null ? void 0 : _middlewareData$flip.overflows) || [];
+      if (checkMainAxis) {
+        overflows.push(overflow[side]);
+      }
+      if (checkCrossAxis) {
+        const sides2 = getAlignmentSides(placement, rects, rtl);
+        overflows.push(overflow[sides2[0]], overflow[sides2[1]]);
+      }
+      overflowsData = [...overflowsData, {
+        placement,
+        overflows
+      }];
+      if (!overflows.every((side2) => side2 <= 0)) {
+        var _middlewareData$flip2, _overflowsData$filter;
+        const nextIndex = (((_middlewareData$flip2 = middlewareData.flip) == null ? void 0 : _middlewareData$flip2.index) || 0) + 1;
+        const nextPlacement = placements[nextIndex];
+        if (nextPlacement) {
+          const ignoreCrossAxisOverflow = checkCrossAxis === "alignment" ? initialSideAxis !== getSideAxis(nextPlacement) : false;
+          if (!ignoreCrossAxisOverflow || // We leave the current main axis only if every placement on that axis
+          // overflows the main axis.
+          overflowsData.every((d2) => getSideAxis(d2.placement) === initialSideAxis ? d2.overflows[0] > 0 : true)) {
+            return {
+              data: {
+                index: nextIndex,
+                overflows: overflowsData
+              },
+              reset: {
+                placement: nextPlacement
+              }
+            };
+          }
+        }
+        let resetPlacement = (_overflowsData$filter = overflowsData.filter((d2) => d2.overflows[0] <= 0).sort((a2, b2) => a2.overflows[1] - b2.overflows[1])[0]) == null ? void 0 : _overflowsData$filter.placement;
+        if (!resetPlacement) {
+          switch (fallbackStrategy) {
+            case "bestFit": {
+              var _overflowsData$filter2;
+              const placement2 = (_overflowsData$filter2 = overflowsData.filter((d2) => {
+                if (hasFallbackAxisSideDirection) {
+                  const currentSideAxis = getSideAxis(d2.placement);
+                  return currentSideAxis === initialSideAxis || // Create a bias to the `y` side axis due to horizontal
+                  // reading directions favoring greater width.
+                  currentSideAxis === "y";
+                }
+                return true;
+              }).map((d2) => [d2.placement, d2.overflows.filter((overflow2) => overflow2 > 0).reduce((acc, overflow2) => acc + overflow2, 0)]).sort((a2, b2) => a2[1] - b2[1])[0]) == null ? void 0 : _overflowsData$filter2[0];
+              if (placement2) {
+                resetPlacement = placement2;
+              }
+              break;
+            }
+            case "initialPlacement":
+              resetPlacement = initialPlacement;
+              break;
+          }
+        }
+        if (placement !== resetPlacement) {
+          return {
+            reset: {
+              placement: resetPlacement
+            }
+          };
+        }
+      }
+      return {};
     }
   };
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs(
-    "button",
+};
+function getSideOffsets(overflow, rect) {
+  return {
+    top: overflow.top - rect.height,
+    right: overflow.right - rect.width,
+    bottom: overflow.bottom - rect.height,
+    left: overflow.left - rect.width
+  };
+}
+function isAnySideFullyClipped(overflow) {
+  return sides.some((side) => overflow[side] >= 0);
+}
+const hide$2 = function(options) {
+  if (options === void 0) {
+    options = {};
+  }
+  return {
+    name: "hide",
+    options,
+    async fn(state) {
+      const {
+        rects,
+        platform: platform2
+      } = state;
+      const {
+        strategy = "referenceHidden",
+        ...detectOverflowOptions
+      } = evaluate(options, state);
+      switch (strategy) {
+        case "referenceHidden": {
+          const overflow = await platform2.detectOverflow(state, {
+            ...detectOverflowOptions,
+            elementContext: "reference"
+          });
+          const offsets = getSideOffsets(overflow, rects.reference);
+          return {
+            data: {
+              referenceHiddenOffsets: offsets,
+              referenceHidden: isAnySideFullyClipped(offsets)
+            }
+          };
+        }
+        case "escaped": {
+          const overflow = await platform2.detectOverflow(state, {
+            ...detectOverflowOptions,
+            altBoundary: true
+          });
+          const offsets = getSideOffsets(overflow, rects.floating);
+          return {
+            data: {
+              escapedOffsets: offsets,
+              escaped: isAnySideFullyClipped(offsets)
+            }
+          };
+        }
+        default: {
+          return {};
+        }
+      }
+    }
+  };
+};
+const originSides = /* @__PURE__ */ new Set(["left", "top"]);
+async function convertValueToCoords(state, options) {
+  const {
+    placement,
+    platform: platform2,
+    elements
+  } = state;
+  const rtl = await (platform2.isRTL == null ? void 0 : platform2.isRTL(elements.floating));
+  const side = getSide(placement);
+  const alignment = getAlignment(placement);
+  const isVertical = getSideAxis(placement) === "y";
+  const mainAxisMulti = originSides.has(side) ? -1 : 1;
+  const crossAxisMulti = rtl && isVertical ? -1 : 1;
+  const rawValue = evaluate(options, state);
+  let {
+    mainAxis,
+    crossAxis,
+    alignmentAxis
+  } = typeof rawValue === "number" ? {
+    mainAxis: rawValue,
+    crossAxis: 0,
+    alignmentAxis: null
+  } : {
+    mainAxis: rawValue.mainAxis || 0,
+    crossAxis: rawValue.crossAxis || 0,
+    alignmentAxis: rawValue.alignmentAxis
+  };
+  if (alignment && typeof alignmentAxis === "number") {
+    crossAxis = alignment === "end" ? alignmentAxis * -1 : alignmentAxis;
+  }
+  return isVertical ? {
+    x: crossAxis * crossAxisMulti,
+    y: mainAxis * mainAxisMulti
+  } : {
+    x: mainAxis * mainAxisMulti,
+    y: crossAxis * crossAxisMulti
+  };
+}
+const offset$2 = function(options) {
+  if (options === void 0) {
+    options = 0;
+  }
+  return {
+    name: "offset",
+    options,
+    async fn(state) {
+      var _middlewareData$offse, _middlewareData$arrow;
+      const {
+        x: x2,
+        y: y2,
+        placement,
+        middlewareData
+      } = state;
+      const diffCoords = await convertValueToCoords(state, options);
+      if (placement === ((_middlewareData$offse = middlewareData.offset) == null ? void 0 : _middlewareData$offse.placement) && (_middlewareData$arrow = middlewareData.arrow) != null && _middlewareData$arrow.alignmentOffset) {
+        return {};
+      }
+      return {
+        x: x2 + diffCoords.x,
+        y: y2 + diffCoords.y,
+        data: {
+          ...diffCoords,
+          placement
+        }
+      };
+    }
+  };
+};
+const shift$2 = function(options) {
+  if (options === void 0) {
+    options = {};
+  }
+  return {
+    name: "shift",
+    options,
+    async fn(state) {
+      const {
+        x: x2,
+        y: y2,
+        placement,
+        platform: platform2
+      } = state;
+      const {
+        mainAxis: checkMainAxis = true,
+        crossAxis: checkCrossAxis = false,
+        limiter = {
+          fn: (_ref) => {
+            let {
+              x: x3,
+              y: y3
+            } = _ref;
+            return {
+              x: x3,
+              y: y3
+            };
+          }
+        },
+        ...detectOverflowOptions
+      } = evaluate(options, state);
+      const coords = {
+        x: x2,
+        y: y2
+      };
+      const overflow = await platform2.detectOverflow(state, detectOverflowOptions);
+      const crossAxis = getSideAxis(getSide(placement));
+      const mainAxis = getOppositeAxis(crossAxis);
+      let mainAxisCoord = coords[mainAxis];
+      let crossAxisCoord = coords[crossAxis];
+      if (checkMainAxis) {
+        const minSide = mainAxis === "y" ? "top" : "left";
+        const maxSide = mainAxis === "y" ? "bottom" : "right";
+        const min2 = mainAxisCoord + overflow[minSide];
+        const max2 = mainAxisCoord - overflow[maxSide];
+        mainAxisCoord = clamp(min2, mainAxisCoord, max2);
+      }
+      if (checkCrossAxis) {
+        const minSide = crossAxis === "y" ? "top" : "left";
+        const maxSide = crossAxis === "y" ? "bottom" : "right";
+        const min2 = crossAxisCoord + overflow[minSide];
+        const max2 = crossAxisCoord - overflow[maxSide];
+        crossAxisCoord = clamp(min2, crossAxisCoord, max2);
+      }
+      const limitedCoords = limiter.fn({
+        ...state,
+        [mainAxis]: mainAxisCoord,
+        [crossAxis]: crossAxisCoord
+      });
+      return {
+        ...limitedCoords,
+        data: {
+          x: limitedCoords.x - x2,
+          y: limitedCoords.y - y2,
+          enabled: {
+            [mainAxis]: checkMainAxis,
+            [crossAxis]: checkCrossAxis
+          }
+        }
+      };
+    }
+  };
+};
+const limitShift$2 = function(options) {
+  if (options === void 0) {
+    options = {};
+  }
+  return {
+    options,
+    fn(state) {
+      const {
+        x: x2,
+        y: y2,
+        placement,
+        rects,
+        middlewareData
+      } = state;
+      const {
+        offset: offset2 = 0,
+        mainAxis: checkMainAxis = true,
+        crossAxis: checkCrossAxis = true
+      } = evaluate(options, state);
+      const coords = {
+        x: x2,
+        y: y2
+      };
+      const crossAxis = getSideAxis(placement);
+      const mainAxis = getOppositeAxis(crossAxis);
+      let mainAxisCoord = coords[mainAxis];
+      let crossAxisCoord = coords[crossAxis];
+      const rawOffset = evaluate(offset2, state);
+      const computedOffset = typeof rawOffset === "number" ? {
+        mainAxis: rawOffset,
+        crossAxis: 0
+      } : {
+        mainAxis: 0,
+        crossAxis: 0,
+        ...rawOffset
+      };
+      if (checkMainAxis) {
+        const len = mainAxis === "y" ? "height" : "width";
+        const limitMin = rects.reference[mainAxis] - rects.floating[len] + computedOffset.mainAxis;
+        const limitMax = rects.reference[mainAxis] + rects.reference[len] - computedOffset.mainAxis;
+        if (mainAxisCoord < limitMin) {
+          mainAxisCoord = limitMin;
+        } else if (mainAxisCoord > limitMax) {
+          mainAxisCoord = limitMax;
+        }
+      }
+      if (checkCrossAxis) {
+        var _middlewareData$offse, _middlewareData$offse2;
+        const len = mainAxis === "y" ? "width" : "height";
+        const isOriginSide = originSides.has(getSide(placement));
+        const limitMin = rects.reference[crossAxis] - rects.floating[len] + (isOriginSide ? ((_middlewareData$offse = middlewareData.offset) == null ? void 0 : _middlewareData$offse[crossAxis]) || 0 : 0) + (isOriginSide ? 0 : computedOffset.crossAxis);
+        const limitMax = rects.reference[crossAxis] + rects.reference[len] + (isOriginSide ? 0 : ((_middlewareData$offse2 = middlewareData.offset) == null ? void 0 : _middlewareData$offse2[crossAxis]) || 0) - (isOriginSide ? computedOffset.crossAxis : 0);
+        if (crossAxisCoord < limitMin) {
+          crossAxisCoord = limitMin;
+        } else if (crossAxisCoord > limitMax) {
+          crossAxisCoord = limitMax;
+        }
+      }
+      return {
+        [mainAxis]: mainAxisCoord,
+        [crossAxis]: crossAxisCoord
+      };
+    }
+  };
+};
+const size$2 = function(options) {
+  if (options === void 0) {
+    options = {};
+  }
+  return {
+    name: "size",
+    options,
+    async fn(state) {
+      var _state$middlewareData, _state$middlewareData2;
+      const {
+        placement,
+        rects,
+        platform: platform2,
+        elements
+      } = state;
+      const {
+        apply = () => {
+        },
+        ...detectOverflowOptions
+      } = evaluate(options, state);
+      const overflow = await platform2.detectOverflow(state, detectOverflowOptions);
+      const side = getSide(placement);
+      const alignment = getAlignment(placement);
+      const isYAxis = getSideAxis(placement) === "y";
+      const {
+        width,
+        height
+      } = rects.floating;
+      let heightSide;
+      let widthSide;
+      if (side === "top" || side === "bottom") {
+        heightSide = side;
+        widthSide = alignment === (await (platform2.isRTL == null ? void 0 : platform2.isRTL(elements.floating)) ? "start" : "end") ? "left" : "right";
+      } else {
+        widthSide = side;
+        heightSide = alignment === "end" ? "top" : "bottom";
+      }
+      const maximumClippingHeight = height - overflow.top - overflow.bottom;
+      const maximumClippingWidth = width - overflow.left - overflow.right;
+      const overflowAvailableHeight = min(height - overflow[heightSide], maximumClippingHeight);
+      const overflowAvailableWidth = min(width - overflow[widthSide], maximumClippingWidth);
+      const noShift = !state.middlewareData.shift;
+      let availableHeight = overflowAvailableHeight;
+      let availableWidth = overflowAvailableWidth;
+      if ((_state$middlewareData = state.middlewareData.shift) != null && _state$middlewareData.enabled.x) {
+        availableWidth = maximumClippingWidth;
+      }
+      if ((_state$middlewareData2 = state.middlewareData.shift) != null && _state$middlewareData2.enabled.y) {
+        availableHeight = maximumClippingHeight;
+      }
+      if (noShift && !alignment) {
+        const xMin = max(overflow.left, 0);
+        const xMax = max(overflow.right, 0);
+        const yMin = max(overflow.top, 0);
+        const yMax = max(overflow.bottom, 0);
+        if (isYAxis) {
+          availableWidth = width - 2 * (xMin !== 0 || xMax !== 0 ? xMin + xMax : max(overflow.left, overflow.right));
+        } else {
+          availableHeight = height - 2 * (yMin !== 0 || yMax !== 0 ? yMin + yMax : max(overflow.top, overflow.bottom));
+        }
+      }
+      await apply({
+        ...state,
+        availableWidth,
+        availableHeight
+      });
+      const nextDimensions = await platform2.getDimensions(elements.floating);
+      if (width !== nextDimensions.width || height !== nextDimensions.height) {
+        return {
+          reset: {
+            rects: true
+          }
+        };
+      }
+      return {};
+    }
+  };
+};
+function hasWindow() {
+  return typeof window !== "undefined";
+}
+function getNodeName(node) {
+  if (isNode(node)) {
+    return (node.nodeName || "").toLowerCase();
+  }
+  return "#document";
+}
+function getWindow(node) {
+  var _node$ownerDocument;
+  return (node == null || (_node$ownerDocument = node.ownerDocument) == null ? void 0 : _node$ownerDocument.defaultView) || window;
+}
+function getDocumentElement(node) {
+  var _ref;
+  return (_ref = (isNode(node) ? node.ownerDocument : node.document) || window.document) == null ? void 0 : _ref.documentElement;
+}
+function isNode(value) {
+  if (!hasWindow()) {
+    return false;
+  }
+  return value instanceof Node || value instanceof getWindow(value).Node;
+}
+function isElement(value) {
+  if (!hasWindow()) {
+    return false;
+  }
+  return value instanceof Element || value instanceof getWindow(value).Element;
+}
+function isHTMLElement(value) {
+  if (!hasWindow()) {
+    return false;
+  }
+  return value instanceof HTMLElement || value instanceof getWindow(value).HTMLElement;
+}
+function isShadowRoot(value) {
+  if (!hasWindow() || typeof ShadowRoot === "undefined") {
+    return false;
+  }
+  return value instanceof ShadowRoot || value instanceof getWindow(value).ShadowRoot;
+}
+function isOverflowElement(element) {
+  const {
+    overflow,
+    overflowX,
+    overflowY,
+    display
+  } = getComputedStyle$1(element);
+  return /auto|scroll|overlay|hidden|clip/.test(overflow + overflowY + overflowX) && display !== "inline" && display !== "contents";
+}
+function isTableElement(element) {
+  return /^(table|td|th)$/.test(getNodeName(element));
+}
+function isTopLayer(element) {
+  try {
+    if (element.matches(":popover-open")) {
+      return true;
+    }
+  } catch (_e4) {
+  }
+  try {
+    return element.matches(":modal");
+  } catch (_e4) {
+    return false;
+  }
+}
+const willChangeRe = /transform|translate|scale|rotate|perspective|filter/;
+const containRe = /paint|layout|strict|content/;
+const isNotNone = (value) => !!value && value !== "none";
+let isWebKitValue;
+function isContainingBlock(elementOrCss) {
+  const css = isElement(elementOrCss) ? getComputedStyle$1(elementOrCss) : elementOrCss;
+  return isNotNone(css.transform) || isNotNone(css.translate) || isNotNone(css.scale) || isNotNone(css.rotate) || isNotNone(css.perspective) || !isWebKit() && (isNotNone(css.backdropFilter) || isNotNone(css.filter)) || willChangeRe.test(css.willChange || "") || containRe.test(css.contain || "");
+}
+function getContainingBlock(element) {
+  let currentNode = getParentNode(element);
+  while (isHTMLElement(currentNode) && !isLastTraversableNode(currentNode)) {
+    if (isContainingBlock(currentNode)) {
+      return currentNode;
+    } else if (isTopLayer(currentNode)) {
+      return null;
+    }
+    currentNode = getParentNode(currentNode);
+  }
+  return null;
+}
+function isWebKit() {
+  if (isWebKitValue == null) {
+    isWebKitValue = typeof CSS !== "undefined" && CSS.supports && CSS.supports("-webkit-backdrop-filter", "none");
+  }
+  return isWebKitValue;
+}
+function isLastTraversableNode(node) {
+  return /^(html|body|#document)$/.test(getNodeName(node));
+}
+function getComputedStyle$1(element) {
+  return getWindow(element).getComputedStyle(element);
+}
+function getNodeScroll(element) {
+  if (isElement(element)) {
+    return {
+      scrollLeft: element.scrollLeft,
+      scrollTop: element.scrollTop
+    };
+  }
+  return {
+    scrollLeft: element.scrollX,
+    scrollTop: element.scrollY
+  };
+}
+function getParentNode(node) {
+  if (getNodeName(node) === "html") {
+    return node;
+  }
+  const result = (
+    // Step into the shadow DOM of the parent of a slotted node.
+    node.assignedSlot || // DOM Element detected.
+    node.parentNode || // ShadowRoot detected.
+    isShadowRoot(node) && node.host || // Fallback.
+    getDocumentElement(node)
+  );
+  return isShadowRoot(result) ? result.host : result;
+}
+function getNearestOverflowAncestor(node) {
+  const parentNode = getParentNode(node);
+  if (isLastTraversableNode(parentNode)) {
+    return node.ownerDocument ? node.ownerDocument.body : node.body;
+  }
+  if (isHTMLElement(parentNode) && isOverflowElement(parentNode)) {
+    return parentNode;
+  }
+  return getNearestOverflowAncestor(parentNode);
+}
+function getOverflowAncestors(node, list, traverseIframes) {
+  var _node$ownerDocument2;
+  if (list === void 0) {
+    list = [];
+  }
+  if (traverseIframes === void 0) {
+    traverseIframes = true;
+  }
+  const scrollableAncestor = getNearestOverflowAncestor(node);
+  const isBody = scrollableAncestor === ((_node$ownerDocument2 = node.ownerDocument) == null ? void 0 : _node$ownerDocument2.body);
+  const win = getWindow(scrollableAncestor);
+  if (isBody) {
+    const frameElement = getFrameElement(win);
+    return list.concat(win, win.visualViewport || [], isOverflowElement(scrollableAncestor) ? scrollableAncestor : [], frameElement && traverseIframes ? getOverflowAncestors(frameElement) : []);
+  } else {
+    return list.concat(scrollableAncestor, getOverflowAncestors(scrollableAncestor, [], traverseIframes));
+  }
+}
+function getFrameElement(win) {
+  return win.parent && Object.getPrototypeOf(win.parent) ? win.frameElement : null;
+}
+function getCssDimensions(element) {
+  const css = getComputedStyle$1(element);
+  let width = parseFloat(css.width) || 0;
+  let height = parseFloat(css.height) || 0;
+  const hasOffset = isHTMLElement(element);
+  const offsetWidth = hasOffset ? element.offsetWidth : width;
+  const offsetHeight = hasOffset ? element.offsetHeight : height;
+  const shouldFallback = round(width) !== offsetWidth || round(height) !== offsetHeight;
+  if (shouldFallback) {
+    width = offsetWidth;
+    height = offsetHeight;
+  }
+  return {
+    width,
+    height,
+    $: shouldFallback
+  };
+}
+function unwrapElement(element) {
+  return !isElement(element) ? element.contextElement : element;
+}
+function getScale(element) {
+  const domElement = unwrapElement(element);
+  if (!isHTMLElement(domElement)) {
+    return createCoords(1);
+  }
+  const rect = domElement.getBoundingClientRect();
+  const {
+    width,
+    height,
+    $: $2
+  } = getCssDimensions(domElement);
+  let x2 = ($2 ? round(rect.width) : rect.width) / width;
+  let y2 = ($2 ? round(rect.height) : rect.height) / height;
+  if (!x2 || !Number.isFinite(x2)) {
+    x2 = 1;
+  }
+  if (!y2 || !Number.isFinite(y2)) {
+    y2 = 1;
+  }
+  return {
+    x: x2,
+    y: y2
+  };
+}
+const noOffsets = /* @__PURE__ */ createCoords(0);
+function getVisualOffsets(element) {
+  const win = getWindow(element);
+  if (!isWebKit() || !win.visualViewport) {
+    return noOffsets;
+  }
+  return {
+    x: win.visualViewport.offsetLeft,
+    y: win.visualViewport.offsetTop
+  };
+}
+function shouldAddVisualOffsets(element, isFixed, floatingOffsetParent) {
+  if (isFixed === void 0) {
+    isFixed = false;
+  }
+  if (!floatingOffsetParent || isFixed && floatingOffsetParent !== getWindow(element)) {
+    return false;
+  }
+  return isFixed;
+}
+function getBoundingClientRect(element, includeScale, isFixedStrategy, offsetParent) {
+  if (includeScale === void 0) {
+    includeScale = false;
+  }
+  if (isFixedStrategy === void 0) {
+    isFixedStrategy = false;
+  }
+  const clientRect = element.getBoundingClientRect();
+  const domElement = unwrapElement(element);
+  let scale = createCoords(1);
+  if (includeScale) {
+    if (offsetParent) {
+      if (isElement(offsetParent)) {
+        scale = getScale(offsetParent);
+      }
+    } else {
+      scale = getScale(element);
+    }
+  }
+  const visualOffsets = shouldAddVisualOffsets(domElement, isFixedStrategy, offsetParent) ? getVisualOffsets(domElement) : createCoords(0);
+  let x2 = (clientRect.left + visualOffsets.x) / scale.x;
+  let y2 = (clientRect.top + visualOffsets.y) / scale.y;
+  let width = clientRect.width / scale.x;
+  let height = clientRect.height / scale.y;
+  if (domElement) {
+    const win = getWindow(domElement);
+    const offsetWin = offsetParent && isElement(offsetParent) ? getWindow(offsetParent) : offsetParent;
+    let currentWin = win;
+    let currentIFrame = getFrameElement(currentWin);
+    while (currentIFrame && offsetParent && offsetWin !== currentWin) {
+      const iframeScale = getScale(currentIFrame);
+      const iframeRect = currentIFrame.getBoundingClientRect();
+      const css = getComputedStyle$1(currentIFrame);
+      const left = iframeRect.left + (currentIFrame.clientLeft + parseFloat(css.paddingLeft)) * iframeScale.x;
+      const top = iframeRect.top + (currentIFrame.clientTop + parseFloat(css.paddingTop)) * iframeScale.y;
+      x2 *= iframeScale.x;
+      y2 *= iframeScale.y;
+      width *= iframeScale.x;
+      height *= iframeScale.y;
+      x2 += left;
+      y2 += top;
+      currentWin = getWindow(currentIFrame);
+      currentIFrame = getFrameElement(currentWin);
+    }
+  }
+  return rectToClientRect({
+    width,
+    height,
+    x: x2,
+    y: y2
+  });
+}
+function getWindowScrollBarX(element, rect) {
+  const leftScroll = getNodeScroll(element).scrollLeft;
+  if (!rect) {
+    return getBoundingClientRect(getDocumentElement(element)).left + leftScroll;
+  }
+  return rect.left + leftScroll;
+}
+function getHTMLOffset(documentElement, scroll) {
+  const htmlRect = documentElement.getBoundingClientRect();
+  const x2 = htmlRect.left + scroll.scrollLeft - getWindowScrollBarX(documentElement, htmlRect);
+  const y2 = htmlRect.top + scroll.scrollTop;
+  return {
+    x: x2,
+    y: y2
+  };
+}
+function convertOffsetParentRelativeRectToViewportRelativeRect(_ref) {
+  let {
+    elements,
+    rect,
+    offsetParent,
+    strategy
+  } = _ref;
+  const isFixed = strategy === "fixed";
+  const documentElement = getDocumentElement(offsetParent);
+  const topLayer = elements ? isTopLayer(elements.floating) : false;
+  if (offsetParent === documentElement || topLayer && isFixed) {
+    return rect;
+  }
+  let scroll = {
+    scrollLeft: 0,
+    scrollTop: 0
+  };
+  let scale = createCoords(1);
+  const offsets = createCoords(0);
+  const isOffsetParentAnElement = isHTMLElement(offsetParent);
+  if (isOffsetParentAnElement || !isOffsetParentAnElement && !isFixed) {
+    if (getNodeName(offsetParent) !== "body" || isOverflowElement(documentElement)) {
+      scroll = getNodeScroll(offsetParent);
+    }
+    if (isOffsetParentAnElement) {
+      const offsetRect = getBoundingClientRect(offsetParent);
+      scale = getScale(offsetParent);
+      offsets.x = offsetRect.x + offsetParent.clientLeft;
+      offsets.y = offsetRect.y + offsetParent.clientTop;
+    }
+  }
+  const htmlOffset = documentElement && !isOffsetParentAnElement && !isFixed ? getHTMLOffset(documentElement, scroll) : createCoords(0);
+  return {
+    width: rect.width * scale.x,
+    height: rect.height * scale.y,
+    x: rect.x * scale.x - scroll.scrollLeft * scale.x + offsets.x + htmlOffset.x,
+    y: rect.y * scale.y - scroll.scrollTop * scale.y + offsets.y + htmlOffset.y
+  };
+}
+function getClientRects(element) {
+  return Array.from(element.getClientRects());
+}
+function getDocumentRect(element) {
+  const html = getDocumentElement(element);
+  const scroll = getNodeScroll(element);
+  const body = element.ownerDocument.body;
+  const width = max(html.scrollWidth, html.clientWidth, body.scrollWidth, body.clientWidth);
+  const height = max(html.scrollHeight, html.clientHeight, body.scrollHeight, body.clientHeight);
+  let x2 = -scroll.scrollLeft + getWindowScrollBarX(element);
+  const y2 = -scroll.scrollTop;
+  if (getComputedStyle$1(body).direction === "rtl") {
+    x2 += max(html.clientWidth, body.clientWidth) - width;
+  }
+  return {
+    width,
+    height,
+    x: x2,
+    y: y2
+  };
+}
+const SCROLLBAR_MAX = 25;
+function getViewportRect(element, strategy) {
+  const win = getWindow(element);
+  const html = getDocumentElement(element);
+  const visualViewport = win.visualViewport;
+  let width = html.clientWidth;
+  let height = html.clientHeight;
+  let x2 = 0;
+  let y2 = 0;
+  if (visualViewport) {
+    width = visualViewport.width;
+    height = visualViewport.height;
+    const visualViewportBased = isWebKit();
+    if (!visualViewportBased || visualViewportBased && strategy === "fixed") {
+      x2 = visualViewport.offsetLeft;
+      y2 = visualViewport.offsetTop;
+    }
+  }
+  const windowScrollbarX = getWindowScrollBarX(html);
+  if (windowScrollbarX <= 0) {
+    const doc = html.ownerDocument;
+    const body = doc.body;
+    const bodyStyles = getComputedStyle(body);
+    const bodyMarginInline = doc.compatMode === "CSS1Compat" ? parseFloat(bodyStyles.marginLeft) + parseFloat(bodyStyles.marginRight) || 0 : 0;
+    const clippingStableScrollbarWidth = Math.abs(html.clientWidth - body.clientWidth - bodyMarginInline);
+    if (clippingStableScrollbarWidth <= SCROLLBAR_MAX) {
+      width -= clippingStableScrollbarWidth;
+    }
+  } else if (windowScrollbarX <= SCROLLBAR_MAX) {
+    width += windowScrollbarX;
+  }
+  return {
+    width,
+    height,
+    x: x2,
+    y: y2
+  };
+}
+function getInnerBoundingClientRect(element, strategy) {
+  const clientRect = getBoundingClientRect(element, true, strategy === "fixed");
+  const top = clientRect.top + element.clientTop;
+  const left = clientRect.left + element.clientLeft;
+  const scale = isHTMLElement(element) ? getScale(element) : createCoords(1);
+  const width = element.clientWidth * scale.x;
+  const height = element.clientHeight * scale.y;
+  const x2 = left * scale.x;
+  const y2 = top * scale.y;
+  return {
+    width,
+    height,
+    x: x2,
+    y: y2
+  };
+}
+function getClientRectFromClippingAncestor(element, clippingAncestor, strategy) {
+  let rect;
+  if (clippingAncestor === "viewport") {
+    rect = getViewportRect(element, strategy);
+  } else if (clippingAncestor === "document") {
+    rect = getDocumentRect(getDocumentElement(element));
+  } else if (isElement(clippingAncestor)) {
+    rect = getInnerBoundingClientRect(clippingAncestor, strategy);
+  } else {
+    const visualOffsets = getVisualOffsets(element);
+    rect = {
+      x: clippingAncestor.x - visualOffsets.x,
+      y: clippingAncestor.y - visualOffsets.y,
+      width: clippingAncestor.width,
+      height: clippingAncestor.height
+    };
+  }
+  return rectToClientRect(rect);
+}
+function hasFixedPositionAncestor(element, stopNode) {
+  const parentNode = getParentNode(element);
+  if (parentNode === stopNode || !isElement(parentNode) || isLastTraversableNode(parentNode)) {
+    return false;
+  }
+  return getComputedStyle$1(parentNode).position === "fixed" || hasFixedPositionAncestor(parentNode, stopNode);
+}
+function getClippingElementAncestors(element, cache) {
+  const cachedResult = cache.get(element);
+  if (cachedResult) {
+    return cachedResult;
+  }
+  let result = getOverflowAncestors(element, [], false).filter((el) => isElement(el) && getNodeName(el) !== "body");
+  let currentContainingBlockComputedStyle = null;
+  const elementIsFixed = getComputedStyle$1(element).position === "fixed";
+  let currentNode = elementIsFixed ? getParentNode(element) : element;
+  while (isElement(currentNode) && !isLastTraversableNode(currentNode)) {
+    const computedStyle = getComputedStyle$1(currentNode);
+    const currentNodeIsContaining = isContainingBlock(currentNode);
+    if (!currentNodeIsContaining && computedStyle.position === "fixed") {
+      currentContainingBlockComputedStyle = null;
+    }
+    const shouldDropCurrentNode = elementIsFixed ? !currentNodeIsContaining && !currentContainingBlockComputedStyle : !currentNodeIsContaining && computedStyle.position === "static" && !!currentContainingBlockComputedStyle && (currentContainingBlockComputedStyle.position === "absolute" || currentContainingBlockComputedStyle.position === "fixed") || isOverflowElement(currentNode) && !currentNodeIsContaining && hasFixedPositionAncestor(element, currentNode);
+    if (shouldDropCurrentNode) {
+      result = result.filter((ancestor) => ancestor !== currentNode);
+    } else {
+      currentContainingBlockComputedStyle = computedStyle;
+    }
+    currentNode = getParentNode(currentNode);
+  }
+  cache.set(element, result);
+  return result;
+}
+function getClippingRect(_ref) {
+  let {
+    element,
+    boundary,
+    rootBoundary,
+    strategy
+  } = _ref;
+  const elementClippingAncestors = boundary === "clippingAncestors" ? isTopLayer(element) ? [] : getClippingElementAncestors(element, this._c) : [].concat(boundary);
+  const clippingAncestors = [...elementClippingAncestors, rootBoundary];
+  const firstRect = getClientRectFromClippingAncestor(element, clippingAncestors[0], strategy);
+  let top = firstRect.top;
+  let right = firstRect.right;
+  let bottom = firstRect.bottom;
+  let left = firstRect.left;
+  for (let i = 1; i < clippingAncestors.length; i++) {
+    const rect = getClientRectFromClippingAncestor(element, clippingAncestors[i], strategy);
+    top = max(rect.top, top);
+    right = min(rect.right, right);
+    bottom = min(rect.bottom, bottom);
+    left = max(rect.left, left);
+  }
+  return {
+    width: right - left,
+    height: bottom - top,
+    x: left,
+    y: top
+  };
+}
+function getDimensions(element) {
+  const {
+    width,
+    height
+  } = getCssDimensions(element);
+  return {
+    width,
+    height
+  };
+}
+function getRectRelativeToOffsetParent(element, offsetParent, strategy) {
+  const isOffsetParentAnElement = isHTMLElement(offsetParent);
+  const documentElement = getDocumentElement(offsetParent);
+  const isFixed = strategy === "fixed";
+  const rect = getBoundingClientRect(element, true, isFixed, offsetParent);
+  let scroll = {
+    scrollLeft: 0,
+    scrollTop: 0
+  };
+  const offsets = createCoords(0);
+  function setLeftRTLScrollbarOffset() {
+    offsets.x = getWindowScrollBarX(documentElement);
+  }
+  if (isOffsetParentAnElement || !isOffsetParentAnElement && !isFixed) {
+    if (getNodeName(offsetParent) !== "body" || isOverflowElement(documentElement)) {
+      scroll = getNodeScroll(offsetParent);
+    }
+    if (isOffsetParentAnElement) {
+      const offsetRect = getBoundingClientRect(offsetParent, true, isFixed, offsetParent);
+      offsets.x = offsetRect.x + offsetParent.clientLeft;
+      offsets.y = offsetRect.y + offsetParent.clientTop;
+    } else if (documentElement) {
+      setLeftRTLScrollbarOffset();
+    }
+  }
+  if (isFixed && !isOffsetParentAnElement && documentElement) {
+    setLeftRTLScrollbarOffset();
+  }
+  const htmlOffset = documentElement && !isOffsetParentAnElement && !isFixed ? getHTMLOffset(documentElement, scroll) : createCoords(0);
+  const x2 = rect.left + scroll.scrollLeft - offsets.x - htmlOffset.x;
+  const y2 = rect.top + scroll.scrollTop - offsets.y - htmlOffset.y;
+  return {
+    x: x2,
+    y: y2,
+    width: rect.width,
+    height: rect.height
+  };
+}
+function isStaticPositioned(element) {
+  return getComputedStyle$1(element).position === "static";
+}
+function getTrueOffsetParent(element, polyfill2) {
+  if (!isHTMLElement(element) || getComputedStyle$1(element).position === "fixed") {
+    return null;
+  }
+  if (polyfill2) {
+    return polyfill2(element);
+  }
+  let rawOffsetParent = element.offsetParent;
+  if (getDocumentElement(element) === rawOffsetParent) {
+    rawOffsetParent = rawOffsetParent.ownerDocument.body;
+  }
+  return rawOffsetParent;
+}
+function getOffsetParent(element, polyfill2) {
+  const win = getWindow(element);
+  if (isTopLayer(element)) {
+    return win;
+  }
+  if (!isHTMLElement(element)) {
+    let svgOffsetParent = getParentNode(element);
+    while (svgOffsetParent && !isLastTraversableNode(svgOffsetParent)) {
+      if (isElement(svgOffsetParent) && !isStaticPositioned(svgOffsetParent)) {
+        return svgOffsetParent;
+      }
+      svgOffsetParent = getParentNode(svgOffsetParent);
+    }
+    return win;
+  }
+  let offsetParent = getTrueOffsetParent(element, polyfill2);
+  while (offsetParent && isTableElement(offsetParent) && isStaticPositioned(offsetParent)) {
+    offsetParent = getTrueOffsetParent(offsetParent, polyfill2);
+  }
+  if (offsetParent && isLastTraversableNode(offsetParent) && isStaticPositioned(offsetParent) && !isContainingBlock(offsetParent)) {
+    return win;
+  }
+  return offsetParent || getContainingBlock(element) || win;
+}
+const getElementRects = async function(data) {
+  const getOffsetParentFn = this.getOffsetParent || getOffsetParent;
+  const getDimensionsFn = this.getDimensions;
+  const floatingDimensions = await getDimensionsFn(data.floating);
+  return {
+    reference: getRectRelativeToOffsetParent(data.reference, await getOffsetParentFn(data.floating), data.strategy),
+    floating: {
+      x: 0,
+      y: 0,
+      width: floatingDimensions.width,
+      height: floatingDimensions.height
+    }
+  };
+};
+function isRTL(element) {
+  return getComputedStyle$1(element).direction === "rtl";
+}
+const platform = {
+  convertOffsetParentRelativeRectToViewportRelativeRect,
+  getDocumentElement,
+  getClippingRect,
+  getOffsetParent,
+  getElementRects,
+  getClientRects,
+  getDimensions,
+  getScale,
+  isElement,
+  isRTL
+};
+function rectsAreEqual(a2, b2) {
+  return a2.x === b2.x && a2.y === b2.y && a2.width === b2.width && a2.height === b2.height;
+}
+function observeMove(element, onMove) {
+  let io = null;
+  let timeoutId;
+  const root2 = getDocumentElement(element);
+  function cleanup() {
+    var _io;
+    clearTimeout(timeoutId);
+    (_io = io) == null || _io.disconnect();
+    io = null;
+  }
+  function refresh(skip, threshold) {
+    if (skip === void 0) {
+      skip = false;
+    }
+    if (threshold === void 0) {
+      threshold = 1;
+    }
+    cleanup();
+    const elementRectForRootMargin = element.getBoundingClientRect();
+    const {
+      left,
+      top,
+      width,
+      height
+    } = elementRectForRootMargin;
+    if (!skip) {
+      onMove();
+    }
+    if (!width || !height) {
+      return;
+    }
+    const insetTop = floor(top);
+    const insetRight = floor(root2.clientWidth - (left + width));
+    const insetBottom = floor(root2.clientHeight - (top + height));
+    const insetLeft = floor(left);
+    const rootMargin = -insetTop + "px " + -insetRight + "px " + -insetBottom + "px " + -insetLeft + "px";
+    const options = {
+      rootMargin,
+      threshold: max(0, min(1, threshold)) || 1
+    };
+    let isFirstUpdate = true;
+    function handleObserve(entries) {
+      const ratio = entries[0].intersectionRatio;
+      if (ratio !== threshold) {
+        if (!isFirstUpdate) {
+          return refresh();
+        }
+        if (!ratio) {
+          timeoutId = setTimeout(() => {
+            refresh(false, 1e-7);
+          }, 1e3);
+        } else {
+          refresh(false, ratio);
+        }
+      }
+      if (ratio === 1 && !rectsAreEqual(elementRectForRootMargin, element.getBoundingClientRect())) {
+        refresh();
+      }
+      isFirstUpdate = false;
+    }
+    try {
+      io = new IntersectionObserver(handleObserve, {
+        ...options,
+        // Handle <iframe>s
+        root: root2.ownerDocument
+      });
+    } catch (_e4) {
+      io = new IntersectionObserver(handleObserve, options);
+    }
+    io.observe(element);
+  }
+  refresh(true);
+  return cleanup;
+}
+function autoUpdate(reference, floating, update, options) {
+  if (options === void 0) {
+    options = {};
+  }
+  const {
+    ancestorScroll = true,
+    ancestorResize = true,
+    elementResize = typeof ResizeObserver === "function",
+    layoutShift = typeof IntersectionObserver === "function",
+    animationFrame = false
+  } = options;
+  const referenceEl = unwrapElement(reference);
+  const ancestors = ancestorScroll || ancestorResize ? [...referenceEl ? getOverflowAncestors(referenceEl) : [], ...floating ? getOverflowAncestors(floating) : []] : [];
+  ancestors.forEach((ancestor) => {
+    ancestorScroll && ancestor.addEventListener("scroll", update, {
+      passive: true
+    });
+    ancestorResize && ancestor.addEventListener("resize", update);
+  });
+  const cleanupIo = referenceEl && layoutShift ? observeMove(referenceEl, update) : null;
+  let reobserveFrame = -1;
+  let resizeObserver = null;
+  if (elementResize) {
+    resizeObserver = new ResizeObserver((_ref) => {
+      let [firstEntry] = _ref;
+      if (firstEntry && firstEntry.target === referenceEl && resizeObserver && floating) {
+        resizeObserver.unobserve(floating);
+        cancelAnimationFrame(reobserveFrame);
+        reobserveFrame = requestAnimationFrame(() => {
+          var _resizeObserver;
+          (_resizeObserver = resizeObserver) == null || _resizeObserver.observe(floating);
+        });
+      }
+      update();
+    });
+    if (referenceEl && !animationFrame) {
+      resizeObserver.observe(referenceEl);
+    }
+    if (floating) {
+      resizeObserver.observe(floating);
+    }
+  }
+  let frameId;
+  let prevRefRect = animationFrame ? getBoundingClientRect(reference) : null;
+  if (animationFrame) {
+    frameLoop();
+  }
+  function frameLoop() {
+    const nextRefRect = getBoundingClientRect(reference);
+    if (prevRefRect && !rectsAreEqual(prevRefRect, nextRefRect)) {
+      update();
+    }
+    prevRefRect = nextRefRect;
+    frameId = requestAnimationFrame(frameLoop);
+  }
+  update();
+  return () => {
+    var _resizeObserver2;
+    ancestors.forEach((ancestor) => {
+      ancestorScroll && ancestor.removeEventListener("scroll", update);
+      ancestorResize && ancestor.removeEventListener("resize", update);
+    });
+    cleanupIo == null || cleanupIo();
+    (_resizeObserver2 = resizeObserver) == null || _resizeObserver2.disconnect();
+    resizeObserver = null;
+    if (animationFrame) {
+      cancelAnimationFrame(frameId);
+    }
+  };
+}
+const offset$1 = offset$2;
+const shift$1 = shift$2;
+const flip$1 = flip$2;
+const size$1 = size$2;
+const hide$1 = hide$2;
+const arrow$2 = arrow$3;
+const limitShift$1 = limitShift$2;
+const computePosition = (reference, floating, options) => {
+  const cache = /* @__PURE__ */ new Map();
+  const mergedOptions = {
+    platform,
+    ...options
+  };
+  const platformWithCache = {
+    ...mergedOptions.platform,
+    _c: cache
+  };
+  return computePosition$1(reference, floating, {
+    ...mergedOptions,
+    platform: platformWithCache
+  });
+};
+var isClient = typeof document !== "undefined";
+var noop = function noop2() {
+};
+var index = isClient ? reactExports.useLayoutEffect : noop;
+function deepEqual(a2, b2) {
+  if (a2 === b2) {
+    return true;
+  }
+  if (typeof a2 !== typeof b2) {
+    return false;
+  }
+  if (typeof a2 === "function" && a2.toString() === b2.toString()) {
+    return true;
+  }
+  let length;
+  let i;
+  let keys;
+  if (a2 && b2 && typeof a2 === "object") {
+    if (Array.isArray(a2)) {
+      length = a2.length;
+      if (length !== b2.length) return false;
+      for (i = length; i-- !== 0; ) {
+        if (!deepEqual(a2[i], b2[i])) {
+          return false;
+        }
+      }
+      return true;
+    }
+    keys = Object.keys(a2);
+    length = keys.length;
+    if (length !== Object.keys(b2).length) {
+      return false;
+    }
+    for (i = length; i-- !== 0; ) {
+      if (!{}.hasOwnProperty.call(b2, keys[i])) {
+        return false;
+      }
+    }
+    for (i = length; i-- !== 0; ) {
+      const key = keys[i];
+      if (key === "_owner" && a2.$$typeof) {
+        continue;
+      }
+      if (!deepEqual(a2[key], b2[key])) {
+        return false;
+      }
+    }
+    return true;
+  }
+  return a2 !== a2 && b2 !== b2;
+}
+function getDPR(element) {
+  if (typeof window === "undefined") {
+    return 1;
+  }
+  const win = element.ownerDocument.defaultView || window;
+  return win.devicePixelRatio || 1;
+}
+function roundByDPR(element, value) {
+  const dpr = getDPR(element);
+  return Math.round(value * dpr) / dpr;
+}
+function useLatestRef(value) {
+  const ref = reactExports.useRef(value);
+  index(() => {
+    ref.current = value;
+  });
+  return ref;
+}
+function useFloating(options) {
+  if (options === void 0) {
+    options = {};
+  }
+  const {
+    placement = "bottom",
+    strategy = "absolute",
+    middleware = [],
+    platform: platform2,
+    elements: {
+      reference: externalReference,
+      floating: externalFloating
+    } = {},
+    transform = true,
+    whileElementsMounted,
+    open
+  } = options;
+  const [data, setData] = reactExports.useState({
+    x: 0,
+    y: 0,
+    strategy,
+    placement,
+    middlewareData: {},
+    isPositioned: false
+  });
+  const [latestMiddleware, setLatestMiddleware] = reactExports.useState(middleware);
+  if (!deepEqual(latestMiddleware, middleware)) {
+    setLatestMiddleware(middleware);
+  }
+  const [_reference, _setReference] = reactExports.useState(null);
+  const [_floating, _setFloating] = reactExports.useState(null);
+  const setReference = reactExports.useCallback((node) => {
+    if (node !== referenceRef.current) {
+      referenceRef.current = node;
+      _setReference(node);
+    }
+  }, []);
+  const setFloating = reactExports.useCallback((node) => {
+    if (node !== floatingRef.current) {
+      floatingRef.current = node;
+      _setFloating(node);
+    }
+  }, []);
+  const referenceEl = externalReference || _reference;
+  const floatingEl = externalFloating || _floating;
+  const referenceRef = reactExports.useRef(null);
+  const floatingRef = reactExports.useRef(null);
+  const dataRef = reactExports.useRef(data);
+  const hasWhileElementsMounted = whileElementsMounted != null;
+  const whileElementsMountedRef = useLatestRef(whileElementsMounted);
+  const platformRef = useLatestRef(platform2);
+  const openRef = useLatestRef(open);
+  const update = reactExports.useCallback(() => {
+    if (!referenceRef.current || !floatingRef.current) {
+      return;
+    }
+    const config = {
+      placement,
+      strategy,
+      middleware: latestMiddleware
+    };
+    if (platformRef.current) {
+      config.platform = platformRef.current;
+    }
+    computePosition(referenceRef.current, floatingRef.current, config).then((data2) => {
+      const fullData = {
+        ...data2,
+        // The floating element's position may be recomputed while it's closed
+        // but still mounted (such as when transitioning out). To ensure
+        // `isPositioned` will be `false` initially on the next open, avoid
+        // setting it to `true` when `open === false` (must be specified).
+        isPositioned: openRef.current !== false
+      };
+      if (isMountedRef.current && !deepEqual(dataRef.current, fullData)) {
+        dataRef.current = fullData;
+        reactDomExports.flushSync(() => {
+          setData(fullData);
+        });
+      }
+    });
+  }, [latestMiddleware, placement, strategy, platformRef, openRef]);
+  index(() => {
+    if (open === false && dataRef.current.isPositioned) {
+      dataRef.current.isPositioned = false;
+      setData((data2) => ({
+        ...data2,
+        isPositioned: false
+      }));
+    }
+  }, [open]);
+  const isMountedRef = reactExports.useRef(false);
+  index(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
+  index(() => {
+    if (referenceEl) referenceRef.current = referenceEl;
+    if (floatingEl) floatingRef.current = floatingEl;
+    if (referenceEl && floatingEl) {
+      if (whileElementsMountedRef.current) {
+        return whileElementsMountedRef.current(referenceEl, floatingEl, update);
+      }
+      update();
+    }
+  }, [referenceEl, floatingEl, update, whileElementsMountedRef, hasWhileElementsMounted]);
+  const refs = reactExports.useMemo(() => ({
+    reference: referenceRef,
+    floating: floatingRef,
+    setReference,
+    setFloating
+  }), [setReference, setFloating]);
+  const elements = reactExports.useMemo(() => ({
+    reference: referenceEl,
+    floating: floatingEl
+  }), [referenceEl, floatingEl]);
+  const floatingStyles = reactExports.useMemo(() => {
+    const initialStyles = {
+      position: strategy,
+      left: 0,
+      top: 0
+    };
+    if (!elements.floating) {
+      return initialStyles;
+    }
+    const x2 = roundByDPR(elements.floating, data.x);
+    const y2 = roundByDPR(elements.floating, data.y);
+    if (transform) {
+      return {
+        ...initialStyles,
+        transform: "translate(" + x2 + "px, " + y2 + "px)",
+        ...getDPR(elements.floating) >= 1.5 && {
+          willChange: "transform"
+        }
+      };
+    }
+    return {
+      position: strategy,
+      left: x2,
+      top: y2
+    };
+  }, [strategy, transform, elements.floating, data.x, data.y]);
+  return reactExports.useMemo(() => ({
+    ...data,
+    update,
+    refs,
+    elements,
+    floatingStyles
+  }), [data, update, refs, elements, floatingStyles]);
+}
+const arrow$1 = (options) => {
+  function isRef(value) {
+    return {}.hasOwnProperty.call(value, "current");
+  }
+  return {
+    name: "arrow",
+    options,
+    fn(state) {
+      const {
+        element,
+        padding
+      } = typeof options === "function" ? options(state) : options;
+      if (element && isRef(element)) {
+        if (element.current != null) {
+          return arrow$2({
+            element: element.current,
+            padding
+          }).fn(state);
+        }
+        return {};
+      }
+      if (element) {
+        return arrow$2({
+          element,
+          padding
+        }).fn(state);
+      }
+      return {};
+    }
+  };
+};
+const offset = (options, deps) => {
+  const result = offset$1(options);
+  return {
+    name: result.name,
+    fn: result.fn,
+    options: [options, deps]
+  };
+};
+const shift = (options, deps) => {
+  const result = shift$1(options);
+  return {
+    name: result.name,
+    fn: result.fn,
+    options: [options, deps]
+  };
+};
+const limitShift = (options, deps) => {
+  const result = limitShift$1(options);
+  return {
+    fn: result.fn,
+    options: [options, deps]
+  };
+};
+const flip = (options, deps) => {
+  const result = flip$1(options);
+  return {
+    name: result.name,
+    fn: result.fn,
+    options: [options, deps]
+  };
+};
+const size = (options, deps) => {
+  const result = size$1(options);
+  return {
+    name: result.name,
+    fn: result.fn,
+    options: [options, deps]
+  };
+};
+const hide = (options, deps) => {
+  const result = hide$1(options);
+  return {
+    name: result.name,
+    fn: result.fn,
+    options: [options, deps]
+  };
+};
+const arrow = (options, deps) => {
+  const result = arrow$1(options);
+  return {
+    name: result.name,
+    fn: result.fn,
+    options: [options, deps]
+  };
+};
+var NAME$1 = "Arrow";
+var Arrow$1 = reactExports.forwardRef((props, forwardedRef) => {
+  const { children, width = 10, height = 5, ...arrowProps } = props;
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    Primitive.svg,
     {
-      type: "button",
-      onClick: handleCopy,
-      className: `copy-btn ${copied ? "is-copied" : ""} ${className ?? ""}`,
-      "aria-label": label ?? "Copy to clipboard",
-      "data-ocid": "copy_button",
-      children: [
-        copied ? /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-3.5 h-3.5", "aria-hidden": "true" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Copy, { className: "w-3.5 h-3.5", "aria-hidden": "true" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: copied ? "Copied" : label ?? "Copy" })
+      ...arrowProps,
+      ref: forwardedRef,
+      width,
+      height,
+      viewBox: "0 0 30 10",
+      preserveAspectRatio: "none",
+      children: props.asChild ? children : /* @__PURE__ */ jsxRuntimeExports.jsx("polygon", { points: "0,0 30,0 15,10" })
+    }
+  );
+});
+Arrow$1.displayName = NAME$1;
+var Root$1 = Arrow$1;
+var POPPER_NAME = "Popper";
+var [createPopperContext, createPopperScope] = createContextScope(POPPER_NAME);
+var [PopperProvider, usePopperContext] = createPopperContext(POPPER_NAME);
+var Popper = (props) => {
+  const { __scopePopper, children } = props;
+  const [anchor, setAnchor] = reactExports.useState(null);
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(PopperProvider, { scope: __scopePopper, anchor, onAnchorChange: setAnchor, children });
+};
+Popper.displayName = POPPER_NAME;
+var ANCHOR_NAME = "PopperAnchor";
+var PopperAnchor = reactExports.forwardRef(
+  (props, forwardedRef) => {
+    const { __scopePopper, virtualRef, ...anchorProps } = props;
+    const context = usePopperContext(ANCHOR_NAME, __scopePopper);
+    const ref = reactExports.useRef(null);
+    const composedRefs = useComposedRefs(forwardedRef, ref);
+    const anchorRef = reactExports.useRef(null);
+    reactExports.useEffect(() => {
+      const previousAnchor = anchorRef.current;
+      anchorRef.current = (virtualRef == null ? void 0 : virtualRef.current) || ref.current;
+      if (previousAnchor !== anchorRef.current) {
+        context.onAnchorChange(anchorRef.current);
+      }
+    });
+    return virtualRef ? null : /* @__PURE__ */ jsxRuntimeExports.jsx(Primitive.div, { ...anchorProps, ref: composedRefs });
+  }
+);
+PopperAnchor.displayName = ANCHOR_NAME;
+var CONTENT_NAME$1 = "PopperContent";
+var [PopperContentProvider, useContentContext] = createPopperContext(CONTENT_NAME$1);
+var PopperContent = reactExports.forwardRef(
+  (props, forwardedRef) => {
+    var _a2, _b2, _c2, _d2, _e4, _f2;
+    const {
+      __scopePopper,
+      side = "bottom",
+      sideOffset = 0,
+      align = "center",
+      alignOffset = 0,
+      arrowPadding = 0,
+      avoidCollisions = true,
+      collisionBoundary = [],
+      collisionPadding: collisionPaddingProp = 0,
+      sticky = "partial",
+      hideWhenDetached = false,
+      updatePositionStrategy = "optimized",
+      onPlaced,
+      ...contentProps
+    } = props;
+    const context = usePopperContext(CONTENT_NAME$1, __scopePopper);
+    const [content, setContent] = reactExports.useState(null);
+    const composedRefs = useComposedRefs(forwardedRef, (node) => setContent(node));
+    const [arrow$12, setArrow] = reactExports.useState(null);
+    const arrowSize = useSize(arrow$12);
+    const arrowWidth = (arrowSize == null ? void 0 : arrowSize.width) ?? 0;
+    const arrowHeight = (arrowSize == null ? void 0 : arrowSize.height) ?? 0;
+    const desiredPlacement = side + (align !== "center" ? "-" + align : "");
+    const collisionPadding = typeof collisionPaddingProp === "number" ? collisionPaddingProp : { top: 0, right: 0, bottom: 0, left: 0, ...collisionPaddingProp };
+    const boundary = Array.isArray(collisionBoundary) ? collisionBoundary : [collisionBoundary];
+    const hasExplicitBoundaries = boundary.length > 0;
+    const detectOverflowOptions = {
+      padding: collisionPadding,
+      boundary: boundary.filter(isNotNull),
+      // with `strategy: 'fixed'`, this is the only way to get it to respect boundaries
+      altBoundary: hasExplicitBoundaries
+    };
+    const { refs, floatingStyles, placement, isPositioned, middlewareData } = useFloating({
+      // default to `fixed` strategy so users don't have to pick and we also avoid focus scroll issues
+      strategy: "fixed",
+      placement: desiredPlacement,
+      whileElementsMounted: (...args) => {
+        const cleanup = autoUpdate(...args, {
+          animationFrame: updatePositionStrategy === "always"
+        });
+        return cleanup;
+      },
+      elements: {
+        reference: context.anchor
+      },
+      middleware: [
+        offset({ mainAxis: sideOffset + arrowHeight, alignmentAxis: alignOffset }),
+        avoidCollisions && shift({
+          mainAxis: true,
+          crossAxis: false,
+          limiter: sticky === "partial" ? limitShift() : void 0,
+          ...detectOverflowOptions
+        }),
+        avoidCollisions && flip({ ...detectOverflowOptions }),
+        size({
+          ...detectOverflowOptions,
+          apply: ({ elements, rects, availableWidth, availableHeight }) => {
+            const { width: anchorWidth, height: anchorHeight } = rects.reference;
+            const contentStyle = elements.floating.style;
+            contentStyle.setProperty("--radix-popper-available-width", `${availableWidth}px`);
+            contentStyle.setProperty("--radix-popper-available-height", `${availableHeight}px`);
+            contentStyle.setProperty("--radix-popper-anchor-width", `${anchorWidth}px`);
+            contentStyle.setProperty("--radix-popper-anchor-height", `${anchorHeight}px`);
+          }
+        }),
+        arrow$12 && arrow({ element: arrow$12, padding: arrowPadding }),
+        transformOrigin({ arrowWidth, arrowHeight }),
+        hideWhenDetached && hide({ strategy: "referenceHidden", ...detectOverflowOptions })
       ]
+    });
+    const [placedSide, placedAlign] = getSideAndAlignFromPlacement(placement);
+    const handlePlaced = useCallbackRef$1(onPlaced);
+    useLayoutEffect2(() => {
+      if (isPositioned) {
+        handlePlaced == null ? void 0 : handlePlaced();
+      }
+    }, [isPositioned, handlePlaced]);
+    const arrowX = (_a2 = middlewareData.arrow) == null ? void 0 : _a2.x;
+    const arrowY = (_b2 = middlewareData.arrow) == null ? void 0 : _b2.y;
+    const cannotCenterArrow = ((_c2 = middlewareData.arrow) == null ? void 0 : _c2.centerOffset) !== 0;
+    const [contentZIndex, setContentZIndex] = reactExports.useState();
+    useLayoutEffect2(() => {
+      if (content) setContentZIndex(window.getComputedStyle(content).zIndex);
+    }, [content]);
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "div",
+      {
+        ref: refs.setFloating,
+        "data-radix-popper-content-wrapper": "",
+        style: {
+          ...floatingStyles,
+          transform: isPositioned ? floatingStyles.transform : "translate(0, -200%)",
+          // keep off the page when measuring
+          minWidth: "max-content",
+          zIndex: contentZIndex,
+          ["--radix-popper-transform-origin"]: [
+            (_d2 = middlewareData.transformOrigin) == null ? void 0 : _d2.x,
+            (_e4 = middlewareData.transformOrigin) == null ? void 0 : _e4.y
+          ].join(" "),
+          // hide the content if using the hide middleware and should be hidden
+          // set visibility to hidden and disable pointer events so the UI behaves
+          // as if the PopperContent isn't there at all
+          ...((_f2 = middlewareData.hide) == null ? void 0 : _f2.referenceHidden) && {
+            visibility: "hidden",
+            pointerEvents: "none"
+          }
+        },
+        dir: props.dir,
+        children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+          PopperContentProvider,
+          {
+            scope: __scopePopper,
+            placedSide,
+            onArrowChange: setArrow,
+            arrowX,
+            arrowY,
+            shouldHideArrow: cannotCenterArrow,
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+              Primitive.div,
+              {
+                "data-side": placedSide,
+                "data-align": placedAlign,
+                ...contentProps,
+                ref: composedRefs,
+                style: {
+                  ...contentProps.style,
+                  // if the PopperContent hasn't been placed yet (not all measurements done)
+                  // we prevent animations so that users's animation don't kick in too early referring wrong sides
+                  animation: !isPositioned ? "none" : void 0
+                }
+              }
+            )
+          }
+        )
+      }
+    );
+  }
+);
+PopperContent.displayName = CONTENT_NAME$1;
+var ARROW_NAME$1 = "PopperArrow";
+var OPPOSITE_SIDE = {
+  top: "bottom",
+  right: "left",
+  bottom: "top",
+  left: "right"
+};
+var PopperArrow = reactExports.forwardRef(function PopperArrow2(props, forwardedRef) {
+  const { __scopePopper, ...arrowProps } = props;
+  const contentContext = useContentContext(ARROW_NAME$1, __scopePopper);
+  const baseSide = OPPOSITE_SIDE[contentContext.placedSide];
+  return (
+    // we have to use an extra wrapper because `ResizeObserver` (used by `useSize`)
+    // doesn't report size as we'd expect on SVG elements.
+    // it reports their bounding box which is effectively the largest path inside the SVG.
+    /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "span",
+      {
+        ref: contentContext.onArrowChange,
+        style: {
+          position: "absolute",
+          left: contentContext.arrowX,
+          top: contentContext.arrowY,
+          [baseSide]: 0,
+          transformOrigin: {
+            top: "",
+            right: "0 0",
+            bottom: "center 0",
+            left: "100% 0"
+          }[contentContext.placedSide],
+          transform: {
+            top: "translateY(100%)",
+            right: "translateY(50%) rotate(90deg) translateX(-50%)",
+            bottom: `rotate(180deg)`,
+            left: "translateY(50%) rotate(-90deg) translateX(50%)"
+          }[contentContext.placedSide],
+          visibility: contentContext.shouldHideArrow ? "hidden" : void 0
+        },
+        children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+          Root$1,
+          {
+            ...arrowProps,
+            ref: forwardedRef,
+            style: {
+              ...arrowProps.style,
+              // ensures the element can be measured correctly (mostly for if SVG)
+              display: "block"
+            }
+          }
+        )
+      }
+    )
+  );
+});
+PopperArrow.displayName = ARROW_NAME$1;
+function isNotNull(value) {
+  return value !== null;
+}
+var transformOrigin = (options) => ({
+  name: "transformOrigin",
+  options,
+  fn(data) {
+    var _a2, _b2, _c2;
+    const { placement, rects, middlewareData } = data;
+    const cannotCenterArrow = ((_a2 = middlewareData.arrow) == null ? void 0 : _a2.centerOffset) !== 0;
+    const isArrowHidden = cannotCenterArrow;
+    const arrowWidth = isArrowHidden ? 0 : options.arrowWidth;
+    const arrowHeight = isArrowHidden ? 0 : options.arrowHeight;
+    const [placedSide, placedAlign] = getSideAndAlignFromPlacement(placement);
+    const noArrowAlign = { start: "0%", center: "50%", end: "100%" }[placedAlign];
+    const arrowXCenter = (((_b2 = middlewareData.arrow) == null ? void 0 : _b2.x) ?? 0) + arrowWidth / 2;
+    const arrowYCenter = (((_c2 = middlewareData.arrow) == null ? void 0 : _c2.y) ?? 0) + arrowHeight / 2;
+    let x2 = "";
+    let y2 = "";
+    if (placedSide === "bottom") {
+      x2 = isArrowHidden ? noArrowAlign : `${arrowXCenter}px`;
+      y2 = `${-arrowHeight}px`;
+    } else if (placedSide === "top") {
+      x2 = isArrowHidden ? noArrowAlign : `${arrowXCenter}px`;
+      y2 = `${rects.floating.height + arrowHeight}px`;
+    } else if (placedSide === "right") {
+      x2 = `${-arrowHeight}px`;
+      y2 = isArrowHidden ? noArrowAlign : `${arrowYCenter}px`;
+    } else if (placedSide === "left") {
+      x2 = `${rects.floating.width + arrowHeight}px`;
+      y2 = isArrowHidden ? noArrowAlign : `${arrowYCenter}px`;
+    }
+    return { data: { x: x2, y: y2 } };
+  }
+});
+function getSideAndAlignFromPlacement(placement) {
+  const [side, align = "center"] = placement.split("-");
+  return [side, align];
+}
+var Root2$1 = Popper;
+var Anchor = PopperAnchor;
+var Content = PopperContent;
+var Arrow = PopperArrow;
+var VISUALLY_HIDDEN_STYLES = Object.freeze({
+  // See: https://github.com/twbs/bootstrap/blob/main/scss/mixins/_visually-hidden.scss
+  position: "absolute",
+  border: 0,
+  width: 1,
+  height: 1,
+  padding: 0,
+  margin: -1,
+  overflow: "hidden",
+  clip: "rect(0, 0, 0, 0)",
+  whiteSpace: "nowrap",
+  wordWrap: "normal"
+});
+var NAME = "VisuallyHidden";
+var VisuallyHidden = reactExports.forwardRef(
+  (props, forwardedRef) => {
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(
+      Primitive.span,
+      {
+        ...props,
+        ref: forwardedRef,
+        style: { ...VISUALLY_HIDDEN_STYLES, ...props.style }
+      }
+    );
+  }
+);
+VisuallyHidden.displayName = NAME;
+var OPEN_KEYS = [" ", "Enter", "ArrowUp", "ArrowDown"];
+var SELECTION_KEYS = [" ", "Enter"];
+var SELECT_NAME = "Select";
+var [Collection, useCollection, createCollectionScope] = createCollection(SELECT_NAME);
+var [createSelectContext] = createContextScope(SELECT_NAME, [
+  createCollectionScope,
+  createPopperScope
+]);
+var usePopperScope = createPopperScope();
+var [SelectProvider, useSelectContext] = createSelectContext(SELECT_NAME);
+var [SelectNativeOptionsProvider, useSelectNativeOptionsContext] = createSelectContext(SELECT_NAME);
+var Select$1 = (props) => {
+  const {
+    __scopeSelect,
+    children,
+    open: openProp,
+    defaultOpen,
+    onOpenChange,
+    value: valueProp,
+    defaultValue,
+    onValueChange,
+    dir,
+    name,
+    autoComplete,
+    disabled,
+    required,
+    form
+  } = props;
+  const popperScope = usePopperScope(__scopeSelect);
+  const [trigger, setTrigger] = reactExports.useState(null);
+  const [valueNode, setValueNode] = reactExports.useState(null);
+  const [valueNodeHasChildren, setValueNodeHasChildren] = reactExports.useState(false);
+  const direction = useDirection(dir);
+  const [open, setOpen] = useControllableState({
+    prop: openProp,
+    defaultProp: defaultOpen ?? false,
+    onChange: onOpenChange,
+    caller: SELECT_NAME
+  });
+  const [value, setValue] = useControllableState({
+    prop: valueProp,
+    defaultProp: defaultValue,
+    onChange: onValueChange,
+    caller: SELECT_NAME
+  });
+  const triggerPointerDownPosRef = reactExports.useRef(null);
+  const isFormControl = trigger ? form || !!trigger.closest("form") : true;
+  const [nativeOptionsSet, setNativeOptionsSet] = reactExports.useState(/* @__PURE__ */ new Set());
+  const nativeSelectKey = Array.from(nativeOptionsSet).map((option) => option.props.value).join(";");
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(Root2$1, { ...popperScope, children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+    SelectProvider,
+    {
+      required,
+      scope: __scopeSelect,
+      trigger,
+      onTriggerChange: setTrigger,
+      valueNode,
+      onValueNodeChange: setValueNode,
+      valueNodeHasChildren,
+      onValueNodeHasChildrenChange: setValueNodeHasChildren,
+      contentId: useId(),
+      value,
+      onValueChange: setValue,
+      open,
+      onOpenChange: setOpen,
+      dir: direction,
+      triggerPointerDownPosRef,
+      disabled,
+      children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Collection.Provider, { scope: __scopeSelect, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+          SelectNativeOptionsProvider,
+          {
+            scope: props.__scopeSelect,
+            onNativeOptionAdd: reactExports.useCallback((option) => {
+              setNativeOptionsSet((prev) => new Set(prev).add(option));
+            }, []),
+            onNativeOptionRemove: reactExports.useCallback((option) => {
+              setNativeOptionsSet((prev) => {
+                const optionsSet = new Set(prev);
+                optionsSet.delete(option);
+                return optionsSet;
+              });
+            }, []),
+            children
+          }
+        ) }),
+        isFormControl ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          SelectBubbleInput,
+          {
+            "aria-hidden": true,
+            required,
+            tabIndex: -1,
+            name,
+            autoComplete,
+            value,
+            onChange: (event) => setValue(event.target.value),
+            disabled,
+            form,
+            children: [
+              value === void 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "" }) : null,
+              Array.from(nativeOptionsSet)
+            ]
+          },
+          nativeSelectKey
+        ) : null
+      ]
+    }
+  ) });
+};
+Select$1.displayName = SELECT_NAME;
+var TRIGGER_NAME = "SelectTrigger";
+var SelectTrigger$1 = reactExports.forwardRef(
+  (props, forwardedRef) => {
+    const { __scopeSelect, disabled = false, ...triggerProps } = props;
+    const popperScope = usePopperScope(__scopeSelect);
+    const context = useSelectContext(TRIGGER_NAME, __scopeSelect);
+    const isDisabled = context.disabled || disabled;
+    const composedRefs = useComposedRefs(forwardedRef, context.onTriggerChange);
+    const getItems = useCollection(__scopeSelect);
+    const pointerTypeRef = reactExports.useRef("touch");
+    const [searchRef, handleTypeaheadSearch, resetTypeahead] = useTypeaheadSearch((search) => {
+      const enabledItems = getItems().filter((item) => !item.disabled);
+      const currentItem = enabledItems.find((item) => item.value === context.value);
+      const nextItem = findNextItem(enabledItems, search, currentItem);
+      if (nextItem !== void 0) {
+        context.onValueChange(nextItem.value);
+      }
+    });
+    const handleOpen = (pointerEvent) => {
+      if (!isDisabled) {
+        context.onOpenChange(true);
+        resetTypeahead();
+      }
+      if (pointerEvent) {
+        context.triggerPointerDownPosRef.current = {
+          x: Math.round(pointerEvent.pageX),
+          y: Math.round(pointerEvent.pageY)
+        };
+      }
+    };
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(Anchor, { asChild: true, ...popperScope, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+      Primitive.button,
+      {
+        type: "button",
+        role: "combobox",
+        "aria-controls": context.contentId,
+        "aria-expanded": context.open,
+        "aria-required": context.required,
+        "aria-autocomplete": "none",
+        dir: context.dir,
+        "data-state": context.open ? "open" : "closed",
+        disabled: isDisabled,
+        "data-disabled": isDisabled ? "" : void 0,
+        "data-placeholder": shouldShowPlaceholder(context.value) ? "" : void 0,
+        ...triggerProps,
+        ref: composedRefs,
+        onClick: composeEventHandlers(triggerProps.onClick, (event) => {
+          event.currentTarget.focus();
+          if (pointerTypeRef.current !== "mouse") {
+            handleOpen(event);
+          }
+        }),
+        onPointerDown: composeEventHandlers(triggerProps.onPointerDown, (event) => {
+          pointerTypeRef.current = event.pointerType;
+          const target = event.target;
+          if (target.hasPointerCapture(event.pointerId)) {
+            target.releasePointerCapture(event.pointerId);
+          }
+          if (event.button === 0 && event.ctrlKey === false && event.pointerType === "mouse") {
+            handleOpen(event);
+            event.preventDefault();
+          }
+        }),
+        onKeyDown: composeEventHandlers(triggerProps.onKeyDown, (event) => {
+          const isTypingAhead = searchRef.current !== "";
+          const isModifierKey = event.ctrlKey || event.altKey || event.metaKey;
+          if (!isModifierKey && event.key.length === 1) handleTypeaheadSearch(event.key);
+          if (isTypingAhead && event.key === " ") return;
+          if (OPEN_KEYS.includes(event.key)) {
+            handleOpen();
+            event.preventDefault();
+          }
+        })
+      }
+    ) });
+  }
+);
+SelectTrigger$1.displayName = TRIGGER_NAME;
+var VALUE_NAME = "SelectValue";
+var SelectValue$1 = reactExports.forwardRef(
+  (props, forwardedRef) => {
+    const { __scopeSelect, className, style: style2, children, placeholder = "", ...valueProps } = props;
+    const context = useSelectContext(VALUE_NAME, __scopeSelect);
+    const { onValueNodeHasChildrenChange } = context;
+    const hasChildren = children !== void 0;
+    const composedRefs = useComposedRefs(forwardedRef, context.onValueNodeChange);
+    useLayoutEffect2(() => {
+      onValueNodeHasChildrenChange(hasChildren);
+    }, [onValueNodeHasChildrenChange, hasChildren]);
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(
+      Primitive.span,
+      {
+        ...valueProps,
+        ref: composedRefs,
+        style: { pointerEvents: "none" },
+        children: shouldShowPlaceholder(context.value) ? /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: placeholder }) : children
+      }
+    );
+  }
+);
+SelectValue$1.displayName = VALUE_NAME;
+var ICON_NAME = "SelectIcon";
+var SelectIcon = reactExports.forwardRef(
+  (props, forwardedRef) => {
+    const { __scopeSelect, children, ...iconProps } = props;
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(Primitive.span, { "aria-hidden": true, ...iconProps, ref: forwardedRef, children: children || "▼" });
+  }
+);
+SelectIcon.displayName = ICON_NAME;
+var PORTAL_NAME = "SelectPortal";
+var SelectPortal = (props) => {
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(Portal$2, { asChild: true, ...props });
+};
+SelectPortal.displayName = PORTAL_NAME;
+var CONTENT_NAME = "SelectContent";
+var SelectContent$1 = reactExports.forwardRef(
+  (props, forwardedRef) => {
+    const context = useSelectContext(CONTENT_NAME, props.__scopeSelect);
+    const [fragment, setFragment] = reactExports.useState();
+    useLayoutEffect2(() => {
+      setFragment(new DocumentFragment());
+    }, []);
+    if (!context.open) {
+      const frag = fragment;
+      return frag ? reactDomExports.createPortal(
+        /* @__PURE__ */ jsxRuntimeExports.jsx(SelectContentProvider, { scope: props.__scopeSelect, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Collection.Slot, { scope: props.__scopeSelect, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { children: props.children }) }) }),
+        frag
+      ) : null;
+    }
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(SelectContentImpl, { ...props, ref: forwardedRef });
+  }
+);
+SelectContent$1.displayName = CONTENT_NAME;
+var CONTENT_MARGIN = 10;
+var [SelectContentProvider, useSelectContentContext] = createSelectContext(CONTENT_NAME);
+var CONTENT_IMPL_NAME = "SelectContentImpl";
+var Slot = /* @__PURE__ */ createSlot("SelectContent.RemoveScroll");
+var SelectContentImpl = reactExports.forwardRef(
+  (props, forwardedRef) => {
+    const {
+      __scopeSelect,
+      position = "item-aligned",
+      onCloseAutoFocus,
+      onEscapeKeyDown,
+      onPointerDownOutside,
+      //
+      // PopperContent props
+      side,
+      sideOffset,
+      align,
+      alignOffset,
+      arrowPadding,
+      collisionBoundary,
+      collisionPadding,
+      sticky,
+      hideWhenDetached,
+      avoidCollisions,
+      //
+      ...contentProps
+    } = props;
+    const context = useSelectContext(CONTENT_NAME, __scopeSelect);
+    const [content, setContent] = reactExports.useState(null);
+    const [viewport, setViewport] = reactExports.useState(null);
+    const composedRefs = useComposedRefs(forwardedRef, (node) => setContent(node));
+    const [selectedItem, setSelectedItem] = reactExports.useState(null);
+    const [selectedItemText, setSelectedItemText] = reactExports.useState(
+      null
+    );
+    const getItems = useCollection(__scopeSelect);
+    const [isPositioned, setIsPositioned] = reactExports.useState(false);
+    const firstValidItemFoundRef = reactExports.useRef(false);
+    reactExports.useEffect(() => {
+      if (content) return hideOthers(content);
+    }, [content]);
+    useFocusGuards();
+    const focusFirst2 = reactExports.useCallback(
+      (candidates) => {
+        const [firstItem, ...restItems] = getItems().map((item) => item.ref.current);
+        const [lastItem] = restItems.slice(-1);
+        const PREVIOUSLY_FOCUSED_ELEMENT = document.activeElement;
+        for (const candidate of candidates) {
+          if (candidate === PREVIOUSLY_FOCUSED_ELEMENT) return;
+          candidate == null ? void 0 : candidate.scrollIntoView({ block: "nearest" });
+          if (candidate === firstItem && viewport) viewport.scrollTop = 0;
+          if (candidate === lastItem && viewport) viewport.scrollTop = viewport.scrollHeight;
+          candidate == null ? void 0 : candidate.focus();
+          if (document.activeElement !== PREVIOUSLY_FOCUSED_ELEMENT) return;
+        }
+      },
+      [getItems, viewport]
+    );
+    const focusSelectedItem = reactExports.useCallback(
+      () => focusFirst2([selectedItem, content]),
+      [focusFirst2, selectedItem, content]
+    );
+    reactExports.useEffect(() => {
+      if (isPositioned) {
+        focusSelectedItem();
+      }
+    }, [isPositioned, focusSelectedItem]);
+    const { onOpenChange, triggerPointerDownPosRef } = context;
+    reactExports.useEffect(() => {
+      if (content) {
+        let pointerMoveDelta = { x: 0, y: 0 };
+        const handlePointerMove = (event) => {
+          var _a2, _b2;
+          pointerMoveDelta = {
+            x: Math.abs(Math.round(event.pageX) - (((_a2 = triggerPointerDownPosRef.current) == null ? void 0 : _a2.x) ?? 0)),
+            y: Math.abs(Math.round(event.pageY) - (((_b2 = triggerPointerDownPosRef.current) == null ? void 0 : _b2.y) ?? 0))
+          };
+        };
+        const handlePointerUp = (event) => {
+          if (pointerMoveDelta.x <= 10 && pointerMoveDelta.y <= 10) {
+            event.preventDefault();
+          } else {
+            if (!content.contains(event.target)) {
+              onOpenChange(false);
+            }
+          }
+          document.removeEventListener("pointermove", handlePointerMove);
+          triggerPointerDownPosRef.current = null;
+        };
+        if (triggerPointerDownPosRef.current !== null) {
+          document.addEventListener("pointermove", handlePointerMove);
+          document.addEventListener("pointerup", handlePointerUp, { capture: true, once: true });
+        }
+        return () => {
+          document.removeEventListener("pointermove", handlePointerMove);
+          document.removeEventListener("pointerup", handlePointerUp, { capture: true });
+        };
+      }
+    }, [content, onOpenChange, triggerPointerDownPosRef]);
+    reactExports.useEffect(() => {
+      const close = () => onOpenChange(false);
+      window.addEventListener("blur", close);
+      window.addEventListener("resize", close);
+      return () => {
+        window.removeEventListener("blur", close);
+        window.removeEventListener("resize", close);
+      };
+    }, [onOpenChange]);
+    const [searchRef, handleTypeaheadSearch] = useTypeaheadSearch((search) => {
+      const enabledItems = getItems().filter((item) => !item.disabled);
+      const currentItem = enabledItems.find((item) => item.ref.current === document.activeElement);
+      const nextItem = findNextItem(enabledItems, search, currentItem);
+      if (nextItem) {
+        setTimeout(() => nextItem.ref.current.focus());
+      }
+    });
+    const itemRefCallback = reactExports.useCallback(
+      (node, value, disabled) => {
+        const isFirstValidItem = !firstValidItemFoundRef.current && !disabled;
+        const isSelectedItem = context.value !== void 0 && context.value === value;
+        if (isSelectedItem || isFirstValidItem) {
+          setSelectedItem(node);
+          if (isFirstValidItem) firstValidItemFoundRef.current = true;
+        }
+      },
+      [context.value]
+    );
+    const handleItemLeave = reactExports.useCallback(() => content == null ? void 0 : content.focus(), [content]);
+    const itemTextRefCallback = reactExports.useCallback(
+      (node, value, disabled) => {
+        const isFirstValidItem = !firstValidItemFoundRef.current && !disabled;
+        const isSelectedItem = context.value !== void 0 && context.value === value;
+        if (isSelectedItem || isFirstValidItem) {
+          setSelectedItemText(node);
+        }
+      },
+      [context.value]
+    );
+    const SelectPosition = position === "popper" ? SelectPopperPosition : SelectItemAlignedPosition;
+    const popperContentProps = SelectPosition === SelectPopperPosition ? {
+      side,
+      sideOffset,
+      align,
+      alignOffset,
+      arrowPadding,
+      collisionBoundary,
+      collisionPadding,
+      sticky,
+      hideWhenDetached,
+      avoidCollisions
+    } : {};
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(
+      SelectContentProvider,
+      {
+        scope: __scopeSelect,
+        content,
+        viewport,
+        onViewportChange: setViewport,
+        itemRefCallback,
+        selectedItem,
+        onItemLeave: handleItemLeave,
+        itemTextRefCallback,
+        focusSelectedItem,
+        selectedItemText,
+        position,
+        isPositioned,
+        searchRef,
+        children: /* @__PURE__ */ jsxRuntimeExports.jsx(ReactRemoveScroll, { as: Slot, allowPinchZoom: true, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+          FocusScope,
+          {
+            asChild: true,
+            trapped: context.open,
+            onMountAutoFocus: (event) => {
+              event.preventDefault();
+            },
+            onUnmountAutoFocus: composeEventHandlers(onCloseAutoFocus, (event) => {
+              var _a2;
+              (_a2 = context.trigger) == null ? void 0 : _a2.focus({ preventScroll: true });
+              event.preventDefault();
+            }),
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+              DismissableLayer,
+              {
+                asChild: true,
+                disableOutsidePointerEvents: true,
+                onEscapeKeyDown,
+                onPointerDownOutside,
+                onFocusOutside: (event) => event.preventDefault(),
+                onDismiss: () => context.onOpenChange(false),
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  SelectPosition,
+                  {
+                    role: "listbox",
+                    id: context.contentId,
+                    "data-state": context.open ? "open" : "closed",
+                    dir: context.dir,
+                    onContextMenu: (event) => event.preventDefault(),
+                    ...contentProps,
+                    ...popperContentProps,
+                    onPlaced: () => setIsPositioned(true),
+                    ref: composedRefs,
+                    style: {
+                      // flex layout so we can place the scroll buttons properly
+                      display: "flex",
+                      flexDirection: "column",
+                      // reset the outline by default as the content MAY get focused
+                      outline: "none",
+                      ...contentProps.style
+                    },
+                    onKeyDown: composeEventHandlers(contentProps.onKeyDown, (event) => {
+                      const isModifierKey = event.ctrlKey || event.altKey || event.metaKey;
+                      if (event.key === "Tab") event.preventDefault();
+                      if (!isModifierKey && event.key.length === 1) handleTypeaheadSearch(event.key);
+                      if (["ArrowUp", "ArrowDown", "Home", "End"].includes(event.key)) {
+                        const items = getItems().filter((item) => !item.disabled);
+                        let candidateNodes = items.map((item) => item.ref.current);
+                        if (["ArrowUp", "End"].includes(event.key)) {
+                          candidateNodes = candidateNodes.slice().reverse();
+                        }
+                        if (["ArrowUp", "ArrowDown"].includes(event.key)) {
+                          const currentElement = event.target;
+                          const currentIndex = candidateNodes.indexOf(currentElement);
+                          candidateNodes = candidateNodes.slice(currentIndex + 1);
+                        }
+                        setTimeout(() => focusFirst2(candidateNodes));
+                        event.preventDefault();
+                      }
+                    })
+                  }
+                )
+              }
+            )
+          }
+        ) })
+      }
+    );
+  }
+);
+SelectContentImpl.displayName = CONTENT_IMPL_NAME;
+var ITEM_ALIGNED_POSITION_NAME = "SelectItemAlignedPosition";
+var SelectItemAlignedPosition = reactExports.forwardRef((props, forwardedRef) => {
+  const { __scopeSelect, onPlaced, ...popperProps } = props;
+  const context = useSelectContext(CONTENT_NAME, __scopeSelect);
+  const contentContext = useSelectContentContext(CONTENT_NAME, __scopeSelect);
+  const [contentWrapper, setContentWrapper] = reactExports.useState(null);
+  const [content, setContent] = reactExports.useState(null);
+  const composedRefs = useComposedRefs(forwardedRef, (node) => setContent(node));
+  const getItems = useCollection(__scopeSelect);
+  const shouldExpandOnScrollRef = reactExports.useRef(false);
+  const shouldRepositionRef = reactExports.useRef(true);
+  const { viewport, selectedItem, selectedItemText, focusSelectedItem } = contentContext;
+  const position = reactExports.useCallback(() => {
+    if (context.trigger && context.valueNode && contentWrapper && content && viewport && selectedItem && selectedItemText) {
+      const triggerRect = context.trigger.getBoundingClientRect();
+      const contentRect = content.getBoundingClientRect();
+      const valueNodeRect = context.valueNode.getBoundingClientRect();
+      const itemTextRect = selectedItemText.getBoundingClientRect();
+      if (context.dir !== "rtl") {
+        const itemTextOffset = itemTextRect.left - contentRect.left;
+        const left = valueNodeRect.left - itemTextOffset;
+        const leftDelta = triggerRect.left - left;
+        const minContentWidth = triggerRect.width + leftDelta;
+        const contentWidth = Math.max(minContentWidth, contentRect.width);
+        const rightEdge = window.innerWidth - CONTENT_MARGIN;
+        const clampedLeft = clamp$1(left, [
+          CONTENT_MARGIN,
+          // Prevents the content from going off the starting edge of the
+          // viewport. It may still go off the ending edge, but this can be
+          // controlled by the user since they may want to manage overflow in a
+          // specific way.
+          // https://github.com/radix-ui/primitives/issues/2049
+          Math.max(CONTENT_MARGIN, rightEdge - contentWidth)
+        ]);
+        contentWrapper.style.minWidth = minContentWidth + "px";
+        contentWrapper.style.left = clampedLeft + "px";
+      } else {
+        const itemTextOffset = contentRect.right - itemTextRect.right;
+        const right = window.innerWidth - valueNodeRect.right - itemTextOffset;
+        const rightDelta = window.innerWidth - triggerRect.right - right;
+        const minContentWidth = triggerRect.width + rightDelta;
+        const contentWidth = Math.max(minContentWidth, contentRect.width);
+        const leftEdge = window.innerWidth - CONTENT_MARGIN;
+        const clampedRight = clamp$1(right, [
+          CONTENT_MARGIN,
+          Math.max(CONTENT_MARGIN, leftEdge - contentWidth)
+        ]);
+        contentWrapper.style.minWidth = minContentWidth + "px";
+        contentWrapper.style.right = clampedRight + "px";
+      }
+      const items = getItems();
+      const availableHeight = window.innerHeight - CONTENT_MARGIN * 2;
+      const itemsHeight = viewport.scrollHeight;
+      const contentStyles = window.getComputedStyle(content);
+      const contentBorderTopWidth = parseInt(contentStyles.borderTopWidth, 10);
+      const contentPaddingTop = parseInt(contentStyles.paddingTop, 10);
+      const contentBorderBottomWidth = parseInt(contentStyles.borderBottomWidth, 10);
+      const contentPaddingBottom = parseInt(contentStyles.paddingBottom, 10);
+      const fullContentHeight = contentBorderTopWidth + contentPaddingTop + itemsHeight + contentPaddingBottom + contentBorderBottomWidth;
+      const minContentHeight = Math.min(selectedItem.offsetHeight * 5, fullContentHeight);
+      const viewportStyles = window.getComputedStyle(viewport);
+      const viewportPaddingTop = parseInt(viewportStyles.paddingTop, 10);
+      const viewportPaddingBottom = parseInt(viewportStyles.paddingBottom, 10);
+      const topEdgeToTriggerMiddle = triggerRect.top + triggerRect.height / 2 - CONTENT_MARGIN;
+      const triggerMiddleToBottomEdge = availableHeight - topEdgeToTriggerMiddle;
+      const selectedItemHalfHeight = selectedItem.offsetHeight / 2;
+      const itemOffsetMiddle = selectedItem.offsetTop + selectedItemHalfHeight;
+      const contentTopToItemMiddle = contentBorderTopWidth + contentPaddingTop + itemOffsetMiddle;
+      const itemMiddleToContentBottom = fullContentHeight - contentTopToItemMiddle;
+      const willAlignWithoutTopOverflow = contentTopToItemMiddle <= topEdgeToTriggerMiddle;
+      if (willAlignWithoutTopOverflow) {
+        const isLastItem = items.length > 0 && selectedItem === items[items.length - 1].ref.current;
+        contentWrapper.style.bottom = "0px";
+        const viewportOffsetBottom = content.clientHeight - viewport.offsetTop - viewport.offsetHeight;
+        const clampedTriggerMiddleToBottomEdge = Math.max(
+          triggerMiddleToBottomEdge,
+          selectedItemHalfHeight + // viewport might have padding bottom, include it to avoid a scrollable viewport
+          (isLastItem ? viewportPaddingBottom : 0) + viewportOffsetBottom + contentBorderBottomWidth
+        );
+        const height = contentTopToItemMiddle + clampedTriggerMiddleToBottomEdge;
+        contentWrapper.style.height = height + "px";
+      } else {
+        const isFirstItem = items.length > 0 && selectedItem === items[0].ref.current;
+        contentWrapper.style.top = "0px";
+        const clampedTopEdgeToTriggerMiddle = Math.max(
+          topEdgeToTriggerMiddle,
+          contentBorderTopWidth + viewport.offsetTop + // viewport might have padding top, include it to avoid a scrollable viewport
+          (isFirstItem ? viewportPaddingTop : 0) + selectedItemHalfHeight
+        );
+        const height = clampedTopEdgeToTriggerMiddle + itemMiddleToContentBottom;
+        contentWrapper.style.height = height + "px";
+        viewport.scrollTop = contentTopToItemMiddle - topEdgeToTriggerMiddle + viewport.offsetTop;
+      }
+      contentWrapper.style.margin = `${CONTENT_MARGIN}px 0`;
+      contentWrapper.style.minHeight = minContentHeight + "px";
+      contentWrapper.style.maxHeight = availableHeight + "px";
+      onPlaced == null ? void 0 : onPlaced();
+      requestAnimationFrame(() => shouldExpandOnScrollRef.current = true);
+    }
+  }, [
+    getItems,
+    context.trigger,
+    context.valueNode,
+    contentWrapper,
+    content,
+    viewport,
+    selectedItem,
+    selectedItemText,
+    context.dir,
+    onPlaced
+  ]);
+  useLayoutEffect2(() => position(), [position]);
+  const [contentZIndex, setContentZIndex] = reactExports.useState();
+  useLayoutEffect2(() => {
+    if (content) setContentZIndex(window.getComputedStyle(content).zIndex);
+  }, [content]);
+  const handleScrollButtonChange = reactExports.useCallback(
+    (node) => {
+      if (node && shouldRepositionRef.current === true) {
+        position();
+        focusSelectedItem == null ? void 0 : focusSelectedItem();
+        shouldRepositionRef.current = false;
+      }
+    },
+    [position, focusSelectedItem]
+  );
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    SelectViewportProvider,
+    {
+      scope: __scopeSelect,
+      contentWrapper,
+      shouldExpandOnScrollRef,
+      onScrollButtonChange: handleScrollButtonChange,
+      children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "div",
+        {
+          ref: setContentWrapper,
+          style: {
+            display: "flex",
+            flexDirection: "column",
+            position: "fixed",
+            zIndex: contentZIndex
+          },
+          children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+            Primitive.div,
+            {
+              ...popperProps,
+              ref: composedRefs,
+              style: {
+                // When we get the height of the content, it includes borders. If we were to set
+                // the height without having `boxSizing: 'border-box'` it would be too big.
+                boxSizing: "border-box",
+                // We need to ensure the content doesn't get taller than the wrapper
+                maxHeight: "100%",
+                ...popperProps.style
+              }
+            }
+          )
+        }
+      )
+    }
+  );
+});
+SelectItemAlignedPosition.displayName = ITEM_ALIGNED_POSITION_NAME;
+var POPPER_POSITION_NAME = "SelectPopperPosition";
+var SelectPopperPosition = reactExports.forwardRef((props, forwardedRef) => {
+  const {
+    __scopeSelect,
+    align = "start",
+    collisionPadding = CONTENT_MARGIN,
+    ...popperProps
+  } = props;
+  const popperScope = usePopperScope(__scopeSelect);
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    Content,
+    {
+      ...popperScope,
+      ...popperProps,
+      ref: forwardedRef,
+      align,
+      collisionPadding,
+      style: {
+        // Ensure border-box for floating-ui calculations
+        boxSizing: "border-box",
+        ...popperProps.style,
+        // re-namespace exposed content custom properties
+        ...{
+          "--radix-select-content-transform-origin": "var(--radix-popper-transform-origin)",
+          "--radix-select-content-available-width": "var(--radix-popper-available-width)",
+          "--radix-select-content-available-height": "var(--radix-popper-available-height)",
+          "--radix-select-trigger-width": "var(--radix-popper-anchor-width)",
+          "--radix-select-trigger-height": "var(--radix-popper-anchor-height)"
+        }
+      }
+    }
+  );
+});
+SelectPopperPosition.displayName = POPPER_POSITION_NAME;
+var [SelectViewportProvider, useSelectViewportContext] = createSelectContext(CONTENT_NAME, {});
+var VIEWPORT_NAME = "SelectViewport";
+var SelectViewport = reactExports.forwardRef(
+  (props, forwardedRef) => {
+    const { __scopeSelect, nonce, ...viewportProps } = props;
+    const contentContext = useSelectContentContext(VIEWPORT_NAME, __scopeSelect);
+    const viewportContext = useSelectViewportContext(VIEWPORT_NAME, __scopeSelect);
+    const composedRefs = useComposedRefs(forwardedRef, contentContext.onViewportChange);
+    const prevScrollTopRef = reactExports.useRef(0);
+    return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "style",
+        {
+          dangerouslySetInnerHTML: {
+            __html: `[data-radix-select-viewport]{scrollbar-width:none;-ms-overflow-style:none;-webkit-overflow-scrolling:touch;}[data-radix-select-viewport]::-webkit-scrollbar{display:none}`
+          },
+          nonce
+        }
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Collection.Slot, { scope: __scopeSelect, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+        Primitive.div,
+        {
+          "data-radix-select-viewport": "",
+          role: "presentation",
+          ...viewportProps,
+          ref: composedRefs,
+          style: {
+            // we use position: 'relative' here on the `viewport` so that when we call
+            // `selectedItem.offsetTop` in calculations, the offset is relative to the viewport
+            // (independent of the scrollUpButton).
+            position: "relative",
+            flex: 1,
+            // Viewport should only be scrollable in the vertical direction.
+            // This won't work in vertical writing modes, so we'll need to
+            // revisit this if/when that is supported
+            // https://developer.chrome.com/blog/vertical-form-controls
+            overflow: "hidden auto",
+            ...viewportProps.style
+          },
+          onScroll: composeEventHandlers(viewportProps.onScroll, (event) => {
+            const viewport = event.currentTarget;
+            const { contentWrapper, shouldExpandOnScrollRef } = viewportContext;
+            if ((shouldExpandOnScrollRef == null ? void 0 : shouldExpandOnScrollRef.current) && contentWrapper) {
+              const scrolledBy = Math.abs(prevScrollTopRef.current - viewport.scrollTop);
+              if (scrolledBy > 0) {
+                const availableHeight = window.innerHeight - CONTENT_MARGIN * 2;
+                const cssMinHeight = parseFloat(contentWrapper.style.minHeight);
+                const cssHeight = parseFloat(contentWrapper.style.height);
+                const prevHeight = Math.max(cssMinHeight, cssHeight);
+                if (prevHeight < availableHeight) {
+                  const nextHeight = prevHeight + scrolledBy;
+                  const clampedNextHeight = Math.min(availableHeight, nextHeight);
+                  const heightDiff = nextHeight - clampedNextHeight;
+                  contentWrapper.style.height = clampedNextHeight + "px";
+                  if (contentWrapper.style.bottom === "0px") {
+                    viewport.scrollTop = heightDiff > 0 ? heightDiff : 0;
+                    contentWrapper.style.justifyContent = "flex-end";
+                  }
+                }
+              }
+            }
+            prevScrollTopRef.current = viewport.scrollTop;
+          })
+        }
+      ) })
+    ] });
+  }
+);
+SelectViewport.displayName = VIEWPORT_NAME;
+var GROUP_NAME = "SelectGroup";
+var [SelectGroupContextProvider, useSelectGroupContext] = createSelectContext(GROUP_NAME);
+var SelectGroup = reactExports.forwardRef(
+  (props, forwardedRef) => {
+    const { __scopeSelect, ...groupProps } = props;
+    const groupId = useId();
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(SelectGroupContextProvider, { scope: __scopeSelect, id: groupId, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Primitive.div, { role: "group", "aria-labelledby": groupId, ...groupProps, ref: forwardedRef }) });
+  }
+);
+SelectGroup.displayName = GROUP_NAME;
+var LABEL_NAME = "SelectLabel";
+var SelectLabel = reactExports.forwardRef(
+  (props, forwardedRef) => {
+    const { __scopeSelect, ...labelProps } = props;
+    const groupContext = useSelectGroupContext(LABEL_NAME, __scopeSelect);
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(Primitive.div, { id: groupContext.id, ...labelProps, ref: forwardedRef });
+  }
+);
+SelectLabel.displayName = LABEL_NAME;
+var ITEM_NAME = "SelectItem";
+var [SelectItemContextProvider, useSelectItemContext] = createSelectContext(ITEM_NAME);
+var SelectItem$1 = reactExports.forwardRef(
+  (props, forwardedRef) => {
+    const {
+      __scopeSelect,
+      value,
+      disabled = false,
+      textValue: textValueProp,
+      ...itemProps
+    } = props;
+    const context = useSelectContext(ITEM_NAME, __scopeSelect);
+    const contentContext = useSelectContentContext(ITEM_NAME, __scopeSelect);
+    const isSelected = context.value === value;
+    const [textValue, setTextValue] = reactExports.useState(textValueProp ?? "");
+    const [isFocused, setIsFocused] = reactExports.useState(false);
+    const composedRefs = useComposedRefs(
+      forwardedRef,
+      (node) => {
+        var _a2;
+        return (_a2 = contentContext.itemRefCallback) == null ? void 0 : _a2.call(contentContext, node, value, disabled);
+      }
+    );
+    const textId = useId();
+    const pointerTypeRef = reactExports.useRef("touch");
+    const handleSelect = () => {
+      if (!disabled) {
+        context.onValueChange(value);
+        context.onOpenChange(false);
+      }
+    };
+    if (value === "") {
+      throw new Error(
+        "A <Select.Item /> must have a value prop that is not an empty string. This is because the Select value can be set to an empty string to clear the selection and show the placeholder."
+      );
+    }
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(
+      SelectItemContextProvider,
+      {
+        scope: __scopeSelect,
+        value,
+        disabled,
+        textId,
+        isSelected,
+        onItemTextChange: reactExports.useCallback((node) => {
+          setTextValue((prevTextValue) => prevTextValue || ((node == null ? void 0 : node.textContent) ?? "").trim());
+        }, []),
+        children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+          Collection.ItemSlot,
+          {
+            scope: __scopeSelect,
+            value,
+            disabled,
+            textValue,
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+              Primitive.div,
+              {
+                role: "option",
+                "aria-labelledby": textId,
+                "data-highlighted": isFocused ? "" : void 0,
+                "aria-selected": isSelected && isFocused,
+                "data-state": isSelected ? "checked" : "unchecked",
+                "aria-disabled": disabled || void 0,
+                "data-disabled": disabled ? "" : void 0,
+                tabIndex: disabled ? void 0 : -1,
+                ...itemProps,
+                ref: composedRefs,
+                onFocus: composeEventHandlers(itemProps.onFocus, () => setIsFocused(true)),
+                onBlur: composeEventHandlers(itemProps.onBlur, () => setIsFocused(false)),
+                onClick: composeEventHandlers(itemProps.onClick, () => {
+                  if (pointerTypeRef.current !== "mouse") handleSelect();
+                }),
+                onPointerUp: composeEventHandlers(itemProps.onPointerUp, () => {
+                  if (pointerTypeRef.current === "mouse") handleSelect();
+                }),
+                onPointerDown: composeEventHandlers(itemProps.onPointerDown, (event) => {
+                  pointerTypeRef.current = event.pointerType;
+                }),
+                onPointerMove: composeEventHandlers(itemProps.onPointerMove, (event) => {
+                  var _a2;
+                  pointerTypeRef.current = event.pointerType;
+                  if (disabled) {
+                    (_a2 = contentContext.onItemLeave) == null ? void 0 : _a2.call(contentContext);
+                  } else if (pointerTypeRef.current === "mouse") {
+                    event.currentTarget.focus({ preventScroll: true });
+                  }
+                }),
+                onPointerLeave: composeEventHandlers(itemProps.onPointerLeave, (event) => {
+                  var _a2;
+                  if (event.currentTarget === document.activeElement) {
+                    (_a2 = contentContext.onItemLeave) == null ? void 0 : _a2.call(contentContext);
+                  }
+                }),
+                onKeyDown: composeEventHandlers(itemProps.onKeyDown, (event) => {
+                  var _a2;
+                  const isTypingAhead = ((_a2 = contentContext.searchRef) == null ? void 0 : _a2.current) !== "";
+                  if (isTypingAhead && event.key === " ") return;
+                  if (SELECTION_KEYS.includes(event.key)) handleSelect();
+                  if (event.key === " ") event.preventDefault();
+                })
+              }
+            )
+          }
+        )
+      }
+    );
+  }
+);
+SelectItem$1.displayName = ITEM_NAME;
+var ITEM_TEXT_NAME = "SelectItemText";
+var SelectItemText = reactExports.forwardRef(
+  (props, forwardedRef) => {
+    const { __scopeSelect, className, style: style2, ...itemTextProps } = props;
+    const context = useSelectContext(ITEM_TEXT_NAME, __scopeSelect);
+    const contentContext = useSelectContentContext(ITEM_TEXT_NAME, __scopeSelect);
+    const itemContext = useSelectItemContext(ITEM_TEXT_NAME, __scopeSelect);
+    const nativeOptionsContext = useSelectNativeOptionsContext(ITEM_TEXT_NAME, __scopeSelect);
+    const [itemTextNode, setItemTextNode] = reactExports.useState(null);
+    const composedRefs = useComposedRefs(
+      forwardedRef,
+      (node) => setItemTextNode(node),
+      itemContext.onItemTextChange,
+      (node) => {
+        var _a2;
+        return (_a2 = contentContext.itemTextRefCallback) == null ? void 0 : _a2.call(contentContext, node, itemContext.value, itemContext.disabled);
+      }
+    );
+    const textContent = itemTextNode == null ? void 0 : itemTextNode.textContent;
+    const nativeOption = reactExports.useMemo(
+      () => /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: itemContext.value, disabled: itemContext.disabled, children: textContent }, itemContext.value),
+      [itemContext.disabled, itemContext.value, textContent]
+    );
+    const { onNativeOptionAdd, onNativeOptionRemove } = nativeOptionsContext;
+    useLayoutEffect2(() => {
+      onNativeOptionAdd(nativeOption);
+      return () => onNativeOptionRemove(nativeOption);
+    }, [onNativeOptionAdd, onNativeOptionRemove, nativeOption]);
+    return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Primitive.span, { id: itemContext.textId, ...itemTextProps, ref: composedRefs }),
+      itemContext.isSelected && context.valueNode && !context.valueNodeHasChildren ? reactDomExports.createPortal(itemTextProps.children, context.valueNode) : null
+    ] });
+  }
+);
+SelectItemText.displayName = ITEM_TEXT_NAME;
+var ITEM_INDICATOR_NAME = "SelectItemIndicator";
+var SelectItemIndicator = reactExports.forwardRef(
+  (props, forwardedRef) => {
+    const { __scopeSelect, ...itemIndicatorProps } = props;
+    const itemContext = useSelectItemContext(ITEM_INDICATOR_NAME, __scopeSelect);
+    return itemContext.isSelected ? /* @__PURE__ */ jsxRuntimeExports.jsx(Primitive.span, { "aria-hidden": true, ...itemIndicatorProps, ref: forwardedRef }) : null;
+  }
+);
+SelectItemIndicator.displayName = ITEM_INDICATOR_NAME;
+var SCROLL_UP_BUTTON_NAME = "SelectScrollUpButton";
+var SelectScrollUpButton$1 = reactExports.forwardRef((props, forwardedRef) => {
+  const contentContext = useSelectContentContext(SCROLL_UP_BUTTON_NAME, props.__scopeSelect);
+  const viewportContext = useSelectViewportContext(SCROLL_UP_BUTTON_NAME, props.__scopeSelect);
+  const [canScrollUp, setCanScrollUp] = reactExports.useState(false);
+  const composedRefs = useComposedRefs(forwardedRef, viewportContext.onScrollButtonChange);
+  useLayoutEffect2(() => {
+    if (contentContext.viewport && contentContext.isPositioned) {
+      let handleScroll2 = function() {
+        const canScrollUp2 = viewport.scrollTop > 0;
+        setCanScrollUp(canScrollUp2);
+      };
+      const viewport = contentContext.viewport;
+      handleScroll2();
+      viewport.addEventListener("scroll", handleScroll2);
+      return () => viewport.removeEventListener("scroll", handleScroll2);
+    }
+  }, [contentContext.viewport, contentContext.isPositioned]);
+  return canScrollUp ? /* @__PURE__ */ jsxRuntimeExports.jsx(
+    SelectScrollButtonImpl,
+    {
+      ...props,
+      ref: composedRefs,
+      onAutoScroll: () => {
+        const { viewport, selectedItem } = contentContext;
+        if (viewport && selectedItem) {
+          viewport.scrollTop = viewport.scrollTop - selectedItem.offsetHeight;
+        }
+      }
+    }
+  ) : null;
+});
+SelectScrollUpButton$1.displayName = SCROLL_UP_BUTTON_NAME;
+var SCROLL_DOWN_BUTTON_NAME = "SelectScrollDownButton";
+var SelectScrollDownButton$1 = reactExports.forwardRef((props, forwardedRef) => {
+  const contentContext = useSelectContentContext(SCROLL_DOWN_BUTTON_NAME, props.__scopeSelect);
+  const viewportContext = useSelectViewportContext(SCROLL_DOWN_BUTTON_NAME, props.__scopeSelect);
+  const [canScrollDown, setCanScrollDown] = reactExports.useState(false);
+  const composedRefs = useComposedRefs(forwardedRef, viewportContext.onScrollButtonChange);
+  useLayoutEffect2(() => {
+    if (contentContext.viewport && contentContext.isPositioned) {
+      let handleScroll2 = function() {
+        const maxScroll = viewport.scrollHeight - viewport.clientHeight;
+        const canScrollDown2 = Math.ceil(viewport.scrollTop) < maxScroll;
+        setCanScrollDown(canScrollDown2);
+      };
+      const viewport = contentContext.viewport;
+      handleScroll2();
+      viewport.addEventListener("scroll", handleScroll2);
+      return () => viewport.removeEventListener("scroll", handleScroll2);
+    }
+  }, [contentContext.viewport, contentContext.isPositioned]);
+  return canScrollDown ? /* @__PURE__ */ jsxRuntimeExports.jsx(
+    SelectScrollButtonImpl,
+    {
+      ...props,
+      ref: composedRefs,
+      onAutoScroll: () => {
+        const { viewport, selectedItem } = contentContext;
+        if (viewport && selectedItem) {
+          viewport.scrollTop = viewport.scrollTop + selectedItem.offsetHeight;
+        }
+      }
+    }
+  ) : null;
+});
+SelectScrollDownButton$1.displayName = SCROLL_DOWN_BUTTON_NAME;
+var SelectScrollButtonImpl = reactExports.forwardRef((props, forwardedRef) => {
+  const { __scopeSelect, onAutoScroll, ...scrollIndicatorProps } = props;
+  const contentContext = useSelectContentContext("SelectScrollButton", __scopeSelect);
+  const autoScrollTimerRef = reactExports.useRef(null);
+  const getItems = useCollection(__scopeSelect);
+  const clearAutoScrollTimer = reactExports.useCallback(() => {
+    if (autoScrollTimerRef.current !== null) {
+      window.clearInterval(autoScrollTimerRef.current);
+      autoScrollTimerRef.current = null;
+    }
+  }, []);
+  reactExports.useEffect(() => {
+    return () => clearAutoScrollTimer();
+  }, [clearAutoScrollTimer]);
+  useLayoutEffect2(() => {
+    var _a2;
+    const activeItem = getItems().find((item) => item.ref.current === document.activeElement);
+    (_a2 = activeItem == null ? void 0 : activeItem.ref.current) == null ? void 0 : _a2.scrollIntoView({ block: "nearest" });
+  }, [getItems]);
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    Primitive.div,
+    {
+      "aria-hidden": true,
+      ...scrollIndicatorProps,
+      ref: forwardedRef,
+      style: { flexShrink: 0, ...scrollIndicatorProps.style },
+      onPointerDown: composeEventHandlers(scrollIndicatorProps.onPointerDown, () => {
+        if (autoScrollTimerRef.current === null) {
+          autoScrollTimerRef.current = window.setInterval(onAutoScroll, 50);
+        }
+      }),
+      onPointerMove: composeEventHandlers(scrollIndicatorProps.onPointerMove, () => {
+        var _a2;
+        (_a2 = contentContext.onItemLeave) == null ? void 0 : _a2.call(contentContext);
+        if (autoScrollTimerRef.current === null) {
+          autoScrollTimerRef.current = window.setInterval(onAutoScroll, 50);
+        }
+      }),
+      onPointerLeave: composeEventHandlers(scrollIndicatorProps.onPointerLeave, () => {
+        clearAutoScrollTimer();
+      })
+    }
+  );
+});
+var SEPARATOR_NAME = "SelectSeparator";
+var SelectSeparator = reactExports.forwardRef(
+  (props, forwardedRef) => {
+    const { __scopeSelect, ...separatorProps } = props;
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(Primitive.div, { "aria-hidden": true, ...separatorProps, ref: forwardedRef });
+  }
+);
+SelectSeparator.displayName = SEPARATOR_NAME;
+var ARROW_NAME = "SelectArrow";
+var SelectArrow = reactExports.forwardRef(
+  (props, forwardedRef) => {
+    const { __scopeSelect, ...arrowProps } = props;
+    const popperScope = usePopperScope(__scopeSelect);
+    const context = useSelectContext(ARROW_NAME, __scopeSelect);
+    const contentContext = useSelectContentContext(ARROW_NAME, __scopeSelect);
+    return context.open && contentContext.position === "popper" ? /* @__PURE__ */ jsxRuntimeExports.jsx(Arrow, { ...popperScope, ...arrowProps, ref: forwardedRef }) : null;
+  }
+);
+SelectArrow.displayName = ARROW_NAME;
+var BUBBLE_INPUT_NAME$1 = "SelectBubbleInput";
+var SelectBubbleInput = reactExports.forwardRef(
+  ({ __scopeSelect, value, ...props }, forwardedRef) => {
+    const ref = reactExports.useRef(null);
+    const composedRefs = useComposedRefs(forwardedRef, ref);
+    const prevValue = usePrevious(value);
+    reactExports.useEffect(() => {
+      const select = ref.current;
+      if (!select) return;
+      const selectProto = window.HTMLSelectElement.prototype;
+      const descriptor = Object.getOwnPropertyDescriptor(
+        selectProto,
+        "value"
+      );
+      const setValue = descriptor.set;
+      if (prevValue !== value && setValue) {
+        const event = new Event("change", { bubbles: true });
+        setValue.call(select, value);
+        select.dispatchEvent(event);
+      }
+    }, [prevValue, value]);
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(
+      Primitive.select,
+      {
+        ...props,
+        style: { ...VISUALLY_HIDDEN_STYLES, ...props.style },
+        ref: composedRefs,
+        defaultValue: value
+      }
+    );
+  }
+);
+SelectBubbleInput.displayName = BUBBLE_INPUT_NAME$1;
+function shouldShowPlaceholder(value) {
+  return value === "" || value === void 0;
+}
+function useTypeaheadSearch(onSearchChange) {
+  const handleSearchChange = useCallbackRef$1(onSearchChange);
+  const searchRef = reactExports.useRef("");
+  const timerRef = reactExports.useRef(0);
+  const handleTypeaheadSearch = reactExports.useCallback(
+    (key) => {
+      const search = searchRef.current + key;
+      handleSearchChange(search);
+      (function updateSearch(value) {
+        searchRef.current = value;
+        window.clearTimeout(timerRef.current);
+        if (value !== "") timerRef.current = window.setTimeout(() => updateSearch(""), 1e3);
+      })(search);
+    },
+    [handleSearchChange]
+  );
+  const resetTypeahead = reactExports.useCallback(() => {
+    searchRef.current = "";
+    window.clearTimeout(timerRef.current);
+  }, []);
+  reactExports.useEffect(() => {
+    return () => window.clearTimeout(timerRef.current);
+  }, []);
+  return [searchRef, handleTypeaheadSearch, resetTypeahead];
+}
+function findNextItem(items, search, currentItem) {
+  const isRepeated = search.length > 1 && Array.from(search).every((char) => char === search[0]);
+  const normalizedSearch = isRepeated ? search[0] : search;
+  const currentItemIndex = currentItem ? items.indexOf(currentItem) : -1;
+  let wrappedItems = wrapArray(items, Math.max(currentItemIndex, 0));
+  const excludeCurrentItem = normalizedSearch.length === 1;
+  if (excludeCurrentItem) wrappedItems = wrappedItems.filter((v2) => v2 !== currentItem);
+  const nextItem = wrappedItems.find(
+    (item) => item.textValue.toLowerCase().startsWith(normalizedSearch.toLowerCase())
+  );
+  return nextItem !== currentItem ? nextItem : void 0;
+}
+function wrapArray(array, startIndex) {
+  return array.map((_2, index2) => array[(startIndex + index2) % array.length]);
+}
+var Root2 = Select$1;
+var Trigger = SelectTrigger$1;
+var Value = SelectValue$1;
+var Icon = SelectIcon;
+var Portal = SelectPortal;
+var Content2 = SelectContent$1;
+var Viewport = SelectViewport;
+var Item = SelectItem$1;
+var ItemText = SelectItemText;
+var ItemIndicator = SelectItemIndicator;
+var ScrollUpButton = SelectScrollUpButton$1;
+var ScrollDownButton = SelectScrollDownButton$1;
+function Select({
+  ...props
+}) {
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(Root2, { "data-slot": "select", ...props });
+}
+function SelectValue({
+  ...props
+}) {
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(Value, { "data-slot": "select-value", ...props });
+}
+function SelectTrigger({
+  className,
+  size: size2 = "default",
+  children,
+  ...props
+}) {
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+    Trigger,
+    {
+      "data-slot": "select-trigger",
+      "data-size": size2,
+      className: cn$1(
+        "border-input data-[placeholder]:text-muted-foreground [&_svg:not([class*='text-'])]:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30 dark:hover:bg-input/50 flex w-fit items-center justify-between gap-2 rounded-md border bg-transparent px-3 py-2 text-sm whitespace-nowrap shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50 data-[size=default]:h-9 data-[size=sm]:h-8 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        className
+      ),
+      ...props,
+      children: [
+        children,
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { asChild: true, children: /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronDown, { className: "size-4 opacity-50" }) })
+      ]
+    }
+  );
+}
+function SelectContent({
+  className,
+  children,
+  position = "popper",
+  ...props
+}) {
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(Portal, { children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+    Content2,
+    {
+      "data-slot": "select-content",
+      className: cn$1(
+        "bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 relative z-50 max-h-(--radix-select-content-available-height) min-w-[8rem] origin-(--radix-select-content-transform-origin) overflow-x-hidden overflow-y-auto rounded-md border shadow-md",
+        position === "popper" && "data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1",
+        className
+      ),
+      position,
+      ...props,
+      children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(SelectScrollUpButton, {}),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          Viewport,
+          {
+            className: cn$1(
+              "p-1",
+              position === "popper" && "h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)] scroll-my-1"
+            ),
+            children
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(SelectScrollDownButton, {})
+      ]
+    }
+  ) });
+}
+function SelectItem({
+  className,
+  children,
+  ...props
+}) {
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+    Item,
+    {
+      "data-slot": "select-item",
+      className: cn$1(
+        "focus:bg-accent focus:text-accent-foreground [&_svg:not([class*='text-'])]:text-muted-foreground relative flex w-full cursor-default items-center gap-2 rounded-sm py-1.5 pr-8 pl-2 text-sm outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2",
+        className
+      ),
+      ...props,
+      children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "absolute right-2 flex size-3.5 items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(ItemIndicator, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "size-4" }) }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(ItemText, { children })
+      ]
+    }
+  );
+}
+function SelectScrollUpButton({
+  className,
+  ...props
+}) {
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    ScrollUpButton,
+    {
+      "data-slot": "select-scroll-up-button",
+      className: cn$1(
+        "flex cursor-default items-center justify-center py-1",
+        className
+      ),
+      ...props,
+      children: /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronUp, { className: "size-4" })
+    }
+  );
+}
+function SelectScrollDownButton({
+  className,
+  ...props
+}) {
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    ScrollDownButton,
+    {
+      "data-slot": "select-scroll-down-button",
+      className: cn$1(
+        "flex cursor-default items-center justify-center py-1",
+        className
+      ),
+      ...props,
+      children: /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronDown, { className: "size-4" })
+    }
+  );
+}
+var SWITCH_NAME = "Switch";
+var [createSwitchContext] = createContextScope(SWITCH_NAME);
+var [SwitchProvider, useSwitchContext] = createSwitchContext(SWITCH_NAME);
+var Switch$1 = reactExports.forwardRef(
+  (props, forwardedRef) => {
+    const {
+      __scopeSwitch,
+      name,
+      checked: checkedProp,
+      defaultChecked,
+      required,
+      disabled,
+      value = "on",
+      onCheckedChange,
+      form,
+      ...switchProps
+    } = props;
+    const [button, setButton] = reactExports.useState(null);
+    const composedRefs = useComposedRefs(forwardedRef, (node) => setButton(node));
+    const hasConsumerStoppedPropagationRef = reactExports.useRef(false);
+    const isFormControl = button ? form || !!button.closest("form") : true;
+    const [checked, setChecked] = useControllableState({
+      prop: checkedProp,
+      defaultProp: defaultChecked ?? false,
+      onChange: onCheckedChange,
+      caller: SWITCH_NAME
+    });
+    return /* @__PURE__ */ jsxRuntimeExports.jsxs(SwitchProvider, { scope: __scopeSwitch, checked, disabled, children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        Primitive.button,
+        {
+          type: "button",
+          role: "switch",
+          "aria-checked": checked,
+          "aria-required": required,
+          "data-state": getState(checked),
+          "data-disabled": disabled ? "" : void 0,
+          disabled,
+          value,
+          ...switchProps,
+          ref: composedRefs,
+          onClick: composeEventHandlers(props.onClick, (event) => {
+            setChecked((prevChecked) => !prevChecked);
+            if (isFormControl) {
+              hasConsumerStoppedPropagationRef.current = event.isPropagationStopped();
+              if (!hasConsumerStoppedPropagationRef.current) event.stopPropagation();
+            }
+          })
+        }
+      ),
+      isFormControl && /* @__PURE__ */ jsxRuntimeExports.jsx(
+        SwitchBubbleInput,
+        {
+          control: button,
+          bubbles: !hasConsumerStoppedPropagationRef.current,
+          name,
+          value,
+          checked,
+          required,
+          disabled,
+          form,
+          style: { transform: "translateX(-100%)" }
+        }
+      )
+    ] });
+  }
+);
+Switch$1.displayName = SWITCH_NAME;
+var THUMB_NAME = "SwitchThumb";
+var SwitchThumb = reactExports.forwardRef(
+  (props, forwardedRef) => {
+    const { __scopeSwitch, ...thumbProps } = props;
+    const context = useSwitchContext(THUMB_NAME, __scopeSwitch);
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(
+      Primitive.span,
+      {
+        "data-state": getState(context.checked),
+        "data-disabled": context.disabled ? "" : void 0,
+        ...thumbProps,
+        ref: forwardedRef
+      }
+    );
+  }
+);
+SwitchThumb.displayName = THUMB_NAME;
+var BUBBLE_INPUT_NAME = "SwitchBubbleInput";
+var SwitchBubbleInput = reactExports.forwardRef(
+  ({
+    __scopeSwitch,
+    control,
+    checked,
+    bubbles = true,
+    ...props
+  }, forwardedRef) => {
+    const ref = reactExports.useRef(null);
+    const composedRefs = useComposedRefs(ref, forwardedRef);
+    const prevChecked = usePrevious(checked);
+    const controlSize = useSize(control);
+    reactExports.useEffect(() => {
+      const input = ref.current;
+      if (!input) return;
+      const inputProto = window.HTMLInputElement.prototype;
+      const descriptor = Object.getOwnPropertyDescriptor(
+        inputProto,
+        "checked"
+      );
+      const setChecked = descriptor.set;
+      if (prevChecked !== checked && setChecked) {
+        const event = new Event("click", { bubbles });
+        setChecked.call(input, checked);
+        input.dispatchEvent(event);
+      }
+    }, [prevChecked, checked, bubbles]);
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "input",
+      {
+        type: "checkbox",
+        "aria-hidden": true,
+        defaultChecked: checked,
+        ...props,
+        tabIndex: -1,
+        ref: composedRefs,
+        style: {
+          ...props.style,
+          ...controlSize,
+          position: "absolute",
+          pointerEvents: "none",
+          opacity: 0,
+          margin: 0
+        }
+      }
+    );
+  }
+);
+SwitchBubbleInput.displayName = BUBBLE_INPUT_NAME;
+function getState(checked) {
+  return checked ? "checked" : "unchecked";
+}
+var Root = Switch$1;
+var Thumb = SwitchThumb;
+function Switch({
+  className,
+  ...props
+}) {
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    Root,
+    {
+      "data-slot": "switch",
+      className: cn$1(
+        "peer data-[state=checked]:bg-primary data-[state=unchecked]:bg-input focus-visible:border-ring focus-visible:ring-ring/50 dark:data-[state=unchecked]:bg-input/80 inline-flex h-[1.15rem] w-8 shrink-0 items-center rounded-full border border-transparent shadow-xs transition-all outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50",
+        className
+      ),
+      ...props,
+      children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+        Thumb,
+        {
+          "data-slot": "switch-thumb",
+          className: cn$1(
+            "bg-background dark:data-[state=unchecked]:bg-foreground dark:data-[state=checked]:bg-primary-foreground pointer-events-none block size-4 rounded-full ring-0 transition-transform data-[state=checked]:translate-x-[calc(100%-2px)] data-[state=unchecked]:translate-x-0"
+          )
+        }
+      )
     }
   );
 }
@@ -43447,6 +48598,700 @@ function AdminTable({
       col.key
     )) }, rowKey(row))) })
   ] }) });
+}
+function categoryErrorMessage(error) {
+  if (error && typeof error === "object") {
+    const record = error;
+    switch (record.__kind__) {
+      case "emptyName":
+        return "Category name cannot be empty.";
+      case "slugCollision":
+        return `A category with the slug "${String(
+          record.slugCollision
+        )}" already exists.`;
+      case "notFound":
+        return "That category no longer exists — refresh the list.";
+      case "targetCategoryNotFound":
+        return `The reassignment target "${String(
+          record.targetCategoryNotFound
+        )}" no longer exists.`;
+      case "productsReferenced": {
+        const ref = record.productsReferenced;
+        return `This category still has ${String(
+          ref.count
+        )} product(s) referencing it.`;
+      }
+    }
+  }
+  if (error instanceof Error) return error.message;
+  return "Operation failed";
+}
+function slugify(name) {
+  const trimmed = name.replace(/^ +| +$/g, "");
+  let out = "";
+  for (const c2 of trimmed.toLowerCase()) {
+    if (new RegExp("\\p{L}|\\p{N}", "u").test(c2)) {
+      out += c2;
+    } else if (c2 === " ") {
+      out += "-";
+    }
+  }
+  return out;
+}
+function CategoriesTab({ session }) {
+  const { data: categories, isLoading, error } = useCategories();
+  const createCategory = useCreateCategory();
+  const updateCategory = useUpdateCategory();
+  const reorderCategories = useReorderCategories();
+  const deleteCategory = useDeleteCategory();
+  const reassignProducts = useReassignProducts();
+  const canEdit = session.canManage;
+  const [addOpen, setAddOpen] = reactExports.useState(false);
+  const [addDraft, setAddDraft] = reactExports.useState({
+    name: "",
+    description: ""
+  });
+  const [addError, setAddError] = reactExports.useState(null);
+  const [editing, setEditing] = reactExports.useState(null);
+  const [editDraft, setEditDraft] = reactExports.useState(null);
+  const [editError, setEditError] = reactExports.useState(null);
+  const [reassign, setReassign] = reactExports.useState(null);
+  const [reassignTo, setReassignTo] = reactExports.useState("");
+  const [reassignError, setReassignError] = reactExports.useState(null);
+  const list = reactExports.useMemo(() => categories ?? [], [categories]);
+  const stats = reactExports.useMemo(() => {
+    const active = list.filter((c2) => c2.category.active).length;
+    const totalProducts = list.reduce(
+      (sum, c2) => sum + Number(c2.productCount),
+      0
+    );
+    return { total: list.length, active, totalProducts };
+  }, [list]);
+  reactExports.useEffect(() => {
+    if (editing) {
+      setEditDraft({
+        name: editing.name,
+        description: editing.description ?? "",
+        active: editing.active,
+        showWhenEmpty: editing.showWhenEmpty
+      });
+    }
+  }, [editing]);
+  const openAdd = () => {
+    setAddError(null);
+    setAddDraft({ name: "", description: "" });
+    setAddOpen(true);
+  };
+  const closeAdd = () => {
+    setAddOpen(false);
+    setAddError(null);
+  };
+  const openEdit = (c2) => {
+    setEditError(null);
+    setEditing(c2);
+  };
+  const closeEdit = () => {
+    setEditing(null);
+    setEditDraft(null);
+    setEditError(null);
+  };
+  const handleCreate = async () => {
+    const name = addDraft.name.trim();
+    if (!name) {
+      setAddError("Category name cannot be empty.");
+      return;
+    }
+    setAddError(null);
+    try {
+      await createCategory.mutateAsync(
+        name,
+        addDraft.description.trim() || null
+      );
+      closeAdd();
+    } catch (e) {
+      setAddError(categoryErrorMessage(e));
+    }
+  };
+  const handleUpdate = async () => {
+    if (!editing || !editDraft) return;
+    const name = editDraft.name.trim();
+    if (!name) {
+      setEditError("Category name cannot be empty.");
+      return;
+    }
+    setEditError(null);
+    try {
+      await updateCategory.mutateAsync(
+        editing.id,
+        name,
+        editDraft.description.trim() || null,
+        editing.sortOrder,
+        editDraft.active,
+        editDraft.showWhenEmpty
+      );
+      closeEdit();
+    } catch (e) {
+      setEditError(categoryErrorMessage(e));
+    }
+  };
+  const handleToggleActive = async (c2) => {
+    try {
+      await updateCategory.mutateAsync(
+        c2.id,
+        c2.name,
+        c2.description ?? null,
+        c2.sortOrder,
+        !c2.active,
+        c2.showWhenEmpty
+      );
+    } catch (e) {
+      setEditError(categoryErrorMessage(e));
+    }
+  };
+  const move = async (index2, direction) => {
+    const target = index2 + direction;
+    if (target < 0 || target >= list.length) return;
+    const next = list.map((c2) => c2.category.id);
+    const [moved] = next.splice(index2, 1);
+    next.splice(target, 0, moved);
+    try {
+      await reorderCategories.mutateAsync(next);
+    } catch (e) {
+      setEditError(categoryErrorMessage(e));
+    }
+  };
+  const handleDelete = async (c2) => {
+    try {
+      await deleteCategory.mutateAsync(c2.category.id);
+    } catch (e) {
+      const err = e;
+      if (err && err.__kind__ === "productsReferenced") {
+        setReassign({
+          category: c2,
+          count: err.productsReferenced.count,
+          slug: err.productsReferenced.slug
+        });
+        setReassignTo("");
+        setReassignError(null);
+      } else {
+        setEditError(categoryErrorMessage(e));
+      }
+    }
+  };
+  const handleReassignAndDelete = async () => {
+    if (!reassign) return;
+    if (!reassignTo) {
+      setReassignError("Choose a category to move the products to first.");
+      return;
+    }
+    setReassignError(null);
+    try {
+      await reassignProducts.mutateAsync(reassign.slug, reassignTo);
+      await deleteCategory.mutateAsync(reassign.category.category.id);
+      setReassign(null);
+    } catch (e) {
+      setReassignError(categoryErrorMessage(e));
+    }
+  };
+  if (isLoading) {
+    return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      "div",
+      {
+        className: "flex items-center justify-center gap-3 py-16",
+        style: { color: "var(--muted-foreground)" },
+        "data-ocid": "admin.categories.loading_state",
+        children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-5 h-5 animate-spin" }),
+          "Loading categories…"
+        ]
+      }
+    );
+  }
+  if (error) {
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "div",
+      {
+        className: "admin-panel",
+        style: { borderColor: "var(--nak-negative)" },
+        "data-ocid": "admin.categories.error_state",
+        children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "admin-panel-body", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { style: { color: "var(--nak-negative)" }, children: categoryErrorMessage(error) }) })
+      }
+    );
+  }
+  const reassignTargets = list.filter(
+    (c2) => c2.category.id !== (reassign == null ? void 0 : reassign.category.category.id)
+  );
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-4", "data-ocid": "admin.categories", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "admin-stat-grid", "data-ocid": "admin.categories.stats", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(AdminStatCard, { label: "Categories", value: String(stats.total) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(AdminStatCard, { label: "Active", value: String(stats.active) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(AdminStatCard, { label: "Products", value: String(stats.totalProducts) })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(
+      AdminPanel,
+      {
+        title: "All categories",
+        actions: canEdit ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            type: "button",
+            className: "btn btn-secondary",
+            onClick: openAdd,
+            "data-ocid": "admin.categories.new_button",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { className: "w-4 h-4" }),
+              "New category"
+            ]
+          }
+        ) : void 0,
+        children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+          AdminTable,
+          {
+            columns: [
+              {
+                key: "name",
+                header: "Name",
+                render: (c2) => /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "inline-flex items-center gap-2", children: [
+                  c2.category.name,
+                  !c2.category.active && /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "span",
+                    {
+                      className: "text-[0.625rem] uppercase tracking-wider",
+                      style: { color: "var(--muted-foreground)" },
+                      children: "inactive"
+                    }
+                  )
+                ] })
+              },
+              {
+                key: "slug",
+                header: "Slug",
+                render: (c2) => /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { color: "var(--muted-foreground)" }, children: c2.category.slug })
+              },
+              {
+                key: "products",
+                header: "Products",
+                align: "right",
+                render: (c2) => String(c2.productCount)
+              },
+              {
+                key: "active",
+                header: "Active",
+                render: (c2) => canEdit ? /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  Switch,
+                  {
+                    checked: c2.category.active,
+                    onCheckedChange: () => void handleToggleActive(c2.category),
+                    "aria-label": `Toggle ${c2.category.name} active`,
+                    "data-ocid": `admin.categories.toggle.${c2.category.id}`
+                  }
+                ) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { color: "var(--muted-foreground)" }, children: c2.category.active ? "yes" : "no" })
+              },
+              {
+                key: "reorder",
+                header: "Order",
+                render: (c2) => {
+                  const index2 = list.findIndex(
+                    (x2) => x2.category.id === c2.category.id
+                  );
+                  return canEdit ? /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "inline-flex items-center gap-1", children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(
+                      "button",
+                      {
+                        type: "button",
+                        className: "btn btn-secondary",
+                        style: { padding: "0.25rem 0.5rem" },
+                        onClick: () => void move(index2, -1),
+                        disabled: index2 <= 0,
+                        "aria-label": `Move ${c2.category.name} up`,
+                        "data-ocid": `admin.categories.move_up.${c2.category.id}`,
+                        children: /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowUp, { className: "w-3.5 h-3.5" })
+                      }
+                    ),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(
+                      "button",
+                      {
+                        type: "button",
+                        className: "btn btn-secondary",
+                        style: { padding: "0.25rem 0.5rem" },
+                        onClick: () => void move(index2, 1),
+                        disabled: index2 < 0 || index2 >= list.length - 1,
+                        "aria-label": `Move ${c2.category.name} down`,
+                        "data-ocid": `admin.categories.move_down.${c2.category.id}`,
+                        children: /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowDown, { className: "w-3.5 h-3.5" })
+                      }
+                    )
+                  ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { color: "var(--muted-foreground)" }, children: String(c2.category.sortOrder) });
+                }
+              },
+              {
+                key: "actions",
+                header: "",
+                align: "right",
+                render: (c2) => canEdit ? /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "inline-flex items-center gap-1", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                    "button",
+                    {
+                      type: "button",
+                      className: "btn btn-secondary",
+                      onClick: () => openEdit(c2.category),
+                      "data-ocid": `admin.categories.edit_button.${c2.category.id}`,
+                      children: [
+                        /* @__PURE__ */ jsxRuntimeExports.jsx(Pencil, { className: "w-4 h-4" }),
+                        "Edit"
+                      ]
+                    }
+                  ),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    AdminConfirmDialog,
+                    {
+                      trigger: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                        "button",
+                        {
+                          type: "button",
+                          className: "btn btn-secondary",
+                          "data-ocid": `admin.categories.delete_button.${c2.category.id}`,
+                          children: [
+                            /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { className: "w-4 h-4" }),
+                            "Delete"
+                          ]
+                        }
+                      ),
+                      title: "Delete category",
+                      description: `Delete "${c2.category.name}"? If products still reference it, you will be asked to reassign them first.`,
+                      confirmLabel: "Delete",
+                      cancelLabel: "Cancel",
+                      tone: "negative",
+                      onConfirm: () => void handleDelete(c2),
+                      pending: deleteCategory.isPending
+                    }
+                  )
+                ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { color: "var(--muted-foreground)" }, children: "—" })
+              }
+            ],
+            rows: list,
+            rowKey: (c2) => String(c2.category.id),
+            emptyMessage: "No categories configured."
+          }
+        )
+      }
+    ),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(Dialog, { open: addOpen, onOpenChange: (o) => !o && closeAdd(), children: /* @__PURE__ */ jsxRuntimeExports.jsxs(DialogContent, { "data-ocid": "admin.categories.add_dialog", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(DialogHeader, { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(DialogTitle, { children: "New category" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(DialogDescription, { children: "Create a category. The slug is generated from the name and cannot be changed later." })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-4", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-1.5", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "field-label", htmlFor: "categories-add-name", children: "Name" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "input",
+            {
+              id: "categories-add-name",
+              className: "field-input",
+              value: addDraft.name,
+              onChange: (e) => setAddDraft({ ...addDraft, name: e.target.value }),
+              "data-ocid": "admin.categories.add_name_input"
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-1.5", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "label",
+            {
+              className: "field-label",
+              htmlFor: "categories-add-description",
+              children: "Description (optional)"
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "textarea",
+            {
+              id: "categories-add-description",
+              className: "field-input",
+              rows: 3,
+              value: addDraft.description,
+              onChange: (e) => setAddDraft({ ...addDraft, description: e.target.value }),
+              "data-ocid": "admin.categories.add_description_input"
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-1.5", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "field-label", children: "Slug preview" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "span",
+            {
+              className: "inset-well",
+              "data-ocid": "admin.categories.add_slug_preview",
+              children: slugify(addDraft.name) || "—"
+            }
+          )
+        ] }),
+        addError && /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "p",
+          {
+            className: "text-sm",
+            style: { color: "var(--nak-negative)" },
+            "data-ocid": "admin.categories.add_error",
+            children: addError
+          }
+        )
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(DialogFooter, { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            type: "button",
+            className: "btn btn-secondary",
+            onClick: closeAdd,
+            "data-ocid": "cancel_button",
+            children: "Cancel"
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            type: "button",
+            className: "btn btn-primary",
+            onClick: () => void handleCreate(),
+            disabled: createCategory.isPending,
+            "data-ocid": "admin.categories.add_submit_button",
+            children: [
+              createCategory.isPending ? /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-4 h-4 animate-spin" }) : null,
+              "Create category"
+            ]
+          }
+        )
+      ] })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(Dialog, { open: editing !== null, onOpenChange: (o) => !o && closeEdit(), children: /* @__PURE__ */ jsxRuntimeExports.jsxs(DialogContent, { "data-ocid": "admin.categories.edit_dialog", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(DialogHeader, { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(DialogTitle, { children: "Edit category" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(DialogDescription, { children: "Update the category details. The slug is fixed to keep existing products and orders linked." })
+      ] }),
+      editDraft && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-4", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-1.5", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "field-label", htmlFor: "categories-edit-name", children: "Name" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "input",
+            {
+              id: "categories-edit-name",
+              className: "field-input",
+              value: editDraft.name,
+              onChange: (e) => setEditDraft({ ...editDraft, name: e.target.value }),
+              "data-ocid": "admin.categories.edit_name_input"
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-1.5", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "label",
+            {
+              className: "field-label",
+              htmlFor: "categories-edit-description",
+              children: "Description (optional)"
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "textarea",
+            {
+              id: "categories-edit-description",
+              className: "field-input",
+              rows: 3,
+              value: editDraft.description,
+              onChange: (e) => setEditDraft({ ...editDraft, description: e.target.value }),
+              "data-ocid": "admin.categories.edit_description_input"
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-1.5", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "field-label", children: "Slug" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "span",
+            {
+              className: "inset-well",
+              "data-ocid": "admin.categories.edit_slug",
+              children: editing == null ? void 0 : editing.slug
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "p",
+            {
+              className: "text-xs",
+              style: { color: "var(--muted-foreground)" },
+              children: "The slug is fixed — it keeps existing products and orders linked to this category."
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-3", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "label",
+            {
+              className: "flex items-center gap-2 text-sm",
+              htmlFor: "categories-edit-active",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  Checkbox,
+                  {
+                    id: "categories-edit-active",
+                    checked: editDraft.active,
+                    onCheckedChange: (v2) => setEditDraft({ ...editDraft, active: v2 === true }),
+                    "data-ocid": "admin.categories.edit_active_checkbox"
+                  }
+                ),
+                "Active (shown in the shop filter)"
+              ]
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "label",
+            {
+              className: "flex items-center gap-2 text-sm",
+              htmlFor: "categories-edit-showWhenEmpty",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  Checkbox,
+                  {
+                    id: "categories-edit-showWhenEmpty",
+                    checked: editDraft.showWhenEmpty,
+                    onCheckedChange: (v2) => setEditDraft({
+                      ...editDraft,
+                      showWhenEmpty: v2 === true
+                    }),
+                    "data-ocid": "admin.categories.edit_show_when_empty_checkbox"
+                  }
+                ),
+                "Show when empty (no products)"
+              ]
+            }
+          )
+        ] }),
+        editError && /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "p",
+          {
+            className: "text-sm",
+            style: { color: "var(--nak-negative)" },
+            "data-ocid": "admin.categories.edit_error",
+            children: editError
+          }
+        )
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(DialogFooter, { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            type: "button",
+            className: "btn btn-secondary",
+            onClick: closeEdit,
+            "data-ocid": "cancel_button",
+            children: "Cancel"
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            type: "button",
+            className: "btn btn-primary",
+            onClick: () => void handleUpdate(),
+            disabled: updateCategory.isPending,
+            "data-ocid": "admin.categories.edit_submit_button",
+            children: [
+              updateCategory.isPending ? /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-4 h-4 animate-spin" }) : null,
+              "Save changes"
+            ]
+          }
+        )
+      ] })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(
+      Dialog,
+      {
+        open: reassign !== null,
+        onOpenChange: (o) => !o && setReassign(null),
+        children: /* @__PURE__ */ jsxRuntimeExports.jsxs(DialogContent, { "data-ocid": "admin.categories.reassign_dialog", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(DialogHeader, { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(DialogTitle, { children: "Products reference this category" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(DialogDescription, { children: reassign ? `"${reassign.category.category.name}" still has ${String(
+              reassign.count
+            )} product(s). Move them to another category before deleting it — this keeps every product and order linked.` : "" })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-4", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-1.5", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "field-label", htmlFor: "categories-reassign-to", children: "Move products to" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs(Select, { value: reassignTo, onValueChange: setReassignTo, children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  SelectTrigger,
+                  {
+                    id: "categories-reassign-to",
+                    className: "w-full",
+                    "data-ocid": "admin.categories.reassign_select",
+                    children: /* @__PURE__ */ jsxRuntimeExports.jsx(SelectValue, { placeholder: "Choose a category" })
+                  }
+                ),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(SelectContent, { children: reassignTargets.map((c2) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  SelectItem,
+                  {
+                    value: c2.category.slug,
+                    "data-ocid": `admin.categories.reassign_option.${c2.category.id}`,
+                    children: c2.category.name
+                  },
+                  c2.category.id
+                )) })
+              ] })
+            ] }),
+            reassignError && /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "p",
+              {
+                className: "text-sm",
+                style: { color: "var(--nak-negative)" },
+                "data-ocid": "admin.categories.reassign_error",
+                children: reassignError
+              }
+            )
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(DialogFooter, { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                type: "button",
+                className: "btn btn-secondary",
+                onClick: () => setReassign(null),
+                "data-ocid": "cancel_button",
+                children: "Cancel"
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "button",
+              {
+                type: "button",
+                className: "btn btn-primary",
+                onClick: () => void handleReassignAndDelete(),
+                disabled: reassignProducts.isPending || deleteCategory.isPending,
+                "data-ocid": "admin.categories.reassign_confirm_button",
+                children: [
+                  reassignProducts.isPending || deleteCategory.isPending ? /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-4 h-4 animate-spin" }) : null,
+                  "Move products & delete"
+                ]
+              }
+            )
+          ] })
+        ] })
+      }
+    )
+  ] });
+}
+function formatPrice(value) {
+  return value.toLocaleString("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
+}
+function parseDollars(input) {
+  const trimmed = input.trim();
+  if (!/^\d+(\.\d{1,2})?$/.test(trimmed)) return null;
+  return Number(trimmed);
 }
 const FILTERS = [
   { id: "all", label: "All", backend: "all" },
@@ -43980,9 +49825,6 @@ function OrdersTab({ session }) {
 function timestampToMs$1(ts2) {
   return Number(ts2 / 1000000n);
 }
-function formatMoney(amount) {
-  return formatPrice(amount);
-}
 function formatCount(n) {
   return n.toLocaleString("en-US");
 }
@@ -44015,8 +49857,8 @@ function OverviewTab({ session: _session }) {
     const paid = list.filter((o) => o.status === PaymentStatus.paid);
     const cryptoRevenue = paid.filter(
       (o) => o.paymentMethod === PaymentMethod.crypto_icp || o.paymentMethod === PaymentMethod.crypto_ckusdc
-    ).reduce((sum, o) => sum + o.amountOwed, 0n);
-    const cardRevenue = paid.filter((o) => o.paymentMethod === PaymentMethod.card_stripe).reduce((sum, o) => sum + o.amountOwed, 0n);
+    ).reduce((sum, o) => sum + o.amountOwed, 0);
+    const cardRevenue = paid.filter((o) => o.paymentMethod === PaymentMethod.card_stripe).reduce((sum, o) => sum + o.amountOwed, 0);
     const pending = list.filter(
       (o) => o.status === PaymentStatus.pending
     ).length;
@@ -44026,7 +49868,7 @@ function OverviewTab({ session: _session }) {
     const review = list.filter(
       (o) => needsReview(o.status, o.cryptoStatus)
     ).length;
-    const aov = paid.length > 0 ? paid.reduce((sum, o) => sum + o.amountOwed, 0n) / BigInt(paid.length) : 0n;
+    const aov = paid.length > 0 ? paid.reduce((sum, o) => sum + o.amountOwed, 0) / paid.length : 0;
     return {
       total: list.length,
       today,
@@ -44105,21 +49947,21 @@ function OverviewTab({ session: _session }) {
         AdminStatCard,
         {
           label: "Revenue crypto",
-          value: formatMoney(stats.cryptoRevenue)
+          value: formatPrice(stats.cryptoRevenue)
         }
       ),
       /* @__PURE__ */ jsxRuntimeExports.jsx(
         AdminStatCard,
         {
           label: "Revenue card",
-          value: formatMoney(stats.cardRevenue)
+          value: formatPrice(stats.cardRevenue)
         }
       ),
       /* @__PURE__ */ jsxRuntimeExports.jsx(
         AdminStatCard,
         {
           label: "Average order value",
-          value: formatMoney(stats.aov)
+          value: formatPrice(stats.aov)
         }
       )
     ] }),
@@ -44159,7 +50001,7 @@ function OverviewTab({ session: _session }) {
             key: "price",
             header: "Price",
             align: "right",
-            render: (r2) => formatMoney(r2.price)
+            render: (r2) => formatPrice(r2.price)
           },
           {
             key: "inventory",
@@ -44181,332 +50023,12 @@ function OverviewTab({ session: _session }) {
     ) })
   ] });
 }
-function usePrevious(value) {
-  const ref = reactExports.useRef({ value, previous: value });
-  return reactExports.useMemo(() => {
-    if (ref.current.value !== value) {
-      ref.current.previous = ref.current.value;
-      ref.current.value = value;
-    }
-    return ref.current.previous;
-  }, [value]);
-}
-function useSize(element) {
-  const [size, setSize] = reactExports.useState(void 0);
-  useLayoutEffect2(() => {
-    if (element) {
-      setSize({ width: element.offsetWidth, height: element.offsetHeight });
-      const resizeObserver = new ResizeObserver((entries) => {
-        if (!Array.isArray(entries)) {
-          return;
-        }
-        if (!entries.length) {
-          return;
-        }
-        const entry = entries[0];
-        let width;
-        let height;
-        if ("borderBoxSize" in entry) {
-          const borderSizeEntry = entry["borderBoxSize"];
-          const borderSize = Array.isArray(borderSizeEntry) ? borderSizeEntry[0] : borderSizeEntry;
-          width = borderSize["inlineSize"];
-          height = borderSize["blockSize"];
-        } else {
-          width = element.offsetWidth;
-          height = element.offsetHeight;
-        }
-        setSize({ width, height });
-      });
-      resizeObserver.observe(element, { box: "border-box" });
-      return () => resizeObserver.unobserve(element);
-    } else {
-      setSize(void 0);
-    }
-  }, [element]);
-  return size;
-}
-var CHECKBOX_NAME = "Checkbox";
-var [createCheckboxContext] = createContextScope(CHECKBOX_NAME);
-var [CheckboxProviderImpl, useCheckboxContext] = createCheckboxContext(CHECKBOX_NAME);
-function CheckboxProvider(props) {
-  const {
-    __scopeCheckbox,
-    checked: checkedProp,
-    children,
-    defaultChecked,
-    disabled,
-    form,
-    name,
-    onCheckedChange,
-    required,
-    value = "on",
-    // @ts-expect-error
-    internal_do_not_use_render
-  } = props;
-  const [checked, setChecked] = useControllableState({
-    prop: checkedProp,
-    defaultProp: defaultChecked ?? false,
-    onChange: onCheckedChange,
-    caller: CHECKBOX_NAME
-  });
-  const [control, setControl] = reactExports.useState(null);
-  const [bubbleInput, setBubbleInput] = reactExports.useState(null);
-  const hasConsumerStoppedPropagationRef = reactExports.useRef(false);
-  const isFormControl = control ? !!form || !!control.closest("form") : (
-    // We set this to true by default so that events bubble to forms without JS (SSR)
-    true
-  );
-  const context = {
-    checked,
-    disabled,
-    setChecked,
-    control,
-    setControl,
-    name,
-    form,
-    value,
-    hasConsumerStoppedPropagationRef,
-    required,
-    defaultChecked: isIndeterminate(defaultChecked) ? false : defaultChecked,
-    isFormControl,
-    bubbleInput,
-    setBubbleInput
-  };
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(
-    CheckboxProviderImpl,
-    {
-      scope: __scopeCheckbox,
-      ...context,
-      children: isFunction(internal_do_not_use_render) ? internal_do_not_use_render(context) : children
-    }
-  );
-}
-var TRIGGER_NAME = "CheckboxTrigger";
-var CheckboxTrigger = reactExports.forwardRef(
-  ({ __scopeCheckbox, onKeyDown, onClick, ...checkboxProps }, forwardedRef) => {
-    const {
-      control,
-      value,
-      disabled,
-      checked,
-      required,
-      setControl,
-      setChecked,
-      hasConsumerStoppedPropagationRef,
-      isFormControl,
-      bubbleInput
-    } = useCheckboxContext(TRIGGER_NAME, __scopeCheckbox);
-    const composedRefs = useComposedRefs(forwardedRef, setControl);
-    const initialCheckedStateRef = reactExports.useRef(checked);
-    reactExports.useEffect(() => {
-      const form = control == null ? void 0 : control.form;
-      if (form) {
-        const reset = () => setChecked(initialCheckedStateRef.current);
-        form.addEventListener("reset", reset);
-        return () => form.removeEventListener("reset", reset);
-      }
-    }, [control, setChecked]);
-    return /* @__PURE__ */ jsxRuntimeExports.jsx(
-      Primitive.button,
-      {
-        type: "button",
-        role: "checkbox",
-        "aria-checked": isIndeterminate(checked) ? "mixed" : checked,
-        "aria-required": required,
-        "data-state": getState(checked),
-        "data-disabled": disabled ? "" : void 0,
-        disabled,
-        value,
-        ...checkboxProps,
-        ref: composedRefs,
-        onKeyDown: composeEventHandlers(onKeyDown, (event) => {
-          if (event.key === "Enter") event.preventDefault();
-        }),
-        onClick: composeEventHandlers(onClick, (event) => {
-          setChecked((prevChecked) => isIndeterminate(prevChecked) ? true : !prevChecked);
-          if (bubbleInput && isFormControl) {
-            hasConsumerStoppedPropagationRef.current = event.isPropagationStopped();
-            if (!hasConsumerStoppedPropagationRef.current) event.stopPropagation();
-          }
-        })
-      }
-    );
-  }
-);
-CheckboxTrigger.displayName = TRIGGER_NAME;
-var Checkbox$1 = reactExports.forwardRef(
-  (props, forwardedRef) => {
-    const {
-      __scopeCheckbox,
-      name,
-      checked,
-      defaultChecked,
-      required,
-      disabled,
-      value,
-      onCheckedChange,
-      form,
-      ...checkboxProps
-    } = props;
-    return /* @__PURE__ */ jsxRuntimeExports.jsx(
-      CheckboxProvider,
-      {
-        __scopeCheckbox,
-        checked,
-        defaultChecked,
-        disabled,
-        required,
-        onCheckedChange,
-        name,
-        form,
-        value,
-        internal_do_not_use_render: ({ isFormControl }) => /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            CheckboxTrigger,
-            {
-              ...checkboxProps,
-              ref: forwardedRef,
-              __scopeCheckbox
-            }
-          ),
-          isFormControl && /* @__PURE__ */ jsxRuntimeExports.jsx(
-            CheckboxBubbleInput,
-            {
-              __scopeCheckbox
-            }
-          )
-        ] })
-      }
-    );
-  }
-);
-Checkbox$1.displayName = CHECKBOX_NAME;
-var INDICATOR_NAME = "CheckboxIndicator";
-var CheckboxIndicator = reactExports.forwardRef(
-  (props, forwardedRef) => {
-    const { __scopeCheckbox, forceMount, ...indicatorProps } = props;
-    const context = useCheckboxContext(INDICATOR_NAME, __scopeCheckbox);
-    return /* @__PURE__ */ jsxRuntimeExports.jsx(
-      Presence,
-      {
-        present: forceMount || isIndeterminate(context.checked) || context.checked === true,
-        children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-          Primitive.span,
-          {
-            "data-state": getState(context.checked),
-            "data-disabled": context.disabled ? "" : void 0,
-            ...indicatorProps,
-            ref: forwardedRef,
-            style: { pointerEvents: "none", ...props.style }
-          }
-        )
-      }
-    );
-  }
-);
-CheckboxIndicator.displayName = INDICATOR_NAME;
-var BUBBLE_INPUT_NAME = "CheckboxBubbleInput";
-var CheckboxBubbleInput = reactExports.forwardRef(
-  ({ __scopeCheckbox, ...props }, forwardedRef) => {
-    const {
-      control,
-      hasConsumerStoppedPropagationRef,
-      checked,
-      defaultChecked,
-      required,
-      disabled,
-      name,
-      value,
-      form,
-      bubbleInput,
-      setBubbleInput
-    } = useCheckboxContext(BUBBLE_INPUT_NAME, __scopeCheckbox);
-    const composedRefs = useComposedRefs(forwardedRef, setBubbleInput);
-    const prevChecked = usePrevious(checked);
-    const controlSize = useSize(control);
-    reactExports.useEffect(() => {
-      const input = bubbleInput;
-      if (!input) return;
-      const inputProto = window.HTMLInputElement.prototype;
-      const descriptor = Object.getOwnPropertyDescriptor(
-        inputProto,
-        "checked"
-      );
-      const setChecked = descriptor.set;
-      const bubbles = !hasConsumerStoppedPropagationRef.current;
-      if (prevChecked !== checked && setChecked) {
-        const event = new Event("click", { bubbles });
-        input.indeterminate = isIndeterminate(checked);
-        setChecked.call(input, isIndeterminate(checked) ? false : checked);
-        input.dispatchEvent(event);
-      }
-    }, [bubbleInput, prevChecked, checked, hasConsumerStoppedPropagationRef]);
-    const defaultCheckedRef = reactExports.useRef(isIndeterminate(checked) ? false : checked);
-    return /* @__PURE__ */ jsxRuntimeExports.jsx(
-      Primitive.input,
-      {
-        type: "checkbox",
-        "aria-hidden": true,
-        defaultChecked: defaultChecked ?? defaultCheckedRef.current,
-        required,
-        disabled,
-        name,
-        value,
-        form,
-        ...props,
-        tabIndex: -1,
-        ref: composedRefs,
-        style: {
-          ...props.style,
-          ...controlSize,
-          position: "absolute",
-          pointerEvents: "none",
-          opacity: 0,
-          margin: 0,
-          // We transform because the input is absolutely positioned but we have
-          // rendered it **after** the button. This pulls it back to sit on top
-          // of the button.
-          transform: "translateX(-100%)"
-        }
-      }
-    );
-  }
-);
-CheckboxBubbleInput.displayName = BUBBLE_INPUT_NAME;
-function isFunction(value) {
-  return typeof value === "function";
-}
-function isIndeterminate(checked) {
-  return checked === "indeterminate";
-}
-function getState(checked) {
-  return isIndeterminate(checked) ? "indeterminate" : checked ? "checked" : "unchecked";
-}
-function Checkbox({
-  className,
-  ...props
-}) {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(
-    Checkbox$1,
-    {
-      "data-slot": "checkbox",
-      className: cn$1(
-        "peer border-input dark:bg-input/30 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground dark:data-[state=checked]:bg-primary data-[state=checked]:border-primary focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive size-4 shrink-0 rounded-[4px] border shadow-xs transition-shadow outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50",
-        className
-      ),
-      ...props,
-      children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-        CheckboxIndicator,
-        {
-          "data-slot": "checkbox-indicator",
-          className: "flex items-center justify-center text-current transition-none",
-          children: /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "size-3.5" })
-        }
-      )
-    }
-  );
-}
 const LOW_STOCK_THRESHOLD = 5;
+const MAX_IMAGES = 5;
+function assetIdFromUrl(url) {
+  const parts = url.split("/");
+  return parts[parts.length - 1] ?? url;
+}
 function blankProduct() {
   return {
     id: 0n,
@@ -44520,7 +50042,7 @@ function blankProduct() {
     description: "",
     category: "",
     currency: "usd",
-    price: 0n,
+    price: 0,
     images: [],
     variants: []
   };
@@ -44528,14 +50050,301 @@ function blankProduct() {
 function toDraft(p2) {
   return {
     name: p2.name,
-    priceDollars: (Number(p2.price) / 100).toFixed(2),
+    category: p2.category,
+    priceDollars: p2.price.toFixed(2),
     inventory: String(p2.inventory),
     active: p2.active,
     hidden: p2.admin_only
   };
 }
+function ProductImageSection({
+  product,
+  canEdit
+}) {
+  const startUpload = useStartUpload();
+  const uploadChunk = useUploadChunk();
+  const finishUpload = useFinishUpload();
+  const deleteProductImage = useDeleteProductImage();
+  const updateProduct = useUpdateProduct();
+  const { data: canisterId } = useGetCanisterId();
+  const [images, setImages] = reactExports.useState(product.images);
+  const [dragging, setDragging] = reactExports.useState(false);
+  const [dragIndex, setDragIndex] = reactExports.useState(null);
+  const [overIndex, setOverIndex] = reactExports.useState(null);
+  const [uploading, setUploading] = reactExports.useState(false);
+  const [progress, setProgress] = reactExports.useState(null);
+  const [sizeMeta, setSizeMeta] = reactExports.useState(null);
+  const [error, setError] = reactExports.useState(null);
+  const fileInputRef = reactExports.useRef(null);
+  const atLimit = images.length >= MAX_IMAGES;
+  reactExports.useEffect(() => {
+    setImages(product.images);
+  }, [product.images]);
+  const handleFiles = async (files) => {
+    if (!files || files.length === 0 || uploading || atLimit) return;
+    const file = files[0];
+    setError(null);
+    setSizeMeta(null);
+    setProgress(null);
+    setUploading(true);
+    try {
+      const compressed = await resizeAndCompressImage(file);
+      setSizeMeta({
+        originalBytes: compressed.originalBytes,
+        compressedBytes: compressed.compressedBytes
+      });
+      if (!canisterId) {
+        throw new Error("Canister id is not available yet — try again.");
+      }
+      const methods = {
+        startUpload: async (contentType, totalSize) => {
+          const ok = await startUpload.mutateAsync({ contentType, totalSize });
+          return { __kind__: "ok", ok };
+        },
+        uploadChunk: async (uploadId, index2, blob) => {
+          await uploadChunk.mutateAsync({ uploadId, index: index2, blob });
+          return { __kind__: "ok", ok: null };
+        },
+        finishUpload: async (uploadId, productId) => {
+          const ok = await finishUpload.mutateAsync({ uploadId, productId });
+          return { __kind__: "ok", ok };
+        }
+      };
+      const assetId = await uploadProductImage({
+        blob: compressed.blob,
+        contentType: compressed.mimeType,
+        productId: product.id,
+        methods,
+        onProgress: setProgress
+      });
+      const next = [...images, buildAssetUrl(canisterId, assetId)];
+      setImages(next);
+      await updateProduct.mutateAsync({ ...product, images: next });
+    } catch (e) {
+      setError(uploadErrorMessage(e));
+    } finally {
+      setUploading(false);
+    }
+  };
+  const handleRemove = async (index2) => {
+    if (uploading) return;
+    setError(null);
+    const url = images[index2];
+    if (!url) return;
+    const next = images.filter((_2, i) => i !== index2);
+    setImages(next);
+    try {
+      await deleteProductImage.mutateAsync(assetIdFromUrl(url));
+      await updateProduct.mutateAsync({ ...product, images: next });
+    } catch (e) {
+      setError(uploadErrorMessage(e));
+      setImages(product.images);
+    }
+  };
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setDragging(false);
+    setDragIndex(null);
+    setOverIndex(null);
+    void handleFiles(e.dataTransfer.files);
+  };
+  const handleDragStart = (index2) => {
+    setDragIndex(index2);
+  };
+  const handleDragOver = (e, index2) => {
+    e.preventDefault();
+    if (dragIndex !== null && dragIndex !== index2) setOverIndex(index2);
+  };
+  const handleDropOnThumb = (e, index2) => {
+    e.preventDefault();
+    if (dragIndex === null || dragIndex === index2) {
+      setDragIndex(null);
+      setOverIndex(null);
+      return;
+    }
+    const next = [...images];
+    const [moved] = next.splice(dragIndex, 1);
+    next.splice(index2, 0, moved);
+    setDragIndex(null);
+    setOverIndex(null);
+    setImages(next);
+    void updateProduct.mutateAsync({ ...product, images: next }).catch((err) => {
+      setError(uploadErrorMessage(err));
+      setImages(product.images);
+    });
+  };
+  const handleDragEnd = () => {
+    setDragIndex(null);
+    setOverIndex(null);
+  };
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-3", "data-ocid": "admin.products.images", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-baseline justify-between gap-3", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "field-label", children: "Images" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "img-size-meta", children: [
+        images.length,
+        " / ",
+        MAX_IMAGES
+      ] })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      "button",
+      {
+        type: "button",
+        className: `dropzone${dragging ? " is-dragging" : ""}`,
+        onDragOver: (e) => {
+          e.preventDefault();
+          if (!uploading && !atLimit) setDragging(true);
+        },
+        onDragLeave: () => setDragging(false),
+        onDrop: handleDrop,
+        onClick: () => {
+          var _a2;
+          return !uploading && !atLimit && ((_a2 = fileInputRef.current) == null ? void 0 : _a2.click());
+        },
+        disabled: uploading || atLimit,
+        "data-ocid": "admin.products.dropzone",
+        children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "input",
+            {
+              ref: fileInputRef,
+              type: "file",
+              accept: "image/jpeg,image/png,image/webp",
+              className: "hidden",
+              onChange: (e) => {
+                void handleFiles(e.target.files);
+                e.target.value = "";
+              },
+              "data-ocid": "admin.products.file_input"
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            Upload,
+            {
+              className: "w-4 h-4",
+              style: { color: "var(--muted-foreground)" }
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "dropzone-label", children: uploading ? "Uploading…" : "Drop image or browse" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "dropzone-hint", children: atLimit ? `Maximum of ${MAX_IMAGES} images reached — remove one first.` : "JPEG, PNG or WebP — resized to 1200px and compressed before upload" })
+        ]
+      }
+    ),
+    sizeMeta && /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "img-size-meta", "data-ocid": "admin.products.size_readout", children: [
+      "Original ",
+      formatBytes(sizeMeta.originalBytes),
+      " → compressed",
+      " ",
+      formatBytes(sizeMeta.compressedBytes)
+    ] }),
+    uploading && progress && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      "div",
+      {
+        className: "flex flex-col gap-1",
+        "data-ocid": "admin.products.upload_progress",
+        children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "upload-progress", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "div",
+            {
+              className: `upload-progress-fill${progress.percent >= 100 ? " is-complete" : ""}`,
+              style: { width: `${Math.min(100, progress.percent)}%` }
+            }
+          ) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "img-size-meta", children: [
+            formatBytes(progress.bytesUploaded),
+            " /",
+            " ",
+            formatBytes(progress.totalBytes),
+            " · ",
+            Math.round(progress.percent),
+            "%"
+          ] })
+        ]
+      }
+    ),
+    error && /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "p",
+      {
+        className: "text-sm",
+        style: { color: "var(--nak-negative)" },
+        "data-ocid": "admin.products.images_error",
+        children: error
+      }
+    ),
+    images.length > 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "div",
+      {
+        className: "img-thumb-grid",
+        "data-ocid": "admin.products.thumbnail_grid",
+        children: images.map((url, index2) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "div",
+          {
+            className: "img-thumb",
+            draggable: canEdit && !uploading,
+            onDragStart: () => handleDragStart(index2),
+            onDragOver: (e) => handleDragOver(e, index2),
+            onDrop: (e) => handleDropOnThumb(e, index2),
+            onDragEnd: handleDragEnd,
+            "data-ocid": `admin.products.thumbnail.${index2 + 1}`,
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: url, alt: "", loading: "lazy" }),
+              canEdit && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "button",
+                  {
+                    type: "button",
+                    className: "img-thumb-remove",
+                    onClick: () => void handleRemove(index2),
+                    disabled: uploading,
+                    "aria-label": `Remove image ${index2 + 1}`,
+                    "data-ocid": `admin.products.delete_image.${index2 + 1}`,
+                    children: /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { className: "w-3.5 h-3.5" })
+                  }
+                ),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                  "span",
+                  {
+                    className: "img-thumb-meta",
+                    draggable: false,
+                    title: "Drag to reorder — the first image is shown in the shop",
+                    children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(GripVertical, { className: "w-3 h-3 inline-block align-[-0.125rem]" }),
+                      index2 === 0 ? "cover" : `image ${index2 + 1}`
+                    ]
+                  }
+                )
+              ] }),
+              overIndex === index2 && dragIndex !== null && dragIndex !== index2 && /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "span",
+                {
+                  className: "absolute inset-0",
+                  style: {
+                    border: "2px solid var(--primary)",
+                    background: "rgba(139, 92, 246, 0.12)",
+                    pointerEvents: "none"
+                  }
+                }
+              )
+            ]
+          },
+          url
+        ))
+      }
+    ) : /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "p",
+      {
+        className: "img-thumb-empty",
+        style: { border: "1px solid var(--border)", padding: "1rem" },
+        "data-ocid": "admin.products.images_empty",
+        children: "No images yet"
+      }
+    ),
+    canEdit && images.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "img-size-meta", children: "Drag thumbnails to reorder — the first image is the shop cover." })
+  ] });
+}
 function ProductsTab({ session }) {
   const { data: products, isLoading, error } = useProducts();
+  const { data: categories } = useCategories();
   const updateProduct = useUpdateProduct();
   const createProduct = useCreateProduct();
   const canEdit = session.canManage;
@@ -44555,6 +50364,17 @@ function ProductsTab({ session }) {
     ).length;
     return { total: list.length, active, hidden, lowStock };
   }, [products]);
+  const categoryOptions = reactExports.useMemo(() => {
+    const options = /* @__PURE__ */ new Map();
+    for (const entry of categories ?? []) {
+      options.set(entry.category.slug, entry.category.name);
+    }
+    const current = editing == null ? void 0 : editing.category;
+    if (current && !options.has(current)) {
+      options.set(current, current);
+    }
+    return Array.from(options, ([slug, name]) => ({ slug, name }));
+  }, [categories, editing == null ? void 0 : editing.category]);
   const openEdit = (p2) => {
     setFormError(null);
     setEditing(p2);
@@ -44571,8 +50391,8 @@ function ProductsTab({ session }) {
   };
   const handleSave = () => {
     if (!editing || !draft) return;
-    const cents = dollarsToCents(draft.priceDollars);
-    if (cents === null) {
+    const price = parseDollars(draft.priceDollars);
+    if (price === null) {
       setFormError("Price must be a dollar amount with at most two decimals.");
       return;
     }
@@ -44584,12 +50404,13 @@ function ProductsTab({ session }) {
     const next = {
       ...editing,
       name: draft.name.trim() || editing.name,
-      price: BigInt(cents),
+      category: draft.category,
+      price,
       inventory: BigInt(inventory),
       active: draft.active,
       admin_only: draft.hidden
     };
-    if (cents !== Number(editing.price)) {
+    if (price !== editing.price) {
       setConfirmOpen(true);
       return;
     }
@@ -44611,13 +50432,14 @@ function ProductsTab({ session }) {
   };
   const handleConfirmPrice = () => {
     if (!editing || !draft) return;
-    const cents = dollarsToCents(draft.priceDollars);
-    if (cents === null) return;
+    const price = parseDollars(draft.priceDollars);
+    if (price === null) return;
     const inventory = Number(draft.inventory);
     const next = {
       ...editing,
       name: draft.name.trim() || editing.name,
-      price: BigInt(cents),
+      category: draft.category,
+      price,
       inventory: BigInt(inventory),
       active: draft.active,
       admin_only: draft.hidden
@@ -44783,6 +50605,23 @@ function ProductsTab({ session }) {
             }
           )
         ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-1.5", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "field-label", htmlFor: "products-category", children: "Category" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "select",
+            {
+              id: "products-category",
+              className: "field-input",
+              value: draft.category,
+              onChange: (e) => setDraft({ ...draft, category: e.target.value }),
+              "data-ocid": "admin.products.category_select",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "", children: "No category" }),
+                categoryOptions.map((option) => /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: option.slug, children: option.name }, option.slug))
+              ]
+            }
+          )
+        ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2 gap-4", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-1.5", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "field-label", htmlFor: "products-price", children: "Price (USD)" }),
@@ -44861,6 +50700,14 @@ function ProductsTab({ session }) {
             "data-ocid": "admin.products.form_error",
             children: formError
           }
+        ),
+        editing && editing.id !== 0n && /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "div",
+          {
+            className: "border-t pt-4",
+            style: { borderColor: "var(--border)" },
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx(ProductImageSection, { product: editing, canEdit })
+          }
         )
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs(DialogFooter, { children: [
@@ -44895,7 +50742,7 @@ function ProductsTab({ session }) {
             description: editing ? `Changing the price of "${editing.name}" from ${formatPrice(
               editing.price
             )} to ${formatPrice(
-              dollarsToCents((draft == null ? void 0 : draft.priceDollars) ?? "") ?? 0
+              parseDollars((draft == null ? void 0 : draft.priceDollars) ?? "") ?? 0
             )}. This is a financial change and will be applied immediately.` : "",
             confirmLabel: "Confirm price change",
             cancelLabel: "Cancel",
@@ -45051,8 +50898,7 @@ function SettingsTab({ session }) {
       setMinimumError("Minimum must be a non-negative dollar amount.");
       return;
     }
-    const units = BigInt(Math.round(dollars * 100));
-    updateMinimumOrder.mutate(units, {
+    updateMinimumOrder.mutate(dollars, {
       onError: (err) => setMinimumError(adminErrorMessage(err)),
       onSuccess: () => setMinimumInput("")
     });
@@ -45130,7 +50976,7 @@ function SettingsTab({ session }) {
         AdminStatCard,
         {
           label: "Min order",
-          value: minimumOrder !== void 0 ? `$${(Number(minimumOrder) / 100).toFixed(2)}` : "—"
+          value: minimumOrder !== void 0 ? formatPrice(minimumOrder) : "—"
         }
       )
     ] }),
@@ -45676,10 +51522,7 @@ function SettingsTab({ session }) {
                 children: [
                   "Current:",
                   " ",
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "num", children: [
-                    "$",
-                    (Number(minimumOrder ?? 0n) / 100).toFixed(2)
-                  ] })
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "num", children: formatPrice(minimumOrder ?? 0) })
                 ]
               }
             )
@@ -45692,7 +51535,7 @@ function SettingsTab({ session }) {
                 id: "settings-minimum",
                 className: "field-input",
                 inputMode: "decimal",
-                placeholder: (Number(minimumOrder ?? 0n) / 100).toFixed(2),
+                placeholder: (minimumOrder ?? 0).toFixed(2),
                 value: minimumInput,
                 onChange: (e) => setMinimumInput(e.target.value),
                 disabled: !canManage,
@@ -46648,7 +52491,17 @@ function UsersTab({ session }) {
               {
                 key: "principal",
                 header: "Principal",
-                render: (row) => /* @__PURE__ */ jsxRuntimeExports.jsx("code", { className: "admin-mono", children: row.principal.toText() })
+                render: (row) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 min-w-0", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("code", { className: "admin-mono", children: row.principal.toText() }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    CopyButton,
+                    {
+                      text: row.principal.toText(),
+                      label: "Copy",
+                      className: "shrink-0"
+                    }
+                  )
+                ] })
               },
               {
                 key: "role",
@@ -46710,6 +52563,7 @@ const TAB_ORDER = [
   "treasury",
   "orders",
   "products",
+  "categories",
   "submissions",
   "users",
   "settings"
@@ -46720,6 +52574,7 @@ const TAB_LABELS = {
   treasury: "Treasury",
   orders: "Orders",
   products: "Products",
+  categories: "Categories",
   submissions: "Submissions",
   users: "Users",
   settings: "Settings"
@@ -46730,13 +52585,19 @@ const TAB_BODIES = {
   treasury: (props) => /* @__PURE__ */ jsxRuntimeExports.jsx(TreasuryTab, { ...props }),
   orders: (props) => /* @__PURE__ */ jsxRuntimeExports.jsx(OrdersTab, { ...props }),
   products: (props) => /* @__PURE__ */ jsxRuntimeExports.jsx(ProductsTab, { ...props }),
+  categories: (props) => /* @__PURE__ */ jsxRuntimeExports.jsx(CategoriesTab, { ...props }),
   submissions: (props) => /* @__PURE__ */ jsxRuntimeExports.jsx(SubmissionsTab, { ...props }),
   users: (props) => /* @__PURE__ */ jsxRuntimeExports.jsx(UsersTab, { ...props }),
   settings: (props) => /* @__PURE__ */ jsxRuntimeExports.jsx(SettingsTab, { ...props })
 };
+function truncatePrincipal$1(principal) {
+  if (principal.length <= 11) return principal;
+  return `${principal.slice(0, 5)}…${principal.slice(-5)}`;
+}
 function AdminTabShell({ onNavigateToMain }) {
   const { isActorReady, isAuthenticated, identity } = useActorReady();
   const { data: role, isLoading: roleLoading } = useGetMyRole();
+  const { data: adminCount } = useAdminCount();
   const { data: canisterId } = useGetCanisterId();
   const { data: encryptionRecipients } = useGetEncryptionRecipients();
   const claimAdmin = useClaimInitialAdmin();
@@ -46917,7 +52778,7 @@ function AdminTabShell({ onNavigateToMain }) {
         ),
         /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "admin-panel-title", children: "Sign in required" })
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { style: { color: "var(--muted-foreground)" }, children: "Admin access is restricted. Sign in with Internet Identity to verify your principal before using the console." })
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { style: { color: "var(--muted-foreground)" }, children: "Sign in with Internet Identity to get your principal and request admin access." })
     ] }) }) : roleLoading ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
       "div",
       {
@@ -46926,7 +52787,7 @@ function AdminTabShell({ onNavigateToMain }) {
         "data-ocid": "admin.role_loading",
         children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-5 h-5 animate-spin" }),
-          "Checking authorization…"
+          "Checking access…"
         ]
       }
     ) : !role ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "admin-panel", "data-ocid": "admin.not_authorized_state", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "admin-panel-body", children: [
@@ -46941,7 +52802,69 @@ function AdminTabShell({ onNavigateToMain }) {
         /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "admin-panel-title", children: "Not authorized" })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("p", { style: { color: "var(--muted-foreground)" }, children: "Your principal has no admin role, so you cannot view or change these settings." }),
-      isActorReady && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      userPrincipalText && /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "div",
+        {
+          className: "mt-5 flex flex-col gap-3 rounded-lg border p-4",
+          style: { borderColor: "var(--border)" },
+          "data-ocid": "admin.your_principal_panel",
+          children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-1.5", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "span",
+              {
+                className: "text-xs",
+                style: {
+                  color: "var(--muted-foreground)",
+                  letterSpacing: "0.08em",
+                  textTransform: "uppercase",
+                  fontWeight: 600
+                },
+                children: "Your principal"
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 min-w-0", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "code",
+                {
+                  className: "admin-mono",
+                  style: { fontSize: "0.8125rem" },
+                  "data-ocid": "admin.your_principal",
+                  children: truncatePrincipal$1(userPrincipalText)
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                CopyButton,
+                {
+                  text: userPrincipalText,
+                  label: "Copy",
+                  className: "shrink-0"
+                }
+              )
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "p",
+              {
+                className: "text-sm",
+                style: { color: "var(--muted-foreground)" },
+                children: "Copy your principal and send it to an administrator to be granted access."
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "p",
+              {
+                className: "text-xs",
+                style: { color: "var(--text-muted)" },
+                children: [
+                  "This principal is specific to ",
+                  window.location.origin,
+                  "."
+                ]
+              }
+            )
+          ] })
+        }
+      ),
+      isActorReady && adminCount === 0n && /* @__PURE__ */ jsxRuntimeExports.jsxs(
         "div",
         {
           className: "mt-5 flex flex-col gap-3 rounded-lg border p-4",
@@ -50872,13 +56795,13 @@ function serializeShipping(payload) {
 function concatLengthPrefixed(segments) {
   const total = segments.reduce((sum, seg) => sum + 4 + seg.length, 0);
   const out = new Uint8Array(total);
-  let offset = 0;
+  let offset2 = 0;
   for (const seg of segments) {
     const view = new DataView(out.buffer);
-    view.setUint32(offset, seg.length, false);
-    offset += 4;
-    out.set(seg, offset);
-    offset += seg.length;
+    view.setUint32(offset2, seg.length, false);
+    offset2 += 4;
+    out.set(seg, offset2);
+    offset2 += seg.length;
   }
   return out;
 }
@@ -50905,14 +56828,14 @@ function encodeAdminSegment(adminPrincipal, ciphertext) {
     4 + principalBytes.length + 4 + ciphertext.length
   );
   const view = new DataView(segment.buffer);
-  let offset = 0;
-  view.setUint32(offset, principalBytes.length, false);
-  offset += 4;
-  segment.set(principalBytes, offset);
-  offset += principalBytes.length;
-  view.setUint32(offset, ciphertext.length, false);
-  offset += 4;
-  segment.set(ciphertext, offset);
+  let offset2 = 0;
+  view.setUint32(offset2, principalBytes.length, false);
+  offset2 += 4;
+  segment.set(principalBytes, offset2);
+  offset2 += principalBytes.length;
+  view.setUint32(offset2, ciphertext.length, false);
+  offset2 += 4;
+  segment.set(ciphertext, offset2);
   return segment;
 }
 async function fetchAdminPrincipals(backend) {
@@ -51143,7 +57066,7 @@ const qrcode = function(typeNumber, errorCorrectionLevel) {
     }
   };
   const createBytes = function(buffer, rsBlocks) {
-    let offset = 0;
+    let offset2 = 0;
     let maxDcCount = 0;
     let maxEcCount = 0;
     const dcdata = new Array(rsBlocks.length);
@@ -51155,9 +57078,9 @@ const qrcode = function(typeNumber, errorCorrectionLevel) {
       maxEcCount = Math.max(maxEcCount, ecCount);
       dcdata[r2] = new Array(dcCount);
       for (let i = 0; i < dcdata[r2].length; i += 1) {
-        dcdata[r2][i] = 255 & buffer.getBuffer()[i + offset];
+        dcdata[r2][i] = 255 & buffer.getBuffer()[i + offset2];
       }
-      offset += dcCount;
+      offset2 += dcCount;
       const rsPoly = QRUtil.getErrorCorrectPolynomial(ecCount);
       const rawPoly = qrPolynomial(dcdata[r2], rsPoly.getLength() - 1);
       const modPoly = rawPoly.mod(rsPoly);
@@ -51327,12 +57250,12 @@ const qrcode = function(typeNumber, errorCorrectionLevel) {
     title = typeof title === "string" ? { text: title } : title || {};
     title.text = title.text || null;
     title.id = title.text ? title.id || "qrcode-title" : null;
-    const size = _this.getModuleCount() * cellSize + margin * 2;
+    const size2 = _this.getModuleCount() * cellSize + margin * 2;
     let c2, mc, r2, mr2, qrSvg = "", rect;
     rect = "l" + cellSize + ",0 0," + cellSize + " -" + cellSize + ",0 0,-" + cellSize + "z ";
     qrSvg += '<svg version="1.1" xmlns="http://www.w3.org/2000/svg"';
-    qrSvg += !opts.scalable ? ' width="' + size + 'px" height="' + size + 'px"' : "";
-    qrSvg += ' viewBox="0 0 ' + size + " " + size + '" ';
+    qrSvg += !opts.scalable ? ' width="' + size2 + 'px" height="' + size2 + 'px"' : "";
+    qrSvg += ' viewBox="0 0 ' + size2 + " " + size2 + '" ';
     qrSvg += ' preserveAspectRatio="xMinYMin meet"';
     qrSvg += title.text || alt.text ? ' role="img" aria-labelledby="' + escapeXml([title.id, alt.id].join(" ").trim()) + '"' : "";
     qrSvg += ">";
@@ -51356,13 +57279,13 @@ const qrcode = function(typeNumber, errorCorrectionLevel) {
   _this.createDataURL = function(cellSize, margin) {
     cellSize = cellSize || 2;
     margin = typeof margin == "undefined" ? cellSize * 4 : margin;
-    const size = _this.getModuleCount() * cellSize + margin * 2;
-    const min = margin;
-    const max = size - margin;
-    return createDataURL(size, size, function(x2, y2) {
-      if (min <= x2 && x2 < max && min <= y2 && y2 < max) {
-        const c2 = Math.floor((x2 - min) / cellSize);
-        const r2 = Math.floor((y2 - min) / cellSize);
+    const size2 = _this.getModuleCount() * cellSize + margin * 2;
+    const min2 = margin;
+    const max2 = size2 - margin;
+    return createDataURL(size2, size2, function(x2, y2) {
+      if (min2 <= x2 && x2 < max2 && min2 <= y2 && y2 < max2) {
+        const c2 = Math.floor((x2 - min2) / cellSize);
+        const r2 = Math.floor((y2 - min2) / cellSize);
         return _this.isDark(r2, c2) ? 0 : 1;
       } else {
         return 1;
@@ -51372,17 +57295,17 @@ const qrcode = function(typeNumber, errorCorrectionLevel) {
   _this.createImgTag = function(cellSize, margin, alt) {
     cellSize = cellSize || 2;
     margin = typeof margin == "undefined" ? cellSize * 4 : margin;
-    const size = _this.getModuleCount() * cellSize + margin * 2;
+    const size2 = _this.getModuleCount() * cellSize + margin * 2;
     let img = "";
     img += "<img";
     img += ' src="';
     img += _this.createDataURL(cellSize, margin);
     img += '"';
     img += ' width="';
-    img += size;
+    img += size2;
     img += '"';
     img += ' height="';
-    img += size;
+    img += size2;
     img += '"';
     if (alt) {
       img += ' alt="';
@@ -51419,9 +57342,9 @@ const qrcode = function(typeNumber, errorCorrectionLevel) {
   const _createHalfASCII = function(margin) {
     const cellSize = 1;
     margin = typeof margin == "undefined" ? cellSize * 2 : margin;
-    const size = _this.getModuleCount() * cellSize + margin * 2;
-    const min = margin;
-    const max = size - margin;
+    const size2 = _this.getModuleCount() * cellSize + margin * 2;
+    const min2 = margin;
+    const max2 = size2 - margin;
     let y2, x2, r1, r2, p2;
     const blocks = {
       "██": "█",
@@ -51436,25 +57359,25 @@ const qrcode = function(typeNumber, errorCorrectionLevel) {
       "  ": " "
     };
     let ascii = "";
-    for (y2 = 0; y2 < size; y2 += 2) {
-      r1 = Math.floor((y2 - min) / cellSize);
-      r2 = Math.floor((y2 + 1 - min) / cellSize);
-      for (x2 = 0; x2 < size; x2 += 1) {
+    for (y2 = 0; y2 < size2; y2 += 2) {
+      r1 = Math.floor((y2 - min2) / cellSize);
+      r2 = Math.floor((y2 + 1 - min2) / cellSize);
+      for (x2 = 0; x2 < size2; x2 += 1) {
         p2 = "█";
-        if (min <= x2 && x2 < max && min <= y2 && y2 < max && _this.isDark(r1, Math.floor((x2 - min) / cellSize))) {
+        if (min2 <= x2 && x2 < max2 && min2 <= y2 && y2 < max2 && _this.isDark(r1, Math.floor((x2 - min2) / cellSize))) {
           p2 = " ";
         }
-        if (min <= x2 && x2 < max && min <= y2 + 1 && y2 + 1 < max && _this.isDark(r2, Math.floor((x2 - min) / cellSize))) {
+        if (min2 <= x2 && x2 < max2 && min2 <= y2 + 1 && y2 + 1 < max2 && _this.isDark(r2, Math.floor((x2 - min2) / cellSize))) {
           p2 += " ";
         } else {
           p2 += "█";
         }
-        ascii += margin < 1 && y2 + 1 >= max ? blocksLastLineNoMargin[p2] : blocks[p2];
+        ascii += margin < 1 && y2 + 1 >= max2 ? blocksLastLineNoMargin[p2] : blocks[p2];
       }
       ascii += "\n";
     }
-    if (size % 2 && margin > 0) {
-      return ascii.substring(0, ascii.length - size - 1) + Array(size + 1).join("▀");
+    if (size2 % 2 && margin > 0) {
+      return ascii.substring(0, ascii.length - size2 - 1) + Array(size2 + 1).join("▀");
     }
     return ascii.substring(0, ascii.length - 1);
   };
@@ -51465,20 +57388,20 @@ const qrcode = function(typeNumber, errorCorrectionLevel) {
     }
     cellSize -= 1;
     margin = typeof margin == "undefined" ? cellSize * 2 : margin;
-    const size = _this.getModuleCount() * cellSize + margin * 2;
-    const min = margin;
-    const max = size - margin;
+    const size2 = _this.getModuleCount() * cellSize + margin * 2;
+    const min2 = margin;
+    const max2 = size2 - margin;
     let y2, x2, r2, p2;
     const white = Array(cellSize + 1).join("██");
     const black = Array(cellSize + 1).join("  ");
     let ascii = "";
     let line = "";
-    for (y2 = 0; y2 < size; y2 += 1) {
-      r2 = Math.floor((y2 - min) / cellSize);
+    for (y2 = 0; y2 < size2; y2 += 1) {
+      r2 = Math.floor((y2 - min2) / cellSize);
       line = "";
-      for (x2 = 0; x2 < size; x2 += 1) {
+      for (x2 = 0; x2 < size2; x2 += 1) {
         p2 = 1;
-        if (min <= x2 && x2 < max && min <= y2 && y2 < max && _this.isDark(r2, Math.floor((x2 - min) / cellSize))) {
+        if (min2 <= x2 && x2 < max2 && min2 <= y2 && y2 < max2 && _this.isDark(r2, Math.floor((x2 - min2) / cellSize))) {
           p2 = 0;
         }
         line += p2 ? white : black;
@@ -51840,18 +57763,18 @@ const QRMath = function() {
   };
   return _this;
 }();
-const qrPolynomial = function(num, shift) {
+const qrPolynomial = function(num, shift2) {
   if (typeof num.length == "undefined") {
-    throw num.length + "/" + shift;
+    throw num.length + "/" + shift2;
   }
   const _num = function() {
-    let offset = 0;
-    while (offset < num.length && num[offset] == 0) {
-      offset += 1;
+    let offset2 = 0;
+    while (offset2 < num.length && num[offset2] == 0) {
+      offset2 += 1;
     }
-    const _num2 = new Array(num.length - offset + shift);
-    for (let i = 0; i < num.length - offset; i += 1) {
-      _num2[i] = num[i + offset];
+    const _num2 = new Array(num.length - offset2 + shift2);
+    for (let i = 0; i < num.length - offset2; i += 1) {
+      _num2[i] = num[i + offset2];
     }
     return _num2;
   }();
@@ -52485,14 +58408,14 @@ const gifImage = function(width, height) {
     const lzwMinCodeSize = 2;
     const raster = getLZWRaster(lzwMinCodeSize);
     out.writeByte(lzwMinCodeSize);
-    let offset = 0;
-    while (raster.length - offset > 255) {
+    let offset2 = 0;
+    while (raster.length - offset2 > 255) {
       out.writeByte(255);
-      out.writeBytes(raster, offset, 255);
-      offset += 255;
+      out.writeBytes(raster, offset2, 255);
+      offset2 += 255;
     }
-    out.writeByte(raster.length - offset);
-    out.writeBytes(raster, offset, raster.length - offset);
+    out.writeByte(raster.length - offset2);
+    out.writeBytes(raster, offset2, raster.length - offset2);
     out.writeByte(0);
     out.writeString(";");
   };
@@ -52640,12 +58563,12 @@ var propTypes$1 = {
   xmlns: PropTypes.string
 };
 var QRCodeSvg = /* @__PURE__ */ reactExports.forwardRef(function(_ref, ref) {
-  var bgColor = _ref.bgColor, bgD = _ref.bgD, fgD = _ref.fgD, fgColor = _ref.fgColor, size = _ref.size, title = _ref.title, viewBoxSize = _ref.viewBoxSize, _ref$xmlns = _ref.xmlns, xmlns = _ref$xmlns === void 0 ? "http://www.w3.org/2000/svg" : _ref$xmlns, props = _objectWithoutProperties(_ref, _excluded$1);
+  var bgColor = _ref.bgColor, bgD = _ref.bgD, fgD = _ref.fgD, fgColor = _ref.fgColor, size2 = _ref.size, title = _ref.title, viewBoxSize = _ref.viewBoxSize, _ref$xmlns = _ref.xmlns, xmlns = _ref$xmlns === void 0 ? "http://www.w3.org/2000/svg" : _ref$xmlns, props = _objectWithoutProperties(_ref, _excluded$1);
   return /* @__PURE__ */ React$2.createElement("svg", _extends({}, props, {
-    height: size,
+    height: size2,
     ref,
     viewBox: "0 0 ".concat(viewBoxSize, " ").concat(viewBoxSize),
-    width: size,
+    width: size2,
     xmlns
   }), title ? /* @__PURE__ */ React$2.createElement("title", null, title) : null, /* @__PURE__ */ React$2.createElement("path", {
     d: bgD,
@@ -52669,7 +58592,7 @@ var propTypes = {
   value: PropTypes.string.isRequired
 };
 var QRCode = /* @__PURE__ */ reactExports.forwardRef(function(_ref, ref) {
-  var _ref$bgColor = _ref.bgColor, bgColor = _ref$bgColor === void 0 ? "#FFFFFF" : _ref$bgColor, _ref$fgColor = _ref.fgColor, fgColor = _ref$fgColor === void 0 ? "#000000" : _ref$fgColor, _ref$level = _ref.level, level = _ref$level === void 0 ? "L" : _ref$level, _ref$size = _ref.size, size = _ref$size === void 0 ? 256 : _ref$size, value = _ref.value, props = _objectWithoutProperties(_ref, _excluded);
+  var _ref$bgColor = _ref.bgColor, bgColor = _ref$bgColor === void 0 ? "#FFFFFF" : _ref$bgColor, _ref$fgColor = _ref.fgColor, fgColor = _ref$fgColor === void 0 ? "#000000" : _ref$fgColor, _ref$level = _ref.level, level = _ref$level === void 0 ? "L" : _ref$level, _ref$size = _ref.size, size2 = _ref$size === void 0 ? 256 : _ref$size, value = _ref.value, props = _objectWithoutProperties(_ref, _excluded);
   var qr = qrcode(0, level);
   qr.addData(value);
   qr.make();
@@ -52697,7 +58620,7 @@ var QRCode = /* @__PURE__ */ reactExports.forwardRef(function(_ref, ref) {
       }).join(" ");
     }).join(" "),
     ref,
-    size,
+    size: size2,
     viewBoxSize: moduleCount
   }));
 });
@@ -52846,7 +58769,7 @@ function OrderSummary({
                 item.quantity.toString()
               ] })
             ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num text-sm text-secondary-foreground", children: formatPrice(item.unit_amount * item.quantity) })
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num text-sm text-secondary-foreground", children: formatPrice(item.unit_amount * Number(item.quantity)) })
           ]
         },
         item.variant_id
@@ -52888,7 +58811,7 @@ function OrderSummary({
                   item.quantity
                 ] })
               ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num text-sm text-secondary-foreground", children: formatPrice(unitPrice * BigInt(item.quantity)) })
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num text-sm text-secondary-foreground", children: formatPrice(unitPrice * item.quantity) })
             ]
           },
           `${item.product.id}-${item.variantId}`
@@ -52897,7 +58820,7 @@ function OrderSummary({
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-2 border-t border-border pt-4 text-sm", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "summary-row", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-muted-foreground", children: "Subtotal" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "summary-value", children: formatPrice(BigInt(Math.round(cartSubtotal))) })
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "summary-value", children: formatPrice(cartSubtotal) })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "pt-2 text-xs text-muted-foreground", children: "Tax and shipping are calculated when you place your order." })
       ] })
@@ -55674,7 +61597,7 @@ function OrderItems({ items }) {
             item.variant_id
           ] })
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm mono-num text-[var(--foreground)] whitespace-nowrap", children: formatPrice(item.unit_amount * item.quantity) })
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm mono-num text-[var(--foreground)] whitespace-nowrap", children: formatPrice(item.unit_amount * Number(item.quantity)) })
       ]
     },
     `${item.product_id}-${item.variant_id}-${index2}`
@@ -56030,7 +61953,7 @@ const ProductPage = ({
     () => (product == null ? void 0 : product.variants.find((v2) => v2.id === selectedVariantId)) ?? null,
     [product, selectedVariantId]
   );
-  const unitPrice = selectedVariant ? selectedVariant.price : (product == null ? void 0 : product.price) ?? 0n;
+  const unitPrice = selectedVariant ? selectedVariant.price : (product == null ? void 0 : product.price) ?? 0;
   const maxInventory = selectedVariant ? selectedVariant.inventory : (product == null ? void 0 : product.inventory) ?? 0n;
   const maxQty = Math.max(1, Number(maxInventory));
   const image = product == null ? void 0 : product.images[0];
@@ -56533,7 +62456,7 @@ function OrderRow({
       }
     ) }),
     /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "admin-mono", children: paymentMethodLabel(order.paymentMethod) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "admin-mono text-right", children: formatTokenAmount(order.amountOwed, decimals) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "admin-mono text-right", children: formatPrice(order.amountOwed) }),
     /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "admin-mono max-w-[16rem]", children: order.depositAccount ? /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block break-all", children: order.depositAccount.textAddress }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-muted", children: "—" }) }),
     /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "admin-mono text-right", children: formatTokenAmount(order.liveBalance, decimals) }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("td", { children: [
@@ -56891,7 +62814,7 @@ const ShopBanner = ({ onNavigateToShop }) => {
         ),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "flex-1 min-w-0 flex flex-col gap-0.5", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "section-label", children: "Product Line" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "truncate", style: { color: "var(--nak-text)" }, children: ckUSDCEnabled ? "N.A.K. Fragrance — five colognes, settled in ckUSDC" : "N.A.K. Fragrance — five colognes" })
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "truncate", style: { color: "var(--nak-text)" }, children: ckUSDCEnabled ? "N.A.K. — five colognes, settled in ckUSDC" : "N.A.K. — five colognes" })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "flex-shrink-0 flex items-center gap-2", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -56908,22 +62831,16 @@ const ShopBanner = ({ onNavigateToShop }) => {
     }
   ) }) });
 };
-const CATEGORY_OPTIONS = [
-  { value: "all", label: "All" },
-  { value: "Fragrance", label: "Fragrance" },
-  { value: "Oils", label: "Oils" }
-];
 function readFilterFromUrl() {
   const hash = window.location.hash;
   const queryIndex = hash.indexOf("?");
   if (queryIndex === -1) return "all";
   const params = new URLSearchParams(hash.slice(queryIndex + 1));
-  const cat = params.get("cat");
-  if (cat === "Fragrance" || cat === "Oils") return cat;
-  return "all";
+  return params.get("cat") ?? "all";
 }
 const ShopPage = ({ onNavigateToMain }) => {
   const { data: products, isLoading, isError } = useProducts();
+  const { data: categories } = useCategories();
   const { addItem } = useCart();
   const [addedId, setAddedId] = reactExports.useState(null);
   const [filter, setFilter] = reactExports.useState(
@@ -56932,16 +62849,61 @@ const ShopPage = ({ onNavigateToMain }) => {
   reactExports.useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+  const filterOptions = reactExports.useMemo(() => {
+    const known = (categories ?? []).map((c2) => c2.category).filter((c2) => c2.active).sort((a2, b2) => Number(a2.sortOrder) - Number(b2.sortOrder));
+    return [
+      { value: "all", label: "All" },
+      ...known.map((c2) => ({ value: c2.slug, label: c2.name }))
+    ];
+  }, [categories]);
+  const resolvedFilter = reactExports.useMemo(() => {
+    if (filter === "all") return "all";
+    const known = (categories ?? []).map((c2) => c2.category).filter((c2) => c2.active);
+    return known.some((c2) => c2.slug === filter) ? filter : "all";
+  }, [filter, categories]);
+  const sections = reactExports.useMemo(() => {
+    if (!products) return [];
+    const known = (categories ?? []).map((c2) => c2.category).filter((c2) => c2.active).sort((a2, b2) => Number(a2.sortOrder) - Number(b2.sortOrder));
+    const knownSlugs = new Set(known.map((c2) => c2.slug));
+    const byCategory = /* @__PURE__ */ new Map();
+    const uncategorized = [];
+    for (const product of products) {
+      if (product.category && knownSlugs.has(product.category)) {
+        const list = byCategory.get(product.category) ?? [];
+        list.push(product);
+        byCategory.set(product.category, list);
+      } else {
+        uncategorized.push(product);
+      }
+    }
+    const ordered = [];
+    for (const category of known) {
+      const items = byCategory.get(category.slug);
+      if (items && items.length > 0) {
+        ordered.push({ key: category.slug, heading: category.name, items });
+      } else if (category.showWhenEmpty) {
+        ordered.push({ key: category.slug, heading: category.name, items: [] });
+      }
+    }
+    if (uncategorized.length > 0) {
+      ordered.push({
+        key: "uncategorized",
+        heading: "Uncategorized",
+        items: uncategorized
+      });
+    }
+    return ordered;
+  }, [products, categories]);
   reactExports.useEffect(() => {
     const base = "#/shop";
     const params = new URLSearchParams();
-    if (filter !== "all") params.set("cat", filter);
+    if (resolvedFilter !== "all") params.set("cat", resolvedFilter);
     const query = params.toString();
     const next = query ? `${base}?${query}` : base;
     if (window.location.hash !== next) {
       window.history.replaceState(null, "", next);
     }
-  }, [filter]);
+  }, [resolvedFilter]);
   const handleAddToCart = (product) => {
     var _a2;
     const variantId = ((_a2 = product.variants[0]) == null ? void 0 : _a2.id) ?? "";
@@ -56949,31 +62911,10 @@ const ShopPage = ({ onNavigateToMain }) => {
     setAddedId(product.slug || String(product.id));
     window.setTimeout(() => setAddedId(null), 2e3);
   };
-  const sections = reactExports.useMemo(() => {
-    if (!products) return [];
-    const byCategory = /* @__PURE__ */ new Map();
-    for (const product of products) {
-      const key = product.category || "Other";
-      const list = byCategory.get(key) ?? [];
-      list.push(product);
-      byCategory.set(key, list);
-    }
-    const ordered = [];
-    for (const category of ["Fragrance", "Oils"]) {
-      const items = byCategory.get(category);
-      if (items && items.length > 0) ordered.push({ category, items });
-    }
-    for (const [category, items] of byCategory) {
-      if (category !== "Fragrance" && category !== "Oils") {
-        ordered.push({ category, items });
-      }
-    }
-    return ordered;
-  }, [products]);
   const visibleSections = reactExports.useMemo(() => {
-    if (filter === "all") return sections;
-    return sections.filter((s) => s.category === filter);
-  }, [sections, filter]);
+    if (resolvedFilter === "all") return sections;
+    return sections.filter((s) => s.key === resolvedFilter);
+  }, [sections, resolvedFilter]);
   const renderCard = (product, index2) => {
     var _a2, _b2;
     const image = (_a2 = product.images) == null ? void 0 : _a2[0];
@@ -56981,7 +62922,7 @@ const ShopPage = ({ onNavigateToMain }) => {
     const isSoldOut = inventory === 0;
     const isLow = inventory > 0 && inventory <= 10;
     const isAdded = addedId === (product.slug || String(product.id));
-    const size = (_b2 = product.variants[0]) == null ? void 0 : _b2.size;
+    const size2 = (_b2 = product.variants[0]) == null ? void 0 : _b2.size;
     return /* @__PURE__ */ jsxRuntimeExports.jsxs(
       "div",
       {
@@ -57007,12 +62948,12 @@ const ShopPage = ({ onNavigateToMain }) => {
                 children: product.name
               }
             ),
-            size && /* @__PURE__ */ jsxRuntimeExports.jsx(
+            size2 && /* @__PURE__ */ jsxRuntimeExports.jsx(
               "span",
               {
                 className: "mono-num text-[0.6875rem] whitespace-nowrap",
                 style: { color: "var(--muted-foreground)" },
-                children: size
+                children: size2
               }
             )
           ] }),
@@ -57110,12 +63051,12 @@ const ShopPage = ({ onNavigateToMain }) => {
         "data-ocid": "shop.category_filter",
         children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("legend", { className: "sr-only", children: "Filter products by category" }),
-          CATEGORY_OPTIONS.map((option) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+          filterOptions.map((option) => /* @__PURE__ */ jsxRuntimeExports.jsx(
             "button",
             {
               type: "button",
-              className: filter === option.value ? "is-active" : "",
-              "aria-pressed": filter === option.value,
+              className: resolvedFilter === option.value ? "is-active" : "",
+              "aria-pressed": resolvedFilter === option.value,
               onClick: () => setFilter(option.value),
               "data-ocid": `shop.filter.${option.value.toLowerCase()}`,
               children: option.label
@@ -57204,15 +63145,15 @@ const ShopPage = ({ onNavigateToMain }) => {
       "section",
       {
         className: "mb-12 sm:mb-16",
-        "data-ocid": `shop.section.${section.category.toLowerCase()}`,
+        "data-ocid": `shop.section.${section.key.toLowerCase()}`,
         children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "category-section-heading mb-4 px-2", children: section.category }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "category-section-heading mb-4 px-2", children: section.heading }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "lattice", "data-ocid": "shop.grid", children: section.items.map(
             (product, index2) => renderCard(product, index2)
           ) })
         ]
       },
-      section.category
+      section.key
     ))
   ] }) });
 };
@@ -57311,7 +63252,7 @@ const SuccessPage = ({
                   item.quantity.toString()
                 ] })
               ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "summary-value shrink-0", children: formatPrice(item.unit_amount * item.quantity) })
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "summary-value shrink-0", children: formatPrice(item.unit_amount * Number(item.quantity)) })
             ]
           },
           `${item.variant_id}-${index2}`

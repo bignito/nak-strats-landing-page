@@ -108,7 +108,7 @@ function OrderItems({ items }: { items: OrderItem[] }) {
             </p>
           </div>
           <p className="text-sm mono-num text-[var(--foreground)] whitespace-nowrap">
-            {formatPrice(item.unit_amount * item.quantity)}
+            {formatPrice(item.unit_amount * Number(item.quantity))}
           </p>
         </li>
       ))}

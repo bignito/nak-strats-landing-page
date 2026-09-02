@@ -27,22 +27,22 @@ treasury/dashboard data from external services.
   hidden products remain purchasable by an admin but never leak to customers.
 - `createProduct(product : Product) : async Bool` — update. ADMIN-OR-OWNER.
   Appends a new product to the catalogue. The caller supplies the full
-  `Product` record; every price field (`price`, and each `variant.price`) is an
-  integer in cents (never a float) — the frontend converts dollar input to
-  cents before calling. Binds the caller at the top of the function, rejects
-  the anonymous principal, and traps for a caller that is not a non-anonymous
-  ADMIN or OWNER. Returns `true` on success.
+  `Product` record; every price field (`price`, and each `variant.price`) is a
+  US dollar decimal value stored directly as a `Float` (e.g. `24.99`) — never
+  integer cents, never divided by 100 in the display path. Binds the caller at
+  the top of the function, rejects the anonymous principal, and traps for a
+  caller that is not a non-anonymous ADMIN or OWNER. Returns `true` on success.
 - `updateProduct(product : Product) : async Bool` — update. ADMIN-OR-OWNER.
   Replaces the existing product whose `id` matches the supplied record (a
-  no-op when no product with that id exists). Prices are integer cents. Binds
-  the caller at the top of the function, rejects the anonymous principal, and
-  traps for a caller that is not a non-anonymous ADMIN or OWNER. Returns `true`
-  on success.
+  no-op when no product with that id exists). Prices are US dollar decimal
+  `Float` values (e.g. `24.99`) — never integer cents. Binds the caller at the
+  top of the function, rejects the anonymous principal, and traps for a caller
+  that is not a non-anonymous ADMIN or OWNER. Returns `true` on success.
 - `createOrder(input : CreateOrderInput) : async Result<CreateOrderResult,
   OrderError>` — update. Validates the order server-side (product exists and is active,
   variant exists, quantity is at least 1, stock is sufficient), computes the
-  authoritative subtotal, tax (8%), shipping (free at or above 5000 units,
-  otherwise 500), and total from the product records — never from
+  authoritative subtotal, tax (8%), shipping (free at or above $50.00,
+  otherwise $5.00), and total from the product records — never from
   browser-submitted prices. Creates the order with `payment_status = #pending`
   and a unique unguessable `reference` of the form `NAK-` followed by 12
   characters drawn from an unambiguous uppercase alphanumeric alphabet
@@ -96,6 +96,131 @@ treasury/dashboard data from external services.
   never read another customer's orders. A signed-in customer's orders are
   attributed to them at creation time via `customer_principal`. Each returned
   record is a public-safe view that omits `customer_email`.
+
+### Categories
+
+Categories drive the shop's filter chips and per-category section headings. The
+shop derives every filter chip and section heading from `listCategories()` —
+there are no hardcoded category name literals in the frontend. `Product.category`
+is a `Text` that now stores the category SLUG (not the display name); renaming a
+category only mutates the `Category` record and never rewrites `Product` or
+`Order` records, so existing products and orders stay linked.
+
+- `listCategories() : async [CategoryWithCount]` — query. PUBLIC (anonymous).
+  Returns the ACTIVE categories sorted by `sortOrder`, each wrapped with a
+  `productCount` of visible (active, non-`admin_only`) products that reference
+  its slug. Inactive categories (including the hidden `test` category) are
+  omitted, so they never appear in the shop.
+- `createCategory(name : Text, description : ?Text) : async
+  Result<Category, CategoryError>` — update. ADMIN-OR-OWNER. Creates a category.
+  The slug is auto-generated from `name` (lowercase, spaces to hyphens, strip
+  non-alphanumerics) and is immutable after creation. The name is trimmed and
+  rejected if empty (`#err(#emptyName)`); a slug that collides with an existing
+  slug is rejected with `#err(#slugCollision(slug))`. New categories default to
+  `active = true`, `showWhenEmpty = false`, and `sortOrder` at the end.
+- `updateCategory(id : CategoryId, name : Text, description : ?Text, sortOrder :
+  Nat, active : Bool, showWhenEmpty : Bool) : async Result<Category,
+  CategoryError>` — update. ADMIN-OR-OWNER. Updates the editable fields (name,
+  description, sortOrder, active, showWhenEmpty). The slug is NOT editable — it
+  stays immutable so existing products and orders remain linked. Returns
+  `#err(#notFound(id))` for an unknown id and `#err(#emptyName)` for an empty
+  name.
+- `reorderCategories(orderedIds : [CategoryId]) : async Result<(), CategoryError>`
+  — update. ADMIN-OR-OWNER. Persists `sortOrder` to match the supplied ordered
+  array of category ids. Returns `#err(#notFound(id))` when the array does not
+  exactly cover the existing categories (wrong size, a duplicate, or an unknown
+  id).
+- `deleteCategory(id : CategoryId) : async Result<(), CategoryError>` — update.
+  ADMIN-OR-OWNER. Deletes a category. REFUSES (with
+  `#err(#productsReferenced({ slug; count }))` naming the count) when any
+  product still references the slug — a category with products is never
+  silently deleted and its products are never orphaned. Use
+  `reassignProducts` first to clear it.
+- `reassignProducts(fromSlug : Text, toSlug : Text) : async Result<Nat,
+  CategoryError>` — update. ADMIN-OR-OWNER. Rewrites every product whose
+  `category` equals `fromSlug` to `toSlug` and returns the number of products
+  reassigned, so an admin can clear a category before deleting it. Returns
+  `#err(#targetCategoryNotFound(toSlug))` when `fromSlug == toSlug`.
+
+Category errors are returned as a `CategoryError` variant (never a generic
+\"failed\"): `#emptyName`, `#slugCollision(slug)`, `#notFound(id)`,
+`#productsReferenced({ slug; count })`, and `#targetCategoryNotFound(slug)`.
+
+### Product image assets (canister-side storage)
+
+Product images are stored as blobs in the canister's own stable state (NOT the
+external blob gateway) and served publicly over the canister's HTTP interface
+at a stable URL of the form
+`https://<canister-id>.icp0.io/assets/products/<assetId>`. After a successful
+upload, the asset's absolute URL is appended to the owning product's `images`
+list, so `Product.images` continues to hold URL strings and nothing downstream
+(shop grid, product detail, cart) needs to change. Asset ids are immutable, so
+the URL is stable and safe to cache forever.
+
+Upload is CHUNKED to stay under the IC ingress message limit (~2MB): a single
+update call carrying a large photo would fail, so the frontend splits the
+compressed image into ~1MB chunks and sends them one at a time.
+
+- `startUpload(contentType : Text, totalSize : Nat) : async
+  Result<Text, UploadError>` — update. ADMIN-OR-OWNER. Begins a chunked upload.
+  Binds the caller at the top, rejects the anonymous principal and STAFF, and
+  returns `#err(#unauthorized)` for a caller that is not a non-anonymous ADMIN
+  or OWNER. Validates the content type (only `image/jpeg`, `image/png`,
+  `image/webp` are accepted; `image/svg+xml` is explicitly rejected with
+  `#err(#svgNotAllowed)` because SVG can carry script and would be an XSS
+  vector served from the canister's own origin) and the declared `totalSize`
+  (rejects anything over 2MB with `#err(#tooLarge)`). On success creates an
+  upload session and returns its id. Also lazily sweeps abandoned partial
+  uploads.
+- `uploadChunk(uploadId : Text, index : Nat, blob : Blob) : async
+  Result<(), UploadError>` — update. ADMIN-OR-OWNER. Accepts one ~1MB chunk for
+  an in-progress upload. Only the session owner may upload; chunks must arrive
+  in order (`index` must equal the number of chunks already received, else
+  `#err(#chunkOutOfOrder)`). Returns `#err(#notFound)` for an unknown upload id
+  and `#err(#tooLarge)` if the accumulated size would exceed the declared
+  `totalSize`. Bumps the session's `lastActivityAt` so the expiry sweep does not
+  reap an active upload.
+- `finishUpload(uploadId : Text, productId : Nat) : async
+  Result<Text, UploadError>` — update. ADMIN-OR-OWNER. Assembles the received
+  chunks in index order, validates the assembled size matches the declared
+  `totalSize` (else `#err(#sizeMismatch)`), verifies the declared content type
+  against the file's actual magic bytes (else `#err(#magicByteMismatch)`),
+  enforces the 5-image-per-product cap (else `#err(#tooManyImages)`), commits
+  the `AssetRecord`, and appends the asset's absolute URL to the product's
+  `images` list. Returns the new asset id. Returns `#err(#notFound)` for an
+  unknown upload id or product id.
+- `deleteProductImage(assetId : Text) : async Result<(), UploadError>` —
+  update. ADMIN-OR-OWNER. Removes the asset's URL from the owning product's
+  `images` list AND deletes the stored blob, so removing an image never leaves
+  orphaned bytes accumulating in stable state. Returns `#err(#notFound)` for an
+  unknown asset id.
+- `getProductImageStorageStats() : async StorageStats` — query. PUBLIC. Returns
+  `{ totalBytes : Nat; count : Nat }` — the total bytes and count of stored
+  product image blobs. Surfaced in the admin Canister tab so the operator can
+  watch storage grow and the ongoing cycle burn rate it implies. It is a public
+  query (no role required) so the admin UI can render the gauge without an
+  admin session.
+- `http_request(req : HttpRequest) : async HttpResponse` — query. PUBLIC. The
+  canister's HTTP interface for serving assets. Serves `GET
+  /assets/products/<assetId>` with the correct `Content-Type`, a
+  `Content-Length`, and a long immutable `Cache-Control` header
+  (`public, max-age=31536000, immutable`) since asset ids are immutable. Returns
+  404 for unknown asset ids or non-asset paths, and 405 for non-GET methods.
+  Large bodies are served via the streaming strategy.
+- `http_request_update(req : HttpRequest) : async HttpResponse` — query.
+  PUBLIC. The update variant of the HTTP interface, required alongside
+  `http_request` for the IC to route asset requests to the canister. Behaves
+  identically to `http_request`.
+- `http_request_streaming_callback(token : StreamingCallbackToken) : async
+  StreamingCallbackResponse` — query. PUBLIC. The streaming callback that
+  serves successive ~1MB slices of a large asset body that exceeds the
+  single-response byte ceiling. Returns an empty body with `token = null` when
+  the end of the asset is reached.
+
+Upload errors are returned as an `UploadError` variant (never a generic
+\"upload failed\"): `#unauthorized`, `#notFound`, `#invalidContentType`,
+`#svgNotAllowed`, `#tooLarge`, `#sizeMismatch`, `#magicByteMismatch`,
+`#tooManyImages`, `#chunkOutOfOrder`, `#uploadExpired`.
 
 ### Payment adapter
 
@@ -226,7 +351,8 @@ keys will not match.
 - `getCryptoConfig() : async CryptoConfigView` — query. Returns the current
   crypto configuration: the treasury principal and subaccount, the ckUSDC
   and ICP ledger configurations (canister id, decimals, fee), the current
-  `minimumOrder` (in USD cents) required for crypto checkout, and
+  `minimumOrder` (in US dollars as a decimal, e.g. `0.25`) required for crypto
+  checkout, and
   `ckUSDCEnabled : Bool` — whether ckUSDC checkout is currently enabled. The
   `ckUSDCEnabled` field mirrors the compile-time `CKUSDC_CHECKOUT_ENABLED`
   constant: while it is `false`, the checkout UI must not offer ckUSDC and the
@@ -235,15 +361,15 @@ keys will not match.
   fulfillable. ICP is present in the config but is DISABLED for payments — no
   rate oracle is configured, so ICP is never offered and any attempt to pay
   with ICP is rejected.
-- `getMinimumOrder() : async Nat` — query. Public. Returns the current minimum
-  order total (in USD cents) required for crypto checkout. Defaults to `25`
-  ($0.25). Crypto orders whose total is below this are rejected server-side
-  because they cannot be swept to the treasury after the ledger transfer fee is
-  deducted.
-- `updateMinimumOrder(minimum : Nat) : async Result<(), CryptoPaymentError>` —
-  update. ADMIN-OR-OWNER. Sets the minimum order total (in USD cents) required
-  for crypto checkout. Traps for a caller that is not a non-anonymous ADMIN or
-  OWNER.
+- `getMinimumOrder() : async Float` — query. Public. Returns the current
+  minimum order total (in US dollars as a decimal) required for crypto
+  checkout. Defaults to `0.25` ($0.25). Crypto orders whose total is below this
+  are rejected server-side because they cannot be swept to the treasury after
+  the ledger transfer fee is deducted.
+- `updateMinimumOrder(minimum : Float) : async Result<(), CryptoPaymentError>` —
+  update. ADMIN-OR-OWNER. Sets the minimum order total (in US dollars as a
+  decimal) required for crypto checkout. Traps for a caller that is not a
+  non-anonymous ADMIN or OWNER.
 - `getCryptoDepositInfo(reference : Text) : async Result<DepositInfo,
   CryptoPaymentError>` — query. Returns the deposit details for an order's
   crypto payment: the deposit address (this canister's own principal), the
@@ -512,9 +638,9 @@ so an admin can act on the exact ledger failure.
 ### OQL query layer
 
 - `schema() : async Text` — query. Returns a JSON catalogue of the queryable
-  entities (`product`, `order`, `cryptoPayment`, `cryptoConfig`,
-  `paymentServiceConfig`, `latePayment`, `admin`), their primary keys, fields,
-  and edges.
+  entities (`product`, `category`, `order`, `cryptoPayment`, `cryptoConfig`,
+  `paymentServiceConfig`, `latePayment`, `admin`, `asset`), their primary keys,
+  fields, and edges.
 - `execute(qJson : Text) : async Result` — query. Runs a JSON-encoded OQL query
   and returns matching rows. See the OQL documentation for the query grammar.
 
@@ -677,8 +803,15 @@ OWNER-only (managing owners and roles):
 ADMIN or OWNER (financial, configuration, and order-management tier — STAFF is
 never admitted):
 
-- `createProduct`, `updateProduct` — catalogue edits; prices are integer cents.
-- `updateMinimumOrder` — minimum crypto order total (USD cents).
+- `createProduct`, `updateProduct` — catalogue edits; prices are US dollar
+  decimal `Float` values (e.g. `24.99`), never integer cents.
+- `createCategory`, `updateCategory`, `reorderCategories`, `deleteCategory`,
+  `reassignProducts` — category management (slug is immutable; delete refuses
+  while products reference the slug).
+- `startUpload`, `uploadChunk`, `finishUpload`, `deleteProductImage` — product
+  image upload and deletion (content-integrity control: STAFF can never upload
+  or delete images).
+- `updateMinimumOrder` — minimum crypto order total (US dollars as a decimal).
 - `updateTreasury`, `updateLedgerConfig` — treasury destination and ledger
   configuration.
 - `updatePaymentServiceUrl`, `updatePaymentServiceToken` — payment service
@@ -710,8 +843,12 @@ Public (no role required):
 - `claimInitialAdmin` (one-time, gated on `initialAdminClaimed = false`),
   `getMyRole`, `adminCount`, `isAdmin`, `getResumeInfo`, `getCycleBalance`,
   `getCanisterId`, `getIbePublicKey`, `unsubscribe`, `submitSubmission`, the
-  storefront read methods, the crypto read methods, and the HTTP outcall
-  helpers.
+  storefront read methods, the crypto read methods, the HTTP outcall
+  helpers, `getProductImageStorageStats`, and the HTTP asset-serving methods
+  (`http_request`, `http_request_update`, `http_request_streaming_callback`).
+  Asset reads are PUBLIC — these are product photos shown to every customer.
+  `listCategories` is also public (anonymous) — the shop derives its filter
+  chips and section headings from it.
 
 There is no registration gate for the public storefront methods: no method
 requires a signed-in (non-anonymous) caller for the public storefront methods,
@@ -757,6 +894,10 @@ OQL authorization is per entity and is enforced against the live caller on both
 
 - `product` — `#public_`: any caller (including anonymous) reads every product
   row.
+- `category` — `#public_`: any caller (including anonymous) reads every category
+  row (id, slug, name, description, sort_order, active, show_when_empty,
+  created_at, updated_at). Categories are public catalogue data, matching the
+  public `listCategories()` query.
 - `order` — `#controllerOnly`: only the canister controller reads order rows;
   all other callers are denied. Order rows carry `customer_email` but are
   private and are never exposed to end users through OQL.
@@ -779,14 +920,24 @@ OQL authorization is per entity and is enforced against the live caller on both
   exposes the principal, its role (`owner`/`admin`/`staff`), and when the role
   was granted. It is never exposed to end users; role data is readable only
   through the role-gated `listUsers()` and `listAdmins()` methods (OWNER/ADMIN).
+- `asset` — `#controllerOnly`: only the canister controller reads the product
+  image asset metadata rows (one row per stored asset, keyed by the asset id).
+  Each row exposes the asset id, content type, byte size, upload timestamp, and
+  owning product id. The raw image bytes blob is NEVER exposed through OQL —
+  the blob is served only over the public HTTP interface
+  (`http_request` / `http_request_update` / `http_request_streaming_callback`),
+  which is how the shop grid, product detail page, and cart render product
+  photos. Asset metadata is admin data and is never exposed to end users
+  through OQL.
 
 ## Units and Encodings
 
 - **Money**: `price`, `subtotal`, `tax`, `shipping`, `total`, and
-  `unit_amount` are `Nat` values in the smallest currency unit (cents for USD).
-  `currency` is a `Text` ISO code, currently `\"USD\"`. For card checkout, the
-  `unitAmount` sent to the payment service is an INTEGER in cents (e.g. $35.00
-  = 3500) and `quantity` is a positive integer.
+  `unit_amount` are `Float` values in US dollars as decimals (e.g. `24.99`),
+  stored directly — never integer cents, never divided by 100 in the display
+  path. `currency` is a `Text` ISO code, currently `\"USD\"`. For card checkout,
+  the `unitAmount` sent to the payment service is the same US dollar decimal
+  value (e.g. $24.99 = `24.99`) and `quantity` is a positive integer.
 - **Timestamps**: `created_at` and `updated_at` are `Int` values in
   nanoseconds since the Unix epoch (`Time.now()`).
 - **Identifiers**: `Product.id` and `Order.id` are `Nat`. `Order.reference` is
@@ -796,6 +947,22 @@ OQL authorization is per entity and is enforced against the live caller on both
   stable public lookup key and is NOT derived from the order id. Orders created
   before this scheme (legacy orders) keep their sequential `NAK-<id>`
   references unchanged.
+- **Category slugs**: `Category.slug` is a `Text` — lowercase, url-safe
+  (alphanumerics and hyphens only), unique, and immutable after creation. It is
+  auto-generated from the category name (lowercase, spaces to hyphens, strip
+  non-alphanumerics) and is what `Product.category` stores. `Category.id` is a
+  `Nat`. `sortOrder` is a `Nat` controlling the shop's section order (lower
+  first). `active` is a `Bool` (default `true`); `showWhenEmpty` is a `Bool`
+  (default `false`) — a category with zero visible products is hidden from the
+  shop unless `showWhenEmpty` is `true`. `description` is `?Text` (`null` when
+  unset). `created_at` and `updated_at` are `Int` nanoseconds since the Unix
+  epoch (`Time.now()`).
+- **Asset ids**: `AssetId` is a `Text` (lowercase hex) generated from IC raw
+  randomness at `finishUpload` time; it is immutable once committed and is both
+  the map key for the stored blob and the path segment in the public asset URL
+  (`/assets/products/<assetId>`). `AssetRecord.byteSize` is the `Nat` byte count
+  of the stored blob. `UploadSession.totalSize` is the `Nat` byte count declared
+  at `startUpload`; the assembled size must match it exactly at `finishUpload`.
 - **Optional values**: `payment_reference` is `?Text` — `null` until a payment
   is recorded. `ShippingAddress.line2` is `?Text`. `shipped_at` is `?Int`
   (nanoseconds since epoch) — `null` until the order is shipped.
@@ -831,7 +998,11 @@ OQL authorization is per entity and is enforced against the live caller on both
 - **OQL encodings**: In the OQL `product` entity, `images` is a comma-joined
   `Text` of the image URLs, `variants` is the `Nat` count of variants, and
   `admin_only` is a `Bool` flag indicating whether the product is hidden from
-  the public /shop grid. In the OQL `order` entity, `items` is the `Nat` count
+  the public /shop grid. In the OQL `category` entity, each row exposes `id`
+  (`Nat`, the primary key), `slug` (`Text`), `name` (`Text`), `description`
+  (`Text` or `\"\"` when unset), `sort_order` (`Nat`), `active` (`Bool`),
+  `show_when_empty` (`Bool`), and `created_at` / `updated_at` (`Int`
+  nanoseconds since the Unix epoch). In the OQL `order` entity, `items` is the `Nat` count
   of line items, `encrypted_shipping` is the IBE ciphertext blob as lowercase
   hex `Text` (or `\"\"` when the order has no encrypted shipping details),
   `has_shipping_details` is a `Bool` indicating whether the order carries
@@ -870,6 +1041,12 @@ OQL authorization is per entity and is enforced against the live caller on both
   principal key as `principal` (`Text`), the role tag name as `role` (`Text`,
   `owner`/`admin`/`staff`), and `granted_at` (`Int` nanoseconds since the Unix
   epoch — when the role was granted).
+- **OQL asset encoding**: In the OQL `asset` entity, each row exposes the asset
+  id key as `id` (`Text`, lowercase hex), `content_type` (`Text`,
+  `image/jpeg`/`image/png`/`image/webp`), `byte_size` (`Nat` — the stored blob
+  byte count), `uploaded_at` (`Int` nanoseconds since the Unix epoch — when the
+  asset was committed), and `product_id` (`Nat` — the owning product's id). The
+  raw image bytes blob is never exposed through OQL.
 
 ## Lifecycle and Polling
 
@@ -957,6 +1134,39 @@ the OQL `latePayment` entity (controller-only), and an admin marks it reviewed
 via `markLatePaymentReviewed(reference)`. This ensures funds that arrive late
 are never silently lost and are always flagged for admin recovery.
 
+### Product image asset lifecycle
+
+A product image upload is a three-phase chunked protocol, all ADMIN/OWNER only:
+
+1. `startUpload(contentType, totalSize)` validates the content type (only
+   `image/jpeg`, `image/png`, `image/webp`; `image/svg+xml` is rejected as an
+   XSS vector) and the declared size (2MB max), creates an upload session, and
+   returns its id. The session records the caller as its owner.
+2. `uploadChunk(uploadId, index, blob)` accepts one ~1MB chunk at a time.
+   Chunks must arrive in order (`index` must equal the number of chunks already
+   received). Only the session owner may upload chunks. Each chunk bumps the
+   session's `lastActivityAt`.
+3. `finishUpload(uploadId, productId)` assembles the chunks in index order,
+   validates the assembled size matches the declared `totalSize`, verifies the
+   declared content type against the file's magic bytes, enforces the
+   5-image-per-product cap, commits the `AssetRecord`, and appends the asset's
+   absolute URL to the product's `images` list. The upload session is consumed
+   on success.
+
+An upload started and never finished does not occupy storage indefinitely: a
+session idle longer than the 1-hour expiry window is removed (freeing its
+accumulated chunk storage) by a lazy sweep on every `startUpload` and by a
+recurring hourly timer auto-registered on canister init and post-upgrade. An
+expired session's id is no longer accepted by `uploadChunk` or `finishUpload`
+(they return `#err(#notFound)`; the `#uploadExpired` variant exists for
+callers that tracked the session and want to distinguish expiry from a never-
+existent id).
+
+Deletion is a single ADMIN/OWNER call: `deleteProductImage(assetId)` removes
+the asset's URL from the owning product's `images` list AND deletes the stored
+blob, so removing an image never leaves orphaned bytes accumulating in stable
+state.
+
 ## Mutation Retry Safety
 
 - `createOrder` is not idempotent: each successful call creates a new order
@@ -1005,7 +1215,7 @@ are never silently lost and are always flagged for admin recovery.
   `#productInactive(id)`, `#unknownVariant(id, variantId)`,
   `#outOfStock(id, variantId)`, `#invalidQuantity`, `#paymentFailed(msg)`,
   `#belowMinimumOrder(minimum)` (the crypto order total is below the configured
-  minimum order total, in cents), and `#ckUSDCDisabled` (ckUSDC checkout is
+  minimum order total, in US dollars as a decimal), and `#ckUSDCDisabled` (ckUSDC checkout is
   temporarily disabled — the `CKUSDC_CHECKOUT_ENABLED` flag is `false`; a new
   ckUSDC order is rejected while existing ckUSDC orders are unaffected).
 - `getProduct` returns `null` for an unknown slug or id — it does not trap.
@@ -1104,6 +1314,33 @@ are never silently lost and are always flagged for admin recovery.
   in nanoseconds since the Unix epoch (`Time.now()`), parsed from the payment
   service's ISO-8601 UTC timestamps. `marketingConsentAt` is `null` when the
   submitter did not opt in to marketing.
+- The product image asset methods return an `UploadError` variant for
+  caller-correctable problems: `#unauthorized` (anonymous caller or not
+  ADMIN/OWNER — STAFF is never admitted), `#notFound` (unknown upload id,
+  asset id, or product id), `#invalidContentType` (not `image/jpeg`,
+  `image/png`, or `image/webp`), `#svgNotAllowed` (`image/svg+xml` is
+  explicitly rejected as an XSS vector), `#tooLarge` (declared or accumulated
+  size over the 2MB per-image limit), `#sizeMismatch` (assembled size does not
+  match the declared `totalSize`), `#magicByteMismatch` (the declared content
+  type contradicts the file's magic bytes: JPEG `FF D8 FF`, PNG
+  `89 50 4E 47 0D 0A 1A 0A`, WebP `RIFF....WEBP`), `#tooManyImages` (the
+  product already has the maximum 5 images), `#chunkOutOfOrder` (a chunk index
+  was received out of order or duplicated), and `#uploadExpired` (the upload
+  session was abandoned and swept). They do not trap on these.
+- Abandoned partial uploads are cleaned up: an upload session idle longer than
+  the 1-hour expiry window is removed (freeing its accumulated chunk storage)
+  by a lazy sweep on every `startUpload` and by a recurring hourly timer
+  auto-registered on canister init and post-upgrade. An upload started and
+  never finished therefore does not occupy storage indefinitely.
+- Uploads are chunked at ~1MB per chunk (`uploadChunk`), well clear of the IC
+  ingress message limit (~2MB), so a single update call carrying a photo never
+  fails. The per-image limit is 2MB after client-side compression, and the
+  per-product limit is 5 images — both enforced server-side, never only in the
+  browser.
+- Canister storage consumes cycles continuously: every stored product image
+  blob increases the canister's stable-state footprint and its ongoing burn
+  rate. `getProductImageStorageStats()` reports the total bytes and count so
+  the operator can watch storage grow.
 "
   };
 };

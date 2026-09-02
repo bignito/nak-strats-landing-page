@@ -15,6 +15,7 @@ import RateLimitTypes "../types/rate-limit";
 import RateLimitLib "../lib/rate-limit";
 import CancellationTypes "../types/cancellation";
 import CancellationLib "../lib/cancellation";
+import AssetTypes "../types/product-assets";
 import OutCall "mo:caffeineai-http-outcalls/outcall";
 
 mixin (
@@ -23,21 +24,23 @@ mixin (
   state : { var nextOrderId : Nat },
   paymentAdapter : PaymentAdapterLib.PaymentAdapter,
   adminUsers : AdminTypes.AdminUsers,
-  minimumOrderState : { var minimumOrder : Nat },
+  minimumOrderState : { var minimumOrder : Float },
   emailConfig : PaymentServiceTypes.PaymentServiceConfig,
   emailTransform : OutCall.Transform,
   orderRateLimit : RateLimitTypes.RateLimitState,
   cancelTokens : Map.Map<Text, CancellationTypes.CancellationToken>,
+  assets : Map.Map<AssetTypes.AssetId, AssetTypes.AssetRecord>,
+  selfPrincipal : Principal,
 ) {
   public query func listProducts() : async [Types.Product] {
     StorefrontLib.listActiveProducts(products);
   };
 
   // Admin-only: create a new product in the catalogue. The caller supplies the
-  // full Product record with prices in integer cents (never floats) — the
-  // frontend converts dollar input to cents before calling. Binds the caller at
-  // the top, rejects the anonymous principal, and traps for a caller that is
-  // not a non-anonymous member of the admin allowlist.
+  // full Product record with prices as US dollar decimal values (e.g. 24.99) —
+  // never integer cents, never divided by 100 in the display path. Binds the
+  // caller at the top, rejects the anonymous principal, and traps for a caller
+  // that is not a non-anonymous member of the admin allowlist.
   public shared ({ caller }) func createProduct(product : Types.Product) : async Bool {
     AdminLib.requireAdminOrOwner(adminUsers, caller);
     StorefrontLib.createProduct(products, product);
@@ -45,12 +48,15 @@ mixin (
   };
 
   // Admin-only: update an existing product (matched by id). The caller supplies
-  // the full Product record with prices in integer cents. Binds the caller at
-  // the top, rejects the anonymous principal, and traps for a caller that is
-  // not a non-anonymous member of the admin allowlist.
+  // the full Product record with prices as US dollar decimal values (e.g.
+  // 24.99) — never integer cents. Binds the caller at the top, rejects the
+  // anonymous principal, and traps for a caller that is not a non-anonymous
+  // member of the admin allowlist. Removed internal asset URLs (the canister's
+  // own /assets/products/ URLs present in the old images list but absent in the
+  // new one) have their stored blobs deleted so no orphaned bytes accumulate.
   public shared ({ caller }) func updateProduct(product : Types.Product) : async Bool {
     AdminLib.requireAdminOrOwner(adminUsers, caller);
-    StorefrontLib.updateProduct(products, product);
+    StorefrontLib.updateProduct(products, product, assets, selfPrincipal);
     true
   };
 

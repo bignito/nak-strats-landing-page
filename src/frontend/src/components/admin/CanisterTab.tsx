@@ -1,4 +1,9 @@
-import { useGetCanisterId, useGetCycleBalance } from "@/hooks/useQueries";
+import {
+  useGetCanisterId,
+  useGetCycleBalance,
+  useGetProductImageStorageStats,
+} from "@/hooks/useQueries";
+import { formatBytes } from "@/lib/imageUpload";
 import type { AdminTabBodyProps } from "@/types/routes";
 import { Check, Copy, Loader2 } from "lucide-react";
 import { useMemo, useState } from "react";
@@ -37,6 +42,8 @@ function formatTrillions(balance: bigint): string {
 export function CanisterTab(_props: AdminTabBodyProps) {
   const { data: cycleBalance, isLoading: cyclesLoading } = useGetCycleBalance();
   const { data: canisterId, isLoading: idLoading } = useGetCanisterId();
+  const { data: storageStats, isError: storageError } =
+    useGetProductImageStorageStats();
   const [copied, setCopied] = useState(false);
 
   const band = useMemo(
@@ -183,6 +190,55 @@ export function CanisterTab(_props: AdminTabBodyProps) {
               &lt; 500 B
             </span>
           </div>
+        </div>
+      </AdminPanel>
+
+      <AdminPanel title="Product image storage">
+        <div className="flex flex-col gap-4">
+          <div
+            className="admin-stat-grid"
+            data-ocid="admin.canister.storage_stats"
+          >
+            <AdminStatCard
+              label="Total bytes"
+              value={
+                storageStats
+                  ? formatBytes(Number(storageStats.totalBytes))
+                  : "—"
+              }
+              delta={
+                storageStats
+                  ? `${storageStats.totalBytes.toLocaleString("en-US")} bytes`
+                  : undefined
+              }
+            />
+            <AdminStatCard
+              label="Images"
+              value={
+                storageStats ? storageStats.count.toLocaleString("en-US") : "—"
+              }
+            />
+          </div>
+
+          <p
+            className="text-xs leading-relaxed"
+            style={{ color: "var(--muted-foreground)" }}
+          >
+            Product images are stored in the canister and consume cycles
+            continuously. Every byte held in storage increases the ongoing cycle
+            burn rate, so the balance above drains faster as more images are
+            uploaded.
+          </p>
+
+          {storageError && (
+            <p
+              className="text-xs"
+              style={{ color: "var(--destructive)" }}
+              data-ocid="admin.canister.storage_error"
+            >
+              Could not read product image storage usage.
+            </p>
+          )}
         </div>
       </AdminPanel>
     </div>

@@ -1,5 +1,5 @@
 import { useCart } from "@/hooks/useCart";
-import { useProducts } from "@/hooks/useQueries";
+import { useCategories, useProducts } from "@/hooks/useQueries";
 import { formatPrice } from "@/lib/currency";
 import type { Product } from "@/types/storefront";
 import { ArrowLeft, Check, Image as ImageIcon } from "lucide-react";
@@ -11,27 +11,28 @@ interface ShopPageProps {
   onNavigateToProduct?: (slugOrId: string) => void;
 }
 
-type CategoryFilter = "all" | "Fragrance" | "Oils";
+/** A category slug, or "all" when no filter is active. */
+type CategoryFilter = string;
 
-const CATEGORY_OPTIONS: { value: CategoryFilter; label: string }[] = [
-  { value: "all", label: "All" },
-  { value: "Fragrance", label: "Fragrance" },
-  { value: "Oils", label: "Oils" },
-];
+/** One rendered shop section: a known category, or the trailing safety net. */
+interface ShopSection {
+  key: string;
+  heading: string;
+  items: Product[];
+}
 
-/** Read the selected category from the URL hash (#/shop?cat=Fragrance). */
+/** Read the selected category slug from the URL hash (#/shop?cat=<slug>). */
 function readFilterFromUrl(): CategoryFilter {
   const hash = window.location.hash;
   const queryIndex = hash.indexOf("?");
   if (queryIndex === -1) return "all";
   const params = new URLSearchParams(hash.slice(queryIndex + 1));
-  const cat = params.get("cat");
-  if (cat === "Fragrance" || cat === "Oils") return cat;
-  return "all";
+  return params.get("cat") ?? "all";
 }
 
 const ShopPage: React.FC<ShopPageProps> = ({ onNavigateToMain }) => {
   const { data: products, isLoading, isError } = useProducts();
+  const { data: categories } = useCategories();
   const { addItem } = useCart();
   const [addedId, setAddedId] = useState<string | null>(null);
   const [filter, setFilter] = useState<CategoryFilter>(() =>
@@ -43,18 +44,81 @@ const ShopPage: React.FC<ShopPageProps> = ({ onNavigateToMain }) => {
     window.scrollTo(0, 0);
   }, []);
 
+  // Filter chips: "All" first, then every active category by name, in the
+  // stored sortOrder.
+  const filterOptions = useMemo(() => {
+    const known = (categories ?? [])
+      .map((c) => c.category)
+      .filter((c) => c.active)
+      .sort((a, b) => Number(a.sortOrder) - Number(b.sortOrder));
+    return [
+      { value: "all", label: "All" },
+      ...known.map((c) => ({ value: c.slug, label: c.name })),
+    ];
+  }, [categories]);
+
+  // A filter referencing a category that no longer exists falls back to "All".
+  const resolvedFilter = useMemo(() => {
+    if (filter === "all") return "all";
+    const known = (categories ?? [])
+      .map((c) => c.category)
+      .filter((c) => c.active);
+    return known.some((c) => c.slug === filter) ? filter : "all";
+  }, [filter, categories]);
+
+  // Group products into per-category sections. Section order comes from the
+  // stored category sortOrder; a category with no visible products is hidden
+  // unless showWhenEmpty is set. Products whose category slug does not match a
+  // known active category land in the trailing "Uncategorized" safety net.
+  const sections = useMemo(() => {
+    if (!products) return [];
+    const known = (categories ?? [])
+      .map((c) => c.category)
+      .filter((c) => c.active)
+      .sort((a, b) => Number(a.sortOrder) - Number(b.sortOrder));
+    const knownSlugs = new Set(known.map((c) => c.slug));
+    const byCategory = new Map<string, Product[]>();
+    const uncategorized: Product[] = [];
+    for (const product of products) {
+      if (product.category && knownSlugs.has(product.category)) {
+        const list = byCategory.get(product.category) ?? [];
+        list.push(product);
+        byCategory.set(product.category, list);
+      } else {
+        uncategorized.push(product);
+      }
+    }
+    const ordered: ShopSection[] = [];
+    for (const category of known) {
+      const items = byCategory.get(category.slug);
+      if (items && items.length > 0) {
+        ordered.push({ key: category.slug, heading: category.name, items });
+      } else if (category.showWhenEmpty) {
+        ordered.push({ key: category.slug, heading: category.name, items: [] });
+      }
+    }
+    if (uncategorized.length > 0) {
+      ordered.push({
+        key: "uncategorized",
+        heading: "Uncategorized",
+        items: uncategorized,
+      });
+    }
+    return ordered;
+  }, [products, categories]);
+
   // Keep the selected category in the URL hash so the filter survives refresh
   // and is shareable through the page URL.
   useEffect(() => {
     const base = "#/shop";
     const params = new URLSearchParams();
-    if (filter !== "all") params.set("cat", filter);
+    if (resolvedFilter !== "all") params.set("cat", resolvedFilter);
     const query = params.toString();
     const next = query ? `${base}?${query}` : base;
     if (window.location.hash !== next) {
       window.history.replaceState(null, "", next);
     }
-  }, [filter]);
+  }, [resolvedFilter]);
 
   const handleAddToCart = (product: Product) => {
     const variantId = product.variants[0]?.id ?? "";
@@ -63,36 +127,12 @@ const ShopPage: React.FC<ShopPageProps> = ({ onNavigateToMain }) => {
     window.setTimeout(() => setAddedId(null), 2000);
   };
 
-  // Group products into per-category sections. Fragrance and Oils come first in
-  // a fixed order; any other category is appended after them.
-  const sections = useMemo(() => {
-    if (!products) return [];
-    const byCategory = new Map<string, Product[]>();
-    for (const product of products) {
-      const key = product.category || "Other";
-      const list = byCategory.get(key) ?? [];
-      list.push(product);
-      byCategory.set(key, list);
-    }
-    const ordered: { category: string; items: Product[] }[] = [];
-    for (const category of ["Fragrance", "Oils"]) {
-      const items = byCategory.get(category);
-      if (items && items.length > 0) ordered.push({ category, items });
-    }
-    for (const [category, items] of byCategory) {
-      if (category !== "Fragrance" && category !== "Oils") {
-        ordered.push({ category, items });
-      }
-    }
-    return ordered;
-  }, [products]);
-
   // When a specific category is selected, show only that section; when All is
   // selected, show every section with its heading.
   const visibleSections = useMemo(() => {
-    if (filter === "all") return sections;
-    return sections.filter((s) => s.category === filter);
-  }, [sections, filter]);
+    if (resolvedFilter === "all") return sections;
+    return sections.filter((s) => s.key === resolvedFilter);
+  }, [sections, resolvedFilter]);
 
   const renderCard = (product: Product, index: number) => {
     const image = product.images?.[0];
@@ -141,7 +181,7 @@ const ShopPage: React.FC<ShopPageProps> = ({ onNavigateToMain }) => {
           )}
         </div>
 
-        {/* Fragrance notes */}
+        {/* Notes */}
         <p
           className="text-[0.75rem] leading-relaxed"
           style={{ color: "var(--muted-foreground)" }}
@@ -246,12 +286,12 @@ const ShopPage: React.FC<ShopPageProps> = ({ onNavigateToMain }) => {
             data-ocid="shop.category_filter"
           >
             <legend className="sr-only">Filter products by category</legend>
-            {CATEGORY_OPTIONS.map((option) => (
+            {filterOptions.map((option) => (
               <button
                 key={option.value}
                 type="button"
-                className={filter === option.value ? "is-active" : ""}
-                aria-pressed={filter === option.value}
+                className={resolvedFilter === option.value ? "is-active" : ""}
+                aria-pressed={resolvedFilter === option.value}
                 onClick={() => setFilter(option.value)}
                 data-ocid={`shop.filter.${option.value.toLowerCase()}`}
               >
@@ -342,12 +382,12 @@ const ShopPage: React.FC<ShopPageProps> = ({ onNavigateToMain }) => {
           products.length > 0 &&
           visibleSections.map((section) => (
             <section
-              key={section.category}
+              key={section.key}
               className="mb-12 sm:mb-16"
-              data-ocid={`shop.section.${section.category.toLowerCase()}`}
+              data-ocid={`shop.section.${section.key.toLowerCase()}`}
             >
               <h2 className="category-section-heading mb-4 px-2">
-                {section.category}
+                {section.heading}
               </h2>
               <div className="lattice" data-ocid="shop.grid">
                 {section.items.map((product, index) =>

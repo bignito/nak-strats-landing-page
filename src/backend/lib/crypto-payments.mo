@@ -1,4 +1,5 @@
 import Array "mo:core/Array";
+import Int "mo:core/Int";
 import Nat "mo:core/Nat";
 import Principal "mo:core/Principal";
 import Time "mo:core/Time";
@@ -169,10 +170,10 @@ module {
   };
 
   public func computeAmountDue(order : StorefrontTypes.Order, decimals : Nat8) : Nat {
-    // order.total is in cents; convert to the token's smallest units.
-    // ckUSDC has 6 decimals -> scale = 10^(6-2) = 10^4.
-    let scale = pow10(decimals.toNat() - 2);
-    order.total * scale;
+    // order.total is in US dollars (Float); convert to the token's smallest units.
+    // ckUSDC has 6 decimals -> scale = 10^6.
+    let scale = pow10(decimals.toNat());
+    (order.total * scale.toFloat()).toInt().toNat();
   };
 
   public func createPayment(

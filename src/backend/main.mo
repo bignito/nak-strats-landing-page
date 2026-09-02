@@ -3,10 +3,12 @@ import List "mo:core/List";
 import Map "mo:core/Map";
 import Principal "mo:core/Principal";
 import Timer "mo:core/Timer";
+import Time "mo:core/Time";
 import Types "types/storefront";
 import CryptoTypes "types/crypto-payments";
 import RecoveryTypes "types/recovery";
 import StorefrontApi "mixins/storefront-api";
+import CategoriesApi "mixins/categories-api";
 import PaymentAdapterApi "mixins/payment-adapter-api";
 import CryptoPaymentsApi "mixins/crypto-payments-api";
 import CryptoPaymentsLib "lib/crypto-payments";
@@ -30,6 +32,8 @@ import SubmissionsApi "mixins/submissions-api";
 import IbeApi "mixins/ibe-api";
 import RateLimitTypes "types/rate-limit";
 import CancellationTypes "types/cancellation";
+import AssetTypes "types/product-assets";
+import ProductAssetsApi "mixins/product-assets";
 import Runtime "mo:core/Runtime";
 
 persistent actor Self {
@@ -59,13 +63,27 @@ persistent actor Self {
       switch o { case null { "" }; case (?p) { p.toText() } };
     };
 
+    func categoryRow(c : Types.Category) : OQL.Entity.Row {
+      [
+        ("id", #nat(c.id)),
+        ("slug", #text(c.slug)),
+        ("name", #text(c.name)),
+        ("description", #text(optText(c.description))),
+        ("sort_order", #nat(c.sortOrder)),
+        ("active", #bool(c.active)),
+        ("show_when_empty", #bool(c.showWhenEmpty)),
+        ("created_at", #int(c.created_at)),
+        ("updated_at", #int(c.updated_at)),
+      ]
+    };
+
     func productRow(p : Types.Product) : OQL.Entity.Row {
       [
         ("id", #nat(p.id)),
         ("name", #text(p.name)),
         ("slug", #text(p.slug)),
         ("description", #text(p.description)),
-        ("price", #nat(p.price)),
+        ("price", #float(p.price)),
         ("currency", #text(p.currency)),
         ("images", #text(p.images.values().join(","))),
         ("category", #text(p.category)),
@@ -83,10 +101,10 @@ persistent actor Self {
         ("id", #nat(o.id)),
         ("reference", #text(o.reference)),
         ("items", #nat(o.items.size())),
-        ("subtotal", #nat(o.subtotal)),
-        ("tax", #nat(o.tax)),
-        ("shipping", #nat(o.shipping)),
-        ("total", #nat(o.total)),
+        ("subtotal", #float(o.subtotal)),
+        ("tax", #float(o.tax)),
+        ("shipping", #float(o.shipping)),
+        ("total", #float(o.total)),
         ("currency", #text(o.currency)),
         ("customer_email", #text(o.customer_email)),
         ("encrypted_shipping", #text(optBlobToText(o.encrypted_shipping))),
@@ -230,6 +248,19 @@ persistent actor Self {
       ];
     };
 
+    // Product image asset metadata row. The raw image bytes blob is NEVER
+    // exposed through OQL — only the id, content type, byte size, upload
+    // timestamp, and owning product id. Private (controller-only).
+    func assetRow(a : AssetTypes.AssetRecord) : OQL.Entity.Row {
+      [
+        ("id", #text(a.id)),
+        ("content_type", #text(a.contentType)),
+        ("byte_size", #nat(a.byteSize)),
+        ("uploaded_at", #int(a.uploadedAt)),
+        ("product_id", #nat(a.productId)),
+      ]
+    };
+
     func roleToText(r : AdminTypes.Role) : Text {
       switch r {
         case (#owner) "owner";
@@ -294,11 +325,12 @@ persistent actor Self {
     // empty), so an emptied allowlist can never silently reopen ownership.
     let initialAdminClaimed : { var initialAdminClaimed : Bool };
 
-    // Minimum order total (in USD cents) required for crypto checkout (stable,
-    // seeded by the migration chain, default $0.25). Crypto orders below this
-    // are rejected server-side because they cannot be swept to the treasury
-    // after the ledger transfer fee is deducted. Admin-configurable.
-    let minimumOrder : { var minimumOrder : Nat };
+    // Minimum order total (in US dollars as a decimal) required for crypto
+    // checkout (stable, seeded by the migration chain, default $0.25). Crypto
+    // orders below this are rejected server-side because they cannot be swept
+    // to the treasury after the ledger transfer fee is deducted.
+    // Admin-configurable.
+    let minimumOrder : { var minimumOrder : Float };
 
     // Runtime icrc1_fee cache (stable, seeded by the migration chain). The
     // sweep queries icrc1_fee on the configured ledger at runtime and caches it
@@ -339,6 +371,22 @@ persistent actor Self {
     // order reference alone never confers the power to cancel.
     let cancelTokens : Map.Map<Text, CancellationTypes.CancellationToken>;
 
+    // Product image assets stored in canister stable state (stable, seeded by
+    // the migration chain). Maps an immutable asset id to the stored blob and
+    // its metadata. Served publicly over the canister's HTTP interface at
+    // /assets/products/<assetId>.
+    let assets : Map.Map<AssetTypes.AssetId, AssetTypes.AssetRecord>;
+
+    // In-progress chunked upload sessions (stable, seeded by the migration
+    // chain). Maps an upload id to the accumulating chunks and metadata.
+    // Abandoned sessions are swept after the expiry window.
+    let uploads : Map.Map<Text, AssetTypes.UploadSession>;
+
+    // Product categories (stable, seeded by the migration chain). Product.category
+    // stores the category SLUG; renaming a category only mutates this record and
+    // never rewrites Product or Order records.
+    let categories : List.List<Types.Category>;
+
     // Payment adapter (transient — recreated on restart, not persisted)
     transient let selfPrincipal = Principal.fromActor(Self);
     transient let paymentAdapter = CryptoPaymentsLib.cryptoAdapter(orders, products, cryptoPayments, cryptoConfig);
@@ -360,16 +408,33 @@ persistent actor Self {
     // timers are not persisted across upgrades, so this re-registers the timer
     // after every upgrade. Verification therefore runs independent of the
     // browser tab even if no admin ever calls startVerificationTimer.
-    transient let _verificationTimer = ignore {
-      timerState.timerId := ?Timer.recurringTimer<system>(#seconds(30), func() : async () {
+    transient let _verificationTimer = do {
+      let id = Timer.recurringTimer<system>(#seconds(30), func() : async () {
         ignore (await RecoveryLib.runVerificationPass(cryptoPayments, orders, products, latePayments, cryptoConfig, selfPrincipal, feeCache, paymentServiceConfig, emailTransform));
       });
+      timerState.timerId := ?id;
+      id
+    };
+
+    // Auto-register the recurring hourly upload-expiry timer on every (re)start.
+    // Transient fields are re-initialized on canister init AND post-upgrade, and
+    // timers are not persisted across upgrades, so this re-registers the timer
+    // after every upgrade. It sweeps abandoned partial upload sessions (idle
+    // longer than the expiry window) so their accumulated chunk storage is
+    // freed and does not occupy canister storage indefinitely.
+    transient let _assetExpiryTimer = do {
+      let id = Timer.recurringTimer<system>(#seconds(3600), func() : async () {
+        ignore (await sweepExpiredUploads());
+      });
+      id
     };
 
     include EmailApi(paymentServiceConfig, orders, adminUsers);
     include ConsentApi(paymentServiceConfig, adminUsers, unsubscribeRateLimit);
     include SweepApi(cryptoConfig, selfPrincipal, adminUsers, feeCache);
-    include StorefrontApi(products, orders, state, paymentAdapter, adminUsers, minimumOrder, paymentServiceConfig, emailTransform, orderRateLimit, cancelTokens);
+    include StorefrontApi(products, orders, state, paymentAdapter, adminUsers, minimumOrder, paymentServiceConfig, emailTransform, orderRateLimit, cancelTokens, assets, selfPrincipal);
+    include CategoriesApi(categories, products, adminUsers);
+    include ProductAssetsApi(assets, uploads, adminUsers, products, selfPrincipal);
     include PaymentAdapterApi(paymentAdapter);
     include CryptoPaymentsApi(orders, products, cryptoPayments, cryptoConfig, selfPrincipal, adminUsers, minimumOrder, feeCache);
     include PaymentServiceApi(paymentServiceConfig, orders, products, adminUsers, checkoutRateLimit, confirmRateLimit, cancelTokens);
@@ -387,7 +452,7 @@ persistent actor Self {
         name = "";
         slug = "";
         description = "";
-        price = 0;
+        price = 0.0;
         currency = "";
         images = [];
         category = "";
@@ -399,16 +464,33 @@ persistent actor Self {
         updated_at = 0;
       }
     )));
+    // Categories are a public catalogue: the shop derives its filter chips and
+    // section headings from listCategories(), and the category rows are exposed
+    // publicly so the same data is queryable through OQL.
+    transient let categoryEntity = OQL.Entity.build(OQL.Entity.public_(OQL.Entity.sample(
+      categories.toEntity("category", "Category", "id", categoryRow),
+      {
+        id = 0;
+        slug = "";
+        name = "";
+        description = null : ?Text;
+        sortOrder = 0;
+        active = true;
+        showWhenEmpty = false;
+        created_at = 0 : Int;
+        updated_at = 0 : Int;
+      }
+    )));
     transient let orderEntity = OQL.Entity.build(OQL.Entity.controllerOnly(OQL.Entity.sample(
       orders.toEntity("order", "Order", "id", orderRow),
       {
         id = 0;
         reference = "";
         items = [];
-        subtotal = 0;
-        tax = 0;
-        shipping = 0;
-        total = 0;
+        subtotal = 0.0;
+        tax = 0.0;
+        shipping = 0.0;
+        total = 0.0;
         currency = "";
         customer_email = "";
         encrypted_shipping = null : ?Blob;
@@ -503,8 +585,22 @@ persistent actor Self {
       ),
       (Principal.fromText("aaaaa-aa"), { role = #staff; grantedAt = 0 : Int; })
     )));
+    // Product image asset metadata is private (controller-only): each row
+    // exposes the asset id, content type, byte size, upload timestamp, and
+    // owning product id. The raw image bytes blob is NEVER exposed through OQL.
+    transient let assetEntity = OQL.Entity.build(OQL.Entity.controllerOnly(OQL.Entity.sample(
+      assets.toEntity("asset", "Asset", "id", assetRow),
+      {
+        id = "";
+        contentType = "";
+        bytes = "\00" : Blob;
+        byteSize = 0;
+        uploadedAt = 0 : Int;
+        productId = 0;
+      }
+    )));
     include Expose({
-      entities = [productEntity, orderEntity, cryptoPaymentEntity, cryptoConfigEntity, paymentServiceConfigEntity, latePaymentEntity, adminEntity];
+      entities = [productEntity, categoryEntity, orderEntity, cryptoPaymentEntity, cryptoConfigEntity, paymentServiceConfigEntity, latePaymentEntity, adminEntity, assetEntity];
     });
 
     include ApiDocMixin();

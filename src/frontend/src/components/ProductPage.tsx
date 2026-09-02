@@ -50,7 +50,7 @@ const ProductPage: React.FC<ProductPageProps> = ({
 
   const unitPrice = selectedVariant
     ? selectedVariant.price
-    : (product?.price ?? 0n);
+    : (product?.price ?? 0);
   const maxInventory = selectedVariant
     ? selectedVariant.inventory
     : (product?.inventory ?? 0n);

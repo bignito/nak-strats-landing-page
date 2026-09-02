@@ -17,11 +17,6 @@ function timestampToMs(ts: bigint): number {
   return Number(ts / 1_000_000n);
 }
 
-/** Dense monetary figure — integer cents rendered as USD dollars. */
-function formatMoney(amount: bigint): string {
-  return formatPrice(amount);
-}
-
 function formatCount(n: number): string {
   return n.toLocaleString("en-US");
 }
@@ -50,7 +45,7 @@ function needsReview(
 interface ProductRow {
   name: string;
   category: string;
-  price: bigint;
+  price: number;
   currency: string;
   inventory: bigint;
   units: number;
@@ -89,10 +84,10 @@ export function OverviewTab({ session: _session }: AdminTabBodyProps) {
           o.paymentMethod === PaymentMethod.crypto_icp ||
           o.paymentMethod === PaymentMethod.crypto_ckusdc,
       )
-      .reduce((sum, o) => sum + o.amountOwed, 0n);
+      .reduce((sum, o) => sum + o.amountOwed, 0);
     const cardRevenue = paid
       .filter((o) => o.paymentMethod === PaymentMethod.card_stripe)
-      .reduce((sum, o) => sum + o.amountOwed, 0n);
+      .reduce((sum, o) => sum + o.amountOwed, 0);
 
     const pending = list.filter(
       (o) => o.status === PaymentStatus.pending,
@@ -108,8 +103,8 @@ export function OverviewTab({ session: _session }: AdminTabBodyProps) {
 
     const aov =
       paid.length > 0
-        ? paid.reduce((sum, o) => sum + o.amountOwed, 0n) / BigInt(paid.length)
-        : 0n;
+        ? paid.reduce((sum, o) => sum + o.amountOwed, 0) / paid.length
+        : 0;
 
     return {
       total: list.length,
@@ -192,15 +187,15 @@ export function OverviewTab({ session: _session }: AdminTabBodyProps) {
       <div className="admin-stat-grid" data-ocid="admin.overview.revenue">
         <AdminStatCard
           label="Revenue crypto"
-          value={formatMoney(stats.cryptoRevenue)}
+          value={formatPrice(stats.cryptoRevenue)}
         />
         <AdminStatCard
           label="Revenue card"
-          value={formatMoney(stats.cardRevenue)}
+          value={formatPrice(stats.cardRevenue)}
         />
         <AdminStatCard
           label="Average order value"
-          value={formatMoney(stats.aov)}
+          value={formatPrice(stats.aov)}
         />
       </div>
 
@@ -231,7 +226,7 @@ export function OverviewTab({ session: _session }: AdminTabBodyProps) {
               key: "price",
               header: "Price",
               align: "right",
-              render: (r) => formatMoney(r.price),
+              render: (r) => formatPrice(r.price),
             },
             {
               key: "inventory",

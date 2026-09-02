@@ -48,7 +48,7 @@ Flat near-black surfaces separated by 1px hairlines; no glows, no drop-shadows, 
 | Checkout      | background  | —                | two-col ledger, sticky mono summary    |
 | Admin shell   | background  | —                | full-width ops surface, no max-width   |
 | Admin header  | card        | 1px border-b     | sticky top bar, title + actions        |
-| Admin tabs    | background  | 1px border-b     | sticky, 8 tabs, 2px purple underline   |
+| Admin tabs    | background  | 1px border-b     | sticky, 9 tabs, 2px purple underline   |
 | Stat cards    | card        | 1px lattice      | 1px gap grid, mono figures, band edges |
 | Cycle gauge   | inset track | 1px border       | recessed, green/amber/red segments     |
 | Admin tables  | background  | 1px row dividers | dense cells, right-aligned mono nums   |
@@ -60,7 +60,8 @@ Storefront containers max-w-7xl; admin is full-width with 1.5rem gutter. Stat gr
 ## Component Patterns
 
 - Buttons: 0.25rem radius. Primary white bg + dark text; secondary transparent + 1px border-strong; admin actions compact 0.75rem color-coded (btn-recheck/sweep/email/shipped/export)
-- Tabs: 8-tab bar (OVERVIEW, CANISTER, TREASURY, ORDERS, PRODUCTS, SUBMISSIONS, USERS, SETTINGS); active = foreground + 2px purple underline (.admin-tab.is-active)
+- Tabs: 9-tab bar (OVERVIEW, CANISTER, TREASURY, ORDERS, PRODUCTS, CATEGORIES, SUBMISSIONS, USERS, SETTINGS); active = foreground + 2px purple underline (.admin-tab.is-active). Categories tab matches existing tabs exactly — no new styling
+- Shop filter: plain text buttons, 2px purple underline on active (.category-filter); chips and section headings derive from stored category data, never literals
 - Stat cards: 1px lattice grid, mono 1.25rem value, optional 2px left band (positive/warning/negative)
 - Cycle gauge: 0.375rem recessed track, colour fill/segments by band
 - Tables: admin-table (0.625/0.875) and admin-table-dense (0.375/0.625); numeric columns JetBrains Mono tabular right-aligned
@@ -79,6 +80,7 @@ Storefront containers max-w-7xl; admin is full-width with 1.5rem gutter. Stat gr
 - Consume existing --nak-* / institutional tokens; no hardcoded or new colours
 - Admin is a dense operations tool — no emoji anywhere on admin
 - Do NOT change main page or storefront styling; admin extends the NAK language
+- Categories tab reuses .admin-tab / .admin-table / .admin-panel; no new tokens, no icons, no drag-and-drop
 - Inter 500 headings; JetBrains Mono tabular for all amounts/refs/balances/cycles
 - Hairlines instead of glows; 0.25rem radius buttons, not pills
 - Admin payment token shows only 'set' / 'not set', never the stored value

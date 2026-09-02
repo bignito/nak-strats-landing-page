@@ -1,6 +1,10 @@
 import type {
   AdminOrderDetail,
   AdminOrderView,
+  Category,
+  CategoryError,
+  CategoryId,
+  CategoryWithCount,
   CheckoutSession,
   CryptoConfigView,
   CryptoPaymentError,
@@ -20,14 +24,20 @@ import type {
   RecheckResult,
   RecoveryError,
   ResumeInfo,
+  StorageStats,
   SweepResult,
   Token,
+  UploadError,
 } from "@/backend";
 import { encodeIcrcAccount } from "@dfinity/ledger-icrc";
 
 export type {
   AdminOrderDetail,
   AdminOrderView,
+  Category,
+  CategoryError,
+  CategoryId,
+  CategoryWithCount,
   CheckoutSession,
   CryptoConfigView,
   CryptoPaymentError,
@@ -47,8 +57,10 @@ export type {
   RecheckResult,
   RecoveryError,
   ResumeInfo,
+  StorageStats,
   SweepResult,
   Token,
+  UploadError,
 };
 
 /** A single line item in the shopping cart. */

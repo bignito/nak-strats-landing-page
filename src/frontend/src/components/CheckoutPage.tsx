@@ -142,7 +142,7 @@ function OrderSummary({
                   </p>
                 </div>
                 <span className="mono-num text-sm text-secondary-foreground">
-                  {formatPrice(item.unit_amount * item.quantity)}
+                  {formatPrice(item.unit_amount * Number(item.quantity))}
                 </span>
               </div>
             ))}
@@ -194,7 +194,7 @@ function OrderSummary({
                     </p>
                   </div>
                   <span className="mono-num text-sm text-secondary-foreground">
-                    {formatPrice(unitPrice * BigInt(item.quantity))}
+                    {formatPrice(unitPrice * item.quantity)}
                   </span>
                 </div>
               );
@@ -204,9 +204,7 @@ function OrderSummary({
           <div className="flex flex-col gap-2 border-t border-border pt-4 text-sm">
             <div className="summary-row">
               <span className="text-muted-foreground">Subtotal</span>
-              <span className="summary-value">
-                {formatPrice(BigInt(Math.round(cartSubtotal)))}
-              </span>
+              <span className="summary-value">{formatPrice(cartSubtotal)}</span>
             </div>
             <p className="pt-2 text-xs text-muted-foreground">
               Tax and shipping are calculated when you place your order.

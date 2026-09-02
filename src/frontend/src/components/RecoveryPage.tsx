@@ -18,6 +18,7 @@ import {
   useMarkLatePaymentReviewed,
   useSweepDefaultSubaccount,
 } from "../hooks/useQueries";
+import { formatPrice } from "../lib/currency";
 import type {
   CryptoPaymentStatus,
   LatePayment,
@@ -271,9 +272,7 @@ function OrderRow({
         </span>
       </td>
       <td className="admin-mono">{paymentMethodLabel(order.paymentMethod)}</td>
-      <td className="admin-mono text-right">
-        {formatTokenAmount(order.amountOwed, decimals)}
-      </td>
+      <td className="admin-mono text-right">{formatPrice(order.amountOwed)}</td>
       <td className="admin-mono max-w-[16rem]">
         {order.depositAccount ? (
           <span className="block break-all">

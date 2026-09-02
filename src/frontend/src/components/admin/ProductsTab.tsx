@@ -1,4 +1,4 @@
-import type { Product } from "@/backend";
+import type { Product, UploadError } from "@/backend";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
@@ -10,14 +10,37 @@ import {
 } from "@/components/ui/dialog";
 import {
   adminErrorMessage,
+  useCategories,
   useCreateProduct,
+  useDeleteProductImage,
+  useFinishUpload,
+  useGetCanisterId,
   useProducts,
+  useStartUpload,
   useUpdateProduct,
+  useUploadChunk,
 } from "@/hooks/useQueries";
-import { dollarsToCents, formatPrice } from "@/lib/currency";
+import { formatPrice, parseDollars } from "@/lib/currency";
+import {
+  type UploadDriverMethods,
+  type UploadProgress,
+  buildAssetUrl,
+  formatBytes,
+  resizeAndCompressImage,
+  uploadErrorMessage,
+  uploadProductImage,
+} from "@/lib/imageUpload";
 import type { AdminTabBodyProps } from "@/types/routes";
-import { Loader2, Pencil, Plus } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import {
+  GripVertical,
+  ImagePlus,
+  Loader2,
+  Pencil,
+  Plus,
+  Trash2,
+  Upload,
+} from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { AdminConfirmDialog } from "./AdminConfirmDialog";
 import { AdminPanel } from "./AdminPanel";
 import { AdminStatCard } from "./AdminStatCard";
@@ -25,6 +48,15 @@ import { AdminTable } from "./AdminTable";
 
 /** Inventory at or below this count is flagged as low stock. */
 const LOW_STOCK_THRESHOLD = 5;
+
+/** Maximum number of images a product may hold (enforced client-side). */
+const MAX_IMAGES = 5;
+
+/** Extracts the asset id from a canister asset URL (`.../assets/products/<id>`). */
+function assetIdFromUrl(url: string): string {
+  const parts = url.split("/");
+  return parts[parts.length - 1] ?? url;
+}
 
 /** A fresh product skeleton for the "New product" flow. */
 function blankProduct(): Product {
@@ -40,7 +72,7 @@ function blankProduct(): Product {
     description: "",
     category: "",
     currency: "usd",
-    price: 0n,
+    price: 0,
     images: [],
     variants: [],
   };
@@ -48,6 +80,7 @@ function blankProduct(): Product {
 
 interface Draft {
   name: string;
+  category: string;
   priceDollars: string;
   inventory: string;
   active: boolean;
@@ -57,7 +90,8 @@ interface Draft {
 function toDraft(p: Product): Draft {
   return {
     name: p.name,
-    priceDollars: (Number(p.price) / 100).toFixed(2),
+    category: p.category,
+    priceDollars: p.price.toFixed(2),
     inventory: String(p.inventory),
     active: p.active,
     hidden: p.admin_only,
@@ -65,14 +99,319 @@ function toDraft(p: Product): Draft {
 }
 
 /**
+ * Product image manager — dropzone + picker, browser-side resize/compress with
+ * original/compressed size readout, chunked upload with real progress, and a
+ * thumbnail grid with per-image delete and drag-to-reorder. The first image is
+ * the one the shop grid shows, so reordering persists through `updateProduct`.
+ * Only rendered for persisted products (images belong to a saved product).
+ */
+function ProductImageSection({
+  product,
+  canEdit,
+}: {
+  product: Product;
+  canEdit: boolean;
+}) {
+  const startUpload = useStartUpload();
+  const uploadChunk = useUploadChunk();
+  const finishUpload = useFinishUpload();
+  const deleteProductImage = useDeleteProductImage();
+  const updateProduct = useUpdateProduct();
+  const { data: canisterId } = useGetCanisterId();
+
+  const [images, setImages] = useState<string[]>(product.images);
+  const [dragging, setDragging] = useState(false);
+  const [dragIndex, setDragIndex] = useState<number | null>(null);
+  const [overIndex, setOverIndex] = useState<number | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const [progress, setProgress] = useState<UploadProgress | null>(null);
+  const [sizeMeta, setSizeMeta] = useState<{
+    originalBytes: number;
+    compressedBytes: number;
+  } | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const atLimit = images.length >= MAX_IMAGES;
+
+  // Keep the grid in sync with the persisted product (e.g. after a save).
+  useEffect(() => {
+    setImages(product.images);
+  }, [product.images]);
+
+  const handleFiles = async (files: FileList | null) => {
+    if (!files || files.length === 0 || uploading || atLimit) return;
+    const file = files[0];
+    setError(null);
+    setSizeMeta(null);
+    setProgress(null);
+    setUploading(true);
+    try {
+      const compressed = await resizeAndCompressImage(file);
+      setSizeMeta({
+        originalBytes: compressed.originalBytes,
+        compressedBytes: compressed.compressedBytes,
+      });
+      if (!canisterId) {
+        throw new Error("Canister id is not available yet — try again.");
+      }
+      const methods: UploadDriverMethods = {
+        startUpload: async (contentType, totalSize) => {
+          const ok = await startUpload.mutateAsync({ contentType, totalSize });
+          return { __kind__: "ok", ok };
+        },
+        uploadChunk: async (uploadId, index, blob) => {
+          await uploadChunk.mutateAsync({ uploadId, index, blob });
+          return { __kind__: "ok", ok: null };
+        },
+        finishUpload: async (uploadId, productId) => {
+          const ok = await finishUpload.mutateAsync({ uploadId, productId });
+          return { __kind__: "ok", ok };
+        },
+      };
+      const assetId = await uploadProductImage({
+        blob: compressed.blob,
+        contentType: compressed.mimeType,
+        productId: product.id,
+        methods,
+        onProgress: setProgress,
+      });
+      const next = [...images, buildAssetUrl(canisterId, assetId)];
+      setImages(next);
+      await updateProduct.mutateAsync({ ...product, images: next });
+    } catch (e) {
+      setError(uploadErrorMessage(e));
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleRemove = async (index: number) => {
+    if (uploading) return;
+    setError(null);
+    const url = images[index];
+    if (!url) return;
+    const next = images.filter((_, i) => i !== index);
+    setImages(next);
+    try {
+      await deleteProductImage.mutateAsync(assetIdFromUrl(url));
+      await updateProduct.mutateAsync({ ...product, images: next });
+    } catch (e) {
+      setError(uploadErrorMessage(e));
+      setImages(product.images);
+    }
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragging(false);
+    setDragIndex(null);
+    setOverIndex(null);
+    void handleFiles(e.dataTransfer.files);
+  };
+
+  const handleDragStart = (index: number) => {
+    setDragIndex(index);
+  };
+
+  const handleDragOver = (e: React.DragEvent, index: number) => {
+    e.preventDefault();
+    if (dragIndex !== null && dragIndex !== index) setOverIndex(index);
+  };
+
+  const handleDropOnThumb = (e: React.DragEvent, index: number) => {
+    e.preventDefault();
+    if (dragIndex === null || dragIndex === index) {
+      setDragIndex(null);
+      setOverIndex(null);
+      return;
+    }
+    const next = [...images];
+    const [moved] = next.splice(dragIndex, 1);
+    next.splice(index, 0, moved);
+    setDragIndex(null);
+    setOverIndex(null);
+    setImages(next);
+    void updateProduct
+      .mutateAsync({ ...product, images: next })
+      .catch((err) => {
+        setError(uploadErrorMessage(err));
+        setImages(product.images);
+      });
+  };
+
+  const handleDragEnd = () => {
+    setDragIndex(null);
+    setOverIndex(null);
+  };
+
+  return (
+    <div className="flex flex-col gap-3" data-ocid="admin.products.images">
+      <div className="flex items-baseline justify-between gap-3">
+        <span className="field-label">Images</span>
+        <span className="img-size-meta">
+          {images.length} / {MAX_IMAGES}
+        </span>
+      </div>
+
+      <button
+        type="button"
+        className={`dropzone${dragging ? " is-dragging" : ""}`}
+        onDragOver={(e) => {
+          e.preventDefault();
+          if (!uploading && !atLimit) setDragging(true);
+        }}
+        onDragLeave={() => setDragging(false)}
+        onDrop={handleDrop}
+        onClick={() => !uploading && !atLimit && fileInputRef.current?.click()}
+        disabled={uploading || atLimit}
+        data-ocid="admin.products.dropzone"
+      >
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/jpeg,image/png,image/webp"
+          className="hidden"
+          onChange={(e) => {
+            void handleFiles(e.target.files);
+            e.target.value = "";
+          }}
+          data-ocid="admin.products.file_input"
+        />
+        <Upload
+          className="w-4 h-4"
+          style={{ color: "var(--muted-foreground)" }}
+        />
+        <span className="dropzone-label">
+          {uploading ? "Uploading…" : "Drop image or browse"}
+        </span>
+        <span className="dropzone-hint">
+          {atLimit
+            ? `Maximum of ${MAX_IMAGES} images reached — remove one first.`
+            : "JPEG, PNG or WebP — resized to 1200px and compressed before upload"}
+        </span>
+      </button>
+
+      {sizeMeta && (
+        <p className="img-size-meta" data-ocid="admin.products.size_readout">
+          Original {formatBytes(sizeMeta.originalBytes)} → compressed{" "}
+          {formatBytes(sizeMeta.compressedBytes)}
+        </p>
+      )}
+
+      {uploading && progress && (
+        <div
+          className="flex flex-col gap-1"
+          data-ocid="admin.products.upload_progress"
+        >
+          <div className="upload-progress">
+            <div
+              className={`upload-progress-fill${
+                progress.percent >= 100 ? " is-complete" : ""
+              }`}
+              style={{ width: `${Math.min(100, progress.percent)}%` }}
+            />
+          </div>
+          <span className="img-size-meta">
+            {formatBytes(progress.bytesUploaded)} /{" "}
+            {formatBytes(progress.totalBytes)} · {Math.round(progress.percent)}%
+          </span>
+        </div>
+      )}
+
+      {error && (
+        <p
+          className="text-sm"
+          style={{ color: "var(--nak-negative)" }}
+          data-ocid="admin.products.images_error"
+        >
+          {error}
+        </p>
+      )}
+
+      {images.length > 0 ? (
+        <div
+          className="img-thumb-grid"
+          data-ocid="admin.products.thumbnail_grid"
+        >
+          {images.map((url, index) => (
+            <div
+              key={url}
+              className="img-thumb"
+              draggable={canEdit && !uploading}
+              onDragStart={() => handleDragStart(index)}
+              onDragOver={(e) => handleDragOver(e, index)}
+              onDrop={(e) => handleDropOnThumb(e, index)}
+              onDragEnd={handleDragEnd}
+              data-ocid={`admin.products.thumbnail.${index + 1}`}
+            >
+              <img src={url} alt="" loading="lazy" />
+              {canEdit && (
+                <>
+                  <button
+                    type="button"
+                    className="img-thumb-remove"
+                    onClick={() => void handleRemove(index)}
+                    disabled={uploading}
+                    aria-label={`Remove image ${index + 1}`}
+                    data-ocid={`admin.products.delete_image.${index + 1}`}
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </button>
+                  <span
+                    className="img-thumb-meta"
+                    draggable={false}
+                    title="Drag to reorder — the first image is shown in the shop"
+                  >
+                    <GripVertical className="w-3 h-3 inline-block align-[-0.125rem]" />
+                    {index === 0 ? "cover" : `image ${index + 1}`}
+                  </span>
+                </>
+              )}
+              {overIndex === index &&
+                dragIndex !== null &&
+                dragIndex !== index && (
+                  <span
+                    className="absolute inset-0"
+                    style={{
+                      border: "2px solid var(--primary)",
+                      background: "rgba(139, 92, 246, 0.12)",
+                      pointerEvents: "none",
+                    }}
+                  />
+                )}
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p
+          className="img-thumb-empty"
+          style={{ border: "1px solid var(--border)", padding: "1rem" }}
+          data-ocid="admin.products.images_empty"
+        >
+          No images yet
+        </p>
+      )}
+
+      {canEdit && images.length > 0 && (
+        <p className="img-size-meta">
+          Drag thumbnails to reorder — the first image is the shop cover.
+        </p>
+      )}
+    </div>
+  );
+}
+
+/**
  * PRODUCTS tab — dense operations view of every product, including hidden and
- * test products. Operators can edit name, price (dollar input converted to
- * integer cents), inventory, active and hidden flags. Price changes are
+ * test products. Operators can edit name, price (dollar decimal value stored
+ * directly, e.g. 24.99), inventory, active and hidden flags. Price changes are
  * financial and therefore gated on ADMIN/OWNER and pass through an explicit
  * confirmation step. All reads use query calls; errors are surfaced verbatim.
  */
 export function ProductsTab({ session }: AdminTabBodyProps) {
   const { data: products, isLoading, error } = useProducts();
+  const { data: categories } = useCategories();
   const updateProduct = useUpdateProduct();
   const createProduct = useCreateProduct();
 
@@ -99,6 +438,22 @@ export function ProductsTab({ session }: AdminTabBodyProps) {
     return { total: list.length, active, hidden, lowStock };
   }, [products]);
 
+  // Dropdown options derived from stored category data (never hardcoded
+  // names). The currently-selected product's slug is always included — even
+  // when its category is inactive or missing from the list — so saving an
+  // existing product never silently reassigns it to another category.
+  const categoryOptions = useMemo(() => {
+    const options = new Map<string, string>();
+    for (const entry of categories ?? []) {
+      options.set(entry.category.slug, entry.category.name);
+    }
+    const current = editing?.category;
+    if (current && !options.has(current)) {
+      options.set(current, current);
+    }
+    return Array.from(options, ([slug, name]) => ({ slug, name }));
+  }, [categories, editing?.category]);
+
   const openEdit = (p: Product) => {
     setFormError(null);
     setEditing(p);
@@ -118,8 +473,8 @@ export function ProductsTab({ session }: AdminTabBodyProps) {
 
   const handleSave = () => {
     if (!editing || !draft) return;
-    const cents = dollarsToCents(draft.priceDollars);
-    if (cents === null) {
+    const price = parseDollars(draft.priceDollars);
+    if (price === null) {
       setFormError("Price must be a dollar amount with at most two decimals.");
       return;
     }
@@ -132,14 +487,15 @@ export function ProductsTab({ session }: AdminTabBodyProps) {
     const next: Product = {
       ...editing,
       name: draft.name.trim() || editing.name,
-      price: BigInt(cents),
+      category: draft.category,
+      price,
       inventory: BigInt(inventory),
       active: draft.active,
       admin_only: draft.hidden,
     };
 
     // Price changes are financial — require explicit confirmation.
-    if (cents !== Number(editing.price)) {
+    if (price !== editing.price) {
       setConfirmOpen(true);
       return;
     }
@@ -163,13 +519,14 @@ export function ProductsTab({ session }: AdminTabBodyProps) {
 
   const handleConfirmPrice = () => {
     if (!editing || !draft) return;
-    const cents = dollarsToCents(draft.priceDollars);
-    if (cents === null) return;
+    const price = parseDollars(draft.priceDollars);
+    if (price === null) return;
     const inventory = Number(draft.inventory);
     const next: Product = {
       ...editing,
       name: draft.name.trim() || editing.name,
-      price: BigInt(cents),
+      category: draft.category,
+      price,
       inventory: BigInt(inventory),
       active: draft.active,
       admin_only: draft.hidden,
@@ -356,6 +713,28 @@ export function ProductsTab({ session }: AdminTabBodyProps) {
                 />
               </div>
 
+              <div className="flex flex-col gap-1.5">
+                <label className="field-label" htmlFor="products-category">
+                  Category
+                </label>
+                <select
+                  id="products-category"
+                  className="field-input"
+                  value={draft.category}
+                  onChange={(e) =>
+                    setDraft({ ...draft, category: e.target.value })
+                  }
+                  data-ocid="admin.products.category_select"
+                >
+                  <option value="">No category</option>
+                  {categoryOptions.map((option) => (
+                    <option key={option.slug} value={option.slug}>
+                      {option.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
               <div className="grid grid-cols-2 gap-4">
                 <div className="flex flex-col gap-1.5">
                   <label className="field-label" htmlFor="products-price">
@@ -429,6 +808,15 @@ export function ProductsTab({ session }: AdminTabBodyProps) {
                   {formError}
                 </p>
               )}
+
+              {editing && editing.id !== 0n && (
+                <div
+                  className="border-t pt-4"
+                  style={{ borderColor: "var(--border)" }}
+                >
+                  <ProductImageSection product={editing} canEdit={canEdit} />
+                </div>
+              )}
             </div>
           )}
 
@@ -464,7 +852,7 @@ export function ProductsTab({ session }: AdminTabBodyProps) {
                   ? `Changing the price of "${editing.name}" from ${formatPrice(
                       editing.price,
                     )} to ${formatPrice(
-                      dollarsToCents(draft?.priceDollars ?? "") ?? 0,
+                      parseDollars(draft?.priceDollars ?? "") ?? 0,
                     )}. This is a financial change and will be applied immediately.`
                   : ""
               }

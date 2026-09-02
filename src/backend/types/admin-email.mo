@@ -10,10 +10,10 @@ module {
     id : Nat;
     reference : Text;
     items : [StorefrontTypes.OrderItem];
-    subtotal : Nat;
-    tax : Nat;
-    shipping : Nat;
-    total : Nat;
+    subtotal : Float;
+    tax : Float;
+    shipping : Float;
+    total : Float;
     currency : Text;
     // The IBE ciphertext of the customer's shipping details, carried through
     // unchanged from Order.encrypted_shipping. It is opaque ciphertext (never

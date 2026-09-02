@@ -17,7 +17,7 @@ export interface AdminOrderDetail {
   'cryptoStatus' : [] | [CryptoPaymentStatus],
   'createdAt' : bigint,
   'reference' : string,
-  'amountOwed' : bigint,
+  'amountOwed' : number,
   'updatedAt' : bigint,
   'currency' : string,
   'hasShippingDetails' : boolean,
@@ -34,12 +34,33 @@ export interface AdminOrderView {
   'createdAt' : bigint,
   'itemCount' : bigint,
   'reference' : string,
-  'amountOwed' : bigint,
+  'amountOwed' : number,
   'currency' : string,
   'subaccountHex' : string,
   'sweepNote' : [] | [string],
   'customerEmail' : string,
   'depositAccountText' : string,
+}
+export interface Category {
+  'id' : CategoryId,
+  'updated_at' : bigint,
+  'active' : boolean,
+  'sortOrder' : bigint,
+  'name' : string,
+  'slug' : string,
+  'description' : [] | [string],
+  'created_at' : bigint,
+  'showWhenEmpty' : boolean,
+}
+export type CategoryError = { 'emptyName' : null } |
+  { 'targetCategoryNotFound' : string } |
+  { 'notFound' : CategoryId } |
+  { 'productsReferenced' : { 'count' : bigint, 'slug' : string } } |
+  { 'slugCollision' : string };
+export type CategoryId = bigint;
+export interface CategoryWithCount {
+  'productCount' : bigint,
+  'category' : Category,
 }
 export interface Cell { 'value' : Value, 'name' : string }
 export interface CheckoutSession { 'url' : [] | [string], 'reference' : string }
@@ -72,7 +93,7 @@ export interface CryptoConfigView {
   'icp' : LedgerConfig,
   'ckUSDC' : LedgerConfig,
   'treasurySubaccount' : [] | [Uint8Array],
-  'minimumOrder' : bigint,
+  'minimumOrder' : number,
   'ckUSDCEnabled' : boolean,
   'treasuryPrincipal' : Principal,
 }
@@ -86,7 +107,7 @@ export type CryptoPaymentError = { 'alreadyPaid' : null } |
   { 'notCryptoOrder' : null } |
   { 'unauthorized' : null } |
   { 'invalidConfig' : string } |
-  { 'belowMinimumOrder' : bigint };
+  { 'belowMinimumOrder' : number };
 export type CryptoPaymentStatus = {
     'overpayment' : { 'expected' : bigint, 'received' : bigint }
   } |
@@ -121,10 +142,22 @@ export type EmailError = { 'notConfigured' : string } |
   { 'unauthorized' : null } |
   { 'invalidResponse' : string };
 export interface HttpHeader { 'value' : string, 'name' : string }
+export interface HttpRequest {
+  'url' : string,
+  'method' : string,
+  'body' : Uint8Array,
+  'headers' : Array<[string, string]>,
+}
 export interface HttpRequestResult {
   'status' : bigint,
   'body' : Uint8Array,
   'headers' : Array<HttpHeader>,
+}
+export interface HttpResponse {
+  'body' : Uint8Array,
+  'headers' : Array<[string, string]>,
+  'streaming_strategy' : [] | [StreamingStrategy],
+  'status_code' : number,
 }
 export interface LatePayment {
   'token' : Token,
@@ -141,11 +174,11 @@ export interface LedgerConfig {
 }
 export interface Order {
   'id' : bigint,
-  'tax' : bigint,
+  'tax' : number,
   'updated_at' : bigint,
-  'total' : bigint,
+  'total' : number,
   'sweep_note' : [] | [string],
-  'shipping' : bigint,
+  'shipping' : number,
   'reference' : string,
   'created_at' : bigint,
   'payment_status' : PaymentStatus,
@@ -162,7 +195,7 @@ export interface Order {
   'shipped_at' : [] | [bigint],
   'marketing_consent' : boolean,
   'payment_reference' : [] | [string],
-  'subtotal' : bigint,
+  'subtotal' : number,
 }
 export type OrderError = { 'outOfStock' : [ProductId, string] } |
   { 'unknownVariant' : [ProductId, string] } |
@@ -170,14 +203,14 @@ export type OrderError = { 'outOfStock' : [ProductId, string] } |
   { 'ckUSDCDisabled' : null } |
   { 'emptyOrder' : null } |
   { 'rateLimited' : null } |
-  { 'belowMinimumOrder' : bigint } |
+  { 'belowMinimumOrder' : number } |
   { 'productInactive' : ProductId } |
   { 'paymentFailed' : string } |
   { 'invalidQuantity' : null } |
   { 'tooManyPendingOrders' : null };
 export interface OrderItem {
   'product_id' : ProductId,
-  'unit_amount' : bigint,
+  'unit_amount' : number,
   'name' : string,
   'variant_id' : string,
   'quantity' : bigint,
@@ -188,7 +221,7 @@ export interface OrderRecoveryView {
   'expiresAt' : [] | [bigint],
   'reference' : string,
   'depositAccount' : [] | [DepositAccount],
-  'amountOwed' : bigint,
+  'amountOwed' : number,
   'liveBalance' : bigint,
 }
 export type PaymentError = { 'invalidOrder' : null } |
@@ -225,7 +258,7 @@ export interface Product {
   'currency' : string,
   'admin_only' : boolean,
   'category' : string,
-  'price' : bigint,
+  'price' : number,
   'images' : Array<string>,
 }
 export type ProductId = bigint;
@@ -234,15 +267,15 @@ export interface ProductVariant {
   'inventory' : bigint,
   'name' : string,
   'size' : string,
-  'price' : bigint,
+  'price' : number,
 }
 export interface PublicOrderView {
   'id' : bigint,
-  'tax' : bigint,
+  'tax' : number,
   'updated_at' : bigint,
-  'total' : bigint,
+  'total' : number,
   'sweep_note' : [] | [string],
-  'shipping' : bigint,
+  'shipping' : number,
   'reference' : string,
   'created_at' : bigint,
   'payment_status' : PaymentStatus,
@@ -258,7 +291,7 @@ export interface PublicOrderView {
   'shipped_at' : [] | [bigint],
   'marketing_consent' : boolean,
   'payment_reference' : [] | [string],
-  'subtotal' : bigint,
+  'subtotal' : number,
 }
 export interface RecheckResult {
   'status' : CryptoPaymentStatus,
@@ -273,47 +306,57 @@ export type RecoveryError = { 'sweepFailed' : string } |
   { 'unauthorized' : null } |
   { 'invalidConfig' : string };
 export type Result = { 'ok' : null } |
-  { 'err' : CryptoPaymentError };
+  { 'err' : UploadError };
 export type Result_1 = { 'ok' : null } |
-  { 'err' : PaymentServiceError };
-export type Result_10 = { 'ok' : SubaccountBalanceResult } |
-  { 'err' : SweepError };
-export type Result_11 = { 'ok' : ResumeInfo } |
-  { 'err' : RecoveryError };
-export type Result_12 = { 'ok' : bigint } |
-  { 'err' : RecoveryError };
-export type Result_13 = { 'ok' : CryptoPaymentStatus } |
   { 'err' : CryptoPaymentError };
-export type Result_14 = { 'ok' : DepositInfo } |
-  { 'err' : CryptoPaymentError };
-export type Result_15 = { 'ok' : ConsentListExport } |
-  { 'err' : ConsentError };
-export type Result_16 = { 'ok' : RecheckResult } |
-  { 'err' : RecoveryError };
-export type Result_17 = { 'ok' : CreateOrderResult } |
-  { 'err' : OrderError };
-export type Result_18 = { 'ok' : CheckoutSession } |
-  { 'err' : PaymentError };
-export type Result_19 = { 'ok' : CheckoutSession } |
-  { 'err' : PaymentServiceError };
-export type Result_2 = { 'ok' : null } |
-  { 'err' : ConsentError };
-export type Result_20 = { 'ok' : PaymentStatus } |
-  { 'err' : PaymentServiceError };
-export type Result_3 = { 'ok' : SweepSubaccountResult } |
-  { 'err' : SweepError };
-export type Result_4 = { 'ok' : SweepResult } |
-  { 'err' : RecoveryError };
-export type Result_5 = { 'ok' : bigint } |
-  { 'err' : CryptoPaymentError };
-export type Result_6 = { 'ok' : null } |
-  { 'err' : SubmissionError };
-export type Result_7 = { 'ok' : null } |
+export type Result_10 = { 'ok' : null } |
   { 'err' : EmailError };
-export type Result_8 = { 'ok' : Array<SubmissionRecord> } |
+export type Result_11 = { 'ok' : null } |
+  { 'err' : CategoryError };
+export type Result_12 = { 'ok' : bigint } |
+  { 'err' : CategoryError };
+export type Result_13 = { 'ok' : Array<SubmissionRecord> } |
   { 'err' : SubmissionError };
-export type Result_9 = { 'ok' : null } |
+export type Result_14 = { 'ok' : null } |
   { 'err' : PaymentError };
+export type Result_15 = { 'ok' : SubaccountBalanceResult } |
+  { 'err' : SweepError };
+export type Result_16 = { 'ok' : ResumeInfo } |
+  { 'err' : RecoveryError };
+export type Result_17 = { 'ok' : bigint } |
+  { 'err' : RecoveryError };
+export type Result_18 = { 'ok' : CryptoPaymentStatus } |
+  { 'err' : CryptoPaymentError };
+export type Result_19 = { 'ok' : DepositInfo } |
+  { 'err' : CryptoPaymentError };
+export type Result_2 = { 'ok' : null } |
+  { 'err' : PaymentServiceError };
+export type Result_20 = { 'ok' : ConsentListExport } |
+  { 'err' : ConsentError };
+export type Result_21 = { 'ok' : RecheckResult } |
+  { 'err' : RecoveryError };
+export type Result_22 = { 'ok' : CreateOrderResult } |
+  { 'err' : OrderError };
+export type Result_23 = { 'ok' : CheckoutSession } |
+  { 'err' : PaymentError };
+export type Result_24 = { 'ok' : CheckoutSession } |
+  { 'err' : PaymentServiceError };
+export type Result_25 = { 'ok' : PaymentStatus } |
+  { 'err' : PaymentServiceError };
+export type Result_3 = { 'ok' : Category } |
+  { 'err' : CategoryError };
+export type Result_4 = { 'ok' : null } |
+  { 'err' : ConsentError };
+export type Result_5 = { 'ok' : SweepSubaccountResult } |
+  { 'err' : SweepError };
+export type Result_6 = { 'ok' : SweepResult } |
+  { 'err' : RecoveryError };
+export type Result_7 = { 'ok' : bigint } |
+  { 'err' : CryptoPaymentError };
+export type Result_8 = { 'ok' : null } |
+  { 'err' : SubmissionError };
+export type Result_9 = { 'ok' : string } |
+  { 'err' : UploadError };
 export interface Result__1 { 'hasMore' : boolean, 'rows' : Array<Array<Cell>> }
 export interface ResumeInfo {
   'status' : CryptoPaymentStatus,
@@ -327,6 +370,27 @@ export type Role = { 'admin' : null } |
   { 'staff' : null };
 export type ShippingStatus = { 'shipped' : null } |
   { 'pending' : null };
+export interface StorageStats { 'count' : bigint, 'totalBytes' : bigint }
+export type StreamingCallback = ActorMethod<
+  [StreamingCallbackToken],
+  StreamingCallbackResponse
+>;
+export interface StreamingCallbackResponse {
+  'token' : [] | [StreamingCallbackToken],
+  'body' : Uint8Array,
+}
+export interface StreamingCallbackToken {
+  'key' : string,
+  'sha256' : [] | [Uint8Array],
+  'index' : bigint,
+  'content_encoding' : string,
+}
+export type StreamingStrategy = {
+    'Callback' : {
+      'token' : StreamingCallbackToken,
+      'callback' : [Principal, string],
+    }
+  };
 export interface SubaccountBalanceResult {
   'balance' : bigint,
   'subaccountHex' : string,
@@ -385,6 +449,16 @@ export interface TransformationOutput {
   'body' : Uint8Array,
   'headers' : Array<HttpHeader>,
 }
+export type UploadError = { 'tooManyImages' : null } |
+  { 'tooLarge' : null } |
+  { 'magicByteMismatch' : null } |
+  { 'sizeMismatch' : null } |
+  { 'invalidContentType' : null } |
+  { 'notFound' : null } |
+  { 'uploadExpired' : null } |
+  { 'svgNotAllowed' : null } |
+  { 'chunkOutOfOrder' : null } |
+  { 'unauthorized' : null };
 export interface UserRecord { 'grantedAt' : bigint, 'role' : Role }
 export type Value = { 'int' : bigint } |
   { 'nat' : bigint } |
@@ -398,38 +472,42 @@ export interface _SERVICE {
   'adminGetOrderDetail' : ActorMethod<[string], [] | [AdminOrderDetail]>,
   'adminListOrders' : ActorMethod<[string], Array<AdminOrderView>>,
   'bootstrapOwner' : ActorMethod<[Principal], boolean>,
-  'cancelCardOrder' : ActorMethod<[string], Result_1>,
-  'cancelGuestOrder' : ActorMethod<[string, string], Result_1>,
-  'checkCryptoPayment' : ActorMethod<[string], Result_13>,
+  'cancelCardOrder' : ActorMethod<[string], Result_2>,
+  'cancelGuestOrder' : ActorMethod<[string, string], Result_2>,
+  'checkCryptoPayment' : ActorMethod<[string], Result_18>,
   'claimInitialAdmin' : ActorMethod<[], boolean>,
-  'confirmCardPayment' : ActorMethod<[string], Result_20>,
+  'confirmCardPayment' : ActorMethod<[string], Result_25>,
   'consentServiceTransform' : ActorMethod<
     [TransformationInput],
     TransformationOutput
   >,
   'createCardCheckoutSession' : ActorMethod<
     [string, string, string],
-    Result_19
+    Result_24
   >,
-  'createCheckoutSession' : ActorMethod<[Order], Result_18>,
-  'createOrder' : ActorMethod<[CreateOrderInput], Result_17>,
+  'createCategory' : ActorMethod<[string, [] | [string]], Result_3>,
+  'createCheckoutSession' : ActorMethod<[Order], Result_23>,
+  'createOrder' : ActorMethod<[CreateOrderInput], Result_22>,
   'createProduct' : ActorMethod<[Product], boolean>,
+  'deleteCategory' : ActorMethod<[CategoryId], Result_11>,
+  'deleteProductImage' : ActorMethod<[string], Result>,
   'emailTransform' : ActorMethod<[TransformationInput], TransformationOutput>,
   'execute' : ActorMethod<[string], Result__1>,
-  'forceRecheckPayment' : ActorMethod<[string], Result_16>,
-  'forceSweepOrder' : ActorMethod<[string], Result_4>,
+  'finishUpload' : ActorMethod<[string, bigint], Result_9>,
+  'forceRecheckPayment' : ActorMethod<[string], Result_21>,
+  'forceSweepOrder' : ActorMethod<[string], Result_6>,
   'getApiDoc' : ActorMethod<[], string>,
   'getCanisterId' : ActorMethod<[], Principal>,
-  'getConsentListCsv' : ActorMethod<[], Result_15>,
+  'getConsentListCsv' : ActorMethod<[], Result_20>,
   'getCryptoConfig' : ActorMethod<[], CryptoConfigView>,
-  'getCryptoDepositInfo' : ActorMethod<[string], Result_14>,
-  'getCryptoPaymentStatus' : ActorMethod<[string], Result_13>,
+  'getCryptoDepositInfo' : ActorMethod<[string], Result_19>,
+  'getCryptoPaymentStatus' : ActorMethod<[string], Result_18>,
   'getCycleBalance' : ActorMethod<[], bigint>,
   'getDashboardData' : ActorMethod<[], string>,
-  'getDefaultSubaccountBalance' : ActorMethod<[], Result_12>,
+  'getDefaultSubaccountBalance' : ActorMethod<[], Result_17>,
   'getEncryptionRecipients' : ActorMethod<[], Array<Principal>>,
   'getIbePublicKey' : ActorMethod<[], Uint8Array>,
-  'getMinimumOrder' : ActorMethod<[], bigint>,
+  'getMinimumOrder' : ActorMethod<[], number>,
   'getMyEncryptedIbeKey' : ActorMethod<[Uint8Array], Uint8Array>,
   'getMyOrders' : ActorMethod<[], Array<PublicOrderView>>,
   'getMyRole' : ActorMethod<[], [] | [Role]>,
@@ -438,53 +516,70 @@ export interface _SERVICE {
   'getPaymentServiceConfig' : ActorMethod<[], PaymentServiceConfigView>,
   'getPaymentStatus' : ActorMethod<[string], PaymentStatus>,
   'getProduct' : ActorMethod<[string], [] | [Product]>,
-  'getResumeInfo' : ActorMethod<[string], Result_11>,
-  'getSubaccountBalance' : ActorMethod<[bigint], Result_10>,
+  'getProductImageStorageStats' : ActorMethod<[], StorageStats>,
+  'getResumeInfo' : ActorMethod<[string], Result_16>,
+  'getSubaccountBalance' : ActorMethod<[bigint], Result_15>,
   'getTokenImage' : ActorMethod<[string, string], string>,
   'getTokenProfile' : ActorMethod<[string, string], string>,
   'getTreasuryTokens' : ActorMethod<[], string>,
   'grantRole' : ActorMethod<[Principal, Role], boolean>,
-  'handlePaymentConfirmation' : ActorMethod<[string], Result_9>,
+  'handlePaymentConfirmation' : ActorMethod<[string], Result_14>,
+  'http_request' : ActorMethod<[HttpRequest], HttpResponse>,
+  'http_request_streaming_callback' : ActorMethod<
+    [StreamingCallbackToken],
+    StreamingCallbackResponse
+  >,
+  'http_request_update' : ActorMethod<[HttpRequest], HttpResponse>,
   'isAdmin' : ActorMethod<[], boolean>,
   'listAdmins' : ActorMethod<[], Array<Principal>>,
+  'listCategories' : ActorMethod<[], Array<CategoryWithCount>>,
   'listLatePayments' : ActorMethod<[], Array<LatePayment>>,
   'listOrdersForRecovery' : ActorMethod<[], Array<OrderRecoveryView>>,
   'listProducts' : ActorMethod<[], Array<Product>>,
-  'listSubmissions' : ActorMethod<[], Result_8>,
+  'listSubmissions' : ActorMethod<[], Result_13>,
   'listUsers' : ActorMethod<[], Array<[Principal, UserRecord]>>,
   'markLatePaymentReviewed' : ActorMethod<[string], boolean>,
-  'markOrderShipped' : ActorMethod<[string, [] | [string]], Result_7>,
+  'markOrderShipped' : ActorMethod<[string, [] | [string]], Result_10>,
   'paymentServiceTransform' : ActorMethod<
     [TransformationInput],
     TransformationOutput
   >,
+  'reassignProducts' : ActorMethod<[string, string], Result_12>,
   'releaseExpiredOrders' : ActorMethod<[], bigint>,
   'removeAdmin' : ActorMethod<[Principal], boolean>,
-  'resendConfirmationEmail' : ActorMethod<[string], Result_7>,
+  'reorderCategories' : ActorMethod<[Array<CategoryId>], Result_11>,
+  'resendConfirmationEmail' : ActorMethod<[string], Result_10>,
   'resetAdminForMigration' : ActorMethod<[], boolean>,
   'revokeRole' : ActorMethod<[Principal], boolean>,
   'schema' : ActorMethod<[], string>,
+  'startUpload' : ActorMethod<[string, bigint], Result_9>,
   'startVerificationTimer' : ActorMethod<[], boolean>,
   'stopVerificationTimer' : ActorMethod<[], boolean>,
   'submissionServiceTransform' : ActorMethod<
     [TransformationInput],
     TransformationOutput
   >,
-  'submitSubmission' : ActorMethod<[SubmissionInput], Result_6>,
-  'sweepCryptoToTreasury' : ActorMethod<[string], Result_5>,
-  'sweepDefaultSubaccount' : ActorMethod<[], Result_4>,
-  'sweepSubaccount' : ActorMethod<[bigint], Result_3>,
+  'submitSubmission' : ActorMethod<[SubmissionInput], Result_8>,
+  'sweepCryptoToTreasury' : ActorMethod<[string], Result_7>,
+  'sweepDefaultSubaccount' : ActorMethod<[], Result_6>,
+  'sweepExpiredUploads' : ActorMethod<[], undefined>,
+  'sweepSubaccount' : ActorMethod<[bigint], Result_5>,
   'transform' : ActorMethod<[TransformationInput], TransformationOutput>,
-  'unsubscribe' : ActorMethod<[string], Result_2>,
+  'unsubscribe' : ActorMethod<[string], Result_4>,
+  'updateCategory' : ActorMethod<
+    [CategoryId, string, [] | [string], bigint, boolean, boolean],
+    Result_3
+  >,
   'updateLedgerConfig' : ActorMethod<
     [Token, Principal, number, bigint],
-    Result
+    Result_1
   >,
-  'updateMinimumOrder' : ActorMethod<[bigint], Result>,
-  'updatePaymentServiceToken' : ActorMethod<[string], Result_1>,
-  'updatePaymentServiceUrl' : ActorMethod<[string], Result_1>,
+  'updateMinimumOrder' : ActorMethod<[number], Result_1>,
+  'updatePaymentServiceToken' : ActorMethod<[string], Result_2>,
+  'updatePaymentServiceUrl' : ActorMethod<[string], Result_2>,
   'updateProduct' : ActorMethod<[Product], boolean>,
-  'updateTreasury' : ActorMethod<[Principal, [] | [Uint8Array]], Result>,
+  'updateTreasury' : ActorMethod<[Principal, [] | [Uint8Array]], Result_1>,
+  'uploadChunk' : ActorMethod<[string, bigint, Uint8Array], Result>,
 }
 export declare const idlService: IDL.ServiceClass;
 export declare const idlInitArgs: IDL.Type[];

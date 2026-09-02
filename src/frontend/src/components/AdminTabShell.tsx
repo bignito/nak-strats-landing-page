@@ -1,6 +1,8 @@
 import { Role } from "@/backend";
+import { CopyButton } from "@/components/CopyButton";
 import { AdminConfirmDialog } from "@/components/admin/AdminConfirmDialog";
 import { CanisterTab } from "@/components/admin/CanisterTab";
+import { CategoriesTab } from "@/components/admin/CategoriesTab";
 import { OrdersTab } from "@/components/admin/OrdersTab";
 import { OverviewTab } from "@/components/admin/OverviewTab";
 import { ProductsTab } from "@/components/admin/ProductsTab";
@@ -10,6 +12,7 @@ import { TreasuryTab } from "@/components/admin/TreasuryTab";
 import { UsersTab } from "@/components/admin/UsersTab";
 import {
   useActorReady,
+  useAdminCount,
   useClaimInitialAdmin,
   useGetCanisterId,
   useGetEncryptionRecipients,
@@ -29,13 +32,14 @@ import { useMemo, useState } from "react";
 /** Draft canister principal — a matching id means this console is DRAFT. */
 const DRAFT_CANISTER_ID = "vm5zh-yaaaa-aaaaj-qoaza-cai";
 
-/** The 8 admin tabs in display order. */
+/** The 9 admin tabs in display order. */
 const TAB_ORDER: AdminTabId[] = [
   "overview",
   "canister",
   "treasury",
   "orders",
   "products",
+  "categories",
   "submissions",
   "users",
   "settings",
@@ -47,6 +51,7 @@ const TAB_LABELS: Record<AdminTabId, string> = {
   treasury: "Treasury",
   orders: "Orders",
   products: "Products",
+  categories: "Categories",
   submissions: "Submissions",
   users: "Users",
   settings: "Settings",
@@ -62,6 +67,7 @@ const TAB_BODIES: Record<AdminTabId, React.ComponentType<AdminTabBodyProps>> = {
   treasury: (props) => <TreasuryTab {...props} />,
   orders: (props) => <OrdersTab {...props} />,
   products: (props) => <ProductsTab {...props} />,
+  categories: (props) => <CategoriesTab {...props} />,
   submissions: (props) => <SubmissionsTab {...props} />,
   users: (props) => <UsersTab {...props} />,
   settings: (props) => <SettingsTab {...props} />,
@@ -69,6 +75,16 @@ const TAB_BODIES: Record<AdminTabId, React.ComponentType<AdminTabBodyProps>> = {
 
 interface AdminTabShellProps {
   onNavigateToMain: () => void;
+}
+
+/**
+ * Middle-ellipsis truncation for a principal: keeps the first 5 and last 5
+ * characters joined by an ellipsis (e.g. `z2dj2…wn-jqe`). Short principals are
+ * returned unchanged. The full untruncated string is always what gets copied.
+ */
+function truncatePrincipal(principal: string): string {
+  if (principal.length <= 11) return principal;
+  return `${principal.slice(0, 5)}…${principal.slice(-5)}`;
 }
 
 /**
@@ -81,6 +97,7 @@ interface AdminTabShellProps {
 export function AdminTabShell({ onNavigateToMain }: AdminTabShellProps) {
   const { isActorReady, isAuthenticated, identity } = useActorReady();
   const { data: role, isLoading: roleLoading } = useGetMyRole();
+  const { data: adminCount } = useAdminCount();
   const { data: canisterId } = useGetCanisterId();
   const { data: encryptionRecipients } = useGetEncryptionRecipients();
   const claimAdmin = useClaimInitialAdmin();
@@ -271,8 +288,8 @@ export function AdminTabShell({ onNavigateToMain }: AdminTabShellProps) {
                 <h2 className="admin-panel-title">Sign in required</h2>
               </div>
               <p style={{ color: "var(--muted-foreground)" }}>
-                Admin access is restricted. Sign in with Internet Identity to
-                verify your principal before using the console.
+                Sign in with Internet Identity to get your principal and request
+                admin access.
               </p>
             </div>
           </div>
@@ -283,7 +300,7 @@ export function AdminTabShell({ onNavigateToMain }: AdminTabShellProps) {
             data-ocid="admin.role_loading"
           >
             <Loader2 className="w-5 h-5 animate-spin" />
-            Checking authorization…
+            Checking access…
           </div>
         ) : !role ? (
           <div className="admin-panel" data-ocid="admin.not_authorized_state">
@@ -299,7 +316,57 @@ export function AdminTabShell({ onNavigateToMain }: AdminTabShellProps) {
                 Your principal has no admin role, so you cannot view or change
                 these settings.
               </p>
-              {isActorReady && (
+
+              {userPrincipalText && (
+                <div
+                  className="mt-5 flex flex-col gap-3 rounded-lg border p-4"
+                  style={{ borderColor: "var(--border)" }}
+                  data-ocid="admin.your_principal_panel"
+                >
+                  <div className="flex flex-col gap-1.5">
+                    <span
+                      className="text-xs"
+                      style={{
+                        color: "var(--muted-foreground)",
+                        letterSpacing: "0.08em",
+                        textTransform: "uppercase",
+                        fontWeight: 600,
+                      }}
+                    >
+                      Your principal
+                    </span>
+                    <div className="flex items-center gap-2 min-w-0">
+                      <code
+                        className="admin-mono"
+                        style={{ fontSize: "0.8125rem" }}
+                        data-ocid="admin.your_principal"
+                      >
+                        {truncatePrincipal(userPrincipalText)}
+                      </code>
+                      <CopyButton
+                        text={userPrincipalText}
+                        label="Copy"
+                        className="shrink-0"
+                      />
+                    </div>
+                    <p
+                      className="text-sm"
+                      style={{ color: "var(--muted-foreground)" }}
+                    >
+                      Copy your principal and send it to an administrator to be
+                      granted access.
+                    </p>
+                    <p
+                      className="text-xs"
+                      style={{ color: "var(--text-muted)" }}
+                    >
+                      This principal is specific to {window.location.origin}.
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {isActorReady && adminCount === 0n && (
                 <div
                   className="mt-5 flex flex-col gap-3 rounded-lg border p-4"
                   style={{ borderColor: "var(--border)" }}

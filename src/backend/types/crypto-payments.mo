@@ -32,10 +32,10 @@ module {
     treasurySubaccount : ?Blob;
     ckUSDC : LedgerConfig;
     icp : LedgerConfig;
-    // The minimum order total (in USD cents) required for crypto checkout.
+    // The minimum order total (in US dollars) required for crypto checkout.
     // Crypto orders below this are rejected server-side because they cannot be
     // swept to the treasury after the ledger transfer fee is deducted.
-    minimumOrder : Nat;
+    minimumOrder : Float;
     // Whether ckUSDC checkout is currently enabled. Mirrors the compile-time
     // CKUSDC_CHECKOUT_ENABLED constant so the checkout UI reads the same single
     // value. When false, the UI must not offer ckUSDC and the backend rejects
@@ -103,9 +103,9 @@ module {
     #invalidConfig : Text;
     #sweepFailed : Text;
     // The crypto order total is below the configured minimum order total (the
-    // payload is the minimum in cents). Crypto orders below this cannot be
+    // payload is the minimum in US dollars). Crypto orders below this cannot be
     // swept to the treasury after the ledger transfer fee is deducted.
-    #belowMinimumOrder : Nat;
+    #belowMinimumOrder : Float;
   };
 
   // Admin-only row view of an order for the admin Orders list. Includes the
@@ -117,7 +117,7 @@ module {
     status : StorefrontTypes.PaymentStatus;
     cryptoStatus : ?CryptoPaymentStatus;
     paymentMethod : StorefrontTypes.PaymentMethod;
-    amountOwed : Nat;
+    amountOwed : Float;
     currency : Text;
     itemCount : Nat;
     // The customer's email address (already stored plaintext on the order to
@@ -140,7 +140,7 @@ module {
     status : StorefrontTypes.PaymentStatus;
     cryptoStatus : ?CryptoPaymentStatus;
     paymentMethod : StorefrontTypes.PaymentMethod;
-    amountOwed : Nat;
+    amountOwed : Float;
     currency : Text;
     items : [StorefrontTypes.OrderItem];
     customerEmail : Text;

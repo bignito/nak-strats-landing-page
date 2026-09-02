@@ -12,6 +12,19 @@ type UserRecord =
    grantedAt: int;
    role: Role;
  };
+type UploadError = 
+ variant {
+   chunkOutOfOrder;
+   invalidContentType;
+   magicByteMismatch;
+   notFound;
+   sizeMismatch;
+   svgNotAllowed;
+   tooLarge;
+   tooManyImages;
+   unauthorized;
+   uploadExpired;
+ };
 type TransformationOutput = 
  record {
    body: blob;
@@ -86,6 +99,31 @@ type SubaccountBalanceResult =
    subaccountHex: text;
    subaccountIndex: nat;
  };
+type StreamingStrategy = variant {
+                           Callback:
+                            record {
+                              callback: StreamingCallback;
+                              token: StreamingCallbackToken;
+                            };};
+type StreamingCallbackToken = 
+ record {
+   content_encoding: text;
+   index: nat;
+   key: text;
+   sha256: opt blob;
+ };
+type StreamingCallbackResponse = 
+ record {
+   body: blob;
+   token: opt StreamingCallbackToken;
+ };
+type StreamingCallback = func (StreamingCallbackToken) ->
+                          (StreamingCallbackResponse) query;
+type StorageStats = 
+ record {
+   count: nat;
+   totalBytes: nat;
+ };
 type ShippingStatus = 
  variant {
    pending;
@@ -112,107 +150,132 @@ type Result__1 =
  };
 type Result_9 = 
  variant {
-   err: PaymentError;
-   ok;
+   err: UploadError;
+   ok: text;
  };
 type Result_8 = 
  variant {
    err: SubmissionError;
-   ok: vec SubmissionRecord;
+   ok;
  };
 type Result_7 = 
- variant {
-   err: EmailError;
-   ok;
- };
-type Result_6 = 
- variant {
-   err: SubmissionError;
-   ok;
- };
-type Result_5 = 
  variant {
    err: CryptoPaymentError;
    ok: nat;
  };
-type Result_4 = 
+type Result_6 = 
  variant {
    err: RecoveryError;
    ok: SweepResult;
  };
-type Result_3 = 
+type Result_5 = 
  variant {
    err: SweepError;
    ok: SweepSubaccountResult;
  };
-type Result_20 = 
+type Result_4 = 
+ variant {
+   err: ConsentError;
+   ok;
+ };
+type Result_3 = 
+ variant {
+   err: CategoryError;
+   ok: Category;
+ };
+type Result_25 = 
  variant {
    err: PaymentServiceError;
    ok: PaymentStatus;
  };
-type Result_2 = 
- variant {
-   err: ConsentError;
-   ok;
- };
-type Result_19 = 
+type Result_24 = 
  variant {
    err: PaymentServiceError;
    ok: CheckoutSession;
  };
-type Result_18 = 
+type Result_23 = 
  variant {
    err: PaymentError;
    ok: CheckoutSession;
  };
-type Result_17 = 
+type Result_22 = 
  variant {
    err: OrderError;
    ok: CreateOrderResult;
  };
-type Result_16 = 
+type Result_21 = 
  variant {
    err: RecoveryError;
    ok: RecheckResult;
  };
-type Result_15 = 
+type Result_20 = 
  variant {
    err: ConsentError;
    ok: ConsentListExport;
  };
-type Result_14 = 
- variant {
-   err: CryptoPaymentError;
-   ok: DepositInfo;
- };
-type Result_13 = 
- variant {
-   err: CryptoPaymentError;
-   ok: CryptoPaymentStatus;
- };
-type Result_12 = 
- variant {
-   err: RecoveryError;
-   ok: nat;
- };
-type Result_11 = 
- variant {
-   err: RecoveryError;
-   ok: ResumeInfo;
- };
-type Result_10 = 
- variant {
-   err: SweepError;
-   ok: SubaccountBalanceResult;
- };
-type Result_1 = 
+type Result_2 = 
  variant {
    err: PaymentServiceError;
    ok;
  };
-type Result = 
+type Result_19 = 
  variant {
    err: CryptoPaymentError;
+   ok: DepositInfo;
+ };
+type Result_18 = 
+ variant {
+   err: CryptoPaymentError;
+   ok: CryptoPaymentStatus;
+ };
+type Result_17 = 
+ variant {
+   err: RecoveryError;
+   ok: nat;
+ };
+type Result_16 = 
+ variant {
+   err: RecoveryError;
+   ok: ResumeInfo;
+ };
+type Result_15 = 
+ variant {
+   err: SweepError;
+   ok: SubaccountBalanceResult;
+ };
+type Result_14 = 
+ variant {
+   err: PaymentError;
+   ok;
+ };
+type Result_13 = 
+ variant {
+   err: SubmissionError;
+   ok: vec SubmissionRecord;
+ };
+type Result_12 = 
+ variant {
+   err: CategoryError;
+   ok: nat;
+ };
+type Result_11 = 
+ variant {
+   err: CategoryError;
+   ok;
+ };
+type Result_10 = 
+ variant {
+   err: EmailError;
+   ok;
+ };
+type Result_1 = 
+ variant {
+   err: CryptoPaymentError;
+   ok;
+ };
+type Result = 
+ variant {
+   err: UploadError;
    ok;
  };
 type RecoveryError = 
@@ -247,12 +310,12 @@ type PublicOrderView =
    payment_status: PaymentStatus;
    reference: text;
    shipped_at: opt int;
-   shipping: nat;
+   shipping: float64;
    shipping_status: ShippingStatus;
-   subtotal: nat;
+   subtotal: float64;
    sweep_note: opt text;
-   tax: nat;
-   total: nat;
+   tax: float64;
+   total: float64;
    tracking_number: opt text;
    updated_at: int;
  };
@@ -261,7 +324,7 @@ type ProductVariant =
    id: text;
    inventory: nat;
    name: text;
-   price: nat;
+   price: float64;
    size: text;
  };
 type ProductId = nat;
@@ -277,7 +340,7 @@ type Product =
    images: vec text;
    inventory: nat;
    name: text;
-   price: nat;
+   price: float64;
    slug: text;
    updated_at: int;
    variants: vec ProductVariant;
@@ -318,7 +381,7 @@ type PaymentError =
  };
 type OrderRecoveryView = 
  record {
-   amountOwed: nat;
+   amountOwed: float64;
    depositAccount: opt DepositAccount;
    expiresAt: opt int;
    liveBalance: nat;
@@ -331,12 +394,12 @@ type OrderItem =
    name: text;
    product_id: ProductId;
    quantity: nat;
-   unit_amount: nat;
+   unit_amount: float64;
    variant_id: text;
  };
 type OrderError = 
  variant {
-   belowMinimumOrder: nat;
+   belowMinimumOrder: float64;
    ckUSDCDisabled;
    emptyOrder;
    invalidQuantity;
@@ -371,12 +434,12 @@ type Order =
    payment_status: PaymentStatus;
    reference: text;
    shipped_at: opt int;
-   shipping: nat;
+   shipping: float64;
    shipping_status: ShippingStatus;
-   subtotal: nat;
+   subtotal: float64;
    sweep_note: opt text;
-   tax: nat;
-   total: nat;
+   tax: float64;
+   total: float64;
    tracking_number: opt text;
    updated_at: int;
  };
@@ -395,11 +458,31 @@ type LatePayment =
    reviewed: bool;
    token: Token;
  };
+type HttpResponse = 
+ record {
+   body: blob;
+   headers: vec record {
+                  text;
+                  text;
+                };
+   status_code: nat16;
+   streaming_strategy: opt StreamingStrategy;
+ };
 type HttpRequestResult = 
  record {
    body: blob;
    headers: vec HttpHeader;
    status: nat;
+ };
+type HttpRequest = 
+ record {
+   body: blob;
+   headers: vec record {
+                  text;
+                  text;
+                };
+   method: text;
+   url: text;
  };
 type HttpHeader = 
  record {
@@ -457,7 +540,7 @@ type CryptoPaymentStatus =
 type CryptoPaymentError = 
  variant {
    alreadyPaid;
-   belowMinimumOrder: nat;
+   belowMinimumOrder: float64;
    expired;
    invalidConfig: text;
    ledgerError: text;
@@ -479,7 +562,7 @@ type CryptoConfigView =
    ckUSDC: LedgerConfig;
    ckUSDCEnabled: bool;
    icp: LedgerConfig;
-   minimumOrder: nat;
+   minimumOrder: float64;
    treasuryPrincipal: principal;
    treasurySubaccount: opt blob;
  };
@@ -524,9 +607,38 @@ type Cell =
    name: text;
    value: Value;
  };
+type CategoryWithCount = 
+ record {
+   category: Category;
+   productCount: nat;
+ };
+type CategoryId = nat;
+type CategoryError = 
+ variant {
+   emptyName;
+   notFound: CategoryId;
+   productsReferenced: record {
+                         count: nat;
+                         slug: text;
+                       };
+   slugCollision: text;
+   targetCategoryNotFound: text;
+ };
+type Category = 
+ record {
+   active: bool;
+   created_at: int;
+   description: opt text;
+   id: CategoryId;
+   name: text;
+   showWhenEmpty: bool;
+   slug: text;
+   sortOrder: nat;
+   updated_at: int;
+ };
 type AdminOrderView = 
  record {
-   amountOwed: nat;
+   amountOwed: float64;
    createdAt: int;
    cryptoStatus: opt CryptoPaymentStatus;
    currency: text;
@@ -541,7 +653,7 @@ type AdminOrderView =
  };
 type AdminOrderDetail = 
  record {
-   amountOwed: nat;
+   amountOwed: float64;
    createdAt: int;
    cryptoStatus: opt CryptoPaymentStatus;
    currency: text;
@@ -563,35 +675,39 @@ service : {
   adminGetOrderDetail: (reference: text) -> (opt AdminOrderDetail) query;
   adminListOrders: (filter: text) -> (vec AdminOrderView) query;
   bootstrapOwner: (p: principal) -> (bool);
-  cancelCardOrder: (reference: text) -> (Result_1);
-  cancelGuestOrder: (reference: text, cancellationToken: text) -> (Result_1);
-  checkCryptoPayment: (reference: text) -> (Result_13);
+  cancelCardOrder: (reference: text) -> (Result_2);
+  cancelGuestOrder: (reference: text, cancellationToken: text) -> (Result_2);
+  checkCryptoPayment: (reference: text) -> (Result_18);
   claimInitialAdmin: () -> (bool);
-  confirmCardPayment: (reference: text) -> (Result_20);
+  confirmCardPayment: (reference: text) -> (Result_25);
   consentServiceTransform: (input: TransformationInput) ->
    (TransformationOutput) query;
   createCardCheckoutSession: (reference: text, successUrl: text, cancelUrl:
-   text) -> (Result_19);
-  createCheckoutSession: (order: Order) -> (Result_18);
-  createOrder: (input: CreateOrderInput) -> (Result_17);
+   text) -> (Result_24);
+  createCategory: (name: text, description: opt text) -> (Result_3);
+  createCheckoutSession: (order: Order) -> (Result_23);
+  createOrder: (input: CreateOrderInput) -> (Result_22);
   createProduct: (product: Product) -> (bool);
+  deleteCategory: (id: CategoryId) -> (Result_11);
+  deleteProductImage: (assetId: text) -> (Result);
   emailTransform: (input: TransformationInput) ->
    (TransformationOutput) query;
   execute: (qJson: text) -> (Result__1) query;
-  forceRecheckPayment: (reference: text) -> (Result_16);
-  forceSweepOrder: (reference: text) -> (Result_4);
+  finishUpload: (uploadId: text, productId: nat) -> (Result_9);
+  forceRecheckPayment: (reference: text) -> (Result_21);
+  forceSweepOrder: (reference: text) -> (Result_6);
   getApiDoc: () -> (text) query;
   getCanisterId: () -> (principal) query;
-  getConsentListCsv: () -> (Result_15);
+  getConsentListCsv: () -> (Result_20);
   getCryptoConfig: () -> (CryptoConfigView) query;
-  getCryptoDepositInfo: (reference: text) -> (Result_14) query;
-  getCryptoPaymentStatus: (reference: text) -> (Result_13) query;
+  getCryptoDepositInfo: (reference: text) -> (Result_19) query;
+  getCryptoPaymentStatus: (reference: text) -> (Result_18) query;
   getCycleBalance: () -> (nat) query;
   getDashboardData: () -> (text);
-  getDefaultSubaccountBalance: () -> (Result_12);
+  getDefaultSubaccountBalance: () -> (Result_17);
   getEncryptionRecipients: () -> (vec principal) query;
   getIbePublicKey: () -> (blob);
-  getMinimumOrder: () -> (nat) query;
+  getMinimumOrder: () -> (float64) query;
   getMyEncryptedIbeKey: (transportPublicKey: blob) -> (blob);
   getMyOrders: () -> (vec PublicOrderView) query;
   getMyRole: () -> (opt Role) query;
@@ -600,48 +716,63 @@ service : {
   getPaymentServiceConfig: () -> (PaymentServiceConfigView) query;
   getPaymentStatus: (reference: text) -> (PaymentStatus);
   getProduct: (slugOrId: text) -> (opt Product) query;
-  getResumeInfo: (reference: text) -> (Result_11) query;
-  getSubaccountBalance: (subaccountIndex: nat) -> (Result_10);
+  getProductImageStorageStats: () -> (StorageStats) query;
+  getResumeInfo: (reference: text) -> (Result_16) query;
+  getSubaccountBalance: (subaccountIndex: nat) -> (Result_15);
   getTokenImage: (chainId: text, tokenAddress: text) -> (text);
   getTokenProfile: (chainId: text, tokenAddress: text) -> (text);
   getTreasuryTokens: () -> (text);
   grantRole: (p: principal, role: Role) -> (bool);
-  handlePaymentConfirmation: (payload: text) -> (Result_9);
+  handlePaymentConfirmation: (payload: text) -> (Result_14);
+  http_request: (req: HttpRequest) -> (HttpResponse) query;
+  http_request_streaming_callback: (token: StreamingCallbackToken) ->
+   (StreamingCallbackResponse) query;
+  http_request_update: (req: HttpRequest) -> (HttpResponse) query;
   isAdmin: () -> (bool) query;
   listAdmins: () -> (vec principal);
+  listCategories: () -> (vec CategoryWithCount) query;
   listLatePayments: () -> (vec LatePayment);
   listOrdersForRecovery: () -> (vec OrderRecoveryView);
   listProducts: () -> (vec Product) query;
-  listSubmissions: () -> (Result_8);
+  listSubmissions: () -> (Result_13);
   listUsers: () -> (vec record {
                           principal;
                           UserRecord;
                         });
   markLatePaymentReviewed: (reference: text) -> (bool);
-  markOrderShipped: (reference: text, trackingNumber: opt text) -> (Result_7);
+  markOrderShipped: (reference: text, trackingNumber: opt text) ->
+   (Result_10);
   paymentServiceTransform: (input: TransformationInput) ->
    (TransformationOutput) query;
+  reassignProducts: (fromSlug: text, toSlug: text) -> (Result_12);
   releaseExpiredOrders: () -> (nat);
   removeAdmin: (p: principal) -> (bool);
-  resendConfirmationEmail: (reference: text) -> (Result_7);
+  reorderCategories: (orderedIds: vec CategoryId) -> (Result_11);
+  resendConfirmationEmail: (reference: text) -> (Result_10);
   resetAdminForMigration: () -> (bool);
   revokeRole: (p: principal) -> (bool);
   schema: () -> (text) query;
+  startUpload: (contentType: text, totalSize: nat) -> (Result_9);
   startVerificationTimer: () -> (bool);
   stopVerificationTimer: () -> (bool);
   submissionServiceTransform: (input: TransformationInput) ->
    (TransformationOutput) query;
-  submitSubmission: (input: SubmissionInput) -> (Result_6);
-  sweepCryptoToTreasury: (reference: text) -> (Result_5);
-  sweepDefaultSubaccount: () -> (Result_4);
-  sweepSubaccount: (subaccountIndex: nat) -> (Result_3);
+  submitSubmission: (input: SubmissionInput) -> (Result_8);
+  sweepCryptoToTreasury: (reference: text) -> (Result_7);
+  sweepDefaultSubaccount: () -> (Result_6);
+  sweepExpiredUploads: () -> ();
+  sweepSubaccount: (subaccountIndex: nat) -> (Result_5);
   transform: (input: TransformationInput) -> (TransformationOutput) query;
-  unsubscribe: (token: text) -> (Result_2);
+  unsubscribe: (token: text) -> (Result_4);
+  updateCategory: (id: CategoryId, name: text, description: opt text,
+   sortOrder: nat, active: bool, showWhenEmpty: bool) -> (Result_3);
   updateLedgerConfig: (token: Token, canisterId: principal, decimals: 
-   nat8, fee: nat) -> (Result);
-  updateMinimumOrder: (minimum: nat) -> (Result);
-  updatePaymentServiceToken: (token: text) -> (Result_1);
-  updatePaymentServiceUrl: (url: text) -> (Result_1);
+   nat8, fee: nat) -> (Result_1);
+  updateMinimumOrder: (minimum: float64) -> (Result_1);
+  updatePaymentServiceToken: (token: text) -> (Result_2);
+  updatePaymentServiceUrl: (url: text) -> (Result_2);
   updateProduct: (product: Product) -> (bool);
-  updateTreasury: ("principal": principal, subaccount: opt blob) -> (Result);
+  updateTreasury: ("principal": principal, subaccount: opt blob) ->
+   (Result_1);
+  uploadChunk: (uploadId: text, index: nat, "blob": blob) -> (Result);
 }

@@ -5,7 +5,8 @@ module {
     id : Text;
     name : Text;
     size : Text;
-    price : Nat;
+    // US dollar decimal value (e.g. 24.99). Never integer cents.
+    price : Float;
     inventory : Nat;
   };
 
@@ -14,7 +15,8 @@ module {
     name : Text;
     slug : Text;
     description : Text;
-    price : Nat;
+    // US dollar decimal value (e.g. 24.99). Never integer cents.
+    price : Float;
     currency : Text;
     images : [Text];
     category : Text;
@@ -34,7 +36,8 @@ module {
     variant_id : Text;
     name : Text;
     quantity : Nat;
-    unit_amount : Nat;
+    // US dollar decimal value (e.g. 24.99). Never integer cents.
+    unit_amount : Float;
   };
 
   public type PaymentStatus = {
@@ -61,10 +64,12 @@ module {
     id : Nat;
     reference : Text;
     items : [OrderItem];
-    subtotal : Nat;
-    tax : Nat;
-    shipping : Nat;
-    total : Nat;
+    // All monetary fields are US dollar decimal values (e.g. 24.99), never
+    // integer cents.
+    subtotal : Float;
+    tax : Float;
+    shipping : Float;
+    total : Float;
     currency : Text;
     // The customer's email address. This is the ONE documented exception to
     // the "no plaintext PII in canister state" rule: it must reach the email
@@ -171,9 +176,10 @@ module {
     #invalidQuantity;
     #paymentFailed : Text;
     // The crypto order total is below the configured minimum order total (the
-    // payload is the minimum in cents). Crypto orders below this cannot be
-    // swept to the treasury after the ledger transfer fee is deducted.
-    #belowMinimumOrder : Nat;
+    // payload is the minimum in US dollars as a decimal). Crypto orders below
+    // this cannot be swept to the treasury after the ledger transfer fee is
+    // deducted.
+    #belowMinimumOrder : Float;
     // ckUSDC checkout is temporarily disabled (the CKUSDC_CHECKOUT_ENABLED
     // constant is false). New ckUSDC orders are rejected; existing ckUSDC
     // orders are unaffected.
@@ -185,5 +191,39 @@ module {
     // reservations. For anonymous guests this is a global cap on simultaneous
     // pending orders, bounding how much of the catalogue a script can reserve.
     #tooManyPendingOrders;
+  };
+
+  public type CategoryId = Nat;
+
+  // A product category. The slug is the immutable, url-safe identifier that
+  // Product.category now stores — Product.category holds the category SLUG, not
+  // the display name. Renaming a category only mutates this record; it never
+  // rewrites Product or Order records. Field naming follows the Product
+  // convention (created_at / updated_at).
+  public type Category = {
+    id : CategoryId;
+    slug : Text;
+    name : Text;
+    description : ?Text;
+    sortOrder : Nat;
+    active : Bool;
+    showWhenEmpty : Bool;
+    created_at : Int;
+    updated_at : Int;
+  };
+
+  // Public view of a category returned by listCategories: the category plus the
+  // count of visible (active, non-admin_only) products that reference its slug.
+  public type CategoryWithCount = {
+    category : Category;
+    productCount : Nat;
+  };
+
+  public type CategoryError = {
+    #emptyName;
+    #slugCollision : Text;
+    #notFound : CategoryId;
+    #productsReferenced : { slug : Text; count : Nat };
+    #targetCategoryNotFound : Text;
   };
 };

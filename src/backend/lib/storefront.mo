@@ -7,6 +7,7 @@ import Nat "mo:core/Nat";
 import Principal "mo:core/Principal";
 import Types "../types/storefront";
 import CryptoTypes "../types/crypto-payments";
+import AssetTypes "../types/product-assets";
 import OrderReferencesLib "./order-references";
 
 module {
@@ -96,17 +97,44 @@ module {
   };
 
   // Admin-only: append a new product to the catalogue. The caller supplies the
-  // full Product record (prices in integer cents). The id and timestamps are
-  // provided by the caller; the frontend assigns a fresh id and current
-  // timestamps when creating.
+  // full Product record with prices as US dollar decimal values (e.g. 24.99) —
+  // never integer cents. The id and timestamps are provided by the caller; the
+  // frontend assigns a fresh id and current timestamps when creating.
   public func createProduct(products : List.List<Types.Product>, product : Types.Product) {
     products.add(product);
   };
 
   // Admin-only: replace an existing product (matched by id) with the supplied
-  // record. Prices are integer cents. A no-op when no product with that id
-  // exists.
-  public func updateProduct(products : List.List<Types.Product>, product : Types.Product) {
+  // record. Prices are US dollar decimal values (e.g. 24.99) — never integer
+  // cents. A no-op when no product with that id exists.
+  //
+  // Reconciles removed internal asset URLs: any URL matching the canister's own
+  // /assets/products/ prefix that was present in the OLD product's images list
+  // but is absent from the NEW list has its stored blob deleted from the assets
+  // map, so removing an image from a product never leaves orphaned bytes
+  // accumulating in stable state.
+  public func updateProduct(
+    products : List.List<Types.Product>,
+    product : Types.Product,
+    assets : Map.Map<AssetTypes.AssetId, AssetTypes.AssetRecord>,
+    selfPrincipal : Principal,
+  ) {
+    let prefix = "https://" # selfPrincipal.toText() # ".icp0.io/assets/products/";
+    switch (products.find(func p = p.id == product.id)) {
+      case (?oldProduct) {
+        for (url in oldProduct.images.values()) {
+          if (url.startsWith(#text prefix) and not product.images.contains(url)) {
+            // Extract the asset id: the last path segment of the internal URL.
+            let segments = url.split(#text "/").toArray();
+            if (segments.size() > 0) {
+              let assetId = segments[segments.size() - 1];
+              assets.remove(assetId);
+            };
+          };
+        };
+      };
+      case null {};
+    };
     replaceProduct(products, product);
   };
 
@@ -116,11 +144,11 @@ module {
     state : { var nextOrderId : Nat },
     input : Types.CreateOrderInput,
     caller : Principal,
-    minimumOrder : Nat,
+    minimumOrder : Float,
   ) : async Result.Result<Types.Order, Types.OrderError> {
     if (input.items.size() == 0) { return #err(#emptyOrder) };
 
-    var subtotal = 0;
+    var subtotal = 0.0;
     var validatedItems : [Types.OrderItem] = [];
     var reserved : [(Types.ProductId, Text, Nat)] = [];
     // True when the order contains an internal test item (an admin_only
@@ -146,7 +174,7 @@ module {
               };
               reservedQty.add(key, already + item.quantity);
               let unitAmount = v.price;
-              subtotal += unitAmount * item.quantity;
+              subtotal += unitAmount * item.quantity.toFloat();
               validatedItems := validatedItems.concat([{
                 product_id = item.product_id;
                 variant_id = item.variant_id;
@@ -162,11 +190,11 @@ module {
     };
 
     // Internal test items (admin_only products) are exempt from tax as well as
-    // shipping, so a single test item's total is exactly its price ($0.50),
-    // making the ckUSDC sweep math easy to verify. Real products keep the
-    // existing 8% tax and shipping rules.
-    let tax = if (hasTestItem) { 0 } else { subtotal * 8 / 100 };
-    let shipping = if (hasTestItem or subtotal >= 5000) { 0 } else { 500 };
+    // shipping, so a single test item's total is exactly its price, making the
+    // ckUSDC sweep math easy to verify. Real products keep the existing 8% tax
+    // and shipping rules. All monetary values are US dollar decimals (Float).
+    let tax = if (hasTestItem) { 0.0 } else { subtotal * 0.08 };
+    let shipping = if (hasTestItem or subtotal >= 50.0) { 0.0 } else { 5.0 };
     let total = subtotal + tax + shipping;
     let now = Time.now();
 

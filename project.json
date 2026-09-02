@@ -1,16 +1,15 @@
 {
-  "overview": "A storefront app for NAK STRATS with product listings, guest checkout, and order management.",
+  "overview": "A storefront landing page for NAK STRATS cologne products with a shop grid, product detail, cart, and checkout.",
   "features": [
-    "Browse and purchase products",
-    "Guest checkout with payment",
-    "Order status tracking",
-    "Admin order management"
+    "Browse a catalog of cologne products",
+    "View product details and prices",
+    "Add products to cart and check out"
   ],
-  "category": "storefront",
+  "category": "ecommerce",
   "tags": [
     "storefront",
-    "ecommerce",
-    "checkout"
+    "cologne",
+    "ecommerce"
   ],
-  "last_updated": "2026-09-01T16:05:12.568Z"
+  "last_updated": "2026-09-02T09:49:06.470Z"
 }

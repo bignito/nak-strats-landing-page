@@ -16,7 +16,7 @@ mixin (
   cryptoConfig : Types.CryptoConfig,
   selfPrincipal : Principal,
   adminUsers : AdminTypes.AdminUsers,
-  minimumOrderState : { var minimumOrder : Nat },
+  minimumOrderState : { var minimumOrder : Float },
   feeCache : Types.FeeCache,
 ) {
   public query func getCryptoConfig() : async Types.CryptoConfigView {
@@ -30,16 +30,16 @@ mixin (
     };
   };
 
-  // Public query: returns the current minimum order total (in USD cents)
+  // Public query: returns the current minimum order total (in USD dollars)
   // required for crypto checkout.
-  public query func getMinimumOrder() : async Nat {
+  public query func getMinimumOrder() : async Float {
     minimumOrderState.minimumOrder;
   };
 
-  // Admin-only: sets the minimum order total (in USD cents) required for crypto
+  // Admin-only: sets the minimum order total (in USD dollars) required for crypto
   // checkout. Crypto orders below this are rejected server-side because they
   // cannot be swept to the treasury after the ledger transfer fee is deducted.
-  public shared ({ caller }) func updateMinimumOrder(minimum : Nat) : async Result.Result<(), Types.CryptoPaymentError> {
+  public shared ({ caller }) func updateMinimumOrder(minimum : Float) : async Result.Result<(), Types.CryptoPaymentError> {
     AdminLib.requireAdminOrOwner(adminUsers, caller);
     minimumOrderState.minimumOrder := minimum;
     #ok();

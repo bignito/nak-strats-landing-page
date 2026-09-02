@@ -37,8 +37,8 @@ const ShopBanner: React.FC<ShopBannerProps> = ({ onNavigateToShop }) => {
             <span className="section-label">Product Line</span>
             <span className="truncate" style={{ color: "var(--nak-text)" }}>
               {ckUSDCEnabled
-                ? "N.A.K. Fragrance — five colognes, settled in ckUSDC"
-                : "N.A.K. Fragrance — five colognes"}
+                ? "N.A.K. — five colognes, settled in ckUSDC"
+                : "N.A.K. — five colognes"}
             </span>
           </span>
 

@@ -10,6 +10,7 @@ import {
   useUpdatePaymentServiceUrl,
   useUpdateTreasury,
 } from "@/hooks/useQueries";
+import { formatPrice } from "@/lib/currency";
 import type { AdminTabBodyProps } from "@/types/routes";
 import { Principal } from "@icp-sdk/core/principal";
 import { Loader2, ShieldAlert } from "lucide-react";
@@ -184,8 +185,7 @@ export function SettingsTab({ session }: AdminTabBodyProps) {
       setMinimumError("Minimum must be a non-negative dollar amount.");
       return;
     }
-    const units = BigInt(Math.round(dollars * 100));
-    updateMinimumOrder.mutate(units, {
+    updateMinimumOrder.mutate(dollars, {
       onError: (err) => setMinimumError(adminErrorMessage(err)),
       onSuccess: () => setMinimumInput(""),
     });
@@ -256,11 +256,7 @@ export function SettingsTab({ session }: AdminTabBodyProps) {
         />
         <AdminStatCard
           label="Min order"
-          value={
-            minimumOrder !== undefined
-              ? `$${(Number(minimumOrder) / 100).toFixed(2)}`
-              : "—"
-          }
+          value={minimumOrder !== undefined ? formatPrice(minimumOrder) : "—"}
         />
       </div>
 
@@ -814,9 +810,7 @@ export function SettingsTab({ session }: AdminTabBodyProps) {
                 style={{ color: "var(--muted-foreground)" }}
               >
                 Current:{" "}
-                <span className="num">
-                  ${(Number(minimumOrder ?? 0n) / 100).toFixed(2)}
-                </span>
+                <span className="num">{formatPrice(minimumOrder ?? 0)}</span>
               </span>
             </div>
             <div className="flex flex-col gap-1.5">
@@ -827,7 +821,7 @@ export function SettingsTab({ session }: AdminTabBodyProps) {
                 id="settings-minimum"
                 className="field-input"
                 inputMode="decimal"
-                placeholder={(Number(minimumOrder ?? 0n) / 100).toFixed(2)}
+                placeholder={(minimumOrder ?? 0).toFixed(2)}
                 value={minimumInput}
                 onChange={(e) => setMinimumInput(e.target.value)}
                 disabled={!canManage}

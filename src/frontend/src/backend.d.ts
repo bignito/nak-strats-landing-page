@@ -113,10 +113,10 @@ export type CryptoPaymentStatus = {
 };
 export type Result_5 = {
     __kind__: "ok";
-    ok: SweepSubaccountResult;
+    ok: null;
 } | {
     __kind__: "err";
-    err: SweepError;
+    err: ConsentError;
 };
 export interface CategoryWithCount {
     productCount: bigint;
@@ -124,10 +124,10 @@ export interface CategoryWithCount {
 }
 export type Result_4 = {
     __kind__: "ok";
-    ok: null;
+    ok: Category;
 } | {
     __kind__: "err";
-    err: ConsentError;
+    err: CategoryError;
 };
 export interface LedgerConfig {
     fee: bigint;
@@ -172,10 +172,10 @@ export interface LatePayment {
 }
 export type Result_7 = {
     __kind__: "ok";
-    ok: bigint;
+    ok: SweepResult;
 } | {
     __kind__: "err";
-    err: CryptoPaymentError;
+    err: RecoveryError;
 };
 export interface DepositInfo {
     decimals: number;
@@ -243,28 +243,31 @@ export type ConsentError = {
 };
 export type Result_6 = {
     __kind__: "ok";
-    ok: SweepResult;
+    ok: SweepSubaccountResult;
 } | {
     __kind__: "err";
-    err: RecoveryError;
+    err: SweepError;
 };
-export interface CheckoutSession {
-    url?: string;
-    reference: string;
-}
+export type Result_26 = {
+    __kind__: "ok";
+    ok: PaymentStatus;
+} | {
+    __kind__: "err";
+    err: PaymentServiceError;
+};
 export type Result_12 = {
     __kind__: "ok";
-    ok: bigint;
+    ok: null;
 } | {
     __kind__: "err";
     err: CategoryError;
 };
 export type Result_9 = {
     __kind__: "ok";
-    ok: string;
+    ok: null;
 } | {
     __kind__: "err";
-    err: UploadError;
+    err: SubmissionError;
 };
 export interface Order {
     id: bigint;
@@ -299,6 +302,10 @@ export interface CreateOrderResult {
     order: Order;
     cancellationToken?: string;
     sessionId?: string;
+}
+export interface CheckoutSession {
+    url?: string;
+    reference: string;
 }
 export type StreamingStrategy = {
     __kind__: "Callback";
@@ -339,10 +346,10 @@ export interface SubmissionRecord {
 }
 export type Result_10 = {
     __kind__: "ok";
-    ok: null;
+    ok: string;
 } | {
     __kind__: "err";
-    err: EmailError;
+    err: UploadError;
 };
 export type Result = {
     __kind__: "ok";
@@ -353,10 +360,10 @@ export type Result = {
 };
 export type Result_8 = {
     __kind__: "ok";
-    ok: null;
+    ok: bigint;
 } | {
     __kind__: "err";
-    err: SubmissionError;
+    err: CryptoPaymentError;
 };
 export interface CryptoConfigView {
     icp: LedgerConfig;
@@ -368,21 +375,21 @@ export interface CryptoConfigView {
 }
 export type Result_17 = {
     __kind__: "ok";
-    ok: bigint;
+    ok: ResumeInfo;
 } | {
     __kind__: "err";
     err: RecoveryError;
 };
 export type Result_13 = {
     __kind__: "ok";
-    ok: Array<SubmissionRecord>;
+    ok: bigint;
 } | {
     __kind__: "err";
-    err: SubmissionError;
+    err: CategoryError;
 };
 export type Result_25 = {
     __kind__: "ok";
-    ok: PaymentStatus;
+    ok: CheckoutSession;
 } | {
     __kind__: "err";
     err: PaymentServiceError;
@@ -428,10 +435,35 @@ export type SubmissionError = {
 };
 export type Result_16 = {
     __kind__: "ok";
-    ok: ResumeInfo;
+    ok: SubaccountBalanceResult;
+} | {
+    __kind__: "err";
+    err: SweepError;
+};
+export type Result_1 = {
+    __kind__: "ok";
+    ok: null;
+} | {
+    __kind__: "err";
+    err: CryptoPaymentError;
+};
+export interface UserRecord {
+    grantedAt: bigint;
+    role: Role;
+}
+export type Result_22 = {
+    __kind__: "ok";
+    ok: RecheckResult;
 } | {
     __kind__: "err";
     err: RecoveryError;
+};
+export type Result_11 = {
+    __kind__: "ok";
+    ok: null;
+} | {
+    __kind__: "err";
+    err: EmailError;
 };
 export type PaymentServiceError = {
     __kind__: "alreadyPaid";
@@ -454,31 +486,6 @@ export type PaymentServiceError = {
 } | {
     __kind__: "invalidResponse";
     invalidResponse: string;
-};
-export interface UserRecord {
-    grantedAt: bigint;
-    role: Role;
-}
-export type Result_22 = {
-    __kind__: "ok";
-    ok: CreateOrderResult;
-} | {
-    __kind__: "err";
-    err: OrderError;
-};
-export type Result_11 = {
-    __kind__: "ok";
-    ok: null;
-} | {
-    __kind__: "err";
-    err: CategoryError;
-};
-export type Result_1 = {
-    __kind__: "ok";
-    ok: null;
-} | {
-    __kind__: "err";
-    err: CryptoPaymentError;
 };
 export interface SubmissionInput {
     discipline: Discipline;
@@ -507,7 +514,7 @@ export interface TransformationInput {
 }
 export type Result_19 = {
     __kind__: "ok";
-    ok: DepositInfo;
+    ok: CryptoPaymentStatus;
 } | {
     __kind__: "err";
     err: CryptoPaymentError;
@@ -521,14 +528,14 @@ export type Result_24 = {
     ok: CheckoutSession;
 } | {
     __kind__: "err";
-    err: PaymentServiceError;
+    err: PaymentError;
 };
 export type Result_14 = {
     __kind__: "ok";
-    ok: null;
+    ok: Array<SubmissionRecord>;
 } | {
     __kind__: "err";
-    err: PaymentError;
+    err: SubmissionError;
 };
 export interface OrderRecoveryView {
     status: PaymentStatus;
@@ -640,10 +647,10 @@ export interface PublicOrderView {
 }
 export type Result_21 = {
     __kind__: "ok";
-    ok: RecheckResult;
+    ok: ConsentListExport;
 } | {
     __kind__: "err";
-    err: RecoveryError;
+    err: ConsentError;
 };
 export interface ProductVariant {
     id: string;
@@ -654,10 +661,10 @@ export interface ProductVariant {
 }
 export type Result_18 = {
     __kind__: "ok";
-    ok: CryptoPaymentStatus;
+    ok: bigint;
 } | {
     __kind__: "err";
-    err: CryptoPaymentError;
+    err: RecoveryError;
 };
 export type PaymentError = {
     __kind__: "invalidOrder";
@@ -668,10 +675,10 @@ export type PaymentError = {
 };
 export type Result_3 = {
     __kind__: "ok";
-    ok: Category;
+    ok: null;
 } | {
     __kind__: "err";
-    err: CategoryError;
+    err: string;
 };
 export interface StreamingCallbackResponse {
     token?: StreamingCallbackToken;
@@ -685,17 +692,17 @@ export interface HttpResponse {
 }
 export type Result_23 = {
     __kind__: "ok";
-    ok: CheckoutSession;
+    ok: CreateOrderResult;
 } | {
     __kind__: "err";
-    err: PaymentError;
+    err: OrderError;
 };
 export type Result_15 = {
     __kind__: "ok";
-    ok: SubaccountBalanceResult;
+    ok: null;
 } | {
     __kind__: "err";
-    err: SweepError;
+    err: PaymentError;
 };
 export type CategoryId = bigint;
 export type ProductId = bigint;
@@ -744,10 +751,10 @@ export interface HttpRequest {
 }
 export type Result_20 = {
     __kind__: "ok";
-    ok: ConsentListExport;
+    ok: DepositInfo;
 } | {
     __kind__: "err";
-    err: ConsentError;
+    err: CryptoPaymentError;
 };
 export interface Product {
     id: ProductId;
@@ -817,32 +824,36 @@ export interface backendInterface {
     bootstrapOwner(p: Principal): Promise<boolean>;
     cancelCardOrder(reference: string): Promise<Result_2>;
     cancelGuestOrder(reference: string, cancellationToken: string): Promise<Result_2>;
-    checkCryptoPayment(reference: string): Promise<Result_18>;
+    checkCryptoPayment(reference: string): Promise<Result_19>;
     claimInitialAdmin(): Promise<boolean>;
-    confirmCardPayment(reference: string): Promise<Result_25>;
+    confirmCardPayment(reference: string): Promise<Result_26>;
     consentServiceTransform(input: TransformationInput): Promise<TransformationOutput>;
-    createCardCheckoutSession(reference: string, successUrl: string, cancelUrl: string): Promise<Result_24>;
-    createCategory(name: string, description: string | null): Promise<Result_3>;
-    createCheckoutSession(order: Order): Promise<Result_23>;
-    createOrder(input: CreateOrderInput): Promise<Result_22>;
+    createCardCheckoutSession(reference: string, successUrl: string, cancelUrl: string): Promise<Result_25>;
+    createCategory(name: string, description: string | null): Promise<Result_4>;
+    createCheckoutSession(order: Order): Promise<Result_24>;
+    createOrder(input: CreateOrderInput): Promise<Result_23>;
     createProduct(product: Product): Promise<boolean>;
-    deleteCategory(id: CategoryId): Promise<Result_11>;
+    deleteCategory(id: CategoryId): Promise<Result_12>;
     deleteProductImage(assetId: string): Promise<Result>;
     emailTransform(input: TransformationInput): Promise<TransformationOutput>;
     execute(qJson: string): Promise<Result__1>;
-    finishUpload(uploadId: string, productId: bigint): Promise<Result_9>;
-    forceRecheckPayment(reference: string): Promise<Result_21>;
-    forceSweepOrder(reference: string): Promise<Result_6>;
+    finishUpload(uploadId: string, productId: bigint): Promise<Result_10>;
+    forceRecheckPayment(reference: string): Promise<Result_22>;
+    forceSweepOrder(reference: string): Promise<Result_7>;
     getApiDoc(): Promise<string>;
     getCanisterId(): Promise<Principal>;
-    getConsentListCsv(): Promise<Result_20>;
+    getConsentListCsv(): Promise<Result_21>;
     getCryptoConfig(): Promise<CryptoConfigView>;
-    getCryptoDepositInfo(reference: string): Promise<Result_19>;
-    getCryptoPaymentStatus(reference: string): Promise<Result_18>;
+    getCryptoDepositInfo(reference: string): Promise<Result_20>;
+    getCryptoPaymentStatus(reference: string): Promise<Result_19>;
     getCycleBalance(): Promise<bigint>;
     getDashboardData(): Promise<string>;
-    getDefaultSubaccountBalance(): Promise<Result_17>;
+    getDefaultSubaccountBalance(): Promise<Result_18>;
     getEncryptionRecipients(): Promise<Array<Principal>>;
+    getFeaturedVideo(): Promise<{
+        rawUrl: string;
+        embedUrl: string;
+    }>;
     getIbePublicKey(): Promise<Uint8Array>;
     getMinimumOrder(): Promise<bigint>;
     getMyEncryptedIbeKey(transportPublicKey: Uint8Array): Promise<Uint8Array>;
@@ -858,13 +869,13 @@ export interface backendInterface {
     }>;
     getProduct(slugOrId: string): Promise<Product | null>;
     getProductImageStorageStats(): Promise<StorageStats>;
-    getResumeInfo(reference: string): Promise<Result_16>;
-    getSubaccountBalance(subaccountIndex: bigint): Promise<Result_15>;
+    getResumeInfo(reference: string): Promise<Result_17>;
+    getSubaccountBalance(subaccountIndex: bigint): Promise<Result_16>;
     getTokenImage(chainId: string, tokenAddress: string): Promise<string>;
     getTokenProfile(chainId: string, tokenAddress: string): Promise<string>;
     getTreasuryTokens(): Promise<string>;
     grantRole(p: Principal, role: Role): Promise<boolean>;
-    handlePaymentConfirmation(payload: string): Promise<Result_14>;
+    handlePaymentConfirmation(payload: string): Promise<Result_15>;
     http_request(req: HttpRequest): Promise<HttpResponse>;
     http_request_streaming_callback(token: StreamingCallbackToken): Promise<StreamingCallbackResponse>;
     http_request_update(req: HttpRequest): Promise<HttpResponse>;
@@ -874,32 +885,33 @@ export interface backendInterface {
     listLatePayments(): Promise<Array<LatePayment>>;
     listOrdersForRecovery(): Promise<Array<OrderRecoveryView>>;
     listProducts(): Promise<Array<Product>>;
-    listSubmissions(): Promise<Result_13>;
+    listSubmissions(): Promise<Result_14>;
     listUsers(): Promise<Array<[Principal, UserRecord]>>;
     markLatePaymentReviewed(reference: string): Promise<boolean>;
-    markOrderShipped(reference: string, trackingNumber: string | null): Promise<Result_10>;
+    markOrderShipped(reference: string, trackingNumber: string | null): Promise<Result_11>;
     paymentServiceTransform(input: TransformationInput): Promise<TransformationOutput>;
-    reassignProducts(fromSlug: string, toSlug: string): Promise<Result_12>;
+    reassignProducts(fromSlug: string, toSlug: string): Promise<Result_13>;
     releaseExpiredOrders(): Promise<bigint>;
     releaseExpiredReservations(): Promise<bigint>;
     removeAdmin(p: Principal): Promise<boolean>;
-    reorderCategories(orderedIds: Array<CategoryId>): Promise<Result_11>;
-    resendConfirmationEmail(reference: string): Promise<Result_10>;
+    reorderCategories(orderedIds: Array<CategoryId>): Promise<Result_12>;
+    resendConfirmationEmail(reference: string): Promise<Result_11>;
     resetAdminForMigration(): Promise<boolean>;
     revokeRole(p: Principal): Promise<boolean>;
     schema(): Promise<string>;
-    startUpload(contentType: string, totalSize: bigint): Promise<Result_9>;
+    startUpload(contentType: string, totalSize: bigint): Promise<Result_10>;
     startVerificationTimer(): Promise<boolean>;
     stopVerificationTimer(): Promise<boolean>;
     submissionServiceTransform(input: TransformationInput): Promise<TransformationOutput>;
-    submitSubmission(input: SubmissionInput): Promise<Result_8>;
-    sweepCryptoToTreasury(reference: string): Promise<Result_7>;
-    sweepDefaultSubaccount(): Promise<Result_6>;
+    submitSubmission(input: SubmissionInput): Promise<Result_9>;
+    sweepCryptoToTreasury(reference: string): Promise<Result_8>;
+    sweepDefaultSubaccount(): Promise<Result_7>;
     sweepExpiredUploads(): Promise<void>;
-    sweepSubaccount(subaccountIndex: bigint): Promise<Result_5>;
+    sweepSubaccount(subaccountIndex: bigint): Promise<Result_6>;
     transform(input: TransformationInput): Promise<TransformationOutput>;
-    unsubscribe(token: string): Promise<Result_4>;
-    updateCategory(id: CategoryId, name: string, description: string | null, sortOrder: bigint, active: boolean, showWhenEmpty: boolean): Promise<Result_3>;
+    unsubscribe(token: string): Promise<Result_5>;
+    updateCategory(id: CategoryId, name: string, description: string | null, sortOrder: bigint, active: boolean, showWhenEmpty: boolean): Promise<Result_4>;
+    updateFeaturedVideo(rawUrl: string): Promise<Result_3>;
     updateLedgerConfig(token: Token, canisterId: Principal, decimals: number, fee: bigint): Promise<Result_1>;
     updateMinimumOrder(minimum: bigint): Promise<Result_1>;
     updatePaymentServiceToken(token: string): Promise<Result_2>;

@@ -6,7 +6,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useSubmitSubmission } from "@/hooks/useQueries";
+import { useFeaturedVideo, useSubmitSubmission } from "@/hooks/useQueries";
 import type React from "react";
 import { useState } from "react";
 
@@ -103,6 +103,13 @@ const NAKFeaturedArtist: React.FC<NAKFeaturedArtistProps> = () => {
   const [errors, setErrors] = useState<FieldErrors>({});
   const [submitted, setSubmitted] = useState(false);
   const submit = useSubmitSubmission();
+  const { data: featuredVideo } = useFeaturedVideo();
+
+  // Normalized embed URL from the backend; fall back to the current hardcoded
+  // video when none is set so the box is never empty.
+  const embedUrl =
+    featuredVideo?.embedUrl || "https://www.youtube.com/embed/HkIOBvsSyOQ";
+  const watchUrl = featuredVideo?.rawUrl || "https://youtu.be/HkIOBvsSyOQ";
 
   const setField = <K extends keyof FormState>(key: K, value: FormState[K]) => {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -167,7 +174,7 @@ const NAKFeaturedArtist: React.FC<NAKFeaturedArtistProps> = () => {
             className="text-[1.75rem] font-medium tracking-[-0.02em]"
             style={{ fontFamily: "var(--font-heading)" }}
           >
-            July Jax$on
+            NAK culture is hustle, heart, and grit.
           </h2>
           <span
             className="hairline inline-flex items-center px-2 py-0.5 text-[0.625rem] uppercase tracking-[0.14em] font-semibold text-muted-foreground"
@@ -181,15 +188,17 @@ const NAKFeaturedArtist: React.FC<NAKFeaturedArtistProps> = () => {
           className="font-mono text-[0.8125rem] text-muted-foreground mb-8"
           data-ocid="culture.debut_line"
         >
-          Ruby Galaxy — debut project, out now
+          Making something out of nothing. And when it hits, we don&apos;t
+          flaunt it — we keep doing what we do. Got to feed the family at the
+          end of the day. That&apos;s the mission.
         </p>
 
         <div className="hairline surface overflow-hidden">
           <div className="relative w-full aspect-video">
             <iframe
               className="absolute inset-0 w-full h-full"
-              src="https://www.youtube.com/embed/HkIOBvsSyOQ"
-              title="Ruby Galaxy — July Jax$on"
+              src={embedUrl}
+              title="NAK Culture — featured video"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
@@ -201,10 +210,10 @@ const NAKFeaturedArtist: React.FC<NAKFeaturedArtistProps> = () => {
               className="font-mono text-[0.8125rem] text-muted-foreground"
               data-ocid="culture.video_title"
             >
-              Ruby Galaxy · July Jax$on
+              NAK Culture
             </span>
             <a
-              href="https://youtu.be/HkIOBvsSyOQ"
+              href={watchUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="text-[0.8125rem] font-medium text-foreground hover:text-primary transition-colors"

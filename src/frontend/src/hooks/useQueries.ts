@@ -1138,6 +1138,52 @@ export function useUpdateMinimumOrder() {
   });
 }
 
+/**
+ * Reads the featured video. The backend returns the raw URL the admin entered
+ * plus a normalized embed URL (both empty strings when unset). The embed URL
+ * is the single source of truth for rendering the preview iframe.
+ */
+export function useGetFeaturedVideo() {
+  const { actor, isFetching } = useActor(createActor);
+  return useQuery({
+    queryKey: ["featuredVideo"],
+    queryFn: async (): Promise<{ rawUrl: string; embedUrl: string }> => {
+      if (!actor) return { rawUrl: "", embedUrl: "" };
+      return actor.getFeaturedVideo();
+    },
+    enabled: !!actor && !isFetching,
+  });
+}
+
+/**
+ * Updates the featured video URL. The backend normalizes accepted YouTube
+ * forms to an embed URL and rejects invalid 11-char video IDs, leaving the
+ * previous value untouched on failure.
+ */
+export function useUpdateFeaturedVideo() {
+  const { actor, isFetching } = useActor(createActor);
+  const { isActorReady } = useActorReady();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (rawUrl: string) => {
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      if (!isActorReady)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      const result = await actor.updateFeaturedVideo(rawUrl);
+      if (result.__kind__ === "err") throw result.err;
+      return result.ok;
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["featuredVideo"] });
+    },
+  });
+}
+
 /* ============================================================
    Order Resume & Admin Recovery hooks
    ============================================================ */
@@ -1547,6 +1593,24 @@ export function useSubmitSubmission() {
       const result = await actor.submitSubmission(input);
       if (result.__kind__ === "err") throw result.err;
     },
+  });
+}
+
+/**
+ * Reads the featured video for the Culture section (public query). Returns the
+ * raw URL plus the normalized embed URL; both are empty strings when no video
+ * is set. The caller falls back to a hardcoded default when embedUrl is empty
+ * so the video box is never blank.
+ */
+export function useFeaturedVideo() {
+  const { actor, isFetching } = useActor(createActor);
+  return useQuery({
+    queryKey: ["featuredVideo"],
+    queryFn: async (): Promise<{ rawUrl: string; embedUrl: string }> => {
+      if (!actor) return { rawUrl: "", embedUrl: "" };
+      return actor.getFeaturedVideo();
+    },
+    enabled: !!actor && !isFetching,
   });
 }
 

@@ -2,8 +2,10 @@ import { Token } from "@/backend";
 import {
   adminErrorMessage,
   useCryptoConfig,
+  useGetFeaturedVideo,
   useGetMinimumOrder,
   usePaymentServiceConfig,
+  useUpdateFeaturedVideo,
   useUpdateLedgerConfig,
   useUpdateMinimumOrder,
   useUpdatePaymentServiceToken,
@@ -13,7 +15,7 @@ import {
 import { formatPrice, parseDollars } from "@/lib/currency";
 import type { AdminTabBodyProps } from "@/types/routes";
 import { Principal } from "@icp-sdk/core/principal";
-import { Loader2, ShieldAlert } from "lucide-react";
+import { CheckCircle2, Loader2, ShieldAlert } from "lucide-react";
 import { useState } from "react";
 import { AdminConfirmDialog } from "./AdminConfirmDialog";
 import { AdminPanel } from "./AdminPanel";
@@ -26,6 +28,28 @@ function formatE8s(value: bigint, decimals: number): string {
   if (fraction === 0n) return whole.toString();
   const padded = fraction.toString().padStart(decimals, "0");
   return `${whole}.${padded.replace(/0+$/, "")}`;
+}
+
+/**
+ * Derives a YouTube embed URL from a raw URL for the live preview. Accepts the
+ * common watch, youtu.be, and embed forms and extracts the 11-char video ID.
+ * Returns null when no valid ID can be found so the preview stays hidden.
+ */
+function deriveEmbedUrl(rawUrl: string): string | null {
+  const trimmed = rawUrl.trim();
+  if (!trimmed) return null;
+  let id: string | null = null;
+  const watch = trimmed.match(
+    /(?:youtube\.com\/watch\?(?:.*&)?v=|youtu\.be\/|youtube\.com\/embed\/)([A-Za-z0-9_-]{11})/,
+  );
+  if (watch) {
+    id = watch[1];
+  } else {
+    const bare = trimmed.match(/^([A-Za-z0-9_-]{11})$/);
+    if (bare) id = bare[1];
+  }
+  if (!id) return null;
+  return `https://www.youtube.com/embed/${id}`;
 }
 
 /**
@@ -50,12 +74,18 @@ export function SettingsTab({ session }: AdminTabBodyProps) {
   } = usePaymentServiceConfig();
   const { data: minimumOrder, isLoading: minimumLoading } =
     useGetMinimumOrder();
+  const {
+    data: featuredVideo,
+    isLoading: featuredLoading,
+    error: featuredError,
+  } = useGetFeaturedVideo();
 
   const updateTreasury = useUpdateTreasury();
   const updateLedgerConfig = useUpdateLedgerConfig();
   const updatePaymentServiceUrl = useUpdatePaymentServiceUrl();
   const updatePaymentServiceToken = useUpdatePaymentServiceToken();
   const updateMinimumOrder = useUpdateMinimumOrder();
+  const updateFeaturedVideo = useUpdateFeaturedVideo();
 
   const [treasuryInput, setTreasuryInput] = useState("");
   const [treasuryError, setTreasuryError] = useState<string | null>(null);
@@ -78,6 +108,12 @@ export function SettingsTab({ session }: AdminTabBodyProps) {
 
   const [minimumInput, setMinimumInput] = useState("");
   const [minimumError, setMinimumError] = useState<string | null>(null);
+
+  const [featuredInput, setFeaturedInput] = useState("");
+  const [featuredSaveError, setFeaturedSaveError] = useState<string | null>(
+    null,
+  );
+  const [featuredSuccess, setFeaturedSuccess] = useState(false);
 
   const handleUpdateTreasury = () => {
     setTreasuryError(null);
@@ -188,6 +224,26 @@ export function SettingsTab({ session }: AdminTabBodyProps) {
     updateMinimumOrder.mutate(cents, {
       onError: (err) => setMinimumError(adminErrorMessage(err)),
       onSuccess: () => setMinimumInput(""),
+    });
+  };
+
+  const handleUpdateFeaturedVideo = () => {
+    setFeaturedSaveError(null);
+    setFeaturedSuccess(false);
+    const url = featuredInput.trim();
+    if (!url) {
+      setFeaturedSaveError("Enter a YouTube video URL.");
+      return;
+    }
+    updateFeaturedVideo.mutate(url, {
+      onError: (err) =>
+        setFeaturedSaveError(
+          typeof err === "string" ? err : adminErrorMessage(err),
+        ),
+      onSuccess: () => {
+        setFeaturedSuccess(true);
+        setFeaturedInput("");
+      },
     });
   };
 
@@ -861,6 +917,131 @@ export function SettingsTab({ session }: AdminTabBodyProps) {
                 {minimumError}
               </div>
             )}
+          </div>
+        )}
+      </AdminPanel>
+
+      {/* Featured video */}
+      <AdminPanel
+        title="Featured video"
+        actions={
+          <span
+            className="text-xs"
+            style={{ color: "var(--muted-foreground)" }}
+          >
+            ADMIN / OWNER
+          </span>
+        }
+      >
+        {featuredLoading ? (
+          <div
+            className="flex items-center gap-3 py-6"
+            style={{ color: "var(--muted-foreground)" }}
+            data-ocid="admin.settings.loading_state"
+          >
+            <Loader2 className="w-4 h-4 animate-spin" />
+            Loading configuration…
+          </div>
+        ) : featuredError ? (
+          <div className="error-panel" data-ocid="admin.settings.error_state">
+            {adminErrorMessage(featuredError)}
+          </div>
+        ) : (
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center justify-between">
+              <span className="section-heading text-sm">YouTube video</span>
+              <span
+                className="text-xs"
+                style={{ color: "var(--muted-foreground)" }}
+              >
+                {featuredVideo?.rawUrl ? "Set" : "Not set"}
+              </span>
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <label className="field-label" htmlFor="settings-featured">
+                YouTube video URL
+              </label>
+              <input
+                id="settings-featured"
+                className="field-input"
+                placeholder={
+                  featuredVideo?.rawUrl || "https://www.youtube.com/watch?v=…"
+                }
+                value={featuredInput}
+                onChange={(e) => {
+                  setFeaturedInput(e.target.value);
+                  setFeaturedSaveError(null);
+                  setFeaturedSuccess(false);
+                }}
+                disabled={!canManage}
+                data-ocid="admin.settings.featured_input"
+              />
+            </div>
+            <div className="flex items-center gap-3">
+              <AdminConfirmDialog
+                trigger={
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    disabled={!canManage || !featuredInput.trim()}
+                    data-ocid="admin.settings.featured_button"
+                  >
+                    Save video
+                  </button>
+                }
+                title="Set featured video"
+                description={`Set the featured video to ${featuredInput.trim() || "this URL"}? It will be shown on the main page.`}
+                confirmLabel="Save video"
+                cancelLabel="Cancel"
+                tone="warning"
+                onConfirm={handleUpdateFeaturedVideo}
+                pending={updateFeaturedVideo.isPending}
+                disabled={!canManage || !featuredInput.trim()}
+              />
+              {updateFeaturedVideo.isPending && (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              )}
+            </div>
+            {featuredSaveError && (
+              <div
+                className="error-panel"
+                data-ocid="admin.settings.featured_error"
+              >
+                {featuredSaveError}
+              </div>
+            )}
+            {featuredSuccess && (
+              <p
+                className="flex items-center gap-1.5 text-xs"
+                style={{ color: "var(--positive)" }}
+                data-ocid="admin.settings.featured_success"
+              >
+                <CheckCircle2 className="w-3.5 h-3.5" />
+                Featured video saved.
+              </p>
+            )}
+            {(() => {
+              const previewUrl =
+                featuredInput.trim() !== ""
+                  ? deriveEmbedUrl(featuredInput)
+                  : featuredVideo?.embedUrl || null;
+              if (!previewUrl) return null;
+              return (
+                <div className="flex flex-col gap-1.5">
+                  <span className="field-label">Preview</span>
+                  <div className="relative w-full aspect-video overflow-hidden rounded-md border border-border bg-black">
+                    <iframe
+                      className="absolute inset-0 h-full w-full"
+                      src={previewUrl}
+                      title="Featured video preview"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowFullScreen
+                      data-ocid="admin.settings.featured_preview"
+                    />
+                  </div>
+                </div>
+              );
+            })()}
           </div>
         )}
       </AdminPanel>

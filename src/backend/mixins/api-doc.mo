@@ -167,6 +167,40 @@ Category errors are returned as a `CategoryError` variant (never a generic
 \"failed\"): `#emptyName`, `#slugCollision(slug)`, `#notFound(id)`,
 `#productsReferenced({ slug; count })`, and `#targetCategoryNotFound(slug)`.
 
+### Featured video (admin-editable main-page YouTube embed)
+
+The main page's video block is driven by an admin-editable featured YouTube
+video stored in canister stable state (survives upgrades). The backend stores
+the raw URL the admin pasted AND the normalized embed URL derived from it, so
+the frontend can render the embed directly without re-parsing.
+
+- `getFeaturedVideo() : async { rawUrl : Text; embedUrl : Text }` — query.
+  PUBLIC (anonymous). Returns the current featured video config: `rawUrl` is
+  the exact URL the admin last saved (or `\"\"` when none has been set), and
+  `embedUrl` is the normalized embed URL
+  (`https://www.youtube.com/embed/VIDEO_ID`) the main page should render (or
+  `\"\"` when none has been set). When `embedUrl` is empty, the frontend falls
+  back to its hardcoded default video rather than rendering an empty box.
+- `updateFeaturedVideo(rawUrl : Text) : async Result<(), Text>` — update.
+  ADMIN-OR-OWNER. Sets the featured video from a raw YouTube URL. Binds the
+  caller at the top of the function, rejects the anonymous principal, and traps
+  for a caller that is not a non-anonymous ADMIN or OWNER (the same admin guard
+  used by every other admin-configuration method). On success it stores the raw
+  URL and the normalized embed URL and returns `#ok()`. The accepted input
+  forms, all normalized to `https://www.youtube.com/embed/VIDEO_ID`:
+  - `https://www.youtube.com/watch?v=VIDEO_ID` (with or without extra query
+    params like `&t=` or `&list=`)
+  - `https://youtu.be/VIDEO_ID`
+  - `https://www.youtube.com/shorts/VIDEO_ID`
+  - `https://www.youtube.com/embed/VIDEO_ID` (already normalized)
+  - a bare `VIDEO_ID`
+  A valid video id is exactly 11 characters drawn from the YouTube id character
+  set (`A-Z`, `a-z`, `0-9`, `-`, `_`). If the URL cannot be parsed into a valid
+  11-character video id, the save is REJECTED with
+  `#err(\"That doesn't look like a valid YouTube link.\")` and the previous
+  value is left untouched — a bad save never clears or corrupts the current
+  video.
+
 ### Product image assets (canister-side storage)
 
 Product images are stored as blobs in the canister's own stable state (NOT the
@@ -833,6 +867,7 @@ never admitted):
   image upload and deletion (content-integrity control: STAFF can never upload
   or delete images).
 - `updateMinimumOrder` — minimum crypto order total (integer cents).
+- `updateFeaturedVideo` — sets the admin-editable featured YouTube video.
 - `updateTreasury`, `updateLedgerConfig` — treasury destination and ledger
   configuration.
 - `updatePaymentServiceUrl`, `updatePaymentServiceToken` — payment service
@@ -869,7 +904,7 @@ Public (no role required):
 - `claimInitialAdmin` (one-time, gated on `initialAdminClaimed = false`),
   `getMyRole`, `adminCount`, `isAdmin`, `getResumeInfo`, `getCycleBalance`,
   `getCanisterId`, `getIbePublicKey`, `unsubscribe`, `submitSubmission`,
-  `getPendingOrderConfig`, the
+  `getPendingOrderConfig`, `getFeaturedVideo`, the
   storefront read methods, the crypto read methods, the HTTP outcall
   helpers, `getProductImageStorageStats`, and the HTTP asset-serving methods
   (`http_request`, `http_request_update`, `http_request_streaming_callback`).
@@ -1296,7 +1331,8 @@ state.
 - The admin-gated methods (`updateTreasury`, `updateLedgerConfig`,
   `updatePaymentServiceUrl`, `updatePaymentServiceToken`, `addAdmin`,
   `removeAdmin`, `listAdmins`, `sweepCryptoToTreasury`, `releaseExpiredOrders`,
-  `adminListOrders`, `adminGetOrderDetail`, `createProduct`, `updateProduct`)
+  `adminListOrders`, `adminGetOrderDetail`, `createProduct`, `updateProduct`,
+  `updateFeaturedVideo`)
   TRAP for a caller that is not a non-anonymous ADMIN or OWNER, and for the
   anonymous principal. This is an authorization failure, not a
   caller-correctable error, so it reaches the caller as a reject rather than a

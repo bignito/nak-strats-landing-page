@@ -1,16 +1,15 @@
 {
-  "overview": "A storefront landing page for NAK STRATS colognes with a browsable catalogue, cart, and card checkout.",
+  "overview": "A landing page for NAK STRATS with an admin dashboard, a featured YouTube video, and a NAKSwap token swap widget.",
   "features": [
-    "Browse the cologne catalogue by category",
-    "Add products to a cart and place orders",
-    "Pay by card through the checkout flow",
-    "Admin product management with access control"
+    "Admin-editable featured YouTube video",
+    "NAKSwap token swap widget",
+    "Admin dashboard for site configuration"
   ],
-  "category": "ecommerce",
+  "category": "landing-page",
   "tags": [
-    "storefront",
-    "ecommerce",
-    "colognes"
+    "crypto",
+    "landing-page",
+    "admin"
   ],
-  "last_updated": "2026-09-02T17:14:22.880Z"
+  "last_updated": "2026-09-02T19:55:49.167Z"
 }

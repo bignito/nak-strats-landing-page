@@ -31,6 +31,7 @@ import ApiDocMixin "mixins/api-doc";
 import SubmissionTypes "types/submissions";
 import SubmissionsApi "mixins/submissions-api";
 import IbeApi "mixins/ibe-api";
+import FeaturedVideoApi "mixins/featured-video-api";
 import RateLimitTypes "types/rate-limit";
 import CancellationTypes "types/cancellation";
 import AssetTypes "types/product-assets";
@@ -333,6 +334,12 @@ persistent actor Self {
     // Admin-configurable.
     let minimumOrder : { var minimumOrder : Nat };
 
+    // Admin-editable featured YouTube video (stable, seeded by the migration
+    // chain, default empty). Holds the raw URL the admin pasted plus the
+    // normalized embed URL (https://www.youtube.com/embed/VIDEO_ID). Both are
+    // empty strings until an admin sets a video via updateFeaturedVideo().
+    let featuredVideo : { var rawUrl : Text; var embedUrl : Text };
+
     // Runtime icrc1_fee cache (stable, seeded by the migration chain). The
     // sweep queries icrc1_fee on the configured ledger at runtime and caches it
     // briefly rather than hardcoding it; the hardcoded ledger fee is only the
@@ -467,6 +474,7 @@ persistent actor Self {
     include CryptoPaymentsApi(orders, products, cryptoPayments, cryptoConfig, selfPrincipal, adminUsers, minimumOrder, feeCache);
     include PaymentServiceApi(paymentServiceConfig, orders, products, adminUsers, checkoutRateLimit, confirmRateLimit, cancelTokens);
     include AdminApi(adminUsers, initialAdminClaimed, selfPrincipal);
+    include FeaturedVideoApi(featuredVideo, adminUsers);
     include IbeApi(adminUsers, ibeKeyName);
     include RecoveryApi(orders, products, cryptoPayments, cryptoConfig, selfPrincipal, adminUsers, feeCache, latePayments, timerState, paymentServiceConfig, emailTransform);
     include SubmissionsApi(paymentServiceConfig, adminUsers, rateLimit);

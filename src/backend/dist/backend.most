@@ -63,6 +63,15 @@ type AssetRecord__927655605 =
     productId : Nat;
     uploadedAt : Int
   };
+type AssetRecord__971915635 =
+  {
+    byteSize : Nat;
+    bytes : Blob;
+    contentType : Text;
+    id : Text;
+    productId : Nat;
+    uploadedAt : Int
+  };
 type AssetRecord__998594987 =
   {
     byteSize : Nat;
@@ -76,6 +85,7 @@ type CancellationToken__122555126 = {expiresAt : Int; token : Text};
 type CancellationToken__141884488 = {expiresAt : Int; token : Text};
 type CancellationToken__199793108 = {expiresAt : Int; token : Text};
 type CancellationToken__249699440 = {expiresAt : Int; token : Text};
+type CancellationToken__444399231 = {expiresAt : Int; token : Text};
 type CancellationToken__56272076 = {expiresAt : Int; token : Text};
 type CancellationToken__568485365 = {expiresAt : Int; token : Text};
 type CancellationToken__572156728 = {expiresAt : Int; token : Text};
@@ -95,6 +105,18 @@ type Category__1009107007 =
     updated_at : Int
   };
 type Category__183236200 =
+  {
+    active : Bool;
+    created_at : Int;
+    description : ?Text;
+    id : Nat;
+    name : Text;
+    showWhenEmpty : Bool;
+    slug : Text;
+    sortOrder : Nat;
+    updated_at : Int
+  };
+type Category__224863482 =
   {
     active : Bool;
     created_at : Int;
@@ -257,6 +279,13 @@ type CryptoConfig__638530895 =
     var treasuryPrincipal : Principal;
     var treasurySubaccount : ?Blob
   };
+type CryptoConfig__648353191 =
+  {
+    var ckUSDC : LedgerConfig__773595603;
+    var icp : LedgerConfig__773595603;
+    var treasuryPrincipal : Principal;
+    var treasurySubaccount : ?Blob
+  };
 type CryptoConfig__678988748 =
   {
     var ckUSDC : LedgerConfig__116400985;
@@ -347,6 +376,14 @@ type CryptoPaymentStatus__178157964 =
     #underpayment : {expected : Nat; received : Nat}
   };
 type CryptoPaymentStatus__212946176 =
+  {
+    #awaiting_payment;
+    #expired;
+    #overpayment : {expected : Nat; received : Nat};
+    #paid : {blockIndex : Nat};
+    #underpayment : {expected : Nat; received : Nat}
+  };
+type CryptoPaymentStatus__229575107 =
   {
     #awaiting_payment;
     #expired;
@@ -734,6 +771,19 @@ type CryptoPayment__800176578 =
     token : Token__130132368;
     updatedAt : Int
   };
+type CryptoPayment__890414459 =
+  {
+    amountDue : Nat;
+    confirmedBlockIndex : ?Nat;
+    createdAt : Int;
+    expiresAt : Int;
+    orderId : Nat;
+    reference : Text;
+    status : CryptoPaymentStatus__229575107;
+    subaccount : Blob;
+    token : Token__680836017;
+    updatedAt : Int
+  };
 type CryptoPayment__939263613 =
   {
     amountDue : Nat;
@@ -750,6 +800,7 @@ type CryptoPayment__939263613 =
 type Data__265875254<K, V> = {var count : Nat__58649523; kvs : [var ?(K, V)]};
 type Data__859131645<T> = {var count : Nat__58649523; elements : [var ?T]};
 type FeeCacheEntry__1035766934 = {var fee : Nat; var updatedAt : Int};
+type FeeCacheEntry__117302515 = {var fee : Nat; var updatedAt : Int};
 type FeeCacheEntry__160002690 = {var fee : Nat; var updatedAt : Int};
 type FeeCacheEntry__161440515 = {var fee : Nat; var updatedAt : Int};
 type FeeCacheEntry__241378038 = {var fee : Nat; var updatedAt : Int};
@@ -766,6 +817,8 @@ type FeeCacheEntry__81626611 = {var fee : Nat; var updatedAt : Int};
 type FeeCacheEntry__84478112 = {var fee : Nat; var updatedAt : Int};
 type FeeCacheEntry__856894186 = {var fee : Nat; var updatedAt : Int};
 type FeeCacheEntry__988204841 = {var fee : Nat; var updatedAt : Int};
+type FeeCache__1017681762 =
+  {var ckUSDC : FeeCacheEntry__117302515; var icp : FeeCacheEntry__117302515};
 type FeeCache__1035989734 =
   {var ckUSDC : FeeCacheEntry__347564953; var icp : FeeCacheEntry__347564953};
 type FeeCache__326838663 =
@@ -886,6 +939,15 @@ type LatePayment__352643406 =
     reviewed : Bool;
     token : Token__863372865
   };
+type LatePayment__379098565 =
+  {
+    expectedAmount : Nat;
+    receivedAmount : Nat;
+    receivedAt : Int;
+    reference : Text;
+    reviewed : Bool;
+    token : Token__680836017
+  };
 type LatePayment__642791935 =
   {
     expectedAmount : Nat;
@@ -980,6 +1042,8 @@ type LedgerConfig__652279807 =
 type LedgerConfig__700127978 =
   {canisterId : Principal; decimals : Nat8; fee : Nat};
 type LedgerConfig__710561065 =
+  {canisterId : Principal; decimals : Nat8; fee : Nat};
+type LedgerConfig__773595603 =
   {canisterId : Principal; decimals : Nat8; fee : Nat};
 type LedgerConfig__784393959 =
   {canisterId : Principal; decimals : Nat8; fee : Nat};
@@ -1096,6 +1160,32 @@ type NewActor__388723483 =
     state : {var nextOrderId : Nat};
     unsubscribeRateLimit : RateLimitState__814889285;
     uploads : Map__386906547<Text, UploadSession__690807904>
+  };
+type NewActor__393957481 =
+  {
+    adminUsers : Map__386906547<Principal, UserRecord__320950283>;
+    assets : Map__386906547<Text, AssetRecord__971915635>;
+    cancelTokens : Map__386906547<Text, CancellationToken__444399231>;
+    categories : List__89170296<Category__224863482>;
+    checkoutRateLimit : RateLimitState__892173164;
+    confirmRateLimit : RateLimitState__892173164;
+    cryptoConfig : CryptoConfig__648353191;
+    cryptoPayments : Map__386906547<Text, CryptoPayment__890414459>;
+    featuredVideo : {var embedUrl : Text; var rawUrl : Text};
+    feeCache : FeeCache__1017681762;
+    initialAdminClaimed : {var initialAdminClaimed : Bool};
+    latePayments : List__89170296<LatePayment__379098565>;
+    minimumOrder : {var minimumOrder : Nat};
+    orderRateLimit : RateLimitState__892173164;
+    orders : List__89170296<Order__464789027>;
+    paymentServiceConfig : {var token : Text; var url : Text};
+    pendingOrderConfig : {var globalCap : Nat};
+    products : List__89170296<Product__345304702>;
+    rateLimit : {var submissions : Map__386906547<Principal, [Int]>};
+    sessionOrders : Map__386906547<Text, List__89170296<Text>>;
+    state : {var nextOrderId : Nat};
+    unsubscribeRateLimit : RateLimitState__892173164;
+    uploads : Map__386906547<Text, UploadSession__857805393>
   };
 type NewActor__446880241 =
   {
@@ -1504,6 +1594,31 @@ type Node__1045371124<T> =
   {#internal : Internal__778364379<T>; #leaf : Leaf__776840865<T>};
 type Node__430031793<K, V> =
   {#internal : Internal__161573640<K, V>; #leaf : Leaf__1045638083<K, V>};
+type OldActor__101527642 =
+  {
+    adminUsers : Map__386906547<Principal, UserRecord__320950283>;
+    assets : Map__386906547<Text, AssetRecord__971915635>;
+    cancelTokens : Map__386906547<Text, CancellationToken__444399231>;
+    categories : List__89170296<Category__224863482>;
+    checkoutRateLimit : RateLimitState__892173164;
+    confirmRateLimit : RateLimitState__892173164;
+    cryptoConfig : CryptoConfig__648353191;
+    cryptoPayments : Map__386906547<Text, CryptoPayment__890414459>;
+    feeCache : FeeCache__1017681762;
+    initialAdminClaimed : {var initialAdminClaimed : Bool};
+    latePayments : List__89170296<LatePayment__379098565>;
+    minimumOrder : {var minimumOrder : Nat};
+    orderRateLimit : RateLimitState__892173164;
+    orders : List__89170296<Order__464789027>;
+    paymentServiceConfig : {var token : Text; var url : Text};
+    pendingOrderConfig : {var globalCap : Nat};
+    products : List__89170296<Product__345304702>;
+    rateLimit : {var submissions : Map__386906547<Principal, [Int]>};
+    sessionOrders : Map__386906547<Text, List__89170296<Text>>;
+    state : {var nextOrderId : Nat};
+    unsubscribeRateLimit : RateLimitState__892173164;
+    uploads : Map__386906547<Text, UploadSession__857805393>
+  };
 type OldActor__141955202 =
   {
     adminAllowlist : Set__195681557<Principal>;
@@ -2012,6 +2127,14 @@ type OrderItem__30484001 =
     unit_amount : Float;
     variant_id : Text
   };
+type OrderItem__330885608 =
+  {
+    name : Text;
+    product_id : Nat;
+    quantity : Nat;
+    unit_amount : Nat;
+    variant_id : Text
+  };
 type OrderItem__350286306 =
   {
     name : Text;
@@ -2311,6 +2434,32 @@ type Order__381945960 =
     tracking_number : ?Text;
     updated_at : Int
   };
+type Order__464789027 =
+  {
+    created_at : Int;
+    currency : Text;
+    customer_email : Text;
+    customer_principal : ?Principal;
+    encrypted_shipping : ?Blob;
+    has_shipping_details : Bool;
+    id : Nat;
+    items : [OrderItem__330885608];
+    marketing_consent : Bool;
+    marketing_consent_at : ?Int;
+    payment_method : PaymentMethod__571620172;
+    payment_reference : ?Text;
+    payment_status : PaymentStatus__50602037;
+    reference : Text;
+    shipped_at : ?Int;
+    shipping : Nat;
+    shipping_status : ShippingStatus__503727622;
+    subtotal : Nat;
+    sweep_note : ?Text;
+    tax : Nat;
+    total : Nat;
+    tracking_number : ?Text;
+    updated_at : Int
+  };
 type Order__485945001 =
   {
     created_at : Int;
@@ -2568,6 +2717,8 @@ type PaymentMethod__439916913 =
   {#card_stripe; #crypto_ckusdc; #crypto_icp; #manual};
 type PaymentMethod__522322462 =
   {#card_stripe; #crypto_ckusdc; #crypto_icp; #manual};
+type PaymentMethod__571620172 =
+  {#card_stripe; #crypto_ckusdc; #crypto_icp; #manual};
 type PaymentMethod__573648682 =
   {#card_stripe; #crypto_ckusdc; #crypto_icp; #manual};
 type PaymentMethod__695801121 =
@@ -2603,6 +2754,7 @@ type PaymentStatus__404668488 = {#cancelled; #expired; #paid; #pending};
 type PaymentStatus__419640478 = {#cancelled; #expired; #paid; #pending};
 type PaymentStatus__440834947 = {#cancelled; #expired; #paid; #pending};
 type PaymentStatus__446045969 = {#cancelled; #expired; #paid; #pending};
+type PaymentStatus__50602037 = {#cancelled; #expired; #paid; #pending};
 type PaymentStatus__522203698 = {#cancelled; #expired; #paid; #pending};
 type PaymentStatus__557411377 = {#cancelled; #expired; #paid; #pending};
 type PaymentStatus__622475758 = {#cancelled; #expired; #paid; #pending};
@@ -2647,6 +2799,8 @@ type ProductVariant__590594803 =
 type ProductVariant__707504129 =
   {id : Text; inventory : Nat; name : Text; price : Nat; size : Text};
 type ProductVariant__772641295 =
+  {id : Text; inventory : Nat; name : Text; price : Nat; size : Text};
+type ProductVariant__785524577 =
   {id : Text; inventory : Nat; name : Text; price : Nat; size : Text};
 type ProductVariant__831360607 =
   {id : Text; inventory : Nat; name : Text; price : Nat; size : Text};
@@ -2840,6 +2994,23 @@ type Product__300878977 =
     updated_at : Int;
     variants : [ProductVariant__1032075207]
   };
+type Product__345304702 =
+  {
+    active : Bool;
+    admin_only : Bool;
+    category : Text;
+    created_at : Int;
+    currency : Text;
+    description : Text;
+    id : Nat;
+    images : [Text];
+    inventory : Nat;
+    name : Text;
+    price : Nat;
+    slug : Text;
+    updated_at : Int;
+    variants : [ProductVariant__785524577]
+  };
 type Product__355065486 =
   {
     active : Bool;
@@ -3008,6 +3179,8 @@ type RateLimitState__674097649 =
   {var calls : Map__386906547<Principal, [Int]>};
 type RateLimitState__814889285 =
   {var calls : Map__386906547<Principal, [Int]>};
+type RateLimitState__892173164 =
+  {var calls : Map__386906547<Principal, [Int]>};
 type Role__154797762 = {#admin; #owner; #staff};
 type Role__247618351 = {#admin; #owner; #staff};
 type Role__27535170 = {#admin; #owner; #staff};
@@ -3017,6 +3190,7 @@ type Role__516740223 = {#admin; #owner; #staff};
 type Role__520338175 = {#admin; #owner; #staff};
 type Role__649098038 = {#admin; #owner; #staff};
 type Role__793703359 = {#admin; #owner; #staff};
+type Role__849415657 = {#admin; #owner; #staff};
 type Role__895443989 = {#admin; #owner; #staff};
 type Set__195681557<T> = Set__29061695<T>;
 type Set__29061695<T> =
@@ -3116,6 +3290,7 @@ type ShippingStatus__130972803 = {#pending; #shipped};
 type ShippingStatus__172127575 = {#pending; #shipped};
 type ShippingStatus__301631604 = {#pending; #shipped};
 type ShippingStatus__494029615 = {#pending; #shipped};
+type ShippingStatus__503727622 = {#pending; #shipped};
 type ShippingStatus__618992772 = {#pending; #shipped};
 type ShippingStatus__637416611 = {#pending; #shipped};
 type ShippingStatus__646367499 = {#pending; #shipped};
@@ -3142,6 +3317,7 @@ type Token__409727160 = {#ICP; #ckUSDC};
 type Token__465204250 = {#ICP; #ckUSDC};
 type Token__483073351 = {#ICP; #ckUSDC};
 type Token__529220404 = {#ICP; #ckUSDC};
+type Token__680836017 = {#ICP; #ckUSDC};
 type Token__685382632 = {#ICP; #ckUSDC};
 type Token__701566634 = {#ICP; #ckUSDC};
 type Token__796771584 = {#ICP; #ckUSDC};
@@ -3207,6 +3383,16 @@ type UploadSession__690807904 =
     received : Map__386906547<Nat, Blob>;
     totalSize : Nat
   };
+type UploadSession__857805393 =
+  {
+    contentType : Text;
+    createdAt : Int;
+    id : Text;
+    lastActivityAt : Int;
+    owner : Principal;
+    received : Map__386906547<Nat, Blob>;
+    totalSize : Nat
+  };
 type UploadSession__914270516 =
   {
     contentType : Text;
@@ -3232,6 +3418,7 @@ type UserRecord__1058149651 = {grantedAt : Int; role : Role__793703359};
 type UserRecord__152225916 = {grantedAt : Int; role : Role__27535170};
 type UserRecord__21008380 = {grantedAt : Int; role : Role__154797762};
 type UserRecord__248376505 = {grantedAt : Int; role : Role__514646194};
+type UserRecord__320950283 = {grantedAt : Int; role : Role__849415657};
 type UserRecord__333049531 = {grantedAt : Int; role : Role__516740223};
 type UserRecord__38871181 = {grantedAt : Int; role : Role__382057378};
 type UserRecord__43517813 = {grantedAt : Int; role : Role__895443989};
@@ -3257,7 +3444,8 @@ type UserRecord__964092535 = {grantedAt : Int; role : Role__520338175};
   "20260902_030000" : (old : OldActor__699478200) -> NewActor__766393799;
   "20260902_040000" : (old : OldActor__180216486) -> NewActor__946683096;
   "20260902_050000" : (old : OldActor__319710906) -> NewActor__944821987;
-  "20260902_060000" : (old : OldActor__339929214) -> NewActor__388723483
+  "20260902_060000" : (old : OldActor__339929214) -> NewActor__388723483;
+  "20260902_070000" : (old : OldActor__101527642) -> NewActor__393957481
 }
 actor  {
   stable adminUsers :
@@ -3295,6 +3483,7 @@ actor  {
       var root : Node__430031793<Text, CryptoPayment__509112777>;
       var size : Nat__58649523
     };
+  stable featuredVideo : {var embedUrl : Text; var rawUrl : Text};
   stable feeCache :
     {
       var ckUSDC : FeeCacheEntry__988204841;

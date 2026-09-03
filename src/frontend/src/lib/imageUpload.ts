@@ -1,4 +1,4 @@
-import type { Result, Result_9 } from "@/backend";
+import type { Result, Result_10 } from "@/backend";
 
 /** Long-edge cap for browser-side resize before upload. */
 export const MAX_IMAGE_EDGE = 1200;
@@ -36,13 +36,13 @@ export interface UploadProgress {
 
 /** The three backend actor methods the chunked driver needs. */
 export interface UploadDriverMethods {
-  startUpload: (contentType: string, totalSize: bigint) => Promise<Result_9>;
+  startUpload: (contentType: string, totalSize: bigint) => Promise<Result_10>;
   uploadChunk: (
     uploadId: string,
     index: bigint,
     blob: Uint8Array,
   ) => Promise<Result>;
-  finishUpload: (uploadId: string, productId: bigint) => Promise<Result_9>;
+  finishUpload: (uploadId: string, productId: bigint) => Promise<Result_10>;
 }
 
 /**

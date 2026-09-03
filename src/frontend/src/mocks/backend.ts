@@ -1038,6 +1038,10 @@ export const mockBackend: backendInterface = {
     treasuryPrincipal: "aaaaa-aa" as never,
   }),
   getMinimumOrder: async () => 2500n,
+  // Featured video — the mock returns an unset video (both URLs empty) so the
+  // admin Featured Video section renders its empty state and the live preview
+  // stays hidden until a valid URL is entered.
+  getFeaturedVideo: async () => ({ rawUrl: "", embedUrl: "" }),
   getCryptoDepositInfo: async () => ({
     __kind__: "ok",
     ok: {
@@ -1254,6 +1258,7 @@ export const mockBackend: backendInterface = {
   }),
   updateLedgerConfig: async () => ({ __kind__: "ok", ok: null }),
   updateMinimumOrder: async () => ({ __kind__: "ok", ok: null }),
+  updateFeaturedVideo: async () => ({ __kind__: "ok", ok: null }),
   updatePaymentServiceToken: async () => ({ __kind__: "ok", ok: null }),
   updatePaymentServiceUrl: async () => ({ __kind__: "ok", ok: null }),
   updateProduct: async () => true,

@@ -312,54 +312,56 @@ export type Result = { 'ok' : null } |
   { 'err' : UploadError };
 export type Result_1 = { 'ok' : null } |
   { 'err' : CryptoPaymentError };
-export type Result_10 = { 'ok' : null } |
-  { 'err' : EmailError };
+export type Result_10 = { 'ok' : string } |
+  { 'err' : UploadError };
 export type Result_11 = { 'ok' : null } |
+  { 'err' : EmailError };
+export type Result_12 = { 'ok' : null } |
   { 'err' : CategoryError };
-export type Result_12 = { 'ok' : bigint } |
+export type Result_13 = { 'ok' : bigint } |
   { 'err' : CategoryError };
-export type Result_13 = { 'ok' : Array<SubmissionRecord> } |
+export type Result_14 = { 'ok' : Array<SubmissionRecord> } |
   { 'err' : SubmissionError };
-export type Result_14 = { 'ok' : null } |
+export type Result_15 = { 'ok' : null } |
   { 'err' : PaymentError };
-export type Result_15 = { 'ok' : SubaccountBalanceResult } |
+export type Result_16 = { 'ok' : SubaccountBalanceResult } |
   { 'err' : SweepError };
-export type Result_16 = { 'ok' : ResumeInfo } |
+export type Result_17 = { 'ok' : ResumeInfo } |
   { 'err' : RecoveryError };
-export type Result_17 = { 'ok' : bigint } |
+export type Result_18 = { 'ok' : bigint } |
   { 'err' : RecoveryError };
-export type Result_18 = { 'ok' : CryptoPaymentStatus } |
-  { 'err' : CryptoPaymentError };
-export type Result_19 = { 'ok' : DepositInfo } |
+export type Result_19 = { 'ok' : CryptoPaymentStatus } |
   { 'err' : CryptoPaymentError };
 export type Result_2 = { 'ok' : null } |
   { 'err' : PaymentServiceError };
-export type Result_20 = { 'ok' : ConsentListExport } |
-  { 'err' : ConsentError };
-export type Result_21 = { 'ok' : RecheckResult } |
-  { 'err' : RecoveryError };
-export type Result_22 = { 'ok' : CreateOrderResult } |
-  { 'err' : OrderError };
-export type Result_23 = { 'ok' : CheckoutSession } |
-  { 'err' : PaymentError };
-export type Result_24 = { 'ok' : CheckoutSession } |
-  { 'err' : PaymentServiceError };
-export type Result_25 = { 'ok' : PaymentStatus } |
-  { 'err' : PaymentServiceError };
-export type Result_3 = { 'ok' : Category } |
-  { 'err' : CategoryError };
-export type Result_4 = { 'ok' : null } |
-  { 'err' : ConsentError };
-export type Result_5 = { 'ok' : SweepSubaccountResult } |
-  { 'err' : SweepError };
-export type Result_6 = { 'ok' : SweepResult } |
-  { 'err' : RecoveryError };
-export type Result_7 = { 'ok' : bigint } |
+export type Result_20 = { 'ok' : DepositInfo } |
   { 'err' : CryptoPaymentError };
-export type Result_8 = { 'ok' : null } |
+export type Result_21 = { 'ok' : ConsentListExport } |
+  { 'err' : ConsentError };
+export type Result_22 = { 'ok' : RecheckResult } |
+  { 'err' : RecoveryError };
+export type Result_23 = { 'ok' : CreateOrderResult } |
+  { 'err' : OrderError };
+export type Result_24 = { 'ok' : CheckoutSession } |
+  { 'err' : PaymentError };
+export type Result_25 = { 'ok' : CheckoutSession } |
+  { 'err' : PaymentServiceError };
+export type Result_26 = { 'ok' : PaymentStatus } |
+  { 'err' : PaymentServiceError };
+export type Result_3 = { 'ok' : null } |
+  { 'err' : string };
+export type Result_4 = { 'ok' : Category } |
+  { 'err' : CategoryError };
+export type Result_5 = { 'ok' : null } |
+  { 'err' : ConsentError };
+export type Result_6 = { 'ok' : SweepSubaccountResult } |
+  { 'err' : SweepError };
+export type Result_7 = { 'ok' : SweepResult } |
+  { 'err' : RecoveryError };
+export type Result_8 = { 'ok' : bigint } |
+  { 'err' : CryptoPaymentError };
+export type Result_9 = { 'ok' : null } |
   { 'err' : SubmissionError };
-export type Result_9 = { 'ok' : string } |
-  { 'err' : UploadError };
 export interface Result__1 { 'hasMore' : boolean, 'rows' : Array<Array<Cell>> }
 export interface ResumeInfo {
   'status' : CryptoPaymentStatus,
@@ -477,38 +479,42 @@ export interface _SERVICE {
   'bootstrapOwner' : ActorMethod<[Principal], boolean>,
   'cancelCardOrder' : ActorMethod<[string], Result_2>,
   'cancelGuestOrder' : ActorMethod<[string, string], Result_2>,
-  'checkCryptoPayment' : ActorMethod<[string], Result_18>,
+  'checkCryptoPayment' : ActorMethod<[string], Result_19>,
   'claimInitialAdmin' : ActorMethod<[], boolean>,
-  'confirmCardPayment' : ActorMethod<[string], Result_25>,
+  'confirmCardPayment' : ActorMethod<[string], Result_26>,
   'consentServiceTransform' : ActorMethod<
     [TransformationInput],
     TransformationOutput
   >,
   'createCardCheckoutSession' : ActorMethod<
     [string, string, string],
-    Result_24
+    Result_25
   >,
-  'createCategory' : ActorMethod<[string, [] | [string]], Result_3>,
-  'createCheckoutSession' : ActorMethod<[Order], Result_23>,
-  'createOrder' : ActorMethod<[CreateOrderInput], Result_22>,
+  'createCategory' : ActorMethod<[string, [] | [string]], Result_4>,
+  'createCheckoutSession' : ActorMethod<[Order], Result_24>,
+  'createOrder' : ActorMethod<[CreateOrderInput], Result_23>,
   'createProduct' : ActorMethod<[Product], boolean>,
-  'deleteCategory' : ActorMethod<[CategoryId], Result_11>,
+  'deleteCategory' : ActorMethod<[CategoryId], Result_12>,
   'deleteProductImage' : ActorMethod<[string], Result>,
   'emailTransform' : ActorMethod<[TransformationInput], TransformationOutput>,
   'execute' : ActorMethod<[string], Result__1>,
-  'finishUpload' : ActorMethod<[string, bigint], Result_9>,
-  'forceRecheckPayment' : ActorMethod<[string], Result_21>,
-  'forceSweepOrder' : ActorMethod<[string], Result_6>,
+  'finishUpload' : ActorMethod<[string, bigint], Result_10>,
+  'forceRecheckPayment' : ActorMethod<[string], Result_22>,
+  'forceSweepOrder' : ActorMethod<[string], Result_7>,
   'getApiDoc' : ActorMethod<[], string>,
   'getCanisterId' : ActorMethod<[], Principal>,
-  'getConsentListCsv' : ActorMethod<[], Result_20>,
+  'getConsentListCsv' : ActorMethod<[], Result_21>,
   'getCryptoConfig' : ActorMethod<[], CryptoConfigView>,
-  'getCryptoDepositInfo' : ActorMethod<[string], Result_19>,
-  'getCryptoPaymentStatus' : ActorMethod<[string], Result_18>,
+  'getCryptoDepositInfo' : ActorMethod<[string], Result_20>,
+  'getCryptoPaymentStatus' : ActorMethod<[string], Result_19>,
   'getCycleBalance' : ActorMethod<[], bigint>,
   'getDashboardData' : ActorMethod<[], string>,
-  'getDefaultSubaccountBalance' : ActorMethod<[], Result_17>,
+  'getDefaultSubaccountBalance' : ActorMethod<[], Result_18>,
   'getEncryptionRecipients' : ActorMethod<[], Array<Principal>>,
+  'getFeaturedVideo' : ActorMethod<
+    [],
+    { 'rawUrl' : string, 'embedUrl' : string }
+  >,
   'getIbePublicKey' : ActorMethod<[], Uint8Array>,
   'getMinimumOrder' : ActorMethod<[], bigint>,
   'getMyEncryptedIbeKey' : ActorMethod<[Uint8Array], Uint8Array>,
@@ -524,13 +530,13 @@ export interface _SERVICE {
   >,
   'getProduct' : ActorMethod<[string], [] | [Product]>,
   'getProductImageStorageStats' : ActorMethod<[], StorageStats>,
-  'getResumeInfo' : ActorMethod<[string], Result_16>,
-  'getSubaccountBalance' : ActorMethod<[bigint], Result_15>,
+  'getResumeInfo' : ActorMethod<[string], Result_17>,
+  'getSubaccountBalance' : ActorMethod<[bigint], Result_16>,
   'getTokenImage' : ActorMethod<[string, string], string>,
   'getTokenProfile' : ActorMethod<[string, string], string>,
   'getTreasuryTokens' : ActorMethod<[], string>,
   'grantRole' : ActorMethod<[Principal, Role], boolean>,
-  'handlePaymentConfirmation' : ActorMethod<[string], Result_14>,
+  'handlePaymentConfirmation' : ActorMethod<[string], Result_15>,
   'http_request' : ActorMethod<[HttpRequest], HttpResponse>,
   'http_request_streaming_callback' : ActorMethod<
     [StreamingCallbackToken],
@@ -543,41 +549,42 @@ export interface _SERVICE {
   'listLatePayments' : ActorMethod<[], Array<LatePayment>>,
   'listOrdersForRecovery' : ActorMethod<[], Array<OrderRecoveryView>>,
   'listProducts' : ActorMethod<[], Array<Product>>,
-  'listSubmissions' : ActorMethod<[], Result_13>,
+  'listSubmissions' : ActorMethod<[], Result_14>,
   'listUsers' : ActorMethod<[], Array<[Principal, UserRecord]>>,
   'markLatePaymentReviewed' : ActorMethod<[string], boolean>,
-  'markOrderShipped' : ActorMethod<[string, [] | [string]], Result_10>,
+  'markOrderShipped' : ActorMethod<[string, [] | [string]], Result_11>,
   'paymentServiceTransform' : ActorMethod<
     [TransformationInput],
     TransformationOutput
   >,
-  'reassignProducts' : ActorMethod<[string, string], Result_12>,
+  'reassignProducts' : ActorMethod<[string, string], Result_13>,
   'releaseExpiredOrders' : ActorMethod<[], bigint>,
   'releaseExpiredReservations' : ActorMethod<[], bigint>,
   'removeAdmin' : ActorMethod<[Principal], boolean>,
-  'reorderCategories' : ActorMethod<[Array<CategoryId>], Result_11>,
-  'resendConfirmationEmail' : ActorMethod<[string], Result_10>,
+  'reorderCategories' : ActorMethod<[Array<CategoryId>], Result_12>,
+  'resendConfirmationEmail' : ActorMethod<[string], Result_11>,
   'resetAdminForMigration' : ActorMethod<[], boolean>,
   'revokeRole' : ActorMethod<[Principal], boolean>,
   'schema' : ActorMethod<[], string>,
-  'startUpload' : ActorMethod<[string, bigint], Result_9>,
+  'startUpload' : ActorMethod<[string, bigint], Result_10>,
   'startVerificationTimer' : ActorMethod<[], boolean>,
   'stopVerificationTimer' : ActorMethod<[], boolean>,
   'submissionServiceTransform' : ActorMethod<
     [TransformationInput],
     TransformationOutput
   >,
-  'submitSubmission' : ActorMethod<[SubmissionInput], Result_8>,
-  'sweepCryptoToTreasury' : ActorMethod<[string], Result_7>,
-  'sweepDefaultSubaccount' : ActorMethod<[], Result_6>,
+  'submitSubmission' : ActorMethod<[SubmissionInput], Result_9>,
+  'sweepCryptoToTreasury' : ActorMethod<[string], Result_8>,
+  'sweepDefaultSubaccount' : ActorMethod<[], Result_7>,
   'sweepExpiredUploads' : ActorMethod<[], undefined>,
-  'sweepSubaccount' : ActorMethod<[bigint], Result_5>,
+  'sweepSubaccount' : ActorMethod<[bigint], Result_6>,
   'transform' : ActorMethod<[TransformationInput], TransformationOutput>,
-  'unsubscribe' : ActorMethod<[string], Result_4>,
+  'unsubscribe' : ActorMethod<[string], Result_5>,
   'updateCategory' : ActorMethod<
     [CategoryId, string, [] | [string], bigint, boolean, boolean],
-    Result_3
+    Result_4
   >,
+  'updateFeaturedVideo' : ActorMethod<[string], Result_3>,
   'updateLedgerConfig' : ActorMethod<
     [Token, Principal, number, bigint],
     Result_1

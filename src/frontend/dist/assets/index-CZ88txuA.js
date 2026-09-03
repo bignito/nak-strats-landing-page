@@ -34491,11 +34491,11 @@ const CryptoPaymentError = Variant({
   "invalidConfig": Text,
   "belowMinimumOrder": Nat
 });
-const Result_18 = Variant({
+const Result_19 = Variant({
   "ok": CryptoPaymentStatus,
   "err": CryptoPaymentError
 });
-const Result_25 = Variant({
+const Result_26 = Variant({
   "ok": PaymentStatus$1,
   "err": PaymentServiceError
 });
@@ -34518,7 +34518,7 @@ const CheckoutSession = Record({
   "url": Opt(Text),
   "reference": Text
 });
-const Result_24 = Variant({
+const Result_25 = Variant({
   "ok": CheckoutSession,
   "err": PaymentServiceError
 });
@@ -34541,7 +34541,7 @@ const CategoryError = Variant({
   "productsReferenced": Record({ "count": Nat, "slug": Text }),
   "slugCollision": Text
 });
-const Result_3 = Variant({ "ok": Category, "err": CategoryError });
+const Result_4 = Variant({ "ok": Category, "err": CategoryError });
 const ShippingStatus = Variant({
   "shipped": Null,
   "pending": Null
@@ -34575,7 +34575,7 @@ const PaymentError = Variant({
   "invalidOrder": Null,
   "paymentFailed": Text
 });
-const Result_23 = Variant({
+const Result_24 = Variant({
   "ok": CheckoutSession,
   "err": PaymentError
 });
@@ -34612,7 +34612,7 @@ const OrderError = Variant({
   "invalidQuantity": Null,
   "tooManyPendingOrders": Null
 });
-const Result_22 = Variant({
+const Result_23 = Variant({
   "ok": CreateOrderResult,
   "err": OrderError
 });
@@ -34639,7 +34639,7 @@ const Product = Record({
   "price": Nat,
   "images": Vec(Text)
 });
-const Result_11 = Variant({
+const Result_12 = Variant({
   "ok": Null,
   "err": CategoryError
 });
@@ -34669,7 +34669,7 @@ const Result__1 = Record({
   "hasMore": Bool,
   "rows": Vec(Vec(Cell))
 });
-const Result_9 = Variant({ "ok": Text, "err": UploadError });
+const Result_10 = Variant({ "ok": Text, "err": UploadError });
 const RecheckResult = Record({
   "status": CryptoPaymentStatus,
   "balance": Nat,
@@ -34684,7 +34684,7 @@ const RecoveryError = Variant({
   "unauthorized": Null,
   "invalidConfig": Text
 });
-const Result_21 = Variant({
+const Result_22 = Variant({
   "ok": RecheckResult,
   "err": RecoveryError
 });
@@ -34693,7 +34693,7 @@ const SweepResult = Record({
   "error": Opt(Text),
   "blockIndex": Opt(Nat)
 });
-const Result_6 = Variant({
+const Result_7 = Variant({
   "ok": SweepResult,
   "err": RecoveryError
 });
@@ -34707,7 +34707,7 @@ const ConsentError = Variant({
   "unauthorized": Null,
   "invalidResponse": Text
 });
-const Result_20 = Variant({
+const Result_21 = Variant({
   "ok": ConsentListExport,
   "err": ConsentError
 });
@@ -34735,11 +34735,11 @@ const DepositInfo = Record({
   "address": Principal2,
   "amountDue": Nat
 });
-const Result_19 = Variant({
+const Result_20 = Variant({
   "ok": DepositInfo,
   "err": CryptoPaymentError
 });
-const Result_17 = Variant({ "ok": Nat, "err": RecoveryError });
+const Result_18 = Variant({ "ok": Nat, "err": RecoveryError });
 const PublicOrderView = Record({
   "id": Nat,
   "tax": Float64,
@@ -34784,7 +34784,7 @@ const ResumeInfo = Record({
   "deposit": Opt(DepositInfo),
   "remainingNs": Int
 });
-const Result_16 = Variant({
+const Result_17 = Variant({
   "ok": ResumeInfo,
   "err": RecoveryError
 });
@@ -34799,11 +34799,11 @@ const SweepError = Variant({
   "unauthorized": Null,
   "invalidConfig": Text
 });
-const Result_15 = Variant({
+const Result_16 = Variant({
   "ok": SubaccountBalanceResult,
   "err": SweepError
 });
-const Result_14 = Variant({ "ok": Null, "err": PaymentError });
+const Result_15 = Variant({ "ok": Null, "err": PaymentError });
 const HttpRequest = Record({
   "url": Text,
   "method": Text,
@@ -34889,7 +34889,7 @@ const SubmissionError = Variant({
   "outcallFailed": Text,
   "invalidResponse": Text
 });
-const Result_13 = Variant({
+const Result_14 = Variant({
   "ok": Vec(SubmissionRecord),
   "err": SubmissionError
 });
@@ -34902,8 +34902,8 @@ const EmailError = Variant({
   "unauthorized": Null,
   "invalidResponse": Text
 });
-const Result_10 = Variant({ "ok": Null, "err": EmailError });
-const Result_12 = Variant({ "ok": Nat, "err": CategoryError });
+const Result_11 = Variant({ "ok": Null, "err": EmailError });
+const Result_13 = Variant({ "ok": Nat, "err": CategoryError });
 const SubmissionInput = Record({
   "discipline": Discipline$1,
   "link": Text,
@@ -34914,11 +34914,11 @@ const SubmissionInput = Record({
   "marketingConsentAt": Opt(Int),
   "marketingConsent": Bool
 });
-const Result_8 = Variant({
+const Result_9 = Variant({
   "ok": Null,
   "err": SubmissionError
 });
-const Result_7 = Variant({
+const Result_8 = Variant({
   "ok": Nat,
   "err": CryptoPaymentError
 });
@@ -34928,11 +34928,12 @@ const SweepSubaccountResult = Record({
   "subaccountHex": Text,
   "subaccountIndex": Nat
 });
-const Result_5 = Variant({
+const Result_6 = Variant({
   "ok": SweepSubaccountResult,
   "err": SweepError
 });
-const Result_4 = Variant({ "ok": Null, "err": ConsentError });
+const Result_5 = Variant({ "ok": Null, "err": ConsentError });
+const Result_3 = Variant({ "ok": Null, "err": Text });
 const Result_1 = Variant({
   "ok": Null,
   "err": CryptoPaymentError
@@ -34953,9 +34954,9 @@ Service({
   "bootstrapOwner": Func([Principal2], [Bool], []),
   "cancelCardOrder": Func([Text], [Result_2], []),
   "cancelGuestOrder": Func([Text, Text], [Result_2], []),
-  "checkCryptoPayment": Func([Text], [Result_18], []),
+  "checkCryptoPayment": Func([Text], [Result_19], []),
   "claimInitialAdmin": Func([], [Bool], []),
-  "confirmCardPayment": Func([Text], [Result_25], []),
+  "confirmCardPayment": Func([Text], [Result_26], []),
   "consentServiceTransform": Func(
     [TransformationInput],
     [TransformationOutput],
@@ -34963,14 +34964,14 @@ Service({
   ),
   "createCardCheckoutSession": Func(
     [Text, Text, Text],
-    [Result_24],
+    [Result_25],
     []
   ),
-  "createCategory": Func([Text, Opt(Text)], [Result_3], []),
-  "createCheckoutSession": Func([Order], [Result_23], []),
-  "createOrder": Func([CreateOrderInput], [Result_22], []),
+  "createCategory": Func([Text, Opt(Text)], [Result_4], []),
+  "createCheckoutSession": Func([Order], [Result_24], []),
+  "createOrder": Func([CreateOrderInput], [Result_23], []),
   "createProduct": Func([Product], [Bool], []),
-  "deleteCategory": Func([CategoryId], [Result_11], []),
+  "deleteCategory": Func([CategoryId], [Result_12], []),
   "deleteProductImage": Func([Text], [Result], []),
   "emailTransform": Func(
     [TransformationInput],
@@ -34978,19 +34979,24 @@ Service({
     ["query"]
   ),
   "execute": Func([Text], [Result__1], ["query"]),
-  "finishUpload": Func([Text, Nat], [Result_9], []),
-  "forceRecheckPayment": Func([Text], [Result_21], []),
-  "forceSweepOrder": Func([Text], [Result_6], []),
+  "finishUpload": Func([Text, Nat], [Result_10], []),
+  "forceRecheckPayment": Func([Text], [Result_22], []),
+  "forceSweepOrder": Func([Text], [Result_7], []),
   "getApiDoc": Func([], [Text], ["query"]),
   "getCanisterId": Func([], [Principal2], ["query"]),
-  "getConsentListCsv": Func([], [Result_20], []),
+  "getConsentListCsv": Func([], [Result_21], []),
   "getCryptoConfig": Func([], [CryptoConfigView], ["query"]),
-  "getCryptoDepositInfo": Func([Text], [Result_19], ["query"]),
-  "getCryptoPaymentStatus": Func([Text], [Result_18], ["query"]),
+  "getCryptoDepositInfo": Func([Text], [Result_20], ["query"]),
+  "getCryptoPaymentStatus": Func([Text], [Result_19], ["query"]),
   "getCycleBalance": Func([], [Nat], ["query"]),
   "getDashboardData": Func([], [Text], []),
-  "getDefaultSubaccountBalance": Func([], [Result_17], []),
+  "getDefaultSubaccountBalance": Func([], [Result_18], []),
   "getEncryptionRecipients": Func([], [Vec(Principal2)], ["query"]),
+  "getFeaturedVideo": Func(
+    [],
+    [Record({ "rawUrl": Text, "embedUrl": Text })],
+    ["query"]
+  ),
   "getIbePublicKey": Func([], [Vec(Nat8)], []),
   "getMinimumOrder": Func([], [Nat], ["query"]),
   "getMyEncryptedIbeKey": Func(
@@ -35019,13 +35025,13 @@ Service({
   ),
   "getProduct": Func([Text], [Opt(Product)], ["query"]),
   "getProductImageStorageStats": Func([], [StorageStats], ["query"]),
-  "getResumeInfo": Func([Text], [Result_16], ["query"]),
-  "getSubaccountBalance": Func([Nat], [Result_15], []),
+  "getResumeInfo": Func([Text], [Result_17], ["query"]),
+  "getSubaccountBalance": Func([Nat], [Result_16], []),
   "getTokenImage": Func([Text, Text], [Text], []),
   "getTokenProfile": Func([Text, Text], [Text], []),
   "getTreasuryTokens": Func([], [Text], []),
   "grantRole": Func([Principal2, Role$1], [Bool], []),
-  "handlePaymentConfirmation": Func([Text], [Result_14], []),
+  "handlePaymentConfirmation": Func([Text], [Result_15], []),
   "http_request": Func([HttpRequest], [HttpResponse], ["query"]),
   "http_request_streaming_callback": Func(
     [StreamingCallbackToken],
@@ -35039,29 +35045,29 @@ Service({
   "listLatePayments": Func([], [Vec(LatePayment)], []),
   "listOrdersForRecovery": Func([], [Vec(OrderRecoveryView)], []),
   "listProducts": Func([], [Vec(Product)], ["query"]),
-  "listSubmissions": Func([], [Result_13], []),
+  "listSubmissions": Func([], [Result_14], []),
   "listUsers": Func(
     [],
     [Vec(Tuple(Principal2, UserRecord))],
     []
   ),
   "markLatePaymentReviewed": Func([Text], [Bool], []),
-  "markOrderShipped": Func([Text, Opt(Text)], [Result_10], []),
+  "markOrderShipped": Func([Text, Opt(Text)], [Result_11], []),
   "paymentServiceTransform": Func(
     [TransformationInput],
     [TransformationOutput],
     ["query"]
   ),
-  "reassignProducts": Func([Text, Text], [Result_12], []),
+  "reassignProducts": Func([Text, Text], [Result_13], []),
   "releaseExpiredOrders": Func([], [Nat], []),
   "releaseExpiredReservations": Func([], [Nat], []),
   "removeAdmin": Func([Principal2], [Bool], []),
-  "reorderCategories": Func([Vec(CategoryId)], [Result_11], []),
-  "resendConfirmationEmail": Func([Text], [Result_10], []),
+  "reorderCategories": Func([Vec(CategoryId)], [Result_12], []),
+  "resendConfirmationEmail": Func([Text], [Result_11], []),
   "resetAdminForMigration": Func([], [Bool], []),
   "revokeRole": Func([Principal2], [Bool], []),
   "schema": Func([], [Text], ["query"]),
-  "startUpload": Func([Text, Nat], [Result_9], []),
+  "startUpload": Func([Text, Nat], [Result_10], []),
   "startVerificationTimer": Func([], [Bool], []),
   "stopVerificationTimer": Func([], [Bool], []),
   "submissionServiceTransform": Func(
@@ -35069,22 +35075,23 @@ Service({
     [TransformationOutput],
     ["query"]
   ),
-  "submitSubmission": Func([SubmissionInput], [Result_8], []),
-  "sweepCryptoToTreasury": Func([Text], [Result_7], []),
-  "sweepDefaultSubaccount": Func([], [Result_6], []),
+  "submitSubmission": Func([SubmissionInput], [Result_9], []),
+  "sweepCryptoToTreasury": Func([Text], [Result_8], []),
+  "sweepDefaultSubaccount": Func([], [Result_7], []),
   "sweepExpiredUploads": Func([], [], []),
-  "sweepSubaccount": Func([Nat], [Result_5], []),
+  "sweepSubaccount": Func([Nat], [Result_6], []),
   "transform": Func(
     [TransformationInput],
     [TransformationOutput],
     ["query"]
   ),
-  "unsubscribe": Func([Text], [Result_4], []),
+  "unsubscribe": Func([Text], [Result_5], []),
   "updateCategory": Func(
     [CategoryId, Text, Opt(Text), Nat, Bool, Bool],
-    [Result_3],
+    [Result_4],
     []
   ),
+  "updateFeaturedVideo": Func([Text], [Result_3], []),
   "updateLedgerConfig": Func(
     [Token$1, Principal2, Nat8, Nat],
     [Result_1],
@@ -35174,7 +35181,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "unauthorized": IDL2.Null,
     "invalidResponse": IDL2.Text
   });
-  const Result_26 = IDL2.Variant({
+  const Result_27 = IDL2.Variant({
     "ok": IDL2.Null,
     "err": PaymentServiceError2
   });
@@ -35191,11 +35198,11 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "invalidConfig": IDL2.Text,
     "belowMinimumOrder": IDL2.Nat
   });
-  const Result_182 = IDL2.Variant({
+  const Result_192 = IDL2.Variant({
     "ok": CryptoPaymentStatus2,
     "err": CryptoPaymentError2
   });
-  const Result_252 = IDL2.Variant({
+  const Result_262 = IDL2.Variant({
     "ok": PaymentStatus2,
     "err": PaymentServiceError2
   });
@@ -35218,7 +35225,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "url": IDL2.Opt(IDL2.Text),
     "reference": IDL2.Text
   });
-  const Result_242 = IDL2.Variant({
+  const Result_252 = IDL2.Variant({
     "ok": CheckoutSession2,
     "err": PaymentServiceError2
   });
@@ -35241,7 +35248,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "productsReferenced": IDL2.Record({ "count": IDL2.Nat, "slug": IDL2.Text }),
     "slugCollision": IDL2.Text
   });
-  const Result_32 = IDL2.Variant({ "ok": Category2, "err": CategoryError2 });
+  const Result_42 = IDL2.Variant({ "ok": Category2, "err": CategoryError2 });
   const ShippingStatus2 = IDL2.Variant({
     "shipped": IDL2.Null,
     "pending": IDL2.Null
@@ -35275,7 +35282,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "invalidOrder": IDL2.Null,
     "paymentFailed": IDL2.Text
   });
-  const Result_232 = IDL2.Variant({
+  const Result_242 = IDL2.Variant({
     "ok": CheckoutSession2,
     "err": PaymentError2
   });
@@ -35312,7 +35319,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "invalidQuantity": IDL2.Null,
     "tooManyPendingOrders": IDL2.Null
   });
-  const Result_222 = IDL2.Variant({
+  const Result_232 = IDL2.Variant({
     "ok": CreateOrderResult2,
     "err": OrderError2
   });
@@ -35339,7 +35346,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "price": IDL2.Nat,
     "images": IDL2.Vec(IDL2.Text)
   });
-  const Result_112 = IDL2.Variant({ "ok": IDL2.Null, "err": CategoryError2 });
+  const Result_122 = IDL2.Variant({ "ok": IDL2.Null, "err": CategoryError2 });
   const UploadError2 = IDL2.Variant({
     "tooManyImages": IDL2.Null,
     "tooLarge": IDL2.Null,
@@ -35366,7 +35373,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "hasMore": IDL2.Bool,
     "rows": IDL2.Vec(IDL2.Vec(Cell2))
   });
-  const Result_92 = IDL2.Variant({ "ok": IDL2.Text, "err": UploadError2 });
+  const Result_102 = IDL2.Variant({ "ok": IDL2.Text, "err": UploadError2 });
   const RecheckResult2 = IDL2.Record({
     "status": CryptoPaymentStatus2,
     "balance": IDL2.Nat,
@@ -35381,7 +35388,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "unauthorized": IDL2.Null,
     "invalidConfig": IDL2.Text
   });
-  const Result_212 = IDL2.Variant({
+  const Result_222 = IDL2.Variant({
     "ok": RecheckResult2,
     "err": RecoveryError2
   });
@@ -35390,7 +35397,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "error": IDL2.Opt(IDL2.Text),
     "blockIndex": IDL2.Opt(IDL2.Nat)
   });
-  const Result_62 = IDL2.Variant({ "ok": SweepResult2, "err": RecoveryError2 });
+  const Result_72 = IDL2.Variant({ "ok": SweepResult2, "err": RecoveryError2 });
   const ConsentListExport2 = IDL2.Record({ "csv": IDL2.Text });
   const ConsentError2 = IDL2.Variant({
     "alreadyUnsubscribed": IDL2.Null,
@@ -35401,7 +35408,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "unauthorized": IDL2.Null,
     "invalidResponse": IDL2.Text
   });
-  const Result_202 = IDL2.Variant({
+  const Result_212 = IDL2.Variant({
     "ok": ConsentListExport2,
     "err": ConsentError2
   });
@@ -35429,11 +35436,11 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "address": IDL2.Principal,
     "amountDue": IDL2.Nat
   });
-  const Result_192 = IDL2.Variant({
+  const Result_202 = IDL2.Variant({
     "ok": DepositInfo2,
     "err": CryptoPaymentError2
   });
-  const Result_172 = IDL2.Variant({ "ok": IDL2.Nat, "err": RecoveryError2 });
+  const Result_182 = IDL2.Variant({ "ok": IDL2.Nat, "err": RecoveryError2 });
   const PublicOrderView2 = IDL2.Record({
     "id": IDL2.Nat,
     "tax": IDL2.Float64,
@@ -35478,7 +35485,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "deposit": IDL2.Opt(DepositInfo2),
     "remainingNs": IDL2.Int
   });
-  const Result_162 = IDL2.Variant({ "ok": ResumeInfo2, "err": RecoveryError2 });
+  const Result_172 = IDL2.Variant({ "ok": ResumeInfo2, "err": RecoveryError2 });
   const SubaccountBalanceResult2 = IDL2.Record({
     "balance": IDL2.Nat,
     "subaccountHex": IDL2.Text,
@@ -35490,11 +35497,11 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "unauthorized": IDL2.Null,
     "invalidConfig": IDL2.Text
   });
-  const Result_152 = IDL2.Variant({
+  const Result_162 = IDL2.Variant({
     "ok": SubaccountBalanceResult2,
     "err": SweepError2
   });
-  const Result_142 = IDL2.Variant({ "ok": IDL2.Null, "err": PaymentError2 });
+  const Result_152 = IDL2.Variant({ "ok": IDL2.Null, "err": PaymentError2 });
   const HttpRequest2 = IDL2.Record({
     "url": IDL2.Text,
     "method": IDL2.Text,
@@ -35580,7 +35587,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "outcallFailed": IDL2.Text,
     "invalidResponse": IDL2.Text
   });
-  const Result_132 = IDL2.Variant({
+  const Result_142 = IDL2.Variant({
     "ok": IDL2.Vec(SubmissionRecord2),
     "err": SubmissionError2
   });
@@ -35593,8 +35600,8 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "unauthorized": IDL2.Null,
     "invalidResponse": IDL2.Text
   });
-  const Result_102 = IDL2.Variant({ "ok": IDL2.Null, "err": EmailError2 });
-  const Result_122 = IDL2.Variant({ "ok": IDL2.Nat, "err": CategoryError2 });
+  const Result_112 = IDL2.Variant({ "ok": IDL2.Null, "err": EmailError2 });
+  const Result_132 = IDL2.Variant({ "ok": IDL2.Nat, "err": CategoryError2 });
   const SubmissionInput2 = IDL2.Record({
     "discipline": Discipline2,
     "link": IDL2.Text,
@@ -35605,19 +35612,20 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "marketingConsentAt": IDL2.Opt(IDL2.Int),
     "marketingConsent": IDL2.Bool
   });
-  const Result_82 = IDL2.Variant({ "ok": IDL2.Null, "err": SubmissionError2 });
-  const Result_72 = IDL2.Variant({ "ok": IDL2.Nat, "err": CryptoPaymentError2 });
+  const Result_92 = IDL2.Variant({ "ok": IDL2.Null, "err": SubmissionError2 });
+  const Result_82 = IDL2.Variant({ "ok": IDL2.Nat, "err": CryptoPaymentError2 });
   const SweepSubaccountResult2 = IDL2.Record({
     "error": IDL2.Opt(IDL2.Text),
     "blockIndex": IDL2.Opt(IDL2.Nat),
     "subaccountHex": IDL2.Text,
     "subaccountIndex": IDL2.Nat
   });
-  const Result_52 = IDL2.Variant({
+  const Result_62 = IDL2.Variant({
     "ok": SweepSubaccountResult2,
     "err": SweepError2
   });
-  const Result_42 = IDL2.Variant({ "ok": IDL2.Null, "err": ConsentError2 });
+  const Result_52 = IDL2.Variant({ "ok": IDL2.Null, "err": ConsentError2 });
+  const Result_32 = IDL2.Variant({ "ok": IDL2.Null, "err": IDL2.Text });
   const Result_110 = IDL2.Variant({ "ok": IDL2.Null, "err": CryptoPaymentError2 });
   return IDL2.Service({
     "addAdmin": IDL2.Func([IDL2.Principal], [IDL2.Bool], []),
@@ -35633,11 +35641,11 @@ const idlFactory = ({ IDL: IDL2 }) => {
       ["query"]
     ),
     "bootstrapOwner": IDL2.Func([IDL2.Principal], [IDL2.Bool], []),
-    "cancelCardOrder": IDL2.Func([IDL2.Text], [Result_26], []),
-    "cancelGuestOrder": IDL2.Func([IDL2.Text, IDL2.Text], [Result_26], []),
-    "checkCryptoPayment": IDL2.Func([IDL2.Text], [Result_182], []),
+    "cancelCardOrder": IDL2.Func([IDL2.Text], [Result_27], []),
+    "cancelGuestOrder": IDL2.Func([IDL2.Text, IDL2.Text], [Result_27], []),
+    "checkCryptoPayment": IDL2.Func([IDL2.Text], [Result_192], []),
     "claimInitialAdmin": IDL2.Func([], [IDL2.Bool], []),
-    "confirmCardPayment": IDL2.Func([IDL2.Text], [Result_252], []),
+    "confirmCardPayment": IDL2.Func([IDL2.Text], [Result_262], []),
     "consentServiceTransform": IDL2.Func(
       [TransformationInput2],
       [TransformationOutput2],
@@ -35645,14 +35653,14 @@ const idlFactory = ({ IDL: IDL2 }) => {
     ),
     "createCardCheckoutSession": IDL2.Func(
       [IDL2.Text, IDL2.Text, IDL2.Text],
-      [Result_242],
+      [Result_252],
       []
     ),
-    "createCategory": IDL2.Func([IDL2.Text, IDL2.Opt(IDL2.Text)], [Result_32], []),
-    "createCheckoutSession": IDL2.Func([Order2], [Result_232], []),
-    "createOrder": IDL2.Func([CreateOrderInput2], [Result_222], []),
+    "createCategory": IDL2.Func([IDL2.Text, IDL2.Opt(IDL2.Text)], [Result_42], []),
+    "createCheckoutSession": IDL2.Func([Order2], [Result_242], []),
+    "createOrder": IDL2.Func([CreateOrderInput2], [Result_232], []),
     "createProduct": IDL2.Func([Product2], [IDL2.Bool], []),
-    "deleteCategory": IDL2.Func([CategoryId2], [Result_112], []),
+    "deleteCategory": IDL2.Func([CategoryId2], [Result_122], []),
     "deleteProductImage": IDL2.Func([IDL2.Text], [Result2], []),
     "emailTransform": IDL2.Func(
       [TransformationInput2],
@@ -35660,21 +35668,26 @@ const idlFactory = ({ IDL: IDL2 }) => {
       ["query"]
     ),
     "execute": IDL2.Func([IDL2.Text], [Result__12], ["query"]),
-    "finishUpload": IDL2.Func([IDL2.Text, IDL2.Nat], [Result_92], []),
-    "forceRecheckPayment": IDL2.Func([IDL2.Text], [Result_212], []),
-    "forceSweepOrder": IDL2.Func([IDL2.Text], [Result_62], []),
+    "finishUpload": IDL2.Func([IDL2.Text, IDL2.Nat], [Result_102], []),
+    "forceRecheckPayment": IDL2.Func([IDL2.Text], [Result_222], []),
+    "forceSweepOrder": IDL2.Func([IDL2.Text], [Result_72], []),
     "getApiDoc": IDL2.Func([], [IDL2.Text], ["query"]),
     "getCanisterId": IDL2.Func([], [IDL2.Principal], ["query"]),
-    "getConsentListCsv": IDL2.Func([], [Result_202], []),
+    "getConsentListCsv": IDL2.Func([], [Result_212], []),
     "getCryptoConfig": IDL2.Func([], [CryptoConfigView2], ["query"]),
-    "getCryptoDepositInfo": IDL2.Func([IDL2.Text], [Result_192], ["query"]),
-    "getCryptoPaymentStatus": IDL2.Func([IDL2.Text], [Result_182], ["query"]),
+    "getCryptoDepositInfo": IDL2.Func([IDL2.Text], [Result_202], ["query"]),
+    "getCryptoPaymentStatus": IDL2.Func([IDL2.Text], [Result_192], ["query"]),
     "getCycleBalance": IDL2.Func([], [IDL2.Nat], ["query"]),
     "getDashboardData": IDL2.Func([], [IDL2.Text], []),
-    "getDefaultSubaccountBalance": IDL2.Func([], [Result_172], []),
+    "getDefaultSubaccountBalance": IDL2.Func([], [Result_182], []),
     "getEncryptionRecipients": IDL2.Func(
       [],
       [IDL2.Vec(IDL2.Principal)],
+      ["query"]
+    ),
+    "getFeaturedVideo": IDL2.Func(
+      [],
+      [IDL2.Record({ "rawUrl": IDL2.Text, "embedUrl": IDL2.Text })],
       ["query"]
     ),
     "getIbePublicKey": IDL2.Func([], [IDL2.Vec(IDL2.Nat8)], []),
@@ -35705,13 +35718,13 @@ const idlFactory = ({ IDL: IDL2 }) => {
     ),
     "getProduct": IDL2.Func([IDL2.Text], [IDL2.Opt(Product2)], ["query"]),
     "getProductImageStorageStats": IDL2.Func([], [StorageStats2], ["query"]),
-    "getResumeInfo": IDL2.Func([IDL2.Text], [Result_162], ["query"]),
-    "getSubaccountBalance": IDL2.Func([IDL2.Nat], [Result_152], []),
+    "getResumeInfo": IDL2.Func([IDL2.Text], [Result_172], ["query"]),
+    "getSubaccountBalance": IDL2.Func([IDL2.Nat], [Result_162], []),
     "getTokenImage": IDL2.Func([IDL2.Text, IDL2.Text], [IDL2.Text], []),
     "getTokenProfile": IDL2.Func([IDL2.Text, IDL2.Text], [IDL2.Text], []),
     "getTreasuryTokens": IDL2.Func([], [IDL2.Text], []),
     "grantRole": IDL2.Func([IDL2.Principal, Role2], [IDL2.Bool], []),
-    "handlePaymentConfirmation": IDL2.Func([IDL2.Text], [Result_142], []),
+    "handlePaymentConfirmation": IDL2.Func([IDL2.Text], [Result_152], []),
     "http_request": IDL2.Func([HttpRequest2], [HttpResponse2], ["query"]),
     "http_request_streaming_callback": IDL2.Func(
       [StreamingCallbackToken2],
@@ -35725,7 +35738,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "listLatePayments": IDL2.Func([], [IDL2.Vec(LatePayment2)], []),
     "listOrdersForRecovery": IDL2.Func([], [IDL2.Vec(OrderRecoveryView2)], []),
     "listProducts": IDL2.Func([], [IDL2.Vec(Product2)], ["query"]),
-    "listSubmissions": IDL2.Func([], [Result_132], []),
+    "listSubmissions": IDL2.Func([], [Result_142], []),
     "listUsers": IDL2.Func(
       [],
       [IDL2.Vec(IDL2.Tuple(IDL2.Principal, UserRecord2))],
@@ -35734,7 +35747,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
     "markLatePaymentReviewed": IDL2.Func([IDL2.Text], [IDL2.Bool], []),
     "markOrderShipped": IDL2.Func(
       [IDL2.Text, IDL2.Opt(IDL2.Text)],
-      [Result_102],
+      [Result_112],
       []
     ),
     "paymentServiceTransform": IDL2.Func(
@@ -35742,16 +35755,16 @@ const idlFactory = ({ IDL: IDL2 }) => {
       [TransformationOutput2],
       ["query"]
     ),
-    "reassignProducts": IDL2.Func([IDL2.Text, IDL2.Text], [Result_122], []),
+    "reassignProducts": IDL2.Func([IDL2.Text, IDL2.Text], [Result_132], []),
     "releaseExpiredOrders": IDL2.Func([], [IDL2.Nat], []),
     "releaseExpiredReservations": IDL2.Func([], [IDL2.Nat], []),
     "removeAdmin": IDL2.Func([IDL2.Principal], [IDL2.Bool], []),
-    "reorderCategories": IDL2.Func([IDL2.Vec(CategoryId2)], [Result_112], []),
-    "resendConfirmationEmail": IDL2.Func([IDL2.Text], [Result_102], []),
+    "reorderCategories": IDL2.Func([IDL2.Vec(CategoryId2)], [Result_122], []),
+    "resendConfirmationEmail": IDL2.Func([IDL2.Text], [Result_112], []),
     "resetAdminForMigration": IDL2.Func([], [IDL2.Bool], []),
     "revokeRole": IDL2.Func([IDL2.Principal], [IDL2.Bool], []),
     "schema": IDL2.Func([], [IDL2.Text], ["query"]),
-    "startUpload": IDL2.Func([IDL2.Text, IDL2.Nat], [Result_92], []),
+    "startUpload": IDL2.Func([IDL2.Text, IDL2.Nat], [Result_102], []),
     "startVerificationTimer": IDL2.Func([], [IDL2.Bool], []),
     "stopVerificationTimer": IDL2.Func([], [IDL2.Bool], []),
     "submissionServiceTransform": IDL2.Func(
@@ -35759,30 +35772,31 @@ const idlFactory = ({ IDL: IDL2 }) => {
       [TransformationOutput2],
       ["query"]
     ),
-    "submitSubmission": IDL2.Func([SubmissionInput2], [Result_82], []),
-    "sweepCryptoToTreasury": IDL2.Func([IDL2.Text], [Result_72], []),
-    "sweepDefaultSubaccount": IDL2.Func([], [Result_62], []),
+    "submitSubmission": IDL2.Func([SubmissionInput2], [Result_92], []),
+    "sweepCryptoToTreasury": IDL2.Func([IDL2.Text], [Result_82], []),
+    "sweepDefaultSubaccount": IDL2.Func([], [Result_72], []),
     "sweepExpiredUploads": IDL2.Func([], [], []),
-    "sweepSubaccount": IDL2.Func([IDL2.Nat], [Result_52], []),
+    "sweepSubaccount": IDL2.Func([IDL2.Nat], [Result_62], []),
     "transform": IDL2.Func(
       [TransformationInput2],
       [TransformationOutput2],
       ["query"]
     ),
-    "unsubscribe": IDL2.Func([IDL2.Text], [Result_42], []),
+    "unsubscribe": IDL2.Func([IDL2.Text], [Result_52], []),
     "updateCategory": IDL2.Func(
       [CategoryId2, IDL2.Text, IDL2.Opt(IDL2.Text), IDL2.Nat, IDL2.Bool, IDL2.Bool],
-      [Result_32],
+      [Result_42],
       []
     ),
+    "updateFeaturedVideo": IDL2.Func([IDL2.Text], [Result_32], []),
     "updateLedgerConfig": IDL2.Func(
       [Token2, IDL2.Principal, IDL2.Nat8, IDL2.Nat],
       [Result_110],
       []
     ),
     "updateMinimumOrder": IDL2.Func([IDL2.Nat], [Result_110], []),
-    "updatePaymentServiceToken": IDL2.Func([IDL2.Text], [Result_26], []),
-    "updatePaymentServiceUrl": IDL2.Func([IDL2.Text], [Result_26], []),
+    "updatePaymentServiceToken": IDL2.Func([IDL2.Text], [Result_27], []),
+    "updatePaymentServiceUrl": IDL2.Func([IDL2.Text], [Result_27], []),
     "updatePendingOrderGlobalCap": IDL2.Func([IDL2.Nat], [IDL2.Nat], []),
     "updateProduct": IDL2.Func([Product2], [IDL2.Bool], []),
     "updateTreasury": IDL2.Func(
@@ -35950,14 +35964,14 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.checkCryptoPayment(arg0);
-        return from_candid_Result_18_n20(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_19_n20(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.checkCryptoPayment(arg0);
-      return from_candid_Result_18_n20(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_19_n20(this._uploadFile, this._downloadFile, result);
     }
   }
   async claimInitialAdmin() {
@@ -35978,14 +35992,14 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.confirmCardPayment(arg0);
-        return from_candid_Result_25_n24(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_26_n24(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.confirmCardPayment(arg0);
-      return from_candid_Result_25_n24(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_26_n24(this._uploadFile, this._downloadFile, result);
     }
   }
   async consentServiceTransform(arg0) {
@@ -36006,56 +36020,56 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.createCardCheckoutSession(arg0, arg1, arg2);
-        return from_candid_Result_24_n26(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_25_n26(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.createCardCheckoutSession(arg0, arg1, arg2);
-      return from_candid_Result_24_n26(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_25_n26(this._uploadFile, this._downloadFile, result);
     }
   }
   async createCategory(arg0, arg1) {
     if (this.processError) {
       try {
         const result = await this.actor.createCategory(arg0, to_candid_opt_n30(this._uploadFile, this._downloadFile, arg1));
-        return from_candid_Result_3_n31(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_4_n31(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.createCategory(arg0, to_candid_opt_n30(this._uploadFile, this._downloadFile, arg1));
-      return from_candid_Result_3_n31(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_4_n31(this._uploadFile, this._downloadFile, result);
     }
   }
   async createCheckoutSession(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.createCheckoutSession(to_candid_Order_n37(this._uploadFile, this._downloadFile, arg0));
-        return from_candid_Result_23_n45(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_24_n45(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.createCheckoutSession(to_candid_Order_n37(this._uploadFile, this._downloadFile, arg0));
-      return from_candid_Result_23_n45(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_24_n45(this._uploadFile, this._downloadFile, result);
     }
   }
   async createOrder(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.createOrder(to_candid_CreateOrderInput_n49(this._uploadFile, this._downloadFile, arg0));
-        return from_candid_Result_22_n51(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_23_n51(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.createOrder(to_candid_CreateOrderInput_n49(this._uploadFile, this._downloadFile, arg0));
-      return from_candid_Result_22_n51(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_23_n51(this._uploadFile, this._downloadFile, result);
     }
   }
   async createProduct(arg0) {
@@ -36076,14 +36090,14 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.deleteCategory(arg0);
-        return from_candid_Result_11_n63(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_12_n63(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.deleteCategory(arg0);
-      return from_candid_Result_11_n63(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_12_n63(this._uploadFile, this._downloadFile, result);
     }
   }
   async deleteProductImage(arg0) {
@@ -36132,42 +36146,42 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.finishUpload(arg0, arg1);
-        return from_candid_Result_9_n77(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_10_n77(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.finishUpload(arg0, arg1);
-      return from_candid_Result_9_n77(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_10_n77(this._uploadFile, this._downloadFile, result);
     }
   }
   async forceRecheckPayment(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.forceRecheckPayment(arg0);
-        return from_candid_Result_21_n79(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_22_n79(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.forceRecheckPayment(arg0);
-      return from_candid_Result_21_n79(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_22_n79(this._uploadFile, this._downloadFile, result);
     }
   }
   async forceSweepOrder(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.forceSweepOrder(arg0);
-        return from_candid_Result_6_n85(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_7_n85(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.forceSweepOrder(arg0);
-      return from_candid_Result_6_n85(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_7_n85(this._uploadFile, this._downloadFile, result);
     }
   }
   async getApiDoc() {
@@ -36202,14 +36216,14 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.getConsentListCsv();
-        return from_candid_Result_20_n90(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_21_n90(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getConsentListCsv();
-      return from_candid_Result_20_n90(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_21_n90(this._uploadFile, this._downloadFile, result);
     }
   }
   async getCryptoConfig() {
@@ -36230,28 +36244,28 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.getCryptoDepositInfo(arg0);
-        return from_candid_Result_19_n96(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_20_n96(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getCryptoDepositInfo(arg0);
-      return from_candid_Result_19_n96(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_20_n96(this._uploadFile, this._downloadFile, result);
     }
   }
   async getCryptoPaymentStatus(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.getCryptoPaymentStatus(arg0);
-        return from_candid_Result_18_n20(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_19_n20(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getCryptoPaymentStatus(arg0);
-      return from_candid_Result_18_n20(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_19_n20(this._uploadFile, this._downloadFile, result);
     }
   }
   async getCycleBalance() {
@@ -36286,14 +36300,14 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.getDefaultSubaccountBalance();
-        return from_candid_Result_17_n102(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_18_n102(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getDefaultSubaccountBalance();
-      return from_candid_Result_17_n102(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_18_n102(this._uploadFile, this._downloadFile, result);
     }
   }
   async getEncryptionRecipients() {
@@ -36307,6 +36321,20 @@ class Backend {
       }
     } else {
       const result = await this.actor.getEncryptionRecipients();
+      return result;
+    }
+  }
+  async getFeaturedVideo() {
+    if (this.processError) {
+      try {
+        const result = await this.actor.getFeaturedVideo();
+        return result;
+      } catch (e) {
+        this.processError(e);
+        throw new Error("unreachable");
+      }
+    } else {
+      const result = await this.actor.getFeaturedVideo();
       return result;
     }
   }
@@ -36482,28 +36510,28 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.getResumeInfo(arg0);
-        return from_candid_Result_16_n112(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_17_n112(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getResumeInfo(arg0);
-      return from_candid_Result_16_n112(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_17_n112(this._uploadFile, this._downloadFile, result);
     }
   }
   async getSubaccountBalance(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.getSubaccountBalance(arg0);
-        return from_candid_Result_15_n117(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_16_n117(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getSubaccountBalance(arg0);
-      return from_candid_Result_15_n117(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_16_n117(this._uploadFile, this._downloadFile, result);
     }
   }
   async getTokenImage(arg0, arg1) {
@@ -36566,14 +36594,14 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.handlePaymentConfirmation(arg0);
-        return from_candid_Result_14_n123(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_15_n123(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.handlePaymentConfirmation(arg0);
-      return from_candid_Result_14_n123(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_15_n123(this._uploadFile, this._downloadFile, result);
     }
   }
   async http_request(arg0) {
@@ -36706,14 +36734,14 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.listSubmissions();
-        return from_candid_Result_13_n148(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_14_n148(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.listSubmissions();
-      return from_candid_Result_13_n148(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_14_n148(this._uploadFile, this._downloadFile, result);
     }
   }
   async listUsers() {
@@ -36748,14 +36776,14 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.markOrderShipped(arg0, to_candid_opt_n30(this._uploadFile, this._downloadFile, arg1));
-        return from_candid_Result_10_n161(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_11_n161(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.markOrderShipped(arg0, to_candid_opt_n30(this._uploadFile, this._downloadFile, arg1));
-      return from_candid_Result_10_n161(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_11_n161(this._uploadFile, this._downloadFile, result);
     }
   }
   async paymentServiceTransform(arg0) {
@@ -36776,14 +36804,14 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.reassignProducts(arg0, arg1);
-        return from_candid_Result_12_n165(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_13_n165(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.reassignProducts(arg0, arg1);
-      return from_candid_Result_12_n165(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_13_n165(this._uploadFile, this._downloadFile, result);
     }
   }
   async releaseExpiredOrders() {
@@ -36832,28 +36860,28 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.reorderCategories(arg0);
-        return from_candid_Result_11_n63(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_12_n63(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.reorderCategories(arg0);
-      return from_candid_Result_11_n63(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_12_n63(this._uploadFile, this._downloadFile, result);
     }
   }
   async resendConfirmationEmail(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.resendConfirmationEmail(arg0);
-        return from_candid_Result_10_n161(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_11_n161(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.resendConfirmationEmail(arg0);
-      return from_candid_Result_10_n161(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_11_n161(this._uploadFile, this._downloadFile, result);
     }
   }
   async resetAdminForMigration() {
@@ -36902,14 +36930,14 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.startUpload(arg0, arg1);
-        return from_candid_Result_9_n77(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_10_n77(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.startUpload(arg0, arg1);
-      return from_candid_Result_9_n77(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_10_n77(this._uploadFile, this._downloadFile, result);
     }
   }
   async startVerificationTimer() {
@@ -36958,42 +36986,42 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.submitSubmission(to_candid_SubmissionInput_n167(this._uploadFile, this._downloadFile, arg0));
-        return from_candid_Result_8_n171(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_9_n171(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.submitSubmission(to_candid_SubmissionInput_n167(this._uploadFile, this._downloadFile, arg0));
-      return from_candid_Result_8_n171(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_9_n171(this._uploadFile, this._downloadFile, result);
     }
   }
   async sweepCryptoToTreasury(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.sweepCryptoToTreasury(arg0);
-        return from_candid_Result_7_n173(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_8_n173(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.sweepCryptoToTreasury(arg0);
-      return from_candid_Result_7_n173(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_8_n173(this._uploadFile, this._downloadFile, result);
     }
   }
   async sweepDefaultSubaccount() {
     if (this.processError) {
       try {
         const result = await this.actor.sweepDefaultSubaccount();
-        return from_candid_Result_6_n85(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_7_n85(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.sweepDefaultSubaccount();
-      return from_candid_Result_6_n85(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_7_n85(this._uploadFile, this._downloadFile, result);
     }
   }
   async sweepExpiredUploads() {
@@ -37014,14 +37042,14 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.sweepSubaccount(arg0);
-        return from_candid_Result_5_n175(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_6_n175(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.sweepSubaccount(arg0);
-      return from_candid_Result_5_n175(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_6_n175(this._uploadFile, this._downloadFile, result);
     }
   }
   async transform(arg0) {
@@ -37042,56 +37070,70 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.unsubscribe(arg0);
-        return from_candid_Result_4_n179(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_5_n179(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.unsubscribe(arg0);
-      return from_candid_Result_4_n179(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_5_n179(this._uploadFile, this._downloadFile, result);
     }
   }
   async updateCategory(arg0, arg1, arg2, arg3, arg4, arg5) {
     if (this.processError) {
       try {
         const result = await this.actor.updateCategory(arg0, arg1, to_candid_opt_n30(this._uploadFile, this._downloadFile, arg2), arg3, arg4, arg5);
-        return from_candid_Result_3_n31(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_4_n31(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.updateCategory(arg0, arg1, to_candid_opt_n30(this._uploadFile, this._downloadFile, arg2), arg3, arg4, arg5);
-      return from_candid_Result_3_n31(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_4_n31(this._uploadFile, this._downloadFile, result);
     }
   }
-  async updateLedgerConfig(arg0, arg1, arg2, arg3) {
+  async updateFeaturedVideo(arg0) {
     if (this.processError) {
       try {
-        const result = await this.actor.updateLedgerConfig(to_candid_Token_n181(this._uploadFile, this._downloadFile, arg0), arg1, arg2, arg3);
-        return from_candid_Result_1_n183(this._uploadFile, this._downloadFile, result);
+        const result = await this.actor.updateFeaturedVideo(arg0);
+        return from_candid_Result_3_n181(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
-      const result = await this.actor.updateLedgerConfig(to_candid_Token_n181(this._uploadFile, this._downloadFile, arg0), arg1, arg2, arg3);
-      return from_candid_Result_1_n183(this._uploadFile, this._downloadFile, result);
+      const result = await this.actor.updateFeaturedVideo(arg0);
+      return from_candid_Result_3_n181(this._uploadFile, this._downloadFile, result);
+    }
+  }
+  async updateLedgerConfig(arg0, arg1, arg2, arg3) {
+    if (this.processError) {
+      try {
+        const result = await this.actor.updateLedgerConfig(to_candid_Token_n183(this._uploadFile, this._downloadFile, arg0), arg1, arg2, arg3);
+        return from_candid_Result_1_n185(this._uploadFile, this._downloadFile, result);
+      } catch (e) {
+        this.processError(e);
+        throw new Error("unreachable");
+      }
+    } else {
+      const result = await this.actor.updateLedgerConfig(to_candid_Token_n183(this._uploadFile, this._downloadFile, arg0), arg1, arg2, arg3);
+      return from_candid_Result_1_n185(this._uploadFile, this._downloadFile, result);
     }
   }
   async updateMinimumOrder(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.updateMinimumOrder(arg0);
-        return from_candid_Result_1_n183(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_1_n185(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.updateMinimumOrder(arg0);
-      return from_candid_Result_1_n183(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_1_n185(this._uploadFile, this._downloadFile, result);
     }
   }
   async updatePaymentServiceToken(arg0) {
@@ -37153,15 +37195,15 @@ class Backend {
   async updateTreasury(arg0, arg1) {
     if (this.processError) {
       try {
-        const result = await this.actor.updateTreasury(arg0, to_candid_opt_n185(this._uploadFile, this._downloadFile, arg1));
-        return from_candid_Result_1_n183(this._uploadFile, this._downloadFile, result);
+        const result = await this.actor.updateTreasury(arg0, to_candid_opt_n187(this._uploadFile, this._downloadFile, arg1));
+        return from_candid_Result_1_n185(this._uploadFile, this._downloadFile, result);
       } catch (e) {
         this.processError(e);
         throw new Error("unreachable");
       }
     } else {
-      const result = await this.actor.updateTreasury(arg0, to_candid_opt_n185(this._uploadFile, this._downloadFile, arg1));
-      return from_candid_Result_1_n183(this._uploadFile, this._downloadFile, result);
+      const result = await this.actor.updateTreasury(arg0, to_candid_opt_n187(this._uploadFile, this._downloadFile, arg1));
+      return from_candid_Result_1_n185(this._uploadFile, this._downloadFile, result);
     }
   }
   async uploadChunk(arg0, arg1, arg2) {
@@ -37260,80 +37302,83 @@ function from_candid_RecheckResult_n81(_uploadFile, _downloadFile, value) {
 function from_candid_RecoveryError_n83(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n84(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_10_n161(_uploadFile, _downloadFile, value) {
+function from_candid_Result_10_n77(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n78(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_11_n161(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n162(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_11_n63(_uploadFile, _downloadFile, value) {
+function from_candid_Result_12_n63(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n64(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_12_n165(_uploadFile, _downloadFile, value) {
+function from_candid_Result_13_n165(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n166(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_13_n148(_uploadFile, _downloadFile, value) {
+function from_candid_Result_14_n148(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n149(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_14_n123(_uploadFile, _downloadFile, value) {
+function from_candid_Result_15_n123(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n124(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_15_n117(_uploadFile, _downloadFile, value) {
+function from_candid_Result_16_n117(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n118(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_16_n112(_uploadFile, _downloadFile, value) {
+function from_candid_Result_17_n112(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n113(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_17_n102(_uploadFile, _downloadFile, value) {
+function from_candid_Result_18_n102(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n103(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_18_n20(_uploadFile, _downloadFile, value) {
+function from_candid_Result_19_n20(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n21(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_19_n96(_uploadFile, _downloadFile, value) {
+function from_candid_Result_1_n185(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n186(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_20_n96(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n97(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_1_n183(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n184(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_20_n90(_uploadFile, _downloadFile, value) {
+function from_candid_Result_21_n90(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n91(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_21_n79(_uploadFile, _downloadFile, value) {
+function from_candid_Result_22_n79(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n80(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_22_n51(_uploadFile, _downloadFile, value) {
+function from_candid_Result_23_n51(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n52(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_23_n45(_uploadFile, _downloadFile, value) {
+function from_candid_Result_24_n45(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n46(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_24_n26(_uploadFile, _downloadFile, value) {
+function from_candid_Result_25_n26(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n27(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_25_n24(_uploadFile, _downloadFile, value) {
+function from_candid_Result_26_n24(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n25(_uploadFile, _downloadFile, value);
 }
 function from_candid_Result_2_n16(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n17(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_3_n31(_uploadFile, _downloadFile, value) {
+function from_candid_Result_3_n181(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n182(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_4_n31(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n32(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_4_n179(_uploadFile, _downloadFile, value) {
+function from_candid_Result_5_n179(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n180(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_5_n175(_uploadFile, _downloadFile, value) {
+function from_candid_Result_6_n175(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n176(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_6_n85(_uploadFile, _downloadFile, value) {
+function from_candid_Result_7_n85(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n86(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_7_n173(_uploadFile, _downloadFile, value) {
+function from_candid_Result_8_n173(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n174(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_8_n171(_uploadFile, _downloadFile, value) {
+function from_candid_Result_9_n171(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n172(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_9_n77(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n78(_uploadFile, _downloadFile, value);
 }
 function from_candid_Result__1_n69(_uploadFile, _downloadFile, value) {
   return from_candid_record_n70(_uploadFile, _downloadFile, value);
@@ -37886,7 +37931,16 @@ function from_candid_variant_n180(_uploadFile, _downloadFile, value) {
     err: from_candid_ConsentError_n92(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function from_candid_variant_n184(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n182(_uploadFile, _downloadFile, value) {
+  return "ok" in value ? {
+    __kind__: "ok",
+    ok: value.ok
+  } : "err" in value ? {
+    __kind__: "err",
+    err: value.err
+  } : value;
+}
+function from_candid_variant_n186(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
     ok: value.ok
@@ -38270,10 +38324,10 @@ function to_candid_StreamingCallbackToken_n133(_uploadFile, _downloadFile, value
 function to_candid_SubmissionInput_n167(_uploadFile, _downloadFile, value) {
   return to_candid_record_n168(_uploadFile, _downloadFile, value);
 }
-function to_candid_Token_n181(_uploadFile, _downloadFile, value) {
-  return to_candid_variant_n182(_uploadFile, _downloadFile, value);
+function to_candid_Token_n183(_uploadFile, _downloadFile, value) {
+  return to_candid_variant_n184(_uploadFile, _downloadFile, value);
 }
-function to_candid_opt_n185(_uploadFile, _downloadFile, value) {
+function to_candid_opt_n187(_uploadFile, _downloadFile, value) {
   return value === null ? candid_none() : candid_some(value);
 }
 function to_candid_opt_n30(_uploadFile, _downloadFile, value) {
@@ -38359,7 +38413,7 @@ function to_candid_variant_n170(_uploadFile, _downloadFile, value) {
     writing: null
   } : value;
 }
-function to_candid_variant_n182(_uploadFile, _downloadFile, value) {
+function to_candid_variant_n184(_uploadFile, _downloadFile, value) {
   return value == "ICP" ? {
     ICP: null
   } : value == "ckUSDC" ? {
@@ -43833,6 +43887,40 @@ function useUpdateMinimumOrder() {
     }
   });
 }
+function useGetFeaturedVideo() {
+  const { actor, isFetching } = useActor(createActor$2);
+  return useQuery({
+    queryKey: ["featuredVideo"],
+    queryFn: async () => {
+      if (!actor) return { rawUrl: "", embedUrl: "" };
+      return actor.getFeaturedVideo();
+    },
+    enabled: !!actor && !isFetching
+  });
+}
+function useUpdateFeaturedVideo() {
+  const { actor, isFetching } = useActor(createActor$2);
+  const { isActorReady } = useActorReady();
+  const queryClient2 = useQueryClient();
+  return useMutation({
+    mutationFn: async (rawUrl) => {
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again"
+        );
+      if (!isActorReady)
+        throw new Error(
+          "Session not ready — please wait a moment and try again"
+        );
+      const result = await actor.updateFeaturedVideo(rawUrl);
+      if (result.__kind__ === "err") throw result.err;
+      return result.ok;
+    },
+    onSuccess: () => {
+      void queryClient2.invalidateQueries({ queryKey: ["featuredVideo"] });
+    }
+  });
+}
 function useResumeInfo(reference) {
   const { actor, isFetching } = useActor(createActor$2);
   return useQuery({
@@ -44103,6 +44191,17 @@ function useSubmitSubmission() {
       const result = await actor.submitSubmission(input);
       if (result.__kind__ === "err") throw result.err;
     }
+  });
+}
+function useFeaturedVideo() {
+  const { actor, isFetching } = useActor(createActor$2);
+  return useQuery({
+    queryKey: ["featuredVideo"],
+    queryFn: async () => {
+      if (!actor) return { rawUrl: "", embedUrl: "" };
+      return actor.getFeaturedVideo();
+    },
+    enabled: !!actor && !isFetching
   });
 }
 function useListSubmissions() {
@@ -50905,6 +51004,22 @@ function formatE8s(value, decimals) {
   const padded = fraction.toString().padStart(decimals, "0");
   return `${whole}.${padded.replace(/0+$/, "")}`;
 }
+function deriveEmbedUrl(rawUrl) {
+  const trimmed = rawUrl.trim();
+  if (!trimmed) return null;
+  let id = null;
+  const watch = trimmed.match(
+    /(?:youtube\.com\/watch\?(?:.*&)?v=|youtu\.be\/|youtube\.com\/embed\/)([A-Za-z0-9_-]{11})/
+  );
+  if (watch) {
+    id = watch[1];
+  } else {
+    const bare = trimmed.match(/^([A-Za-z0-9_-]{11})$/);
+    if (bare) id = bare[1];
+  }
+  if (!id) return null;
+  return `https://www.youtube.com/embed/${id}`;
+}
 function SettingsTab({ session }) {
   const canManage = session.canManage;
   const {
@@ -50918,11 +51033,17 @@ function SettingsTab({ session }) {
     error: paymentError
   } = usePaymentServiceConfig();
   const { data: minimumOrder, isLoading: minimumLoading } = useGetMinimumOrder();
+  const {
+    data: featuredVideo,
+    isLoading: featuredLoading,
+    error: featuredError
+  } = useGetFeaturedVideo();
   const updateTreasury = useUpdateTreasury();
   const updateLedgerConfig = useUpdateLedgerConfig();
   const updatePaymentServiceUrl = useUpdatePaymentServiceUrl();
   const updatePaymentServiceToken = useUpdatePaymentServiceToken();
   const updateMinimumOrder = useUpdateMinimumOrder();
+  const updateFeaturedVideo = useUpdateFeaturedVideo();
   const [treasuryInput, setTreasuryInput] = reactExports.useState("");
   const [treasuryError, setTreasuryError] = reactExports.useState(null);
   const [icpCanisterInput, setIcpCanisterInput] = reactExports.useState("");
@@ -50939,6 +51060,11 @@ function SettingsTab({ session }) {
   const [tokenError, setTokenError] = reactExports.useState(null);
   const [minimumInput, setMinimumInput] = reactExports.useState("");
   const [minimumError, setMinimumError] = reactExports.useState(null);
+  const [featuredInput, setFeaturedInput] = reactExports.useState("");
+  const [featuredSaveError, setFeaturedSaveError] = reactExports.useState(
+    null
+  );
+  const [featuredSuccess, setFeaturedSuccess] = reactExports.useState(false);
   const handleUpdateTreasury = () => {
     setTreasuryError(null);
     let principal;
@@ -51041,6 +51167,24 @@ function SettingsTab({ session }) {
     updateMinimumOrder.mutate(cents, {
       onError: (err) => setMinimumError(adminErrorMessage(err)),
       onSuccess: () => setMinimumInput("")
+    });
+  };
+  const handleUpdateFeaturedVideo = () => {
+    setFeaturedSaveError(null);
+    setFeaturedSuccess(false);
+    const url = featuredInput.trim();
+    if (!url) {
+      setFeaturedSaveError("Enter a YouTube video URL.");
+      return;
+    }
+    updateFeaturedVideo.mutate(url, {
+      onError: (err) => setFeaturedSaveError(
+        typeof err === "string" ? err : adminErrorMessage(err)
+      ),
+      onSuccess: () => {
+        setFeaturedSuccess(true);
+        setFeaturedInput("");
+      }
     });
   };
   const icp = cryptoConfig == null ? void 0 : cryptoConfig.icp;
@@ -51717,6 +51861,127 @@ function SettingsTab({ session }) {
               children: minimumError
             }
           )
+        ] })
+      }
+    ),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(
+      AdminPanel,
+      {
+        title: "Featured video",
+        actions: /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "span",
+          {
+            className: "text-xs",
+            style: { color: "var(--muted-foreground)" },
+            children: "ADMIN / OWNER"
+          }
+        ),
+        children: featuredLoading ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "div",
+          {
+            className: "flex items-center gap-3 py-6",
+            style: { color: "var(--muted-foreground)" },
+            "data-ocid": "admin.settings.loading_state",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-4 h-4 animate-spin" }),
+              "Loading configuration…"
+            ]
+          }
+        ) : featuredError ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "error-panel", "data-ocid": "admin.settings.error_state", children: adminErrorMessage(featuredError) }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-3", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "section-heading text-sm", children: "YouTube video" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "span",
+              {
+                className: "text-xs",
+                style: { color: "var(--muted-foreground)" },
+                children: (featuredVideo == null ? void 0 : featuredVideo.rawUrl) ? "Set" : "Not set"
+              }
+            )
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-1.5", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "field-label", htmlFor: "settings-featured", children: "YouTube video URL" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "input",
+              {
+                id: "settings-featured",
+                className: "field-input",
+                placeholder: (featuredVideo == null ? void 0 : featuredVideo.rawUrl) || "https://www.youtube.com/watch?v=…",
+                value: featuredInput,
+                onChange: (e) => {
+                  setFeaturedInput(e.target.value);
+                  setFeaturedSaveError(null);
+                  setFeaturedSuccess(false);
+                },
+                disabled: !canManage,
+                "data-ocid": "admin.settings.featured_input"
+              }
+            )
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              AdminConfirmDialog,
+              {
+                trigger: /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "button",
+                  {
+                    type: "button",
+                    className: "btn btn-primary",
+                    disabled: !canManage || !featuredInput.trim(),
+                    "data-ocid": "admin.settings.featured_button",
+                    children: "Save video"
+                  }
+                ),
+                title: "Set featured video",
+                description: `Set the featured video to ${featuredInput.trim() || "this URL"}? It will be shown on the main page.`,
+                confirmLabel: "Save video",
+                cancelLabel: "Cancel",
+                tone: "warning",
+                onConfirm: handleUpdateFeaturedVideo,
+                pending: updateFeaturedVideo.isPending,
+                disabled: !canManage || !featuredInput.trim()
+              }
+            ),
+            updateFeaturedVideo.isPending && /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-4 h-4 animate-spin" })
+          ] }),
+          featuredSaveError && /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "div",
+            {
+              className: "error-panel",
+              "data-ocid": "admin.settings.featured_error",
+              children: featuredSaveError
+            }
+          ),
+          featuredSuccess && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "p",
+            {
+              className: "flex items-center gap-1.5 text-xs",
+              style: { color: "var(--positive)" },
+              "data-ocid": "admin.settings.featured_success",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(CircleCheck, { className: "w-3.5 h-3.5" }),
+                "Featured video saved."
+              ]
+            }
+          ),
+          (() => {
+            const previewUrl = featuredInput.trim() !== "" ? deriveEmbedUrl(featuredInput) : (featuredVideo == null ? void 0 : featuredVideo.embedUrl) || null;
+            if (!previewUrl) return null;
+            return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-1.5", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "field-label", children: "Preview" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative w-full aspect-video overflow-hidden rounded-md border border-border bg-black", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "iframe",
+                {
+                  className: "absolute inset-0 h-full w-full",
+                  src: previewUrl,
+                  title: "Featured video preview",
+                  allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share",
+                  allowFullScreen: true,
+                  "data-ocid": "admin.settings.featured_preview"
+                }
+              ) })
+            ] });
+          })()
         ] })
       }
     )
@@ -60915,6 +61180,9 @@ const NAKFeaturedArtist = () => {
   const [errors, setErrors] = reactExports.useState({});
   const [submitted, setSubmitted] = reactExports.useState(false);
   const submit = useSubmitSubmission();
+  const { data: featuredVideo } = useFeaturedVideo();
+  const embedUrl = (featuredVideo == null ? void 0 : featuredVideo.embedUrl) || "https://www.youtube.com/embed/HkIOBvsSyOQ";
+  const watchUrl = (featuredVideo == null ? void 0 : featuredVideo.rawUrl) || "https://youtu.be/HkIOBvsSyOQ";
   const setField = (key, value) => {
     setForm((prev) => ({ ...prev, [key]: value }));
     if (errors[key]) {
@@ -60964,7 +61232,7 @@ const NAKFeaturedArtist = () => {
           {
             className: "text-[1.75rem] font-medium tracking-[-0.02em]",
             style: { fontFamily: "var(--font-heading)" },
-            children: "July Jax$on"
+            children: "NAK culture is hustle, heart, and grit."
           }
         ),
         /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -60981,7 +61249,7 @@ const NAKFeaturedArtist = () => {
         {
           className: "font-mono text-[0.8125rem] text-muted-foreground mb-8",
           "data-ocid": "culture.debut_line",
-          children: "Ruby Galaxy — debut project, out now"
+          children: "Making something out of nothing. And when it hits, we don't flaunt it — we keep doing what we do. Got to feed the family at the end of the day. That's the mission."
         }
       ),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "hairline surface overflow-hidden", children: [
@@ -60989,8 +61257,8 @@ const NAKFeaturedArtist = () => {
           "iframe",
           {
             className: "absolute inset-0 w-full h-full",
-            src: "https://www.youtube.com/embed/HkIOBvsSyOQ",
-            title: "Ruby Galaxy — July Jax$on",
+            src: embedUrl,
+            title: "NAK Culture — featured video",
             frameBorder: "0",
             allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture",
             allowFullScreen: true,
@@ -61003,13 +61271,13 @@ const NAKFeaturedArtist = () => {
             {
               className: "font-mono text-[0.8125rem] text-muted-foreground",
               "data-ocid": "culture.video_title",
-              children: "Ruby Galaxy · July Jax$on"
+              children: "NAK Culture"
             }
           ),
           /* @__PURE__ */ jsxRuntimeExports.jsx(
             "a",
             {
-              href: "https://youtu.be/HkIOBvsSyOQ",
+              href: watchUrl,
               target: "_blank",
               rel: "noopener noreferrer",
               className: "text-[0.8125rem] font-medium text-foreground hover:text-primary transition-colors",
@@ -62437,7 +62705,7 @@ const PurchaseNAK = () => {
     return () => window.removeEventListener("message", handleMessage);
   }, []);
   return /* @__PURE__ */ jsxRuntimeExports.jsx("section", { id: "trade", className: "px-6 py-20", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "max-w-7xl mx-auto", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 min-[860px]:grid-cols-2 gap-12 lg:gap-16 items-start", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-xl", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-xl min-w-0", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "section-label mb-4", children: "Acquire" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "mb-5", children: "Cross-chain entry via Houdiniswap" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-base leading-relaxed text-muted-foreground mb-8", children: "Houdiniswap routes swaps across chains without requiring an account, so entry into N.A.K. is not gated behind a centralised exchange listing. Bridge from most major assets directly." }),
@@ -62460,7 +62728,7 @@ const PurchaseNAK = () => {
         }
       )
     ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "surface hairline p-6", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "surface hairline p-4 sm:p-6 overflow-hidden max-w-full min-w-0", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(
         "iframe",
         {

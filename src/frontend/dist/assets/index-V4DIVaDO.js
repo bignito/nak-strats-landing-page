@@ -76939,161 +76939,47 @@ function AdminTabShell({ onNavigateToMain }) {
 function AdminDashboard({ onNavigateToMain }) {
   return /* @__PURE__ */ jsxRuntimeExports.jsx(AdminTabShell, { onNavigateToMain });
 }
-const SHELL_RAIN_ITEMS = Array.from({ length: 15 }, (_2, i) => ({
-  id: `shell-rain-${i}`,
-  left: `${(i * 7.3 + 3) % 100}%`,
-  fontSize: `${i % 5 * 4 + 20}px`,
-  animationDelay: `${i * 0.55 % 8}s`,
-  animationDuration: `${i % 4 * 1 + 8}s`
-}));
-const MONEY_RAIN_ITEMS = Array.from({ length: 12 }, (_2, i) => ({
-  id: `money-rain-${i}`,
-  left: `${(i * 8.7 + 1.5) % 100}%`,
-  fontSize: `${i % 4 * 4.5 + 22}px`,
-  animationDelay: `${i * 0.85 % 10}s`,
-  animationDuration: `${i % 3 * 1 + 9}s`
-}));
-const SHELL_SLOW_ITEMS = Array.from({ length: 8 }, (_2, i) => ({
-  id: `shell-slow-${i}`,
-  left: `${(i * 13.2 + 6) % 100}%`,
-  fontSize: `${i % 4 * 3 + 16}px`,
-  animationDelay: `${i * 1.55 % 12}s`,
-  animationDuration: `${i % 6 * 1 + 12}s`
-}));
-const MONEY_FLOAT_ITEMS = Array.from({ length: 6 }, (_2, i) => ({
-  id: `money-float-static-${i}`,
-  left: `${(i * 17.1 + 4) % 100}%`,
-  top: `${(i * 16.3 + 8) % 100}%`,
-  fontSize: `${i % 3 * 5 + 18}px`,
-  animationDelay: `${i * 1.05 % 6}s`,
+const RAIN_ITEMS = Array.from({ length: 12 }, (_2, i) => ({
+  id: `rain-${i}`,
+  emoji: i % 3 === 0 ? "💰" : "🐚",
+  left: `${(i * 8.3 + 2) % 100}%`,
+  fontSize: `${i % 4 * 4 + 20}px`,
+  animationDelay: `${i * 0.8 % 9}s`,
   animationDuration: `${i % 4 * 1 + 8}s`
 }));
 const BubbleBackground = () => {
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "fixed inset-0 overflow-hidden pointer-events-none", children: [
-    SHELL_RAIN_ITEMS.map((item) => /* @__PURE__ */ jsxRuntimeExports.jsx(
-      "div",
-      {
-        className: "absolute animate-emoji-rain opacity-80",
-        style: {
-          left: item.left,
-          fontSize: item.fontSize,
-          animationDelay: item.animationDelay,
-          animationDuration: item.animationDuration,
-          filter: "drop-shadow(0 2px 4px rgba(139, 92, 246, 0.3))"
+  const [hidden, setHidden] = reactExports.useState(false);
+  reactExports.useEffect(() => {
+    const onVisibility = () => setHidden(document.hidden);
+    onVisibility();
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => document.removeEventListener("visibilitychange", onVisibility);
+  }, []);
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    "div",
+    {
+      className: `fixed inset-0 overflow-hidden pointer-events-none ${hidden ? "is-paused" : ""}`,
+      "aria-hidden": "true",
+      children: RAIN_ITEMS.map((item) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "div",
+        {
+          className: "absolute animate-emoji-rain",
+          style: {
+            left: item.left,
+            fontSize: item.fontSize,
+            animationDelay: item.animationDelay,
+            animationDuration: item.animationDuration,
+            // Compositor promotion: animate only transform/opacity, never
+            // filter or layout properties.
+            willChange: "transform, opacity",
+            contain: "layout paint"
+          },
+          children: item.emoji
         },
-        children: "🐚"
-      },
-      item.id
-    )),
-    MONEY_RAIN_ITEMS.map((item) => /* @__PURE__ */ jsxRuntimeExports.jsx(
-      "div",
-      {
-        className: "absolute animate-emoji-rain opacity-75",
-        style: {
-          left: item.left,
-          fontSize: item.fontSize,
-          animationDelay: item.animationDelay,
-          animationDuration: item.animationDuration,
-          filter: "drop-shadow(0 2px 4px rgba(6, 182, 212, 0.3))"
-        },
-        children: "💰"
-      },
-      item.id
-    )),
-    SHELL_SLOW_ITEMS.map((item) => /* @__PURE__ */ jsxRuntimeExports.jsx(
-      "div",
-      {
-        className: "absolute animate-emoji-rain-slow opacity-60",
-        style: {
-          left: item.left,
-          fontSize: item.fontSize,
-          animationDelay: item.animationDelay,
-          animationDuration: item.animationDuration,
-          filter: "drop-shadow(0 1px 2px rgba(139, 92, 246, 0.2))"
-        },
-        children: "🐚"
-      },
-      item.id
-    )),
-    MONEY_FLOAT_ITEMS.map((item) => /* @__PURE__ */ jsxRuntimeExports.jsx(
-      "div",
-      {
-        className: "absolute animate-emoji-float opacity-50",
-        style: {
-          left: item.left,
-          top: item.top,
-          fontSize: item.fontSize,
-          animationDelay: item.animationDelay,
-          animationDuration: item.animationDuration,
-          filter: "drop-shadow(0 2px 4px rgba(6, 182, 212, 0.2))"
-        },
-        children: "💰"
-      },
-      item.id
-    )),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(
-      "div",
-      {
-        className: "absolute inset-0 nak-depth-gradient",
-        style: {
-          background: `
-            radial-gradient(ellipse at 50% 0%, rgba(6, 182, 212, 0.02) 0%, transparent 60%),
-            radial-gradient(ellipse at 0% 100%, rgba(139, 92, 246, 0.015) 0%, transparent 50%),
-            radial-gradient(ellipse at 100% 100%, rgba(139, 92, 246, 0.01) 0%, transparent 50%)
-          `,
-          backdropFilter: "blur(60px)"
-        }
-      }
-    ),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(
-      "div",
-      {
-        className: "absolute inset-0 opacity-8 nak-ambient",
-        style: {
-          background: `
-            radial-gradient(ellipse at 30% 20%, 
-              rgba(6, 182, 212, 0.06) 0%, 
-              transparent 40%),
-            radial-gradient(ellipse at 70% 80%, 
-              rgba(139, 92, 246, 0.04) 0%, 
-              transparent 40%)
-          `,
-          backdropFilter: "blur(80px)",
-          animation: "nak-glow 20s ease-in-out infinite"
-        }
-      }
-    ),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(
-      "div",
-      {
-        className: "absolute top-0 left-0 right-0 h-32 nak-surface opacity-8",
-        style: {
-          background: `
-            linear-gradient(180deg, 
-              rgba(6, 182, 212, 0.08) 0%, 
-              rgba(6, 182, 212, 0.04) 50%, 
-              transparent 100%)
-          `,
-          backdropFilter: "blur(40px)"
-        }
-      }
-    ),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(
-      "div",
-      {
-        className: "absolute bottom-0 left-0 right-0 h-40 nak-depth opacity-6",
-        style: {
-          background: `
-            linear-gradient(0deg, 
-              rgba(139, 92, 246, 0.06) 0%, 
-              rgba(76, 29, 149, 0.03) 50%, 
-              transparent 100%)
-          `,
-          backdropFilter: "blur(60px)"
-        }
-      }
-    )
-  ] });
+        item.id
+      ))
+    }
+  );
 };
 const CANCELLATION_TOKEN_KEY = "nak.cancellationToken";
 function useCancellationToken() {
@@ -87752,6 +87638,7 @@ function UnsubscribePage({
     ] })
   ] }) });
 }
+const EMOJI_RAIN_PAGES = [];
 function App() {
   const [currentPage, setCurrentPage] = reactExports.useState("main");
   const { setActiveOrderRef } = useActiveOrderRef();
@@ -87847,7 +87734,7 @@ function App() {
       className: "min-h-screen relative overflow-x-hidden",
       style: { backgroundColor: "var(--nak-bg)" },
       children: [
-        currentPage !== "main" && currentPage !== "admin" && currentPage !== "adminrecovery" && /* @__PURE__ */ jsxRuntimeExports.jsx(BubbleBackground, {}),
+        EMOJI_RAIN_PAGES.includes(currentPage) && /* @__PURE__ */ jsxRuntimeExports.jsx(BubbleBackground, {}),
         /* @__PURE__ */ jsxRuntimeExports.jsx(
           Navigation,
           {

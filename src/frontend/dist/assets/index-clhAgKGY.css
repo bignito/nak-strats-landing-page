@@ -898,9 +898,6 @@ video {
 .h-3\.5 {
   height: 0.875rem;
 }
-.h-32 {
-  height: 8rem;
-}
 .h-4 {
   height: 1rem;
 }
@@ -2312,12 +2309,6 @@ video {
 .opacity-70 {
   opacity: 0.7;
 }
-.opacity-75 {
-  opacity: 0.75;
-}
-.opacity-80 {
-  opacity: 0.8;
-}
 .shadow {
   --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
   --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
@@ -2552,6 +2543,9 @@ video {
 }
 .ease-linear {
   animation-timing-function: linear;
+}
+.paused {
+  animation-play-state: paused;
 }
 .font-mono-nak {
     font-family: var(--font-mono);
@@ -4554,6 +4548,23 @@ small {
 }
 .animate-emoji-float {
   animation: emoji-float ease-in-out infinite;
+}
+
+/* Emoji rain elements are promoted to their own compositor layers and animate
+   only transform/opacity. contain: layout paint isolates each element so its
+   motion never triggers layout or paint on the rest of the page. */
+.animate-emoji-rain,
+.animate-emoji-rain-slow,
+.animate-emoji-float {
+  contain: layout paint;
+}
+
+/* Pause the emoji rain while the tab is hidden (driven by the component's
+   visibilitychange listener toggling .is-paused). */
+.is-paused .animate-emoji-rain,
+.is-paused .animate-emoji-rain-slow,
+.is-paused .animate-emoji-float {
+  animation-play-state: paused;
 }
 
 /* NAK Theme Effect Classes */

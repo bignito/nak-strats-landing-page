@@ -716,6 +716,23 @@ small {
   animation: emoji-float ease-in-out infinite;
 }
 
+/* Emoji rain elements are promoted to their own compositor layers and animate
+   only transform/opacity. contain: layout paint isolates each element so its
+   motion never triggers layout or paint on the rest of the page. */
+.animate-emoji-rain,
+.animate-emoji-rain-slow,
+.animate-emoji-float {
+  contain: layout paint;
+}
+
+/* Pause the emoji rain while the tab is hidden (driven by the component's
+   visibilitychange listener toggling .is-paused). */
+.is-paused .animate-emoji-rain,
+.is-paused .animate-emoji-rain-slow,
+.is-paused .animate-emoji-float {
+  animation-play-state: paused;
+}
+
 /* NAK Theme Effect Classes */
 .nak-depth-gradient {
   animation: nak-glow 16s ease-in-out infinite;

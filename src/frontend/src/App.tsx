@@ -28,6 +28,11 @@ import { useActiveOrderRef } from "./hooks/useActiveOrderRef";
 import { CartProvider } from "./hooks/useCart";
 import { useIsAdmin } from "./hooks/useQueries";
 
+// Pages that explicitly opt in to the emoji-rain background. Kept empty so
+// BubbleBackground renders NOWHERE by default; a newly added page value must be
+// added here to receive the animation (it never inherits it silently).
+const EMOJI_RAIN_PAGES: readonly string[] = [];
+
 function App() {
   const [currentPage, setCurrentPage] = useState<
     | "main"
@@ -181,12 +186,11 @@ function App() {
         className="min-h-screen relative overflow-x-hidden"
         style={{ backgroundColor: "var(--nak-bg)" }}
       >
-        {/* Falling emoji rain renders on the sub-pages only — the main page
-            uses the restrained institutional background. Admin surfaces stay
-            clean: no emoji rain on #/admin or #/admin/recovery. */}
-        {currentPage !== "main" &&
-          currentPage !== "admin" &&
-          currentPage !== "adminrecovery" && <BubbleBackground />}
+        {/* Emoji rain renders ONLY for pages explicitly listed in
+            EMOJI_RAIN_PAGES (currently empty), so the storefront and admin
+            surfaces stay clean and a newly added page does NOT silently
+            inherit the animation. */}
+        {EMOJI_RAIN_PAGES.includes(currentPage) && <BubbleBackground />}
         <Navigation
           currentPage={
             currentPage as

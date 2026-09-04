@@ -68,6 +68,16 @@ module {
     #expired;
   };
 
+  // A single cached checkCryptoPayment result for one order reference, with the
+  // time it was fetched. The cache is short-lived (15s TTL) and collapses a
+  // client polling every few seconds into one ledger call per 15 seconds. The
+  // entry is deleted when the payment reaches #paid or #expired so the map
+  // cannot grow forever.
+  public type CryptoCheckCacheEntry = {
+    var status : CryptoPaymentStatus;
+    var timestamp : Int;
+  };
+
   public type CryptoPayment = {
     orderId : Nat;
     reference : Text;
@@ -103,6 +113,11 @@ module {
     #unauthorized;
     #invalidConfig : Text;
     #sweepFailed : Text;
+    // The caller exceeded the per-principal rate limit on checkCryptoPayment
+    // (10 calls per 60 seconds). The canister cannot see client IPs, so this
+    // complements the ledger's own protections; anonymous callers all share the
+    // anonymous principal, so for them this is a global cap.
+    #rateLimited;
     // The crypto order total is below the configured minimum order total (the
     // payload is the minimum in integer cents). Crypto orders below this cannot
     // be swept to the treasury after the ledger transfer fee is deducted.

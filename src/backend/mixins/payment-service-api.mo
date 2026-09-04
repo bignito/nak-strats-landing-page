@@ -11,6 +11,7 @@ import RateLimitTypes "../types/rate-limit";
 import RateLimitLib "../lib/rate-limit";
 import CancellationTypes "../types/cancellation";
 import CancellationLib "../lib/cancellation";
+import CycleTypes "../types/cycle-monitor";
 import OutCall "mo:caffeineai-http-outcalls/outcall";
 
 mixin (
@@ -21,6 +22,7 @@ mixin (
   checkoutRateLimit : RateLimitTypes.RateLimitState,
   confirmRateLimit : RateLimitTypes.RateLimitState,
   cancelTokens : Map.Map<Text, CancellationTypes.CancellationToken>,
+  cycleCounters : CycleTypes.CycleCounters,
 ) {
   // Public view of the payment service config. The token is write-only and is
   // never returned — only a boolean "is it set" flag.
@@ -49,7 +51,7 @@ mixin (
     if (not RateLimitLib.checkRateLimit(checkoutRateLimit, caller, RateLimitLib.CARD_RATE_WINDOW_NANOS, RateLimitLib.CARD_RATE_MAX)) {
       return #err(#rateLimited);
     };
-    await PaymentServiceLib.createCheckoutSession(config, orders, reference, successUrl, cancelUrl, paymentServiceTransform);
+    await PaymentServiceLib.createCheckoutSession(cycleCounters, config, orders, reference, successUrl, cancelUrl, paymentServiceTransform);
   };
 
   // Confirm a card order by querying the payment service's order-status
@@ -75,7 +77,7 @@ mixin (
     if (not RateLimitLib.checkRateLimit(confirmRateLimit, caller, RateLimitLib.CARD_RATE_WINDOW_NANOS, RateLimitLib.CARD_RATE_MAX)) {
       return #err(#rateLimited);
     };
-    await PaymentServiceLib.confirmPayment(config, orders, reference, paymentServiceTransform, config, paymentServiceTransform);
+    await PaymentServiceLib.confirmPayment(cycleCounters, config, orders, reference, paymentServiceTransform, config, paymentServiceTransform);
   };
 
   // Cancel a pending card order, releasing its reserved inventory. Succeeds

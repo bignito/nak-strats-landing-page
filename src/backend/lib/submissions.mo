@@ -7,7 +7,9 @@ import Principal "mo:core/Principal";
 import Map "mo:core/Map";
 import Types "../types/submissions";
 import PaymentServiceTypes "../types/payment-service";
+import CycleTypes "../types/cycle-monitor";
 import OutCall "mo:caffeineai-http-outcalls/outcall";
+import OutCallLocal "./outcall";
 
 module {
   // Per-principal rate limit: at most `rateLimitMax` submissions per caller
@@ -284,8 +286,25 @@ module {
     if (filtered.size() >= rateLimitMax) {
       false;
     } else {
+      if (filtered.size() == 0) {
+        // All prior timestamps are outside the window: drop the stale entry so
+        // the map never accumulates dead per-principal keys, then record the
+        // current submission fresh below.
+        rateLimit.submissions.remove(caller);
+      };
       rateLimit.submissions.add(caller, filtered.concat([now]));
       true;
+    };
+  };
+
+  // Remove every principal whose submission timestamps are all older than the
+  // rate-limit window, so the per-principal map does not grow with dead
+  // entries. Called by the recurring hourly sweep timer.
+  public func pruneRateLimit(rateLimit : Types.RateLimitState) {
+    let now = Time.now();
+    let stale = rateLimit.submissions.entries().filter(func (_, ts) = ts.all(func t = now - t >= rateLimitWindowNanos));
+    for ((caller, _) in stale) {
+      rateLimit.submissions.remove(caller);
     };
   };
 
@@ -297,6 +316,7 @@ module {
   // the payment service's per-IP limit). The submission is stored off-canister
   // in the payment service Postgres; the canister never persists the PII.
   public func submitSubmission(
+    counters : CycleTypes.CycleCounters,
     config : PaymentServiceTypes.PaymentServiceConfig,
     rateLimit : Types.RateLimitState,
     input : Types.SubmissionInput,
@@ -337,7 +357,7 @@ module {
     ];
     let url = config.url # "/submissions";
     try {
-      let responseText = await OutCall.httpPostRequest(url, headers, body, transform);
+      let responseText = await OutCallLocal.httpPostRequest(counters, url, headers, body, transform, 8_192 : Nat64);
       if (responseText.contains(#text "\"ok\":true")) {
         #ok();
       } else {
@@ -354,6 +374,7 @@ module {
   // records are PII that lives off-canister; the canister only proxies them
   // through for the admin view and never persists them.
   public func listSubmissions(
+    counters : CycleTypes.CycleCounters,
     config : PaymentServiceTypes.PaymentServiceConfig,
     transform : OutCall.Transform,
   ) : async Result.Result<[Types.SubmissionRecord], Types.SubmissionError> {
@@ -362,7 +383,7 @@ module {
     let url = config.url # "/submissions";
     let headers = [{ name = "Authorization"; value = "Bearer " # config.token }];
     try {
-      let responseText = await OutCall.httpGetRequest(url, headers, transform);
+      let responseText = await OutCallLocal.httpGetRequest(counters, url, headers, transform, 262_144 : Nat64);
       parseSubmissions(responseText);
     } catch e {
       #err(#outcallFailed("payment service unreachable: " # e.message()));

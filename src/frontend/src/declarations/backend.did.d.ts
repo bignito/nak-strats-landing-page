@@ -106,6 +106,7 @@ export type CryptoPaymentError = { 'alreadyPaid' : null } |
   { 'sweepFailed' : string } |
   { 'notFound' : null } |
   { 'ledgerError' : string } |
+  { 'rateLimited' : null } |
   { 'notCryptoOrder' : null } |
   { 'unauthorized' : null } |
   { 'invalidConfig' : string } |
@@ -117,6 +118,27 @@ export type CryptoPaymentStatus = {
   { 'underpayment' : { 'expected' : bigint, 'received' : bigint } } |
   { 'paid' : { 'blockIndex' : bigint } } |
   { 'awaiting_payment' : null };
+export interface CycleCountersView {
+  'totalLedgerCalls' : bigint,
+  'totalRawRandCalls' : bigint,
+  'totalOutcalls' : bigint,
+  'totalVetkdCalls' : bigint,
+}
+export interface CycleMetrics {
+  'samples' : Array<CycleSample>,
+  'counters' : CycleCountersView,
+  'liveBalance' : bigint,
+}
+export interface CycleSample {
+  'stableBytes' : bigint,
+  'heapBytes' : bigint,
+  'totalLedgerCalls' : bigint,
+  'totalRawRandCalls' : bigint,
+  'timestamp' : bigint,
+  'totalOutcalls' : bigint,
+  'totalVetkdCalls' : bigint,
+  'cyclesBalance' : bigint,
+}
 export interface DepositAccount {
   'owner' : Principal,
   'subaccount' : Uint8Array,
@@ -508,6 +530,7 @@ export interface _SERVICE {
   'getCryptoDepositInfo' : ActorMethod<[string], Result_20>,
   'getCryptoPaymentStatus' : ActorMethod<[string], Result_19>,
   'getCycleBalance' : ActorMethod<[], bigint>,
+  'getCycleMetrics' : ActorMethod<[], CycleMetrics>,
   'getDashboardData' : ActorMethod<[], string>,
   'getDefaultSubaccountBalance' : ActorMethod<[], Result_18>,
   'getEncryptionRecipients' : ActorMethod<[], Array<Principal>>,

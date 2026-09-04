@@ -1061,6 +1061,41 @@ export const mockBackend: backendInterface = {
   }),
   getCanisterId: async () => "aaaaa-aa" as unknown as Principal,
   getCycleBalance: async () => 1_250_000_000_000n,
+  // Cycle Monitor — the mock returns a populated ring buffer (2+ samples) so
+  // the tab renders real data in dev. The second sample shows an increased
+  // cyclesBalance to demonstrate a top-up interval, which the frontend flags
+  // and excludes from burn-rate math.
+  getCycleMetrics: async () => ({
+    liveBalance: 1_250_000_000_000n,
+    samples: [
+      {
+        timestamp: 1700000000000000000n,
+        cyclesBalance: 1_240_000_000_000n,
+        heapBytes: 12_000_000n,
+        stableBytes: 8_000_000n,
+        totalOutcalls: 1_200n,
+        totalLedgerCalls: 340n,
+        totalVetkdCalls: 0n,
+        totalRawRandCalls: 0n,
+      },
+      {
+        timestamp: 1700003600000000000n,
+        cyclesBalance: 1_250_000_000_000n,
+        heapBytes: 12_100_000n,
+        stableBytes: 8_050_000n,
+        totalOutcalls: 1_260n,
+        totalLedgerCalls: 352n,
+        totalVetkdCalls: 0n,
+        totalRawRandCalls: 0n,
+      },
+    ],
+    counters: {
+      totalOutcalls: 1_260n,
+      totalLedgerCalls: 352n,
+      totalVetkdCalls: 0n,
+      totalRawRandCalls: 0n,
+    },
+  }),
   getDashboardData: async () => "{}",
   getDefaultSubaccountBalance: async () => ({ __kind__: "ok", ok: 1_250_000_000n }),
   getEncryptionRecipients: async () => [],

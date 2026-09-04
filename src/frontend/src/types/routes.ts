@@ -24,10 +24,11 @@ export type Page =
    registered in the AdminTabRegistry.
    ============================================================ */
 
-/** The 9 admin tabs, in display order. */
+/** The 10 admin tabs, in display order. */
 export type AdminTabId =
   | "overview"
   | "canister"
+  | "cycleMonitor"
   | "treasury"
   | "orders"
   | "products"

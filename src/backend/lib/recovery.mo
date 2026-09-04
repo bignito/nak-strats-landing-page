@@ -7,7 +7,9 @@ import Types "../types/recovery";
 import StorefrontTypes "../types/storefront";
 import CryptoTypes "../types/crypto-payments";
 import PaymentServiceTypes "../types/payment-service";
+import CycleTypes "../types/cycle-monitor";
 import CryptoPaymentsLib "./crypto-payments";
+import CycleCountersLib "./cycle-counters";
 import OutCall "mo:caffeineai-http-outcalls/outcall";
 
 module {
@@ -88,6 +90,7 @@ module {
   // (the ICRC-1 balance_of returns a plain Nat and cannot return an error), so
   // it propagates as a reject rather than being silently swallowed.
   public func getLiveBalance(
+    counters : CycleTypes.CycleCounters,
     cryptoPayments : Map.Map<Text, CryptoTypes.CryptoPayment>,
     reference : Text,
     config : CryptoTypes.CryptoConfig,
@@ -98,6 +101,7 @@ module {
       case (?payment) {
         let ledger = ledgerFor(payment.token, config);
         let ledgerActor : Ledger = actor (ledger.canisterId.toText());
+        CycleCountersLib.incLedgerCalls(counters);
         let balance = await ledgerActor.icrc1_balance_of({ owner = selfPrincipal; subaccount = ?payment.subaccount });
         #ok(balance);
       };
@@ -107,6 +111,7 @@ module {
   // Builds the admin recovery view for every order, including the live
   // on-ledger balance of each crypto order's subaccount.
   public func listOrdersForRecovery(
+    counters : CycleTypes.CycleCounters,
     orders : List.List<StorefrontTypes.Order>,
     cryptoPayments : Map.Map<Text, CryptoTypes.CryptoPayment>,
     config : CryptoTypes.CryptoConfig,
@@ -121,7 +126,7 @@ module {
       };
       let liveBalance = switch (payment) {
         case (?_) {
-          switch (await getLiveBalance(cryptoPayments, order.reference, config, selfPrincipal)) {
+          switch (await getLiveBalance(counters, cryptoPayments, order.reference, config, selfPrincipal)) {
             case (#ok b) { b };
             case (#err _) { 0 };
           };
@@ -144,6 +149,7 @@ module {
   // Forces verification of a single order's payment immediately, returning the
   // current balance, status, and any error.
   public func forceRecheck(
+    counters : CycleTypes.CycleCounters,
     cryptoPayments : Map.Map<Text, CryptoTypes.CryptoPayment>,
     reference : Text,
     config : CryptoTypes.CryptoConfig,
@@ -154,6 +160,7 @@ module {
       case (?payment) {
         let ledger = ledgerFor(payment.token, config);
         let ledgerActor : Ledger = actor (ledger.canisterId.toText());
+        CycleCountersLib.incLedgerCalls(counters);
         let balance = await ledgerActor.icrc1_balance_of({ owner = selfPrincipal; subaccount = ?payment.subaccount });
         let status = if (balance >= payment.amountDue) {
           #paid({ blockIndex = payment.confirmedBlockIndex ?? 0 });
@@ -170,6 +177,7 @@ module {
   // Forces a sweep of a single order's subaccount to the treasury, returning
   // the exact ledger error on failure (never swallowed).
   public func forceSweep(
+    counters : CycleTypes.CycleCounters,
     cryptoPayments : Map.Map<Text, CryptoTypes.CryptoPayment>,
     orders : List.List<StorefrontTypes.Order>,
     reference : Text,
@@ -182,8 +190,9 @@ module {
       case (?payment) {
         let ledger = ledgerFor(payment.token, config);
         let ledgerActor : Ledger = actor (ledger.canisterId.toText());
+        CycleCountersLib.incLedgerCalls(counters);
         let balance = await ledgerActor.icrc1_balance_of({ owner = selfPrincipal; subaccount = ?payment.subaccount });
-        let fee = await CryptoPaymentsLib.getRuntimeFee(payment.token, config, feeCache);
+        let fee = await CryptoPaymentsLib.getRuntimeFee(counters, payment.token, config, feeCache);
         if (balance <= fee) {
           // Cannot sweep: after deducting the fee there is nothing left to
           // transfer. Record the skip on the order and return the exact reason.
@@ -191,6 +200,7 @@ module {
           #err(#sweepFailed("subaccount balance " # balance.toText() # " is not greater than the transfer fee " # fee.toText()));
         } else {
           let sweepAmount = balance - fee;
+          CycleCountersLib.incLedgerCalls(counters);
           let transferResult = await ledgerActor.icrc1_transfer({
             from_subaccount = ?payment.subaccount;
             to = { owner = config.treasuryPrincipal; subaccount = config.treasurySubaccount };
@@ -218,10 +228,12 @@ module {
   // Queries the canister's DEFAULT subaccount (no subaccount) balance on the
   // configured ckUSDC ledger.
   public func getDefaultSubaccountBalance(
+    counters : CycleTypes.CycleCounters,
     config : CryptoTypes.CryptoConfig,
     selfPrincipal : Principal,
   ) : async Result.Result<Nat, Types.RecoveryError> {
     let ledgerActor : Ledger = actor (config.ckUSDC.canisterId.toText());
+    CycleCountersLib.incLedgerCalls(counters);
     let balance = await ledgerActor.icrc1_balance_of({ owner = selfPrincipal; subaccount = null });
     #ok(balance);
   };
@@ -229,17 +241,20 @@ module {
   // Sweeps the canister's DEFAULT subaccount balance to the treasury, returning
   // the exact ledger error on failure (never swallowed).
   public func sweepDefaultSubaccount(
+    counters : CycleTypes.CycleCounters,
     config : CryptoTypes.CryptoConfig,
     selfPrincipal : Principal,
     feeCache : CryptoTypes.FeeCache,
   ) : async Result.Result<Types.SweepResult, Types.RecoveryError> {
     let ledgerActor : Ledger = actor (config.ckUSDC.canisterId.toText());
+    CycleCountersLib.incLedgerCalls(counters);
     let balance = await ledgerActor.icrc1_balance_of({ owner = selfPrincipal; subaccount = null });
-    let fee = await CryptoPaymentsLib.getRuntimeFee(#ckUSDC, config, feeCache);
+    let fee = await CryptoPaymentsLib.getRuntimeFee(counters, #ckUSDC, config, feeCache);
     if (balance <= fee) {
       #err(#sweepFailed("default subaccount balance " # balance.toText() # " is not greater than the transfer fee " # fee.toText()));
     } else {
       let sweepAmount = balance - fee;
+      CycleCountersLib.incLedgerCalls(counters);
       let transferResult = await ledgerActor.icrc1_transfer({
         from_subaccount = null;
         to = { owner = config.treasuryPrincipal; subaccount = config.treasurySubaccount };
@@ -286,6 +301,7 @@ module {
   // and flags it for admin review. Never discards the funds. Idempotent — a
   // reference is only ever recorded once.
   public func recordLatePayment(
+    counters : CycleTypes.CycleCounters,
     cryptoPayments : Map.Map<Text, CryptoTypes.CryptoPayment>,
     latePayments : List.List<Types.LatePayment>,
     reference : Text,
@@ -300,6 +316,7 @@ module {
         };
         let ledger = ledgerFor(payment.token, config);
         let ledgerActor : Ledger = actor (ledger.canisterId.toText());
+        CycleCountersLib.incLedgerCalls(counters);
         let balance = await ledgerActor.icrc1_balance_of({ owner = selfPrincipal; subaccount = ?payment.subaccount });
         latePayments.add({
           reference;
@@ -339,6 +356,7 @@ module {
   // payments received after expiry, and releases expired inventory. Returns the
   // number of payments processed. Runs independent of the browser tab.
   public func runVerificationPass(
+    counters : CycleTypes.CycleCounters,
     cryptoPayments : Map.Map<Text, CryptoTypes.CryptoPayment>,
     orders : List.List<StorefrontTypes.Order>,
     products : List.List<StorefrontTypes.Product>,
@@ -348,6 +366,7 @@ module {
     feeCache : CryptoTypes.FeeCache,
     emailConfig : PaymentServiceTypes.PaymentServiceConfig,
     emailTransform : OutCall.Transform,
+    checkCache : Map.Map<Text, CryptoTypes.CryptoCheckCacheEntry>,
   ) : async Nat {
     // Collect references first so we never mutate the map while iterating it.
     let refs = List.empty<Text>();
@@ -367,19 +386,20 @@ module {
                 // Deposit window passed. Check whether funds arrived late.
                 let ledger = ledgerFor(payment.token, config);
                 let ledgerActor : Ledger = actor (ledger.canisterId.toText());
+                CycleCountersLib.incLedgerCalls(counters);
                 let balance = await ledgerActor.icrc1_balance_of({ owner = selfPrincipal; subaccount = ?payment.subaccount });
                 if (balance > 0) {
                   // Late payment: record it for admin review, never discard.
-                  await recordLatePayment(cryptoPayments, latePayments, reference, config, selfPrincipal);
+                  await recordLatePayment(counters, cryptoPayments, latePayments, reference, config, selfPrincipal);
                 } else {
                   // No funds: release reserved inventory and mark expired.
-                  ignore (await CryptoPaymentsLib.releaseInventoryOnExpiry(products, orders, cryptoPayments, reference));
+                  ignore (await CryptoPaymentsLib.releaseInventoryOnExpiry(products, orders, cryptoPayments, reference, checkCache));
                 };
               } else {
                 // Within the window: verify and confirm (sweep) when paid. Pass
                 // the email config + transform so a confirmed crypto order
                 // triggers its transactional order-confirmation email.
-                ignore (await CryptoPaymentsLib.confirmPayment(cryptoPayments, orders, reference, config, selfPrincipal, feeCache, emailConfig, emailTransform));
+                ignore (await CryptoPaymentsLib.confirmPayment(counters, cryptoPayments, orders, reference, config, selfPrincipal, feeCache, emailConfig, emailTransform, checkCache));
               };
             };
           };

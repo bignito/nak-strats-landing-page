@@ -2,6 +2,7 @@ import Result "mo:core/Result";
 import Principal "mo:core/Principal";
 import Types "../types/sweep";
 import CryptoTypes "../types/crypto-payments";
+import CycleTypes "../types/cycle-monitor";
 import CryptoPaymentsLib "./crypto-payments";
 
 module {
@@ -67,6 +68,7 @@ module {
     config : CryptoTypes.CryptoConfig,
     selfPrincipal : Principal,
     subaccountIndex : Nat,
+    counters : CycleTypes.CycleCounters,
   ) : async Result.Result<Types.SubaccountBalanceResult, Types.SweepError> {
     let subaccount = CryptoPaymentsLib.deriveSubaccount(subaccountIndex);
     let ledgerActor : Ledger = actor (config.ckUSDC.canisterId.toText());
@@ -88,13 +90,14 @@ module {
     selfPrincipal : Principal,
     feeCache : CryptoTypes.FeeCache,
     subaccountIndex : Nat,
+    counters : CycleTypes.CycleCounters,
   ) : async Result.Result<Types.SweepSubaccountResult, Types.SweepError> {
     let subaccount = CryptoPaymentsLib.deriveSubaccount(subaccountIndex);
     let ledgerActor : Ledger = actor (config.ckUSDC.canisterId.toText());
     let balance = await ledgerActor.icrc1_balance_of({ owner = selfPrincipal; subaccount = ?subaccount });
     // The transfer fee is queried from the ledger at runtime (cached briefly)
     // rather than hardcoded, so a fee change never silently breaks the sweep.
-    let fee = await CryptoPaymentsLib.getRuntimeFee(#ckUSDC, config, feeCache);
+    let fee = await CryptoPaymentsLib.getRuntimeFee(counters, #ckUSDC, config, feeCache);
     if (balance <= fee) {
       // Cannot sweep: after deducting the fee there is nothing left to transfer
       // and the ledger rejects a zero-value transfer.

@@ -529,6 +529,30 @@ type DepositAccount =
    subaccount: blob;
    textAddress: text;
  };
+type CycleSample = 
+ record {
+   cyclesBalance: nat;
+   heapBytes: nat;
+   stableBytes: nat;
+   timestamp: int;
+   totalLedgerCalls: nat;
+   totalOutcalls: nat;
+   totalRawRandCalls: nat;
+   totalVetkdCalls: nat;
+ };
+type CycleMetrics = 
+ record {
+   counters: CycleCountersView;
+   liveBalance: nat;
+   samples: vec CycleSample;
+ };
+type CycleCountersView = 
+ record {
+   totalLedgerCalls: nat;
+   totalOutcalls: nat;
+   totalRawRandCalls: nat;
+   totalVetkdCalls: nat;
+ };
 type CryptoPaymentStatus = 
  variant {
    awaiting_payment;
@@ -556,6 +580,7 @@ type CryptoPaymentError =
                   expected: nat;
                   received: nat;
                 };
+   rateLimited;
    sweepFailed: text;
    unauthorized;
    underpayment: record {
@@ -711,6 +736,7 @@ service : {
   getCryptoDepositInfo: (reference: text) -> (Result_20) query;
   getCryptoPaymentStatus: (reference: text) -> (Result_19) query;
   getCycleBalance: () -> (nat) query;
+  getCycleMetrics: () -> (CycleMetrics) query;
   getDashboardData: () -> (text);
   getDefaultSubaccountBalance: () -> (Result_18);
   getEncryptionRecipients: () -> (vec principal) query;

@@ -10,6 +10,8 @@ import Types "../types/storefront";
 import AssetTypes "../types/product-assets";
 import AdminTypes "../types/admin-access-control";
 import AdminLib "../lib/admin-access-control";
+import CycleCountersLib "../lib/cycle-counters";
+import CycleTypes "../types/cycle-monitor";
 
 // Product image asset storage and serving. Stores image blobs in canister
 // stable state (NOT the external blob gateway) and serves them publicly over
@@ -23,6 +25,7 @@ mixin (
   adminUsers : AdminTypes.AdminUsers,
   products : List.List<Types.Product>,
   selfPrincipal : Principal,
+  cycleCounters : CycleTypes.CycleCounters,
 ) {
   // --- Constants (static literals; transient so they are not stable state) ---
 
@@ -64,6 +67,7 @@ mixin (
 
   // Generate a unique id (upload id or asset id) from IC raw randomness.
   func generateId() : async Text {
+    CycleCountersLib.incRawRandCalls(cycleCounters);
     let bytes = await Random.blob();
     assetBlobToHex(bytes);
   };

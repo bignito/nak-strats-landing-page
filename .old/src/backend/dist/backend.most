@@ -18,6 +18,15 @@ type AssetRecord__146493908 =
     productId : Nat;
     uploadedAt : Int
   };
+type AssetRecord__41863482 =
+  {
+    byteSize : Nat;
+    bytes : Blob;
+    contentType : Text;
+    id : Text;
+    productId : Nat;
+    uploadedAt : Int
+  };
 type AssetRecord__444359547 =
   {
     byteSize : Nat;
@@ -36,6 +45,15 @@ type AssetRecord__620301938 =
     productId : Nat;
     uploadedAt : Int
   };
+type AssetRecord__626531815 =
+  {
+    byteSize : Nat;
+    bytes : Blob;
+    contentType : Text;
+    id : Text;
+    productId : Nat;
+    uploadedAt : Int
+  };
 type AssetRecord__717876453 =
   {
     byteSize : Nat;
@@ -46,6 +64,15 @@ type AssetRecord__717876453 =
     uploadedAt : Int
   };
 type AssetRecord__759329849 =
+  {
+    byteSize : Nat;
+    bytes : Blob;
+    contentType : Text;
+    id : Text;
+    productId : Nat;
+    uploadedAt : Int
+  };
+type AssetRecord__848859695 =
   {
     byteSize : Nat;
     bytes : Blob;
@@ -85,7 +112,10 @@ type CancellationToken__122555126 = {expiresAt : Int; token : Text};
 type CancellationToken__141884488 = {expiresAt : Int; token : Text};
 type CancellationToken__199793108 = {expiresAt : Int; token : Text};
 type CancellationToken__249699440 = {expiresAt : Int; token : Text};
+type CancellationToken__28595895 = {expiresAt : Int; token : Text};
+type CancellationToken__382573303 = {expiresAt : Int; token : Text};
 type CancellationToken__444399231 = {expiresAt : Int; token : Text};
+type CancellationToken__507682655 = {expiresAt : Int; token : Text};
 type CancellationToken__56272076 = {expiresAt : Int; token : Text};
 type CancellationToken__568485365 = {expiresAt : Int; token : Text};
 type CancellationToken__572156728 = {expiresAt : Int; token : Text};
@@ -98,6 +128,30 @@ type Category__1009107007 =
     created_at : Int;
     description : ?Text;
     id : CategoryId__510627385;
+    name : Text;
+    showWhenEmpty : Bool;
+    slug : Text;
+    sortOrder : Nat;
+    updated_at : Int
+  };
+type Category__1047250676 =
+  {
+    active : Bool;
+    created_at : Int;
+    description : ?Text;
+    id : Nat;
+    name : Text;
+    showWhenEmpty : Bool;
+    slug : Text;
+    sortOrder : Nat;
+    updated_at : Int
+  };
+type Category__107232665 =
+  {
+    active : Bool;
+    created_at : Int;
+    description : ?Text;
+    id : Nat;
     name : Text;
     showWhenEmpty : Bool;
     slug : Text;
@@ -188,6 +242,24 @@ type Category__50489613 =
     sortOrder : Nat;
     updated_at : Int
   };
+type Category__869959859 =
+  {
+    active : Bool;
+    created_at : Int;
+    description : ?Text;
+    id : Nat;
+    name : Text;
+    showWhenEmpty : Bool;
+    slug : Text;
+    sortOrder : Nat;
+    updated_at : Int
+  };
+type CryptoCheckCacheEntry__1007847844 =
+  {var status : CryptoPaymentStatus__114556572; var timestamp : Int};
+type CryptoCheckCacheEntry__1016422710 =
+  {var status : CryptoPaymentStatus__932177053; var timestamp : Int};
+type CryptoCheckCacheEntry__422630893 =
+  {var status : CryptoPaymentStatus__692924966; var timestamp : Int};
 type CryptoConfig__1039141198 =
   {
     var ckUSDC : LedgerConfig__466233792;
@@ -265,6 +337,13 @@ type CryptoConfig__54689289 =
     var treasuryPrincipal : Principal;
     var treasurySubaccount : ?Blob
   };
+type CryptoConfig__563828793 =
+  {
+    var ckUSDC : LedgerConfig__831238827;
+    var icp : LedgerConfig__831238827;
+    var treasuryPrincipal : Principal;
+    var treasurySubaccount : ?Blob
+  };
 type CryptoConfig__605816032 =
   {
     var ckUSDC : LedgerConfig__539140862;
@@ -307,6 +386,13 @@ type CryptoConfig__77827703 =
     var treasuryPrincipal : Principal;
     var treasurySubaccount : ?Blob
   };
+type CryptoConfig__786593637 =
+  {
+    var ckUSDC : LedgerConfig__184206490;
+    var icp : LedgerConfig__184206490;
+    var treasuryPrincipal : Principal;
+    var treasurySubaccount : ?Blob
+  };
 type CryptoConfig__820037169 =
   {
     var ckUSDC : LedgerConfig__963613426;
@@ -318,6 +404,13 @@ type CryptoConfig__840332871 =
   {
     var ckUSDC : LedgerConfig__22772081;
     var icp : LedgerConfig__22772081;
+    var treasuryPrincipal : Principal;
+    var treasurySubaccount : ?Blob
+  };
+type CryptoConfig__906820369 =
+  {
+    var ckUSDC : LedgerConfig__945765169;
+    var icp : LedgerConfig__945765169;
     var treasuryPrincipal : Principal;
     var treasurySubaccount : ?Blob
   };
@@ -344,6 +437,14 @@ type CryptoPaymentStatus__1029247109 =
     #underpayment : {expected : Nat; received : Nat}
   };
 type CryptoPaymentStatus__1035592969 =
+  {
+    #awaiting_payment;
+    #expired;
+    #overpayment : {expected : Nat; received : Nat};
+    #paid : {blockIndex : Nat};
+    #underpayment : {expected : Nat; received : Nat}
+  };
+type CryptoPaymentStatus__114556572 =
   {
     #awaiting_payment;
     #expired;
@@ -384,6 +485,14 @@ type CryptoPaymentStatus__212946176 =
     #underpayment : {expected : Nat; received : Nat}
   };
 type CryptoPaymentStatus__229575107 =
+  {
+    #awaiting_payment;
+    #expired;
+    #overpayment : {expected : Nat; received : Nat};
+    #paid : {blockIndex : Nat};
+    #underpayment : {expected : Nat; received : Nat}
+  };
+type CryptoPaymentStatus__241160089 =
   {
     #awaiting_payment;
     #expired;
@@ -504,6 +613,14 @@ type CryptoPaymentStatus__834473399 =
     #underpayment : {expected : Nat; received : Nat}
   };
 type CryptoPaymentStatus__863943467 =
+  {
+    #awaiting_payment;
+    #expired;
+    #overpayment : {expected : Nat; received : Nat};
+    #paid : {blockIndex : Nat};
+    #underpayment : {expected : Nat; received : Nat}
+  };
+type CryptoPaymentStatus__932177053 =
   {
     #awaiting_payment;
     #expired;
@@ -719,6 +836,32 @@ type CryptoPayment__669651873 =
     token : Token__1005460799;
     updatedAt : Int
   };
+type CryptoPayment__680878564 =
+  {
+    amountDue : Nat;
+    confirmedBlockIndex : ?Nat;
+    createdAt : Int;
+    expiresAt : Int;
+    orderId : Nat;
+    reference : Text;
+    status : CryptoPaymentStatus__241160089;
+    subaccount : Blob;
+    token : Token__648322203;
+    updatedAt : Int
+  };
+type CryptoPayment__691219525 =
+  {
+    amountDue : Nat;
+    confirmedBlockIndex : ?Nat;
+    createdAt : Int;
+    expiresAt : Int;
+    orderId : Nat;
+    reference : Text;
+    status : CryptoPaymentStatus__932177053;
+    subaccount : Blob;
+    token : Token__838482580;
+    updatedAt : Int
+  };
 type CryptoPayment__706978881 =
   {
     amountDue : Nat;
@@ -784,6 +927,19 @@ type CryptoPayment__890414459 =
     token : Token__680836017;
     updatedAt : Int
   };
+type CryptoPayment__93328139 =
+  {
+    amountDue : Nat;
+    confirmedBlockIndex : ?Nat;
+    createdAt : Int;
+    expiresAt : Int;
+    orderId : Nat;
+    reference : Text;
+    status : CryptoPaymentStatus__114556572;
+    subaccount : Blob;
+    token : Token__945240494;
+    updatedAt : Int
+  };
 type CryptoPayment__939263613 =
   {
     amountDue : Nat;
@@ -797,6 +953,41 @@ type CryptoPayment__939263613 =
     token : Token__2027932;
     updatedAt : Int
   };
+type CycleCounters__755153493 =
+  {
+    var totalLedgerCalls : Nat;
+    var totalOutcalls : Nat;
+    var totalRawRandCalls : Nat;
+    var totalVetkdCalls : Nat
+  };
+type CycleMetricsState__23534398 =
+  {
+    var count : Nat;
+    var head : Nat;
+    var samples : [var ?CycleSample__832945217]
+  };
+type CycleSample__612085926 =
+  {
+    cyclesBalance : Nat;
+    heapBytes : Nat;
+    stableBytes : Nat;
+    timestamp : Int;
+    totalLedgerCalls : Nat;
+    totalOutcalls : Nat;
+    totalRawRandCalls : Nat;
+    totalVetkdCalls : Nat
+  };
+type CycleSample__832945217 =
+  {
+    cyclesBalance : Nat;
+    heapBytes : Nat;
+    stableBytes : Nat;
+    timestamp : Int;
+    totalLedgerCalls : Nat;
+    totalOutcalls : Nat;
+    totalRawRandCalls : Nat;
+    totalVetkdCalls : Nat
+  };
 type Data__265875254<K, V> = {var count : Nat__58649523; kvs : [var ?(K, V)]};
 type Data__859131645<T> = {var count : Nat__58649523; elements : [var ?T]};
 type FeeCacheEntry__1035766934 = {var fee : Nat; var updatedAt : Int};
@@ -804,11 +995,13 @@ type FeeCacheEntry__117302515 = {var fee : Nat; var updatedAt : Int};
 type FeeCacheEntry__160002690 = {var fee : Nat; var updatedAt : Int};
 type FeeCacheEntry__161440515 = {var fee : Nat; var updatedAt : Int};
 type FeeCacheEntry__241378038 = {var fee : Nat; var updatedAt : Int};
+type FeeCacheEntry__283775221 = {var fee : Nat; var updatedAt : Int};
 type FeeCacheEntry__31830119 = {var fee : Nat; var updatedAt : Int};
 type FeeCacheEntry__347564953 = {var fee : Nat; var updatedAt : Int};
 type FeeCacheEntry__350596314 = {var fee : Nat; var updatedAt : Int};
 type FeeCacheEntry__475199623 = {var fee : Nat; var updatedAt : Int};
 type FeeCacheEntry__582202220 = {var fee : Nat; var updatedAt : Int};
+type FeeCacheEntry__64827053 = {var fee : Nat; var updatedAt : Int};
 type FeeCacheEntry__680045839 = {var fee : Nat; var updatedAt : Int};
 type FeeCacheEntry__76025339 = {var fee : Nat; var updatedAt : Int};
 type FeeCacheEntry__796393046 = {var fee : Nat; var updatedAt : Int};
@@ -816,7 +1009,10 @@ type FeeCacheEntry__808552932 = {var fee : Nat; var updatedAt : Int};
 type FeeCacheEntry__81626611 = {var fee : Nat; var updatedAt : Int};
 type FeeCacheEntry__84478112 = {var fee : Nat; var updatedAt : Int};
 type FeeCacheEntry__856894186 = {var fee : Nat; var updatedAt : Int};
+type FeeCacheEntry__953978048 = {var fee : Nat; var updatedAt : Int};
 type FeeCacheEntry__988204841 = {var fee : Nat; var updatedAt : Int};
+type FeeCache__1008518617 =
+  {var ckUSDC : FeeCacheEntry__64827053; var icp : FeeCacheEntry__64827053};
 type FeeCache__1017681762 =
   {var ckUSDC : FeeCacheEntry__117302515; var icp : FeeCacheEntry__117302515};
 type FeeCache__1035989734 =
@@ -835,6 +1031,8 @@ type FeeCache__73252551 =
   {var ckUSDC : FeeCacheEntry__680045839; var icp : FeeCacheEntry__680045839};
 type FeeCache__733709459 =
   {var ckUSDC : FeeCacheEntry__81626611; var icp : FeeCacheEntry__81626611};
+type FeeCache__73805759 =
+  {var ckUSDC : FeeCacheEntry__953978048; var icp : FeeCacheEntry__953978048};
 type FeeCache__743668456 =
   {var ckUSDC : FeeCacheEntry__808552932; var icp : FeeCacheEntry__808552932};
 type FeeCache__755569274 =
@@ -850,10 +1048,24 @@ type FeeCache__864167227 =
   {var ckUSDC : FeeCacheEntry__241378038; var icp : FeeCacheEntry__241378038};
 type FeeCache__921908191 =
   {var ckUSDC : FeeCacheEntry__84478112; var icp : FeeCacheEntry__84478112};
+type FeeCache__922739333 =
+  {var ckUSDC : FeeCacheEntry__283775221; var icp : FeeCacheEntry__283775221};
 type FeeCache__937951839 =
   {var ckUSDC : FeeCacheEntry__856894186; var icp : FeeCacheEntry__856894186};
 type FeeCache__941646156 =
   {var ckUSDC : FeeCacheEntry__582202220; var icp : FeeCacheEntry__582202220};
+type IbePublicKeyCache__258410133 =
+  {
+    var cachedDerivationPath : Blob;
+    var cachedKey : ?Blob;
+    var cachedKeyName : Text
+  };
+type IbePublicKeyCache__602321165 =
+  {
+    var cachedDerivationPath : Blob;
+    var cachedKey : ?Blob;
+    var cachedKeyName : Text
+  };
 type Internal__161573640<K, V> =
   {children : [var ?Node__430031793<K, V>]; data : Data__265875254<K, V>};
 type Internal__778364379<T> =
@@ -957,6 +1169,24 @@ type LatePayment__642791935 =
     reviewed : Bool;
     token : Token__1040385903
   };
+type LatePayment__665062464 =
+  {
+    expectedAmount : Nat;
+    receivedAmount : Nat;
+    receivedAt : Int;
+    reference : Text;
+    reviewed : Bool;
+    token : Token__648322203
+  };
+type LatePayment__669283692 =
+  {
+    expectedAmount : Nat;
+    receivedAmount : Nat;
+    receivedAt : Int;
+    reference : Text;
+    reviewed : Bool;
+    token : Token__945240494
+  };
 type LatePayment__703848308 =
   {
     expectedAmount : Nat;
@@ -993,6 +1223,15 @@ type LatePayment__852976450 =
     reviewed : Bool;
     token : Token__483073351
   };
+type LatePayment__881522131 =
+  {
+    expectedAmount : Nat;
+    receivedAmount : Nat;
+    receivedAt : Int;
+    reference : Text;
+    reviewed : Bool;
+    token : Token__838482580
+  };
 type LatePayment__926877061 =
   {
     expectedAmount : Nat;
@@ -1016,6 +1255,8 @@ type Leaf__776840865<T> = {data : Data__859131645<T>};
 type LedgerConfig__1070536687 =
   {canisterId : Principal; decimals : Nat8; fee : Nat};
 type LedgerConfig__116400985 =
+  {canisterId : Principal; decimals : Nat8; fee : Nat};
+type LedgerConfig__184206490 =
   {canisterId : Principal; decimals : Nat8; fee : Nat};
 type LedgerConfig__194624984 =
   {canisterId : Principal; decimals : Nat8; fee : Nat};
@@ -1051,7 +1292,11 @@ type LedgerConfig__818472765 =
   {canisterId : Principal; decimals : Nat8; fee : Nat};
 type LedgerConfig__82675590 =
   {canisterId : Principal; decimals : Nat8; fee : Nat};
+type LedgerConfig__831238827 =
+  {canisterId : Principal; decimals : Nat8; fee : Nat};
 type LedgerConfig__915578056 =
+  {canisterId : Principal; decimals : Nat8; fee : Nat};
+type LedgerConfig__945765169 =
   {canisterId : Principal; decimals : Nat8; fee : Nat};
 type LedgerConfig__963613426 =
   {canisterId : Principal; decimals : Nat8; fee : Nat};
@@ -1097,6 +1342,41 @@ type NewActor__189103439 =
     paymentServiceConfig : {var token : Text; var url : Text};
     products : List__89170296<Product__1039044436>;
     state : {var nextOrderId : Nat}
+  };
+type NewActor__223008650 =
+  {
+    adminUsers : Map__386906547<Principal, UserRecord__519168707>;
+    assets : Map__386906547<Text, AssetRecord__626531815>;
+    cancelTokens : Map__386906547<Text, CancellationToken__382573303>;
+    categories : List__89170296<Category__1047250676>;
+    checkoutRateLimit : RateLimitState__1009457203;
+    confirmRateLimit : RateLimitState__1009457203;
+    cryptoCheckCache :
+      Map__386906547<Text, CryptoCheckCacheEntry__1016422710>;
+    cryptoCheckRateLimit : RateLimitState__1009457203;
+    cryptoConfig : CryptoConfig__906820369;
+    cryptoPayments : Map__386906547<Text, CryptoPayment__691219525>;
+    cycleCounters : CycleCounters__755153493;
+    cycleMetrics : CycleMetricsState__23534398;
+    featuredVideo : {var embedUrl : Text; var rawUrl : Text};
+    feeCache : FeeCache__922739333;
+    ibePublicKeyCache : IbePublicKeyCache__602321165;
+    ibeRateLimit : RateLimitState__1009457203;
+    initialAdminClaimed : {var initialAdminClaimed : Bool};
+    latePayments : List__89170296<LatePayment__881522131>;
+    minimumOrder : {var minimumOrder : Nat};
+    orderRateLimit : RateLimitState__1009457203;
+    orders : List__89170296<Order__271620663>;
+    paymentServiceConfig : {var token : Text; var url : Text};
+    pendingOrderConfig : {var globalCap : Nat};
+    products : List__89170296<Product__928650218>;
+    publicReadRateLimit : RateLimitState__1009457203;
+    rateLimit : {var submissions : Map__386906547<Principal, [Int]>};
+    responseCache : Map__386906547<Text, ResponseCacheEntry__89581753>;
+    sessionOrders : Map__386906547<Text, List__89170296<Text>>;
+    state : {var nextOrderId : Nat};
+    unsubscribeRateLimit : RateLimitState__1009457203;
+    uploads : Map__386906547<Text, UploadSession__493518302>
   };
 type NewActor__297932434 =
   {
@@ -1294,6 +1574,34 @@ type NewActor__610253763 =
     rateLimit : {var submissions : Map__386906547<Principal, [Int]>};
     state : {var nextOrderId : Nat}
   };
+type NewActor__720873888 =
+  {
+    adminUsers : Map__386906547<Principal, UserRecord__936782237>;
+    assets : Map__386906547<Text, AssetRecord__41863482>;
+    cancelTokens : Map__386906547<Text, CancellationToken__507682655>;
+    categories : List__89170296<Category__107232665>;
+    checkoutRateLimit : RateLimitState__108017636;
+    confirmRateLimit : RateLimitState__108017636;
+    cryptoConfig : CryptoConfig__563828793;
+    cryptoPayments : Map__386906547<Text, CryptoPayment__680878564>;
+    featuredVideo : {var embedUrl : Text; var rawUrl : Text};
+    feeCache : FeeCache__1008518617;
+    initialAdminClaimed : {var initialAdminClaimed : Bool};
+    latePayments : List__89170296<LatePayment__665062464>;
+    minimumOrder : {var minimumOrder : Nat};
+    orderRateLimit : RateLimitState__108017636;
+    orders : List__89170296<Order__233423440>;
+    paymentServiceConfig : {var token : Text; var url : Text};
+    pendingOrderConfig : {var globalCap : Nat};
+    products : List__89170296<Product__158968933>;
+    publicReadRateLimit : RateLimitState__108017636;
+    rateLimit : {var submissions : Map__386906547<Principal, [Int]>};
+    responseCache : Map__386906547<Text, ResponseCacheEntry__322026767>;
+    sessionOrders : Map__386906547<Text, List__89170296<Text>>;
+    state : {var nextOrderId : Nat};
+    unsubscribeRateLimit : RateLimitState__108017636;
+    uploads : Map__386906547<Text, UploadSession__170752147>
+  };
 type NewActor__766393799 =
   {
     adminUsers : Map__386906547<Principal, UserRecord__43517813>;
@@ -1368,6 +1676,39 @@ type NewActor__831890289 =
     state : {var nextOrderId : Nat};
     unsubscribeRateLimit : RateLimitState__401056363;
     uploads : Map__386906547<Text, UploadSession__575928172>
+  };
+type NewActor__838178257 =
+  {
+    adminUsers : Map__386906547<Principal, UserRecord__28024915>;
+    assets : Map__386906547<Text, AssetRecord__848859695>;
+    cancelTokens : Map__386906547<Text, CancellationToken__28595895>;
+    categories : List__89170296<Category__869959859>;
+    checkoutRateLimit : RateLimitState__418315391;
+    confirmRateLimit : RateLimitState__418315391;
+    cryptoCheckCache :
+      Map__386906547<Text, CryptoCheckCacheEntry__1007847844>;
+    cryptoCheckRateLimit : RateLimitState__418315391;
+    cryptoConfig : CryptoConfig__786593637;
+    cryptoPayments : Map__386906547<Text, CryptoPayment__93328139>;
+    featuredVideo : {var embedUrl : Text; var rawUrl : Text};
+    feeCache : FeeCache__73805759;
+    ibePublicKeyCache : IbePublicKeyCache__258410133;
+    ibeRateLimit : RateLimitState__418315391;
+    initialAdminClaimed : {var initialAdminClaimed : Bool};
+    latePayments : List__89170296<LatePayment__669283692>;
+    minimumOrder : {var minimumOrder : Nat};
+    orderRateLimit : RateLimitState__418315391;
+    orders : List__89170296<Order__481713067>;
+    paymentServiceConfig : {var token : Text; var url : Text};
+    pendingOrderConfig : {var globalCap : Nat};
+    products : List__89170296<Product__41769244>;
+    publicReadRateLimit : RateLimitState__418315391;
+    rateLimit : {var submissions : Map__386906547<Principal, [Int]>};
+    responseCache : Map__386906547<Text, ResponseCacheEntry__248889309>;
+    sessionOrders : Map__386906547<Text, List__89170296<Text>>;
+    state : {var nextOrderId : Nat};
+    unsubscribeRateLimit : RateLimitState__418315391;
+    uploads : Map__386906547<Text, UploadSession__401251531>
   };
 type NewActor__944821987 =
   {
@@ -1619,6 +1960,34 @@ type OldActor__101527642 =
     unsubscribeRateLimit : RateLimitState__892173164;
     uploads : Map__386906547<Text, UploadSession__857805393>
   };
+type OldActor__1050162168 =
+  {
+    adminUsers : Map__386906547<Principal, UserRecord__28024915>;
+    assets : Map__386906547<Text, AssetRecord__848859695>;
+    cancelTokens : Map__386906547<Text, CancellationToken__28595895>;
+    categories : List__89170296<Category__869959859>;
+    checkoutRateLimit : RateLimitState__418315391;
+    confirmRateLimit : RateLimitState__418315391;
+    cryptoConfig : CryptoConfig__786593637;
+    cryptoPayments : Map__386906547<Text, CryptoPayment__93328139>;
+    featuredVideo : {var embedUrl : Text; var rawUrl : Text};
+    feeCache : FeeCache__73805759;
+    initialAdminClaimed : {var initialAdminClaimed : Bool};
+    latePayments : List__89170296<LatePayment__669283692>;
+    minimumOrder : {var minimumOrder : Nat};
+    orderRateLimit : RateLimitState__418315391;
+    orders : List__89170296<Order__481713067>;
+    paymentServiceConfig : {var token : Text; var url : Text};
+    pendingOrderConfig : {var globalCap : Nat};
+    products : List__89170296<Product__41769244>;
+    publicReadRateLimit : RateLimitState__418315391;
+    rateLimit : {var submissions : Map__386906547<Principal, [Int]>};
+    responseCache : Map__386906547<Text, ResponseCacheEntry__248889309>;
+    sessionOrders : Map__386906547<Text, List__89170296<Text>>;
+    state : {var nextOrderId : Nat};
+    unsubscribeRateLimit : RateLimitState__418315391;
+    uploads : Map__386906547<Text, UploadSession__401251531>
+  };
 type OldActor__141955202 =
   {
     adminAllowlist : Set__195681557<Principal>;
@@ -1678,6 +2047,32 @@ type OldActor__180216486 =
     unsubscribeRateLimit : RateLimitState__1018724874;
     uploads : Map__386906547<Text, UploadSession__646760456>
   };
+type OldActor__180532489 =
+  {
+    adminUsers : Map__386906547<Principal, UserRecord__936782237>;
+    assets : Map__386906547<Text, AssetRecord__41863482>;
+    cancelTokens : Map__386906547<Text, CancellationToken__507682655>;
+    categories : List__89170296<Category__107232665>;
+    checkoutRateLimit : RateLimitState__108017636;
+    confirmRateLimit : RateLimitState__108017636;
+    cryptoConfig : CryptoConfig__563828793;
+    cryptoPayments : Map__386906547<Text, CryptoPayment__680878564>;
+    featuredVideo : {var embedUrl : Text; var rawUrl : Text};
+    feeCache : FeeCache__1008518617;
+    initialAdminClaimed : {var initialAdminClaimed : Bool};
+    latePayments : List__89170296<LatePayment__665062464>;
+    minimumOrder : {var minimumOrder : Nat};
+    orderRateLimit : RateLimitState__108017636;
+    orders : List__89170296<Order__233423440>;
+    paymentServiceConfig : {var token : Text; var url : Text};
+    pendingOrderConfig : {var globalCap : Nat};
+    products : List__89170296<Product__158968933>;
+    rateLimit : {var submissions : Map__386906547<Principal, [Int]>};
+    sessionOrders : Map__386906547<Text, List__89170296<Text>>;
+    state : {var nextOrderId : Nat};
+    unsubscribeRateLimit : RateLimitState__108017636;
+    uploads : Map__386906547<Text, UploadSession__170752147>
+  };
 type OldActor__186763439 =
   {
     adminAllowlist : Set__195681557<Principal>;
@@ -1718,6 +2113,39 @@ type OldActor__319710906 =
     state : {var nextOrderId : Nat};
     unsubscribeRateLimit : RateLimitState__30879383;
     uploads : Map__386906547<Text, UploadSession__292825118>
+  };
+type OldActor__321845789 =
+  {
+    adminUsers : Map__386906547<Principal, UserRecord__519168707>;
+    assets : Map__386906547<Text, AssetRecord__626531815>;
+    cancelTokens : Map__386906547<Text, CancellationToken__382573303>;
+    categories : List__89170296<Category__1047250676>;
+    checkoutRateLimit : RateLimitState__1009457203;
+    confirmRateLimit : RateLimitState__1009457203;
+    cryptoCheckCache :
+      Map__386906547<Text, CryptoCheckCacheEntry__1016422710>;
+    cryptoCheckRateLimit : RateLimitState__1009457203;
+    cryptoConfig : CryptoConfig__906820369;
+    cryptoPayments : Map__386906547<Text, CryptoPayment__691219525>;
+    featuredVideo : {var embedUrl : Text; var rawUrl : Text};
+    feeCache : FeeCache__922739333;
+    ibePublicKeyCache : IbePublicKeyCache__602321165;
+    ibeRateLimit : RateLimitState__1009457203;
+    initialAdminClaimed : {var initialAdminClaimed : Bool};
+    latePayments : List__89170296<LatePayment__881522131>;
+    minimumOrder : {var minimumOrder : Nat};
+    orderRateLimit : RateLimitState__1009457203;
+    orders : List__89170296<Order__271620663>;
+    paymentServiceConfig : {var token : Text; var url : Text};
+    pendingOrderConfig : {var globalCap : Nat};
+    products : List__89170296<Product__928650218>;
+    publicReadRateLimit : RateLimitState__1009457203;
+    rateLimit : {var submissions : Map__386906547<Principal, [Int]>};
+    responseCache : Map__386906547<Text, ResponseCacheEntry__89581753>;
+    sessionOrders : Map__386906547<Text, List__89170296<Text>>;
+    state : {var nextOrderId : Nat};
+    unsubscribeRateLimit : RateLimitState__1009457203;
+    uploads : Map__386906547<Text, UploadSession__493518302>
   };
 type OldActor__339929214 =
   {
@@ -2175,6 +2603,14 @@ type OrderItem__507216989 =
     unit_amount : Nat;
     variant_id : Text
   };
+type OrderItem__519857493 =
+  {
+    name : Text;
+    product_id : Nat;
+    quantity : Nat;
+    unit_amount : Nat;
+    variant_id : Text
+  };
 type OrderItem__531788269 =
   {
     name : Text;
@@ -2192,6 +2628,14 @@ type OrderItem__576591769 =
     variant_id : Text
   };
 type OrderItem__601927960 =
+  {
+    name : Text;
+    product_id : Nat;
+    quantity : Nat;
+    unit_amount : Nat;
+    variant_id : Text
+  };
+type OrderItem__655423560 =
   {
     name : Text;
     product_id : Nat;
@@ -2231,6 +2675,14 @@ type OrderItem__942383872 =
     unit_amount : Nat;
     variant_id : Text
   };
+type OrderItem__970614091 =
+  {
+    name : Text;
+    product_id : Nat;
+    quantity : Nat;
+    unit_amount : Nat;
+    variant_id : Text
+  };
 type Order__1045373042 =
   {
     created_at : Int;
@@ -2250,6 +2702,58 @@ type Order__1045373042 =
     sweep_note : ?Text;
     tax : Nat;
     total : Nat;
+    updated_at : Int
+  };
+type Order__233423440 =
+  {
+    created_at : Int;
+    currency : Text;
+    customer_email : Text;
+    customer_principal : ?Principal;
+    encrypted_shipping : ?Blob;
+    has_shipping_details : Bool;
+    id : Nat;
+    items : [OrderItem__655423560];
+    marketing_consent : Bool;
+    marketing_consent_at : ?Int;
+    payment_method : PaymentMethod__820352255;
+    payment_reference : ?Text;
+    payment_status : PaymentStatus__572761104;
+    reference : Text;
+    shipped_at : ?Int;
+    shipping : Nat;
+    shipping_status : ShippingStatus__541533998;
+    subtotal : Nat;
+    sweep_note : ?Text;
+    tax : Nat;
+    total : Nat;
+    tracking_number : ?Text;
+    updated_at : Int
+  };
+type Order__271620663 =
+  {
+    created_at : Int;
+    currency : Text;
+    customer_email : Text;
+    customer_principal : ?Principal;
+    encrypted_shipping : ?Blob;
+    has_shipping_details : Bool;
+    id : Nat;
+    items : [OrderItem__519857493];
+    marketing_consent : Bool;
+    marketing_consent_at : ?Int;
+    payment_method : PaymentMethod__147658766;
+    payment_reference : ?Text;
+    payment_status : PaymentStatus__526287041;
+    reference : Text;
+    shipped_at : ?Int;
+    shipping : Nat;
+    shipping_status : ShippingStatus__488763877;
+    subtotal : Nat;
+    sweep_note : ?Text;
+    tax : Nat;
+    total : Nat;
+    tracking_number : ?Text;
     updated_at : Int
   };
 type Order__311797915 =
@@ -2453,6 +2957,32 @@ type Order__464789027 =
     shipped_at : ?Int;
     shipping : Nat;
     shipping_status : ShippingStatus__503727622;
+    subtotal : Nat;
+    sweep_note : ?Text;
+    tax : Nat;
+    total : Nat;
+    tracking_number : ?Text;
+    updated_at : Int
+  };
+type Order__481713067 =
+  {
+    created_at : Int;
+    currency : Text;
+    customer_email : Text;
+    customer_principal : ?Principal;
+    encrypted_shipping : ?Blob;
+    has_shipping_details : Bool;
+    id : Nat;
+    items : [OrderItem__970614091];
+    marketing_consent : Bool;
+    marketing_consent_at : ?Int;
+    payment_method : PaymentMethod__911547614;
+    payment_reference : ?Text;
+    payment_status : PaymentStatus__476652562;
+    reference : Text;
+    shipped_at : ?Int;
+    shipping : Nat;
+    shipping_status : ShippingStatus__783235141;
     subtotal : Nat;
     sweep_note : ?Text;
     tax : Nat;
@@ -2701,6 +3231,8 @@ type Order__988369937 =
   };
 type PaymentMethod__1024435919 =
   {#card_stripe; #crypto_ckusdc; #crypto_icp; #manual};
+type PaymentMethod__147658766 =
+  {#card_stripe; #crypto_ckusdc; #crypto_icp; #manual};
 type PaymentMethod__180795149 =
   {#card_stripe; #crypto_ckusdc; #crypto_icp; #manual};
 type PaymentMethod__279598433 =
@@ -2729,6 +3261,8 @@ type PaymentMethod__771633736 =
   {#card_stripe; #crypto_ckusdc; #crypto_icp; #manual};
 type PaymentMethod__815567871 =
   {#card_stripe; #crypto_ckusdc; #crypto_icp; #manual};
+type PaymentMethod__820352255 =
+  {#card_stripe; #crypto_ckusdc; #crypto_icp; #manual};
 type PaymentMethod__826916589 =
   {#card_stripe; #crypto_ckusdc; #crypto_icp; #manual};
 type PaymentMethod__829688591 =
@@ -2736,6 +3270,8 @@ type PaymentMethod__829688591 =
 type PaymentMethod__838042754 =
   {#card_stripe; #crypto_ckusdc; #crypto_icp; #manual};
 type PaymentMethod__898957814 =
+  {#card_stripe; #crypto_ckusdc; #crypto_icp; #manual};
+type PaymentMethod__911547614 =
   {#card_stripe; #crypto_ckusdc; #crypto_icp; #manual};
 type PaymentMethod__943716616 =
   {#card_stripe; #crypto_ckusdc; #crypto_icp; #manual};
@@ -2754,9 +3290,12 @@ type PaymentStatus__404668488 = {#cancelled; #expired; #paid; #pending};
 type PaymentStatus__419640478 = {#cancelled; #expired; #paid; #pending};
 type PaymentStatus__440834947 = {#cancelled; #expired; #paid; #pending};
 type PaymentStatus__446045969 = {#cancelled; #expired; #paid; #pending};
+type PaymentStatus__476652562 = {#cancelled; #expired; #paid; #pending};
 type PaymentStatus__50602037 = {#cancelled; #expired; #paid; #pending};
 type PaymentStatus__522203698 = {#cancelled; #expired; #paid; #pending};
+type PaymentStatus__526287041 = {#cancelled; #expired; #paid; #pending};
 type PaymentStatus__557411377 = {#cancelled; #expired; #paid; #pending};
+type PaymentStatus__572761104 = {#cancelled; #expired; #paid; #pending};
 type PaymentStatus__622475758 = {#cancelled; #expired; #paid; #pending};
 type PaymentStatus__659456282 = {#cancelled; #expired; #paid; #pending};
 type PaymentStatus__693983186 = {#cancelled; #expired; #paid; #pending};
@@ -2778,6 +3317,8 @@ type ProductVariant__2753824 =
   {id : Text; inventory : Nat; name : Text; price : Nat; size : Text};
 type ProductVariant__282792165 =
   {id : Text; inventory : Nat; name : Text; price : Nat; size : Text};
+type ProductVariant__390028818 =
+  {id : Text; inventory : Nat; name : Text; price : Nat; size : Text};
 type ProductVariant__413895317 =
   {id : Text; inventory : Nat; name : Text; price : Nat; size : Text};
 type ProductVariant__41909391 =
@@ -2795,6 +3336,10 @@ type ProductVariant__526828788 =
 type ProductVariant__542075482 =
   {id : Text; inventory : Nat; name : Text; price : Nat; size : Text};
 type ProductVariant__590594803 =
+  {id : Text; inventory : Nat; name : Text; price : Nat; size : Text};
+type ProductVariant__605828986 =
+  {id : Text; inventory : Nat; name : Text; price : Nat; size : Text};
+type ProductVariant__60600965 =
   {id : Text; inventory : Nat; name : Text; price : Nat; size : Text};
 type ProductVariant__707504129 =
   {id : Text; inventory : Nat; name : Text; price : Nat; size : Text};
@@ -2891,6 +3436,23 @@ type Product__158561678 =
     slug : Text;
     updated_at : Int;
     variants : [ProductVariant__772641295]
+  };
+type Product__158968933 =
+  {
+    active : Bool;
+    admin_only : Bool;
+    category : Text;
+    created_at : Int;
+    currency : Text;
+    description : Text;
+    id : Nat;
+    images : [Text];
+    inventory : Nat;
+    name : Text;
+    price : Nat;
+    slug : Text;
+    updated_at : Int;
+    variants : [ProductVariant__605828986]
   };
 type Product__164314408 =
   {
@@ -3045,6 +3607,23 @@ type Product__415964712 =
     updated_at : Int;
     variants : [ProductVariant__282792165]
   };
+type Product__41769244 =
+  {
+    active : Bool;
+    admin_only : Bool;
+    category : Text;
+    created_at : Int;
+    currency : Text;
+    description : Text;
+    id : Nat;
+    images : [Text];
+    inventory : Nat;
+    name : Text;
+    price : Nat;
+    slug : Text;
+    updated_at : Int;
+    variants : [ProductVariant__390028818]
+  };
 type Product__490966693 =
   {
     active : Bool;
@@ -3163,7 +3742,28 @@ type Product__896422531 =
     updated_at : Int;
     variants : [ProductVariant__865525155]
   };
+type Product__928650218 =
+  {
+    active : Bool;
+    admin_only : Bool;
+    category : Text;
+    created_at : Int;
+    currency : Text;
+    description : Text;
+    id : Nat;
+    images : [Text];
+    inventory : Nat;
+    name : Text;
+    price : Nat;
+    slug : Text;
+    updated_at : Int;
+    variants : [ProductVariant__60600965]
+  };
+type RateLimitState__1009457203 =
+  {var calls : Map__386906547<Principal, [Int]>};
 type RateLimitState__1018724874 =
+  {var calls : Map__386906547<Principal, [Int]>};
+type RateLimitState__108017636 =
   {var calls : Map__386906547<Principal, [Int]>};
 type RateLimitState__220223051 =
   {var calls : Map__386906547<Principal, [Int]>};
@@ -3175,15 +3775,24 @@ type RateLimitState__355055327 =
   {var calls : Map__386906547<Principal, [Int]>};
 type RateLimitState__401056363 =
   {var calls : Map__386906547<Principal, [Int]>};
+type RateLimitState__418315391 =
+  {var calls : Map__386906547<Principal, [Int]>};
 type RateLimitState__674097649 =
   {var calls : Map__386906547<Principal, [Int]>};
 type RateLimitState__814889285 =
   {var calls : Map__386906547<Principal, [Int]>};
 type RateLimitState__892173164 =
   {var calls : Map__386906547<Principal, [Int]>};
+type ResponseCacheEntry__248889309 = {var timestamp : Int; var value : Text};
+type ResponseCacheEntry__322026767 = {var timestamp : Int; var value : Text};
+type ResponseCacheEntry__595453396 = {var timestamp : Int; var value : Text};
+type ResponseCacheEntry__89581753 = {var timestamp : Int; var value : Text};
 type Role__154797762 = {#admin; #owner; #staff};
 type Role__247618351 = {#admin; #owner; #staff};
 type Role__27535170 = {#admin; #owner; #staff};
+type Role__323776388 = {#admin; #owner; #staff};
+type Role__344990698 = {#admin; #owner; #staff};
+type Role__365595163 = {#admin; #owner; #staff};
 type Role__382057378 = {#admin; #owner; #staff};
 type Role__514646194 = {#admin; #owner; #staff};
 type Role__516740223 = {#admin; #owner; #staff};
@@ -3289,14 +3898,17 @@ type ShippingStatus__1064830340 = {#pending; #shipped};
 type ShippingStatus__130972803 = {#pending; #shipped};
 type ShippingStatus__172127575 = {#pending; #shipped};
 type ShippingStatus__301631604 = {#pending; #shipped};
+type ShippingStatus__488763877 = {#pending; #shipped};
 type ShippingStatus__494029615 = {#pending; #shipped};
 type ShippingStatus__503727622 = {#pending; #shipped};
+type ShippingStatus__541533998 = {#pending; #shipped};
 type ShippingStatus__618992772 = {#pending; #shipped};
 type ShippingStatus__637416611 = {#pending; #shipped};
 type ShippingStatus__646367499 = {#pending; #shipped};
 type ShippingStatus__723127594 = {#pending; #shipped};
 type ShippingStatus__758554060 = {#pending; #shipped};
 type ShippingStatus__776286118 = {#pending; #shipped};
+type ShippingStatus__783235141 = {#pending; #shipped};
 type ShippingStatus__801042050 = {#pending; #shipped};
 type ShippingStatus__888493409 = {#pending; #shipped};
 type ShippingStatus__910138919 = {#pending; #shipped};
@@ -3317,12 +3929,25 @@ type Token__409727160 = {#ICP; #ckUSDC};
 type Token__465204250 = {#ICP; #ckUSDC};
 type Token__483073351 = {#ICP; #ckUSDC};
 type Token__529220404 = {#ICP; #ckUSDC};
+type Token__648322203 = {#ICP; #ckUSDC};
 type Token__680836017 = {#ICP; #ckUSDC};
 type Token__685382632 = {#ICP; #ckUSDC};
 type Token__701566634 = {#ICP; #ckUSDC};
 type Token__796771584 = {#ICP; #ckUSDC};
+type Token__838482580 = {#ICP; #ckUSDC};
 type Token__863372865 = {#ICP; #ckUSDC};
 type Token__933521333 = {#ICP; #ckUSDC};
+type Token__945240494 = {#ICP; #ckUSDC};
+type UploadSession__170752147 =
+  {
+    contentType : Text;
+    createdAt : Int;
+    id : Text;
+    lastActivityAt : Int;
+    owner : Principal;
+    received : Map__386906547<Nat, Blob>;
+    totalSize : Nat
+  };
 type UploadSession__1735765 =
   {
     contentType : Text;
@@ -3334,6 +3959,26 @@ type UploadSession__1735765 =
     totalSize : Nat
   };
 type UploadSession__292825118 =
+  {
+    contentType : Text;
+    createdAt : Int;
+    id : Text;
+    lastActivityAt : Int;
+    owner : Principal;
+    received : Map__386906547<Nat, Blob>;
+    totalSize : Nat
+  };
+type UploadSession__401251531 =
+  {
+    contentType : Text;
+    createdAt : Int;
+    id : Text;
+    lastActivityAt : Int;
+    owner : Principal;
+    received : Map__386906547<Nat, Blob>;
+    totalSize : Nat
+  };
+type UploadSession__493518302 =
   {
     contentType : Text;
     createdAt : Int;
@@ -3418,11 +4063,14 @@ type UserRecord__1058149651 = {grantedAt : Int; role : Role__793703359};
 type UserRecord__152225916 = {grantedAt : Int; role : Role__27535170};
 type UserRecord__21008380 = {grantedAt : Int; role : Role__154797762};
 type UserRecord__248376505 = {grantedAt : Int; role : Role__514646194};
+type UserRecord__28024915 = {grantedAt : Int; role : Role__323776388};
 type UserRecord__320950283 = {grantedAt : Int; role : Role__849415657};
 type UserRecord__333049531 = {grantedAt : Int; role : Role__516740223};
 type UserRecord__38871181 = {grantedAt : Int; role : Role__382057378};
 type UserRecord__43517813 = {grantedAt : Int; role : Role__895443989};
+type UserRecord__519168707 = {grantedAt : Int; role : Role__365595163};
 type UserRecord__615887793 = {grantedAt : Int; role : Role__247618351};
+type UserRecord__936782237 = {grantedAt : Int; role : Role__344990698};
 type UserRecord__964092535 = {grantedAt : Int; role : Role__520338175};
 {
   "20260830_030000" : (old : OldActor__737923730) -> NewActor__342108653;
@@ -3445,7 +4093,10 @@ type UserRecord__964092535 = {grantedAt : Int; role : Role__520338175};
   "20260902_040000" : (old : OldActor__180216486) -> NewActor__946683096;
   "20260902_050000" : (old : OldActor__319710906) -> NewActor__944821987;
   "20260902_060000" : (old : OldActor__339929214) -> NewActor__388723483;
-  "20260902_070000" : (old : OldActor__101527642) -> NewActor__393957481
+  "20260902_070000" : (old : OldActor__101527642) -> NewActor__393957481;
+  "20260904_000000" : (old : OldActor__180532489) -> NewActor__720873888;
+  "20260904_010000" : (old : OldActor__1050162168) -> NewActor__838178257;
+  "20260904_020000" : (old : OldActor__321845789) -> NewActor__223008650
 }
 actor  {
   stable adminUsers :
@@ -3471,6 +4122,13 @@ actor  {
     };
   stable checkoutRateLimit : {var calls : Map__386906547<Principal, [Int]>};
   stable confirmRateLimit : {var calls : Map__386906547<Principal, [Int]>};
+  stable cryptoCheckCache :
+    {
+      var root : Node__430031793<Text, CryptoCheckCacheEntry__422630893>;
+      var size : Nat__58649523
+    };
+  stable cryptoCheckRateLimit :
+    {var calls : Map__386906547<Principal, [Int]>};
   stable cryptoConfig :
     {
       var ckUSDC : LedgerConfig__644064518;
@@ -3483,12 +4141,32 @@ actor  {
       var root : Node__430031793<Text, CryptoPayment__509112777>;
       var size : Nat__58649523
     };
+  stable cycleCounters :
+    {
+      var totalLedgerCalls : Nat;
+      var totalOutcalls : Nat;
+      var totalRawRandCalls : Nat;
+      var totalVetkdCalls : Nat
+    };
+  stable cycleMetrics :
+    {
+      var count : Nat;
+      var head : Nat;
+      var samples : [var ?CycleSample__612085926]
+    };
   stable featuredVideo : {var embedUrl : Text; var rawUrl : Text};
   stable feeCache :
     {
       var ckUSDC : FeeCacheEntry__988204841;
       var icp : FeeCacheEntry__988204841
     };
+  stable ibePublicKeyCache :
+    {
+      var cachedDerivationPath : Blob;
+      var cachedKey : ?Blob;
+      var cachedKeyName : Text
+    };
+  stable ibeRateLimit : {var calls : Map__386906547<Principal, [Int]>};
   stable initialAdminClaimed : {var initialAdminClaimed : Bool};
   stable latePayments :
     {
@@ -3512,7 +4190,13 @@ actor  {
       var blocks : [var [var ?Product__896422531]];
       var elementIndex : Nat__58649523
     };
+  stable publicReadRateLimit : {var calls : Map__386906547<Principal, [Int]>};
   stable rateLimit : {var submissions : Map__386906547<Principal, [Int]>};
+  stable responseCache :
+    {
+      var root : Node__430031793<Text, ResponseCacheEntry__595453396>;
+      var size : Nat__58649523
+    };
   stable sessionOrders :
     {
       var root : Node__430031793<Text, List__89170296<Text>>;

@@ -381,7 +381,19 @@ plaintext shipping address.
   frontend uses to IBE-encrypt shipping details to admin principals. It is a
   public key, so any caller (including anonymous guests) may fetch it. It is an
   update (not a query) because it makes an inter-canister call to the
-  management canister. `vetkd_public_key` costs no cycles.
+  management canister on a cache miss. `vetkd_public_key` costs no cycles. The
+  vetKD IBE public key is a CONSTANT for a given key name + derivation path, so
+  it is fetched ONCE and cached forever in stable state (survives upgrades,
+  never expired on a timer): a cached hit (a cached key exists AND its stored
+  key name and derivation path match the current ones) returns immediately with
+  NO vetKD call. Only a miss (empty cache, or key name / derivation path
+  changed) triggers a fresh `vetkd_public_key` call, which stores the result
+  with its key name and derivation path; on a vetKD failure the cache is left
+  empty so the next call retries. The endpoint is additionally rate limited per
+  caller principal (10 calls per 60 seconds, anonymous callers share the
+  anonymous principal) as belt-and-braces — the permanent cache means this is
+  almost never reached. A Blob return cannot carry a Result error, so an
+  over-limit caller traps with `rate_limited`.
 - `getMyEncryptedIbeKey(transportPublicKey : Blob) : async Blob` — update.
   STAFF-OR-ABOVE. Derives the caller's encrypted IBE vetKey for the app's
   domain separator. Binds the caller at the top of the function, rejects the
@@ -444,7 +456,19 @@ keys will not match.
   order is only ever considered paid when the on-ledger balance is at least
   the amount due — never from a frontend claim. This method is read-only: it
   only triggers an on-ledger re-check and can never mark an order paid on its
-  own.
+  own. The ledger is the LAST resort, not the first action: the endpoint is
+  rate limited FIRST (10 calls per caller per 60 seconds, anonymous callers
+  share the anonymous principal; an over-limit caller receives
+  `#err(#rateLimited)`), then an unknown reference returns `#err(#notFound)`
+  from local state with NO ledger call, and a settled (`#paid`/`#expired`)
+  payment returns its stored status directly with NO ledger call. Only a
+  payment that exists AND is still `#awaiting_payment`/`#underpayment`/
+  `#overpayment` proceeds to a short-lived per-reference cache (15s TTL): a
+  cache hit returns the cached result with NO ledger call, collapsing a client
+  polling every few seconds into one ledger call per 15 seconds. On a miss the
+  `icrc1_balance_of` call is made and the result cached. The per-reference
+  cache entry is deleted when the payment reaches `#paid` or `#expired` so the
+  map cannot grow forever.
 - `sweepCryptoToTreasury(reference : Text) : async Result<Nat,
   CryptoPaymentError>` — update. ADMIN-OR-OWNER. Transfers the subaccount balance
   minus the ledger transfer fee to the treasury and returns the on-ledger block
@@ -620,20 +644,59 @@ added to any marketing list; the optional consent checkbox is stored separately
 
 ### HTTP outcall helpers
 
+The five public read endpoints below (`getNAKPrice`, `getTokenImage`,
+`getTokenProfile`, `getTreasuryTokens`, `getDashboardData`) each trigger an
+HTTPS outcall on a cache miss. To stop a single page load (or a script) from
+draining the canister's cycles, they are rate limited per caller principal and
+their responses are cached in stable state.
+
 - `transform(input : TransformationInput) : async TransformationOutput` —
   query. The HTTP outcall response transform function; strips
   non-deterministic headers so outcall responses are deterministic across
   replicas.
 - `getNAKPrice() : async Text` — query. Fetches NAK/ICP pricing from
-  DexScreener.
+  DexScreener. Rate limited at 10 calls per caller per minute (anonymous
+  callers share a limit). Served from a stable in-canister response cache with
+  a 60-second TTL: a call within the TTL makes NO outcall and returns the
+  cached value. On an outcall failure the last good cached value is served when
+  one exists; otherwise the call traps.
 - `getTokenImage(chainId : Text, tokenAddress : Text) : async Text` — query.
-  Fetches a token image from DexScreener.
+  Fetches a token image from DexScreener. Rate limited at 10 calls per caller
+  per minute (anonymous callers share a limit). Served from a stable
+  in-canister response cache with a 300-second TTL (keyed by
+  `chainId`/`tokenAddress`): a call within the TTL makes NO outcall and returns
+  the cached value. On an outcall failure the last good cached value is served
+  when one exists; otherwise the call traps.
 - `getTokenProfile(chainId : Text, tokenAddress : Text) : async Text` — query.
-  Fetches token profile data from DexScreener.
+  Fetches token profile data from DexScreener. Rate limited at 10 calls per
+  caller per minute (anonymous callers share a limit). Served from a stable
+  in-canister response cache with a 300-second TTL (keyed by
+  `chainId`/`tokenAddress`): a call within the TTL makes NO outcall and returns
+  the cached value. On an outcall failure the last good cached value is served
+  when one exists; otherwise the call traps.
 - `getTreasuryTokens() : async Text` — query. Fetches treasury token data from
-  the configured treasury service.
+  the configured treasury service. Rate limited at 10 calls per caller per
+  minute (anonymous callers share a limit). Served from a stable in-canister
+  response cache with a 300-second TTL: a call within the TTL makes NO outcall
+  and returns the cached value. On an outcall failure the last good cached
+  value is served when one exists; otherwise the call traps.
 - `getDashboardData() : async Text` — query. Fetches dashboard data from the
-  configured dashboard service.
+  configured dashboard service. Rate limited at 10 calls per caller per minute
+  (anonymous callers share a limit). Served from a stable in-canister response
+  cache with a 60-second TTL: a call within the TTL makes NO outcall and
+  returns the cached value. On an outcall failure the last good cached value is
+  served when one exists; otherwise the call traps.
+
+When a caller exceeds the 10-calls-per-minute limit, the endpoint returns the
+JSON body `{\"error\":\"rate_limited\"}` rather than making an outcall. The cache
+and per-caller rate-limit state are internal and survive upgrades. All
+per-principal rate-limit maps (the five public read endpoints, `createOrder`,
+the card checkout endpoints, `unsubscribe`, `getIbePublicKey`,
+`checkCryptoPayment`, and artist submissions) are pruned so they never grow
+unbounded: a principal whose timestamps are all older than the rate-limit
+window is removed from the map entirely (both on the next call and by the
+recurring hourly sweep timer), so stable memory stays bounded — storage is
+billed continuously.
 
 ### Recovery (admin-only diagnosis and fund recovery)
 
@@ -690,12 +753,59 @@ so an admin can act on the exact ledger failure.
 - `markLatePaymentReviewed(reference : Text) : async Bool` — update.
   STAFF-OR-ABOVE. Marks a late payment as reviewed. Returns `true` when found.
 
+### Cycle monitor (admin burn-rate monitor)
+
+The backend records periodic metrics samples of its own cycle burn so an admin
+can watch the burn rate and correlate it with activity. The monitor is designed
+to cost essentially nothing to run: it adds NO new timer (it piggybacks on the
+existing hourly sweep timer), each sample uses ONLY local reads (no
+inter-canister, outcall, or management-canister calls), and it stores a fixed
+112-slot ring buffer that never grows.
+
+- `getCycleMetrics() : async CycleMetrics` — query. ADMIN-OR-OWNER. Returns the
+  raw cycle-monitor data: the ring buffer of samples, the current live cycle
+  balance, and the current attribution counter values. It is a `shared query`
+  (NOT an update), so opening the admin page costs no consensus. It is gated to
+  OWNER/ADMIN only via `AdminLib.requireAdminOrOwner` — an anonymous or
+  unregistered caller, or a STAFF caller, traps. It returns RAW samples only:
+  NO averages, rates, or aggregates are computed canister-side — the frontend
+  does all burn-rate arithmetic (browser-side math is free; canister-side math
+  would cost cycles on every call).
+
+Each `CycleSample` record carries: `timestamp` (`Int`, nanoseconds since the
+Unix epoch), `cyclesBalance` (`Nat`, `Cycles.balance()` at sample time),
+`heapBytes` (`Nat`, `Prim.rts_heap_size()`), `stableBytes` (`Nat`,
+`Prim.rts_stable_memory_size()`), and the four cumulative attribution counters
+(`totalOutcalls`, `totalLedgerCalls`, `totalVetkdCalls`, `totalRawRandCalls`).
+The four counters are monotonic and cumulative since deploy — never reset — and
+are incremented in place at their call sites (the outcall wrapper, each
+`icrc1_balance_of`/`icrc1_transfer`/`icrc1_fee` call, each vetKD call, and each
+`raw_rand`/`Random.blob` call). The delta between two samples shows how many of
+each happened in that window.
+
+Samples are recorded at most every 3 hours (`SAMPLE_INTERVAL_NS`), by
+piggybacking on the existing hourly sweep timer: on each hourly tick, a sample
+is recorded only when at least 3 hours have elapsed since the last one;
+otherwise nothing happens. The ring buffer is capped at exactly 112 entries (14
+days at 3-hour intervals); when full, the oldest sample is overwritten and it
+never grows beyond 112. The samples and counters are stable state and survive
+upgrades.
+
+**Top-up detection (consumer responsibility):** between two samples, burn =
+`previous.cyclesBalance - current.cyclesBalance`. If that value is NEGATIVE,
+the balance increased, which means a top-up occurred during that interval. The
+consumer MUST flag that interval as a top-up event (displaying the approximate
+amount added) and EXCLUDE contaminated intervals from the average burn-rate
+calculation — otherwise automatic top-ups make the burn rate look artificially
+low or negative. The canister does not perform this arithmetic; it is the
+consumer's job.
+
 ### OQL query layer
 
 - `schema() : async Text` — query. Returns a JSON catalogue of the queryable
   entities (`product`, `category`, `order`, `cryptoPayment`, `cryptoConfig`,
-  `paymentServiceConfig`, `latePayment`, `admin`, `asset`), their primary keys,
-  fields, and edges.
+  `paymentServiceConfig`, `latePayment`, `admin`, `asset`, `cycleSample`,
+  `cycleCounter`), their primary keys, fields, and edges.
 - `execute(qJson : Text) : async Result` — query. Runs a JSON-encoded OQL query
   and returns matching rows. See the OQL documentation for the query grammar.
 
@@ -705,9 +815,15 @@ The storefront does not gate its public methods on a signed-in caller:
 
 - `listProducts`, `getProduct`, `getOrderStatus`, `getMyOrders`, `schema`,
   `execute`, and the HTTP outcall helpers are callable by any caller, including
-  anonymous callers. `schema()` and `execute()` enforce per-entity
-  authorization against the live caller (see \"OQL per-entity authorization\"
-  below): private entities are readable only by the canister controller.
+  anonymous callers. The five public read HTTP outcall helpers
+  (`getNAKPrice`, `getTokenImage`, `getTokenProfile`, `getTreasuryTokens`,
+  `getDashboardData`) are additionally rate limited at 10 calls per caller per
+  minute (anonymous callers all share the anonymous principal, so for them this
+  is a global cap) and served from a stable in-canister response cache — see
+  the \"HTTP outcall helpers\" section. `schema()` and `execute()` enforce
+  per-entity authorization against the live caller (see \"OQL per-entity
+  authorization\" below): private entities are readable only by the canister
+  controller.
 - The public order lookups (`getOrderStatus`, `getMyOrders`) return
   public-safe views that omit `customer_email`. The customer email is exposed
   ONLY through the ADMIN/OWNER-gated `adminListOrders` and
@@ -730,12 +846,20 @@ The storefront does not gate its public methods on a signed-in caller:
   `getCryptoDepositInfo`, `getCryptoPaymentStatus`, `checkCryptoPayment`) are
   callable by any caller, including anonymous callers. `checkCryptoPayment` is
   read-only and can never mark an order paid — it only triggers an on-ledger
-  re-check. There is no `confirmCryptoPayment` method: no arbitrary caller can
-  confirm an order and mark it paid on their say-so. Verification is driven by
-  the background verification timer and by a customer polling their OWN order
+  re-check. It is rate limited per caller principal (10 calls per 60 seconds,
+  anonymous callers share the anonymous principal) and served from a
+  short-lived per-reference cache (15s TTL), so an arbitrary caller cannot loop
+  it with garbage references to force ledger calls — an unknown reference and a
+  settled (`#paid`/`#expired`) payment both return from local state with NO
+  ledger call. There is no `confirmCryptoPayment` method: no arbitrary caller
+  can confirm an order and mark it paid on their say-so. Verification is driven
+  by the background verification timer and by a customer polling their OWN order
   via `checkCryptoPayment`, which marks an order `#paid` only when the actual
   on-ledger balance is at least the amount due. `sweepCryptoToTreasury` is
   ADMIN-ONLY (see below). `updateMinimumOrder` is admin-gated (see below).
+  `getIbePublicKey` is likewise public but rate limited per caller principal
+  (10 calls per 60 seconds) and served from a permanent stable cache, so a
+  cached hit makes no vetKD call.
 - `isAdmin() : async Bool` is a public query that reports only on the caller:
   it returns `true` when the caller holds OWNER or ADMIN (the \"admin\" tier),
   and `false` otherwise (including STAFF). It never reveals other principals.
@@ -881,6 +1005,8 @@ never admitted):
   on concurrent pending orders across all callers and sessions.
 - `adminListOrders`, `adminGetOrderDetail` — order enumeration and full order
   detail for the admin UI.
+- `getCycleMetrics` — the admin cycle burn-rate monitor read (raw samples,
+  live balance, and attribution counters).
 - `markOrderShipped`, `resendConfirmationEmail` — shipping state mutation and
   transactional email triggers.
 - `getConsentListCsv` — exports the consenting-address mailing list (PII).
@@ -910,7 +1036,14 @@ Public (no role required):
   (`http_request`, `http_request_update`, `http_request_streaming_callback`).
   Asset reads are PUBLIC — these are product photos shown to every customer.
   `listCategories` is also public (anonymous) — the shop derives its filter
-  chips and section headings from it.
+  chips and section headings from it. The five public read HTTP outcall
+  helpers are additionally rate limited at 10 calls per caller per minute and
+  served from a stable response cache (see the \"HTTP outcall helpers\"
+  section). `getIbePublicKey` is rate limited at 10 calls per caller per 60
+  seconds and served from a permanent stable cache (see the IBE section), and
+  `checkCryptoPayment` is rate limited at 10 calls per caller per 60 seconds
+  and served from a short-lived per-reference cache (see the Crypto checkout
+  section).
 
 There is no registration gate for the public storefront methods: no method
 requires a signed-in (non-anonymous) caller for the public storefront methods,
@@ -991,6 +1124,22 @@ OQL authorization is per entity and is enforced against the live caller on both
   which is how the shop grid, product detail page, and cart render product
   photos. Asset metadata is admin data and is never exposed to end users
   through OQL.
+- `cycleSample` — `#controllerOnly`: only the canister controller reads the
+  cycle-monitor sample rows (one row per metrics sample in the fixed 112-slot
+  ring buffer, keyed by `timestamp`). Each row exposes the timestamp, cycle
+  balance, heap/stable memory, and the four cumulative attribution counters.
+  It is never exposed to end users; the same data is readable by OWNER/ADMIN
+  through the `getCycleMetrics` query.
+- `cycleCounter` — `#controllerOnly`: only the canister controller reads the
+  single cycle-counter row exposing the four cumulative attribution counters
+  (outcalls, ledger, vetKD, raw_rand) since deploy. It is never exposed to end
+  users; the same data is readable by OWNER/ADMIN through the `getCycleMetrics`
+  query.
+
+The internal response cache and per-caller rate-limit state for the five public
+read endpoints are NOT exposed through OQL. They are internal cache/rate-limit
+state, not business data, so they are not registered as OQL entities and never
+appear in `schema()` or `execute()` results.
 
 ## Units and Encodings
 
@@ -1109,6 +1258,19 @@ OQL authorization is per entity and is enforced against the live caller on both
   byte count), `uploaded_at` (`Int` nanoseconds since the Unix epoch — when the
   asset was committed), and `product_id` (`Nat` — the owning product's id). The
   raw image bytes blob is never exposed through OQL.
+- **OQL cycle sample encoding**: In the OQL `cycleSample` entity, each row
+  exposes the sample timestamp key as `timestamp` (`Int` nanoseconds since the
+  Unix epoch), `cycles_balance` (`Nat` — `Cycles.balance()` at sample time),
+  `heap_bytes` (`Nat` — `Prim.rts_heap_size()`), `stable_bytes` (`Nat` —
+  `Prim.rts_stable_memory_size()`), and the four cumulative attribution
+  counters `total_outcalls`, `total_ledger_calls`, `total_vetkd_calls`, and
+  `total_raw_rand_calls` (each `Nat`, cumulative since deploy). The rows are
+  returned in chronological order (oldest first). The ring buffer is capped at
+  112 entries and never grows beyond that.
+- **OQL cycle counter encoding**: In the OQL `cycleCounter` entity (a single
+  row), the four cumulative attribution counters are exposed as
+  `total_outcalls`, `total_ledger_calls`, `total_vetkd_calls`, and
+  `total_raw_rand_calls` (each `Nat`, cumulative since deploy).
 
 ## Lifecycle and Polling
 
@@ -1135,6 +1297,10 @@ For a crypto order (`#crypto_ckusdc`), the lifecycle is:
    or `#paid`. Overpayment is accepted and reported as `#paid` (the excess is
    swept with the principal). `checkCryptoPayment` is read-only: it only
    triggers an on-ledger re-check and can never mark an order paid on its own.
+   It is rate limited per caller principal (10 calls per 60 seconds) and served
+   from a short-lived per-reference cache (15s TTL), so polling every few
+   seconds collapses into one ledger call per 15 seconds while a genuinely
+   pending payment is still detected within 15 seconds.
 4. When the balance is at least the amount due, the payment is marked `#paid`
    and swept to the treasury. This is driven by the background verification
    timer and by a customer polling their OWN order via
@@ -1261,7 +1427,9 @@ state.
 - `checkCryptoPayment` is idempotent and read-only: it only triggers an
   on-ledger re-check and never double-sweeps, never double-decrements inventory
   (inventory is reserved once at order creation and only released on expiry),
-  and never duplicates the order. There is no `confirmCryptoPayment` method —
+  and never duplicates the order. Repeated polling within the 15s per-reference
+  cache TTL returns the cached result with no ledger call. There is no
+  `confirmCryptoPayment` method —
   no arbitrary caller can confirm an order and mark it paid on their say-so.
 - `releaseInventoryOnExpiry` is idempotent: it only releases inventory and marks
   the payment `#expired` once; a second call on an already-expired or already-
@@ -1315,7 +1483,9 @@ state.
 - The crypto methods return a `CryptoPaymentError` variant for
   caller-correctable problems: `#notFound`, `#expired`, `#underpayment`,
   `#overpayment`, `#unauthorized`, `#invalidConfig`, `#ledgerError`,
-  `#sweepFailed`, and `#notCryptoOrder`. They do not trap on these.
+  `#sweepFailed`, `#rateLimited` (the caller exceeded the per-principal rate
+  limit on `checkCryptoPayment`, 10 calls per 60 seconds), and
+  `#notCryptoOrder`. They do not trap on these.
 - The recovery methods return a `RecoveryError` variant for caller-correctable
   problems: `#notFound`, `#notCryptoOrder`, `#unauthorized`,
   `#invalidConfig(msg)`, `#ledgerError(msg)`, and `#sweepFailed(msg)`. Ledger
@@ -1332,7 +1502,7 @@ state.
   `updatePaymentServiceUrl`, `updatePaymentServiceToken`, `addAdmin`,
   `removeAdmin`, `listAdmins`, `sweepCryptoToTreasury`, `releaseExpiredOrders`,
   `adminListOrders`, `adminGetOrderDetail`, `createProduct`, `updateProduct`,
-  `updateFeaturedVideo`)
+  `updateFeaturedVideo`, `getCycleMetrics`)
   TRAP for a caller that is not a non-anonymous ADMIN or OWNER, and for the
   anonymous principal. This is an authorization failure, not a
   caller-correctable error, so it reaches the caller as a reject rather than a
@@ -1343,9 +1513,14 @@ state.
   passed; it never marks a payment paid from a frontend claim — only an
   on-ledger balance at least the amount due counts. `checkCryptoPayment` is
   read-only (it only triggers an on-ledger re-check and can never mark an order
-  paid). There is no `confirmCryptoPayment` method: no arbitrary caller can
-  confirm an order and mark it paid on their say-so — verification is driven by
-  the background verification timer and by a customer polling their OWN order.
+  paid). It is rate limited per caller principal (10 calls per 60 seconds; an
+  over-limit caller receives `#err(#rateLimited)`) and served from a
+  short-lived per-reference cache (15s TTL), so an unknown reference and a
+  settled (`#paid`/`#expired`) payment both return from local state with NO
+  ledger call. There is no `confirmCryptoPayment` method: no arbitrary caller
+  can confirm an order and mark it paid on their say-so — verification is driven
+  by the background verification timer and by a customer polling their OWN
+  order.
 - The sweep transfers `balance - fee` to the treasury and returns
   `#err(#sweepFailed)` when the balance cannot cover the transfer fee. The
   transfer fee is queried at runtime via `icrc1_fee` on the configured ledger
@@ -1360,6 +1535,16 @@ state.
   hardcode an ICP exchange rate.
 - The HTTP outcall helpers return raw `Text` responses and do not parse or
   validate the payload; the caller is responsible for interpreting the JSON.
+- The five public read HTTP outcall helpers (`getNAKPrice`, `getTokenImage`,
+  `getTokenProfile`, `getTreasuryTokens`, `getDashboardData`) are rate limited
+  at 10 calls per caller per minute (anonymous callers share the anonymous
+  principal, so for them this is a global cap). A caller that exceeds the limit
+  receives the JSON body `{\"error\":\"rate_limited\"}` rather than making an
+  outcall. Their responses are served from a stable in-canister response cache
+  (60s TTL for `getNAKPrice` and `getDashboardData`; 300s TTL for
+  `getTokenImage`, `getTokenProfile`, and `getTreasuryTokens`), so a call
+  within the TTL makes NO outcall. On an outcall failure the last good cached
+  value is served when one exists; otherwise the call traps.
 - OQL `execute` traps on a malformed query or an unknown entity name (there is
   no structured error envelope). Validate queries against `schema()` first.
 - The payment adapter is `transient` and recreated on every restart; the

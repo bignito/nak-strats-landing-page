@@ -1,18 +1,58 @@
 import Principal "mo:core/Principal";
 import Text "mo:core/Text";
 import List "mo:core/List";
+import Runtime "mo:core/Runtime";
 import ManagementCanister "mo:ic-vetkeys/ManagementCanister";
 import AdminLib "../lib/admin-access-control";
 import AdminTypes "../types/admin-access-control";
 import IbeLib "../lib/ibe";
+import IbeTypes "../types/ibe";
+import RateLimitLib "../lib/rate-limit";
+import RateLimitTypes "../types/rate-limit";
+import CycleCountersLib "../lib/cycle-counters";
+import CycleTypes "../types/cycle-monitor";
 
-mixin (adminUsers : AdminTypes.AdminUsers, ibeKeyName : Text) {
+mixin (
+  adminUsers : AdminTypes.AdminUsers,
+  ibeKeyName : Text,
+  ibePublicKeyCache : IbeTypes.IbePublicKeyCache,
+  ibeRateLimit : RateLimitTypes.RateLimitState,
+  cycleCounters : CycleTypes.CycleCounters,
+) {
   // Public: returns the IBE public key for the app's DOMAIN_SEPARATOR so the
-  // frontend can IBE-encrypt shipping details to admin principals. Free —
-  // vetkd_public_key costs no cycles. An update (not a query) because it makes
-  // an inter-canister call to the management canister.
-  public shared func getIbePublicKey() : async Blob {
-    await ManagementCanister.vetKdPublicKey(null, IbeLib.DOMAIN_SEPARATOR.encodeUtf8(), IbeLib.keyId(ibeKeyName));
+  // frontend can IBE-encrypt shipping details to admin principals. The vetKD
+  // IBE public key is a CONSTANT for a given key name + derivation path, so it
+  // is fetched once and cached forever (survives upgrades) — a cached hit
+  // returns immediately with NO vetKD call. An update (not a query) because it
+  // makes an inter-canister call to the management canister on a cache miss.
+  // Rate limited per caller principal (10 calls per 60 seconds) as
+  // belt-and-braces; the cache means this is almost never reached. A Blob
+  // return cannot carry a Result error, so an over-limit caller traps.
+  public shared ({ caller }) func getIbePublicKey() : async Blob {
+    if (not RateLimitLib.checkRateLimit(ibeRateLimit, caller, RateLimitLib.PUBLIC_READ_RATE_WINDOW_NANOS, RateLimitLib.PUBLIC_READ_RATE_MAX)) {
+      Runtime.trap("rate_limited");
+    };
+    let derivationPath = IbeLib.DOMAIN_SEPARATOR.encodeUtf8();
+    // Permanent cache: on a hit (a cached key exists AND its stored key name
+    // and derivation path match the current ones) return it immediately with
+    // NO vetKD call.
+    switch (ibePublicKeyCache.cachedKey) {
+      case (?key) {
+        if (ibePublicKeyCache.cachedKeyName == ibeKeyName and ibePublicKeyCache.cachedDerivationPath == derivationPath) {
+          return key;
+        };
+      };
+      case null {};
+    };
+    // Miss (empty cache, or key name / derivation path changed): fetch the key
+    // once and cache it forever with its key name and derivation path. On a
+    // vetKD failure the cache is left empty so the next call retries.
+    CycleCountersLib.incVetkdCalls(cycleCounters);
+    let key = await ManagementCanister.vetKdPublicKey(null, derivationPath, IbeLib.keyId(ibeKeyName));
+    ibePublicKeyCache.cachedKey := ?key;
+    ibePublicKeyCache.cachedKeyName := ibeKeyName;
+    ibePublicKeyCache.cachedDerivationPath := derivationPath;
+    key;
   };
 
   // Public query: returns the principals that shipping details should be
@@ -43,6 +83,7 @@ mixin (adminUsers : AdminTypes.AdminUsers, ibeKeyName : Text) {
   // test_key_1; the Motoko helper attaches the amount, excess refunded).
   public shared ({ caller }) func getMyEncryptedIbeKey(transportPublicKey : Blob) : async Blob {
     AdminLib.requireStaffOrAbove(adminUsers, caller);
+    CycleCountersLib.incVetkdCalls(cycleCounters);
     await ManagementCanister.vetKdDeriveKey(caller.toBlob(), IbeLib.DOMAIN_SEPARATOR.encodeUtf8(), IbeLib.keyId(ibeKeyName), transportPublicKey);
   };
 };

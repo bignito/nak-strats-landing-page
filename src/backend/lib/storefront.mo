@@ -8,6 +8,7 @@ import CryptoTypes "../types/crypto-payments";
 import OrderReferencesLib "./order-references";
 import RateLimitLib "./rate-limit";
 import AssetTypes "../types/product-assets";
+import CycleTypes "../types/cycle-monitor";
 
 module {
   // True when a product's price and every variant price are positive integer
@@ -240,6 +241,7 @@ module {
     input : Types.CreateOrderInput,
     caller : Principal,
     minimumOrder : Nat,
+    counters : CycleTypes.CycleCounters,
   ) : async Result.Result<Types.Order, Types.OrderError> {
     if (input.items.size() == 0) { return #err(#emptyOrder) };
     // Validate every line item server-side and compute the authoritative unit
@@ -287,7 +289,7 @@ module {
       };
       case (_) {};
     };
-    let reference = await OrderReferencesLib.generateUniqueReference(orders);
+    let reference = await OrderReferencesLib.generateUniqueReference(orders, counters);
     let now = Time.now();
     let order : Types.Order = {
       id = state.nextOrderId;

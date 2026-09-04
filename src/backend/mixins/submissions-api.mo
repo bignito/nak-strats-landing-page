@@ -2,12 +2,14 @@ import Result "mo:core/Result";
 import Principal "mo:core/Principal";
 import Types "../types/submissions";
 import PaymentServiceTypes "../types/payment-service";
+import CycleTypes "../types/cycle-monitor";
 import SubmissionsLib "../lib/submissions";
 import AdminLib "../lib/admin-access-control";
 import AdminTypes "../types/admin-access-control";
 import OutCall "mo:caffeineai-http-outcalls/outcall";
 
 mixin (
+  cycleCounters : CycleTypes.CycleCounters,
   config : PaymentServiceTypes.PaymentServiceConfig,
   adminUsers : AdminTypes.AdminUsers,
   rateLimit : Types.RateLimitState,
@@ -19,7 +21,7 @@ mixin (
   // outcall. On success the payment service sends the transactional
   // acknowledgement email to the submitter.
   public shared ({ caller }) func submitSubmission(input : Types.SubmissionInput) : async Result.Result<(), Types.SubmissionError> {
-    await SubmissionsLib.submitSubmission(config, rateLimit, input, caller, submissionServiceTransform);
+    await SubmissionsLib.submitSubmission(cycleCounters, config, rateLimit, input, caller, submissionServiceTransform);
   };
 
   // Admin-only: list submissions for the admin review view. Binds the caller at
@@ -28,7 +30,7 @@ mixin (
   // lives off-canister; the canister only proxies them through.
   public shared ({ caller }) func listSubmissions() : async Result.Result<[Types.SubmissionRecord], Types.SubmissionError> {
     AdminLib.requireStaffOrAbove(adminUsers, caller);
-    await SubmissionsLib.listSubmissions(config, submissionServiceTransform);
+    await SubmissionsLib.listSubmissions(cycleCounters, config, submissionServiceTransform);
   };
 
   // HTTP outcall response transform for the payment service submission

@@ -87,6 +87,7 @@ export const CryptoPaymentError = IDL.Variant({
   'sweepFailed' : IDL.Text,
   'notFound' : IDL.Null,
   'ledgerError' : IDL.Text,
+  'rateLimited' : IDL.Null,
   'notCryptoOrder' : IDL.Null,
   'unauthorized' : IDL.Null,
   'invalidConfig' : IDL.Text,
@@ -340,6 +341,27 @@ export const Result_20 = IDL.Variant({
   'ok' : DepositInfo,
   'err' : CryptoPaymentError,
 });
+export const CycleSample = IDL.Record({
+  'stableBytes' : IDL.Nat,
+  'heapBytes' : IDL.Nat,
+  'totalLedgerCalls' : IDL.Nat,
+  'totalRawRandCalls' : IDL.Nat,
+  'timestamp' : IDL.Int,
+  'totalOutcalls' : IDL.Nat,
+  'totalVetkdCalls' : IDL.Nat,
+  'cyclesBalance' : IDL.Nat,
+});
+export const CycleCountersView = IDL.Record({
+  'totalLedgerCalls' : IDL.Nat,
+  'totalRawRandCalls' : IDL.Nat,
+  'totalOutcalls' : IDL.Nat,
+  'totalVetkdCalls' : IDL.Nat,
+});
+export const CycleMetrics = IDL.Record({
+  'samples' : IDL.Vec(CycleSample),
+  'counters' : CycleCountersView,
+  'liveBalance' : IDL.Nat,
+});
 export const Result_18 = IDL.Variant({ 'ok' : IDL.Nat, 'err' : RecoveryError });
 export const PublicOrderView = IDL.Record({
   'id' : IDL.Nat,
@@ -591,6 +613,7 @@ export const idlService = IDL.Service({
   'getCryptoDepositInfo' : IDL.Func([IDL.Text], [Result_20], ['query']),
   'getCryptoPaymentStatus' : IDL.Func([IDL.Text], [Result_19], ['query']),
   'getCycleBalance' : IDL.Func([], [IDL.Nat], ['query']),
+  'getCycleMetrics' : IDL.Func([], [CycleMetrics], ['query']),
   'getDashboardData' : IDL.Func([], [IDL.Text], []),
   'getDefaultSubaccountBalance' : IDL.Func([], [Result_18], []),
   'getEncryptionRecipients' : IDL.Func([], [IDL.Vec(IDL.Principal)], ['query']),
@@ -798,6 +821,7 @@ export const idlFactory = ({ IDL }) => {
     'sweepFailed' : IDL.Text,
     'notFound' : IDL.Null,
     'ledgerError' : IDL.Text,
+    'rateLimited' : IDL.Null,
     'notCryptoOrder' : IDL.Null,
     'unauthorized' : IDL.Null,
     'invalidConfig' : IDL.Text,
@@ -1045,6 +1069,27 @@ export const idlFactory = ({ IDL }) => {
     'ok' : DepositInfo,
     'err' : CryptoPaymentError,
   });
+  const CycleSample = IDL.Record({
+    'stableBytes' : IDL.Nat,
+    'heapBytes' : IDL.Nat,
+    'totalLedgerCalls' : IDL.Nat,
+    'totalRawRandCalls' : IDL.Nat,
+    'timestamp' : IDL.Int,
+    'totalOutcalls' : IDL.Nat,
+    'totalVetkdCalls' : IDL.Nat,
+    'cyclesBalance' : IDL.Nat,
+  });
+  const CycleCountersView = IDL.Record({
+    'totalLedgerCalls' : IDL.Nat,
+    'totalRawRandCalls' : IDL.Nat,
+    'totalOutcalls' : IDL.Nat,
+    'totalVetkdCalls' : IDL.Nat,
+  });
+  const CycleMetrics = IDL.Record({
+    'samples' : IDL.Vec(CycleSample),
+    'counters' : CycleCountersView,
+    'liveBalance' : IDL.Nat,
+  });
   const Result_18 = IDL.Variant({ 'ok' : IDL.Nat, 'err' : RecoveryError });
   const PublicOrderView = IDL.Record({
     'id' : IDL.Nat,
@@ -1284,6 +1329,7 @@ export const idlFactory = ({ IDL }) => {
     'getCryptoDepositInfo' : IDL.Func([IDL.Text], [Result_20], ['query']),
     'getCryptoPaymentStatus' : IDL.Func([IDL.Text], [Result_19], ['query']),
     'getCycleBalance' : IDL.Func([], [IDL.Nat], ['query']),
+    'getCycleMetrics' : IDL.Func([], [CycleMetrics], ['query']),
     'getDashboardData' : IDL.Func([], [IDL.Text], []),
     'getDefaultSubaccountBalance' : IDL.Func([], [Result_18], []),
     'getEncryptionRecipients' : IDL.Func(

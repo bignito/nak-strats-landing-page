@@ -16,6 +16,15 @@ module {
   public let UNSUBSCRIBE_RATE_WINDOW_NANOS : Int = 3_600_000_000_000; // 1 hour
   public let UNSUBSCRIBE_RATE_MAX : Nat = 10;
 
+  // Rate-limit window and maximum for the five public read endpoints
+  // (getNAKPrice, getTokenImage, getTokenProfile, getTreasuryTokens,
+  // getDashboardData). These endpoints each trigger an HTTPS outcall on a cache
+  // miss, so bounding calls per caller principal prevents a script from draining
+  // the canister's cycles. Anonymous callers all share the anonymous principal,
+  // so for them this is a global cap.
+  public let PUBLIC_READ_RATE_WINDOW_NANOS : Int = 60_000_000_000; // 60 seconds
+  public let PUBLIC_READ_RATE_MAX : Nat = 10;
+
   // Cap on concurrent pending (unpaid) reservations PER SESSION. A normal
   // customer creates one order at a time and checks out promptly, so this is
   // never tripped by legitimate checkout. For a signed-in customer the cap is
@@ -58,8 +67,25 @@ module {
     if (filtered.size() >= max) {
       false;
     } else {
+      if (filtered.size() == 0) {
+        // All prior timestamps are outside the window: drop the stale entry so
+        // the map never accumulates dead per-principal keys, then record the
+        // current call fresh below.
+        state.calls.remove(caller);
+      };
       state.calls.add(caller, filtered.concat([now]));
       true;
+    };
+  };
+
+  // Remove every principal whose timestamps are all older than the window, so
+  // the per-principal map does not grow with dead entries. Called by the
+  // recurring hourly sweep timer.
+  public func pruneRateLimit(state : Types.RateLimitState, windowNanos : Int) {
+    let now = Time.now();
+    let stale = state.calls.entries().filter(func (_, ts) = ts.all(func t = now - t >= windowNanos));
+    for ((caller, _) in stale) {
+      state.calls.remove(caller);
     };
   };
 };

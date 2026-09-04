@@ -8,6 +8,7 @@ import Types "../types/recovery";
 import StorefrontTypes "../types/storefront";
 import CryptoTypes "../types/crypto-payments";
 import PaymentServiceTypes "../types/payment-service";
+import CycleTypes "../types/cycle-monitor";
 import RecoveryLib "../lib/recovery";
 import AdminLib "../lib/admin-access-control";
 import AdminTypes "../types/admin-access-control";
@@ -25,6 +26,8 @@ mixin (
   timerState : { var timerId : ?Timer.TimerId },
   paymentServiceConfig : PaymentServiceTypes.PaymentServiceConfig,
   emailTransform : OutCall.Transform,
+  cryptoCheckCache : Map.Map<Text, CryptoTypes.CryptoCheckCacheEntry>,
+  cycleCounters : CycleTypes.CycleCounters,
 ) {
   // 1. DIAGNOSIS SUPPORT. Reports the canister's current cycle balance via
   // Cycles.balance(). Cycle balance is not sensitive, so this is a public
@@ -47,34 +50,34 @@ mixin (
   // on-ledger balance of each crypto order's subaccount.
   public shared ({ caller }) func listOrdersForRecovery() : async [Types.OrderRecoveryView] {
     AdminLib.requireStaffOrAbove(adminUsers, caller);
-    await RecoveryLib.listOrdersForRecovery(orders, cryptoPayments, cryptoConfig, selfPrincipal);
+    await RecoveryLib.listOrdersForRecovery(cycleCounters, orders, cryptoPayments, cryptoConfig, selfPrincipal);
   };
 
   // Forces verification of a single order's payment to run immediately,
   // returning the current balance, status, and any error.
   public shared ({ caller }) func forceRecheckPayment(reference : Text) : async Result.Result<Types.RecheckResult, Types.RecoveryError> {
     AdminLib.requireStaffOrAbove(adminUsers, caller);
-    await RecoveryLib.forceRecheck(cryptoPayments, reference, cryptoConfig, selfPrincipal);
+    await RecoveryLib.forceRecheck(cycleCounters, cryptoPayments, reference, cryptoConfig, selfPrincipal);
   };
 
   // Forces a sweep of a single order's subaccount to the treasury, returning
   // the exact ledger error on failure (never swallowed).
   public shared ({ caller }) func forceSweepOrder(reference : Text) : async Result.Result<Types.SweepResult, Types.RecoveryError> {
     AdminLib.requireAdminOrOwner(adminUsers, caller);
-    await RecoveryLib.forceSweep(cryptoPayments, orders, reference, cryptoConfig, selfPrincipal, feeCache);
+    await RecoveryLib.forceSweep(cycleCounters, cryptoPayments, orders, reference, cryptoConfig, selfPrincipal, feeCache);
   };
 
   // Returns the canister's DEFAULT subaccount balance on the configured ledger.
   public shared ({ caller }) func getDefaultSubaccountBalance() : async Result.Result<Nat, Types.RecoveryError> {
     AdminLib.requireStaffOrAbove(adminUsers, caller);
-    await RecoveryLib.getDefaultSubaccountBalance(cryptoConfig, selfPrincipal);
+    await RecoveryLib.getDefaultSubaccountBalance(cycleCounters, cryptoConfig, selfPrincipal);
   };
 
   // Sweeps the canister's DEFAULT subaccount balance to the treasury, returning
   // the exact ledger error on failure (never swallowed).
   public shared ({ caller }) func sweepDefaultSubaccount() : async Result.Result<Types.SweepResult, Types.RecoveryError> {
     AdminLib.requireAdminOrOwner(adminUsers, caller);
-    await RecoveryLib.sweepDefaultSubaccount(cryptoConfig, selfPrincipal, feeCache);
+    await RecoveryLib.sweepDefaultSubaccount(cycleCounters, cryptoConfig, selfPrincipal, feeCache);
   };
 
   // 3. VERIFICATION TIMER — registers the recurring backend timer that runs
@@ -89,7 +92,7 @@ mixin (
       case null {};
     };
     timerState.timerId := ?Timer.recurringTimer<system>(#seconds(30), func() : async () {
-      ignore (await RecoveryLib.runVerificationPass(cryptoPayments, orders, products, latePayments, cryptoConfig, selfPrincipal, feeCache, paymentServiceConfig, emailTransform));
+      ignore (await RecoveryLib.runVerificationPass(cycleCounters, cryptoPayments, orders, products, latePayments, cryptoConfig, selfPrincipal, feeCache, paymentServiceConfig, emailTransform, cryptoCheckCache));
     });
     true;
   };

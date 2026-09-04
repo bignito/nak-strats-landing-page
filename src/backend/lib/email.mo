@@ -8,6 +8,8 @@ import Types "../types/email";
 import StorefrontTypes "../types/storefront";
 import PaymentServiceTypes "../types/payment-service";
 import OutCall "mo:caffeineai-http-outcalls/outcall";
+import OutCallLocal "./outcall";
+import CycleTypes "../types/cycle-monitor";
 
 module {
   // Extract the unquoted value of a string field from a flat JSON object.
@@ -78,6 +80,7 @@ module {
   // marketing consent. Called when a payment is confirmed, for both crypto and
   // card orders.
   public func sendOrderConfirmation(
+    counters : CycleTypes.CycleCounters,
     config : PaymentServiceTypes.PaymentServiceConfig,
     orders : List.List<StorefrontTypes.Order>,
     reference : Text,
@@ -95,7 +98,7 @@ module {
         ];
         let url = config.url # "/emails/order-confirmation";
         try {
-          let responseText = await OutCall.httpPostRequest(url, headers, body, transform);
+          let responseText = await OutCallLocal.httpPostRequest(counters, url, headers, body, transform, 8_192 : Nat64);
           switch (jsonStringField(responseText, "ok")) {
             case (?ok) {
               if (ok == "true") { #ok() } else { #err(#invalidResponse("email send failed")) };
@@ -115,6 +118,7 @@ module {
   // when a crypto order is created, so a customer who closes the tab can still
   // find their order.
   public func sendPaymentPending(
+    counters : CycleTypes.CycleCounters,
     config : PaymentServiceTypes.PaymentServiceConfig,
     orders : List.List<StorefrontTypes.Order>,
     reference : Text,
@@ -135,7 +139,7 @@ module {
         ];
         let url = config.url # "/emails/payment-pending";
         try {
-          let responseText = await OutCall.httpPostRequest(url, headers, body, transform);
+          let responseText = await OutCallLocal.httpPostRequest(counters, url, headers, body, transform, 8_192 : Nat64);
           switch (jsonStringField(responseText, "ok")) {
             case (?ok) {
               if (ok == "true") { #ok() } else { #err(#invalidResponse("email send failed")) };
@@ -154,6 +158,7 @@ module {
   // the order reference and the tracking number when present. Transactional —
   // sends regardless of marketing consent.
   public func sendShippingNotification(
+    counters : CycleTypes.CycleCounters,
     config : PaymentServiceTypes.PaymentServiceConfig,
     orders : List.List<StorefrontTypes.Order>,
     reference : Text,
@@ -179,7 +184,7 @@ module {
         ];
         let url = config.url # "/emails/shipping";
         try {
-          let responseText = await OutCall.httpPostRequest(url, headers, body, transform);
+          let responseText = await OutCallLocal.httpPostRequest(counters, url, headers, body, transform, 8_192 : Nat64);
           switch (jsonStringField(responseText, "ok")) {
             case (?ok) {
               if (ok == "true") { #ok() } else { #err(#invalidResponse("email send failed")) };

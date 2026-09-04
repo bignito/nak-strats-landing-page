@@ -9,6 +9,7 @@ import type {
   CreateOrderInput,
   CryptoConfigView,
   CryptoPaymentStatus,
+  CycleMetrics,
   DepositInfo,
   LatePayment,
   Order,
@@ -1328,6 +1329,24 @@ export function useGetCycleBalance() {
     queryFn: async (): Promise<bigint> => {
       if (!actor) return 0n;
       return actor.getCycleBalance();
+    },
+    enabled: !!actor && !isFetching,
+  });
+}
+
+/**
+ * Fetches the raw cycle-monitor metrics: the fixed-size sample ring buffer,
+ * the current live cycle balance, and the current counter values. The backend
+ * does NO aggregation — every interval, burn-rate, and top-up computation is
+ * done client-side in the Cycle Monitor tab. Admin-gated shared query.
+ */
+export function useGetCycleMetrics() {
+  const { actor, isFetching } = useActor(createActor);
+  return useQuery({
+    queryKey: ["cycleMetrics"],
+    queryFn: async (): Promise<CycleMetrics | null> => {
+      if (!actor) return null;
+      return actor.getCycleMetrics();
     },
     enabled: !!actor && !isFetching,
   });

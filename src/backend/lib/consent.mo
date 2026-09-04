@@ -3,7 +3,9 @@ import Text "mo:core/Text";
 import Error "mo:core/Error";
 import Types "../types/consent";
 import PaymentServiceTypes "../types/payment-service";
+import CycleTypes "../types/cycle-monitor";
 import OutCall "mo:caffeineai-http-outcalls/outcall";
+import OutCallLocal "./outcall";
 
 module {
   // Extract the unquoted value of a string field from a flat JSON object.
@@ -33,6 +35,7 @@ module {
   // body unchanged. The email addresses are PII that lives off-canister; the
   // canister never persists them.
   public func fetchConsentListCsv(
+    counters : CycleTypes.CycleCounters,
     config : PaymentServiceTypes.PaymentServiceConfig,
     transform : OutCall.Transform,
   ) : async Result.Result<Types.ConsentListExport, Types.ConsentError> {
@@ -41,7 +44,7 @@ module {
     let url = config.url # "/emails/consent-list";
     let headers = [{ name = "Authorization"; value = "Bearer " # config.token }];
     try {
-      let csv = await OutCall.httpGetRequest(url, headers, transform);
+      let csv = await OutCallLocal.httpGetRequest(counters, url, headers, transform, 1_000_000 : Nat64);
       #ok({ csv });
     } catch e {
       #err(#outcallFailed("payment service unreachable: " # e.message()));
@@ -53,6 +56,7 @@ module {
   // never sent marketing email; transactional emails remain exempt. The
   // suppression list lives at the payment service, not in canister state.
   public func unsubscribe(
+    counters : CycleTypes.CycleCounters,
     config : PaymentServiceTypes.PaymentServiceConfig,
     token : Text,
     transform : OutCall.Transform,
@@ -66,7 +70,7 @@ module {
     ];
     let body = "{ \"token\":\"" # token # "\" }";
     try {
-      let responseText = await OutCall.httpPostRequest(url, headers, body, transform);
+      let responseText = await OutCallLocal.httpPostRequest(counters, url, headers, body, transform, 8_192 : Nat64);
       switch (jsonStringField(responseText, "status")) {
         case (?status) {
           if (status == "ok") {

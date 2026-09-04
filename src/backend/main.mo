@@ -1,4 +1,6 @@
 import OutCall "mo:caffeineai-http-outcalls/outcall";
+import OutCallLocal "lib/outcall";
+import RateLimitLib "lib/rate-limit";
 import List "mo:core/List";
 import Map "mo:core/Map";
 import Principal "mo:core/Principal";
@@ -30,12 +32,17 @@ import SetEntity "mo:caffeineai-oql/SetEntity";
 import ApiDocMixin "mixins/api-doc";
 import SubmissionTypes "types/submissions";
 import SubmissionsApi "mixins/submissions-api";
+import SubmissionsLib "lib/submissions";
 import IbeApi "mixins/ibe-api";
+import IbeTypes "types/ibe";
 import FeaturedVideoApi "mixins/featured-video-api";
 import RateLimitTypes "types/rate-limit";
 import CancellationTypes "types/cancellation";
 import AssetTypes "types/product-assets";
 import ProductAssetsApi "mixins/product-assets";
+import CycleTypes "types/cycle-monitor";
+import CycleMonitorLib "lib/cycle-monitor";
+import CycleMonitorApi "mixins/cycle-monitor-api";
 import Runtime "mo:core/Runtime";
 
 persistent actor Self {
@@ -271,35 +278,195 @@ persistent actor Self {
       };
     };
 
+    // Cycle monitor sample row: one row per metrics sample in the fixed
+    // 112-slot ring buffer. Exposes the timestamp, cycle balance, heap/stable
+    // memory, and the four cumulative attribution counters. Private
+    // (controller-only).
+    func cycleSampleRow(s : CycleTypes.CycleSample) : OQL.Entity.Row {
+      [
+        ("timestamp", #int(s.timestamp)),
+        ("cycles_balance", #nat(s.cyclesBalance)),
+        ("heap_bytes", #nat(s.heapBytes)),
+        ("stable_bytes", #nat(s.stableBytes)),
+        ("total_outcalls", #nat(s.totalOutcalls)),
+        ("total_ledger_calls", #nat(s.totalLedgerCalls)),
+        ("total_vetkd_calls", #nat(s.totalVetkdCalls)),
+        ("total_raw_rand_calls", #nat(s.totalRawRandCalls)),
+      ]
+    };
+
+    // Cycle counter row: a single row exposing the four cumulative
+    // attribution counters. Private (controller-only).
+    func cycleCounterRow(c : CycleTypes.CycleCountersView) : OQL.Entity.Row {
+      [
+        ("total_outcalls", #nat(c.totalOutcalls)),
+        ("total_ledger_calls", #nat(c.totalLedgerCalls)),
+        ("total_vetkd_calls", #nat(c.totalVetkdCalls)),
+        ("total_raw_rand_calls", #nat(c.totalRawRandCalls)),
+      ]
+    };
+
     public query func transform(input : OutCall.TransformationInput) : async OutCall.TransformationOutput {
         OutCall.transform(input);
     };
 
-    public func getNAKPrice() : async Text {
-        let url = "https://api.dexscreener.com/latest/dex/search?q=NAK/ICP";
-        await OutCall.httpGetRequest(url, [], transform);
+    // ---- Public read endpoints (cached + rate limited) ----
+    // Each of these triggers an HTTPS outcall on a cache miss. To stop a single
+    // page load (or a script) from draining the canister's cycles, they are
+    // rate limited per caller principal (10 calls/min, anonymous callers share
+    // the anonymous principal) and their responses are cached in stable state so
+    // repeated calls within the TTL make no outcall. On outcall failure the last
+    // good cached value is served when one exists.
+
+    // Cache TTLs (nanoseconds). getNAKPrice and getDashboardData are volatile
+    // market/dashboard data (60s); the token image/profile/treasury endpoints
+    // change rarely (300s).
+    transient let NAK_PRICE_TTL_NANOS : Int = 60_000_000_000;
+    transient let DASHBOARD_TTL_NANOS : Int = 60_000_000_000;
+    transient let TOKEN_TTL_NANOS : Int = 300_000_000_000;
+
+    // Read a fresh (within-TTL) cache entry, if any.
+    func cacheGet(key : Text, ttlNanos : Int) : ?Text {
+      switch (responseCache.get(key)) {
+        case (?entry) {
+          if (Time.now() - entry.timestamp < ttlNanos) { ?entry.value } else { null };
+        };
+        case null { null };
+      };
     };
 
-    public func getTokenImage(chainId : Text, tokenAddress : Text) : async Text {
-        let url = "https://api.dexscreener.com/tokens/v1/" # chainId # "/" # tokenAddress;
-        await OutCall.httpGetRequest(url, [], transform);
+    // Read a cache entry regardless of age (used to serve stale data on outcall
+    // failure).
+    func cacheGetStale(key : Text) : ?Text {
+      switch (responseCache.get(key)) {
+        case (?entry) { ?entry.value };
+        case null { null };
+      };
     };
 
-    public func getTokenProfile(chainId : Text, tokenAddress : Text) : async Text {
-        let url = "https://api.dexscreener.com/token-profiles/latest/v1";
-        let body = "{ \"chainId\": \"" # chainId # "\", \"tokenAddress\": \"" # tokenAddress # "\" }";
-        let headers = [{ name = "Content-Type"; value = "application/json" }];
-        await OutCall.httpPostRequest(url, headers, body, transform);
+    // Store a response in the cache, refreshing the timestamp.
+    func cachePut(key : Text, value : Text) {
+      switch (responseCache.get(key)) {
+        case (?entry) { entry.value := value; entry.timestamp := Time.now() };
+        case null { responseCache.add(key, { var value = value; var timestamp = Time.now() }) };
+      };
     };
 
-    public func getTreasuryTokens() : async Text {
-        let url = "https://r4tak-4iaaa-aaaac-qbw5a-cai.icp0.io/tokens";
-        await OutCall.httpGetRequest(url, [], transform);
+    public shared ({ caller }) func getNAKPrice() : async Text {
+      if (not RateLimitLib.checkRateLimit(publicReadRateLimit, caller, RateLimitLib.PUBLIC_READ_RATE_WINDOW_NANOS, RateLimitLib.PUBLIC_READ_RATE_MAX)) {
+        return "{\"error\":\"rate_limited\"}";
+      };
+      switch (cacheGet("nakPrice", NAK_PRICE_TTL_NANOS)) {
+        case (?v) { return v };
+        case null {};
+      };
+      let url = "https://api.dexscreener.com/latest/dex/search?q=NAK/ICP";
+      try {
+        let result = await OutCallLocal.httpGetRequest(cycleCounters, url, [], transform, 16_384 : Nat64);
+        cachePut("nakPrice", result);
+        result;
+      } catch e {
+        switch (cacheGetStale("nakPrice")) {
+          case (?v) { v };
+          case null { Runtime.trap("outcall failed: " # e.message()) };
+        };
+      };
     };
 
-    public func getDashboardData() : async Text {
-        let url = "https://r4tak-4iaaa-aaaac-qbw5a-cai.icp0.io/dashboard";
-        await OutCall.httpGetRequest(url, [], transform);
+    public shared ({ caller }) func getTokenImage(chainId : Text, tokenAddress : Text) : async Text {
+      if (not RateLimitLib.checkRateLimit(publicReadRateLimit, caller, RateLimitLib.PUBLIC_READ_RATE_WINDOW_NANOS, RateLimitLib.PUBLIC_READ_RATE_MAX)) {
+        return "{\"error\":\"rate_limited\"}";
+      };
+      let key = "tokenImage:" # chainId # ":" # tokenAddress;
+      switch (cacheGet(key, TOKEN_TTL_NANOS)) {
+        case (?v) { return v };
+        case null {};
+      };
+      let url = "https://api.dexscreener.com/tokens/v1/" # chainId # "/" # tokenAddress;
+      try {
+        let result = await OutCallLocal.httpGetRequest(cycleCounters, url, [], transform, 16_384 : Nat64);
+        cachePut(key, result);
+        result;
+      } catch e {
+        switch (cacheGetStale(key)) {
+          case (?v) { v };
+          case null { Runtime.trap("outcall failed: " # e.message()) };
+        };
+      };
+    };
+
+    public shared ({ caller }) func getTokenProfile(chainId : Text, tokenAddress : Text) : async Text {
+      if (not RateLimitLib.checkRateLimit(publicReadRateLimit, caller, RateLimitLib.PUBLIC_READ_RATE_WINDOW_NANOS, RateLimitLib.PUBLIC_READ_RATE_MAX)) {
+        return "{\"error\":\"rate_limited\"}";
+      };
+      let key = "tokenProfile:" # chainId # ":" # tokenAddress;
+      switch (cacheGet(key, TOKEN_TTL_NANOS)) {
+        case (?v) { return v };
+        case null {};
+      };
+      let url = "https://api.dexscreener.com/token-profiles/latest/v1";
+      let body = "{ \"chainId\": \"" # chainId # "\", \"tokenAddress\": \"" # tokenAddress # "\" }";
+      let headers = [{ name = "Content-Type"; value = "application/json" }];
+      try {
+        let result = await OutCallLocal.httpPostRequest(cycleCounters, url, headers, body, transform, 32_768 : Nat64);
+        cachePut(key, result);
+        result;
+      } catch e {
+        switch (cacheGetStale(key)) {
+          case (?v) { v };
+          case null { Runtime.trap("outcall failed: " # e.message()) };
+        };
+      };
+    };
+
+    public shared ({ caller }) func getTreasuryTokens() : async Text {
+      if (not RateLimitLib.checkRateLimit(publicReadRateLimit, caller, RateLimitLib.PUBLIC_READ_RATE_WINDOW_NANOS, RateLimitLib.PUBLIC_READ_RATE_MAX)) {
+        return "{\"error\":\"rate_limited\"}";
+      };
+      switch (cacheGet("treasuryTokens", TOKEN_TTL_NANOS)) {
+        case (?v) { return v };
+        case null {};
+      };
+      let url = "https://r4tak-4iaaa-aaaac-qbw5a-cai.icp0.io/tokens";
+      try {
+        let result = await OutCallLocal.httpGetRequest(cycleCounters, url, [], transform, 65_536 : Nat64);
+        cachePut("treasuryTokens", result);
+        result;
+      } catch e {
+        switch (cacheGetStale("treasuryTokens")) {
+          case (?v) { v };
+          case null { Runtime.trap("outcall failed: " # e.message()) };
+        };
+      };
+    };
+
+    public shared ({ caller }) func getDashboardData() : async Text {
+      if (not RateLimitLib.checkRateLimit(publicReadRateLimit, caller, RateLimitLib.PUBLIC_READ_RATE_WINDOW_NANOS, RateLimitLib.PUBLIC_READ_RATE_MAX)) {
+        return "{\"error\":\"rate_limited\"}";
+      };
+      switch (cacheGet("dashboardData", DASHBOARD_TTL_NANOS)) {
+        case (?v) { return v };
+        case null {};
+      };
+      let url = "https://r4tak-4iaaa-aaaac-qbw5a-cai.icp0.io/dashboard";
+      try {
+        let result = await OutCallLocal.httpGetRequest(cycleCounters, url, [], transform, 65_536 : Nat64);
+        cachePut("dashboardData", result);
+        result;
+      } catch e {
+        switch (cacheGetStale("dashboardData")) {
+          case (?v) { v };
+          case null { Runtime.trap("outcall failed: " # e.message()) };
+        };
+      };
+    };
+
+    // A single cached response for a public read endpoint: the raw Text body
+    // plus the time it was fetched (nanoseconds since the Unix epoch). Used to
+    // serve repeated frontend calls without re-triggering an HTTPS outcall.
+    type ResponseCacheEntry = {
+      var value : Text;
+      var timestamp : Int;
     };
 
     // Storefront state (stable, seeded by the migration chain)
@@ -373,6 +540,45 @@ persistent actor Self {
     // brute-force by bounding attempts per caller.
     let unsubscribeRateLimit : RateLimitTypes.RateLimitState;
 
+    // Per-principal rate-limit state for the five public read endpoints
+    // (getNAKPrice, getTokenImage, getTokenProfile, getTreasuryTokens,
+    // getDashboardData) (stable, seeded by the migration chain). Bounds how many
+    // HTTPS outcalls an arbitrary caller can trigger per minute, so a script
+    // cannot drain the canister's cycles. Anonymous callers all share the
+    // anonymous principal, so for them this is a global cap.
+    let publicReadRateLimit : RateLimitTypes.RateLimitState;
+
+    // Stable response cache for the five public read endpoints (stable, seeded
+    // by the migration chain). Maps an endpoint key (including any parameters)
+    // to the last fetched body and timestamp, so repeated frontend calls within
+    // the TTL make no outcall. Survives upgrades.
+    let responseCache : Map.Map<Text, ResponseCacheEntry>;
+
+    // Permanent cache for the IBE public key (stable, seeded by the migration
+    // chain). The vetKD IBE public key is a constant for a given key name +
+    // derivation path, so it is fetched once and cached forever (survives
+    // upgrades). Never expired on a timer. Stores the key together with the key
+    // name and derivation path it was derived from, so a change to either
+    // invalidates the cache and triggers a fresh fetch.
+    let ibePublicKeyCache : IbeTypes.IbePublicKeyCache;
+
+    // Per-principal rate-limit state for getIbePublicKey (stable, seeded by the
+    // migration chain). 10 calls per caller per 60 seconds. Belt-and-braces —
+    // the permanent cache means this is almost never reached.
+    let ibeRateLimit : RateLimitTypes.RateLimitState;
+
+    // Per-principal rate-limit state for checkCryptoPayment (stable, seeded by
+    // the migration chain). 10 calls per caller per 60 seconds, applied FIRST
+    // before any ledger work so an arbitrary caller cannot loop the endpoint
+    // and force ledger calls.
+    let cryptoCheckRateLimit : RateLimitTypes.RateLimitState;
+
+    // Short-lived per-reference cache for checkCryptoPayment results (stable,
+    // seeded by the migration chain). 15s TTL; collapses a client polling every
+    // few seconds into one ledger call per 15 seconds. Entries are deleted when
+    // a payment reaches #paid or #expired so the map cannot grow forever.
+    let cryptoCheckCache : Map.Map<Text, CryptoTypes.CryptoCheckCacheEntry>;
+
     // Short-lived cancellation tokens keyed by order reference (stable, seeded
     // by the migration chain). Issued to the browser session that created an
     // anonymous guest order; required for guest self-cancellation so a leaked
@@ -408,6 +614,20 @@ persistent actor Self {
     // never rewrites Product or Order records.
     let categories : List.List<Types.Category>;
 
+    // Cycle burn-rate monitor state (stable, seeded by the migration chain).
+    // A fixed 112-slot ring buffer of metrics samples (14 days at 3-hour
+    // intervals). Each sample is a local-reads-only snapshot of the cycle
+    // balance, heap/stable memory, and the four attribution counters. When
+    // full, the oldest sample is overwritten; it never grows beyond 112.
+    let cycleMetrics : CycleTypes.CycleMetricsState;
+
+    // Monotonic cumulative attribution counters (stable, seeded by the
+    // migration chain). Incremented in place at their call sites (outcall
+    // wrapper, ledger calls, vetKD calls, raw_rand). Never reset; each sample
+    // snapshots their current values so the delta between two samples shows
+    // how many of each happened in that window.
+    let cycleCounters : CycleTypes.CycleCounters;
+
     // Payment adapter (transient — recreated on restart, not persisted)
     transient let selfPrincipal = Principal.fromActor(Self);
     transient let paymentAdapter = CryptoPaymentsLib.cryptoAdapter(orders, products, cryptoPayments, cryptoConfig);
@@ -431,7 +651,7 @@ persistent actor Self {
     // browser tab even if no admin ever calls startVerificationTimer.
     transient let _verificationTimer = do {
       let id = Timer.recurringTimer<system>(#seconds(30), func() : async () {
-        ignore (await RecoveryLib.runVerificationPass(cryptoPayments, orders, products, latePayments, cryptoConfig, selfPrincipal, feeCache, paymentServiceConfig, emailTransform));
+        ignore (await RecoveryLib.runVerificationPass(cycleCounters, cryptoPayments, orders, products, latePayments, cryptoConfig, selfPrincipal, feeCache, paymentServiceConfig, emailTransform, cryptoCheckCache));
       });
       timerState.timerId := ?id;
       id
@@ -446,6 +666,33 @@ persistent actor Self {
     transient let _assetExpiryTimer = do {
       let id = Timer.recurringTimer<system>(#seconds(3600), func() : async () {
         ignore (await sweepExpiredUploads());
+        // Prune the per-principal rate-limit maps so they never grow with dead
+        // entries: remove any principal whose timestamps are all older than the
+        // rate-limit window. This keeps stable memory bounded — storage is
+        // billed continuously, so an unbounded per-principal map would cost
+        // forever.
+        RateLimitLib.pruneRateLimit(orderRateLimit, RateLimitLib.ORDER_RATE_WINDOW_NANOS);
+        RateLimitLib.pruneRateLimit(checkoutRateLimit, RateLimitLib.CARD_RATE_WINDOW_NANOS);
+        RateLimitLib.pruneRateLimit(confirmRateLimit, RateLimitLib.CARD_RATE_WINDOW_NANOS);
+        RateLimitLib.pruneRateLimit(unsubscribeRateLimit, RateLimitLib.UNSUBSCRIBE_RATE_WINDOW_NANOS);
+        RateLimitLib.pruneRateLimit(publicReadRateLimit, RateLimitLib.PUBLIC_READ_RATE_WINDOW_NANOS);
+        RateLimitLib.pruneRateLimit(ibeRateLimit, RateLimitLib.PUBLIC_READ_RATE_WINDOW_NANOS);
+        RateLimitLib.pruneRateLimit(cryptoCheckRateLimit, RateLimitLib.PUBLIC_READ_RATE_WINDOW_NANOS);
+        SubmissionsLib.pruneRateLimit(rateLimit);
+        // Cycle monitor sample check: piggyback on this existing hourly tick.
+        // Record a metrics sample only when at least 3 hours (SAMPLE_INTERVAL_NS)
+        // have elapsed since the last one; otherwise do nothing. No new timer,
+        // no extra wakeups — the monitor costs zero additional scheduling.
+        switch (CycleMonitorLib.lastSampleTimestamp(cycleMetrics)) {
+          case (?last) {
+            if (Time.now() - last >= CycleMonitorLib.SAMPLE_INTERVAL_NS) {
+              CycleMonitorLib.recordSample(cycleMetrics, cycleCounters);
+            };
+          };
+          case null {
+            CycleMonitorLib.recordSample(cycleMetrics, cycleCounters);
+          };
+        };
       });
       id
     };
@@ -464,20 +711,21 @@ persistent actor Self {
       id
     };
 
-    include EmailApi(paymentServiceConfig, orders, adminUsers);
-    include ConsentApi(paymentServiceConfig, adminUsers, unsubscribeRateLimit);
-    include SweepApi(cryptoConfig, selfPrincipal, adminUsers, feeCache);
-    include StorefrontApi(products, orders, state, paymentAdapter, adminUsers, minimumOrder, paymentServiceConfig, emailTransform, orderRateLimit, cancelTokens, assets, selfPrincipal, sessionOrders, pendingOrderConfig);
+    include EmailApi(paymentServiceConfig, orders, adminUsers, cycleCounters);
+    include ConsentApi(paymentServiceConfig, adminUsers, unsubscribeRateLimit, cycleCounters);
+    include SweepApi(cryptoConfig, selfPrincipal, adminUsers, feeCache, cycleCounters);
+    include StorefrontApi(products, orders, state, paymentAdapter, adminUsers, minimumOrder, paymentServiceConfig, emailTransform, orderRateLimit, cancelTokens, assets, selfPrincipal, sessionOrders, pendingOrderConfig, cycleCounters);
     include CategoriesApi(categories, products, adminUsers);
-    include ProductAssetsApi(assets, uploads, adminUsers, products, selfPrincipal);
+    include ProductAssetsApi(assets, uploads, adminUsers, products, selfPrincipal, cycleCounters);
     include PaymentAdapterApi(paymentAdapter);
-    include CryptoPaymentsApi(orders, products, cryptoPayments, cryptoConfig, selfPrincipal, adminUsers, minimumOrder, feeCache);
-    include PaymentServiceApi(paymentServiceConfig, orders, products, adminUsers, checkoutRateLimit, confirmRateLimit, cancelTokens);
+    include CryptoPaymentsApi(orders, products, cryptoPayments, cryptoConfig, selfPrincipal, adminUsers, minimumOrder, feeCache, cryptoCheckRateLimit, cryptoCheckCache, cycleCounters);
+    include PaymentServiceApi(paymentServiceConfig, orders, products, adminUsers, checkoutRateLimit, confirmRateLimit, cancelTokens, cycleCounters);
     include AdminApi(adminUsers, initialAdminClaimed, selfPrincipal);
     include FeaturedVideoApi(featuredVideo, adminUsers);
-    include IbeApi(adminUsers, ibeKeyName);
-    include RecoveryApi(orders, products, cryptoPayments, cryptoConfig, selfPrincipal, adminUsers, feeCache, latePayments, timerState, paymentServiceConfig, emailTransform);
-    include SubmissionsApi(paymentServiceConfig, adminUsers, rateLimit);
+    include IbeApi(adminUsers, ibeKeyName, ibePublicKeyCache, ibeRateLimit, cycleCounters);
+    include RecoveryApi(orders, products, cryptoPayments, cryptoConfig, selfPrincipal, adminUsers, feeCache, latePayments, timerState, paymentServiceConfig, emailTransform, cryptoCheckCache, cycleCounters);
+    include SubmissionsApi(cycleCounters, paymentServiceConfig, adminUsers, rateLimit);
+    include CycleMonitorApi(cycleMetrics, cycleCounters, adminUsers);
 
     // OQL — expose persisted storefront data as queryable entities.
     // Products are a public catalogue; orders are private (controller-only).
@@ -635,8 +883,53 @@ persistent actor Self {
         productId = 0;
       }
     )));
+    // Cycle monitor samples are private (controller-only): each row is one
+    // metrics sample from the fixed 112-slot ring buffer (timestamp, cycle
+    // balance, heap/stable memory, and the four cumulative counters).
+    transient let cycleSampleEntity = OQL.Entity.build(OQL.Entity.controllerOnly(OQL.Entity.sample(
+      OQL.Entity.new<CycleTypes.CycleSample>(
+        "cycleSample",
+        func () = CycleMonitorLib.getSamples(cycleMetrics).values(),
+        "CycleSample",
+        "timestamp",
+        cycleSampleRow,
+      ),
+      {
+        timestamp = 0 : Int;
+        cyclesBalance = 0;
+        heapBytes = 0;
+        stableBytes = 0;
+        totalOutcalls = 0;
+        totalLedgerCalls = 0;
+        totalVetkdCalls = 0;
+        totalRawRandCalls = 0;
+      }
+    )));
+    // The cycle attribution counters are private (controller-only): a single
+    // row exposing the four cumulative counters (outcalls, ledger, vetKD,
+    // raw_rand) since deploy.
+    transient let cycleCounterEntity = OQL.Entity.build(OQL.Entity.controllerOnly(OQL.Entity.sample(
+      OQL.Entity.new<CycleTypes.CycleCountersView>(
+        "cycleCounter",
+        func () = [{
+          totalOutcalls = cycleCounters.totalOutcalls;
+          totalLedgerCalls = cycleCounters.totalLedgerCalls;
+          totalVetkdCalls = cycleCounters.totalVetkdCalls;
+          totalRawRandCalls = cycleCounters.totalRawRandCalls;
+        }].values(),
+        "CycleCounter",
+        "total_outcalls",
+        cycleCounterRow,
+      ),
+      {
+        totalOutcalls = 0;
+        totalLedgerCalls = 0;
+        totalVetkdCalls = 0;
+        totalRawRandCalls = 0;
+      }
+    )));
     include Expose({
-      entities = [productEntity, categoryEntity, orderEntity, cryptoPaymentEntity, cryptoConfigEntity, paymentServiceConfigEntity, latePaymentEntity, adminEntity, assetEntity];
+      entities = [productEntity, categoryEntity, orderEntity, cryptoPaymentEntity, cryptoConfigEntity, paymentServiceConfigEntity, latePaymentEntity, adminEntity, assetEntity, cycleSampleEntity, cycleCounterEntity];
     });
 
     include ApiDocMixin();

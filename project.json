@@ -1,15 +1,17 @@
 {
-  "overview": "A landing page for NAK STRATS with an admin dashboard, a featured YouTube video, and a NAKSwap token swap widget.",
+  "overview": "A storefront with an admin cycle burn-rate monitor that tracks cycle consumption, memory growth, and activity attribution at near-zero cost.",
   "features": [
-    "Admin-editable featured YouTube video",
-    "NAKSwap token swap widget",
-    "Admin dashboard for site configuration"
+    "Track cycle balance, burn rate, and estimated days remaining",
+    "Attribute cycle burn to outcalls, ledger calls, vetKD calls, and raw_rand calls",
+    "Chart balance and memory over time with top-up events marked",
+    "Admin-gated metrics dashboard section"
   ],
-  "category": "landing-page",
+  "category": "admin-dashboard",
   "tags": [
-    "crypto",
-    "landing-page",
-    "admin"
+    "admin",
+    "monitoring",
+    "cycles",
+    "dashboard"
   ],
-  "last_updated": "2026-09-02T19:55:49.167Z"
+  "last_updated": "2026-09-04T02:14:20.295Z"
 }

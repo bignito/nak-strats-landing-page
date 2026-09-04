@@ -7,6 +7,37 @@ export interface None {
     __kind__: "None";
 }
 export type Option<T> = Some<T> | None;
+export interface CycleCountersView {
+    totalLedgerCalls: bigint;
+    totalRawRandCalls: bigint;
+    totalOutcalls: bigint;
+    totalVetkdCalls: bigint;
+}
+export type SweepError = {
+    __kind__: "sweepFailed";
+    sweepFailed: string;
+} | {
+    __kind__: "ledgerError";
+    ledgerError: string;
+} | {
+    __kind__: "unauthorized";
+    unauthorized: null;
+} | {
+    __kind__: "invalidConfig";
+    invalidConfig: string;
+};
+export type Result_2 = {
+    __kind__: "ok";
+    ok: null;
+} | {
+    __kind__: "err";
+    err: PaymentServiceError;
+};
+export interface TransformationOutput {
+    status: bigint;
+    body: Uint8Array;
+    headers: Array<HttpHeader>;
+}
 export type CryptoPaymentError = {
     __kind__: "alreadyPaid";
     alreadyPaid: null;
@@ -35,6 +66,9 @@ export type CryptoPaymentError = {
     __kind__: "ledgerError";
     ledgerError: string;
 } | {
+    __kind__: "rateLimited";
+    rateLimited: null;
+} | {
     __kind__: "notCryptoOrder";
     notCryptoOrder: null;
 } | {
@@ -47,36 +81,6 @@ export type CryptoPaymentError = {
     __kind__: "belowMinimumOrder";
     belowMinimumOrder: bigint;
 };
-export type SweepError = {
-    __kind__: "sweepFailed";
-    sweepFailed: string;
-} | {
-    __kind__: "ledgerError";
-    ledgerError: string;
-} | {
-    __kind__: "unauthorized";
-    unauthorized: null;
-} | {
-    __kind__: "invalidConfig";
-    invalidConfig: string;
-};
-export type Result_2 = {
-    __kind__: "ok";
-    ok: null;
-} | {
-    __kind__: "err";
-    err: PaymentServiceError;
-};
-export interface TransformationOutput {
-    status: bigint;
-    body: Uint8Array;
-    headers: Array<HttpHeader>;
-}
-export interface CreateOrderItem {
-    product_id: ProductId;
-    variant_id: string;
-    quantity: bigint;
-}
 export interface HttpRequestResult {
     status: bigint;
     body: Uint8Array;
@@ -86,6 +90,11 @@ export type StreamingCallback = (arg0: StreamingCallbackToken) => Promise<Stream
 export interface Result__1 {
     hasMore: boolean;
     rows: Array<Array<Cell>>;
+}
+export interface CreateOrderItem {
+    product_id: ProductId;
+    variant_id: string;
+    quantity: bigint;
 }
 export type CryptoPaymentStatus = {
     __kind__: "overpayment";
@@ -365,6 +374,16 @@ export type Result_8 = {
     __kind__: "err";
     err: CryptoPaymentError;
 };
+export interface CycleSample {
+    stableBytes: bigint;
+    heapBytes: bigint;
+    totalLedgerCalls: bigint;
+    totalRawRandCalls: bigint;
+    timestamp: bigint;
+    totalOutcalls: bigint;
+    totalVetkdCalls: bigint;
+    cyclesBalance: bigint;
+}
 export interface CryptoConfigView {
     icp: LedgerConfig;
     ckUSDC: LedgerConfig;
@@ -645,6 +664,11 @@ export interface PublicOrderView {
     payment_reference?: string;
     subtotal: number;
 }
+export interface CycleMetrics {
+    samples: Array<CycleSample>;
+    counters: CycleCountersView;
+    liveBalance: bigint;
+}
 export type Result_21 = {
     __kind__: "ok";
     ok: ConsentListExport;
@@ -847,6 +871,7 @@ export interface backendInterface {
     getCryptoDepositInfo(reference: string): Promise<Result_20>;
     getCryptoPaymentStatus(reference: string): Promise<Result_19>;
     getCycleBalance(): Promise<bigint>;
+    getCycleMetrics(): Promise<CycleMetrics>;
     getDashboardData(): Promise<string>;
     getDefaultSubaccountBalance(): Promise<Result_18>;
     getEncryptionRecipients(): Promise<Array<Principal>>;

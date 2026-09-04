@@ -7,12 +7,14 @@ import PaymentServiceTypes "../types/payment-service";
 import EmailLib "../lib/email";
 import AdminLib "../lib/admin-access-control";
 import AdminTypes "../types/admin-access-control";
+import CycleTypes "../types/cycle-monitor";
 import OutCall "mo:caffeineai-http-outcalls/outcall";
 
 mixin (
   config : PaymentServiceTypes.PaymentServiceConfig,
   orders : List.List<StorefrontTypes.Order>,
   adminUsers : AdminTypes.AdminUsers,
+  cycleCounters : CycleTypes.CycleCounters,
 ) {
   // Admin-only: mark an order as shipped (with an optional tracking number) and
   // trigger the shipping notification email. Transactional — sends regardless of
@@ -24,7 +26,7 @@ mixin (
     switch (EmailLib.markOrderShipped(orders, reference, trackingNumber)) {
       case (#err e) { #err(e) };
       case (#ok()) {
-        await EmailLib.sendShippingNotification(config, orders, reference, emailTransform);
+        await EmailLib.sendShippingNotification(cycleCounters, config, orders, reference, emailTransform);
       };
     };
   };
@@ -35,7 +37,7 @@ mixin (
   // non-anonymous member of the admin allowlist.
   public shared ({ caller }) func resendConfirmationEmail(reference : Text) : async Result.Result<(), Types.EmailError> {
     AdminLib.requireAdminOrOwner(adminUsers, caller);
-    await EmailLib.sendOrderConfirmation(config, orders, reference, emailTransform);
+    await EmailLib.sendOrderConfirmation(cycleCounters, config, orders, reference, emailTransform);
   };
 
   // HTTP outcall response transform for the payment service email endpoints:

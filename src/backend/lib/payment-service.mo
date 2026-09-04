@@ -8,6 +8,8 @@ import StorefrontTypes "../types/storefront";
 import StorefrontLib "../lib/storefront";
 import EmailLib "./email";
 import OutCall "mo:caffeineai-http-outcalls/outcall";
+import OutCallLocal "./outcall";
+import CycleTypes "../types/cycle-monitor";
 
 module {
   public func isConfigured(config : Types.PaymentServiceConfig) : Bool {
@@ -70,6 +72,7 @@ module {
   // to. Never marks the order paid. On outcall failure (unreachable service or
   // insufficient cycles) returns a clear error and leaves the order pending.
   public func createCheckoutSession(
+    counters : CycleTypes.CycleCounters,
     config : Types.PaymentServiceConfig,
     orders : List.List<StorefrontTypes.Order>,
     reference : Text,
@@ -99,7 +102,7 @@ module {
         ];
         let url = config.url # "/create-checkout-session";
         try {
-          let responseText = await OutCall.httpPostRequest(url, headers, body, transform);
+          let responseText = await OutCallLocal.httpPostRequest(counters, url, headers, body, transform, 16_384 : Nat64);
           switch (jsonStringField(responseText, "checkoutUrl")) {
             case (?checkoutUrl) { #ok({ reference = order.reference; url = ?checkoutUrl }) };
             case null { #err(#invalidResponse("missing checkoutUrl in response")) };
@@ -117,6 +120,7 @@ module {
   // already-paid (or already-cancelled/expired) order is a no-op and never
   // double-decrements inventory (inventory is reserved once at order creation).
   public func confirmPayment(
+    counters : CycleTypes.CycleCounters,
     config : Types.PaymentServiceConfig,
     orders : List.List<StorefrontTypes.Order>,
     reference : Text,
@@ -140,7 +144,7 @@ module {
         let url = config.url # "/order-status/" # reference;
         let headers = [{ name = "Authorization"; value = "Bearer " # config.token }];
         try {
-          let responseText = await OutCall.httpGetRequest(url, headers, transform);
+          let responseText = await OutCallLocal.httpGetRequest(counters, url, headers, transform, 16_384 : Nat64);
           switch (jsonStringField(responseText, "status")) {
             case (?status) {
               if (status == "paid") {
@@ -148,7 +152,7 @@ module {
                 ignore StorefrontLib.updateOrderStatus(orders, reference, #paid, paymentReference);
                 // Card order confirmed: send the order confirmation email.
                 // Transactional — sends regardless of marketing consent.
-                ignore (await EmailLib.sendOrderConfirmation(emailConfig, orders, reference, emailTransform));
+                ignore (await EmailLib.sendOrderConfirmation(counters, emailConfig, orders, reference, emailTransform));
                 #ok(#paid);
               } else {
                 // pending / expired / failed / unknown — leave the order pending.

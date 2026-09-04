@@ -8,6 +8,9 @@ import StorefrontTypes "../types/storefront";
 import CryptoPaymentsLib "../lib/crypto-payments";
 import AdminLib "../lib/admin-access-control";
 import AdminTypes "../types/admin-access-control";
+import RateLimitLib "../lib/rate-limit";
+import RateLimitTypes "../types/rate-limit";
+import CycleTypes "../types/cycle-monitor";
 
 mixin (
   orders : List.List<StorefrontTypes.Order>,
@@ -18,6 +21,9 @@ mixin (
   adminUsers : AdminTypes.AdminUsers,
   minimumOrderState : { var minimumOrder : Nat },
   feeCache : Types.FeeCache,
+  cryptoCheckRateLimit : RateLimitTypes.RateLimitState,
+  cryptoCheckCache : Map.Map<Text, Types.CryptoCheckCacheEntry>,
+  cycleCounters : CycleTypes.CycleCounters,
 ) {
   public query func getCryptoConfig() : async Types.CryptoConfigView {
     {
@@ -64,8 +70,19 @@ mixin (
   // NEVER marks an order paid or sweeps funds — it only reports what the ledger
   // holds. Actual confirmation (sweep + mark paid) is driven by the background
   // verification timer, never by an arbitrary caller.
-  public func checkCryptoPayment(reference : Text) : async Result.Result<Types.CryptoPaymentStatus, Types.CryptoPaymentError> {
-    await CryptoPaymentsLib.checkPayment(cryptoPayments, reference, cryptoConfig, selfPrincipal);
+  //
+  // This endpoint is public and unrate-limited, so it is rate limited FIRST
+  // (10 calls per caller per 60 seconds) before any other work — without this
+  // an arbitrary caller could loop it with any argument and force ledger calls.
+  // The ledger is the LAST resort: an unknown reference and a settled
+  // (#paid/#expired) payment both return from local state with NO ledger call,
+  // and a short-lived per-reference cache (15s TTL) collapses repeated polling
+  // into one ledger call per 15 seconds.
+  public shared ({ caller }) func checkCryptoPayment(reference : Text) : async Result.Result<Types.CryptoPaymentStatus, Types.CryptoPaymentError> {
+    if (not RateLimitLib.checkRateLimit(cryptoCheckRateLimit, caller, RateLimitLib.PUBLIC_READ_RATE_WINDOW_NANOS, RateLimitLib.PUBLIC_READ_RATE_MAX)) {
+      return #err(#rateLimited);
+    };
+    await CryptoPaymentsLib.checkPayment(cycleCounters, cryptoPayments, reference, cryptoConfig, selfPrincipal, cryptoCheckCache);
   };
 
   // Admin-only: sweeps a single order's subaccount to the treasury. Requires a
@@ -73,7 +90,7 @@ mixin (
   // AdminLib.requireAdmin.
   public shared ({ caller }) func sweepCryptoToTreasury(reference : Text) : async Result.Result<Nat, Types.CryptoPaymentError> {
     AdminLib.requireAdminOrOwner(adminUsers, caller);
-    await CryptoPaymentsLib.sweepToTreasury(cryptoPayments, orders, reference, cryptoConfig, selfPrincipal, feeCache);
+    await CryptoPaymentsLib.sweepToTreasury(cycleCounters, cryptoPayments, orders, reference, cryptoConfig, selfPrincipal, feeCache);
   };
 
   // Admin-only: scan for expired awaiting_payment orders and release their
@@ -89,7 +106,7 @@ mixin (
         case (#expired) {};
         case (_) {
           if (Time.now() > payment.expiresAt) {
-            switch (await CryptoPaymentsLib.releaseInventoryOnExpiry(products, orders, cryptoPayments, reference)) {
+            switch (await CryptoPaymentsLib.releaseInventoryOnExpiry(products, orders, cryptoPayments, reference, cryptoCheckCache)) {
               case (#ok()) { released += 1 };
               case (#err _) {};
             };

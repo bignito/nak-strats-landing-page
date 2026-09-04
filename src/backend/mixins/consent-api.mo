@@ -7,12 +7,14 @@ import AdminLib "../lib/admin-access-control";
 import AdminTypes "../types/admin-access-control";
 import RateLimitTypes "../types/rate-limit";
 import RateLimitLib "../lib/rate-limit";
+import CycleTypes "../types/cycle-monitor";
 import OutCall "mo:caffeineai-http-outcalls/outcall";
 
 mixin (
   config : PaymentServiceTypes.PaymentServiceConfig,
   adminUsers : AdminTypes.AdminUsers,
   unsubscribeRateLimit : RateLimitTypes.RateLimitState,
+  cycleCounters : CycleTypes.CycleCounters,
 ) {
   // Admin-only: fetch the list of consenting addresses from the external
   // payment service and return it as CSV, so a mailing list can be built
@@ -21,7 +23,7 @@ mixin (
   // canister only proxies them through and never persists them.
   public shared ({ caller }) func getConsentListCsv() : async Result.Result<Types.ConsentListExport, Types.ConsentError> {
     AdminLib.requireAdminOrOwner(adminUsers, caller);
-    await ConsentLib.fetchConsentListCsv(config, consentServiceTransform);
+    await ConsentLib.fetchConsentListCsv(cycleCounters, config, consentServiceTransform);
   };
 
   // Token-based unsubscribe. The token is minted by the payment service and
@@ -38,7 +40,7 @@ mixin (
     if (not RateLimitLib.checkRateLimit(unsubscribeRateLimit, caller, RateLimitLib.UNSUBSCRIBE_RATE_WINDOW_NANOS, RateLimitLib.UNSUBSCRIBE_RATE_MAX)) {
       return #err(#rateLimited);
     };
-    await ConsentLib.unsubscribe(config, token, consentServiceTransform);
+    await ConsentLib.unsubscribe(cycleCounters, config, token, consentServiceTransform);
   };
 
   // HTTP outcall transform for the payment service consent endpoints: strips

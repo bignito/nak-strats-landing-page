@@ -2,6 +2,8 @@ import Random "mo:core/Random";
 import Time "mo:core/Time";
 import Map "mo:core/Map";
 import Types "../types/cancellation";
+import CycleTypes "../types/cycle-monitor";
+import CycleCountersLib "../lib/cycle-counters";
 
 module {
   // Alphabet for cancellation tokens: 31 unambiguous uppercase alphanumeric
@@ -15,10 +17,11 @@ module {
   // Generate a random cancellation token from IC raw randomness (Random.blob(),
   // backed by the management canister's raw_rand). Each byte is mapped to an
   // alphabet index via rejection sampling so the distribution is uniform.
-  public func generateToken() : async Text {
+  public func generateToken(counters : CycleTypes.CycleCounters) : async Text {
     let alphabet = ALPHABET.toArray();
     var body = "";
     while (body.size() < TOKEN_LENGTH) {
+      CycleCountersLib.incRawRandCalls(counters);
       let bytes = await Random.blob();
       for (byte in bytes.toArray().values()) {
         let v = byte.toNat();
@@ -33,8 +36,8 @@ module {
 
   // Issue a cancellation token for an order reference, valid for DEFAULT_TTL.
   // Returns the token so the caller can hand it to the browser session.
-  public func issueToken(tokens : Map.Map<Text, Types.CancellationToken>, reference : Text) : async Text {
-    let token = await generateToken();
+  public func issueToken(tokens : Map.Map<Text, Types.CancellationToken>, reference : Text, counters : CycleTypes.CycleCounters) : async Text {
+    let token = await generateToken(counters);
     tokens.add(reference, { token; expiresAt = Time.now() + DEFAULT_TTL_NANOS });
     token;
   };

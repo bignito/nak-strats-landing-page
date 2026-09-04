@@ -16,6 +16,7 @@ import CancellationTypes "../types/cancellation";
 import CancellationLib "../lib/cancellation";
 import AssetTypes "../types/product-assets";
 import OutCall "mo:caffeineai-http-outcalls/outcall";
+import CycleTypes "../types/cycle-monitor";
 
 mixin (
   products : List.List<Types.Product>,
@@ -32,6 +33,7 @@ mixin (
   selfPrincipal : Principal,
   sessionOrders : Map.Map<Text, List.List<Text>>,
   pendingOrderConfig : RateLimitTypes.PendingOrderConfig,
+  cycleCounters : CycleTypes.CycleCounters,
 ) {
   // Public-safe view of an order that omits customer_email (plaintext PII).
   func toPublicView(order : Types.Order) : AdminEmailTypes.PublicOrderView {
@@ -101,7 +103,7 @@ mixin (
     if (StorefrontLib.countAllPendingOrders(orders) >= pendingOrderConfig.globalCap) {
       return #err(#tooManyPendingOrders);
     };
-    switch (await StorefrontLib.createOrder(products, orders, state, input, caller, minimumOrderState.minimumOrder)) {
+    switch (await StorefrontLib.createOrder(products, orders, state, input, caller, minimumOrderState.minimumOrder, cycleCounters)) {
       case (#err e) { #err(e) };
       case (#ok order) {
         switch (await paymentAdapter.createCheckoutSession(order)) {
@@ -116,7 +118,7 @@ mixin (
           case (#ok _) {
             let isGuest = caller.isAnonymous();
             let cancellationToken = if (isGuest) {
-              ?(await CancellationLib.issueToken(cancelTokens, order.reference));
+              ?(await CancellationLib.issueToken(cancelTokens, order.reference, cycleCounters));
             } else {
               null;
             };

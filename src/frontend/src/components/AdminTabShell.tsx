@@ -3,6 +3,7 @@ import { CopyButton } from "@/components/CopyButton";
 import { AdminConfirmDialog } from "@/components/admin/AdminConfirmDialog";
 import { CanisterTab } from "@/components/admin/CanisterTab";
 import { CategoriesTab } from "@/components/admin/CategoriesTab";
+import { CycleMonitorTab } from "@/components/admin/CycleMonitorTab";
 import { OrdersTab } from "@/components/admin/OrdersTab";
 import { OverviewTab } from "@/components/admin/OverviewTab";
 import { ProductsTab } from "@/components/admin/ProductsTab";
@@ -32,10 +33,11 @@ import { useMemo, useState } from "react";
 /** Draft canister principal — a matching id means this console is DRAFT. */
 const DRAFT_CANISTER_ID = "vm5zh-yaaaa-aaaaj-qoaza-cai";
 
-/** The 9 admin tabs in display order. */
+/** The 10 admin tabs in display order. */
 const TAB_ORDER: AdminTabId[] = [
   "overview",
   "canister",
+  "cycleMonitor",
   "treasury",
   "orders",
   "products",
@@ -48,6 +50,7 @@ const TAB_ORDER: AdminTabId[] = [
 const TAB_LABELS: Record<AdminTabId, string> = {
   overview: "Overview",
   canister: "Canister",
+  cycleMonitor: "Cycle Monitor",
   treasury: "Treasury",
   orders: "Orders",
   products: "Products",
@@ -64,6 +67,7 @@ const TAB_LABELS: Record<AdminTabId, string> = {
 const TAB_BODIES: Record<AdminTabId, React.ComponentType<AdminTabBodyProps>> = {
   overview: (props) => <OverviewTab {...props} />,
   canister: (props) => <CanisterTab {...props} />,
+  cycleMonitor: (props) => <CycleMonitorTab {...props} />,
   treasury: (props) => <TreasuryTab {...props} />,
   orders: (props) => <OrdersTab {...props} />,
   products: (props) => <ProductsTab {...props} />,

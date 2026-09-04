@@ -12,6 +12,8 @@ import PaymentServiceTypes "../types/payment-service";
 import PaymentAdapterLib "./payment-adapter";
 import EmailLib "./email";
 import OutCall "mo:caffeineai-http-outcalls/outcall";
+import CycleCountersLib "./cycle-counters";
+import CycleTypes "../types/cycle-monitor";
 
 module {
   // ICRC-1 ledger interface (called via actor(canisterId), not the ic package).
@@ -50,6 +52,12 @@ module {
   // The fee is queried from the ledger at runtime and cached briefly rather
   // than queried on every sweep.
   let FEE_CACHE_TTL_NS : Int = 300_000_000_000;
+
+  // How long a cached checkCryptoPayment result is considered fresh, in
+  // nanoseconds (15 seconds). Collapses a client polling every few seconds into
+  // one ledger call per 15 seconds while still detecting a genuinely pending
+  // payment within 15 seconds.
+  let CHECK_CACHE_TTL_NS : Int = 15_000_000_000;
 
   func byteAt(value : Nat, position : Nat) : Nat8 {
     // position 0 = least significant byte.
@@ -101,6 +109,7 @@ module {
   // older than FEE_CACHE_TTL_NS). The returned value is used for the sweep so a
   // ledger fee change never silently breaks sweeps.
   public func getRuntimeFee(
+    counters : CycleTypes.CycleCounters,
     token : Types.Token,
     config : Types.CryptoConfig,
     feeCache : Types.FeeCache,
@@ -113,6 +122,7 @@ module {
     let now = Time.now();
     if (entry.updatedAt == 0 or now - entry.updatedAt > FEE_CACHE_TTL_NS) {
       let ledgerActor : Ledger = actor (ledger.canisterId.toText());
+      CycleCountersLib.incLedgerCalls(counters);
       let queried = await ledgerActor.icrc1_fee();
       entry.fee := queried;
       entry.updatedAt := now;
@@ -360,34 +370,72 @@ module {
     };
   };
 
+  // Queries the LIVE on-ledger balance of a payment's subaccount and derives the
+  // current status. This is the only place checkCryptoPayment touches the
+  // ledger — it is the LAST resort, reached only after the local-state and
+  // short-lived cache checks have both missed.
+  func ledgerCheck(counters : CycleTypes.CycleCounters, payment : Types.CryptoPayment, config : Types.CryptoConfig, selfPrincipal : Principal) : async Types.CryptoPaymentStatus {
+    let ledger = ledgerFor(payment.token, config);
+    let ledgerActor : Ledger = actor (ledger.canisterId.toText());
+    CycleCountersLib.incLedgerCalls(counters);
+    let balance = await ledgerActor.icrc1_balance_of({ owner = selfPrincipal; subaccount = ?payment.subaccount });
+    if (balance >= payment.amountDue) {
+      // Overpayment is accepted; the excess is swept with the principal.
+      #paid({ blockIndex = payment.confirmedBlockIndex ?? 0 });
+    } else if (balance > 0) {
+      #underpayment(({ expected = payment.amountDue; received = balance }));
+    } else {
+      #awaiting_payment;
+    };
+  };
+
+  // Customer-facing ledger re-check. The ledger is the LAST resort: an unknown
+  // reference and a settled (#paid/#expired) payment both return from local
+  // state with NO ledger call, and a short-lived per-reference cache (15s TTL)
+  // collapses repeated polling into one ledger call per 15 seconds.
   public func checkPayment(
+    counters : CycleTypes.CycleCounters,
     cryptoPayments : Map.Map<Text, Types.CryptoPayment>,
     reference : Text,
     config : Types.CryptoConfig,
     selfPrincipal : Principal,
+    checkCache : Map.Map<Text, Types.CryptoCheckCacheEntry>,
   ) : async Result.Result<Types.CryptoPaymentStatus, Types.CryptoPaymentError> {
     switch (cryptoPayments.get(reference)) {
       case null { #err(#notFound) };
       case (?payment) {
-        if (Time.now() > payment.expiresAt) {
-          return #err(#expired);
-        };
-        let ledger = ledgerFor(payment.token, config);
-        let ledgerActor : Ledger = actor (ledger.canisterId.toText());
-        let balance = await ledgerActor.icrc1_balance_of({ owner = selfPrincipal; subaccount = ?payment.subaccount });
-        if (balance >= payment.amountDue) {
-          // Overpayment is accepted; the excess is swept with the principal.
-          #ok(#paid({ blockIndex = payment.confirmedBlockIndex ?? 0 }));
-        } else if (balance > 0) {
-          #ok(#underpayment(({ expected = payment.amountDue; received = balance })));
-        } else {
-          #ok(#awaiting_payment);
+        let st = payment.status;
+        switch st {
+          case (#paid _) { #ok(payment.status) };
+          case (#expired) { #ok(payment.status) };
+          case (_) {
+            if (Time.now() > payment.expiresAt) {
+              return #err(#expired);
+            };
+            switch (checkCache.get(reference)) {
+              case (?entry) {
+                if (Time.now() - entry.timestamp < CHECK_CACHE_TTL_NS) {
+                  #ok(entry.status);
+                } else {
+                  let status = await ledgerCheck(counters, payment, config, selfPrincipal);
+                  checkCache.add(reference, { var status; var timestamp = Time.now() });
+                  #ok(status);
+                };
+              };
+              case null {
+                let status = await ledgerCheck(counters, payment, config, selfPrincipal);
+                checkCache.add(reference, { var status; var timestamp = Time.now() });
+                #ok(status);
+              };
+            };
+          };
         };
       };
     };
   };
 
   public func confirmPayment(
+    counters : CycleTypes.CycleCounters,
     cryptoPayments : Map.Map<Text, Types.CryptoPayment>,
     orders : List.List<StorefrontTypes.Order>,
     reference : Text,
@@ -396,6 +444,7 @@ module {
     feeCache : Types.FeeCache,
     emailConfig : PaymentServiceTypes.PaymentServiceConfig,
     emailTransform : OutCall.Transform,
+    checkCache : Map.Map<Text, Types.CryptoCheckCacheEntry>,
   ) : async Result.Result<Types.CryptoPaymentStatus, Types.CryptoPaymentError> {
     switch (cryptoPayments.get(reference)) {
       case null { #err(#notFound) };
@@ -411,6 +460,7 @@ module {
         };
         let ledger = ledgerFor(payment.token, config);
         let ledgerActor : Ledger = actor (ledger.canisterId.toText());
+        CycleCountersLib.incLedgerCalls(counters);
         let balance = await ledgerActor.icrc1_balance_of({ owner = selfPrincipal; subaccount = ?payment.subaccount });
         if (balance < payment.amountDue) {
           if (balance > 0) {
@@ -422,7 +472,7 @@ module {
         // The transfer fee is queried from the ledger at runtime (cached
         // briefly) rather than hardcoded, so a fee change never silently breaks
         // the sweep.
-        let fee = await getRuntimeFee(payment.token, config, feeCache);
+        let fee = await getRuntimeFee(counters, payment.token, config, feeCache);
         if (balance <= fee) {
           // Cannot sweep: after deducting the fee there is nothing left to
           // transfer and the ledger rejects a zero-value transfer. Skip the
@@ -443,6 +493,9 @@ module {
             updatedAt = Time.now();
           };
           cryptoPayments.add(reference, updated);
+          // Payment reached #paid: drop its checkCryptoPayment cache entry so
+          // the per-reference cache cannot grow forever.
+          checkCache.remove(reference);
           switch (orders.find(func o = o.reference == reference)) {
             case (?order) {
               let updatedOrder : StorefrontTypes.Order = {
@@ -481,10 +534,11 @@ module {
           // Crypto order confirmed (funds received, sweep skipped): send the
           // order confirmation email. Transactional — sends regardless of
           // marketing consent.
-          ignore (await EmailLib.sendOrderConfirmation(emailConfig, orders, reference, emailTransform));
+          ignore (await EmailLib.sendOrderConfirmation(counters, emailConfig, orders, reference, emailTransform));
           return #ok(#paid({ blockIndex = 0 }));
         };
         let sweepAmount = balance - fee;
+        CycleCountersLib.incLedgerCalls(counters);
         let transferResult = await ledgerActor.icrc1_transfer({
           from_subaccount = ?payment.subaccount;
           to = { owner = config.treasuryPrincipal; subaccount = config.treasurySubaccount };
@@ -510,6 +564,9 @@ module {
               updatedAt = Time.now();
             };
             cryptoPayments.add(reference, updated);
+            // Payment reached #paid: drop its checkCryptoPayment cache entry so
+            // the per-reference cache cannot grow forever.
+            checkCache.remove(reference);
             // Keep the order lifecycle consistent: mark the order #paid and
             // record the payment reference, mirroring releaseInventoryOnExpiry
             // which marks the order #expired. Idempotent: the payment is only
@@ -551,7 +608,7 @@ module {
             };
             // Crypto order confirmed and swept: send the order confirmation
             // email. Transactional — sends regardless of marketing consent.
-            ignore (await EmailLib.sendOrderConfirmation(emailConfig, orders, reference, emailTransform));
+            ignore (await EmailLib.sendOrderConfirmation(counters, emailConfig, orders, reference, emailTransform));
             #ok(#paid({ blockIndex }));
           };
           case (#Err e) {
@@ -565,6 +622,7 @@ module {
   };
 
   public func sweepToTreasury(
+    counters : CycleTypes.CycleCounters,
     cryptoPayments : Map.Map<Text, Types.CryptoPayment>,
     orders : List.List<StorefrontTypes.Order>,
     reference : Text,
@@ -577,11 +635,12 @@ module {
       case (?payment) {
         let ledger = ledgerFor(payment.token, config);
         let ledgerActor : Ledger = actor (ledger.canisterId.toText());
+        CycleCountersLib.incLedgerCalls(counters);
         let balance = await ledgerActor.icrc1_balance_of({ owner = selfPrincipal; subaccount = ?payment.subaccount });
         // The transfer fee is queried from the ledger at runtime (cached
         // briefly) rather than hardcoded, so a fee change never silently breaks
         // the sweep.
-        let fee = await getRuntimeFee(payment.token, config, feeCache);
+        let fee = await getRuntimeFee(counters, payment.token, config, feeCache);
         if (balance <= fee) {
           // Skip the sweep: after deducting the fee there is nothing left to
           // transfer and the ledger rejects a zero-value transfer. Leave the
@@ -591,6 +650,7 @@ module {
           return #ok(0);
         };
         let sweepAmount = balance - fee;
+        CycleCountersLib.incLedgerCalls(counters);
         let transferResult = await ledgerActor.icrc1_transfer({
           from_subaccount = ?payment.subaccount;
           to = { owner = config.treasuryPrincipal; subaccount = config.treasurySubaccount };
@@ -620,6 +680,7 @@ module {
     orders : List.List<StorefrontTypes.Order>,
     cryptoPayments : Map.Map<Text, Types.CryptoPayment>,
     reference : Text,
+    checkCache : Map.Map<Text, Types.CryptoCheckCacheEntry>,
   ) : async Result.Result<(), Types.CryptoPaymentError> {
     switch (cryptoPayments.get(reference)) {
       case null { #err(#notFound) };
@@ -698,6 +759,9 @@ module {
           updatedAt = Time.now();
         };
         cryptoPayments.add(reference, updatedPayment);
+        // Payment reached #expired: drop its checkCryptoPayment cache entry so
+        // the per-reference cache cannot grow forever.
+        checkCache.remove(reference);
         #ok();
       };
     };

@@ -82720,8 +82720,17 @@ const CheckoutPage = ({
   const [line2, setLine2] = reactExports.useState("");
   const [city, setCity] = reactExports.useState("");
   const [region, setRegion] = reactExports.useState("");
-  const [country, setCountry] = reactExports.useState("");
+  const [country, setCountry] = reactExports.useState("United States");
   const [postalCode, setPostalCode] = reactExports.useState("");
+  const [fieldErrors, setFieldErrors] = reactExports.useState({});
+  const clearFieldError = (field) => {
+    setFieldErrors((prev) => {
+      if (!prev[field]) return prev;
+      const next = { ...prev };
+      delete next[field];
+      return next;
+    });
+  };
   const { actor } = useActor(createActor);
   const createOrder = useCreateOrder();
   const checkPayment = useCheckCryptoPayment();
@@ -82866,6 +82875,30 @@ const CheckoutPage = ({
   const handleShippingSubmit = async (e3) => {
     e3.preventDefault();
     setOrderError(null);
+    const requiredFields = [
+      { key: "name", value: name, id: "checkout-name" },
+      { key: "email", value: email, id: "checkout-email" },
+      { key: "line1", value: line1, id: "checkout-line1" },
+      { key: "city", value: city, id: "checkout-city" },
+      { key: "region", value: region, id: "checkout-region" },
+      { key: "country", value: country, id: "checkout-country" },
+      { key: "postalCode", value: postalCode, id: "checkout-postal" }
+    ];
+    const emptyFields = requiredFields.filter((f2) => f2.value.trim() === "");
+    if (emptyFields.length > 0) {
+      const nextErrors = {};
+      for (const f2 of emptyFields) {
+        nextErrors[f2.key] = true;
+      }
+      setFieldErrors(nextErrors);
+      const first = emptyFields[0];
+      const el = document.getElementById(first.id);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "center" });
+        el.focus({ preventScroll: true });
+      }
+      return;
+    }
     const shippingPayload = {
       name,
       email,
@@ -83030,7 +83063,6 @@ const CheckoutPage = ({
       setStep("deposit");
     }
   };
-  const shippingFormValid = name.trim() !== "" && email.trim() !== "" && line1.trim() !== "" && city.trim() !== "" && region.trim() !== "" && country.trim() !== "" && postalCode.trim() !== "";
   const depositAddress = depositData ? depositAccountString(depositData) : "";
   const amountOwed = depositData ? formatTokenAmount$2(depositData.amountDue, depositData.decimals) : "";
   const checkingResume = !!activeOrderRef && !resumeInfo && !resumeError && !resumeSuccess && !resumeFailed;
@@ -83159,10 +83191,22 @@ const CheckoutPage = ({
                   id: "checkout-name",
                   type: "text",
                   value: name,
-                  onChange: (e3) => setName(e3.target.value),
+                  onChange: (e3) => {
+                    setName(e3.target.value);
+                    clearFieldError("name");
+                  },
+                  onBlur: (e3) => setName(e3.target.value),
                   placeholder: "Jane Doe",
                   className: "field-input",
                   "data-ocid": "checkout.name_input"
+                }
+              ),
+              fieldErrors.name && /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "p",
+                {
+                  className: "mt-1.5 text-sm text-destructive",
+                  "data-ocid": "checkout.name_error",
+                  children: "Required"
                 }
               )
             ] }),
@@ -83181,10 +83225,22 @@ const CheckoutPage = ({
                   id: "checkout-email",
                   type: "email",
                   value: email,
-                  onChange: (e3) => setEmail(e3.target.value),
+                  onChange: (e3) => {
+                    setEmail(e3.target.value);
+                    clearFieldError("email");
+                  },
+                  onBlur: (e3) => setEmail(e3.target.value),
                   placeholder: "jane@example.com",
                   className: "field-input",
                   "data-ocid": "checkout.email_input"
+                }
+              ),
+              fieldErrors.email && /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "p",
+                {
+                  className: "mt-1.5 text-sm text-destructive",
+                  "data-ocid": "checkout.email_error",
+                  children: "Required"
                 }
               )
             ] })
@@ -83231,10 +83287,22 @@ const CheckoutPage = ({
                 id: "checkout-line1",
                 type: "text",
                 value: line1,
-                onChange: (e3) => setLine1(e3.target.value),
+                onChange: (e3) => {
+                  setLine1(e3.target.value);
+                  clearFieldError("line1");
+                },
+                onBlur: (e3) => setLine1(e3.target.value),
                 placeholder: "123 Neon Avenue",
                 className: "field-input",
                 "data-ocid": "checkout.line1_input"
+              }
+            ),
+            fieldErrors.line1 && /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "p",
+              {
+                className: "mt-1.5 text-sm text-destructive",
+                "data-ocid": "checkout.line1_error",
+                children: "Required"
               }
             )
           ] }),
@@ -83258,6 +83326,7 @@ const CheckoutPage = ({
                 type: "text",
                 value: line2,
                 onChange: (e3) => setLine2(e3.target.value),
+                onBlur: (e3) => setLine2(e3.target.value),
                 placeholder: "Apt, suite, unit",
                 className: "field-input",
                 "data-ocid": "checkout.line2_input"
@@ -83280,10 +83349,22 @@ const CheckoutPage = ({
                   id: "checkout-city",
                   type: "text",
                   value: city,
-                  onChange: (e3) => setCity(e3.target.value),
-                  placeholder: "Neo Tokyo",
+                  onChange: (e3) => {
+                    setCity(e3.target.value);
+                    clearFieldError("city");
+                  },
+                  onBlur: (e3) => setCity(e3.target.value),
+                  placeholder: "Houston",
                   className: "field-input",
                   "data-ocid": "checkout.city_input"
+                }
+              ),
+              fieldErrors.city && /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "p",
+                {
+                  className: "mt-1.5 text-sm text-destructive",
+                  "data-ocid": "checkout.city_error",
+                  children: "Required"
                 }
               )
             ] }),
@@ -83302,10 +83383,22 @@ const CheckoutPage = ({
                   id: "checkout-region",
                   type: "text",
                   value: region,
-                  onChange: (e3) => setRegion(e3.target.value),
-                  placeholder: "Kanto",
+                  onChange: (e3) => {
+                    setRegion(e3.target.value);
+                    clearFieldError("region");
+                  },
+                  onBlur: (e3) => setRegion(e3.target.value),
+                  placeholder: "TX",
                   className: "field-input",
                   "data-ocid": "checkout.region_input"
+                }
+              ),
+              fieldErrors.region && /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "p",
+                {
+                  className: "mt-1.5 text-sm text-destructive",
+                  "data-ocid": "checkout.region_error",
+                  children: "Required"
                 }
               )
             ] })
@@ -83326,10 +83419,23 @@ const CheckoutPage = ({
                   id: "checkout-country",
                   type: "text",
                   value: country,
-                  onChange: (e3) => setCountry(e3.target.value),
-                  placeholder: "Japan",
-                  className: "field-input",
+                  readOnly: true,
+                  onChange: (e3) => {
+                    setCountry(e3.target.value);
+                    clearFieldError("country");
+                  },
+                  onBlur: (e3) => setCountry(e3.target.value),
+                  placeholder: "United States",
+                  className: "field-input opacity-60 cursor-not-allowed",
                   "data-ocid": "checkout.country_input"
+                }
+              ),
+              fieldErrors.country && /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "p",
+                {
+                  className: "mt-1.5 text-sm text-destructive",
+                  "data-ocid": "checkout.country_error",
+                  children: "Required"
                 }
               )
             ] }),
@@ -83348,10 +83454,22 @@ const CheckoutPage = ({
                   id: "checkout-postal",
                   type: "text",
                   value: postalCode,
-                  onChange: (e3) => setPostalCode(e3.target.value),
-                  placeholder: "100-0001",
+                  onChange: (e3) => {
+                    setPostalCode(e3.target.value);
+                    clearFieldError("postalCode");
+                  },
+                  onBlur: (e3) => setPostalCode(e3.target.value),
+                  placeholder: "77002",
                   className: "field-input",
                   "data-ocid": "checkout.postal_input"
+                }
+              ),
+              fieldErrors.postalCode && /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "p",
+                {
+                  className: "mt-1.5 text-sm text-destructive",
+                  "data-ocid": "checkout.postal_error",
+                  children: "Required"
                 }
               )
             ] })
@@ -83374,7 +83492,7 @@ const CheckoutPage = ({
               "button",
               {
                 type: "submit",
-                disabled: !shippingFormValid || createOrder.isPending,
+                disabled: createOrder.isPending,
                 "data-ocid": "checkout.continue_button",
                 className: "btn px-8 py-4 text-base font-semibold disabled:cursor-not-allowed disabled:opacity-50",
                 children: createOrder.isPending ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [

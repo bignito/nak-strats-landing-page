@@ -22,20 +22,22 @@ mixin (
   // Public: returns the IBE public key for the app's DOMAIN_SEPARATOR so the
   // frontend can IBE-encrypt shipping details to admin principals. The vetKD
   // IBE public key is a CONSTANT for a given key name + derivation path, so it
-  // is fetched once and cached forever (survives upgrades) — a cached hit
-  // returns immediately with NO vetKD call. An update (not a query) because it
-  // makes an inter-canister call to the management canister on a cache miss.
-  // Rate limited per caller principal (10 calls per 60 seconds) as
-  // belt-and-braces; the cache means this is almost never reached. A Blob
-  // return cannot carry a Result error, so an over-limit caller traps.
+  // is fetched once and cached forever (survives upgrades). The cache is
+  // consulted FIRST: a cached hit (a cached key exists AND its stored key name
+  // and derivation path match the current ones) returns immediately with NO
+  // vetKD call and WITHOUT consuming rate-limit budget. The rate limit applies
+  // only to cache misses, which are the calls that actually reach the
+  // management canister. An update (not a query) because it makes an
+  // inter-canister call to the management canister on a cache miss. Rate
+  // limited per caller principal (10 calls per 60 seconds) as belt-and-braces;
+  // the cache means this is almost never reached. A Blob return cannot carry a
+  // Result error, so an over-limit caller traps.
   public shared ({ caller }) func getIbePublicKey() : async Blob {
-    if (not RateLimitLib.checkRateLimit(ibeRateLimit, caller, RateLimitLib.PUBLIC_READ_RATE_WINDOW_NANOS, RateLimitLib.PUBLIC_READ_RATE_MAX)) {
-      Runtime.trap("rate_limited");
-    };
     let derivationPath = IbeLib.DOMAIN_SEPARATOR.encodeUtf8();
     // Permanent cache: on a hit (a cached key exists AND its stored key name
     // and derivation path match the current ones) return it immediately with
-    // NO vetKD call.
+    // NO vetKD call and NO rate-limit check — cached reads never consume
+    // rate-limit budget.
     switch (ibePublicKeyCache.cachedKey) {
       case (?key) {
         if (ibePublicKeyCache.cachedKeyName == ibeKeyName and ibePublicKeyCache.cachedDerivationPath == derivationPath) {
@@ -44,9 +46,15 @@ mixin (
       };
       case null {};
     };
-    // Miss (empty cache, or key name / derivation path changed): fetch the key
-    // once and cache it forever with its key name and derivation path. On a
-    // vetKD failure the cache is left empty so the next call retries.
+    // Miss (empty cache, or key name / derivation path changed): the rate
+    // limit guards only this vetKD path, so it is checked here, before the
+    // expensive management-canister call.
+    if (not RateLimitLib.checkRateLimit(ibeRateLimit, caller, RateLimitLib.PUBLIC_READ_RATE_WINDOW_NANOS, RateLimitLib.PUBLIC_READ_RATE_MAX)) {
+      Runtime.trap("rate_limited");
+    };
+    // Fetch the key once and cache it forever with its key name and derivation
+    // path. On a vetKD failure the cache is left empty so the next call
+    // retries.
     CycleCountersLib.incVetkdCalls(cycleCounters);
     let key = await ManagementCanister.vetKdPublicKey(null, derivationPath, IbeLib.keyId(ibeKeyName));
     ibePublicKeyCache.cachedKey := ?key;

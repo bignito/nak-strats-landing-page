@@ -291,8 +291,30 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
   const [line2, setLine2] = useState("");
   const [city, setCity] = useState("");
   const [region, setRegion] = useState("");
-  const [country, setCountry] = useState("");
+  const [country, setCountry] = useState("United States");
   const [postalCode, setPostalCode] = useState("");
+
+  // Per-field validation errors for the seven required shipping fields. line2
+  // is optional and never validated. Each error is cleared as soon as the user
+  // types into the offending field.
+  const [fieldErrors, setFieldErrors] = useState<{
+    name?: boolean;
+    email?: boolean;
+    line1?: boolean;
+    city?: boolean;
+    region?: boolean;
+    country?: boolean;
+    postalCode?: boolean;
+  }>({});
+
+  const clearFieldError = (field: keyof typeof fieldErrors) => {
+    setFieldErrors((prev) => {
+      if (!prev[field]) return prev;
+      const next = { ...prev };
+      delete next[field];
+      return next;
+    });
+  };
 
   const { actor } = useActor(createActor);
   const createOrder = useCreateOrder();
@@ -503,6 +525,39 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
     e.preventDefault();
     setOrderError(null);
 
+    // Submit-time validation: every required field must be non-empty after
+    // trimming. line2 is optional and never validated. If any field is empty we
+    // do NOT create the order — instead we surface a 'Required' error beneath
+    // each offending field and scroll to / focus the first one.
+    const requiredFields: {
+      key: keyof typeof fieldErrors;
+      value: string;
+      id: string;
+    }[] = [
+      { key: "name", value: name, id: "checkout-name" },
+      { key: "email", value: email, id: "checkout-email" },
+      { key: "line1", value: line1, id: "checkout-line1" },
+      { key: "city", value: city, id: "checkout-city" },
+      { key: "region", value: region, id: "checkout-region" },
+      { key: "country", value: country, id: "checkout-country" },
+      { key: "postalCode", value: postalCode, id: "checkout-postal" },
+    ];
+    const emptyFields = requiredFields.filter((f) => f.value.trim() === "");
+    if (emptyFields.length > 0) {
+      const nextErrors: typeof fieldErrors = {};
+      for (const f of emptyFields) {
+        nextErrors[f.key] = true;
+      }
+      setFieldErrors(nextErrors);
+      const first = emptyFields[0];
+      const el = document.getElementById(first.id);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "center" });
+        el.focus({ preventScroll: true });
+      }
+      return;
+    }
+
     // Build the plaintext shipping payload (name, email, full address) and
     // IBE-encrypt it to EVERY admin principal client-side BEFORE any canister
     // call. The canister only ever sees the ciphertext blob plus the plaintext
@@ -711,15 +766,6 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
     }
   };
 
-  const shippingFormValid =
-    name.trim() !== "" &&
-    email.trim() !== "" &&
-    line1.trim() !== "" &&
-    city.trim() !== "" &&
-    region.trim() !== "" &&
-    country.trim() !== "" &&
-    postalCode.trim() !== "";
-
   const depositAddress = depositData ? depositAccountString(depositData) : "";
   const amountOwed = depositData
     ? formatTokenAmount(depositData.amountDue, depositData.decimals)
@@ -881,11 +927,23 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
                           id="checkout-name"
                           type="text"
                           value={name}
-                          onChange={(e) => setName(e.target.value)}
+                          onChange={(e) => {
+                            setName(e.target.value);
+                            clearFieldError("name");
+                          }}
+                          onBlur={(e) => setName(e.target.value)}
                           placeholder="Jane Doe"
                           className="field-input"
                           data-ocid="checkout.name_input"
                         />
+                        {fieldErrors.name && (
+                          <p
+                            className="mt-1.5 text-sm text-destructive"
+                            data-ocid="checkout.name_error"
+                          >
+                            Required
+                          </p>
+                        )}
                       </div>
                       <div>
                         <label
@@ -898,11 +956,23 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
                           id="checkout-email"
                           type="email"
                           value={email}
-                          onChange={(e) => setEmail(e.target.value)}
+                          onChange={(e) => {
+                            setEmail(e.target.value);
+                            clearFieldError("email");
+                          }}
+                          onBlur={(e) => setEmail(e.target.value)}
                           placeholder="jane@example.com"
                           className="field-input"
                           data-ocid="checkout.email_input"
                         />
+                        {fieldErrors.email && (
+                          <p
+                            className="mt-1.5 text-sm text-destructive"
+                            data-ocid="checkout.email_error"
+                          >
+                            Required
+                          </p>
+                        )}
                       </div>
                     </div>
 
@@ -940,11 +1010,23 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
                         id="checkout-line1"
                         type="text"
                         value={line1}
-                        onChange={(e) => setLine1(e.target.value)}
+                        onChange={(e) => {
+                          setLine1(e.target.value);
+                          clearFieldError("line1");
+                        }}
+                        onBlur={(e) => setLine1(e.target.value)}
                         placeholder="123 Neon Avenue"
                         className="field-input"
                         data-ocid="checkout.line1_input"
                       />
+                      {fieldErrors.line1 && (
+                        <p
+                          className="mt-1.5 text-sm text-destructive"
+                          data-ocid="checkout.line1_error"
+                        >
+                          Required
+                        </p>
+                      )}
                     </div>
 
                     <div>
@@ -962,6 +1044,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
                         type="text"
                         value={line2}
                         onChange={(e) => setLine2(e.target.value)}
+                        onBlur={(e) => setLine2(e.target.value)}
                         placeholder="Apt, suite, unit"
                         className="field-input"
                         data-ocid="checkout.line2_input"
@@ -980,11 +1063,23 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
                           id="checkout-city"
                           type="text"
                           value={city}
-                          onChange={(e) => setCity(e.target.value)}
-                          placeholder="Neo Tokyo"
+                          onChange={(e) => {
+                            setCity(e.target.value);
+                            clearFieldError("city");
+                          }}
+                          onBlur={(e) => setCity(e.target.value)}
+                          placeholder="Houston"
                           className="field-input"
                           data-ocid="checkout.city_input"
                         />
+                        {fieldErrors.city && (
+                          <p
+                            className="mt-1.5 text-sm text-destructive"
+                            data-ocid="checkout.city_error"
+                          >
+                            Required
+                          </p>
+                        )}
                       </div>
                       <div>
                         <label
@@ -997,11 +1092,23 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
                           id="checkout-region"
                           type="text"
                           value={region}
-                          onChange={(e) => setRegion(e.target.value)}
-                          placeholder="Kanto"
+                          onChange={(e) => {
+                            setRegion(e.target.value);
+                            clearFieldError("region");
+                          }}
+                          onBlur={(e) => setRegion(e.target.value)}
+                          placeholder="TX"
                           className="field-input"
                           data-ocid="checkout.region_input"
                         />
+                        {fieldErrors.region && (
+                          <p
+                            className="mt-1.5 text-sm text-destructive"
+                            data-ocid="checkout.region_error"
+                          >
+                            Required
+                          </p>
+                        )}
                       </div>
                     </div>
 
@@ -1017,11 +1124,24 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
                           id="checkout-country"
                           type="text"
                           value={country}
-                          onChange={(e) => setCountry(e.target.value)}
-                          placeholder="Japan"
-                          className="field-input"
+                          readOnly
+                          onChange={(e) => {
+                            setCountry(e.target.value);
+                            clearFieldError("country");
+                          }}
+                          onBlur={(e) => setCountry(e.target.value)}
+                          placeholder="United States"
+                          className="field-input opacity-60 cursor-not-allowed"
                           data-ocid="checkout.country_input"
                         />
+                        {fieldErrors.country && (
+                          <p
+                            className="mt-1.5 text-sm text-destructive"
+                            data-ocid="checkout.country_error"
+                          >
+                            Required
+                          </p>
+                        )}
                       </div>
                       <div>
                         <label
@@ -1034,11 +1154,23 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
                           id="checkout-postal"
                           type="text"
                           value={postalCode}
-                          onChange={(e) => setPostalCode(e.target.value)}
-                          placeholder="100-0001"
+                          onChange={(e) => {
+                            setPostalCode(e.target.value);
+                            clearFieldError("postalCode");
+                          }}
+                          onBlur={(e) => setPostalCode(e.target.value)}
+                          placeholder="77002"
                           className="field-input"
                           data-ocid="checkout.postal_input"
                         />
+                        {fieldErrors.postalCode && (
+                          <p
+                            className="mt-1.5 text-sm text-destructive"
+                            data-ocid="checkout.postal_error"
+                          >
+                            Required
+                          </p>
+                        )}
                       </div>
                     </div>
 
@@ -1054,7 +1186,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
                       </button>
                       <button
                         type="submit"
-                        disabled={!shippingFormValid || createOrder.isPending}
+                        disabled={createOrder.isPending}
                         data-ocid="checkout.continue_button"
                         className="btn px-8 py-4 text-base font-semibold disabled:cursor-not-allowed disabled:opacity-50"
                       >

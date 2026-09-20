@@ -82910,9 +82910,15 @@ const CheckoutPage = ({
       postal_code: postalCode
     };
     const serialized = serializeShipping(shippingPayload);
+    if (!actor) {
+      console.error("[checkout] Backend actor unavailable (ERR-CHK-003)");
+      setOrderError(
+        "The store connection is not ready yet. Please wait a moment and try again. (ERR-CHK-003)"
+      );
+      return;
+    }
     let encryptedShipping;
     try {
-      if (!actor) throw new Error("Backend is not ready");
       const adminPrincipals = await fetchAdminPrincipals(actor);
       if (adminPrincipals.length === 0) {
         console.warn(
@@ -82934,7 +82940,7 @@ const CheckoutPage = ({
         error
       );
       setOrderError(
-        "We could not secure your shipping details. Please try again. (ERR-CHK-001)"
+        `We could not secure your shipping details. Please try again. (ERR-CHK-001) [${error instanceof Error ? error.message : String(error)}]`
       );
       return;
     }

@@ -576,9 +576,16 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
     };
     const serialized = serializeShipping(shippingPayload);
 
+    if (!actor) {
+      console.error("[checkout] Backend actor unavailable (ERR-CHK-003)");
+      setOrderError(
+        "The store connection is not ready yet. Please wait a moment and try again. (ERR-CHK-003)",
+      );
+      return;
+    }
+
     let encryptedShipping: Uint8Array | undefined;
     try {
-      if (!actor) throw new Error("Backend is not ready");
       const adminPrincipals = await fetchAdminPrincipals(actor);
       // No encryption recipients configured — the store cannot receive
       // shipping details. Block checkout explicitly instead of failing with a
@@ -603,7 +610,9 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
         error,
       );
       setOrderError(
-        "We could not secure your shipping details. Please try again. (ERR-CHK-001)",
+        `We could not secure your shipping details. Please try again. (ERR-CHK-001) [${
+          error instanceof Error ? error.message : String(error)
+        }]`,
       );
       return;
     }

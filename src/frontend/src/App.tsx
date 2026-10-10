@@ -4,6 +4,7 @@ import { ShieldAlert } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import AdminDashboard from "./components/AdminDashboard";
 import BubbleBackground from "./components/BubbleBackground";
+import LegalDisclaimer from "./components/LegalDisclaimer";
 import MainContent from "./components/MainContent";
 import MarsLiveArtistPage from "./components/MarsLiveArtistPage";
 import MetaTheatrePage from "./components/MetaTheatrePage";
@@ -125,13 +126,14 @@ function App() {
               <PurchaseNAK />
               <ReserveTreasury />
 
-              {/* Institutional footer — shell mark + copyright left, risk
-                  disclaimer right. */}
+              {/* Institutional footer — legal disclaimer, then shell mark +
+                  copyright. */}
               <footer
                 id="company"
                 className="border-t border-border"
                 style={{ borderColor: "var(--border)" }}
               >
+                <LegalDisclaimer />
                 <div className="max-w-7xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
                   <div className="flex items-center gap-3">
                     <img
@@ -143,16 +145,9 @@ function App() {
                       className="text-sm"
                       style={{ color: "var(--muted-foreground)" }}
                     >
-                      © 2026 New Age Kapital
+                      © 2026 NAK New Age Kapital. All rights reserved.
                     </span>
                   </div>
-                  <p
-                    className="text-xs text-right"
-                    style={{ color: "var(--muted-foreground)" }}
-                  >
-                    Digital assets carry risk. Nothing here constitutes
-                    investment advice.
-                  </p>
                 </div>
               </footer>
             </>

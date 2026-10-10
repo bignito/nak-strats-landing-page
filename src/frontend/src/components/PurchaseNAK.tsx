@@ -32,11 +32,11 @@ const PurchaseNAK: React.FC = () => {
   }, []);
 
   return (
-    <section id="trade" className="px-6 py-20">
+    <section id="trade" className="px-4 sm:px-6 py-12 min-[860px]:py-20">
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 min-[860px]:grid-cols-2 gap-12 lg:gap-16 items-start">
+        <div className="grid grid-cols-1 min-[860px]:grid-cols-2 gap-8 min-[860px]:gap-12 lg:gap-16 items-start">
           {/* Left column — copy, spec table and ICPSwap link */}
-          <div className="max-w-xl min-w-0">
+          <div className="max-w-xl min-w-0 order-2 min-[860px]:order-1">
             <p className="section-label mb-4">Acquire</p>
             <h2 className="mb-5">Cross-chain entry via Houdiniswap</h2>
             <p className="text-base leading-relaxed text-muted-foreground mb-8">
@@ -71,7 +71,7 @@ const PurchaseNAK: React.FC = () => {
           </div>
 
           {/* Right column — embedded NAK Swap service */}
-          <div className="surface hairline p-4 sm:p-6 overflow-hidden max-w-full min-w-0">
+          <div className="surface hairline p-3 sm:p-6 overflow-hidden max-w-full min-w-0 order-1 min-[860px]:order-2">
             <iframe
               src="https://swap.naktoken.lol/?embed=1"
               title="NAK Swap"

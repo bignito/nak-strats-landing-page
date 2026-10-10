@@ -4,27 +4,16 @@ import { ShieldAlert } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import AdminDashboard from "./components/AdminDashboard";
 import BubbleBackground from "./components/BubbleBackground";
-import CancelledPage from "./components/CancelledPage";
-import CartPage from "./components/CartPage";
-import CheckoutPage from "./components/CheckoutPage";
 import MainContent from "./components/MainContent";
 import MarsLiveArtistPage from "./components/MarsLiveArtistPage";
 import MetaTheatrePage from "./components/MetaTheatrePage";
-import MyOrdersPage from "./components/MyOrdersPage";
 import NAKFeaturedArtist from "./components/NAKFeaturedArtist";
 import Navigation from "./components/Navigation";
-import OrderLookupPage from "./components/OrderLookupPage";
-import ProductPage from "./components/ProductPage";
 import PurchaseNAK from "./components/PurchaseNAK";
 import RecoveryPage from "./components/RecoveryPage";
 import ReserveTreasury from "./components/ReserveTreasury";
-import ResumeBanner from "./components/ResumeBanner";
-import ShopBanner from "./components/ShopBanner";
-import ShopPage from "./components/ShopPage";
-import SuccessPage from "./components/SuccessPage";
 import TokenInfo from "./components/TokenInfo";
 import UnsubscribePage from "./components/UnsubscribePage";
-import { useActiveOrderRef } from "./hooks/useActiveOrderRef";
 import { CartProvider } from "./hooks/useCart";
 import { useIsAdmin } from "./hooks/useQueries";
 
@@ -38,20 +27,11 @@ function App() {
     | "main"
     | "artist"
     | "metatheatre"
-    | "shop"
-    | "product"
-    | "cart"
-    | "checkout"
-    | "success"
-    | "cancelled"
-    | "orderlookup"
-    | "myorders"
     | "admin"
     | "adminrecovery"
     | "unsubscribe"
   >("main");
 
-  const { setActiveOrderRef } = useActiveOrderRef();
   const { data: isAdmin } = useIsAdmin();
 
   const { identity } = useInternetIdentity();
@@ -70,18 +50,6 @@ function App() {
     }
     setLastIdentityKey(identityKey);
   }, [identity, lastIdentityKey, queryClient]);
-
-  const [selectedProductSlugOrId, setSelectedProductSlugOrId] = useState<
-    string | null
-  >(null);
-
-  const [successOrderReference, setSuccessOrderReference] = useState<
-    string | null
-  >(null);
-
-  const [cancelledOrderReference, setCancelledOrderReference] = useState<
-    string | null
-  >(null);
 
   // Admin is intentionally kept out of both navs (per requirement) but must
   // stay reachable so the user can sign in and claim initial admin. Route to
@@ -102,78 +70,12 @@ function App() {
     return () => window.removeEventListener("hashchange", handleHash);
   }, []);
 
-  // Card checkout redirects back from the payment service with an order_id
-  // query param (plus a status marker). Detect it on load and route to the
-  // success or cancelled page with the reference, then clean the URL so the
-  // query param does not linger. The crypto flow routes via state and is
-  // unaffected.
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const orderId = params.get("order_id");
-    if (!orderId) return;
-    if (params.get("status") === "cancelled") {
-      setCancelledOrderReference(orderId);
-      setCurrentPage("cancelled");
-    } else {
-      setSuccessOrderReference(orderId);
-      setCurrentPage("success");
-    }
-    const url = new URL(window.location.href);
-    url.search = "";
-    window.history.replaceState({}, "", url.toString());
-  }, []);
-
-  // Checkout resume: /checkout?resume=REF restores a returning customer's
-  // in-progress deposit. Store REF as the active order ref (so CheckoutPage can
-  // restore the same address, amount, and remaining time) and route to checkout,
-  // then clean the query param so it does not linger.
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const resumeRef = params.get("resume");
-    if (!resumeRef) return;
-    setActiveOrderRef(resumeRef);
-    setCurrentPage("checkout");
-    const url = new URL(window.location.href);
-    url.search = "";
-    window.history.replaceState({}, "", url.toString());
-  }, [setActiveOrderRef]);
-
   const navigateToArtistPage = () => {
     setCurrentPage("artist");
   };
 
   const navigateToMetaTheatrePage = () => {
     setCurrentPage("metatheatre");
-  };
-
-  const navigateToShopPage = () => {
-    setCurrentPage("shop");
-  };
-
-  const navigateToProductPage = (slugOrId: string) => {
-    setSelectedProductSlugOrId(slugOrId);
-    setCurrentPage("product");
-  };
-
-  const navigateToCartPage = () => {
-    setCurrentPage("cart");
-  };
-
-  const navigateToCheckoutPage = () => {
-    setCurrentPage("checkout");
-  };
-
-  const navigateToSuccessPage = (orderReference: string) => {
-    setSuccessOrderReference(orderReference);
-    setCurrentPage("success");
-  };
-
-  const navigateToOrderLookupPage = () => {
-    setCurrentPage("orderlookup");
-  };
-
-  const navigateToMyOrdersPage = () => {
-    setCurrentPage("myorders");
   };
 
   const navigateToMainPage = () => {
@@ -193,30 +95,11 @@ function App() {
         {EMOJI_RAIN_PAGES.includes(currentPage) && <BubbleBackground />}
         <Navigation
           currentPage={
-            currentPage as
-              | "main"
-              | "artist"
-              | "metatheatre"
-              | "shop"
-              | "cart"
-              | "checkout"
-              | "success"
-              | "orderlookup"
-              | "myorders"
-              | "admin"
+            currentPage as "main" | "artist" | "metatheatre" | "admin"
           }
           onNavigateToMain={navigateToMainPage}
           onNavigateToMetaTheatre={navigateToMetaTheatrePage}
-          onNavigateToShop={navigateToShopPage}
-          onNavigateToCart={navigateToCartPage}
-          onNavigateToOrderLookup={navigateToOrderLookupPage}
-          onNavigateToMyOrders={navigateToMyOrdersPage}
         />
-
-        {/* Resume-order banner for a returning customer with an unexpired
-            unpaid order. It reads the stored active order ref and calls
-            getResumeInfo itself. */}
-        <ResumeBanner onResume={navigateToCheckoutPage} />
 
         {/* Admin-only Payment Recovery link, shown only to admins. */}
         {isAdmin && (
@@ -240,7 +123,6 @@ function App() {
               <TokenInfo />
               <NAKFeaturedArtist onNavigateToArtist={navigateToArtistPage} />
               <PurchaseNAK />
-              <ShopBanner onNavigateToShop={navigateToShopPage} />
               <ReserveTreasury />
 
               {/* Institutional footer — shell mark + copyright left, risk
@@ -276,46 +158,6 @@ function App() {
             </>
           ) : currentPage === "artist" ? (
             <MarsLiveArtistPage onNavigateToMain={navigateToMainPage} />
-          ) : currentPage === "shop" ? (
-            <ShopPage
-              onNavigateToMain={navigateToMainPage}
-              onNavigateToProduct={navigateToProductPage}
-            />
-          ) : currentPage === "product" ? (
-            <ProductPage
-              slugOrId={selectedProductSlugOrId ?? ""}
-              onNavigateToMain={navigateToMainPage}
-              onNavigateToShop={navigateToShopPage}
-            />
-          ) : currentPage === "cart" ? (
-            <CartPage
-              onNavigateToMain={navigateToMainPage}
-              onNavigateToCheckout={navigateToCheckoutPage}
-              onNavigateToShop={navigateToShopPage}
-            />
-          ) : currentPage === "checkout" ? (
-            <CheckoutPage
-              onNavigateToMain={navigateToMainPage}
-              onNavigateToCart={navigateToCartPage}
-              onNavigateToSuccess={navigateToSuccessPage}
-            />
-          ) : currentPage === "success" ? (
-            <SuccessPage
-              orderReference={successOrderReference ?? ""}
-              onNavigateToMain={navigateToMainPage}
-              onNavigateToShop={navigateToShopPage}
-            />
-          ) : currentPage === "cancelled" ? (
-            <CancelledPage
-              orderReference={cancelledOrderReference ?? ""}
-              onNavigateToMain={navigateToMainPage}
-              onNavigateToShop={navigateToShopPage}
-              onNavigateToCart={navigateToCartPage}
-            />
-          ) : currentPage === "orderlookup" ? (
-            <OrderLookupPage onNavigateToMain={navigateToMainPage} />
-          ) : currentPage === "myorders" ? (
-            <MyOrdersPage onNavigateToMain={navigateToMainPage} />
           ) : currentPage === "admin" ? (
             <AdminDashboard onNavigateToMain={navigateToMainPage} />
           ) : currentPage === "adminrecovery" ? (

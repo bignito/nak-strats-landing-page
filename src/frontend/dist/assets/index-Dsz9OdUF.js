@@ -17,7 +17,7 @@ var __privateWrapper = (obj, member, setter, getter) => ({
     return __privateGet(obj, member, getter);
   }
 });
-var _disableTimeVerification, _agent, _dbName, _storeName, _dbPromise, _IndexedDBExpirableStore_instances, getDb_fn, openDb_fn, openRequest_fn, prune_fn, _entries, _InMemoryExpirableStore_instances, prune_fn2, _rawKey, _derKey, _a, _currentInterval, _randomizationFactor, _multiplier, _maxInterval, _startTime, _maxElapsedTime, _maxIterations, _date, _count, _rootKeyPromise, _shouldFetchRootKey, _timeDiffMsecs, _hasSyncedTime, _syncTimePromise, _shouldSyncTime, _identity, _fetch, _fetchOptions, _callOptions, _credentials, _retryTimes, _backoffStrategy, _maxIngressExpiryInMinutes, _subnetNodeKeyExpirableStore, _HttpAgent_instances, maxIngressExpiryInMs_get, _queryPipeline, _updatePipeline, _subnetKeysFetching, _verifyQuerySignatures, handleV4SyncResponse_fn, handleV2Rejection_fn, requestAndRetryQuery_fn, requestAndRetry_fn, _verifyQueryResponse, readStateInner_fn, setTimeDiffMsecs_fn, asyncGuard_fn, rootKeyGuard_fn, syncTimeGuard_fn, doFetchSubnetKeys_fn, _focused, _cleanup, _setup, _b, _provider, _providerCalled, _c, _online, _cleanup2, _setup2, _d, _gcTimeout, _e2, _initialState, _revertState, _cache, _client, _retryer, _defaultOptions, _abortSignalConsumed, _Query_instances, isInitialPausedFetch_fn, dispatch_fn, _f, _client2, _currentQuery, _currentQueryInitialState, _currentResult, _currentResultState, _currentResultOptions, _currentThenable, _selectError, _selectFn, _selectResult, _lastQueryWithDefinedData, _staleTimeoutId, _refetchIntervalId, _currentRefetchInterval, _trackedProps, _QueryObserver_instances, executeFetch_fn, updateStaleTimeout_fn, computeRefetchInterval_fn, updateRefetchInterval_fn, updateTimers_fn, clearStaleTimeout_fn, clearRefetchInterval_fn, updateQuery_fn, notify_fn, _g, _client3, _observers, _mutationCache, _retryer2, _Mutation_instances, dispatch_fn2, _h, _mutations, _scopes, _mutationId, _i, _client4, _currentResult2, _currentMutation, _mutateOptions, _MutationObserver_instances, updateResult_fn, notify_fn2, _j, _client5, _result, _queries, _options, _observers2, _combinedResult, _lastCombine, _lastResult, _lastQueryHashes, _observerMatches, _QueriesObserver_instances, trackResult_fn, combineResult_fn, findMatchingObservers_fn, onUpdate_fn, notify_fn3, _k, _queries2, _l, _queryCache, _mutationCache2, _defaultOptions2, _queryDefaults, _mutationDefaults, _mountCount, _unsubscribeFocus, _unsubscribeOnline, _m, _rawKey2, _derKey2, _publicKey, _privateKey, _inner, _delegation, _inner2, _attributes, _signer, _options2, _channel, _establishingChannel, _scheduledChannelClosure, _pendingRequestCount, _Signer_instances, rpc_fn, applyTransforms_fn, _options3, _status, _HeartbeatClient_instances, establish_fn, maintain_fn, receiveStatusResponse_fn, sendStatusRequest_fn, _options4, _closeListeners, _options5, _closed, _pendingQueue, _instance, _callbacks, _idleTimeout, _timeoutID, _resetTimer, _options6, _identity2, _chain, _storage, _signer2, _options7, _initPromise, _AuthClient_instances, resolveNonce_fn, init_fn, hydrate_fn, registerDefaultIdleCallback_fn, _t2, _t3, _t4, _t5, _e3, _n2, _r2;
+var _disableTimeVerification, _agent, _dbName, _storeName, _dbPromise, _IndexedDBExpirableStore_instances, getDb_fn, openDb_fn, openRequest_fn, prune_fn, _entries, _InMemoryExpirableStore_instances, prune_fn2, _rawKey, _derKey, _a, _currentInterval, _randomizationFactor, _multiplier, _maxInterval, _startTime, _maxElapsedTime, _maxIterations, _date, _count, _rootKeyPromise, _shouldFetchRootKey, _timeDiffMsecs, _hasSyncedTime, _syncTimePromise, _shouldSyncTime, _identity, _fetch, _fetchOptions, _callOptions, _credentials, _retryTimes, _backoffStrategy, _maxIngressExpiryInMinutes, _subnetNodeKeyExpirableStore, _HttpAgent_instances, maxIngressExpiryInMs_get, _queryPipeline, _updatePipeline, _subnetKeysFetching, _verifyQuerySignatures, handleV4SyncResponse_fn, handleV2Rejection_fn, requestAndRetryQuery_fn, requestAndRetry_fn, _verifyQueryResponse, readStateInner_fn, setTimeDiffMsecs_fn, asyncGuard_fn, rootKeyGuard_fn, syncTimeGuard_fn, doFetchSubnetKeys_fn, _focused, _cleanup, _setup, _b, _provider, _providerCalled, _c, _online, _cleanup2, _setup2, _d, _gcTimeout, _e, _initialState, _revertState, _cache, _client, _retryer, _defaultOptions, _abortSignalConsumed, _Query_instances, isInitialPausedFetch_fn, dispatch_fn, _f, _client2, _currentQuery, _currentQueryInitialState, _currentResult, _currentResultState, _currentResultOptions, _currentThenable, _selectError, _selectFn, _selectResult, _lastQueryWithDefinedData, _staleTimeoutId, _refetchIntervalId, _currentRefetchInterval, _trackedProps, _QueryObserver_instances, executeFetch_fn, updateStaleTimeout_fn, computeRefetchInterval_fn, updateRefetchInterval_fn, updateTimers_fn, clearStaleTimeout_fn, clearRefetchInterval_fn, updateQuery_fn, notify_fn, _g, _client3, _observers, _mutationCache, _retryer2, _Mutation_instances, dispatch_fn2, _h, _mutations, _scopes, _mutationId, _i, _client4, _currentResult2, _currentMutation, _mutateOptions, _MutationObserver_instances, updateResult_fn, notify_fn2, _j, _client5, _result, _queries, _options, _observers2, _combinedResult, _lastCombine, _lastResult, _lastQueryHashes, _observerMatches, _QueriesObserver_instances, trackResult_fn, combineResult_fn, findMatchingObservers_fn, onUpdate_fn, notify_fn3, _k, _queries2, _l, _queryCache, _mutationCache2, _defaultOptions2, _queryDefaults, _mutationDefaults, _mountCount, _unsubscribeFocus, _unsubscribeOnline, _m, _rawKey2, _derKey2, _publicKey, _privateKey, _inner, _delegation, _inner2, _attributes, _signer, _options2, _channel, _establishingChannel, _scheduledChannelClosure, _pendingRequestCount, _Signer_instances, rpc_fn, applyTransforms_fn, _options3, _status, _HeartbeatClient_instances, establish_fn, maintain_fn, receiveStatusResponse_fn, sendStatusRequest_fn, _options4, _closeListeners, _options5, _closed, _pendingQueue, _instance, _callbacks, _idleTimeout, _timeoutID, _resetTimer, _options6, _identity2, _chain, _storage, _signer2, _options7, _initPromise, _AuthClient_instances, resolveNonce_fn, init_fn, hydrate_fn, registerDefaultIdleCallback_fn;
 function _mergeNamespaces(n2, m2) {
   for (var i = 0; i < m2.length; i++) {
     const e3 = m2[i];
@@ -784,17 +784,17 @@ const SHA512_IV = /* @__PURE__ */ Uint32Array.from([
 ]);
 const U32_MASK64 = /* @__PURE__ */ BigInt(2 ** 32 - 1);
 const _32n = /* @__PURE__ */ BigInt(32);
-function fromBig(n2, le2 = false) {
-  if (le2)
+function fromBig(n2, le = false) {
+  if (le)
     return { h: Number(n2 & U32_MASK64), l: Number(n2 >> _32n & U32_MASK64) };
   return { h: Number(n2 >> _32n & U32_MASK64) | 0, l: Number(n2 & U32_MASK64) | 0 };
 }
-function split(lst, le2 = false) {
+function split(lst, le = false) {
   const len = lst.length;
   let Ah = new Uint32Array(len);
   let Al = new Uint32Array(len);
   for (let i = 0; i < len; i++) {
-    const { h: h2, l: l2 } = fromBig(lst[i], le2);
+    const { h: h2, l: l2 } = fromBig(lst[i], le);
     [Ah[i], Al[i]] = [h2, l2];
   }
   return [Ah, Al];
@@ -895,15 +895,15 @@ class SHA256 extends HashMD {
     this.H = SHA256_IV[7] | 0;
   }
   get() {
-    const { A: A2, B: B2, C: C2, D: D2, E: E2, F: F2, G: G2, H: H2 } = this;
-    return [A2, B2, C2, D2, E2, F2, G2, H2];
+    const { A, B: B2, C: C2, D, E: E2, F: F2, G: G2, H: H2 } = this;
+    return [A, B2, C2, D, E2, F2, G2, H2];
   }
   // prettier-ignore
-  set(A2, B2, C2, D2, E2, F2, G2, H2) {
-    this.A = A2 | 0;
+  set(A, B2, C2, D, E2, F2, G2, H2) {
+    this.A = A | 0;
     this.B = B2 | 0;
     this.C = C2 | 0;
-    this.D = D2 | 0;
+    this.D = D | 0;
     this.E = E2 | 0;
     this.F = F2 | 0;
     this.G = G2 | 0;
@@ -919,30 +919,30 @@ class SHA256 extends HashMD {
       const s1 = rotr(W2, 17) ^ rotr(W2, 19) ^ W2 >>> 10;
       SHA256_W[i] = s1 + SHA256_W[i - 7] + s0 + SHA256_W[i - 16] | 0;
     }
-    let { A: A2, B: B2, C: C2, D: D2, E: E2, F: F2, G: G2, H: H2 } = this;
+    let { A, B: B2, C: C2, D, E: E2, F: F2, G: G2, H: H2 } = this;
     for (let i = 0; i < 64; i++) {
       const sigma1 = rotr(E2, 6) ^ rotr(E2, 11) ^ rotr(E2, 25);
       const T1 = H2 + sigma1 + Chi(E2, F2, G2) + SHA256_K[i] + SHA256_W[i] | 0;
-      const sigma0 = rotr(A2, 2) ^ rotr(A2, 13) ^ rotr(A2, 22);
-      const T2 = sigma0 + Maj(A2, B2, C2) | 0;
+      const sigma0 = rotr(A, 2) ^ rotr(A, 13) ^ rotr(A, 22);
+      const T2 = sigma0 + Maj(A, B2, C2) | 0;
       H2 = G2;
       G2 = F2;
       F2 = E2;
-      E2 = D2 + T1 | 0;
-      D2 = C2;
+      E2 = D + T1 | 0;
+      D = C2;
       C2 = B2;
-      B2 = A2;
-      A2 = T1 + T2 | 0;
+      B2 = A;
+      A = T1 + T2 | 0;
     }
-    A2 = A2 + this.A | 0;
+    A = A + this.A | 0;
     B2 = B2 + this.B | 0;
     C2 = C2 + this.C | 0;
-    D2 = D2 + this.D | 0;
+    D = D + this.D | 0;
     E2 = E2 + this.E | 0;
     F2 = F2 + this.F | 0;
     G2 = G2 + this.G | 0;
     H2 = H2 + this.H | 0;
-    this.set(A2, B2, C2, D2, E2, F2, G2, H2);
+    this.set(A, B2, C2, D, E2, F2, G2, H2);
   }
   roundClean() {
     clean(SHA256_W);
@@ -2324,8 +2324,8 @@ var IDLTypeIds;
 const magicNumber = "DIDL";
 const magicNumberBytes = new TextEncoder().encode(magicNumber);
 const toReadableString_max = 400;
-function zipWith(xs2, ys2, f2) {
-  return xs2.map((x3, i) => f2(x3, ys2[i]));
+function zipWith(xs, ys, f2) {
+  return xs.map((x3, i) => f2(x3, ys[i]));
 }
 class TypeTable {
   constructor() {
@@ -2385,7 +2385,7 @@ class TypeTable {
   }
 }
 class Visitor {
-  visitType(_t6, _data) {
+  visitType(_t, _data) {
     throw new Error("Not implemented");
   }
   visitPrimitive(t2, data) {
@@ -2446,7 +2446,7 @@ class Visitor {
   visitVariant(t2, _fields, data) {
     return this.visitConstruct(t2, data);
   }
-  visitRec(_t6, ty, data) {
+  visitRec(_t, ty, data) {
     return this.visitConstruct(ty, data);
   }
   visitFunc(t2, data) {
@@ -2555,7 +2555,7 @@ class UnknownClass extends Type {
   static [Symbol.hasInstance](instance) {
     return instance.typeName === IdlTypeName.UnknownClass;
   }
-  checkType(_t6) {
+  checkType(_t) {
     throw new Error("Method not implemented for unknown.");
   }
   accept(v2, d2) {
@@ -4444,9 +4444,9 @@ class w extends Error {
     super(e3), this.name = "DecodingError";
   }
 }
-const L = 55799, R$2 = /* @__PURE__ */ Symbol("CBOR_STOP_CODE");
-var u$2 = /* @__PURE__ */ ((t2) => (t2[t2.False = 20] = "False", t2[t2.True = 21] = "True", t2[t2.Null = 22] = "Null", t2[t2.Undefined = 23] = "Undefined", t2[t2.Break = 31] = "Break", t2))(u$2 || {}), c$2 = /* @__PURE__ */ ((t2) => (t2[t2.UnsignedInteger = 0] = "UnsignedInteger", t2[t2.NegativeInteger = 1] = "NegativeInteger", t2[t2.ByteString = 2] = "ByteString", t2[t2.TextString = 3] = "TextString", t2[t2.Array = 4] = "Array", t2[t2.Map = 5] = "Map", t2[t2.Tag = 6] = "Tag", t2[t2.Simple = 7] = "Simple", t2))(c$2 || {});
-const Y = 23, G = 255, P$2 = 65535, H = 4294967295, W$1 = BigInt("0xffffffffffffffff");
+const L = 55799, R = /* @__PURE__ */ Symbol("CBOR_STOP_CODE");
+var u$1 = /* @__PURE__ */ ((t2) => (t2[t2.False = 20] = "False", t2[t2.True = 21] = "True", t2[t2.Null = 22] = "Null", t2[t2.Undefined = 23] = "Undefined", t2[t2.Break = 31] = "Break", t2))(u$1 || {}), c$2 = /* @__PURE__ */ ((t2) => (t2[t2.UnsignedInteger = 0] = "UnsignedInteger", t2[t2.NegativeInteger = 1] = "NegativeInteger", t2[t2.ByteString = 2] = "ByteString", t2[t2.TextString = 3] = "TextString", t2[t2.Array = 4] = "Array", t2[t2.Map = 5] = "Map", t2[t2.Tag = 6] = "Tag", t2[t2.Simple = 7] = "Simple", t2))(c$2 || {});
+const Y = 23, G = 255, P$1 = 65535, H = 4294967295, W = BigInt("0xffffffffffffffff");
 var f$1 = /* @__PURE__ */ ((t2) => (t2[t2.Value = 23] = "Value", t2[t2.OneByte = 24] = "OneByte", t2[t2.TwoBytes = 25] = "TwoBytes", t2[t2.FourBytes = 26] = "FourBytes", t2[t2.EightBytes = 27] = "EightBytes", t2[t2.Indefinite = 31] = "Indefinite", t2))(f$1 || {});
 const l$1 = false;
 function K(t2) {
@@ -4457,19 +4457,19 @@ function Z(t2, e3) {
   return n2.set(t2), n2;
 }
 const q$1 = new TextDecoder();
-function J$1(t2) {
+function J(t2) {
   return (t2 & 224) >> 5;
 }
-function Q$1(t2) {
+function Q(t2) {
   return t2 & 31;
 }
-let S = new Uint8Array(), U$1, d$1 = 0;
-function ut$1(t2, e3) {
+let S = new Uint8Array(), U, d$1 = 0;
+function ut(t2, e3) {
   S = t2, d$1 = 0;
-  const n2 = B$1();
+  const n2 = B();
   return (e3 == null ? void 0 : e3(n2)) ?? n2;
 }
-function B$1(t2) {
+function B(t2) {
   const [e3, n2] = N();
   switch (e3) {
     case c$2.UnsignedInteger:
@@ -4477,17 +4477,17 @@ function B$1(t2) {
     case c$2.NegativeInteger:
       return M(n2);
     case c$2.ByteString:
-      return $$1(n2);
+      return $(n2);
     case c$2.TextString:
       return F(n2);
     case c$2.Array:
       return p$1(n2);
     case c$2.Map:
-      return j$1(n2);
+      return j(n2);
     case c$2.Tag:
       return v$1(n2);
     case c$2.Simple:
-      return b$2(n2);
+      return b$1(n2);
   }
   throw new w(`Unsupported major type: ${e3}`);
 }
@@ -4495,71 +4495,71 @@ function N() {
   const t2 = S.at(d$1);
   if (K(t2))
     throw new w("Provided CBOR data is empty");
-  const e3 = J$1(t2), n2 = Q$1(t2);
+  const e3 = J(t2), n2 = Q(t2);
   return d$1++, [e3, n2];
 }
 function p$1(t2, e3) {
   const n2 = h$1(t2);
   if (n2 === 1 / 0) {
     const o = [];
-    let i = B$1();
-    for (; i !== R$2; )
-      o.push(i), i = B$1();
+    let i = B();
+    for (; i !== R; )
+      o.push(i), i = B();
     return o;
   }
   const s2 = new Array(n2);
   for (let o = 0; o < n2; o++) {
-    const i = B$1();
+    const i = B();
     s2[o] = i;
   }
   return s2;
 }
-function b$2(t2) {
+function b$1(t2) {
   switch (t2) {
-    case u$2.False:
+    case u$1.False:
       return false;
-    case u$2.True:
+    case u$1.True:
       return true;
-    case u$2.Null:
+    case u$1.Null:
       return null;
-    case u$2.Undefined:
+    case u$1.Undefined:
       return;
-    case u$2.Break:
-      return R$2;
+    case u$1.Break:
+      return R;
   }
   throw new w(`Unrecognized simple type: ${t2.toString(2)}`);
 }
-function j$1(t2, e3) {
+function j(t2, e3) {
   const n2 = h$1(t2), s2 = {};
   if (n2 === 1 / 0) {
     let [o, i] = N();
-    for (; o !== c$2.Simple && i !== u$2.Break; ) {
-      const A2 = F(i), I = B$1();
-      s2[A2] = I, [o, i] = N();
+    for (; o !== c$2.Simple && i !== u$1.Break; ) {
+      const A = F(i), I = B();
+      s2[A] = I, [o, i] = N();
     }
     return s2;
   }
   for (let o = 0; o < n2; o++) {
-    const [i, A2] = N();
+    const [i, A] = N();
     if (i !== c$2.TextString)
       throw new w("Map keys must be text strings");
-    const I = F(A2), D2 = B$1();
-    s2[I] = D2;
+    const I = F(A), D = B();
+    s2[I] = D;
   }
   return s2;
 }
 function h$1(t2) {
   if (t2 <= f$1.Value)
     return t2;
-  switch (U$1 = new DataView(S.buffer, S.byteOffset + d$1), t2) {
+  switch (U = new DataView(S.buffer, S.byteOffset + d$1), t2) {
     case f$1.OneByte:
-      return d$1++, U$1.getUint8(0);
+      return d$1++, U.getUint8(0);
     case f$1.TwoBytes:
-      return d$1 += 2, U$1.getUint16(0, l$1);
+      return d$1 += 2, U.getUint16(0, l$1);
     case f$1.FourBytes:
-      return d$1 += 4, U$1.getUint32(0, l$1);
+      return d$1 += 4, U.getUint32(0, l$1);
     case f$1.EightBytes:
-      return d$1 += 8, U$1.getBigUint64(0, l$1);
+      return d$1 += 8, U.getBigUint64(0, l$1);
     case f$1.Indefinite:
       return 1 / 0;
     default:
@@ -4570,7 +4570,7 @@ function M(t2) {
   const e3 = h$1(t2);
   return typeof e3 == "number" ? -1 - e3 : -1n - e3;
 }
-function $$1(t2) {
+function $(t2) {
   const e3 = h$1(t2);
   if (e3 > Number.MAX_SAFE_INTEGER)
     throw new w("Byte length is too large");
@@ -4578,13 +4578,13 @@ function $$1(t2) {
   return d$1 += n2, S.slice(d$1 - n2, d$1);
 }
 function F(t2) {
-  const e3 = $$1(t2);
+  const e3 = $(t2);
   return q$1.decode(e3);
 }
 function v$1(t2, e3) {
   const n2 = h$1(t2);
   if (n2 === L)
-    return B$1();
+    return B();
   throw new w(`Unsupported tag: ${n2}.`);
 }
 let x$1 = class x extends Error {
@@ -4592,25 +4592,25 @@ let x$1 = class x extends Error {
     super(e3), this.name = "SerializationError";
   }
 };
-const C$1 = 2 * 1024, V$1 = 100, tt = new TextEncoder();
+const C = 2 * 1024, V = 100, tt = new TextEncoder();
 function y$1(t2) {
   return t2 << 5;
 }
-let a$1 = new Uint8Array(C$1), g$2 = new DataView(a$1.buffer), r$1 = 0, O = [];
-function gt$1(t2, e3) {
+let a$1 = new Uint8Array(C), g$1 = new DataView(a$1.buffer), r$1 = 0, O = [];
+function gt(t2, e3) {
   r$1 = 0;
   const n2 = (e3 == null ? void 0 : e3(t2)) ?? t2;
-  return ft$1(L, n2, e3), a$1.slice(0, r$1);
+  return ft(L, n2, e3), a$1.slice(0, r$1);
 }
-function k$3(t2) {
+function k$2(t2) {
   let e3 = a$1.length * 2;
   for (; e3 < t2; )
     e3 *= 2;
-  a$1 = Z(a$1, e3), g$2 = new DataView(a$1.buffer);
+  a$1 = Z(a$1, e3), g$1 = new DataView(a$1.buffer);
 }
 function _(t2, e3) {
   if (t2 === false || t2 === true || t2 === null || t2 === void 0) {
-    rt$1(t2);
+    rt(t2);
     return;
   }
   if (typeof t2 == "number" || typeof t2 == "bigint") {
@@ -4618,7 +4618,7 @@ function _(t2, e3) {
     return;
   }
   if (typeof t2 == "string") {
-    z$2(t2);
+    z(t2);
     return;
   }
   if (t2 instanceof Uint8Array) {
@@ -4630,79 +4630,79 @@ function _(t2, e3) {
     return;
   }
   if (Array.isArray(t2)) {
-    et$1(t2, e3);
+    et(t2, e3);
     return;
   }
   if (typeof t2 == "object") {
-    nt$1(t2, e3);
+    nt(t2, e3);
     return;
   }
   throw new x$1(`Unsupported type: ${typeof t2}`);
 }
-function et$1(t2, e3) {
+function et(t2, e3) {
   E(c$2.Array, t2.length), t2.forEach((n2, s2) => {
     _((e3 == null ? void 0 : e3(n2, s2.toString())) ?? n2, e3);
   });
 }
-function nt$1(t2, e3) {
+function nt(t2, e3) {
   O = Object.entries(t2), E(c$2.Map, O.length), O.forEach(([n2, s2]) => {
-    z$2(n2), _((e3 == null ? void 0 : e3(s2, n2)) ?? s2, e3);
+    z(n2), _((e3 == null ? void 0 : e3(s2, n2)) ?? s2, e3);
   });
 }
 function E(t2, e3) {
-  if (r$1 > a$1.length - V$1 && k$3(r$1 + V$1), e3 <= Y) {
-    g$2.setUint8(
+  if (r$1 > a$1.length - V && k$2(r$1 + V), e3 <= Y) {
+    g$1.setUint8(
       r$1++,
       y$1(t2) | Number(e3)
     );
     return;
   }
   if (e3 <= G) {
-    g$2.setUint8(
+    g$1.setUint8(
       r$1++,
       y$1(t2) | f$1.OneByte
-    ), g$2.setUint8(r$1, Number(e3)), r$1 += 1;
+    ), g$1.setUint8(r$1, Number(e3)), r$1 += 1;
     return;
   }
-  if (e3 <= P$2) {
-    g$2.setUint8(
+  if (e3 <= P$1) {
+    g$1.setUint8(
       r$1++,
       y$1(t2) | f$1.TwoBytes
-    ), g$2.setUint16(r$1, Number(e3), l$1), r$1 += 2;
+    ), g$1.setUint16(r$1, Number(e3), l$1), r$1 += 2;
     return;
   }
   if (e3 <= H) {
-    g$2.setUint8(
+    g$1.setUint8(
       r$1++,
       y$1(t2) | f$1.FourBytes
-    ), g$2.setUint32(r$1, Number(e3), l$1), r$1 += 4;
+    ), g$1.setUint32(r$1, Number(e3), l$1), r$1 += 4;
     return;
   }
-  if (e3 <= W$1) {
-    g$2.setUint8(
+  if (e3 <= W) {
+    g$1.setUint8(
       r$1++,
       y$1(t2) | f$1.EightBytes
-    ), g$2.setBigUint64(r$1, BigInt(e3), l$1), r$1 += 8;
+    ), g$1.setBigUint64(r$1, BigInt(e3), l$1), r$1 += 8;
     return;
   }
   throw new x$1(`Value too large to encode: ${e3}`);
 }
-function rt$1(t2) {
+function rt(t2) {
   E(c$2.Simple, ct(t2));
 }
 function ct(t2) {
   if (t2 === false)
-    return u$2.False;
+    return u$1.False;
   if (t2 === true)
-    return u$2.True;
+    return u$1.True;
   if (t2 === null)
-    return u$2.Null;
+    return u$1.Null;
   if (t2 === void 0)
-    return u$2.Undefined;
+    return u$1.Undefined;
   throw new x$1(`Unrecognized simple value: ${t2.toString()}`);
 }
 function T(t2, e3) {
-  E(t2, e3.length), r$1 > a$1.length - e3.length && k$3(r$1 + e3.length), a$1.set(e3, r$1), r$1 += e3.length;
+  E(t2, e3.length), r$1 > a$1.length - e3.length && k$2(r$1 + e3.length), a$1.set(e3, r$1), r$1 += e3.length;
 }
 function X$1(t2, e3) {
   E(t2, e3);
@@ -4710,22 +4710,22 @@ function X$1(t2, e3) {
 function it(t2) {
   X$1(c$2.UnsignedInteger, t2);
 }
-function st$1(t2) {
+function st(t2) {
   X$1(
     c$2.NegativeInteger,
     typeof t2 == "bigint" ? -1n - t2 : -1 - t2
   );
 }
 function ot(t2) {
-  t2 >= 0 ? it(t2) : st$1(t2);
+  t2 >= 0 ? it(t2) : st(t2);
 }
-function z$2(t2) {
+function z(t2) {
   T(c$2.TextString, tt.encode(t2));
 }
 function m$1(t2) {
   T(c$2.ByteString, t2);
 }
-function ft$1(t2, e3, n2) {
+function ft(t2, e3, n2) {
   E(c$2.Tag, t2), _(e3, n2);
 }
 const JSON_KEY_EXPIRY = "__expiry__";
@@ -4810,7 +4810,7 @@ function hasCborValueMethod(value) {
 }
 function encode(value) {
   try {
-    return gt$1(value, (value2) => {
+    return gt(value, (value2) => {
       if (Principal$1.isPrincipal(value2)) {
         return value2.toUint8Array();
       }
@@ -4828,7 +4828,7 @@ function encode(value) {
 }
 function decode(input) {
   try {
-    return ut$1(input);
+    return ut(input);
   } catch (error) {
     throw InputError.fromCode(new CborDecodeErrorCode(error, input));
   }
@@ -5005,13 +5005,13 @@ function _validateObject(object2, fields, optFields = {}) {
 const notImplemented = () => {
   throw new Error("not implemented");
 };
-function memoized(fn2) {
+function memoized(fn) {
   const map2 = /* @__PURE__ */ new WeakMap();
   return (arg, ...args) => {
     const val = map2.get(arg);
     if (val !== void 0)
       return val;
-    const computed = fn2(arg, ...args);
+    const computed = fn(arg, ...args);
     map2.set(arg, computed);
     return computed;
   };
@@ -5073,10 +5073,10 @@ function sqrt5mod8(Fp3, n2) {
 }
 function sqrt9mod16(P2) {
   const Fp_ = Field(P2);
-  const tn2 = tonelliShanks(P2);
-  const c1 = tn2(Fp_, Fp_.neg(Fp_.ONE));
-  const c2 = tn2(Fp_, c1);
-  const c3 = tn2(Fp_, Fp_.neg(c1));
+  const tn = tonelliShanks(P2);
+  const c1 = tn(Fp_, Fp_.neg(Fp_.ONE));
+  const c2 = tn(Fp_, c1);
+  const c3 = tn(Fp_, Fp_.neg(c1));
   const c4 = (P2 + _7n) / _16n;
   return (Fp3, n2) => {
     let tv1 = Fp3.pow(n2, c4);
@@ -5620,7 +5620,7 @@ function _createCurveFields(type, CURVE, curveOpts = {}, FpFnLE) {
       throw new Error(`CURVE.${p2} must be positive bigint`);
   }
   const Fp3 = createField(CURVE.p, curveOpts.Fp, FpFnLE);
-  const Fn2 = createField(CURVE.n, curveOpts.Fn, FpFnLE);
+  const Fn = createField(CURVE.n, curveOpts.Fn, FpFnLE);
   const _b2 = type === "weierstrass" ? "b" : "d";
   const params = ["Gx", "Gy", "a", _b2];
   for (const p2 of params) {
@@ -5628,7 +5628,7 @@ function _createCurveFields(type, CURVE, curveOpts = {}, FpFnLE) {
       throw new Error(`CURVE.${p2} must be valid field element of CURVE.Fp`);
   }
   CURVE = Object.freeze(Object.assign({}, CURVE));
-  return { CURVE, Fp: Fp3, Fn: Fn2 };
+  return { CURVE, Fp: Fp3, Fn };
 }
 const os2ip = bytesToNumberBE;
 function i2osp(value, length) {
@@ -5734,10 +5734,10 @@ function hash_to_field(msg, count2, options) {
 function isogenyMap(field, map2) {
   const coeff = map2.map((i) => Array.from(i).reverse());
   return (x3, y2) => {
-    const [xn2, xd, yn2, yd] = coeff.map((val) => val.reduce((acc, i) => field.add(field.mul(acc, x3), i)));
+    const [xn, xd, yn, yd] = coeff.map((val) => val.reduce((acc, i) => field.add(field.mul(acc, x3), i)));
     const [xd_inv, yd_inv] = FpInvertBatch(field, [xd, yd], true);
-    x3 = field.mul(xn2, xd_inv);
-    y2 = field.mul(y2, field.mul(yn2, yd_inv));
+    x3 = field.mul(xn, xd_inv);
+    y2 = field.mul(y2, field.mul(yn, yd_inv));
     return { x: x3, y: y2 };
   };
 }
@@ -5810,26 +5810,26 @@ function _splitEndoScalar(k2, basis, n2) {
   return { k1neg, k1, k2neg, k2: k22 };
 }
 const _0n$4 = BigInt(0), _1n$5 = BigInt(1), _2n$5 = BigInt(2), _3n$3 = BigInt(3), _4n$1 = BigInt(4);
-function _normFnElement(Fn2, key) {
-  const { BYTES: expected } = Fn2;
+function _normFnElement(Fn, key) {
+  const { BYTES: expected } = Fn;
   let num;
   if (typeof key === "bigint") {
     num = key;
   } else {
     let bytes = ensureBytes("private key", key);
     try {
-      num = Fn2.fromBytes(bytes);
+      num = Fn.fromBytes(bytes);
     } catch (error) {
       throw new Error(`invalid private key: expected ui8a of size ${expected}, got ${typeof key}`);
     }
   }
-  if (!Fn2.isValidNot0(num))
+  if (!Fn.isValidNot0(num))
     throw new Error("invalid private key: out of range [1..N-1]");
   return num;
 }
 function weierstrassN(params, extraOpts = {}) {
   const validated = _createCurveFields("weierstrass", params, extraOpts);
-  const { Fp: Fp3, Fn: Fn2 } = validated;
+  const { Fp: Fp3, Fn } = validated;
   let CURVE = validated.CURVE;
   const { h: cofactor, n: CURVE_ORDER } = CURVE;
   _validateObject(extraOpts, {}, {
@@ -5847,7 +5847,7 @@ function weierstrassN(params, extraOpts = {}) {
       throw new Error('invalid endo: expected "beta": bigint and "basises": array');
     }
   }
-  const lengths = getWLengths(Fp3, Fn2);
+  const lengths = getWLengths(Fp3, Fn);
   function assertCompressionIsSupported() {
     if (!Fp3.isOdd)
       throw new Error("compression is not supported: Field does not have .isOdd()");
@@ -5929,7 +5929,7 @@ function weierstrassN(params, extraOpts = {}) {
   function splitEndoScalarN(k2) {
     if (!endo || !endo.basises)
       throw new Error("no endo");
-    return _splitEndoScalar(k2, endo.basises, Fn2.ORDER);
+    return _splitEndoScalar(k2, endo.basises, Fn.ORDER);
   }
   const toAffineMemo = memoized((p2, iz) => {
     const { X: X2, Y: Y2, Z: Z2 } = p2;
@@ -6152,7 +6152,7 @@ function weierstrassN(params, extraOpts = {}) {
      */
     multiply(scalar) {
       const { endo: endo2 } = extraOpts;
-      if (!Fn2.isValidNot0(scalar))
+      if (!Fn.isValidNot0(scalar))
         throw new Error("invalid scalar: out of range");
       let point2, fake;
       const mul = (n2) => wnaf.cached(this, n2, (p2) => normalizeZ(Point, p2));
@@ -6177,7 +6177,7 @@ function weierstrassN(params, extraOpts = {}) {
     multiplyUnsafe(sc) {
       const { endo: endo2 } = extraOpts;
       const p2 = this;
-      if (!Fn2.isValid(sc))
+      if (!Fn.isValid(sc))
         throw new Error("invalid scalar: out of range");
       if (sc === _0n$4 || p2.is0())
         return Point.ZERO;
@@ -6258,17 +6258,17 @@ function weierstrassN(params, extraOpts = {}) {
       return normalizeZ(Point, points);
     }
     static msm(points, scalars) {
-      return pippenger(Point, Fn2, points, scalars);
+      return pippenger(Point, Fn, points, scalars);
     }
     static fromPrivateKey(privateKey) {
-      return Point.BASE.multiply(_normFnElement(Fn2, privateKey));
+      return Point.BASE.multiply(_normFnElement(Fn, privateKey));
     }
   }
   Point.BASE = new Point(CURVE.Gx, CURVE.Gy, Fp3.ONE);
   Point.ZERO = new Point(Fp3.ZERO, Fp3.ONE, Fp3.ZERO);
   Point.Fp = Fp3;
-  Point.Fn = Fn2;
-  const bits = Fn2.BITS;
+  Point.Fn = Fn;
+  const bits = Fn.BITS;
   const wnaf = new wNAF(Point, extraOpts.endo ? Math.ceil(bits / 2) : bits);
   Point.BASE.precompute(8);
   return Point;
@@ -6340,8 +6340,8 @@ function SWUFpSqrtRatio(Fp3, Z2) {
 }
 function mapToCurveSimpleSWU(Fp3, opts) {
   validateField(Fp3);
-  const { A: A2, B: B2, Z: Z2 } = opts;
-  if (!Fp3.isValid(A2) || !Fp3.isValid(B2) || !Fp3.isValid(Z2))
+  const { A, B: B2, Z: Z2 } = opts;
+  if (!Fp3.isValid(A) || !Fp3.isValid(B2) || !Fp3.isValid(Z2))
     throw new Error("mapToCurveSimpleSWU: invalid opts");
   const sqrtRatio = SWUFpSqrtRatio(Fp3, Z2);
   if (!Fp3.isOdd)
@@ -6355,10 +6355,10 @@ function mapToCurveSimpleSWU(Fp3, opts) {
     tv3 = Fp3.add(tv2, Fp3.ONE);
     tv3 = Fp3.mul(tv3, B2);
     tv4 = Fp3.cmov(Z2, Fp3.neg(tv2), !Fp3.eql(tv2, Fp3.ZERO));
-    tv4 = Fp3.mul(tv4, A2);
+    tv4 = Fp3.mul(tv4, A);
     tv2 = Fp3.sqr(tv3);
     tv6 = Fp3.sqr(tv4);
-    tv5 = Fp3.mul(tv6, A2);
+    tv5 = Fp3.mul(tv6, A);
     tv2 = Fp3.add(tv2, tv5);
     tv2 = Fp3.mul(tv2, tv3);
     tv6 = Fp3.mul(tv6, tv4);
@@ -6377,13 +6377,13 @@ function mapToCurveSimpleSWU(Fp3, opts) {
     return { x: x3, y: y2 };
   };
 }
-function getWLengths(Fp3, Fn2) {
+function getWLengths(Fp3, Fn) {
   return {
-    secretKey: Fn2.BYTES,
+    secretKey: Fn.BYTES,
     publicKey: 1 + Fp3.BYTES,
     publicKeyUncompressed: 1 + 2 * Fp3.BYTES,
     publicKeyHasPrefix: true,
-    signature: 2 * Fn2.BYTES
+    signature: 2 * Fn.BYTES
   };
 }
 function weierstrassPoints(c2) {
@@ -6403,14 +6403,14 @@ function _weierstrass_legacy_opts_to_new(c2) {
   };
   const Fp3 = c2.Fp;
   let allowedLengths = c2.allowedPrivateKeyLengths ? Array.from(new Set(c2.allowedPrivateKeyLengths.map((l2) => Math.ceil(l2 / 2)))) : void 0;
-  const Fn2 = Field(CURVE.n, {
+  const Fn = Field(CURVE.n, {
     BITS: c2.nBitLength,
     allowedLengths,
     modFromBytes: c2.wrapPrivateKey
   });
   const curveOpts = {
     Fp: Fp3,
-    Fn: Fn2,
+    Fn,
     allowInfinityPoint: c2.allowInfinityPoint,
     endo: c2.endo,
     isTorsionFree: c2.isTorsionFree,
@@ -6429,16 +6429,16 @@ function _legacyHelperEquat(Fp3, a2, b2) {
   return weierstrassEquation;
 }
 function _weierstrass_new_output_to_legacy(c2, Point) {
-  const { Fp: Fp3, Fn: Fn2 } = Point;
+  const { Fp: Fp3, Fn } = Point;
   function isWithinCurveOrder(num) {
-    return inRange(num, _1n$5, Fn2.ORDER);
+    return inRange(num, _1n$5, Fn.ORDER);
   }
   const weierstrassEquation = _legacyHelperEquat(Fp3, c2.a, c2.b);
   return Object.assign({}, {
     CURVE: c2,
     Point,
     ProjectivePoint: Point,
-    normPrivateKeyToScalar: (key) => _normFnElement(Fn2, key),
+    normPrivateKeyToScalar: (key) => _normFnElement(Fn, key),
     weierstrassEquation,
     isWithinCurveOrder
   });
@@ -6670,7 +6670,7 @@ function createBlsSig(blsPairing, PubCurve, SigCurve, SignatureCoder, isSigG1) {
   };
 }
 function bls(CURVE) {
-  const { Fp: Fp3, Fr: Fr2, Fp2: Fp22, Fp6: Fp62, Fp12: Fp122 } = CURVE.fields;
+  const { Fp: Fp3, Fr, Fp2: Fp22, Fp6: Fp62, Fp12: Fp122 } = CURVE.fields;
   const G1_ = weierstrassPoints(CURVE.G1);
   const G1 = Object.assign(G1_, createHasher(G1_.Point, CURVE.G1.mapToCurve, {
     ...CURVE.htfDefaults,
@@ -6690,8 +6690,8 @@ function bls(CURVE) {
   const shortSignatures = createBlsSig(pairingRes, G2, G1, CURVE.G1.ShortSignature, true);
   const rand = CURVE.randomBytes || randomBytes;
   const randomSecretKey = () => {
-    const length = getMinHashLength(Fr2.ORDER);
-    return mapHashToField(rand(length), Fr2.ORDER);
+    const length = getMinHashLength(Fr.ORDER);
+    return mapHashToField(rand(length), Fr.ORDER);
   };
   const utils = {
     randomSecretKey,
@@ -6755,7 +6755,7 @@ function bls(CURVE) {
     pairingBatch,
     verifyBatch,
     fields: {
-      Fr: Fr2,
+      Fr,
       Fp: Fp3,
       Fp2: Fp22,
       Fp6: Fp62,
@@ -6819,9 +6819,9 @@ function psiFrobenius(Fp3, Fp22, base) {
   function psi2(x3, y2) {
     return [Fp22.mul(x3, PSI2_X), Fp22.neg(y2)];
   }
-  const mapAffine = (fn2) => (c2, P2) => {
+  const mapAffine = (fn) => (c2, P2) => {
     const affine = P2.toAffine();
-    const p2 = fn2(affine.x, affine.y);
+    const p2 = fn(affine.x, affine.y);
     return c2.fromAffine({ x: p2[0], y: p2[1] });
   };
   const G2psi3 = mapAffine(psi);
@@ -8833,11 +8833,11 @@ function isEdValidXY(Fp3, CURVE, x3, y2) {
 }
 function edwards(params, extraOpts = {}) {
   const validated = _createCurveFields("edwards", params, extraOpts, extraOpts.FpFnLE);
-  const { Fp: Fp3, Fn: Fn2 } = validated;
+  const { Fp: Fp3, Fn } = validated;
   let CURVE = validated.CURVE;
   const { h: cofactor } = CURVE;
   _validateObject(extraOpts, {}, { uvRatio: "function" });
-  const MASK = _2n$1 << BigInt(Fn2.BYTES * 8) - _1n$1;
+  const MASK = _2n$1 << BigInt(Fn.BYTES * 8) - _1n$1;
   const modP = (n2) => Fp3.create(n2);
   const uvRatio2 = extraOpts.uvRatio || ((u2, v2) => {
     try {
@@ -8978,15 +8978,15 @@ function edwards(params, extraOpts = {}) {
     double() {
       const { a: a2 } = CURVE;
       const { X: X1, Y: Y1, Z: Z1 } = this;
-      const A2 = modP(X1 * X1);
+      const A = modP(X1 * X1);
       const B2 = modP(Y1 * Y1);
       const C2 = modP(_2n$1 * modP(Z1 * Z1));
-      const D2 = modP(a2 * A2);
+      const D = modP(a2 * A);
       const x1y1 = X1 + Y1;
-      const E2 = modP(modP(x1y1 * x1y1) - A2 - B2);
-      const G2 = D2 + B2;
+      const E2 = modP(modP(x1y1 * x1y1) - A - B2);
+      const G2 = D + B2;
       const F2 = G2 - C2;
-      const H2 = D2 - B2;
+      const H2 = D - B2;
       const X3 = modP(E2 * F2);
       const Y3 = modP(G2 * H2);
       const T3 = modP(E2 * H2);
@@ -9001,14 +9001,14 @@ function edwards(params, extraOpts = {}) {
       const { a: a2, d: d2 } = CURVE;
       const { X: X1, Y: Y1, Z: Z1, T: T1 } = this;
       const { X: X2, Y: Y2, Z: Z2, T: T2 } = other;
-      const A2 = modP(X1 * X2);
+      const A = modP(X1 * X2);
       const B2 = modP(Y1 * Y2);
       const C2 = modP(T1 * d2 * T2);
-      const D2 = modP(Z1 * Z2);
-      const E2 = modP((X1 + Y1) * (X2 + Y2) - A2 - B2);
-      const F2 = D2 - C2;
-      const G2 = D2 + C2;
-      const H2 = modP(B2 - a2 * A2);
+      const D = modP(Z1 * Z2);
+      const E2 = modP((X1 + Y1) * (X2 + Y2) - A - B2);
+      const F2 = D - C2;
+      const G2 = D + C2;
+      const H2 = modP(B2 - a2 * A);
       const X3 = modP(E2 * F2);
       const Y3 = modP(G2 * H2);
       const T3 = modP(E2 * H2);
@@ -9020,7 +9020,7 @@ function edwards(params, extraOpts = {}) {
     }
     // Constant-time multiplication.
     multiply(scalar) {
-      if (!Fn2.isValidNot0(scalar))
+      if (!Fn.isValidNot0(scalar))
         throw new Error("invalid scalar: expected 1 <= sc < curve.n");
       const { p: p2, f: f2 } = wnaf.cached(this, scalar, (p3) => normalizeZ(Point, p3));
       return normalizeZ(Point, [p2, f2])[0];
@@ -9031,7 +9031,7 @@ function edwards(params, extraOpts = {}) {
     // Does NOT allow scalars higher than CURVE.n.
     // Accepts optional accumulator to merge with multiply (important for sparse scalars)
     multiplyUnsafe(scalar, acc = Point.ZERO) {
-      if (!Fn2.isValid(scalar))
+      if (!Fn.isValid(scalar))
         throw new Error("invalid scalar: expected 0 <= sc < curve.n");
       if (scalar === _0n)
         return Point.ZERO;
@@ -9090,7 +9090,7 @@ function edwards(params, extraOpts = {}) {
       return normalizeZ(Point, points);
     }
     static msm(points, scalars) {
-      return pippenger(Point, Fn2, points, scalars);
+      return pippenger(Point, Fn, points, scalars);
     }
     _setWindowSize(windowSize) {
       this.precompute(windowSize);
@@ -9102,8 +9102,8 @@ function edwards(params, extraOpts = {}) {
   Point.BASE = new Point(CURVE.Gx, CURVE.Gy, _1n$1, modP(CURVE.Gx * CURVE.Gy));
   Point.ZERO = new Point(_0n, _1n$1, _1n$1, _0n);
   Point.Fp = Fp3;
-  Point.Fn = Fn2;
-  const wnaf = new wNAF(Point, Fn2.BITS);
+  Point.Fn = Fn;
+  const wnaf = new wNAF(Point, Fn.BITS);
   Point.BASE.precompute(8);
   return Point;
 }
@@ -9118,7 +9118,7 @@ function eddsa(Point, cHash, eddsaOpts = {}) {
     mapToCurve: "function"
   });
   const { prehash } = eddsaOpts;
-  const { BASE: BASE2, Fp: Fp3, Fn: Fn2 } = Point;
+  const { BASE: BASE2, Fp: Fp3, Fn } = Point;
   const randomBytes$1 = eddsaOpts.randomBytes || randomBytes;
   const adjustScalarBytes2 = eddsaOpts.adjustScalarBytes || ((bytes) => bytes);
   const domain = eddsaOpts.domain || ((data, ctx, phflag) => {
@@ -9128,7 +9128,7 @@ function eddsa(Point, cHash, eddsaOpts = {}) {
     return data;
   });
   function modN_LE(hash) {
-    return Fn2.create(bytesToNumberLE(hash));
+    return Fn.create(bytesToNumberLE(hash));
   }
   function getPrivateScalar(key) {
     const len = lengths.secretKey;
@@ -9160,11 +9160,11 @@ function eddsa(Point, cHash, eddsaOpts = {}) {
     const r2 = hashDomainToScalar(options.context, prefix2, msg);
     const R2 = BASE2.multiply(r2).toBytes();
     const k2 = hashDomainToScalar(options.context, R2, pointBytes, msg);
-    const s2 = Fn2.create(r2 + k2 * scalar);
-    if (!Fn2.isValid(s2))
+    const s2 = Fn.create(r2 + k2 * scalar);
+    if (!Fn.isValid(s2))
       throw new Error("sign failed: invalid s");
-    const rs2 = concatBytes(R2, Fn2.toBytes(s2));
-    return _abytes2(rs2, lengths.signature, "result");
+    const rs = concatBytes(R2, Fn.toBytes(s2));
+    return _abytes2(rs, lengths.signature, "result");
   }
   const verifyOpts = { zip215: true };
   function verify(sig, msg, publicKey, options = verifyOpts) {
@@ -9180,18 +9180,18 @@ function eddsa(Point, cHash, eddsaOpts = {}) {
     const mid = len / 2;
     const r2 = sig.subarray(0, mid);
     const s2 = bytesToNumberLE(sig.subarray(mid, len));
-    let A2, R2, SB;
+    let A, R2, SB;
     try {
-      A2 = Point.fromBytes(publicKey, zip215);
+      A = Point.fromBytes(publicKey, zip215);
       R2 = Point.fromBytes(r2, zip215);
       SB = BASE2.multiplyUnsafe(s2);
     } catch (error) {
       return false;
     }
-    if (!zip215 && A2.isSmallOrder())
+    if (!zip215 && A.isSmallOrder())
       return false;
-    const k2 = hashDomainToScalar(context, R2.toBytes(), A2.toBytes(), msg);
-    const RkA = R2.add(A2.multiplyUnsafe(k2));
+    const k2 = hashDomainToScalar(context, R2.toBytes(), A.toBytes(), msg);
+    const RkA = R2.add(A.multiplyUnsafe(k2));
     return RkA.subtract(SB).clearCofactor().is0();
   }
   const _size = Fp3.BYTES;
@@ -9209,7 +9209,7 @@ function eddsa(Point, cHash, eddsaOpts = {}) {
     return { secretKey, publicKey: getPublicKey(secretKey) };
   }
   function isValidSecretKey(key) {
-    return isBytes(key) && key.length === Fn2.BYTES;
+    return isBytes(key) && key.length === Fn.BYTES;
   }
   function isValidPublicKey(key, zip215) {
     try {
@@ -9275,8 +9275,8 @@ function _eddsa_legacy_opts_to_new(c2) {
     Gy: c2.Gy
   };
   const Fp3 = c2.Fp;
-  const Fn2 = Field(CURVE.n, c2.nBitLength, true);
-  const curveOpts = { Fp: Fp3, Fn: Fn2, uvRatio: c2.uvRatio };
+  const Fn = Field(CURVE.n, c2.nBitLength, true);
+  const curveOpts = { Fp: Fp3, Fn, uvRatio: c2.uvRatio };
   const eddsaOpts = {
     randomBytes: c2.randomBytes,
     adjustScalarBytes: c2.adjustScalarBytes,
@@ -10216,13 +10216,13 @@ const _HttpAgent = class _HttpAgent {
     const hostname = this.host.hostname;
     return hostname === "127.0.0.1" || hostname.endsWith("127.0.0.1");
   }
-  addTransform(type, fn2, priority = fn2.priority || 0) {
+  addTransform(type, fn, priority = fn.priority || 0) {
     if (type === "update") {
       const i = __privateGet(this, _updatePipeline).findIndex((x3) => (x3.priority || 0) < priority);
-      __privateGet(this, _updatePipeline).splice(i >= 0 ? i : __privateGet(this, _updatePipeline).length, 0, Object.assign(fn2, { priority }));
+      __privateGet(this, _updatePipeline).splice(i >= 0 ? i : __privateGet(this, _updatePipeline).length, 0, Object.assign(fn, { priority }));
     } else if (type === "query") {
       const i = __privateGet(this, _queryPipeline).findIndex((x3) => (x3.priority || 0) < priority);
-      __privateGet(this, _queryPipeline).splice(i >= 0 ? i : __privateGet(this, _queryPipeline).length, 0, Object.assign(fn2, { priority }));
+      __privateGet(this, _queryPipeline).splice(i >= 0 ? i : __privateGet(this, _queryPipeline).length, 0, Object.assign(fn, { priority }));
     }
   }
   async getPrincipal() {
@@ -10707,12 +10707,12 @@ const _HttpAgent = class _HttpAgent {
   _transform(request2) {
     let p2 = Promise.resolve(request2);
     if (request2.endpoint === Endpoint.Call) {
-      for (const fn2 of __privateGet(this, _updatePipeline)) {
-        p2 = p2.then((r2) => fn2(r2).then((r22) => r22 || r2));
+      for (const fn of __privateGet(this, _updatePipeline)) {
+        p2 = p2.then((r2) => fn(r2).then((r22) => r22 || r2));
       }
     } else {
-      for (const fn2 of __privateGet(this, _queryPipeline)) {
-        p2 = p2.then((r2) => fn2(r2).then((r22) => r22 || r2));
+      for (const fn of __privateGet(this, _queryPipeline)) {
+        p2 = p2.then((r2) => fn(r2).then((r22) => r22 || r2));
       }
     }
     return p2;
@@ -12164,10 +12164,10 @@ function fromBlob(blob, options) {
   return new BlobTokenizer(blob, options);
 }
 var browser = { exports: {} };
-var ms$1;
+var ms;
 var hasRequiredMs;
 function requireMs() {
-  if (hasRequiredMs) return ms$1;
+  if (hasRequiredMs) return ms;
   hasRequiredMs = 1;
   var s2 = 1e3;
   var m2 = s2 * 60;
@@ -12175,7 +12175,7 @@ function requireMs() {
   var d2 = h2 * 24;
   var w2 = d2 * 7;
   var y2 = d2 * 365.25;
-  ms$1 = function(val, options) {
+  ms = function(val, options) {
     options = options || {};
     var type = typeof val;
     if (type === "string" && val.length > 0) {
@@ -12279,7 +12279,7 @@ function requireMs() {
     var isPlural = msAbs >= n2 * 1.5;
     return Math.round(ms2 / n2) + " " + name + (isPlural ? "s" : "");
   }
-  return ms$1;
+  return ms;
 }
 function setup(env) {
   createDebug.debug = createDebug;
@@ -12382,11 +12382,11 @@ function setup(env) {
     createDebug.names = [];
     createDebug.skips = [];
     const split2 = (typeof namespaces === "string" ? namespaces : "").trim().replace(/\s+/g, ",").split(",").filter(Boolean);
-    for (const ns2 of split2) {
-      if (ns2[0] === "-") {
-        createDebug.skips.push(ns2.slice(1));
+    for (const ns of split2) {
+      if (ns[0] === "-") {
+        createDebug.skips.push(ns.slice(1));
       } else {
-        createDebug.names.push(ns2);
+        createDebug.names.push(ns);
       }
     }
   }
@@ -12432,8 +12432,8 @@ function setup(env) {
         return false;
       }
     }
-    for (const ns2 of createDebug.names) {
-      if (matchesTemplate(name, ns2)) {
+    for (const ns of createDebug.names) {
+      if (matchesTemplate(name, ns)) {
         return true;
       }
     }
@@ -12839,8 +12839,8 @@ class ZipHandler {
         controller.close();
       }
     });
-    const ds2 = new DecompressionStream("deflate-raw");
-    const output = input.pipeThrough(ds2);
+    const ds = new DecompressionStream("deflate-raw");
+    const output = input.pipeThrough(ds);
     try {
       const response = new Response(output);
       const buffer = await response.arrayBuffer();
@@ -15973,7 +15973,6 @@ class StorageClient {
   }
 }
 var define_process_env_default$1 = {};
-const DEFAULT_STORAGE_GATEWAY_URL = "https://blob.caffeine.ai";
 const DEFAULT_BUCKET_NAME = "default-bucket";
 const DEFAULT_PROJECT_ID = "0000000-0000-0000-0000-00000000000";
 let configCache = null;
@@ -15998,7 +15997,7 @@ async function loadConfig() {
     const fullConfig = {
       backend_host: config2.backend_host === "undefined" ? void 0 : config2.backend_host,
       backend_canister_id: config2.backend_canister_id === "undefined" ? backendCanisterId : config2.backend_canister_id,
-      storage_gateway_url: runtimeStorageGatewayUrl ?? "https://blob.caffeine.ai" ?? "nogateway",
+      storage_gateway_url: runtimeStorageGatewayUrl ?? "nogateway",
       bucket_name: DEFAULT_BUCKET_NAME,
       project_id: config2.project_id !== "undefined" ? config2.project_id : DEFAULT_PROJECT_ID,
       ii_derivation_origin: config2.ii_derivation_origin === "undefined" ? void 0 : config2.ii_derivation_origin
@@ -16013,7 +16012,7 @@ async function loadConfig() {
     const fallbackConfig = {
       backend_host: void 0,
       backend_canister_id: backendCanisterId,
-      storage_gateway_url: DEFAULT_STORAGE_GATEWAY_URL,
+      storage_gateway_url: "nogateway",
       bucket_name: DEFAULT_BUCKET_NAME,
       project_id: DEFAULT_PROJECT_ID,
       ii_derivation_origin: void 0
@@ -16032,19 +16031,21 @@ function processError(e3) {
   }
   throw e3;
 }
-async function maybeLoadMockBackend() {
+async function loadMockBackendFromModules(mockModules) {
   {
     return null;
   }
 }
 async function createActorWithConfig(createActor2, options) {
   var _a2;
-  const mock = await maybeLoadMockBackend();
-  if (mock) {
-    return mock;
+  const { mockModules, ...resolvedOptions } = options ?? {};
+  if (mockModules) {
+    const mock = await loadMockBackendFromModules();
+    if (mock) {
+      return mock;
+    }
   }
   const config2 = await loadConfig();
-  const resolvedOptions = options ?? {};
   const agent = new HttpAgent({
     ...resolvedOptions.agentOptions,
     host: config2.backend_host
@@ -16547,18 +16548,18 @@ function createNotifyManager() {
      * Use this method to set a custom notify function.
      * This can be used to for example wrap notifications with `React.act` while running tests.
      */
-    setNotifyFunction: (fn2) => {
-      notifyFn = fn2;
+    setNotifyFunction: (fn) => {
+      notifyFn = fn;
     },
     /**
      * Use this method to set a custom function to batch notifications together into a single tick.
      * By default React Query will use the batch function provided by ReactDOM or React Native.
      */
-    setBatchNotifyFunction: (fn2) => {
-      batchNotifyFn = fn2;
+    setBatchNotifyFunction: (fn) => {
+      batchNotifyFn = fn;
     },
-    setScheduler: (fn2) => {
-      scheduleFn = fn2;
+    setScheduler: (fn) => {
+      scheduleFn = fn;
     }
   };
 }
@@ -16737,7 +16738,7 @@ function createRetryer(config2) {
     }
   };
 }
-var Removable = (_e2 = class {
+var Removable = (_e = class {
   constructor() {
     __privateAdd(this, _gcTimeout);
   }
@@ -16764,7 +16765,7 @@ var Removable = (_e2 = class {
       __privateSet(this, _gcTimeout, void 0);
     }
   }
-}, _gcTimeout = new WeakMap(), _e2);
+}, _gcTimeout = new WeakMap(), _e);
 var Query = (_f = class extends Removable {
   constructor(config2) {
     super();
@@ -16929,7 +16930,7 @@ var Query = (_f = class extends Removable {
     }
   }
   async fetch(options, fetchOptions) {
-    var _a2, _b2, _c2, _d2, _e4, _f2, _g2, _h2, _i2, _j2, _k2, _l2;
+    var _a2, _b2, _c2, _d2, _e2, _f2, _g2, _h2, _i2, _j2, _k2, _l2;
     if (this.state.fetchStatus !== "idle" && // If the promise in the retryer is already rejected, we have to definitely
     // re-start the fetch; there is a chance that the query is still in a
     // pending state when that happens
@@ -17033,7 +17034,7 @@ var Query = (_f = class extends Removable {
         throw new Error(`${this.queryHash} data is undefined`);
       }
       this.setData(data);
-      (_f2 = (_e4 = __privateGet(this, _cache).config).onSuccess) == null ? void 0 : _f2.call(_e4, data, this);
+      (_f2 = (_e2 = __privateGet(this, _cache).config).onSuccess) == null ? void 0 : _f2.call(_e2, data, this);
       (_h2 = (_g2 = __privateGet(this, _cache).config).onSettled) == null ? void 0 : _h2.call(
         _g2,
         data,
@@ -17633,11 +17634,11 @@ function shouldAssignObserverCurrentProperties(observer, optimisticResult) {
 function infiniteQueryBehavior(pages) {
   return {
     onFetch: (context, query) => {
-      var _a2, _b2, _c2, _d2, _e4;
+      var _a2, _b2, _c2, _d2, _e2;
       const options = context.options;
       const direction = (_c2 = (_b2 = (_a2 = context.fetchOptions) == null ? void 0 : _a2.meta) == null ? void 0 : _b2.fetchMore) == null ? void 0 : _c2.direction;
       const oldPages = ((_d2 = context.state.data) == null ? void 0 : _d2.pages) || [];
-      const oldPageParams = ((_e4 = context.state.data) == null ? void 0 : _e4.pageParams) || [];
+      const oldPageParams = ((_e2 = context.state.data) == null ? void 0 : _e2.pageParams) || [];
       let result = { pages: [], pageParams: [] };
       let currentPage = 0;
       const fetchFn = async () => {
@@ -17791,7 +17792,7 @@ var Mutation = (_h = class extends Removable {
     this.execute(this.state.variables);
   }
   async execute(variables) {
-    var _a2, _b2, _c2, _d2, _e4, _f2, _g2, _h2, _i2, _j2, _k2, _l2, _m2, _n3, _o, _p, _q, _r3;
+    var _a2, _b2, _c2, _d2, _e2, _f2, _g2, _h2, _i2, _j2, _k2, _l2, _m2, _n, _o, _p, _q, _r;
     const onContinue = () => {
       __privateMethod(this, _Mutation_instances, dispatch_fn2).call(this, { type: "continue" });
     };
@@ -17856,8 +17857,8 @@ var Mutation = (_h = class extends Removable {
         this,
         mutationFnContext
       ));
-      await ((_f2 = (_e4 = this.options).onSuccess) == null ? void 0 : _f2.call(
-        _e4,
+      await ((_f2 = (_e2 = this.options).onSuccess) == null ? void 0 : _f2.call(
+        _e2,
         data,
         variables,
         this.state.context,
@@ -17896,7 +17897,7 @@ var Mutation = (_h = class extends Removable {
         void Promise.reject(e3);
       }
       try {
-        await ((_n3 = (_m2 = this.options).onError) == null ? void 0 : _n3.call(
+        await ((_n = (_m2 = this.options).onError) == null ? void 0 : _n.call(
           _m2,
           error,
           variables,
@@ -17920,7 +17921,7 @@ var Mutation = (_h = class extends Removable {
         void Promise.reject(e3);
       }
       try {
-        await ((_r3 = (_q = this.options).onSettled) == null ? void 0 : _r3.call(
+        await ((_r = (_q = this.options).onSettled) == null ? void 0 : _r.call(
           _q,
           void 0,
           error,
@@ -18209,7 +18210,7 @@ var MutationObserver$1 = (_j = class extends Subscribable {
   });
 }, notify_fn2 = function(action) {
   notifyManager.batch(() => {
-    var _a2, _b2, _c2, _d2, _e4, _f2, _g2, _h2;
+    var _a2, _b2, _c2, _d2, _e2, _f2, _g2, _h2;
     if (__privateGet(this, _mutateOptions) && this.hasListeners()) {
       const variables = __privateGet(this, _currentResult2).variables;
       const onMutateResult = __privateGet(this, _currentResult2).context;
@@ -18244,8 +18245,8 @@ var MutationObserver$1 = (_j = class extends Subscribable {
         }
       } else if ((action == null ? void 0 : action.type) === "error") {
         try {
-          (_f2 = (_e4 = __privateGet(this, _mutateOptions)).onError) == null ? void 0 : _f2.call(
-            _e4,
+          (_f2 = (_e2 = __privateGet(this, _mutateOptions)).onError) == null ? void 0 : _f2.call(
+            _e2,
             action.error,
             variables,
             onMutateResult,
@@ -19119,9 +19120,9 @@ react_production.__COMPILER_RUNTIME = {
     return ReactSharedInternals$2.H.useMemoCache(size2);
   }
 };
-react_production.cache = function(fn2) {
+react_production.cache = function(fn) {
   return function() {
-    return fn2.apply(null, arguments);
+    return fn.apply(null, arguments);
   };
 };
 react_production.cloneElement = function(element, config2, children) {
@@ -21346,11 +21347,11 @@ class LocalStorage {
     if (this._localStorage) {
       return this._localStorage;
     }
-    const ls2 = globalThis.localStorage;
-    if (!ls2) {
+    const ls = globalThis.localStorage;
+    if (!ls) {
       throw new Error("Could not find local storage.");
     }
-    return ls2;
+    return ls;
   }
 }
 class IdbStorage {
@@ -21973,17 +21974,19 @@ function InternetIdentityProvider({ children, createOptions, withAttributes = {}
   });
 }
 const ACTOR_QUERY_KEY = "actor";
-function useActor(createActor2) {
+function useActor(createActor2, options) {
   const { identity: identity3, isAuthenticated } = useInternetIdentity();
   const queryClient2 = useQueryClient();
+  const mockModules = options == null ? void 0 : options.mockModules;
   const actorQuery = useQuery({
     queryKey: [ACTOR_QUERY_KEY, identity3 == null ? void 0 : identity3.getPrincipal().toString()],
     queryFn: async () => {
       if (!isAuthenticated) {
-        return await createActorWithConfig(createActor2);
+        return await createActorWithConfig(createActor2, { mockModules });
       }
       const actor = await createActorWithConfig(createActor2, {
-        agentOptions: { identity: identity3 }
+        agentOptions: { identity: identity3 },
+        mockModules
       });
       return actor;
     },
@@ -22328,8 +22331,8 @@ function createPortal$1(children, containerInfo, implementation) {
   };
 }
 var ReactSharedInternals$1 = React$1.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
-function getCrossOriginStringAs(as2, input) {
-  if ("font" === as2) return "";
+function getCrossOriginStringAs(as, input) {
+  if ("font" === as) return "";
   if ("string" === typeof input)
     return "use-credentials" === input ? input : "";
 }
@@ -22340,10 +22343,10 @@ reactDom_production.createPortal = function(children, container) {
     throw Error(formatProdErrorMessage$1(299));
   return createPortal$1(children, container, null, key);
 };
-reactDom_production.flushSync = function(fn2) {
+reactDom_production.flushSync = function(fn) {
   var previousTransition = ReactSharedInternals$1.T, previousUpdatePriority = Internals.p;
   try {
-    if (ReactSharedInternals$1.T = null, Internals.p = 2, fn2) return fn2();
+    if (ReactSharedInternals$1.T = null, Internals.p = 2, fn) return fn();
   } finally {
     ReactSharedInternals$1.T = previousTransition, Internals.p = previousUpdatePriority, Internals.d.f();
   }
@@ -22356,8 +22359,8 @@ reactDom_production.prefetchDNS = function(href) {
 };
 reactDom_production.preinit = function(href, options) {
   if ("string" === typeof href && options && "string" === typeof options.as) {
-    var as2 = options.as, crossOrigin = getCrossOriginStringAs(as2, options.crossOrigin), integrity = "string" === typeof options.integrity ? options.integrity : void 0, fetchPriority = "string" === typeof options.fetchPriority ? options.fetchPriority : void 0;
-    "style" === as2 ? Internals.d.S(
+    var as = options.as, crossOrigin = getCrossOriginStringAs(as, options.crossOrigin), integrity = "string" === typeof options.integrity ? options.integrity : void 0, fetchPriority = "string" === typeof options.fetchPriority ? options.fetchPriority : void 0;
+    "style" === as ? Internals.d.S(
       href,
       "string" === typeof options.precedence ? options.precedence : void 0,
       {
@@ -22365,7 +22368,7 @@ reactDom_production.preinit = function(href, options) {
         integrity,
         fetchPriority
       }
-    ) : "script" === as2 && Internals.d.X(href, {
+    ) : "script" === as && Internals.d.X(href, {
       crossOrigin,
       integrity,
       fetchPriority,
@@ -22391,8 +22394,8 @@ reactDom_production.preinitModule = function(href, options) {
 };
 reactDom_production.preload = function(href, options) {
   if ("string" === typeof href && "object" === typeof options && null !== options && "string" === typeof options.as) {
-    var as2 = options.as, crossOrigin = getCrossOriginStringAs(as2, options.crossOrigin);
-    Internals.d.L(href, as2, {
+    var as = options.as, crossOrigin = getCrossOriginStringAs(as, options.crossOrigin);
+    Internals.d.L(href, as, {
       crossOrigin,
       integrity: "string" === typeof options.integrity ? options.integrity : void 0,
       nonce: "string" === typeof options.nonce ? options.nonce : void 0,
@@ -22419,8 +22422,8 @@ reactDom_production.preloadModule = function(href, options) {
 reactDom_production.requestFormReset = function(form) {
   Internals.d.r(form);
 };
-reactDom_production.unstable_batchedUpdates = function(fn2, a2) {
-  return fn2(a2);
+reactDom_production.unstable_batchedUpdates = function(fn, a2) {
+  return fn(a2);
 };
 reactDom_production.useFormState = function(action, initialState, permalink) {
   return ReactSharedInternals$1.H.useFormState(action, initialState, permalink);
@@ -22914,10 +22917,10 @@ function resolveUpdatePriority() {
   updatePriority = window.event;
   return void 0 === updatePriority ? 32 : getEventPriority(updatePriority.type);
 }
-function runWithPriority(priority, fn2) {
+function runWithPriority(priority, fn) {
   var previousPriority = ReactDOMSharedInternals.p;
   try {
-    return ReactDOMSharedInternals.p = priority, fn2();
+    return ReactDOMSharedInternals.p = priority, fn();
   } finally {
     ReactDOMSharedInternals.p = previousPriority;
   }
@@ -23052,8 +23055,8 @@ function describeBuiltInComponentFrame(name) {
   return "\n" + prefix$1 + name + suffix;
 }
 var reentry = false;
-function describeNativeComponentFrame(fn2, construct) {
-  if (!fn2 || reentry) return "";
+function describeNativeComponentFrame(fn, construct) {
+  if (!fn || reentry) return "";
   reentry = true;
   var previousPrepareStackTrace = Error.prepareStackTrace;
   Error.prepareStackTrace = void 0;
@@ -23076,14 +23079,14 @@ function describeNativeComponentFrame(fn2, construct) {
               } catch (x3) {
                 var control = x3;
               }
-              Reflect.construct(fn2, [], Fake);
+              Reflect.construct(fn, [], Fake);
             } else {
               try {
                 Fake.call();
               } catch (x$9) {
                 control = x$9;
               }
-              fn2.call(Fake.prototype);
+              fn.call(Fake.prototype);
             }
           } else {
             try {
@@ -23091,7 +23094,7 @@ function describeNativeComponentFrame(fn2, construct) {
             } catch (x$10) {
               control = x$10;
             }
-            (Fake = fn2()) && "function" === typeof Fake.catch && Fake.catch(function() {
+            (Fake = fn()) && "function" === typeof Fake.catch && Fake.catch(function() {
             });
           }
         } catch (sample) {
@@ -23129,7 +23132,7 @@ function describeNativeComponentFrame(fn2, construct) {
             do
               if (RunInRootFrame--, namePropDescriptor--, 0 > namePropDescriptor || sampleLines[RunInRootFrame] !== controlLines[namePropDescriptor]) {
                 var frame = "\n" + sampleLines[RunInRootFrame].replace(" at new ", " at ");
-                fn2.displayName && frame.includes("<anonymous>") && (frame = frame.replace("<anonymous>", fn2.displayName));
+                fn.displayName && frame.includes("<anonymous>") && (frame = frame.replace("<anonymous>", fn.displayName));
                 return frame;
               }
             while (1 <= RunInRootFrame && 0 <= namePropDescriptor);
@@ -23140,7 +23143,7 @@ function describeNativeComponentFrame(fn2, construct) {
   } finally {
     reentry = false, Error.prepareStackTrace = previousPrepareStackTrace;
   }
-  return (previousPrepareStackTrace = fn2 ? fn2.displayName || fn2.name : "") ? describeBuiltInComponentFrame(previousPrepareStackTrace) : "";
+  return (previousPrepareStackTrace = fn ? fn.displayName || fn.name : "") ? describeBuiltInComponentFrame(previousPrepareStackTrace) : "";
 }
 function describeFiber(fiber) {
   switch (fiber.tag) {
@@ -23535,16 +23538,16 @@ function restoreStateOfTarget(target) {
   }
 }
 var isInsideEventHandler = false;
-function batchedUpdates$1(fn2, a2, b2) {
-  if (isInsideEventHandler) return fn2(a2, b2);
+function batchedUpdates$1(fn, a2, b2) {
+  if (isInsideEventHandler) return fn(a2, b2);
   isInsideEventHandler = true;
   try {
-    var JSCompiler_inline_result = fn2(a2);
+    var JSCompiler_inline_result = fn(a2);
     return JSCompiler_inline_result;
   } finally {
     if (isInsideEventHandler = false, null !== restoreTarget || null !== restoreQueue) {
-      if (flushSyncWork$1(), restoreTarget && (a2 = restoreTarget, fn2 = restoreQueue, restoreQueue = restoreTarget = null, restoreStateOfTarget(a2), fn2))
-        for (a2 = 0; a2 < fn2.length; a2++) restoreStateOfTarget(fn2[a2]);
+      if (flushSyncWork$1(), restoreTarget && (a2 = restoreTarget, fn = restoreQueue, restoreQueue = restoreTarget = null, restoreStateOfTarget(a2), fn))
+        for (a2 = 0; a2 < fn.length; a2++) restoreStateOfTarget(fn[a2]);
     }
   }
 }
@@ -23952,10 +23955,10 @@ function getTargetInstForInputOrChangeEvent(domEventName, targetInst) {
   if ("input" === domEventName || "change" === domEventName)
     return getInstIfValueChanged(targetInst);
 }
-function is$1(x3, y2) {
+function is(x3, y2) {
   return x3 === y2 && (0 !== x3 || 1 / x3 === 1 / y2) || x3 !== x3 && y2 !== y2;
 }
-var objectIs = "function" === typeof Object.is ? Object.is : is$1;
+var objectIs = "function" === typeof Object.is ? Object.is : is;
 function shallowEqual$1(objA, objB) {
   if (objectIs(objA, objB)) return true;
   if ("object" !== typeof objA || null === objA || "object" !== typeof objB || null === objB)
@@ -32391,18 +32394,18 @@ function preconnect(href, crossOrigin) {
   previousDispatcher.C(href, crossOrigin);
   preconnectAs("preconnect", href, crossOrigin);
 }
-function preload(href, as2, options) {
-  previousDispatcher.L(href, as2, options);
+function preload(href, as, options) {
+  previousDispatcher.L(href, as, options);
   var ownerDocument = globalDocument;
-  if (ownerDocument && href && as2) {
-    var preloadSelector = 'link[rel="preload"][as="' + escapeSelectorAttributeValueInsideDoubleQuotes(as2) + '"]';
-    "image" === as2 ? options && options.imageSrcSet ? (preloadSelector += '[imagesrcset="' + escapeSelectorAttributeValueInsideDoubleQuotes(
+  if (ownerDocument && href && as) {
+    var preloadSelector = 'link[rel="preload"][as="' + escapeSelectorAttributeValueInsideDoubleQuotes(as) + '"]';
+    "image" === as ? options && options.imageSrcSet ? (preloadSelector += '[imagesrcset="' + escapeSelectorAttributeValueInsideDoubleQuotes(
       options.imageSrcSet
     ) + '"]', "string" === typeof options.imageSizes && (preloadSelector += '[imagesizes="' + escapeSelectorAttributeValueInsideDoubleQuotes(
       options.imageSizes
     ) + '"]')) : preloadSelector += '[href="' + escapeSelectorAttributeValueInsideDoubleQuotes(href) + '"]' : preloadSelector += '[href="' + escapeSelectorAttributeValueInsideDoubleQuotes(href) + '"]';
     var key = preloadSelector;
-    switch (as2) {
+    switch (as) {
       case "style":
         key = getStyleKey(href);
         break;
@@ -32412,19 +32415,19 @@ function preload(href, as2, options) {
     preloadPropsMap.has(key) || (href = assign(
       {
         rel: "preload",
-        href: "image" === as2 && options && options.imageSrcSet ? void 0 : href,
-        as: as2
+        href: "image" === as && options && options.imageSrcSet ? void 0 : href,
+        as
       },
       options
-    ), preloadPropsMap.set(key, href), null !== ownerDocument.querySelector(preloadSelector) || "style" === as2 && ownerDocument.querySelector(getStylesheetSelectorFromKey(key)) || "script" === as2 && ownerDocument.querySelector(getScriptSelectorFromKey(key)) || (as2 = ownerDocument.createElement("link"), setInitialProperties(as2, "link", href), markNodeAsHoistable(as2), ownerDocument.head.appendChild(as2)));
+    ), preloadPropsMap.set(key, href), null !== ownerDocument.querySelector(preloadSelector) || "style" === as && ownerDocument.querySelector(getStylesheetSelectorFromKey(key)) || "script" === as && ownerDocument.querySelector(getScriptSelectorFromKey(key)) || (as = ownerDocument.createElement("link"), setInitialProperties(as, "link", href), markNodeAsHoistable(as), ownerDocument.head.appendChild(as)));
   }
 }
 function preloadModule(href, options) {
   previousDispatcher.m(href, options);
   var ownerDocument = globalDocument;
   if (ownerDocument && href) {
-    var as2 = options && "string" === typeof options.as ? options.as : "script", preloadSelector = 'link[rel="modulepreload"][as="' + escapeSelectorAttributeValueInsideDoubleQuotes(as2) + '"][href="' + escapeSelectorAttributeValueInsideDoubleQuotes(href) + '"]', key = preloadSelector;
-    switch (as2) {
+    var as = options && "string" === typeof options.as ? options.as : "script", preloadSelector = 'link[rel="modulepreload"][as="' + escapeSelectorAttributeValueInsideDoubleQuotes(as) + '"][href="' + escapeSelectorAttributeValueInsideDoubleQuotes(href) + '"]', key = preloadSelector;
+    switch (as) {
       case "audioworklet":
       case "paintworklet":
       case "serviceworker":
@@ -32434,7 +32437,7 @@ function preloadModule(href, options) {
         key = getScriptKey(href);
     }
     if (!preloadPropsMap.has(key) && (href = assign({ rel: "modulepreload", href }, options), preloadPropsMap.set(key, href), null === ownerDocument.querySelector(preloadSelector))) {
-      switch (as2) {
+      switch (as) {
         case "audioworklet":
         case "paintworklet":
         case "serviceworker":
@@ -32444,10 +32447,10 @@ function preloadModule(href, options) {
           if (ownerDocument.querySelector(getScriptSelectorFromKey(key)))
             return;
       }
-      as2 = ownerDocument.createElement("link");
-      setInitialProperties(as2, "link", href);
-      markNodeAsHoistable(as2);
-      ownerDocument.head.appendChild(as2);
+      as = ownerDocument.createElement("link");
+      setInitialProperties(as, "link", href);
+      markNodeAsHoistable(as);
+      ownerDocument.head.appendChild(as);
     }
   }
 }
@@ -33624,165 +33627,11 @@ const createLucideIcon = (iconName, iconNode) => {
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$U = [
+const __iconNode$G = [
   ["path", { d: "M12 5v14", key: "s699le" }],
   ["path", { d: "m19 12-7 7-7-7", key: "1idqje" }]
 ];
-const ArrowDown = createLucideIcon("arrow-down", __iconNode$U);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$T = [
-  ["path", { d: "m12 19-7-7 7-7", key: "1l729n" }],
-  ["path", { d: "M19 12H5", key: "x3x0zl" }]
-];
-const ArrowLeft = createLucideIcon("arrow-left", __iconNode$T);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$S = [
-  ["path", { d: "M5 12h14", key: "1ays0h" }],
-  ["path", { d: "m12 5 7 7-7 7", key: "xquz4c" }]
-];
-const ArrowRight = createLucideIcon("arrow-right", __iconNode$S);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$R = [
-  ["path", { d: "M7 7h10v10", key: "1tivn9" }],
-  ["path", { d: "M7 17 17 7", key: "1vkiza" }]
-];
-const ArrowUpRight = createLucideIcon("arrow-up-right", __iconNode$R);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$Q = [
-  ["path", { d: "m5 12 7-7 7 7", key: "hav0vg" }],
-  ["path", { d: "M12 19V5", key: "x0mq9r" }]
-];
-const ArrowUp = createLucideIcon("arrow-up", __iconNode$Q);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$P = [
-  [
-    "path",
-    {
-      d: "M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z",
-      key: "3c2336"
-    }
-  ],
-  ["path", { d: "m9 12 2 2 4-4", key: "dzmm74" }]
-];
-const BadgeCheck = createLucideIcon("badge-check", __iconNode$P);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$O = [["path", { d: "M20 6 9 17l-5-5", key: "1gmf2c" }]];
-const Check = createLucideIcon("check", __iconNode$O);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$N = [["path", { d: "m6 9 6 6 6-6", key: "qrunsl" }]];
-const ChevronDown = createLucideIcon("chevron-down", __iconNode$N);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$M = [["path", { d: "m18 15-6-6-6 6", key: "153udz" }]];
-const ChevronUp = createLucideIcon("chevron-up", __iconNode$M);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$L = [
-  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
-  ["path", { d: "m9 12 2 2 4-4", key: "dzmm74" }]
-];
-const CircleCheck = createLucideIcon("circle-check", __iconNode$L);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$K = [
-  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
-  ["path", { d: "m15 9-6 6", key: "1uzhvr" }],
-  ["path", { d: "m9 9 6 6", key: "z0biqf" }]
-];
-const CircleX = createLucideIcon("circle-x", __iconNode$K);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$J = [
-  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
-  ["polyline", { points: "12 6 12 12 16 14", key: "68esgv" }]
-];
-const Clock = createLucideIcon("clock", __iconNode$J);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$I = [
-  ["circle", { cx: "8", cy: "8", r: "6", key: "3yglwk" }],
-  ["path", { d: "M18.09 10.37A6 6 0 1 1 10.34 18", key: "t5s6rm" }],
-  ["path", { d: "M7 6h1v4", key: "1obek4" }],
-  ["path", { d: "m16.71 13.88.7.71-2.82 2.82", key: "1rbuyh" }]
-];
-const Coins = createLucideIcon("coins", __iconNode$I);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$H = [
-  ["rect", { width: "14", height: "14", x: "8", y: "8", rx: "2", ry: "2", key: "17jyea" }],
-  ["path", { d: "M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2", key: "zix9uf" }]
-];
-const Copy = createLucideIcon("copy", __iconNode$H);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$G = [
-  ["rect", { width: "20", height: "14", x: "2", y: "5", rx: "2", key: "ynyp8z" }],
-  ["line", { x1: "2", x2: "22", y1: "10", y2: "10", key: "1b3vmo" }]
-];
-const CreditCard = createLucideIcon("credit-card", __iconNode$G);
+const ArrowDown = createLucideIcon("arrow-down", __iconNode$G);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -33790,10 +33639,10 @@ const CreditCard = createLucideIcon("credit-card", __iconNode$G);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$F = [
-  ["line", { x1: "12", x2: "12", y1: "2", y2: "22", key: "7eqyqh" }],
-  ["path", { d: "M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6", key: "1b0p4s" }]
+  ["path", { d: "m12 19-7-7 7-7", key: "1l729n" }],
+  ["path", { d: "M19 12H5", key: "x3x0zl" }]
 ];
-const DollarSign = createLucideIcon("dollar-sign", __iconNode$F);
+const ArrowLeft = createLucideIcon("arrow-left", __iconNode$F);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -33801,11 +33650,10 @@ const DollarSign = createLucideIcon("dollar-sign", __iconNode$F);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$E = [
-  ["path", { d: "M15 3h6v6", key: "1q9fwt" }],
-  ["path", { d: "M10 14 21 3", key: "gplh6r" }],
-  ["path", { d: "M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6", key: "a6xqqp" }]
+  ["path", { d: "M7 7h10v10", key: "1tivn9" }],
+  ["path", { d: "M7 17 17 7", key: "1vkiza" }]
 ];
-const ExternalLink = createLucideIcon("external-link", __iconNode$E);
+const ArrowUpRight = createLucideIcon("arrow-up-right", __iconNode$E);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -33813,6 +33661,122 @@ const ExternalLink = createLucideIcon("external-link", __iconNode$E);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$D = [
+  ["path", { d: "m5 12 7-7 7 7", key: "hav0vg" }],
+  ["path", { d: "M12 19V5", key: "x0mq9r" }]
+];
+const ArrowUp = createLucideIcon("arrow-up", __iconNode$D);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$C = [["path", { d: "M20 6 9 17l-5-5", key: "1gmf2c" }]];
+const Check = createLucideIcon("check", __iconNode$C);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$B = [["path", { d: "m6 9 6 6 6-6", key: "qrunsl" }]];
+const ChevronDown = createLucideIcon("chevron-down", __iconNode$B);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$A = [["path", { d: "m18 15-6-6-6 6", key: "153udz" }]];
+const ChevronUp = createLucideIcon("chevron-up", __iconNode$A);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$z = [
+  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
+  ["path", { d: "m9 12 2 2 4-4", key: "dzmm74" }]
+];
+const CircleCheck = createLucideIcon("circle-check", __iconNode$z);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$y = [
+  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
+  ["path", { d: "m15 9-6 6", key: "1uzhvr" }],
+  ["path", { d: "m9 9 6 6", key: "z0biqf" }]
+];
+const CircleX = createLucideIcon("circle-x", __iconNode$y);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$x = [
+  ["circle", { cx: "8", cy: "8", r: "6", key: "3yglwk" }],
+  ["path", { d: "M18.09 10.37A6 6 0 1 1 10.34 18", key: "t5s6rm" }],
+  ["path", { d: "M7 6h1v4", key: "1obek4" }],
+  ["path", { d: "m16.71 13.88.7.71-2.82 2.82", key: "1rbuyh" }]
+];
+const Coins = createLucideIcon("coins", __iconNode$x);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$w = [
+  ["rect", { width: "14", height: "14", x: "8", y: "8", rx: "2", ry: "2", key: "17jyea" }],
+  ["path", { d: "M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2", key: "zix9uf" }]
+];
+const Copy = createLucideIcon("copy", __iconNode$w);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$v = [
+  ["rect", { width: "20", height: "14", x: "2", y: "5", rx: "2", key: "ynyp8z" }],
+  ["line", { x1: "2", x2: "22", y1: "10", y2: "10", key: "1b3vmo" }]
+];
+const CreditCard = createLucideIcon("credit-card", __iconNode$v);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$u = [
+  ["line", { x1: "12", x2: "12", y1: "2", y2: "22", key: "7eqyqh" }],
+  ["path", { d: "M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6", key: "1b0p4s" }]
+];
+const DollarSign = createLucideIcon("dollar-sign", __iconNode$u);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$t = [
+  ["path", { d: "M15 3h6v6", key: "1q9fwt" }],
+  ["path", { d: "M10 14 21 3", key: "gplh6r" }],
+  ["path", { d: "M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6", key: "a6xqqp" }]
+];
+const ExternalLink = createLucideIcon("external-link", __iconNode$t);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$s = [
   ["rect", { width: "18", height: "18", x: "3", y: "3", rx: "2", key: "afitv7" }],
   ["path", { d: "M7 3v18", key: "bbkbws" }],
   ["path", { d: "M3 7.5h4", key: "zfgn84" }],
@@ -33822,14 +33786,14 @@ const __iconNode$D = [
   ["path", { d: "M17 7.5h4", key: "myr1c1" }],
   ["path", { d: "M17 16.5h4", key: "go4c1d" }]
 ];
-const Film = createLucideIcon("film", __iconNode$D);
+const Film = createLucideIcon("film", __iconNode$s);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$C = [
+const __iconNode$r = [
   ["rect", { x: "3", y: "8", width: "18", height: "4", rx: "1", key: "bkv52" }],
   ["path", { d: "M12 8v13", key: "1c76mn" }],
   ["path", { d: "M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7", key: "6wjy6b" }],
@@ -33841,26 +33805,26 @@ const __iconNode$C = [
     }
   ]
 ];
-const Gift = createLucideIcon("gift", __iconNode$C);
+const Gift = createLucideIcon("gift", __iconNode$r);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$B = [
+const __iconNode$q = [
   ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
   ["path", { d: "M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20", key: "13o1zl" }],
   ["path", { d: "M2 12h20", key: "9i4pu4" }]
 ];
-const Globe = createLucideIcon("globe", __iconNode$B);
+const Globe = createLucideIcon("globe", __iconNode$q);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$A = [
+const __iconNode$p = [
   ["circle", { cx: "9", cy: "12", r: "1", key: "1vctgf" }],
   ["circle", { cx: "9", cy: "5", r: "1", key: "hp0tcf" }],
   ["circle", { cx: "9", cy: "19", r: "1", key: "fkjjf6" }],
@@ -33868,14 +33832,14 @@ const __iconNode$A = [
   ["circle", { cx: "15", cy: "5", r: "1", key: "19l28e" }],
   ["circle", { cx: "15", cy: "19", r: "1", key: "f4zoj3" }]
 ];
-const GripVertical = createLucideIcon("grip-vertical", __iconNode$A);
+const GripVertical = createLucideIcon("grip-vertical", __iconNode$p);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$z = [
+const __iconNode$o = [
   [
     "path",
     {
@@ -33884,180 +33848,15 @@ const __iconNode$z = [
     }
   ]
 ];
-const Heart = createLucideIcon("heart", __iconNode$z);
+const Heart = createLucideIcon("heart", __iconNode$o);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$y = [
-  ["rect", { width: "18", height: "18", x: "3", y: "3", rx: "2", ry: "2", key: "1m3agn" }],
-  ["circle", { cx: "9", cy: "9", r: "2", key: "af1f0g" }],
-  ["path", { d: "m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21", key: "1xmnt7" }]
-];
-const Image = createLucideIcon("image", __iconNode$y);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$x = [["path", { d: "M21 12a9 9 0 1 1-6.219-8.56", key: "13zald" }]];
-const LoaderCircle = createLucideIcon("loader-circle", __iconNode$x);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$w = [
-  ["rect", { width: "18", height: "11", x: "3", y: "11", rx: "2", ry: "2", key: "1w4ew1" }],
-  ["path", { d: "M7 11V7a5 5 0 0 1 10 0v4", key: "fwvmzm" }]
-];
-const Lock = createLucideIcon("lock", __iconNode$w);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$v = [
-  ["path", { d: "m10 17 5-5-5-5", key: "1bsop3" }],
-  ["path", { d: "M15 12H3", key: "6jk70r" }],
-  ["path", { d: "M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4", key: "u53s6r" }]
-];
-const LogIn = createLucideIcon("log-in", __iconNode$v);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$u = [
-  ["path", { d: "m16 17 5-5-5-5", key: "1bji2h" }],
-  ["path", { d: "M21 12H9", key: "dn1m92" }],
-  ["path", { d: "M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4", key: "1uf3rs" }]
-];
-const LogOut = createLucideIcon("log-out", __iconNode$u);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$t = [
-  ["path", { d: "m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7", key: "132q7q" }],
-  ["rect", { x: "2", y: "4", width: "20", height: "16", rx: "2", key: "izxlao" }]
-];
-const Mail = createLucideIcon("mail", __iconNode$t);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$s = [
-  [
-    "path",
-    {
-      d: "M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0",
-      key: "1r0f0z"
-    }
-  ],
-  ["circle", { cx: "12", cy: "10", r: "3", key: "ilqhr7" }]
-];
-const MapPin = createLucideIcon("map-pin", __iconNode$s);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$r = [
-  ["path", { d: "M4 12h16", key: "1lakjw" }],
-  ["path", { d: "M4 18h16", key: "19g7jn" }],
-  ["path", { d: "M4 6h16", key: "1o0s65" }]
-];
-const Menu = createLucideIcon("menu", __iconNode$r);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$q = [["path", { d: "M5 12h14", key: "1ays0h" }]];
-const Minus = createLucideIcon("minus", __iconNode$q);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$p = [
-  ["path", { d: "m16 16 2 2 4-4", key: "gfu2re" }],
-  [
-    "path",
-    {
-      d: "M21 10V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l2-1.14",
-      key: "e7tb2h"
-    }
-  ],
-  ["path", { d: "m7.5 4.27 9 5.15", key: "1c824w" }],
-  ["polyline", { points: "3.29 7 12 12 20.71 7", key: "ousv84" }],
-  ["line", { x1: "12", x2: "12", y1: "22", y2: "12", key: "a4e8g8" }]
-];
-const PackageCheck = createLucideIcon("package-check", __iconNode$p);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$o = [
-  ["path", { d: "M12 22v-9", key: "x3hkom" }],
-  [
-    "path",
-    {
-      d: "M15.17 2.21a1.67 1.67 0 0 1 1.63 0L21 4.57a1.93 1.93 0 0 1 0 3.36L8.82 14.79a1.655 1.655 0 0 1-1.64 0L3 12.43a1.93 1.93 0 0 1 0-3.36z",
-      key: "2ntwy6"
-    }
-  ],
-  [
-    "path",
-    {
-      d: "M20 13v3.87a2.06 2.06 0 0 1-1.11 1.83l-6 3.08a1.93 1.93 0 0 1-1.78 0l-6-3.08A2.06 2.06 0 0 1 4 16.87V13",
-      key: "1pmm1c"
-    }
-  ],
-  [
-    "path",
-    {
-      d: "M21 12.43a1.93 1.93 0 0 0 0-3.36L8.83 2.2a1.64 1.64 0 0 0-1.63 0L3 4.57a1.93 1.93 0 0 0 0 3.36l12.18 6.86a1.636 1.636 0 0 0 1.63 0z",
-      key: "12ttoo"
-    }
-  ]
-];
-const PackageOpen = createLucideIcon("package-open", __iconNode$o);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$n = [
-  [
-    "path",
-    {
-      d: "M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z",
-      key: "1a0edw"
-    }
-  ],
-  ["path", { d: "M12 22V12", key: "d0xqtd" }],
-  ["polyline", { points: "3.29 7 12 12 20.71 7", key: "ousv84" }],
-  ["path", { d: "m7.5 4.27 9 5.15", key: "1c824w" }]
-];
-const Package = createLucideIcon("package", __iconNode$n);
+const __iconNode$n = [["path", { d: "M21 12a9 9 0 1 1-6.219-8.56", key: "13zald" }]];
+const LoaderCircle = createLucideIcon("loader-circle", __iconNode$n);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -34065,6 +33864,53 @@ const Package = createLucideIcon("package", __iconNode$n);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$m = [
+  ["rect", { width: "18", height: "11", x: "3", y: "11", rx: "2", ry: "2", key: "1w4ew1" }],
+  ["path", { d: "M7 11V7a5 5 0 0 1 10 0v4", key: "fwvmzm" }]
+];
+const Lock = createLucideIcon("lock", __iconNode$m);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$l = [
+  ["path", { d: "m10 17 5-5-5-5", key: "1bsop3" }],
+  ["path", { d: "M15 12H3", key: "6jk70r" }],
+  ["path", { d: "M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4", key: "u53s6r" }]
+];
+const LogIn = createLucideIcon("log-in", __iconNode$l);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$k = [
+  ["path", { d: "m16 17 5-5-5-5", key: "1bji2h" }],
+  ["path", { d: "M21 12H9", key: "dn1m92" }],
+  ["path", { d: "M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4", key: "1uf3rs" }]
+];
+const LogOut = createLucideIcon("log-out", __iconNode$k);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$j = [
+  ["path", { d: "M4 12h16", key: "1lakjw" }],
+  ["path", { d: "M4 18h16", key: "19g7jn" }],
+  ["path", { d: "M4 6h16", key: "1o0s65" }]
+];
+const Menu = createLucideIcon("menu", __iconNode$j);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$i = [
   [
     "path",
     {
@@ -34074,58 +33920,7 @@ const __iconNode$m = [
   ],
   ["path", { d: "m15 5 4 4", key: "1mk7zo" }]
 ];
-const Pencil = createLucideIcon("pencil", __iconNode$m);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$l = [
-  ["path", { d: "M5 12h14", key: "1ays0h" }],
-  ["path", { d: "M12 5v14", key: "s699le" }]
-];
-const Plus = createLucideIcon("plus", __iconNode$l);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$k = [
-  [
-    "path",
-    { d: "M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z", key: "q3az6g" }
-  ],
-  ["path", { d: "M14 8H8", key: "1l3xfs" }],
-  ["path", { d: "M16 12H8", key: "1fr5h0" }],
-  ["path", { d: "M13 16H8", key: "wsln4y" }]
-];
-const ReceiptText = createLucideIcon("receipt-text", __iconNode$k);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$j = [
-  ["path", { d: "M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8", key: "v9h5vc" }],
-  ["path", { d: "M21 3v5h-5", key: "1q7to0" }],
-  ["path", { d: "M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16", key: "3uifl3" }],
-  ["path", { d: "M8 16H3v5", key: "1cv678" }]
-];
-const RefreshCw = createLucideIcon("refresh-cw", __iconNode$j);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$i = [
-  ["path", { d: "m21 21-4.34-4.34", key: "14j7rj" }],
-  ["circle", { cx: "11", cy: "11", r: "8", key: "4ej97u" }]
-];
-const Search = createLucideIcon("search", __iconNode$i);
+const Pencil = createLucideIcon("pencil", __iconNode$i);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -34133,6 +33928,41 @@ const Search = createLucideIcon("search", __iconNode$i);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$h = [
+  ["path", { d: "M5 12h14", key: "1ays0h" }],
+  ["path", { d: "M12 5v14", key: "s699le" }]
+];
+const Plus = createLucideIcon("plus", __iconNode$h);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$g = [
+  ["path", { d: "M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8", key: "v9h5vc" }],
+  ["path", { d: "M21 3v5h-5", key: "1q7to0" }],
+  ["path", { d: "M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16", key: "3uifl3" }],
+  ["path", { d: "M8 16H3v5", key: "1cv678" }]
+];
+const RefreshCw = createLucideIcon("refresh-cw", __iconNode$g);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$f = [
+  ["path", { d: "m21 21-4.34-4.34", key: "14j7rj" }],
+  ["circle", { cx: "11", cy: "11", r: "8", key: "4ej97u" }]
+];
+const Search = createLucideIcon("search", __iconNode$f);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$e = [
   [
     "path",
     {
@@ -34143,54 +33973,7 @@ const __iconNode$h = [
   ["path", { d: "M12 8v4", key: "1got3b" }],
   ["path", { d: "M12 16h.01", key: "1drbdi" }]
 ];
-const ShieldAlert = createLucideIcon("shield-alert", __iconNode$h);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$g = [
-  [
-    "path",
-    {
-      d: "M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z",
-      key: "oel41y"
-    }
-  ],
-  ["path", { d: "m9 12 2 2 4-4", key: "dzmm74" }]
-];
-const ShieldCheck = createLucideIcon("shield-check", __iconNode$g);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$f = [
-  ["path", { d: "M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z", key: "hou9p0" }],
-  ["path", { d: "M3 6h18", key: "d0wm0j" }],
-  ["path", { d: "M16 10a4 4 0 0 1-8 0", key: "1ltviw" }]
-];
-const ShoppingBag = createLucideIcon("shopping-bag", __iconNode$f);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$e = [
-  ["circle", { cx: "8", cy: "21", r: "1", key: "jimo8o" }],
-  ["circle", { cx: "19", cy: "21", r: "1", key: "13723u" }],
-  [
-    "path",
-    {
-      d: "M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12",
-      key: "9zh506"
-    }
-  ]
-];
-const ShoppingCart = createLucideIcon("shopping-cart", __iconNode$e);
+const ShieldAlert = createLucideIcon("shield-alert", __iconNode$e);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -35955,14 +35738,14 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.adminListOrders(arg0);
-        return from_candid_vec_n13(this._uploadFile, this._downloadFile, result);
+        return from_candid_vec_n11(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.adminListOrders(arg0);
-      return from_candid_vec_n13(this._uploadFile, this._downloadFile, result);
+      return from_candid_vec_n11(this._uploadFile, this._downloadFile, result);
     }
   }
   async bootstrapOwner(arg0) {
@@ -35983,42 +35766,42 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.cancelCardOrder(arg0);
-        return from_candid_Result_2_n16(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_2_n14(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.cancelCardOrder(arg0);
-      return from_candid_Result_2_n16(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_2_n14(this._uploadFile, this._downloadFile, result);
     }
   }
   async cancelGuestOrder(arg0, arg1) {
     if (this.processError) {
       try {
         const result = await this.actor.cancelGuestOrder(arg0, arg1);
-        return from_candid_Result_2_n16(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_2_n14(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.cancelGuestOrder(arg0, arg1);
-      return from_candid_Result_2_n16(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_2_n14(this._uploadFile, this._downloadFile, result);
     }
   }
   async checkCryptoPayment(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.checkCryptoPayment(arg0);
-        return from_candid_Result_19_n20(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_19_n18(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.checkCryptoPayment(arg0);
-      return from_candid_Result_19_n20(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_19_n18(this._uploadFile, this._downloadFile, result);
     }
   }
   async claimInitialAdmin() {
@@ -36039,14 +35822,14 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.confirmCardPayment(arg0);
-        return from_candid_Result_26_n24(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_26_n22(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.confirmCardPayment(arg0);
-      return from_candid_Result_26_n24(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_26_n22(this._uploadFile, this._downloadFile, result);
     }
   }
   async consentServiceTransform(arg0) {
@@ -36067,56 +35850,56 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.createCardCheckoutSession(arg0, arg1, arg2);
-        return from_candid_Result_25_n26(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_25_n24(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.createCardCheckoutSession(arg0, arg1, arg2);
-      return from_candid_Result_25_n26(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_25_n24(this._uploadFile, this._downloadFile, result);
     }
   }
   async createCategory(arg0, arg1) {
     if (this.processError) {
       try {
-        const result = await this.actor.createCategory(arg0, to_candid_opt_n30(this._uploadFile, this._downloadFile, arg1));
-        return from_candid_Result_4_n31(this._uploadFile, this._downloadFile, result);
+        const result = await this.actor.createCategory(arg0, to_candid_opt_n28(this._uploadFile, this._downloadFile, arg1));
+        return from_candid_Result_4_n29(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
-      const result = await this.actor.createCategory(arg0, to_candid_opt_n30(this._uploadFile, this._downloadFile, arg1));
-      return from_candid_Result_4_n31(this._uploadFile, this._downloadFile, result);
+      const result = await this.actor.createCategory(arg0, to_candid_opt_n28(this._uploadFile, this._downloadFile, arg1));
+      return from_candid_Result_4_n29(this._uploadFile, this._downloadFile, result);
     }
   }
   async createCheckoutSession(arg0) {
     if (this.processError) {
       try {
-        const result = await this.actor.createCheckoutSession(to_candid_Order_n37(this._uploadFile, this._downloadFile, arg0));
-        return from_candid_Result_24_n45(this._uploadFile, this._downloadFile, result);
+        const result = await this.actor.createCheckoutSession(to_candid_Order_n35(this._uploadFile, this._downloadFile, arg0));
+        return from_candid_Result_24_n40(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
-      const result = await this.actor.createCheckoutSession(to_candid_Order_n37(this._uploadFile, this._downloadFile, arg0));
-      return from_candid_Result_24_n45(this._uploadFile, this._downloadFile, result);
+      const result = await this.actor.createCheckoutSession(to_candid_Order_n35(this._uploadFile, this._downloadFile, arg0));
+      return from_candid_Result_24_n40(this._uploadFile, this._downloadFile, result);
     }
   }
   async createOrder(arg0) {
     if (this.processError) {
       try {
-        const result = await this.actor.createOrder(to_candid_CreateOrderInput_n49(this._uploadFile, this._downloadFile, arg0));
-        return from_candid_Result_23_n51(this._uploadFile, this._downloadFile, result);
+        const result = await this.actor.createOrder(to_candid_CreateOrderInput_n44(this._uploadFile, this._downloadFile, arg0));
+        return from_candid_Result_23_n46(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
-      const result = await this.actor.createOrder(to_candid_CreateOrderInput_n49(this._uploadFile, this._downloadFile, arg0));
-      return from_candid_Result_23_n51(this._uploadFile, this._downloadFile, result);
+      const result = await this.actor.createOrder(to_candid_CreateOrderInput_n44(this._uploadFile, this._downloadFile, arg0));
+      return from_candid_Result_23_n46(this._uploadFile, this._downloadFile, result);
     }
   }
   async createProduct(arg0) {
@@ -36137,28 +35920,28 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.deleteCategory(arg0);
-        return from_candid_Result_12_n63(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_12_n57(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.deleteCategory(arg0);
-      return from_candid_Result_12_n63(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_12_n57(this._uploadFile, this._downloadFile, result);
     }
   }
   async deleteProductImage(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.deleteProductImage(arg0);
-        return from_candid_Result_n65(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_n59(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.deleteProductImage(arg0);
-      return from_candid_Result_n65(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_n59(this._uploadFile, this._downloadFile, result);
     }
   }
   async emailTransform(arg0) {
@@ -36179,56 +35962,56 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.execute(arg0);
-        return from_candid_Result__1_n69(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result__1_n62(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.execute(arg0);
-      return from_candid_Result__1_n69(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result__1_n62(this._uploadFile, this._downloadFile, result);
     }
   }
   async finishUpload(arg0, arg1) {
     if (this.processError) {
       try {
         const result = await this.actor.finishUpload(arg0, arg1);
-        return from_candid_Result_10_n77(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_10_n70(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.finishUpload(arg0, arg1);
-      return from_candid_Result_10_n77(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_10_n70(this._uploadFile, this._downloadFile, result);
     }
   }
   async forceRecheckPayment(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.forceRecheckPayment(arg0);
-        return from_candid_Result_22_n79(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_22_n72(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.forceRecheckPayment(arg0);
-      return from_candid_Result_22_n79(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_22_n72(this._uploadFile, this._downloadFile, result);
     }
   }
   async forceSweepOrder(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.forceSweepOrder(arg0);
-        return from_candid_Result_7_n85(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_7_n78(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.forceSweepOrder(arg0);
-      return from_candid_Result_7_n85(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_7_n78(this._uploadFile, this._downloadFile, result);
     }
   }
   async getApiDoc() {
@@ -36263,56 +36046,56 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.getConsentListCsv();
-        return from_candid_Result_21_n90(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_21_n83(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getConsentListCsv();
-      return from_candid_Result_21_n90(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_21_n83(this._uploadFile, this._downloadFile, result);
     }
   }
   async getCryptoConfig() {
     if (this.processError) {
       try {
         const result = await this.actor.getCryptoConfig();
-        return from_candid_CryptoConfigView_n94(this._uploadFile, this._downloadFile, result);
+        return from_candid_CryptoConfigView_n87(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getCryptoConfig();
-      return from_candid_CryptoConfigView_n94(this._uploadFile, this._downloadFile, result);
+      return from_candid_CryptoConfigView_n87(this._uploadFile, this._downloadFile, result);
     }
   }
   async getCryptoDepositInfo(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.getCryptoDepositInfo(arg0);
-        return from_candid_Result_20_n96(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_20_n89(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getCryptoDepositInfo(arg0);
-      return from_candid_Result_20_n96(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_20_n89(this._uploadFile, this._downloadFile, result);
     }
   }
   async getCryptoPaymentStatus(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.getCryptoPaymentStatus(arg0);
-        return from_candid_Result_19_n20(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_19_n18(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getCryptoPaymentStatus(arg0);
-      return from_candid_Result_19_n20(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_19_n18(this._uploadFile, this._downloadFile, result);
     }
   }
   async getCycleBalance() {
@@ -36361,14 +36144,14 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.getDefaultSubaccountBalance();
-        return from_candid_Result_18_n102(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_18_n94(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getDefaultSubaccountBalance();
-      return from_candid_Result_18_n102(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_18_n94(this._uploadFile, this._downloadFile, result);
     }
   }
   async getEncryptionRecipients() {
@@ -36445,28 +36228,28 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.getMyOrders();
-        return from_candid_vec_n104(this._uploadFile, this._downloadFile, result);
+        return from_candid_vec_n96(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getMyOrders();
-      return from_candid_vec_n104(this._uploadFile, this._downloadFile, result);
+      return from_candid_vec_n96(this._uploadFile, this._downloadFile, result);
     }
   }
   async getMyRole() {
     if (this.processError) {
       try {
         const result = await this.actor.getMyRole();
-        return from_candid_opt_n107(this._uploadFile, this._downloadFile, result);
+        return from_candid_opt_n99(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getMyRole();
-      return from_candid_opt_n107(this._uploadFile, this._downloadFile, result);
+      return from_candid_opt_n99(this._uploadFile, this._downloadFile, result);
     }
   }
   async getNAKPrice() {
@@ -36487,14 +36270,14 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.getOrderStatus(arg0);
-        return from_candid_opt_n110(this._uploadFile, this._downloadFile, result);
+        return from_candid_opt_n101(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getOrderStatus(arg0);
-      return from_candid_opt_n110(this._uploadFile, this._downloadFile, result);
+      return from_candid_opt_n101(this._uploadFile, this._downloadFile, result);
     }
   }
   async getPaymentServiceConfig() {
@@ -36543,14 +36326,14 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.getProduct(arg0);
-        return from_candid_opt_n111(this._uploadFile, this._downloadFile, result);
+        return from_candid_opt_n102(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getProduct(arg0);
-      return from_candid_opt_n111(this._uploadFile, this._downloadFile, result);
+      return from_candid_opt_n102(this._uploadFile, this._downloadFile, result);
     }
   }
   async getProductImageStorageStats() {
@@ -36571,28 +36354,28 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.getResumeInfo(arg0);
-        return from_candid_Result_17_n112(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_17_n103(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getResumeInfo(arg0);
-      return from_candid_Result_17_n112(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_17_n103(this._uploadFile, this._downloadFile, result);
     }
   }
   async getSubaccountBalance(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.getSubaccountBalance(arg0);
-        return from_candid_Result_16_n117(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_16_n108(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.getSubaccountBalance(arg0);
-      return from_candid_Result_16_n117(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_16_n108(this._uploadFile, this._downloadFile, result);
     }
   }
   async getTokenImage(arg0, arg1) {
@@ -36640,14 +36423,14 @@ class Backend {
   async grantRole(arg0, arg1) {
     if (this.processError) {
       try {
-        const result = await this.actor.grantRole(arg0, to_candid_Role_n121(this._uploadFile, this._downloadFile, arg1));
+        const result = await this.actor.grantRole(arg0, to_candid_Role_n112(this._uploadFile, this._downloadFile, arg1));
         return result;
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
-      const result = await this.actor.grantRole(arg0, to_candid_Role_n121(this._uploadFile, this._downloadFile, arg1));
+      const result = await this.actor.grantRole(arg0, to_candid_Role_n112(this._uploadFile, this._downloadFile, arg1));
       return result;
     }
   }
@@ -36655,56 +36438,56 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.handlePaymentConfirmation(arg0);
-        return from_candid_Result_15_n123(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_15_n113(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.handlePaymentConfirmation(arg0);
-      return from_candid_Result_15_n123(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_15_n113(this._uploadFile, this._downloadFile, result);
     }
   }
   async http_request(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.http_request(arg0);
-        return from_candid_HttpResponse_n125(this._uploadFile, this._downloadFile, result);
+        return from_candid_HttpResponse_n115(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.http_request(arg0);
-      return from_candid_HttpResponse_n125(this._uploadFile, this._downloadFile, result);
+      return from_candid_HttpResponse_n115(this._uploadFile, this._downloadFile, result);
     }
   }
   async http_request_streaming_callback(arg0) {
     if (this.processError) {
       try {
-        const result = await this.actor.http_request_streaming_callback(to_candid_StreamingCallbackToken_n133(this._uploadFile, this._downloadFile, arg0));
-        return from_candid_StreamingCallbackResponse_n135(this._uploadFile, this._downloadFile, result);
+        const result = await this.actor.http_request_streaming_callback(to_candid_StreamingCallbackToken_n123(this._uploadFile, this._downloadFile, arg0));
+        return from_candid_StreamingCallbackResponse_n125(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
-      const result = await this.actor.http_request_streaming_callback(to_candid_StreamingCallbackToken_n133(this._uploadFile, this._downloadFile, arg0));
-      return from_candid_StreamingCallbackResponse_n135(this._uploadFile, this._downloadFile, result);
+      const result = await this.actor.http_request_streaming_callback(to_candid_StreamingCallbackToken_n123(this._uploadFile, this._downloadFile, arg0));
+      return from_candid_StreamingCallbackResponse_n125(this._uploadFile, this._downloadFile, result);
     }
   }
   async http_request_update(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.http_request_update(arg0);
-        return from_candid_HttpResponse_n125(this._uploadFile, this._downloadFile, result);
+        return from_candid_HttpResponse_n115(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.http_request_update(arg0);
-      return from_candid_HttpResponse_n125(this._uploadFile, this._downloadFile, result);
+      return from_candid_HttpResponse_n115(this._uploadFile, this._downloadFile, result);
     }
   }
   async isAdmin() {
@@ -36739,42 +36522,42 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.listCategories();
-        return from_candid_vec_n138(this._uploadFile, this._downloadFile, result);
+        return from_candid_vec_n128(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.listCategories();
-      return from_candid_vec_n138(this._uploadFile, this._downloadFile, result);
+      return from_candid_vec_n128(this._uploadFile, this._downloadFile, result);
     }
   }
   async listLatePayments() {
     if (this.processError) {
       try {
         const result = await this.actor.listLatePayments();
-        return from_candid_vec_n141(this._uploadFile, this._downloadFile, result);
+        return from_candid_vec_n131(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.listLatePayments();
-      return from_candid_vec_n141(this._uploadFile, this._downloadFile, result);
+      return from_candid_vec_n131(this._uploadFile, this._downloadFile, result);
     }
   }
   async listOrdersForRecovery() {
     if (this.processError) {
       try {
         const result = await this.actor.listOrdersForRecovery();
-        return from_candid_vec_n144(this._uploadFile, this._downloadFile, result);
+        return from_candid_vec_n134(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.listOrdersForRecovery();
-      return from_candid_vec_n144(this._uploadFile, this._downloadFile, result);
+      return from_candid_vec_n134(this._uploadFile, this._downloadFile, result);
     }
   }
   async listProducts() {
@@ -36795,28 +36578,28 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.listSubmissions();
-        return from_candid_Result_14_n148(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_14_n138(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.listSubmissions();
-      return from_candid_Result_14_n148(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_14_n138(this._uploadFile, this._downloadFile, result);
     }
   }
   async listUsers() {
     if (this.processError) {
       try {
         const result = await this.actor.listUsers();
-        return from_candid_vec_n157(this._uploadFile, this._downloadFile, result);
+        return from_candid_vec_n146(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.listUsers();
-      return from_candid_vec_n157(this._uploadFile, this._downloadFile, result);
+      return from_candid_vec_n146(this._uploadFile, this._downloadFile, result);
     }
   }
   async markLatePaymentReviewed(arg0) {
@@ -36836,15 +36619,15 @@ class Backend {
   async markOrderShipped(arg0, arg1) {
     if (this.processError) {
       try {
-        const result = await this.actor.markOrderShipped(arg0, to_candid_opt_n30(this._uploadFile, this._downloadFile, arg1));
-        return from_candid_Result_11_n161(this._uploadFile, this._downloadFile, result);
+        const result = await this.actor.markOrderShipped(arg0, to_candid_opt_n28(this._uploadFile, this._downloadFile, arg1));
+        return from_candid_Result_11_n150(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
-      const result = await this.actor.markOrderShipped(arg0, to_candid_opt_n30(this._uploadFile, this._downloadFile, arg1));
-      return from_candid_Result_11_n161(this._uploadFile, this._downloadFile, result);
+      const result = await this.actor.markOrderShipped(arg0, to_candid_opt_n28(this._uploadFile, this._downloadFile, arg1));
+      return from_candid_Result_11_n150(this._uploadFile, this._downloadFile, result);
     }
   }
   async paymentServiceTransform(arg0) {
@@ -36865,14 +36648,14 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.reassignProducts(arg0, arg1);
-        return from_candid_Result_13_n165(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_13_n154(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.reassignProducts(arg0, arg1);
-      return from_candid_Result_13_n165(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_13_n154(this._uploadFile, this._downloadFile, result);
     }
   }
   async releaseExpiredOrders() {
@@ -36921,28 +36704,28 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.reorderCategories(arg0);
-        return from_candid_Result_12_n63(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_12_n57(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.reorderCategories(arg0);
-      return from_candid_Result_12_n63(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_12_n57(this._uploadFile, this._downloadFile, result);
     }
   }
   async resendConfirmationEmail(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.resendConfirmationEmail(arg0);
-        return from_candid_Result_11_n161(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_11_n150(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.resendConfirmationEmail(arg0);
-      return from_candid_Result_11_n161(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_11_n150(this._uploadFile, this._downloadFile, result);
     }
   }
   async resetAdminForMigration() {
@@ -36991,14 +36774,14 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.startUpload(arg0, arg1);
-        return from_candid_Result_10_n77(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_10_n70(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.startUpload(arg0, arg1);
-      return from_candid_Result_10_n77(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_10_n70(this._uploadFile, this._downloadFile, result);
     }
   }
   async startVerificationTimer() {
@@ -37046,43 +36829,43 @@ class Backend {
   async submitSubmission(arg0) {
     if (this.processError) {
       try {
-        const result = await this.actor.submitSubmission(to_candid_SubmissionInput_n167(this._uploadFile, this._downloadFile, arg0));
-        return from_candid_Result_9_n171(this._uploadFile, this._downloadFile, result);
+        const result = await this.actor.submitSubmission(to_candid_SubmissionInput_n156(this._uploadFile, this._downloadFile, arg0));
+        return from_candid_Result_9_n159(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
-      const result = await this.actor.submitSubmission(to_candid_SubmissionInput_n167(this._uploadFile, this._downloadFile, arg0));
-      return from_candid_Result_9_n171(this._uploadFile, this._downloadFile, result);
+      const result = await this.actor.submitSubmission(to_candid_SubmissionInput_n156(this._uploadFile, this._downloadFile, arg0));
+      return from_candid_Result_9_n159(this._uploadFile, this._downloadFile, result);
     }
   }
   async sweepCryptoToTreasury(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.sweepCryptoToTreasury(arg0);
-        return from_candid_Result_8_n173(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_8_n161(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.sweepCryptoToTreasury(arg0);
-      return from_candid_Result_8_n173(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_8_n161(this._uploadFile, this._downloadFile, result);
     }
   }
   async sweepDefaultSubaccount() {
     if (this.processError) {
       try {
         const result = await this.actor.sweepDefaultSubaccount();
-        return from_candid_Result_7_n85(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_7_n78(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.sweepDefaultSubaccount();
-      return from_candid_Result_7_n85(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_7_n78(this._uploadFile, this._downloadFile, result);
     }
   }
   async sweepExpiredUploads() {
@@ -37103,14 +36886,14 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.sweepSubaccount(arg0);
-        return from_candid_Result_6_n175(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_6_n163(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.sweepSubaccount(arg0);
-      return from_candid_Result_6_n175(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_6_n163(this._uploadFile, this._downloadFile, result);
     }
   }
   async transform(arg0) {
@@ -37131,98 +36914,98 @@ class Backend {
     if (this.processError) {
       try {
         const result = await this.actor.unsubscribe(arg0);
-        return from_candid_Result_5_n179(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_5_n167(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.unsubscribe(arg0);
-      return from_candid_Result_5_n179(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_5_n167(this._uploadFile, this._downloadFile, result);
     }
   }
   async updateCategory(arg0, arg1, arg2, arg3, arg4, arg5) {
     if (this.processError) {
       try {
-        const result = await this.actor.updateCategory(arg0, arg1, to_candid_opt_n30(this._uploadFile, this._downloadFile, arg2), arg3, arg4, arg5);
-        return from_candid_Result_4_n31(this._uploadFile, this._downloadFile, result);
+        const result = await this.actor.updateCategory(arg0, arg1, to_candid_opt_n28(this._uploadFile, this._downloadFile, arg2), arg3, arg4, arg5);
+        return from_candid_Result_4_n29(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
-      const result = await this.actor.updateCategory(arg0, arg1, to_candid_opt_n30(this._uploadFile, this._downloadFile, arg2), arg3, arg4, arg5);
-      return from_candid_Result_4_n31(this._uploadFile, this._downloadFile, result);
+      const result = await this.actor.updateCategory(arg0, arg1, to_candid_opt_n28(this._uploadFile, this._downloadFile, arg2), arg3, arg4, arg5);
+      return from_candid_Result_4_n29(this._uploadFile, this._downloadFile, result);
     }
   }
   async updateFeaturedVideo(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.updateFeaturedVideo(arg0);
-        return from_candid_Result_3_n181(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_3_n169(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.updateFeaturedVideo(arg0);
-      return from_candid_Result_3_n181(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_3_n169(this._uploadFile, this._downloadFile, result);
     }
   }
   async updateLedgerConfig(arg0, arg1, arg2, arg3) {
     if (this.processError) {
       try {
-        const result = await this.actor.updateLedgerConfig(to_candid_Token_n183(this._uploadFile, this._downloadFile, arg0), arg1, arg2, arg3);
-        return from_candid_Result_1_n185(this._uploadFile, this._downloadFile, result);
+        const result = await this.actor.updateLedgerConfig(to_candid_Token_n171(this._uploadFile, this._downloadFile, arg0), arg1, arg2, arg3);
+        return from_candid_Result_1_n172(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
-      const result = await this.actor.updateLedgerConfig(to_candid_Token_n183(this._uploadFile, this._downloadFile, arg0), arg1, arg2, arg3);
-      return from_candid_Result_1_n185(this._uploadFile, this._downloadFile, result);
+      const result = await this.actor.updateLedgerConfig(to_candid_Token_n171(this._uploadFile, this._downloadFile, arg0), arg1, arg2, arg3);
+      return from_candid_Result_1_n172(this._uploadFile, this._downloadFile, result);
     }
   }
   async updateMinimumOrder(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.updateMinimumOrder(arg0);
-        return from_candid_Result_1_n185(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_1_n172(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.updateMinimumOrder(arg0);
-      return from_candid_Result_1_n185(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_1_n172(this._uploadFile, this._downloadFile, result);
     }
   }
   async updatePaymentServiceToken(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.updatePaymentServiceToken(arg0);
-        return from_candid_Result_2_n16(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_2_n14(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.updatePaymentServiceToken(arg0);
-      return from_candid_Result_2_n16(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_2_n14(this._uploadFile, this._downloadFile, result);
     }
   }
   async updatePaymentServiceUrl(arg0) {
     if (this.processError) {
       try {
         const result = await this.actor.updatePaymentServiceUrl(arg0);
-        return from_candid_Result_2_n16(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_2_n14(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.updatePaymentServiceUrl(arg0);
-      return from_candid_Result_2_n16(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_2_n14(this._uploadFile, this._downloadFile, result);
     }
   }
   async updatePendingOrderGlobalCap(arg0) {
@@ -37256,356 +37039,346 @@ class Backend {
   async updateTreasury(arg0, arg1) {
     if (this.processError) {
       try {
-        const result = await this.actor.updateTreasury(arg0, to_candid_opt_n187(this._uploadFile, this._downloadFile, arg1));
-        return from_candid_Result_1_n185(this._uploadFile, this._downloadFile, result);
+        const result = await this.actor.updateTreasury(arg0, to_candid_opt_n174(this._uploadFile, this._downloadFile, arg1));
+        return from_candid_Result_1_n172(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
-      const result = await this.actor.updateTreasury(arg0, to_candid_opt_n187(this._uploadFile, this._downloadFile, arg1));
-      return from_candid_Result_1_n185(this._uploadFile, this._downloadFile, result);
+      const result = await this.actor.updateTreasury(arg0, to_candid_opt_n174(this._uploadFile, this._downloadFile, arg1));
+      return from_candid_Result_1_n172(this._uploadFile, this._downloadFile, result);
     }
   }
   async uploadChunk(arg0, arg1, arg2) {
     if (this.processError) {
       try {
         const result = await this.actor.uploadChunk(arg0, arg1, arg2);
-        return from_candid_Result_n65(this._uploadFile, this._downloadFile, result);
+        return from_candid_Result_n59(this._uploadFile, this._downloadFile, result);
       } catch (e3) {
         this.processError(e3);
         throw new Error("unreachable");
       }
     } else {
       const result = await this.actor.uploadChunk(arg0, arg1, arg2);
-      return from_candid_Result_n65(this._uploadFile, this._downloadFile, result);
+      return from_candid_Result_n59(this._uploadFile, this._downloadFile, result);
     }
   }
 }
 function from_candid_AdminOrderDetail_n2(_uploadFile, _downloadFile, value) {
   return from_candid_record_n3(_uploadFile, _downloadFile, value);
 }
-function from_candid_AdminOrderView_n14(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n15(_uploadFile, _downloadFile, value);
+function from_candid_AdminOrderView_n12(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n13(_uploadFile, _downloadFile, value);
 }
-function from_candid_CategoryError_n35(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n36(_uploadFile, _downloadFile, value);
+function from_candid_CategoryError_n33(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n34(_uploadFile, _downloadFile, value);
 }
-function from_candid_CategoryWithCount_n139(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n140(_uploadFile, _downloadFile, value);
+function from_candid_CategoryWithCount_n129(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n130(_uploadFile, _downloadFile, value);
 }
-function from_candid_Category_n33(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n34(_uploadFile, _downloadFile, value);
+function from_candid_Category_n31(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n32(_uploadFile, _downloadFile, value);
 }
-function from_candid_Cell_n73(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n74(_uploadFile, _downloadFile, value);
+function from_candid_Cell_n66(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n67(_uploadFile, _downloadFile, value);
 }
-function from_candid_CheckoutSession_n28(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n29(_uploadFile, _downloadFile, value);
+function from_candid_CheckoutSession_n26(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n27(_uploadFile, _downloadFile, value);
 }
-function from_candid_ConsentError_n92(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n93(_uploadFile, _downloadFile, value);
-}
-function from_candid_CreateOrderResult_n53(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n54(_uploadFile, _downloadFile, value);
-}
-function from_candid_CryptoConfigView_n94(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n95(_uploadFile, _downloadFile, value);
-}
-function from_candid_CryptoPaymentError_n22(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n23(_uploadFile, _downloadFile, value);
-}
-function from_candid_CryptoPaymentStatus_n10(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n11(_uploadFile, _downloadFile, value);
-}
-function from_candid_DepositInfo_n98(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n99(_uploadFile, _downloadFile, value);
-}
-function from_candid_Discipline_n153(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n154(_uploadFile, _downloadFile, value);
-}
-function from_candid_EmailError_n163(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n164(_uploadFile, _downloadFile, value);
-}
-function from_candid_HttpResponse_n125(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n126(_uploadFile, _downloadFile, value);
-}
-function from_candid_LatePayment_n142(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n143(_uploadFile, _downloadFile, value);
-}
-function from_candid_OrderError_n61(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n62(_uploadFile, _downloadFile, value);
-}
-function from_candid_OrderRecoveryView_n145(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n146(_uploadFile, _downloadFile, value);
-}
-function from_candid_Order_n55(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n56(_uploadFile, _downloadFile, value);
-}
-function from_candid_PaymentError_n47(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n48(_uploadFile, _downloadFile, value);
-}
-function from_candid_PaymentMethod_n6(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n7(_uploadFile, _downloadFile, value);
-}
-function from_candid_PaymentServiceError_n18(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n19(_uploadFile, _downloadFile, value);
-}
-function from_candid_PaymentStatus_n4(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n5(_uploadFile, _downloadFile, value);
-}
-function from_candid_PublicOrderView_n105(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n106(_uploadFile, _downloadFile, value);
-}
-function from_candid_RecheckResult_n81(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n82(_uploadFile, _downloadFile, value);
-}
-function from_candid_RecoveryError_n83(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n84(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_10_n77(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n78(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_11_n161(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n162(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_12_n63(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n64(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_13_n165(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n166(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_14_n148(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n149(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_15_n123(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n124(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_16_n117(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n118(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_17_n112(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n113(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_18_n102(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n103(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_19_n20(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n21(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_1_n185(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n186(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_20_n96(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n97(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_21_n90(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n91(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_22_n79(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n80(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_23_n51(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n52(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_24_n45(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n46(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_25_n26(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n27(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_26_n24(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n25(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_2_n16(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n17(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_3_n181(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n182(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_4_n31(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n32(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_5_n179(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n180(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_6_n175(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n176(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_7_n85(_uploadFile, _downloadFile, value) {
+function from_candid_ConsentError_n85(_uploadFile, _downloadFile, value) {
   return from_candid_variant_n86(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_8_n173(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n174(_uploadFile, _downloadFile, value);
+function from_candid_CreateOrderResult_n48(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n49(_uploadFile, _downloadFile, value);
 }
-function from_candid_Result_9_n171(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n172(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result__1_n69(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n70(_uploadFile, _downloadFile, value);
-}
-function from_candid_Result_n65(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n66(_uploadFile, _downloadFile, value);
-}
-function from_candid_ResumeInfo_n114(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n115(_uploadFile, _downloadFile, value);
-}
-function from_candid_Role_n108(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n109(_uploadFile, _downloadFile, value);
-}
-function from_candid_ShippingStatus_n58(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n59(_uploadFile, _downloadFile, value);
-}
-function from_candid_StreamingCallbackResponse_n135(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n136(_uploadFile, _downloadFile, value);
-}
-function from_candid_StreamingCallbackToken_n131(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n132(_uploadFile, _downloadFile, value);
-}
-function from_candid_StreamingStrategy_n128(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n129(_uploadFile, _downloadFile, value);
-}
-function from_candid_SubmissionError_n155(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n156(_uploadFile, _downloadFile, value);
-}
-function from_candid_SubmissionRecord_n151(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n152(_uploadFile, _downloadFile, value);
-}
-function from_candid_SweepError_n119(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n120(_uploadFile, _downloadFile, value);
-}
-function from_candid_SweepResult_n87(_uploadFile, _downloadFile, value) {
+function from_candid_CryptoConfigView_n87(_uploadFile, _downloadFile, value) {
   return from_candid_record_n88(_uploadFile, _downloadFile, value);
 }
-function from_candid_SweepSubaccountResult_n177(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n178(_uploadFile, _downloadFile, value);
+function from_candid_CryptoPaymentError_n20(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n21(_uploadFile, _downloadFile, value);
 }
-function from_candid_Token_n100(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n101(_uploadFile, _downloadFile, value);
+function from_candid_CryptoPaymentStatus_n8(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n9(_uploadFile, _downloadFile, value);
 }
-function from_candid_UploadError_n67(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n68(_uploadFile, _downloadFile, value);
+function from_candid_DepositInfo_n91(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n92(_uploadFile, _downloadFile, value);
 }
-function from_candid_UserRecord_n159(_uploadFile, _downloadFile, value) {
-  return from_candid_record_n160(_uploadFile, _downloadFile, value);
+function from_candid_Discipline_n143(_uploadFile, _downloadFile, value) {
+  return "music" in value ? "music" : "other" in value ? "other" : "video" in value ? "video" : "visualArt" in value ? "visualArt" : "writing" in value ? "writing" : value;
 }
-function from_candid_Value_n75(_uploadFile, _downloadFile, value) {
-  return from_candid_variant_n76(_uploadFile, _downloadFile, value);
+function from_candid_EmailError_n152(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n153(_uploadFile, _downloadFile, value);
+}
+function from_candid_HttpResponse_n115(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n116(_uploadFile, _downloadFile, value);
+}
+function from_candid_LatePayment_n132(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n133(_uploadFile, _downloadFile, value);
+}
+function from_candid_OrderError_n55(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n56(_uploadFile, _downloadFile, value);
+}
+function from_candid_OrderRecoveryView_n135(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n136(_uploadFile, _downloadFile, value);
+}
+function from_candid_Order_n50(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n51(_uploadFile, _downloadFile, value);
+}
+function from_candid_PaymentError_n42(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n43(_uploadFile, _downloadFile, value);
+}
+function from_candid_PaymentMethod_n5(_uploadFile, _downloadFile, value) {
+  return "crypto_icp" in value ? "crypto_icp" : "card_stripe" in value ? "card_stripe" : "crypto_ckusdc" in value ? "crypto_ckusdc" : "manual" in value ? "manual" : value;
+}
+function from_candid_PaymentServiceError_n16(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n17(_uploadFile, _downloadFile, value);
+}
+function from_candid_PaymentStatus_n4(_uploadFile, _downloadFile, value) {
+  return "cancelled" in value ? "cancelled" : "expired" in value ? "expired" : "pending" in value ? "pending" : "paid" in value ? "paid" : value;
+}
+function from_candid_PublicOrderView_n97(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n98(_uploadFile, _downloadFile, value);
+}
+function from_candid_RecheckResult_n74(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n75(_uploadFile, _downloadFile, value);
+}
+function from_candid_RecoveryError_n76(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n77(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_10_n70(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n71(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_11_n150(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n151(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_12_n57(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n58(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_13_n154(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n155(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_14_n138(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n139(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_15_n113(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n114(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_16_n108(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n109(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_17_n103(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n104(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_18_n94(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n95(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_19_n18(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n19(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_1_n172(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n173(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_20_n89(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n90(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_21_n83(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n84(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_22_n72(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n73(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_23_n46(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n47(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_24_n40(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n41(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_25_n24(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n25(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_26_n22(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n23(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_2_n14(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n15(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_3_n169(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n170(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_4_n29(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n30(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_5_n167(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n168(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_6_n163(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n164(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_7_n78(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n79(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_8_n161(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n162(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_9_n159(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n160(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result__1_n62(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n63(_uploadFile, _downloadFile, value);
+}
+function from_candid_Result_n59(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n60(_uploadFile, _downloadFile, value);
+}
+function from_candid_ResumeInfo_n105(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n106(_uploadFile, _downloadFile, value);
+}
+function from_candid_Role_n100(_uploadFile, _downloadFile, value) {
+  return "admin" in value ? "admin" : "owner" in value ? "owner" : "staff" in value ? "staff" : value;
+}
+function from_candid_ShippingStatus_n53(_uploadFile, _downloadFile, value) {
+  return "shipped" in value ? "shipped" : "pending" in value ? "pending" : value;
+}
+function from_candid_StreamingCallbackResponse_n125(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n126(_uploadFile, _downloadFile, value);
+}
+function from_candid_StreamingCallbackToken_n121(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n122(_uploadFile, _downloadFile, value);
+}
+function from_candid_StreamingStrategy_n118(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n119(_uploadFile, _downloadFile, value);
+}
+function from_candid_SubmissionError_n144(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n145(_uploadFile, _downloadFile, value);
+}
+function from_candid_SubmissionRecord_n141(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n142(_uploadFile, _downloadFile, value);
+}
+function from_candid_SweepError_n110(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n111(_uploadFile, _downloadFile, value);
+}
+function from_candid_SweepResult_n80(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n81(_uploadFile, _downloadFile, value);
+}
+function from_candid_SweepSubaccountResult_n165(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n166(_uploadFile, _downloadFile, value);
+}
+function from_candid_Token_n93(_uploadFile, _downloadFile, value) {
+  return "ICP" in value ? "ICP" : "ckUSDC" in value ? "ckUSDC" : value;
+}
+function from_candid_UploadError_n61(_uploadFile, _downloadFile, value) {
+  return "tooManyImages" in value ? "tooManyImages" : "tooLarge" in value ? "tooLarge" : "magicByteMismatch" in value ? "magicByteMismatch" : "sizeMismatch" in value ? "sizeMismatch" : "invalidContentType" in value ? "invalidContentType" : "notFound" in value ? "notFound" : "uploadExpired" in value ? "uploadExpired" : "svgNotAllowed" in value ? "svgNotAllowed" : "chunkOutOfOrder" in value ? "chunkOutOfOrder" : "unauthorized" in value ? "unauthorized" : value;
+}
+function from_candid_UserRecord_n148(_uploadFile, _downloadFile, value) {
+  return from_candid_record_n149(_uploadFile, _downloadFile, value);
+}
+function from_candid_Value_n68(_uploadFile, _downloadFile, value) {
+  return from_candid_variant_n69(_uploadFile, _downloadFile, value);
 }
 function from_candid_opt_n1(_uploadFile, _downloadFile, value) {
   return value.length === 0 ? null : from_candid_AdminOrderDetail_n2(_uploadFile, _downloadFile, value[0]);
 }
+function from_candid_opt_n10(_uploadFile, _downloadFile, value) {
+  return value.length === 0 ? null : value[0];
+}
+function from_candid_opt_n101(_uploadFile, _downloadFile, value) {
+  return value.length === 0 ? null : from_candid_PublicOrderView_n97(_uploadFile, _downloadFile, value[0]);
+}
+function from_candid_opt_n102(_uploadFile, _downloadFile, value) {
+  return value.length === 0 ? null : value[0];
+}
 function from_candid_opt_n107(_uploadFile, _downloadFile, value) {
-  return value.length === 0 ? null : from_candid_Role_n108(_uploadFile, _downloadFile, value[0]);
+  return value.length === 0 ? null : from_candid_DepositInfo_n91(_uploadFile, _downloadFile, value[0]);
 }
-function from_candid_opt_n110(_uploadFile, _downloadFile, value) {
-  return value.length === 0 ? null : from_candid_PublicOrderView_n105(_uploadFile, _downloadFile, value[0]);
-}
-function from_candid_opt_n111(_uploadFile, _downloadFile, value) {
-  return value.length === 0 ? null : value[0];
-}
-function from_candid_opt_n116(_uploadFile, _downloadFile, value) {
-  return value.length === 0 ? null : from_candid_DepositInfo_n98(_uploadFile, _downloadFile, value[0]);
-}
-function from_candid_opt_n12(_uploadFile, _downloadFile, value) {
-  return value.length === 0 ? null : value[0];
+function from_candid_opt_n117(_uploadFile, _downloadFile, value) {
+  return value.length === 0 ? null : from_candid_StreamingStrategy_n118(_uploadFile, _downloadFile, value[0]);
 }
 function from_candid_opt_n127(_uploadFile, _downloadFile, value) {
-  return value.length === 0 ? null : from_candid_StreamingStrategy_n128(_uploadFile, _downloadFile, value[0]);
+  return value.length === 0 ? null : from_candid_StreamingCallbackToken_n121(_uploadFile, _downloadFile, value[0]);
 }
 function from_candid_opt_n137(_uploadFile, _downloadFile, value) {
-  return value.length === 0 ? null : from_candid_StreamingCallbackToken_n131(_uploadFile, _downloadFile, value[0]);
-}
-function from_candid_opt_n147(_uploadFile, _downloadFile, value) {
   return value.length === 0 ? null : value[0];
 }
-function from_candid_opt_n57(_uploadFile, _downloadFile, value) {
+function from_candid_opt_n52(_uploadFile, _downloadFile, value) {
   return value.length === 0 ? null : value[0];
 }
-function from_candid_opt_n60(_uploadFile, _downloadFile, value) {
+function from_candid_opt_n54(_uploadFile, _downloadFile, value) {
   return value.length === 0 ? null : value[0];
 }
-function from_candid_opt_n8(_uploadFile, _downloadFile, value) {
+function from_candid_opt_n6(_uploadFile, _downloadFile, value) {
   return value.length === 0 ? null : value[0];
 }
-function from_candid_opt_n89(_uploadFile, _downloadFile, value) {
+function from_candid_opt_n7(_uploadFile, _downloadFile, value) {
+  return value.length === 0 ? null : from_candid_CryptoPaymentStatus_n8(_uploadFile, _downloadFile, value[0]);
+}
+function from_candid_opt_n82(_uploadFile, _downloadFile, value) {
   return value.length === 0 ? null : value[0];
 }
-function from_candid_opt_n9(_uploadFile, _downloadFile, value) {
-  return value.length === 0 ? null : from_candid_CryptoPaymentStatus_n10(_uploadFile, _downloadFile, value[0]);
+function from_candid_opt_n99(_uploadFile, _downloadFile, value) {
+  return value.length === 0 ? null : from_candid_Role_n100(_uploadFile, _downloadFile, value[0]);
 }
 function from_candid_record_n106(_uploadFile, _downloadFile, value) {
   return {
-    id: value.id,
-    tax: value.tax,
-    updated_at: value.updated_at,
-    total: value.total,
-    sweep_note: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.sweep_note)),
-    shipping: value.shipping,
-    reference: value.reference,
-    created_at: value.created_at,
-    payment_status: from_candid_PaymentStatus_n4(_uploadFile, _downloadFile, value.payment_status),
-    payment_method: from_candid_PaymentMethod_n6(_uploadFile, _downloadFile, value.payment_method),
-    tracking_number: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.tracking_number)),
-    currency: value.currency,
-    marketing_consent_at: record_opt_to_undefined(from_candid_opt_n57(_uploadFile, _downloadFile, value.marketing_consent_at)),
-    shipping_status: from_candid_ShippingStatus_n58(_uploadFile, _downloadFile, value.shipping_status),
-    has_shipping_details: value.has_shipping_details,
-    items: value.items,
-    encrypted_shipping: record_opt_to_undefined(from_candid_opt_n8(_uploadFile, _downloadFile, value.encrypted_shipping)),
-    customer_principal: record_opt_to_undefined(from_candid_opt_n60(_uploadFile, _downloadFile, value.customer_principal)),
-    shipped_at: record_opt_to_undefined(from_candid_opt_n57(_uploadFile, _downloadFile, value.shipped_at)),
-    marketing_consent: value.marketing_consent,
-    payment_reference: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.payment_reference)),
-    subtotal: value.subtotal
-  };
-}
-function from_candid_record_n115(_uploadFile, _downloadFile, value) {
-  return {
-    status: from_candid_CryptoPaymentStatus_n10(_uploadFile, _downloadFile, value.status),
+    status: from_candid_CryptoPaymentStatus_n8(_uploadFile, _downloadFile, value.status),
     expiresAt: value.expiresAt,
     reference: value.reference,
-    deposit: record_opt_to_undefined(from_candid_opt_n116(_uploadFile, _downloadFile, value.deposit)),
+    deposit: record_opt_to_undefined(from_candid_opt_n107(_uploadFile, _downloadFile, value.deposit)),
     remainingNs: value.remainingNs
   };
 }
-function from_candid_record_n126(_uploadFile, _downloadFile, value) {
+function from_candid_record_n116(_uploadFile, _downloadFile, value) {
   return {
     body: value.body,
     headers: value.headers,
-    streaming_strategy: record_opt_to_undefined(from_candid_opt_n127(_uploadFile, _downloadFile, value.streaming_strategy)),
+    streaming_strategy: record_opt_to_undefined(from_candid_opt_n117(_uploadFile, _downloadFile, value.streaming_strategy)),
     status_code: value.status_code
   };
 }
-function from_candid_record_n130(_uploadFile, _downloadFile, value) {
+function from_candid_record_n120(_uploadFile, _downloadFile, value) {
   return {
-    token: from_candid_StreamingCallbackToken_n131(_uploadFile, _downloadFile, value.token),
+    token: from_candid_StreamingCallbackToken_n121(_uploadFile, _downloadFile, value.token),
     callback: value.callback
   };
 }
-function from_candid_record_n132(_uploadFile, _downloadFile, value) {
+function from_candid_record_n122(_uploadFile, _downloadFile, value) {
   return {
     key: value.key,
-    sha256: record_opt_to_undefined(from_candid_opt_n8(_uploadFile, _downloadFile, value.sha256)),
+    sha256: record_opt_to_undefined(from_candid_opt_n6(_uploadFile, _downloadFile, value.sha256)),
     index: value.index,
     content_encoding: value.content_encoding
   };
 }
-function from_candid_record_n136(_uploadFile, _downloadFile, value) {
+function from_candid_record_n126(_uploadFile, _downloadFile, value) {
   return {
-    token: record_opt_to_undefined(from_candid_opt_n137(_uploadFile, _downloadFile, value.token)),
+    token: record_opt_to_undefined(from_candid_opt_n127(_uploadFile, _downloadFile, value.token)),
     body: value.body
   };
 }
-function from_candid_record_n140(_uploadFile, _downloadFile, value) {
+function from_candid_record_n13(_uploadFile, _downloadFile, value) {
   return {
-    productCount: value.productCount,
-    category: from_candid_Category_n33(_uploadFile, _downloadFile, value.category)
+    status: from_candid_PaymentStatus_n4(_uploadFile, _downloadFile, value.status),
+    paymentMethod: from_candid_PaymentMethod_n5(_uploadFile, _downloadFile, value.paymentMethod),
+    cryptoStatus: record_opt_to_undefined(from_candid_opt_n7(_uploadFile, _downloadFile, value.cryptoStatus)),
+    createdAt: value.createdAt,
+    itemCount: value.itemCount,
+    reference: value.reference,
+    amountOwed: value.amountOwed,
+    currency: value.currency,
+    subaccountHex: value.subaccountHex,
+    sweepNote: record_opt_to_undefined(from_candid_opt_n10(_uploadFile, _downloadFile, value.sweepNote)),
+    customerEmail: value.customerEmail,
+    depositAccountText: value.depositAccountText
   };
 }
-function from_candid_record_n143(_uploadFile, _downloadFile, value) {
+function from_candid_record_n130(_uploadFile, _downloadFile, value) {
   return {
-    token: from_candid_Token_n100(_uploadFile, _downloadFile, value.token),
+    productCount: value.productCount,
+    category: from_candid_Category_n31(_uploadFile, _downloadFile, value.category)
+  };
+}
+function from_candid_record_n133(_uploadFile, _downloadFile, value) {
+  return {
+    token: from_candid_Token_n93(_uploadFile, _downloadFile, value.token),
     reference: value.reference,
     receivedAmount: value.receivedAmount,
     receivedAt: value.receivedAt,
@@ -37613,72 +37386,56 @@ function from_candid_record_n143(_uploadFile, _downloadFile, value) {
     expectedAmount: value.expectedAmount
   };
 }
-function from_candid_record_n146(_uploadFile, _downloadFile, value) {
+function from_candid_record_n136(_uploadFile, _downloadFile, value) {
   return {
     status: from_candid_PaymentStatus_n4(_uploadFile, _downloadFile, value.status),
-    paymentMethod: from_candid_PaymentMethod_n6(_uploadFile, _downloadFile, value.paymentMethod),
-    expiresAt: record_opt_to_undefined(from_candid_opt_n57(_uploadFile, _downloadFile, value.expiresAt)),
+    paymentMethod: from_candid_PaymentMethod_n5(_uploadFile, _downloadFile, value.paymentMethod),
+    expiresAt: record_opt_to_undefined(from_candid_opt_n52(_uploadFile, _downloadFile, value.expiresAt)),
     reference: value.reference,
-    depositAccount: record_opt_to_undefined(from_candid_opt_n147(_uploadFile, _downloadFile, value.depositAccount)),
+    depositAccount: record_opt_to_undefined(from_candid_opt_n137(_uploadFile, _downloadFile, value.depositAccount)),
     amountOwed: value.amountOwed,
     liveBalance: value.liveBalance
   };
 }
-function from_candid_record_n15(_uploadFile, _downloadFile, value) {
-  return {
-    status: from_candid_PaymentStatus_n4(_uploadFile, _downloadFile, value.status),
-    paymentMethod: from_candid_PaymentMethod_n6(_uploadFile, _downloadFile, value.paymentMethod),
-    cryptoStatus: record_opt_to_undefined(from_candid_opt_n9(_uploadFile, _downloadFile, value.cryptoStatus)),
-    createdAt: value.createdAt,
-    itemCount: value.itemCount,
-    reference: value.reference,
-    amountOwed: value.amountOwed,
-    currency: value.currency,
-    subaccountHex: value.subaccountHex,
-    sweepNote: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.sweepNote)),
-    customerEmail: value.customerEmail,
-    depositAccountText: value.depositAccountText
-  };
-}
-function from_candid_record_n152(_uploadFile, _downloadFile, value) {
+function from_candid_record_n142(_uploadFile, _downloadFile, value) {
   return {
     id: value.id,
-    discipline: from_candid_Discipline_n153(_uploadFile, _downloadFile, value.discipline),
+    discipline: from_candid_Discipline_n143(_uploadFile, _downloadFile, value.discipline),
     link: value.link,
     name: value.name,
     submittedAt: value.submittedAt,
     email: value.email,
-    message: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.message)),
-    marketingConsentAt: record_opt_to_undefined(from_candid_opt_n57(_uploadFile, _downloadFile, value.marketingConsentAt)),
+    message: record_opt_to_undefined(from_candid_opt_n10(_uploadFile, _downloadFile, value.message)),
+    marketingConsentAt: record_opt_to_undefined(from_candid_opt_n52(_uploadFile, _downloadFile, value.marketingConsentAt)),
     marketingConsent: value.marketingConsent
   };
 }
-function from_candid_record_n160(_uploadFile, _downloadFile, value) {
+function from_candid_record_n149(_uploadFile, _downloadFile, value) {
   return {
     grantedAt: value.grantedAt,
-    role: from_candid_Role_n108(_uploadFile, _downloadFile, value.role)
+    role: from_candid_Role_n100(_uploadFile, _downloadFile, value.role)
   };
 }
-function from_candid_record_n178(_uploadFile, _downloadFile, value) {
+function from_candid_record_n166(_uploadFile, _downloadFile, value) {
   return {
-    error: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.error)),
-    blockIndex: record_opt_to_undefined(from_candid_opt_n89(_uploadFile, _downloadFile, value.blockIndex)),
+    error: record_opt_to_undefined(from_candid_opt_n10(_uploadFile, _downloadFile, value.error)),
+    blockIndex: record_opt_to_undefined(from_candid_opt_n82(_uploadFile, _downloadFile, value.blockIndex)),
     subaccountHex: value.subaccountHex,
     subaccountIndex: value.subaccountIndex
   };
 }
-function from_candid_record_n29(_uploadFile, _downloadFile, value) {
+function from_candid_record_n27(_uploadFile, _downloadFile, value) {
   return {
-    url: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.url)),
+    url: record_opt_to_undefined(from_candid_opt_n10(_uploadFile, _downloadFile, value.url)),
     reference: value.reference
   };
 }
 function from_candid_record_n3(_uploadFile, _downloadFile, value) {
   return {
     status: from_candid_PaymentStatus_n4(_uploadFile, _downloadFile, value.status),
-    paymentMethod: from_candid_PaymentMethod_n6(_uploadFile, _downloadFile, value.paymentMethod),
-    encryptedShipping: record_opt_to_undefined(from_candid_opt_n8(_uploadFile, _downloadFile, value.encryptedShipping)),
-    cryptoStatus: record_opt_to_undefined(from_candid_opt_n9(_uploadFile, _downloadFile, value.cryptoStatus)),
+    paymentMethod: from_candid_PaymentMethod_n5(_uploadFile, _downloadFile, value.paymentMethod),
+    encryptedShipping: record_opt_to_undefined(from_candid_opt_n6(_uploadFile, _downloadFile, value.encryptedShipping)),
+    cryptoStatus: record_opt_to_undefined(from_candid_opt_n7(_uploadFile, _downloadFile, value.cryptoStatus)),
     createdAt: value.createdAt,
     reference: value.reference,
     amountOwed: value.amountOwed,
@@ -37687,12 +37444,12 @@ function from_candid_record_n3(_uploadFile, _downloadFile, value) {
     hasShippingDetails: value.hasShippingDetails,
     subaccountHex: value.subaccountHex,
     items: value.items,
-    sweepNote: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.sweepNote)),
+    sweepNote: record_opt_to_undefined(from_candid_opt_n10(_uploadFile, _downloadFile, value.sweepNote)),
     customerEmail: value.customerEmail,
     depositAccountText: value.depositAccountText
   };
 }
-function from_candid_record_n34(_uploadFile, _downloadFile, value) {
+function from_candid_record_n32(_uploadFile, _downloadFile, value) {
   return {
     id: value.id,
     updated_at: value.updated_at,
@@ -37700,86 +37457,86 @@ function from_candid_record_n34(_uploadFile, _downloadFile, value) {
     sortOrder: value.sortOrder,
     name: value.name,
     slug: value.slug,
-    description: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.description)),
+    description: record_opt_to_undefined(from_candid_opt_n10(_uploadFile, _downloadFile, value.description)),
     created_at: value.created_at,
     showWhenEmpty: value.showWhenEmpty
   };
 }
-function from_candid_record_n54(_uploadFile, _downloadFile, value) {
+function from_candid_record_n49(_uploadFile, _downloadFile, value) {
   return {
-    order: from_candid_Order_n55(_uploadFile, _downloadFile, value.order),
-    cancellationToken: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.cancellationToken)),
-    sessionId: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.sessionId))
+    order: from_candid_Order_n50(_uploadFile, _downloadFile, value.order),
+    cancellationToken: record_opt_to_undefined(from_candid_opt_n10(_uploadFile, _downloadFile, value.cancellationToken)),
+    sessionId: record_opt_to_undefined(from_candid_opt_n10(_uploadFile, _downloadFile, value.sessionId))
   };
 }
-function from_candid_record_n56(_uploadFile, _downloadFile, value) {
+function from_candid_record_n51(_uploadFile, _downloadFile, value) {
   return {
     id: value.id,
     tax: value.tax,
     updated_at: value.updated_at,
     total: value.total,
-    sweep_note: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.sweep_note)),
+    sweep_note: record_opt_to_undefined(from_candid_opt_n10(_uploadFile, _downloadFile, value.sweep_note)),
     shipping: value.shipping,
     reference: value.reference,
     created_at: value.created_at,
     payment_status: from_candid_PaymentStatus_n4(_uploadFile, _downloadFile, value.payment_status),
-    payment_method: from_candid_PaymentMethod_n6(_uploadFile, _downloadFile, value.payment_method),
-    tracking_number: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.tracking_number)),
+    payment_method: from_candid_PaymentMethod_n5(_uploadFile, _downloadFile, value.payment_method),
+    tracking_number: record_opt_to_undefined(from_candid_opt_n10(_uploadFile, _downloadFile, value.tracking_number)),
     currency: value.currency,
-    marketing_consent_at: record_opt_to_undefined(from_candid_opt_n57(_uploadFile, _downloadFile, value.marketing_consent_at)),
-    shipping_status: from_candid_ShippingStatus_n58(_uploadFile, _downloadFile, value.shipping_status),
+    marketing_consent_at: record_opt_to_undefined(from_candid_opt_n52(_uploadFile, _downloadFile, value.marketing_consent_at)),
+    shipping_status: from_candid_ShippingStatus_n53(_uploadFile, _downloadFile, value.shipping_status),
     has_shipping_details: value.has_shipping_details,
     items: value.items,
     customer_email: value.customer_email,
-    encrypted_shipping: record_opt_to_undefined(from_candid_opt_n8(_uploadFile, _downloadFile, value.encrypted_shipping)),
-    customer_principal: record_opt_to_undefined(from_candid_opt_n60(_uploadFile, _downloadFile, value.customer_principal)),
-    shipped_at: record_opt_to_undefined(from_candid_opt_n57(_uploadFile, _downloadFile, value.shipped_at)),
+    encrypted_shipping: record_opt_to_undefined(from_candid_opt_n6(_uploadFile, _downloadFile, value.encrypted_shipping)),
+    customer_principal: record_opt_to_undefined(from_candid_opt_n54(_uploadFile, _downloadFile, value.customer_principal)),
+    shipped_at: record_opt_to_undefined(from_candid_opt_n52(_uploadFile, _downloadFile, value.shipped_at)),
     marketing_consent: value.marketing_consent,
-    payment_reference: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.payment_reference)),
+    payment_reference: record_opt_to_undefined(from_candid_opt_n10(_uploadFile, _downloadFile, value.payment_reference)),
     subtotal: value.subtotal
   };
 }
-function from_candid_record_n70(_uploadFile, _downloadFile, value) {
+function from_candid_record_n63(_uploadFile, _downloadFile, value) {
   return {
     hasMore: value.hasMore,
-    rows: from_candid_vec_n71(_uploadFile, _downloadFile, value.rows)
+    rows: from_candid_vec_n64(_uploadFile, _downloadFile, value.rows)
   };
 }
-function from_candid_record_n74(_uploadFile, _downloadFile, value) {
+function from_candid_record_n67(_uploadFile, _downloadFile, value) {
   return {
-    value: from_candid_Value_n75(_uploadFile, _downloadFile, value.value),
+    value: from_candid_Value_n68(_uploadFile, _downloadFile, value.value),
     name: value.name
   };
 }
-function from_candid_record_n82(_uploadFile, _downloadFile, value) {
+function from_candid_record_n75(_uploadFile, _downloadFile, value) {
   return {
-    status: from_candid_CryptoPaymentStatus_n10(_uploadFile, _downloadFile, value.status),
+    status: from_candid_CryptoPaymentStatus_n8(_uploadFile, _downloadFile, value.status),
     balance: value.balance,
     reference: value.reference,
-    error: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.error))
+    error: record_opt_to_undefined(from_candid_opt_n10(_uploadFile, _downloadFile, value.error))
+  };
+}
+function from_candid_record_n81(_uploadFile, _downloadFile, value) {
+  return {
+    reference: record_opt_to_undefined(from_candid_opt_n10(_uploadFile, _downloadFile, value.reference)),
+    error: record_opt_to_undefined(from_candid_opt_n10(_uploadFile, _downloadFile, value.error)),
+    blockIndex: record_opt_to_undefined(from_candid_opt_n82(_uploadFile, _downloadFile, value.blockIndex))
   };
 }
 function from_candid_record_n88(_uploadFile, _downloadFile, value) {
   return {
-    reference: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.reference)),
-    error: record_opt_to_undefined(from_candid_opt_n12(_uploadFile, _downloadFile, value.error)),
-    blockIndex: record_opt_to_undefined(from_candid_opt_n89(_uploadFile, _downloadFile, value.blockIndex))
-  };
-}
-function from_candid_record_n95(_uploadFile, _downloadFile, value) {
-  return {
     icp: value.icp,
     ckUSDC: value.ckUSDC,
-    treasurySubaccount: record_opt_to_undefined(from_candid_opt_n8(_uploadFile, _downloadFile, value.treasurySubaccount)),
+    treasurySubaccount: record_opt_to_undefined(from_candid_opt_n6(_uploadFile, _downloadFile, value.treasurySubaccount)),
     minimumOrder: value.minimumOrder,
     ckUSDCEnabled: value.ckUSDCEnabled,
     treasuryPrincipal: value.treasuryPrincipal
   };
 }
-function from_candid_record_n99(_uploadFile, _downloadFile, value) {
+function from_candid_record_n92(_uploadFile, _downloadFile, value) {
   return {
     decimals: value.decimals,
-    token: from_candid_Token_n100(_uploadFile, _downloadFile, value.token),
+    token: from_candid_Token_n93(_uploadFile, _downloadFile, value.token),
     expiresAt: value.expiresAt,
     qrPayload: value.qrPayload,
     subaccount: value.subaccount,
@@ -37788,64 +37545,57 @@ function from_candid_record_n99(_uploadFile, _downloadFile, value) {
     amountDue: value.amountDue
   };
 }
-function from_candid_tuple_n158(_uploadFile, _downloadFile, value) {
+function from_candid_record_n98(_uploadFile, _downloadFile, value) {
+  return {
+    id: value.id,
+    tax: value.tax,
+    updated_at: value.updated_at,
+    total: value.total,
+    sweep_note: record_opt_to_undefined(from_candid_opt_n10(_uploadFile, _downloadFile, value.sweep_note)),
+    shipping: value.shipping,
+    reference: value.reference,
+    created_at: value.created_at,
+    payment_status: from_candid_PaymentStatus_n4(_uploadFile, _downloadFile, value.payment_status),
+    payment_method: from_candid_PaymentMethod_n5(_uploadFile, _downloadFile, value.payment_method),
+    tracking_number: record_opt_to_undefined(from_candid_opt_n10(_uploadFile, _downloadFile, value.tracking_number)),
+    currency: value.currency,
+    marketing_consent_at: record_opt_to_undefined(from_candid_opt_n52(_uploadFile, _downloadFile, value.marketing_consent_at)),
+    shipping_status: from_candid_ShippingStatus_n53(_uploadFile, _downloadFile, value.shipping_status),
+    has_shipping_details: value.has_shipping_details,
+    items: value.items,
+    encrypted_shipping: record_opt_to_undefined(from_candid_opt_n6(_uploadFile, _downloadFile, value.encrypted_shipping)),
+    customer_principal: record_opt_to_undefined(from_candid_opt_n54(_uploadFile, _downloadFile, value.customer_principal)),
+    shipped_at: record_opt_to_undefined(from_candid_opt_n52(_uploadFile, _downloadFile, value.shipped_at)),
+    marketing_consent: value.marketing_consent,
+    payment_reference: record_opt_to_undefined(from_candid_opt_n10(_uploadFile, _downloadFile, value.payment_reference)),
+    subtotal: value.subtotal
+  };
+}
+function from_candid_tuple_n147(_uploadFile, _downloadFile, value) {
   return [
     value[0],
-    from_candid_UserRecord_n159(_uploadFile, _downloadFile, value[1])
+    from_candid_UserRecord_n148(_uploadFile, _downloadFile, value[1])
   ];
 }
-function from_candid_variant_n101(_uploadFile, _downloadFile, value) {
-  return "ICP" in value ? "ICP" : "ckUSDC" in value ? "ckUSDC" : value;
-}
-function from_candid_variant_n103(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n104(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
-    ok: value.ok
+    ok: from_candid_ResumeInfo_n105(_uploadFile, _downloadFile, value.ok)
   } : "err" in value ? {
     __kind__: "err",
-    err: from_candid_RecoveryError_n83(_uploadFile, _downloadFile, value.err)
+    err: from_candid_RecoveryError_n76(_uploadFile, _downloadFile, value.err)
   } : value;
 }
 function from_candid_variant_n109(_uploadFile, _downloadFile, value) {
-  return "admin" in value ? "admin" : "owner" in value ? "owner" : "staff" in value ? "staff" : value;
-}
-function from_candid_variant_n11(_uploadFile, _downloadFile, value) {
-  return "overpayment" in value ? {
-    __kind__: "overpayment",
-    overpayment: value.overpayment
-  } : "expired" in value ? {
-    __kind__: "expired",
-    expired: value.expired
-  } : "underpayment" in value ? {
-    __kind__: "underpayment",
-    underpayment: value.underpayment
-  } : "paid" in value ? {
-    __kind__: "paid",
-    paid: value.paid
-  } : "awaiting_payment" in value ? {
-    __kind__: "awaiting_payment",
-    awaiting_payment: value.awaiting_payment
-  } : value;
-}
-function from_candid_variant_n113(_uploadFile, _downloadFile, value) {
-  return "ok" in value ? {
-    __kind__: "ok",
-    ok: from_candid_ResumeInfo_n114(_uploadFile, _downloadFile, value.ok)
-  } : "err" in value ? {
-    __kind__: "err",
-    err: from_candid_RecoveryError_n83(_uploadFile, _downloadFile, value.err)
-  } : value;
-}
-function from_candid_variant_n118(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
     ok: value.ok
   } : "err" in value ? {
     __kind__: "err",
-    err: from_candid_SweepError_n119(_uploadFile, _downloadFile, value.err)
+    err: from_candid_SweepError_n110(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function from_candid_variant_n120(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n111(_uploadFile, _downloadFile, value) {
   return "sweepFailed" in value ? {
     __kind__: "sweepFailed",
     sweepFailed: value.sweepFailed
@@ -37860,34 +37610,31 @@ function from_candid_variant_n120(_uploadFile, _downloadFile, value) {
     invalidConfig: value.invalidConfig
   } : value;
 }
-function from_candid_variant_n124(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n114(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
     ok: value.ok
   } : "err" in value ? {
     __kind__: "err",
-    err: from_candid_PaymentError_n47(_uploadFile, _downloadFile, value.err)
+    err: from_candid_PaymentError_n42(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function from_candid_variant_n129(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n119(_uploadFile, _downloadFile, value) {
   return "Callback" in value ? {
     __kind__: "Callback",
-    Callback: from_candid_record_n130(_uploadFile, _downloadFile, value.Callback)
+    Callback: from_candid_record_n120(_uploadFile, _downloadFile, value.Callback)
   } : value;
 }
-function from_candid_variant_n149(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n139(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
-    ok: from_candid_vec_n150(_uploadFile, _downloadFile, value.ok)
+    ok: from_candid_vec_n140(_uploadFile, _downloadFile, value.ok)
   } : "err" in value ? {
     __kind__: "err",
-    err: from_candid_SubmissionError_n155(_uploadFile, _downloadFile, value.err)
+    err: from_candid_SubmissionError_n144(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function from_candid_variant_n154(_uploadFile, _downloadFile, value) {
-  return "music" in value ? "music" : "other" in value ? "other" : "video" in value ? "video" : "visualArt" in value ? "visualArt" : "writing" in value ? "writing" : value;
-}
-function from_candid_variant_n156(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n145(_uploadFile, _downloadFile, value) {
   return "invalidInput" in value ? {
     __kind__: "invalidInput",
     invalidInput: value.invalidInput
@@ -37908,16 +37655,25 @@ function from_candid_variant_n156(_uploadFile, _downloadFile, value) {
     invalidResponse: value.invalidResponse
   } : value;
 }
-function from_candid_variant_n162(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n15(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
     ok: value.ok
   } : "err" in value ? {
     __kind__: "err",
-    err: from_candid_EmailError_n163(_uploadFile, _downloadFile, value.err)
+    err: from_candid_PaymentServiceError_n16(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function from_candid_variant_n164(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n151(_uploadFile, _downloadFile, value) {
+  return "ok" in value ? {
+    __kind__: "ok",
+    ok: value.ok
+  } : "err" in value ? {
+    __kind__: "err",
+    err: from_candid_EmailError_n152(_uploadFile, _downloadFile, value.err)
+  } : value;
+}
+function from_candid_variant_n153(_uploadFile, _downloadFile, value) {
   return "notConfigured" in value ? {
     __kind__: "notConfigured",
     notConfigured: value.notConfigured
@@ -37938,79 +37694,52 @@ function from_candid_variant_n164(_uploadFile, _downloadFile, value) {
     invalidResponse: value.invalidResponse
   } : value;
 }
-function from_candid_variant_n166(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n155(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
     ok: value.ok
   } : "err" in value ? {
     __kind__: "err",
-    err: from_candid_CategoryError_n35(_uploadFile, _downloadFile, value.err)
+    err: from_candid_CategoryError_n33(_uploadFile, _downloadFile, value.err)
+  } : value;
+}
+function from_candid_variant_n160(_uploadFile, _downloadFile, value) {
+  return "ok" in value ? {
+    __kind__: "ok",
+    ok: value.ok
+  } : "err" in value ? {
+    __kind__: "err",
+    err: from_candid_SubmissionError_n144(_uploadFile, _downloadFile, value.err)
+  } : value;
+}
+function from_candid_variant_n162(_uploadFile, _downloadFile, value) {
+  return "ok" in value ? {
+    __kind__: "ok",
+    ok: value.ok
+  } : "err" in value ? {
+    __kind__: "err",
+    err: from_candid_CryptoPaymentError_n20(_uploadFile, _downloadFile, value.err)
+  } : value;
+}
+function from_candid_variant_n164(_uploadFile, _downloadFile, value) {
+  return "ok" in value ? {
+    __kind__: "ok",
+    ok: from_candid_SweepSubaccountResult_n165(_uploadFile, _downloadFile, value.ok)
+  } : "err" in value ? {
+    __kind__: "err",
+    err: from_candid_SweepError_n110(_uploadFile, _downloadFile, value.err)
+  } : value;
+}
+function from_candid_variant_n168(_uploadFile, _downloadFile, value) {
+  return "ok" in value ? {
+    __kind__: "ok",
+    ok: value.ok
+  } : "err" in value ? {
+    __kind__: "err",
+    err: from_candid_ConsentError_n85(_uploadFile, _downloadFile, value.err)
   } : value;
 }
 function from_candid_variant_n17(_uploadFile, _downloadFile, value) {
-  return "ok" in value ? {
-    __kind__: "ok",
-    ok: value.ok
-  } : "err" in value ? {
-    __kind__: "err",
-    err: from_candid_PaymentServiceError_n18(_uploadFile, _downloadFile, value.err)
-  } : value;
-}
-function from_candid_variant_n172(_uploadFile, _downloadFile, value) {
-  return "ok" in value ? {
-    __kind__: "ok",
-    ok: value.ok
-  } : "err" in value ? {
-    __kind__: "err",
-    err: from_candid_SubmissionError_n155(_uploadFile, _downloadFile, value.err)
-  } : value;
-}
-function from_candid_variant_n174(_uploadFile, _downloadFile, value) {
-  return "ok" in value ? {
-    __kind__: "ok",
-    ok: value.ok
-  } : "err" in value ? {
-    __kind__: "err",
-    err: from_candid_CryptoPaymentError_n22(_uploadFile, _downloadFile, value.err)
-  } : value;
-}
-function from_candid_variant_n176(_uploadFile, _downloadFile, value) {
-  return "ok" in value ? {
-    __kind__: "ok",
-    ok: from_candid_SweepSubaccountResult_n177(_uploadFile, _downloadFile, value.ok)
-  } : "err" in value ? {
-    __kind__: "err",
-    err: from_candid_SweepError_n119(_uploadFile, _downloadFile, value.err)
-  } : value;
-}
-function from_candid_variant_n180(_uploadFile, _downloadFile, value) {
-  return "ok" in value ? {
-    __kind__: "ok",
-    ok: value.ok
-  } : "err" in value ? {
-    __kind__: "err",
-    err: from_candid_ConsentError_n92(_uploadFile, _downloadFile, value.err)
-  } : value;
-}
-function from_candid_variant_n182(_uploadFile, _downloadFile, value) {
-  return "ok" in value ? {
-    __kind__: "ok",
-    ok: value.ok
-  } : "err" in value ? {
-    __kind__: "err",
-    err: value.err
-  } : value;
-}
-function from_candid_variant_n186(_uploadFile, _downloadFile, value) {
-  return "ok" in value ? {
-    __kind__: "ok",
-    ok: value.ok
-  } : "err" in value ? {
-    __kind__: "err",
-    err: from_candid_CryptoPaymentError_n22(_uploadFile, _downloadFile, value.err)
-  } : value;
-}
-function from_candid_variant_n19(_uploadFile, _downloadFile, value) {
   return "alreadyPaid" in value ? {
     __kind__: "alreadyPaid",
     alreadyPaid: value.alreadyPaid
@@ -38034,16 +37763,34 @@ function from_candid_variant_n19(_uploadFile, _downloadFile, value) {
     invalidResponse: value.invalidResponse
   } : value;
 }
-function from_candid_variant_n21(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n170(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
-    ok: from_candid_CryptoPaymentStatus_n10(_uploadFile, _downloadFile, value.ok)
+    ok: value.ok
   } : "err" in value ? {
     __kind__: "err",
-    err: from_candid_CryptoPaymentError_n22(_uploadFile, _downloadFile, value.err)
+    err: value.err
   } : value;
 }
-function from_candid_variant_n23(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n173(_uploadFile, _downloadFile, value) {
+  return "ok" in value ? {
+    __kind__: "ok",
+    ok: value.ok
+  } : "err" in value ? {
+    __kind__: "err",
+    err: from_candid_CryptoPaymentError_n20(_uploadFile, _downloadFile, value.err)
+  } : value;
+}
+function from_candid_variant_n19(_uploadFile, _downloadFile, value) {
+  return "ok" in value ? {
+    __kind__: "ok",
+    ok: from_candid_CryptoPaymentStatus_n8(_uploadFile, _downloadFile, value.ok)
+  } : "err" in value ? {
+    __kind__: "err",
+    err: from_candid_CryptoPaymentError_n20(_uploadFile, _downloadFile, value.err)
+  } : value;
+}
+function from_candid_variant_n21(_uploadFile, _downloadFile, value) {
   return "alreadyPaid" in value ? {
     __kind__: "alreadyPaid",
     alreadyPaid: value.alreadyPaid
@@ -38082,34 +37829,34 @@ function from_candid_variant_n23(_uploadFile, _downloadFile, value) {
     belowMinimumOrder: value.belowMinimumOrder
   } : value;
 }
-function from_candid_variant_n25(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n23(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
     ok: from_candid_PaymentStatus_n4(_uploadFile, _downloadFile, value.ok)
   } : "err" in value ? {
     __kind__: "err",
-    err: from_candid_PaymentServiceError_n18(_uploadFile, _downloadFile, value.err)
+    err: from_candid_PaymentServiceError_n16(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function from_candid_variant_n27(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n25(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
-    ok: from_candid_CheckoutSession_n28(_uploadFile, _downloadFile, value.ok)
+    ok: from_candid_CheckoutSession_n26(_uploadFile, _downloadFile, value.ok)
   } : "err" in value ? {
     __kind__: "err",
-    err: from_candid_PaymentServiceError_n18(_uploadFile, _downloadFile, value.err)
+    err: from_candid_PaymentServiceError_n16(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function from_candid_variant_n32(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n30(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
-    ok: from_candid_Category_n33(_uploadFile, _downloadFile, value.ok)
+    ok: from_candid_Category_n31(_uploadFile, _downloadFile, value.ok)
   } : "err" in value ? {
     __kind__: "err",
-    err: from_candid_CategoryError_n35(_uploadFile, _downloadFile, value.err)
+    err: from_candid_CategoryError_n33(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function from_candid_variant_n36(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n34(_uploadFile, _downloadFile, value) {
   return "emptyName" in value ? {
     __kind__: "emptyName",
     emptyName: value.emptyName
@@ -38127,16 +37874,16 @@ function from_candid_variant_n36(_uploadFile, _downloadFile, value) {
     slugCollision: value.slugCollision
   } : value;
 }
-function from_candid_variant_n46(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n41(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
-    ok: from_candid_CheckoutSession_n28(_uploadFile, _downloadFile, value.ok)
+    ok: from_candid_CheckoutSession_n26(_uploadFile, _downloadFile, value.ok)
   } : "err" in value ? {
     __kind__: "err",
-    err: from_candid_PaymentError_n47(_uploadFile, _downloadFile, value.err)
+    err: from_candid_PaymentError_n42(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function from_candid_variant_n48(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n43(_uploadFile, _downloadFile, value) {
   return "invalidOrder" in value ? {
     __kind__: "invalidOrder",
     invalidOrder: value.invalidOrder
@@ -38145,22 +37892,16 @@ function from_candid_variant_n48(_uploadFile, _downloadFile, value) {
     paymentFailed: value.paymentFailed
   } : value;
 }
-function from_candid_variant_n5(_uploadFile, _downloadFile, value) {
-  return "cancelled" in value ? "cancelled" : "expired" in value ? "expired" : "pending" in value ? "pending" : "paid" in value ? "paid" : value;
-}
-function from_candid_variant_n52(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n47(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
-    ok: from_candid_CreateOrderResult_n53(_uploadFile, _downloadFile, value.ok)
+    ok: from_candid_CreateOrderResult_n48(_uploadFile, _downloadFile, value.ok)
   } : "err" in value ? {
     __kind__: "err",
-    err: from_candid_OrderError_n61(_uploadFile, _downloadFile, value.err)
+    err: from_candid_OrderError_n55(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function from_candid_variant_n59(_uploadFile, _downloadFile, value) {
-  return "shipped" in value ? "shipped" : "pending" in value ? "pending" : value;
-}
-function from_candid_variant_n62(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n56(_uploadFile, _downloadFile, value) {
   return "outOfStock" in value ? {
     __kind__: "outOfStock",
     outOfStock: value.outOfStock
@@ -38199,31 +37940,25 @@ function from_candid_variant_n62(_uploadFile, _downloadFile, value) {
     tooManyPendingOrders: value.tooManyPendingOrders
   } : value;
 }
-function from_candid_variant_n64(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n58(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
     ok: value.ok
   } : "err" in value ? {
     __kind__: "err",
-    err: from_candid_CategoryError_n35(_uploadFile, _downloadFile, value.err)
+    err: from_candid_CategoryError_n33(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function from_candid_variant_n66(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n60(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
     ok: value.ok
   } : "err" in value ? {
     __kind__: "err",
-    err: from_candid_UploadError_n67(_uploadFile, _downloadFile, value.err)
+    err: from_candid_UploadError_n61(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function from_candid_variant_n68(_uploadFile, _downloadFile, value) {
-  return "tooManyImages" in value ? "tooManyImages" : "tooLarge" in value ? "tooLarge" : "magicByteMismatch" in value ? "magicByteMismatch" : "sizeMismatch" in value ? "sizeMismatch" : "invalidContentType" in value ? "invalidContentType" : "notFound" in value ? "notFound" : "uploadExpired" in value ? "uploadExpired" : "svgNotAllowed" in value ? "svgNotAllowed" : "chunkOutOfOrder" in value ? "chunkOutOfOrder" : "unauthorized" in value ? "unauthorized" : value;
-}
-function from_candid_variant_n7(_uploadFile, _downloadFile, value) {
-  return "crypto_icp" in value ? "crypto_icp" : "card_stripe" in value ? "card_stripe" : "crypto_ckusdc" in value ? "crypto_ckusdc" : "manual" in value ? "manual" : value;
-}
-function from_candid_variant_n76(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n69(_uploadFile, _downloadFile, value) {
   return "int" in value ? {
     __kind__: "int",
     int: value.int
@@ -38244,25 +37979,25 @@ function from_candid_variant_n76(_uploadFile, _downloadFile, value) {
     text: value.text
   } : value;
 }
-function from_candid_variant_n78(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n71(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
     ok: value.ok
   } : "err" in value ? {
     __kind__: "err",
-    err: from_candid_UploadError_n67(_uploadFile, _downloadFile, value.err)
+    err: from_candid_UploadError_n61(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function from_candid_variant_n80(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n73(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
-    ok: from_candid_RecheckResult_n81(_uploadFile, _downloadFile, value.ok)
+    ok: from_candid_RecheckResult_n74(_uploadFile, _downloadFile, value.ok)
   } : "err" in value ? {
     __kind__: "err",
-    err: from_candid_RecoveryError_n83(_uploadFile, _downloadFile, value.err)
+    err: from_candid_RecoveryError_n76(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function from_candid_variant_n84(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n77(_uploadFile, _downloadFile, value) {
   return "sweepFailed" in value ? {
     __kind__: "sweepFailed",
     sweepFailed: value.sweepFailed
@@ -38283,25 +38018,25 @@ function from_candid_variant_n84(_uploadFile, _downloadFile, value) {
     invalidConfig: value.invalidConfig
   } : value;
 }
-function from_candid_variant_n86(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n79(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
-    ok: from_candid_SweepResult_n87(_uploadFile, _downloadFile, value.ok)
+    ok: from_candid_SweepResult_n80(_uploadFile, _downloadFile, value.ok)
   } : "err" in value ? {
     __kind__: "err",
-    err: from_candid_RecoveryError_n83(_uploadFile, _downloadFile, value.err)
+    err: from_candid_RecoveryError_n76(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function from_candid_variant_n91(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n84(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
     ok: value.ok
   } : "err" in value ? {
     __kind__: "err",
-    err: from_candid_ConsentError_n92(_uploadFile, _downloadFile, value.err)
+    err: from_candid_ConsentError_n85(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function from_candid_variant_n93(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n86(_uploadFile, _downloadFile, value) {
   return "alreadyUnsubscribed" in value ? {
     __kind__: "alreadyUnsubscribed",
     alreadyUnsubscribed: value.alreadyUnsubscribed
@@ -38325,146 +38060,73 @@ function from_candid_variant_n93(_uploadFile, _downloadFile, value) {
     invalidResponse: value.invalidResponse
   } : value;
 }
-function from_candid_variant_n97(_uploadFile, _downloadFile, value) {
+function from_candid_variant_n9(_uploadFile, _downloadFile, value) {
+  return "overpayment" in value ? {
+    __kind__: "overpayment",
+    overpayment: value.overpayment
+  } : "expired" in value ? {
+    __kind__: "expired",
+    expired: value.expired
+  } : "underpayment" in value ? {
+    __kind__: "underpayment",
+    underpayment: value.underpayment
+  } : "paid" in value ? {
+    __kind__: "paid",
+    paid: value.paid
+  } : "awaiting_payment" in value ? {
+    __kind__: "awaiting_payment",
+    awaiting_payment: value.awaiting_payment
+  } : value;
+}
+function from_candid_variant_n90(_uploadFile, _downloadFile, value) {
   return "ok" in value ? {
     __kind__: "ok",
-    ok: from_candid_DepositInfo_n98(_uploadFile, _downloadFile, value.ok)
+    ok: from_candid_DepositInfo_n91(_uploadFile, _downloadFile, value.ok)
   } : "err" in value ? {
     __kind__: "err",
-    err: from_candid_CryptoPaymentError_n22(_uploadFile, _downloadFile, value.err)
+    err: from_candid_CryptoPaymentError_n20(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function from_candid_vec_n104(_uploadFile, _downloadFile, value) {
-  return value.map((x3) => from_candid_PublicOrderView_n105(_uploadFile, _downloadFile, x3));
-}
-function from_candid_vec_n13(_uploadFile, _downloadFile, value) {
-  return value.map((x3) => from_candid_AdminOrderView_n14(_uploadFile, _downloadFile, x3));
-}
-function from_candid_vec_n138(_uploadFile, _downloadFile, value) {
-  return value.map((x3) => from_candid_CategoryWithCount_n139(_uploadFile, _downloadFile, x3));
-}
-function from_candid_vec_n141(_uploadFile, _downloadFile, value) {
-  return value.map((x3) => from_candid_LatePayment_n142(_uploadFile, _downloadFile, x3));
-}
-function from_candid_vec_n144(_uploadFile, _downloadFile, value) {
-  return value.map((x3) => from_candid_OrderRecoveryView_n145(_uploadFile, _downloadFile, x3));
-}
-function from_candid_vec_n150(_uploadFile, _downloadFile, value) {
-  return value.map((x3) => from_candid_SubmissionRecord_n151(_uploadFile, _downloadFile, x3));
-}
-function from_candid_vec_n157(_uploadFile, _downloadFile, value) {
-  return value.map((x3) => from_candid_tuple_n158(_uploadFile, _downloadFile, x3));
-}
-function from_candid_vec_n71(_uploadFile, _downloadFile, value) {
-  return value.map((x3) => from_candid_vec_n72(_uploadFile, _downloadFile, x3));
-}
-function from_candid_vec_n72(_uploadFile, _downloadFile, value) {
-  return value.map((x3) => from_candid_Cell_n73(_uploadFile, _downloadFile, x3));
-}
-function to_candid_CreateOrderInput_n49(_uploadFile, _downloadFile, value) {
-  return to_candid_record_n50(_uploadFile, _downloadFile, value);
-}
-function to_candid_Discipline_n169(_uploadFile, _downloadFile, value) {
-  return to_candid_variant_n170(_uploadFile, _downloadFile, value);
-}
-function to_candid_Order_n37(_uploadFile, _downloadFile, value) {
-  return to_candid_record_n38(_uploadFile, _downloadFile, value);
-}
-function to_candid_PaymentMethod_n41(_uploadFile, _downloadFile, value) {
-  return to_candid_variant_n42(_uploadFile, _downloadFile, value);
-}
-function to_candid_PaymentStatus_n39(_uploadFile, _downloadFile, value) {
-  return to_candid_variant_n40(_uploadFile, _downloadFile, value);
-}
-function to_candid_Role_n121(_uploadFile, _downloadFile, value) {
-  return to_candid_variant_n122(_uploadFile, _downloadFile, value);
-}
-function to_candid_ShippingStatus_n43(_uploadFile, _downloadFile, value) {
-  return to_candid_variant_n44(_uploadFile, _downloadFile, value);
-}
-function to_candid_StreamingCallbackToken_n133(_uploadFile, _downloadFile, value) {
-  return to_candid_record_n134(_uploadFile, _downloadFile, value);
-}
-function to_candid_SubmissionInput_n167(_uploadFile, _downloadFile, value) {
-  return to_candid_record_n168(_uploadFile, _downloadFile, value);
-}
-function to_candid_Token_n183(_uploadFile, _downloadFile, value) {
-  return to_candid_variant_n184(_uploadFile, _downloadFile, value);
-}
-function to_candid_opt_n187(_uploadFile, _downloadFile, value) {
-  return value === null ? candid_none() : candid_some(value);
-}
-function to_candid_opt_n30(_uploadFile, _downloadFile, value) {
-  return value === null ? candid_none() : candid_some(value);
-}
-function to_candid_record_n134(_uploadFile, _downloadFile, value) {
-  return {
-    key: value.key,
-    sha256: value.sha256 ? candid_some(value.sha256) : candid_none(),
-    index: value.index,
-    content_encoding: value.content_encoding
-  };
-}
-function to_candid_record_n168(_uploadFile, _downloadFile, value) {
-  return {
-    discipline: to_candid_Discipline_n169(_uploadFile, _downloadFile, value.discipline),
-    link: value.link,
-    name: value.name,
-    email: value.email,
-    message: value.message ? candid_some(value.message) : candid_none(),
-    honeypot: value.honeypot,
-    marketingConsentAt: value.marketingConsentAt ? candid_some(value.marketingConsentAt) : candid_none(),
-    marketingConsent: value.marketingConsent
-  };
-}
-function to_candid_record_n38(_uploadFile, _downloadFile, value) {
-  return {
-    id: value.id,
-    tax: value.tax,
-    updated_at: value.updated_at,
-    total: value.total,
-    sweep_note: value.sweep_note ? candid_some(value.sweep_note) : candid_none(),
-    shipping: value.shipping,
-    reference: value.reference,
-    created_at: value.created_at,
-    payment_status: to_candid_PaymentStatus_n39(_uploadFile, _downloadFile, value.payment_status),
-    payment_method: to_candid_PaymentMethod_n41(_uploadFile, _downloadFile, value.payment_method),
-    tracking_number: value.tracking_number ? candid_some(value.tracking_number) : candid_none(),
-    currency: value.currency,
-    marketing_consent_at: value.marketing_consent_at ? candid_some(value.marketing_consent_at) : candid_none(),
-    shipping_status: to_candid_ShippingStatus_n43(_uploadFile, _downloadFile, value.shipping_status),
-    has_shipping_details: value.has_shipping_details,
-    items: value.items,
-    customer_email: value.customer_email,
-    encrypted_shipping: value.encrypted_shipping ? candid_some(value.encrypted_shipping) : candid_none(),
-    customer_principal: value.customer_principal ? candid_some(value.customer_principal) : candid_none(),
-    shipped_at: value.shipped_at ? candid_some(value.shipped_at) : candid_none(),
-    marketing_consent: value.marketing_consent,
-    payment_reference: value.payment_reference ? candid_some(value.payment_reference) : candid_none(),
-    subtotal: value.subtotal
-  };
-}
-function to_candid_record_n50(_uploadFile, _downloadFile, value) {
-  return {
-    session_id: value.session_id ? candid_some(value.session_id) : candid_none(),
-    payment_method: to_candid_PaymentMethod_n41(_uploadFile, _downloadFile, value.payment_method),
-    has_shipping_details: value.has_shipping_details,
-    items: value.items,
-    customer_email: value.customer_email,
-    encrypted_shipping: value.encrypted_shipping ? candid_some(value.encrypted_shipping) : candid_none(),
-    marketing_consent: value.marketing_consent
-  };
-}
-function to_candid_variant_n122(_uploadFile, _downloadFile, value) {
-  return value == "admin" ? {
-    admin: null
-  } : value == "owner" ? {
-    owner: null
-  } : value == "staff" ? {
-    staff: null
+function from_candid_variant_n95(_uploadFile, _downloadFile, value) {
+  return "ok" in value ? {
+    __kind__: "ok",
+    ok: value.ok
+  } : "err" in value ? {
+    __kind__: "err",
+    err: from_candid_RecoveryError_n76(_uploadFile, _downloadFile, value.err)
   } : value;
 }
-function to_candid_variant_n170(_uploadFile, _downloadFile, value) {
+function from_candid_vec_n11(_uploadFile, _downloadFile, value) {
+  return value.map((x3) => from_candid_AdminOrderView_n12(_uploadFile, _downloadFile, x3));
+}
+function from_candid_vec_n128(_uploadFile, _downloadFile, value) {
+  return value.map((x3) => from_candid_CategoryWithCount_n129(_uploadFile, _downloadFile, x3));
+}
+function from_candid_vec_n131(_uploadFile, _downloadFile, value) {
+  return value.map((x3) => from_candid_LatePayment_n132(_uploadFile, _downloadFile, x3));
+}
+function from_candid_vec_n134(_uploadFile, _downloadFile, value) {
+  return value.map((x3) => from_candid_OrderRecoveryView_n135(_uploadFile, _downloadFile, x3));
+}
+function from_candid_vec_n140(_uploadFile, _downloadFile, value) {
+  return value.map((x3) => from_candid_SubmissionRecord_n141(_uploadFile, _downloadFile, x3));
+}
+function from_candid_vec_n146(_uploadFile, _downloadFile, value) {
+  return value.map((x3) => from_candid_tuple_n147(_uploadFile, _downloadFile, x3));
+}
+function from_candid_vec_n64(_uploadFile, _downloadFile, value) {
+  return value.map((x3) => from_candid_vec_n65(_uploadFile, _downloadFile, x3));
+}
+function from_candid_vec_n65(_uploadFile, _downloadFile, value) {
+  return value.map((x3) => from_candid_Cell_n66(_uploadFile, _downloadFile, x3));
+}
+function from_candid_vec_n96(_uploadFile, _downloadFile, value) {
+  return value.map((x3) => from_candid_PublicOrderView_n97(_uploadFile, _downloadFile, x3));
+}
+function to_candid_CreateOrderInput_n44(_uploadFile, _downloadFile, value) {
+  return to_candid_record_n45(_uploadFile, _downloadFile, value);
+}
+function to_candid_Discipline_n158(_uploadFile, _downloadFile, value) {
   return value == "music" ? {
     music: null
   } : value == "other" ? {
@@ -38477,25 +38139,10 @@ function to_candid_variant_n170(_uploadFile, _downloadFile, value) {
     writing: null
   } : value;
 }
-function to_candid_variant_n184(_uploadFile, _downloadFile, value) {
-  return value == "ICP" ? {
-    ICP: null
-  } : value == "ckUSDC" ? {
-    ckUSDC: null
-  } : value;
+function to_candid_Order_n35(_uploadFile, _downloadFile, value) {
+  return to_candid_record_n36(_uploadFile, _downloadFile, value);
 }
-function to_candid_variant_n40(_uploadFile, _downloadFile, value) {
-  return value == "cancelled" ? {
-    cancelled: null
-  } : value == "expired" ? {
-    expired: null
-  } : value == "pending" ? {
-    pending: null
-  } : value == "paid" ? {
-    paid: null
-  } : value;
-}
-function to_candid_variant_n42(_uploadFile, _downloadFile, value) {
+function to_candid_PaymentMethod_n38(_uploadFile, _downloadFile, value) {
   return value == "crypto_icp" ? {
     crypto_icp: null
   } : value == "card_stripe" ? {
@@ -38506,14 +38153,111 @@ function to_candid_variant_n42(_uploadFile, _downloadFile, value) {
     manual: null
   } : value;
 }
-function to_candid_variant_n44(_uploadFile, _downloadFile, value) {
+function to_candid_PaymentStatus_n37(_uploadFile, _downloadFile, value) {
+  return value == "cancelled" ? {
+    cancelled: null
+  } : value == "expired" ? {
+    expired: null
+  } : value == "pending" ? {
+    pending: null
+  } : value == "paid" ? {
+    paid: null
+  } : value;
+}
+function to_candid_Role_n112(_uploadFile, _downloadFile, value) {
+  return value == "admin" ? {
+    admin: null
+  } : value == "owner" ? {
+    owner: null
+  } : value == "staff" ? {
+    staff: null
+  } : value;
+}
+function to_candid_ShippingStatus_n39(_uploadFile, _downloadFile, value) {
   return value == "shipped" ? {
     shipped: null
   } : value == "pending" ? {
     pending: null
   } : value;
 }
-function createActor$3(canisterId, _uploadFile, _downloadFile, options = {}) {
+function to_candid_StreamingCallbackToken_n123(_uploadFile, _downloadFile, value) {
+  return to_candid_record_n124(_uploadFile, _downloadFile, value);
+}
+function to_candid_SubmissionInput_n156(_uploadFile, _downloadFile, value) {
+  return to_candid_record_n157(_uploadFile, _downloadFile, value);
+}
+function to_candid_Token_n171(_uploadFile, _downloadFile, value) {
+  return value == "ICP" ? {
+    ICP: null
+  } : value == "ckUSDC" ? {
+    ckUSDC: null
+  } : value;
+}
+function to_candid_opt_n174(_uploadFile, _downloadFile, value) {
+  return value === null ? candid_none() : candid_some(value);
+}
+function to_candid_opt_n28(_uploadFile, _downloadFile, value) {
+  return value === null ? candid_none() : candid_some(value);
+}
+function to_candid_record_n124(_uploadFile, _downloadFile, value) {
+  return {
+    key: value.key,
+    sha256: value.sha256 ? candid_some(value.sha256) : candid_none(),
+    index: value.index,
+    content_encoding: value.content_encoding
+  };
+}
+function to_candid_record_n157(_uploadFile, _downloadFile, value) {
+  return {
+    discipline: to_candid_Discipline_n158(_uploadFile, _downloadFile, value.discipline),
+    link: value.link,
+    name: value.name,
+    email: value.email,
+    message: value.message ? candid_some(value.message) : candid_none(),
+    honeypot: value.honeypot,
+    marketingConsentAt: value.marketingConsentAt ? candid_some(value.marketingConsentAt) : candid_none(),
+    marketingConsent: value.marketingConsent
+  };
+}
+function to_candid_record_n36(_uploadFile, _downloadFile, value) {
+  return {
+    id: value.id,
+    tax: value.tax,
+    updated_at: value.updated_at,
+    total: value.total,
+    sweep_note: value.sweep_note ? candid_some(value.sweep_note) : candid_none(),
+    shipping: value.shipping,
+    reference: value.reference,
+    created_at: value.created_at,
+    payment_status: to_candid_PaymentStatus_n37(_uploadFile, _downloadFile, value.payment_status),
+    payment_method: to_candid_PaymentMethod_n38(_uploadFile, _downloadFile, value.payment_method),
+    tracking_number: value.tracking_number ? candid_some(value.tracking_number) : candid_none(),
+    currency: value.currency,
+    marketing_consent_at: value.marketing_consent_at ? candid_some(value.marketing_consent_at) : candid_none(),
+    shipping_status: to_candid_ShippingStatus_n39(_uploadFile, _downloadFile, value.shipping_status),
+    has_shipping_details: value.has_shipping_details,
+    items: value.items,
+    customer_email: value.customer_email,
+    encrypted_shipping: value.encrypted_shipping ? candid_some(value.encrypted_shipping) : candid_none(),
+    customer_principal: value.customer_principal ? candid_some(value.customer_principal) : candid_none(),
+    shipped_at: value.shipped_at ? candid_some(value.shipped_at) : candid_none(),
+    marketing_consent: value.marketing_consent,
+    payment_reference: value.payment_reference ? candid_some(value.payment_reference) : candid_none(),
+    subtotal: value.subtotal
+  };
+}
+function to_candid_record_n45(_uploadFile, _downloadFile, value) {
+  return {
+    session_id: value.session_id ? candid_some(value.session_id) : candid_none(),
+    payment_method: to_candid_PaymentMethod_n38(_uploadFile, _downloadFile, value.payment_method),
+    has_shipping_details: value.has_shipping_details,
+    items: value.items,
+    customer_email: value.customer_email,
+    encrypted_shipping: value.encrypted_shipping ? candid_some(value.encrypted_shipping) : candid_none(),
+    marketing_consent: value.marketing_consent
+  };
+}
+function createActor$2(canisterId, _uploadFile, _downloadFile, options = {}) {
   const agent = options.agent || HttpAgent.createSync({
     ...options.agentOptions
   });
@@ -39475,13 +39219,13 @@ function __rest(s2, e3) {
   return t2;
 }
 function __spreadArray(to, from, pack) {
-  if (pack || arguments.length === 2) for (var i = 0, l2 = from.length, ar2; i < l2; i++) {
-    if (ar2 || !(i in from)) {
-      if (!ar2) ar2 = Array.prototype.slice.call(from, 0, i);
-      ar2[i] = from[i];
+  if (pack || arguments.length === 2) for (var i = 0, l2 = from.length, ar; i < l2; i++) {
+    if (ar || !(i in from)) {
+      if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+      ar[i] = from[i];
     }
   }
-  return to.concat(ar2 || Array.prototype.slice.call(from));
+  return to.concat(ar || Array.prototype.slice.call(from));
 }
 typeof SuppressedError === "function" ? SuppressedError : function(error, suppressed, message) {
   var e3 = new Error(message);
@@ -39764,10 +39508,10 @@ var parse = function(x3) {
   return parseInt(x3 || "", 10) || 0;
 };
 var getOffset$1 = function(gapMode) {
-  var cs2 = window.getComputedStyle(document.body);
-  var left = cs2[gapMode === "padding" ? "paddingLeft" : "marginLeft"];
-  var top = cs2[gapMode === "padding" ? "paddingTop" : "marginTop"];
-  var right = cs2[gapMode === "padding" ? "paddingRight" : "marginRight"];
+  var cs = window.getComputedStyle(document.body);
+  var left = cs[gapMode === "padding" ? "paddingLeft" : "marginLeft"];
+  var top = cs[gapMode === "padding" ? "paddingTop" : "marginTop"];
+  var right = cs[gapMode === "padding" ? "paddingRight" : "marginRight"];
   return [parse(left), parse(top), parse(right)];
 };
 var getGapWidth = function(gapMode) {
@@ -43010,7 +42754,7 @@ const getDefaultConfig = () => {
   };
 };
 const twMerge = /* @__PURE__ */ createTailwindMerge(getDefaultConfig);
-function cn$1(...inputs) {
+function cn(...inputs) {
   return twMerge(clsx(inputs));
 }
 function Dialog({
@@ -43036,7 +42780,7 @@ function DialogOverlay({
     Overlay,
     {
       "data-slot": "dialog-overlay",
-      className: cn$1(
+      className: cn(
         "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/50",
         className
       ),
@@ -43056,7 +42800,7 @@ function DialogContent({
       Content$1,
       {
         "data-slot": "dialog-content",
-        className: cn$1(
+        className: cn(
           "bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-lg border p-6 shadow-lg duration-200 sm:max-w-lg",
           className
         ),
@@ -43084,7 +42828,7 @@ function DialogHeader({ className, ...props }) {
     "div",
     {
       "data-slot": "dialog-header",
-      className: cn$1("flex flex-col gap-2 text-center sm:text-left", className),
+      className: cn("flex flex-col gap-2 text-center sm:text-left", className),
       ...props
     }
   );
@@ -43094,7 +42838,7 @@ function DialogFooter({ className, ...props }) {
     "div",
     {
       "data-slot": "dialog-footer",
-      className: cn$1(
+      className: cn(
         "flex flex-col-reverse gap-2 sm:flex-row sm:justify-end",
         className
       ),
@@ -43110,7 +42854,7 @@ function DialogTitle({
     Title,
     {
       "data-slot": "dialog-title",
-      className: cn$1("text-lg leading-none font-semibold", className),
+      className: cn("text-lg leading-none font-semibold", className),
       ...props
     }
   );
@@ -43123,7 +42867,7 @@ function DialogDescription({
     Description,
     {
       "data-slot": "dialog-description",
-      className: cn$1("text-muted-foreground text-sm", className),
+      className: cn("text-muted-foreground text-sm", className),
       ...props
     }
   );
@@ -43188,9 +42932,9 @@ function AdminConfirmDialog({
     ] })
   ] });
 }
-const createActor$2 = createActor$3;
+const createActor$1 = createActor$2;
 function useActorReady() {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   const { isAuthenticated, identity: identity3 } = useInternetIdentity();
   const isActorReady = !!actor && !isFetching && isAuthenticated;
   return { isActorReady, isAuthenticated, identity: identity3 };
@@ -43216,7 +42960,7 @@ function adminErrorMessage(error) {
   return "Operation failed";
 }
 function useProducts() {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   return useQuery({
     queryKey: ["products"],
     queryFn: async () => {
@@ -43227,7 +42971,7 @@ function useProducts() {
   });
 }
 function useCategories() {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   return useQuery({
     queryKey: ["categories"],
     queryFn: async () => {
@@ -43238,7 +42982,7 @@ function useCategories() {
   });
 }
 function useCreateCategory() {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   const { isActorReady } = useActorReady();
   const queryClient2 = useQueryClient();
   const mutation = useMutation({
@@ -43265,7 +43009,7 @@ function useCreateCategory() {
   };
 }
 function useUpdateCategory() {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   const { isActorReady } = useActorReady();
   const queryClient2 = useQueryClient();
   const mutation = useMutation({
@@ -43306,7 +43050,7 @@ function useUpdateCategory() {
   };
 }
 function useReorderCategories() {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   const { isActorReady } = useActorReady();
   const queryClient2 = useQueryClient();
   const mutation = useMutation({
@@ -43332,7 +43076,7 @@ function useReorderCategories() {
   };
 }
 function useDeleteCategory() {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   const { isActorReady } = useActorReady();
   const queryClient2 = useQueryClient();
   const mutation = useMutation({
@@ -43359,7 +43103,7 @@ function useDeleteCategory() {
   };
 }
 function useReassignProducts() {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   const { isActorReady } = useActorReady();
   const queryClient2 = useQueryClient();
   const mutation = useMutation({
@@ -43386,19 +43130,8 @@ function useReassignProducts() {
     mutateAsync: (fromSlug, toSlug) => mutation.mutateAsync({ fromSlug, toSlug })
   };
 }
-function useProduct(slugOrId) {
-  const { actor, isFetching } = useActor(createActor$2);
-  return useQuery({
-    queryKey: ["product", slugOrId],
-    queryFn: async () => {
-      if (!actor || !slugOrId) return null;
-      return actor.getProduct(slugOrId);
-    },
-    enabled: !!actor && !isFetching && !!slugOrId
-  });
-}
 function useCreateProduct() {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   const { isActorReady } = useActorReady();
   const queryClient2 = useQueryClient();
   return useMutation({
@@ -43419,7 +43152,7 @@ function useCreateProduct() {
   });
 }
 function useUpdateProduct() {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   const { isActorReady } = useActorReady();
   const queryClient2 = useQueryClient();
   return useMutation({
@@ -43439,35 +43172,8 @@ function useUpdateProduct() {
     }
   });
 }
-function useCreateOrder() {
-  const { actor, isFetching } = useActor(createActor$2);
-  const queryClient2 = useQueryClient();
-  return useMutation({
-    mutationFn: async (input) => {
-      if (!actor || isFetching)
-        throw new Error(
-          "Session not ready — please wait a moment and try again"
-        );
-      return actor.createOrder(input);
-    },
-    onSuccess: () => {
-      void queryClient2.invalidateQueries({ queryKey: ["products"] });
-    }
-  });
-}
-function useOrderStatus(reference) {
-  const { actor, isFetching } = useActor(createActor$2);
-  return useQuery({
-    queryKey: ["orderStatus", reference],
-    queryFn: async () => {
-      if (!actor || !reference) return null;
-      return actor.getOrderStatus(reference);
-    },
-    enabled: !!actor && !isFetching && !!reference
-  });
-}
 function useCryptoConfig() {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   return useQuery({
     queryKey: ["cryptoConfig"],
     queryFn: async () => {
@@ -43481,65 +43187,8 @@ function useCkUSDCCheckoutEnabled() {
   const { data: cryptoConfig } = useCryptoConfig();
   return (cryptoConfig == null ? void 0 : cryptoConfig.ckUSDCEnabled) ?? false;
 }
-function useCryptoDepositInfo(reference) {
-  const { actor, isFetching } = useActor(createActor$2);
-  return useQuery({
-    queryKey: ["cryptoDepositInfo", reference],
-    queryFn: async () => {
-      if (!actor || !reference) return null;
-      const result = await actor.getCryptoDepositInfo(reference);
-      return result.__kind__ === "ok" ? result.ok : null;
-    },
-    enabled: !!actor && !isFetching && !!reference
-  });
-}
-function useCryptoPaymentStatus(reference) {
-  const { actor, isFetching } = useActor(createActor$2);
-  return useQuery({
-    queryKey: ["cryptoPaymentStatus", reference],
-    queryFn: async () => {
-      if (!actor || !reference) return null;
-      const result = await actor.getCryptoPaymentStatus(reference);
-      return result.__kind__ === "ok" ? result.ok : null;
-    },
-    enabled: !!actor && !isFetching && !!reference
-  });
-}
-function useCheckCryptoPayment() {
-  const { actor, isFetching } = useActor(createActor$2);
-  return useMutation({
-    mutationFn: async (reference) => {
-      if (!actor || isFetching)
-        throw new Error(
-          "Session not ready — please wait a moment and try again"
-        );
-      return actor.checkCryptoPayment(reference);
-    }
-  });
-}
-function useConfirmCryptoPayment() {
-  const { actor, isFetching } = useActor(createActor$2);
-  const queryClient2 = useQueryClient();
-  return useMutation({
-    mutationFn: async (reference) => {
-      if (!actor || isFetching)
-        throw new Error(
-          "Session not ready — please wait a moment and try again"
-        );
-      return actor.checkCryptoPayment(reference);
-    },
-    onSuccess: (_data, reference) => {
-      void queryClient2.invalidateQueries({
-        queryKey: ["cryptoPaymentStatus", reference]
-      });
-      void queryClient2.invalidateQueries({
-        queryKey: ["orderStatus", reference]
-      });
-    }
-  });
-}
 function useUpdateTreasury() {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   const { isActorReady } = useActorReady();
   const queryClient2 = useQueryClient();
   return useMutation({
@@ -43560,7 +43209,7 @@ function useUpdateTreasury() {
   });
 }
 function useUpdateLedgerConfig() {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   const { isActorReady } = useActorReady();
   const queryClient2 = useQueryClient();
   return useMutation({
@@ -43585,61 +43234,8 @@ function useUpdateLedgerConfig() {
     }
   });
 }
-function useOrderLookup(reference) {
-  const { actor, isFetching } = useActor(createActor$2);
-  return useQuery({
-    queryKey: ["orderLookup", reference],
-    queryFn: async () => {
-      if (!actor || !reference) return null;
-      return actor.getOrderStatus(reference);
-    },
-    enabled: !!actor && !isFetching && !!reference
-  });
-}
-function useMyOrders() {
-  const { actor, isFetching } = useActor(createActor$2);
-  const { isAuthenticated } = useInternetIdentity();
-  return useQuery({
-    queryKey: ["myOrders"],
-    queryFn: async () => {
-      if (!actor) return [];
-      return actor.getMyOrders();
-    },
-    enabled: !!actor && !isFetching && isAuthenticated
-  });
-}
-function useReleaseExpiredOrders(intervalMs = 6e4) {
-  const { actor, isFetching } = useActor(createActor$2);
-  const { isActorReady } = useActorReady();
-  const queryClient2 = useQueryClient();
-  const mutation = useMutation({
-    mutationFn: async () => {
-      if (!actor || isFetching)
-        throw new Error(
-          "Session not ready — please wait a moment and try again"
-        );
-      if (!isActorReady)
-        throw new Error(
-          "Session not ready — please wait a moment and try again"
-        );
-      return actor.releaseExpiredOrders();
-    },
-    onSuccess: () => {
-      void queryClient2.invalidateQueries({ queryKey: ["products"] });
-    }
-  });
-  reactExports.useEffect(() => {
-    if (!isActorReady) return;
-    void mutation.mutate();
-    const interval = setInterval(() => {
-      void mutation.mutate();
-    }, intervalMs);
-    return () => clearInterval(interval);
-  }, [isActorReady, intervalMs, mutation]);
-  return mutation;
-}
 function useAdminReleaseExpiredOrders() {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   const { isActorReady } = useActorReady();
   const queryClient2 = useQueryClient();
   return useMutation({
@@ -43661,7 +43257,7 @@ function useAdminReleaseExpiredOrders() {
   });
 }
 function usePaymentServiceConfig() {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   return useQuery({
     queryKey: ["paymentServiceConfig"],
     queryFn: async () => {
@@ -43672,7 +43268,7 @@ function usePaymentServiceConfig() {
   });
 }
 function useUpdatePaymentServiceUrl() {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   const { isActorReady } = useActorReady();
   const queryClient2 = useQueryClient();
   return useMutation({
@@ -43695,7 +43291,7 @@ function useUpdatePaymentServiceUrl() {
   });
 }
 function useUpdatePaymentServiceToken() {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   const { isActorReady } = useActorReady();
   const queryClient2 = useQueryClient();
   return useMutation({
@@ -43717,78 +43313,8 @@ function useUpdatePaymentServiceToken() {
     }
   });
 }
-function useCreateCardCheckoutSession() {
-  const { actor, isFetching } = useActor(createActor$2);
-  return useMutation({
-    mutationFn: async (args) => {
-      if (!actor || isFetching)
-        throw new Error(
-          "Session not ready — please wait a moment and try again"
-        );
-      return actor.createCardCheckoutSession(
-        args.reference,
-        args.successUrl,
-        args.cancelUrl
-      );
-    }
-  });
-}
-function useConfirmCardPayment() {
-  const { actor, isFetching } = useActor(createActor$2);
-  const queryClient2 = useQueryClient();
-  return useMutation({
-    mutationFn: async (reference) => {
-      if (!actor || isFetching)
-        throw new Error(
-          "Session not ready — please wait a moment and try again"
-        );
-      return actor.confirmCardPayment(reference);
-    },
-    onSuccess: (_data, reference) => {
-      void queryClient2.invalidateQueries({
-        queryKey: ["orderStatus", reference]
-      });
-    }
-  });
-}
-function useCancelCardOrder() {
-  const { actor, isFetching } = useActor(createActor$2);
-  const queryClient2 = useQueryClient();
-  return useMutation({
-    mutationFn: async (reference) => {
-      if (!actor || isFetching)
-        throw new Error(
-          "Session not ready — please wait a moment and try again"
-        );
-      return actor.cancelCardOrder(reference);
-    },
-    onSuccess: (_data, reference) => {
-      void queryClient2.invalidateQueries({
-        queryKey: ["orderStatus", reference]
-      });
-    }
-  });
-}
-function useCancelGuestOrder() {
-  const { actor, isFetching } = useActor(createActor$2);
-  const queryClient2 = useQueryClient();
-  return useMutation({
-    mutationFn: async (args) => {
-      if (!actor || isFetching)
-        throw new Error(
-          "Session not ready — please wait a moment and try again"
-        );
-      return actor.cancelGuestOrder(args.reference, args.cancellationToken);
-    },
-    onSuccess: (_data, args) => {
-      void queryClient2.invalidateQueries({
-        queryKey: ["orderStatus", args.reference]
-      });
-    }
-  });
-}
 function useIsAdmin() {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   return useQuery({
     queryKey: ["isAdmin"],
     queryFn: async () => {
@@ -43799,7 +43325,7 @@ function useIsAdmin() {
   });
 }
 function useAdminCount() {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   return useQuery({
     queryKey: ["adminCount"],
     queryFn: async () => {
@@ -43810,7 +43336,7 @@ function useAdminCount() {
   });
 }
 function useGetMyRole() {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   const { isAuthenticated } = useInternetIdentity();
   return useQuery({
     queryKey: ["myRole"],
@@ -43827,7 +43353,7 @@ function normalizePrincipalInput(input) {
   return quoted ? trimmed.slice(1, -1).trim() : trimmed;
 }
 function useListUsers() {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   return useQuery({
     queryKey: ["users"],
     queryFn: async () => {
@@ -43838,7 +43364,7 @@ function useListUsers() {
   });
 }
 function useGrantRole() {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   const { isActorReady } = useActorReady();
   const queryClient2 = useQueryClient();
   return useMutation({
@@ -43862,7 +43388,7 @@ function useGrantRole() {
   });
 }
 function useRevokeRole() {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   const { isActorReady } = useActorReady();
   const queryClient2 = useQueryClient();
   return useMutation({
@@ -43886,7 +43412,7 @@ function useRevokeRole() {
   });
 }
 function useClaimInitialAdmin() {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   const { isActorReady } = useActorReady();
   const queryClient2 = useQueryClient();
   return useMutation({
@@ -43909,7 +43435,7 @@ function useClaimInitialAdmin() {
   });
 }
 function useGetEncryptionRecipients() {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   return useQuery({
     queryKey: ["encryptionRecipients"],
     queryFn: async () => {
@@ -43920,7 +43446,7 @@ function useGetEncryptionRecipients() {
   });
 }
 function useGetMinimumOrder() {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   return useQuery({
     queryKey: ["minimumOrder"],
     queryFn: async () => {
@@ -43931,7 +43457,7 @@ function useGetMinimumOrder() {
   });
 }
 function useUpdateMinimumOrder() {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   const { isActorReady } = useActorReady();
   const queryClient2 = useQueryClient();
   return useMutation({
@@ -43952,7 +43478,7 @@ function useUpdateMinimumOrder() {
   });
 }
 function useGetFeaturedVideo() {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   return useQuery({
     queryKey: ["featuredVideo"],
     queryFn: async () => {
@@ -43963,7 +43489,7 @@ function useGetFeaturedVideo() {
   });
 }
 function useUpdateFeaturedVideo() {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   const { isActorReady } = useActorReady();
   const queryClient2 = useQueryClient();
   return useMutation({
@@ -43985,24 +43511,8 @@ function useUpdateFeaturedVideo() {
     }
   });
 }
-function useResumeInfo(reference) {
-  const { actor, isFetching } = useActor(createActor$2);
-  return useQuery({
-    queryKey: ["resumeInfo", reference],
-    queryFn: async () => {
-      if (!actor || !reference) return null;
-      const result = await actor.getResumeInfo(reference);
-      if (result.__kind__ === "err") {
-        if (result.err.__kind__ === "ledgerError") throw result.err;
-        return null;
-      }
-      return result.ok;
-    },
-    enabled: !!actor && !isFetching && !!reference
-  });
-}
 function useListOrdersForRecovery() {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   return useQuery({
     queryKey: ["ordersForRecovery"],
     queryFn: async () => {
@@ -44013,7 +43523,7 @@ function useListOrdersForRecovery() {
   });
 }
 function useForceRecheckPayment() {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   const { isActorReady } = useActorReady();
   const queryClient2 = useQueryClient();
   return useMutation({
@@ -44036,7 +43546,7 @@ function useForceRecheckPayment() {
   });
 }
 function useForceSweepOrder() {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   const { isActorReady } = useActorReady();
   const queryClient2 = useQueryClient();
   return useMutation({
@@ -44062,7 +43572,7 @@ function useForceSweepOrder() {
   });
 }
 function useGetDefaultSubaccountBalance() {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   return useQuery({
     queryKey: ["defaultSubaccountBalance"],
     queryFn: async () => {
@@ -44075,7 +43585,7 @@ function useGetDefaultSubaccountBalance() {
   });
 }
 function useSweepDefaultSubaccount() {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   const { isActorReady } = useActorReady();
   const queryClient2 = useQueryClient();
   return useMutation({
@@ -44101,7 +43611,7 @@ function useSweepDefaultSubaccount() {
   });
 }
 function useGetCycleBalance() {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   return useQuery({
     queryKey: ["cycleBalance"],
     queryFn: async () => {
@@ -44112,7 +43622,7 @@ function useGetCycleBalance() {
   });
 }
 function useGetCycleMetrics() {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   return useQuery({
     queryKey: ["cycleMetrics"],
     queryFn: async () => {
@@ -44123,7 +43633,7 @@ function useGetCycleMetrics() {
   });
 }
 function useListLatePayments() {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   return useQuery({
     queryKey: ["latePayments"],
     queryFn: async () => {
@@ -44134,7 +43644,7 @@ function useListLatePayments() {
   });
 }
 function useMarkLatePaymentReviewed() {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   const { isActorReady } = useActorReady();
   const queryClient2 = useQueryClient();
   return useMutation({
@@ -44155,7 +43665,7 @@ function useMarkLatePaymentReviewed() {
   });
 }
 function useAdminListOrders(filter) {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   return useQuery({
     queryKey: ["adminOrders", filter],
     queryFn: async () => {
@@ -44166,7 +43676,7 @@ function useAdminListOrders(filter) {
   });
 }
 function useAdminGetOrderDetail(reference) {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   return useQuery({
     queryKey: ["adminOrderDetail", reference],
     queryFn: async () => {
@@ -44177,7 +43687,7 @@ function useAdminGetOrderDetail(reference) {
   });
 }
 function useGetCanisterId() {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   return useQuery({
     queryKey: ["canisterId"],
     queryFn: async () => {
@@ -44188,7 +43698,7 @@ function useGetCanisterId() {
   });
 }
 function useGetTreasuryTokens() {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   return useQuery({
     queryKey: ["treasuryTokens"],
     queryFn: async () => {
@@ -44199,7 +43709,7 @@ function useGetTreasuryTokens() {
   });
 }
 function useGetSubaccountBalance(subaccountIndex) {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   return useQuery({
     queryKey: ["subaccountBalance", subaccountIndex],
     queryFn: async () => {
@@ -44212,7 +43722,7 @@ function useGetSubaccountBalance(subaccountIndex) {
   });
 }
 function useMarkOrderShipped() {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   const { isActorReady } = useActorReady();
   const queryClient2 = useQueryClient();
   return useMutation({
@@ -44243,7 +43753,7 @@ function useMarkOrderShipped() {
   });
 }
 function useUnsubscribe() {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   return useMutation({
     mutationFn: async (token) => {
       if (!actor || isFetching)
@@ -44256,7 +43766,7 @@ function useUnsubscribe() {
   });
 }
 function useSubmitSubmission() {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   return useMutation({
     mutationFn: async (input) => {
       if (!actor || isFetching)
@@ -44269,7 +43779,7 @@ function useSubmitSubmission() {
   });
 }
 function useFeaturedVideo() {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   return useQuery({
     queryKey: ["featuredVideo"],
     queryFn: async () => {
@@ -44280,7 +43790,7 @@ function useFeaturedVideo() {
   });
 }
 function useListSubmissions() {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   return useQuery({
     queryKey: ["submissions"],
     queryFn: async () => {
@@ -44293,7 +43803,7 @@ function useListSubmissions() {
   });
 }
 function useStartUpload() {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   const { isActorReady } = useActorReady();
   return useMutation({
     mutationFn: async (args) => {
@@ -44312,7 +43822,7 @@ function useStartUpload() {
   });
 }
 function useUploadChunk() {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   const { isActorReady } = useActorReady();
   return useMutation({
     mutationFn: async (args) => {
@@ -44334,7 +43844,7 @@ function useUploadChunk() {
   });
 }
 function useFinishUpload() {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   const { isActorReady } = useActorReady();
   const queryClient2 = useQueryClient();
   return useMutation({
@@ -44360,7 +43870,7 @@ function useFinishUpload() {
   });
 }
 function useDeleteProductImage() {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   const { isActorReady } = useActorReady();
   const queryClient2 = useQueryClient();
   return useMutation({
@@ -44385,7 +43895,7 @@ function useDeleteProductImage() {
   });
 }
 function useGetProductImageStorageStats() {
-  const { actor, isFetching } = useActor(createActor$2);
+  const { actor, isFetching } = useActor(createActor$1);
   return useQuery({
     queryKey: ["productImageStorageStats"],
     queryFn: async () => {
@@ -45083,7 +44593,7 @@ function Checkbox({
     Checkbox$1,
     {
       "data-slot": "checkbox",
-      className: cn$1(
+      className: cn(
         "peer border-input dark:bg-input/30 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground dark:data-[state=checked]:bg-primary data-[state=checked]:border-primary focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive size-4 shrink-0 rounded-[4px] border shadow-xs transition-shadow outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50",
         className
       ),
@@ -45439,14 +44949,14 @@ const computePosition$1 = async (reference, floating, config2) => {
     }
     const {
       name,
-      fn: fn2
+      fn
     } = currentMiddleware;
     const {
       x: nextX,
       y: nextY,
       data,
       reset
-    } = await fn2({
+    } = await fn({
       x: x3,
       y: y2,
       initialPlacement: placement,
@@ -46069,11 +45579,11 @@ function isTopLayer(element) {
     if (element.matches(":popover-open")) {
       return true;
     }
-  } catch (_e4) {
+  } catch (_e2) {
   }
   try {
     return element.matches(":modal");
-  } catch (_e4) {
+  } catch (_e2) {
     return false;
   }
 }
@@ -46678,7 +46188,7 @@ function observeMove(element, onMove) {
         // Handle <iframe>s
         root: root2.ownerDocument
       });
-    } catch (_e4) {
+    } catch (_e2) {
       io = new IntersectionObserver(handleObserve, options);
     }
     io.observe(element);
@@ -47134,7 +46644,7 @@ var CONTENT_NAME$1 = "PopperContent";
 var [PopperContentProvider, useContentContext] = createPopperContext(CONTENT_NAME$1);
 var PopperContent = reactExports.forwardRef(
   (props, forwardedRef) => {
-    var _a2, _b2, _c2, _d2, _e4, _f2;
+    var _a2, _b2, _c2, _d2, _e2, _f2;
     const {
       __scopePopper,
       side = "bottom",
@@ -47233,7 +46743,7 @@ var PopperContent = reactExports.forwardRef(
           zIndex: contentZIndex,
           ["--radix-popper-transform-origin"]: [
             (_d2 = middlewareData.transformOrigin) == null ? void 0 : _d2.x,
-            (_e4 = middlewareData.transformOrigin) == null ? void 0 : _e4.y
+            (_e2 = middlewareData.transformOrigin) == null ? void 0 : _e2.y
           ].join(" "),
           // hide the content if using the hide middleware and should be hidden
           // set visibility to hidden and disable pointer events so the UI behaves
@@ -48560,7 +48070,7 @@ function SelectTrigger({
     {
       "data-slot": "select-trigger",
       "data-size": size2,
-      className: cn$1(
+      className: cn(
         "border-input data-[placeholder]:text-muted-foreground [&_svg:not([class*='text-'])]:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30 dark:hover:bg-input/50 flex w-fit items-center justify-between gap-2 rounded-md border bg-transparent px-3 py-2 text-sm whitespace-nowrap shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50 data-[size=default]:h-9 data-[size=sm]:h-8 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         className
       ),
@@ -48582,7 +48092,7 @@ function SelectContent({
     Content2,
     {
       "data-slot": "select-content",
-      className: cn$1(
+      className: cn(
         "bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 relative z-50 max-h-(--radix-select-content-available-height) min-w-[8rem] origin-(--radix-select-content-transform-origin) overflow-x-hidden overflow-y-auto rounded-md border shadow-md",
         position === "popper" && "data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1",
         className
@@ -48594,7 +48104,7 @@ function SelectContent({
         /* @__PURE__ */ jsxRuntimeExports.jsx(
           Viewport,
           {
-            className: cn$1(
+            className: cn(
               "p-1",
               position === "popper" && "h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)] scroll-my-1"
             ),
@@ -48615,7 +48125,7 @@ function SelectItem({
     Item,
     {
       "data-slot": "select-item",
-      className: cn$1(
+      className: cn(
         "focus:bg-accent focus:text-accent-foreground [&_svg:not([class*='text-'])]:text-muted-foreground relative flex w-full cursor-default items-center gap-2 rounded-sm py-1.5 pr-8 pl-2 text-sm outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2",
         className
       ),
@@ -48635,7 +48145,7 @@ function SelectScrollUpButton({
     ScrollUpButton,
     {
       "data-slot": "select-scroll-up-button",
-      className: cn$1(
+      className: cn(
         "flex cursor-default items-center justify-center py-1",
         className
       ),
@@ -48652,7 +48162,7 @@ function SelectScrollDownButton({
     ScrollDownButton,
     {
       "data-slot": "select-scroll-down-button",
-      className: cn$1(
+      className: cn(
         "flex cursor-default items-center justify-center py-1",
         className
       ),
@@ -48809,7 +48319,7 @@ function Switch({
     Root,
     {
       "data-slot": "switch",
-      className: cn$1(
+      className: cn(
         "peer data-[state=checked]:bg-primary data-[state=unchecked]:bg-input focus-visible:border-ring focus-visible:ring-ring/50 dark:data-[state=unchecked]:bg-input/80 inline-flex h-[1.15rem] w-8 shrink-0 items-center rounded-full border border-transparent shadow-xs transition-all outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50",
         className
       ),
@@ -48818,7 +48328,7 @@ function Switch({
         Thumb,
         {
           "data-slot": "switch-thumb",
-          className: cn$1(
+          className: cn(
             "bg-background dark:data-[state=unchecked]:bg-foreground dark:data-[state=checked]:bg-primary-foreground pointer-events-none block size-4 rounded-full ring-0 transition-transform data-[state=checked]:translate-x-[calc(100%-2px)] data-[state=unchecked]:translate-x-0"
           )
         }
@@ -50022,13 +49532,13 @@ var reactIs_production_min = {};
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-var b$1 = Symbol.for("react.element"), c$1 = Symbol.for("react.portal"), d = Symbol.for("react.fragment"), e = Symbol.for("react.strict_mode"), f = Symbol.for("react.profiler"), g$1 = Symbol.for("react.provider"), h = Symbol.for("react.context"), k$2 = Symbol.for("react.server_context"), l = Symbol.for("react.forward_ref"), m = Symbol.for("react.suspense"), n = Symbol.for("react.suspense_list"), p = Symbol.for("react.memo"), q = Symbol.for("react.lazy"), t = Symbol.for("react.offscreen"), u$1;
-u$1 = Symbol.for("react.module.reference");
+var b = Symbol.for("react.element"), c$1 = Symbol.for("react.portal"), d = Symbol.for("react.fragment"), e = Symbol.for("react.strict_mode"), f = Symbol.for("react.profiler"), g = Symbol.for("react.provider"), h = Symbol.for("react.context"), k$1 = Symbol.for("react.server_context"), l = Symbol.for("react.forward_ref"), m = Symbol.for("react.suspense"), n = Symbol.for("react.suspense_list"), p = Symbol.for("react.memo"), q = Symbol.for("react.lazy"), t = Symbol.for("react.offscreen"), u;
+u = Symbol.for("react.module.reference");
 function v(a2) {
   if ("object" === typeof a2 && null !== a2) {
     var r2 = a2.$$typeof;
     switch (r2) {
-      case b$1:
+      case b:
         switch (a2 = a2.type, a2) {
           case d:
           case f:
@@ -50038,12 +49548,12 @@ function v(a2) {
             return a2;
           default:
             switch (a2 = a2 && a2.$$typeof, a2) {
-              case k$2:
+              case k$1:
               case h:
               case l:
               case q:
               case p:
-              case g$1:
+              case g:
                 return a2;
               default:
                 return r2;
@@ -50055,8 +49565,8 @@ function v(a2) {
   }
 }
 reactIs_production_min.ContextConsumer = h;
-reactIs_production_min.ContextProvider = g$1;
-reactIs_production_min.Element = b$1;
+reactIs_production_min.ContextProvider = g;
+reactIs_production_min.Element = b;
 reactIs_production_min.ForwardRef = l;
 reactIs_production_min.Fragment = d;
 reactIs_production_min.Lazy = q;
@@ -50076,10 +49586,10 @@ reactIs_production_min.isContextConsumer = function(a2) {
   return v(a2) === h;
 };
 reactIs_production_min.isContextProvider = function(a2) {
-  return v(a2) === g$1;
+  return v(a2) === g;
 };
 reactIs_production_min.isElement = function(a2) {
-  return "object" === typeof a2 && null !== a2 && a2.$$typeof === b$1;
+  return "object" === typeof a2 && null !== a2 && a2.$$typeof === b;
 };
 reactIs_production_min.isForwardRef = function(a2) {
   return v(a2) === l;
@@ -50109,7 +49619,7 @@ reactIs_production_min.isSuspenseList = function(a2) {
   return v(a2) === n;
 };
 reactIs_production_min.isValidElementType = function(a2) {
-  return "string" === typeof a2 || "function" === typeof a2 || a2 === d || a2 === f || a2 === e || a2 === m || a2 === n || a2 === t || "object" === typeof a2 && null !== a2 && (a2.$$typeof === q || a2.$$typeof === p || a2.$$typeof === g$1 || a2.$$typeof === h || a2.$$typeof === l || a2.$$typeof === u$1 || void 0 !== a2.getModuleId) ? true : false;
+  return "string" === typeof a2 || "function" === typeof a2 || a2 === d || a2 === f || a2 === e || a2 === m || a2 === n || a2 === t || "object" === typeof a2 && null !== a2 && (a2.$$typeof === q || a2.$$typeof === p || a2.$$typeof === g || a2.$$typeof === h || a2.$$typeof === l || a2.$$typeof === u || void 0 !== a2.getModuleId) ? true : false;
 };
 reactIs_production_min.typeOf = v;
 {
@@ -50642,10 +50152,10 @@ var adaptEventsOfChild = function adaptEventsOfChild2(props, data, index2) {
   });
   return out;
 };
-var _excluded$l = ["children"], _excluded2$7 = ["children"];
-function _objectWithoutProperties$k(source, excluded) {
+var _excluded$j = ["children"], _excluded2$7 = ["children"];
+function _objectWithoutProperties$j(source, excluded) {
   if (source == null) return {};
-  var target = _objectWithoutPropertiesLoose$k(source, excluded);
+  var target = _objectWithoutPropertiesLoose$j(source, excluded);
   var key, i;
   if (Object.getOwnPropertySymbols) {
     var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
@@ -50658,7 +50168,7 @@ function _objectWithoutProperties$k(source, excluded) {
   }
   return target;
 }
-function _objectWithoutPropertiesLoose$k(source, excluded) {
+function _objectWithoutPropertiesLoose$j(source, excluded) {
   if (source == null) return {};
   var target = {};
   for (var key in source) {
@@ -50817,8 +50327,8 @@ var isSingleChildEqual = function isSingleChildEqual2(nextChild, prevChild) {
     return true;
   }
   if (!isNil$1(nextChild) && !isNil$1(prevChild)) {
-    var _ref = nextChild.props || {}, nextChildren = _ref.children, nextProps = _objectWithoutProperties$k(_ref, _excluded$l);
-    var _ref2 = prevChild.props || {}, prevChildren = _ref2.children, prevProps = _objectWithoutProperties$k(_ref2, _excluded2$7);
+    var _ref = nextChild.props || {}, nextChildren = _ref.children, nextProps = _objectWithoutProperties$j(_ref, _excluded$j);
+    var _ref2 = prevChild.props || {}, prevChildren = _ref2.children, prevProps = _objectWithoutProperties$j(_ref2, _excluded2$7);
     if (nextChildren && prevChildren) {
       return shallowEqual(nextProps, prevProps) && isChildrenEqual(nextChildren, prevChildren);
     }
@@ -50857,65 +50367,7 @@ var getReactEventByType = function getReactEventByType2(e3) {
 var parseChildIndex = function parseChildIndex2(child, children) {
   return toArray(children).indexOf(child);
 };
-var _excluded$k = ["children", "width", "height", "viewBox", "className", "style", "title", "desc"];
-function _extends$u() {
-  _extends$u = Object.assign ? Object.assign.bind() : function(target) {
-    for (var i = 1; i < arguments.length; i++) {
-      var source = arguments[i];
-      for (var key in source) {
-        if (Object.prototype.hasOwnProperty.call(source, key)) {
-          target[key] = source[key];
-        }
-      }
-    }
-    return target;
-  };
-  return _extends$u.apply(this, arguments);
-}
-function _objectWithoutProperties$j(source, excluded) {
-  if (source == null) return {};
-  var target = _objectWithoutPropertiesLoose$j(source, excluded);
-  var key, i;
-  if (Object.getOwnPropertySymbols) {
-    var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
-    for (i = 0; i < sourceSymbolKeys.length; i++) {
-      key = sourceSymbolKeys[i];
-      if (excluded.indexOf(key) >= 0) continue;
-      if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
-      target[key] = source[key];
-    }
-  }
-  return target;
-}
-function _objectWithoutPropertiesLoose$j(source, excluded) {
-  if (source == null) return {};
-  var target = {};
-  for (var key in source) {
-    if (Object.prototype.hasOwnProperty.call(source, key)) {
-      if (excluded.indexOf(key) >= 0) continue;
-      target[key] = source[key];
-    }
-  }
-  return target;
-}
-function Surface(props) {
-  var children = props.children, width = props.width, height = props.height, viewBox = props.viewBox, className = props.className, style2 = props.style, title = props.title, desc = props.desc, others = _objectWithoutProperties$j(props, _excluded$k);
-  var svgView = viewBox || {
-    width,
-    height,
-    x: 0,
-    y: 0
-  };
-  var layerClass = clsx("recharts-surface", className);
-  return /* @__PURE__ */ React$2.createElement("svg", _extends$u({}, filterProps(others, true, "svg"), {
-    className: layerClass,
-    width,
-    height,
-    style: style2,
-    viewBox: "".concat(svgView.x, " ").concat(svgView.y, " ").concat(svgView.width, " ").concat(svgView.height)
-  }), /* @__PURE__ */ React$2.createElement("title", null, title), /* @__PURE__ */ React$2.createElement("desc", null, desc), children);
-}
-var _excluded$j = ["children", "className"];
+var _excluded$i = ["children", "width", "height", "viewBox", "className", "style", "title", "desc"];
 function _extends$t() {
   _extends$t = Object.assign ? Object.assign.bind() : function(target) {
     for (var i = 1; i < arguments.length; i++) {
@@ -50956,10 +50408,68 @@ function _objectWithoutPropertiesLoose$i(source, excluded) {
   }
   return target;
 }
+function Surface(props) {
+  var children = props.children, width = props.width, height = props.height, viewBox = props.viewBox, className = props.className, style2 = props.style, title = props.title, desc = props.desc, others = _objectWithoutProperties$i(props, _excluded$i);
+  var svgView = viewBox || {
+    width,
+    height,
+    x: 0,
+    y: 0
+  };
+  var layerClass = clsx("recharts-surface", className);
+  return /* @__PURE__ */ React$2.createElement("svg", _extends$t({}, filterProps(others, true, "svg"), {
+    className: layerClass,
+    width,
+    height,
+    style: style2,
+    viewBox: "".concat(svgView.x, " ").concat(svgView.y, " ").concat(svgView.width, " ").concat(svgView.height)
+  }), /* @__PURE__ */ React$2.createElement("title", null, title), /* @__PURE__ */ React$2.createElement("desc", null, desc), children);
+}
+var _excluded$h = ["children", "className"];
+function _extends$s() {
+  _extends$s = Object.assign ? Object.assign.bind() : function(target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+    return target;
+  };
+  return _extends$s.apply(this, arguments);
+}
+function _objectWithoutProperties$h(source, excluded) {
+  if (source == null) return {};
+  var target = _objectWithoutPropertiesLoose$h(source, excluded);
+  var key, i;
+  if (Object.getOwnPropertySymbols) {
+    var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
+    for (i = 0; i < sourceSymbolKeys.length; i++) {
+      key = sourceSymbolKeys[i];
+      if (excluded.indexOf(key) >= 0) continue;
+      if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
+      target[key] = source[key];
+    }
+  }
+  return target;
+}
+function _objectWithoutPropertiesLoose$h(source, excluded) {
+  if (source == null) return {};
+  var target = {};
+  for (var key in source) {
+    if (Object.prototype.hasOwnProperty.call(source, key)) {
+      if (excluded.indexOf(key) >= 0) continue;
+      target[key] = source[key];
+    }
+  }
+  return target;
+}
 var Layer = /* @__PURE__ */ React$2.forwardRef(function(props, ref) {
-  var children = props.children, className = props.className, others = _objectWithoutProperties$i(props, _excluded$j);
+  var children = props.children, className = props.className, others = _objectWithoutProperties$h(props, _excluded$h);
   var layerClass = clsx("recharts-layer", className);
-  return /* @__PURE__ */ React$2.createElement("g", _extends$t({
+  return /* @__PURE__ */ React$2.createElement("g", _extends$s({
     className: layerClass
   }, filterProps(others, true), {
     ref
@@ -51415,13 +50925,13 @@ const symbolTriangle = {
 };
 const c = -0.5;
 const s = sqrt$1(3) / 2;
-const k$1 = 1 / sqrt$1(12);
-const a = (k$1 / 2 + 1) * 3;
+const k = 1 / sqrt$1(12);
+const a = (k / 2 + 1) * 3;
 const symbolWye = {
   draw(context, size2) {
     const r2 = sqrt$1(size2 / a);
-    const x0 = r2 / 2, y0 = r2 * k$1;
-    const x1 = x0, y1 = r2 * k$1 + r2;
+    const x0 = r2 / 2, y0 = r2 * k;
+    const x1 = x0, y1 = r2 * k + r2;
     const x22 = -x1, y2 = y1;
     context.moveTo(x0, y0);
     context.lineTo(x1, y1);
@@ -51932,9 +51442,9 @@ function _typeof$J(o) {
     return o2 && "function" == typeof Symbol && o2.constructor === Symbol && o2 !== Symbol.prototype ? "symbol" : typeof o2;
   }, _typeof$J(o);
 }
-var _excluded$i = ["type", "size", "sizeType"];
-function _extends$s() {
-  _extends$s = Object.assign ? Object.assign.bind() : function(target) {
+var _excluded$g = ["type", "size", "sizeType"];
+function _extends$r() {
+  _extends$r = Object.assign ? Object.assign.bind() : function(target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = arguments[i];
       for (var key in source) {
@@ -51945,7 +51455,7 @@ function _extends$s() {
     }
     return target;
   };
-  return _extends$s.apply(this, arguments);
+  return _extends$r.apply(this, arguments);
 }
 function ownKeys$B(e3, r2) {
   var t2 = Object.keys(e3);
@@ -51991,9 +51501,9 @@ function _toPrimitive$I(t2, r2) {
   }
   return ("string" === r2 ? String : Number)(t2);
 }
-function _objectWithoutProperties$h(source, excluded) {
+function _objectWithoutProperties$g(source, excluded) {
   if (source == null) return {};
-  var target = _objectWithoutPropertiesLoose$h(source, excluded);
+  var target = _objectWithoutPropertiesLoose$g(source, excluded);
   var key, i;
   if (Object.getOwnPropertySymbols) {
     var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
@@ -52006,7 +51516,7 @@ function _objectWithoutProperties$h(source, excluded) {
   }
   return target;
 }
-function _objectWithoutPropertiesLoose$h(source, excluded) {
+function _objectWithoutPropertiesLoose$g(source, excluded) {
   if (source == null) return {};
   var target = {};
   for (var key in source) {
@@ -52058,7 +51568,7 @@ var registerSymbol = function registerSymbol2(key, factory) {
   symbolFactories["symbol".concat(upperFirst$1(key))] = factory;
 };
 var Symbols = function Symbols2(_ref) {
-  var _ref$type = _ref.type, type = _ref$type === void 0 ? "circle" : _ref$type, _ref$size = _ref.size, size2 = _ref$size === void 0 ? 64 : _ref$size, _ref$sizeType = _ref.sizeType, sizeType = _ref$sizeType === void 0 ? "area" : _ref$sizeType, rest = _objectWithoutProperties$h(_ref, _excluded$i);
+  var _ref$type = _ref.type, type = _ref$type === void 0 ? "circle" : _ref$type, _ref$size = _ref.size, size2 = _ref$size === void 0 ? 64 : _ref$size, _ref$sizeType = _ref.sizeType, sizeType = _ref$sizeType === void 0 ? "area" : _ref$sizeType, rest = _objectWithoutProperties$g(_ref, _excluded$g);
   var props = _objectSpread$B(_objectSpread$B({}, rest), {}, {
     type,
     size: size2,
@@ -52072,7 +51582,7 @@ var Symbols = function Symbols2(_ref) {
   var className = props.className, cx = props.cx, cy = props.cy;
   var filteredProps = filterProps(props, true);
   if (cx === +cx && cy === +cy && size2 === +size2) {
-    return /* @__PURE__ */ React$2.createElement("path", _extends$s({}, filteredProps, {
+    return /* @__PURE__ */ React$2.createElement("path", _extends$r({}, filteredProps, {
       className: clsx("recharts-symbols", className),
       transform: "translate(".concat(cx, ", ").concat(cy, ")"),
       d: getPath4()
@@ -52089,8 +51599,8 @@ function _typeof$I(o) {
     return o2 && "function" == typeof Symbol && o2.constructor === Symbol && o2 !== Symbol.prototype ? "symbol" : typeof o2;
   }, _typeof$I(o);
 }
-function _extends$r() {
-  _extends$r = Object.assign ? Object.assign.bind() : function(target) {
+function _extends$q() {
+  _extends$q = Object.assign ? Object.assign.bind() : function(target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = arguments[i];
       for (var key in source) {
@@ -52101,7 +51611,7 @@ function _extends$r() {
     }
     return target;
   };
-  return _extends$r.apply(this, arguments);
+  return _extends$q.apply(this, arguments);
 }
 function ownKeys$A(e3, r2) {
   var t2 = Object.keys(e3);
@@ -52319,7 +51829,7 @@ var DefaultLegendContent = /* @__PURE__ */ function(_PureComponent) {
           // eslint-disable-line max-len
         );
         var color2 = entry.inactive ? inactiveColor : entry.color;
-        return /* @__PURE__ */ React$2.createElement("li", _extends$r({
+        return /* @__PURE__ */ React$2.createElement("li", _extends$q({
           className,
           style: itemStyle,
           key: "legend-item-".concat(i)
@@ -53162,7 +52672,7 @@ function _typeof$H(o) {
     return o2 && "function" == typeof Symbol && o2.constructor === Symbol && o2 !== Symbol.prototype ? "symbol" : typeof o2;
   }, _typeof$H(o);
 }
-var _excluded$h = ["ref"];
+var _excluded$f = ["ref"];
 function ownKeys$z(e3, r2) {
   var t2 = Object.keys(e3);
   if (Object.getOwnPropertySymbols) {
@@ -53275,9 +52785,9 @@ function _toPrimitive$G(t2, r2) {
   }
   return String(t2);
 }
-function _objectWithoutProperties$g(source, excluded) {
+function _objectWithoutProperties$f(source, excluded) {
   if (source == null) return {};
-  var target = _objectWithoutPropertiesLoose$g(source, excluded);
+  var target = _objectWithoutPropertiesLoose$f(source, excluded);
   var key, i;
   if (Object.getOwnPropertySymbols) {
     var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
@@ -53290,7 +52800,7 @@ function _objectWithoutProperties$g(source, excluded) {
   }
   return target;
 }
-function _objectWithoutPropertiesLoose$g(source, excluded) {
+function _objectWithoutPropertiesLoose$f(source, excluded) {
   if (source == null) return {};
   var target = {};
   for (var key in source) {
@@ -53312,7 +52822,7 @@ function renderContent$1(content, props) {
     return /* @__PURE__ */ React$2.createElement(content, props);
   }
   props.ref;
-  var otherProps = _objectWithoutProperties$g(props, _excluded$h);
+  var otherProps = _objectWithoutProperties$f(props, _excluded$f);
   return /* @__PURE__ */ React$2.createElement(DefaultLegendContent, otherProps);
 }
 var EPS$1 = 1;
@@ -53729,8 +53239,8 @@ function _typeof$G(o) {
     return o2 && "function" == typeof Symbol && o2.constructor === Symbol && o2 !== Symbol.prototype ? "symbol" : typeof o2;
   }, _typeof$G(o);
 }
-function _extends$q() {
-  _extends$q = Object.assign ? Object.assign.bind() : function(target) {
+function _extends$p() {
+  _extends$p = Object.assign ? Object.assign.bind() : function(target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = arguments[i];
       for (var key in source) {
@@ -53741,7 +53251,7 @@ function _extends$q() {
     }
     return target;
   };
-  return _extends$q.apply(this, arguments);
+  return _extends$p.apply(this, arguments);
 }
 function _slicedToArray$b(arr, i) {
   return _arrayWithHoles$c(arr) || _iterableToArrayLimit$b(arr, i) || _unsupportedIterableToArray$j(arr, i) || _nonIterableRest$c();
@@ -53908,7 +53418,7 @@ var DefaultTooltipContent = function DefaultTooltipContent2(props) {
     role: "status",
     "aria-live": "assertive"
   } : {};
-  return /* @__PURE__ */ React$2.createElement("div", _extends$q({
+  return /* @__PURE__ */ React$2.createElement("div", _extends$p({
     className: wrapperCN,
     style: finalStyle
   }, accessibilityAttributes), /* @__PURE__ */ React$2.createElement("p", {
@@ -55189,9 +54699,9 @@ function reduceCSSCalc(expression) {
   }
   return result;
 }
-var _excluded$g = ["x", "y", "lineHeight", "capHeight", "scaleToFit", "textAnchor", "verticalAnchor", "fill"], _excluded2$6 = ["dx", "dy", "angle", "className", "breakAll"];
-function _extends$p() {
-  _extends$p = Object.assign ? Object.assign.bind() : function(target) {
+var _excluded$e = ["x", "y", "lineHeight", "capHeight", "scaleToFit", "textAnchor", "verticalAnchor", "fill"], _excluded2$6 = ["dx", "dy", "angle", "className", "breakAll"];
+function _extends$o() {
+  _extends$o = Object.assign ? Object.assign.bind() : function(target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = arguments[i];
       for (var key in source) {
@@ -55202,11 +54712,11 @@ function _extends$p() {
     }
     return target;
   };
-  return _extends$p.apply(this, arguments);
+  return _extends$o.apply(this, arguments);
 }
-function _objectWithoutProperties$f(source, excluded) {
+function _objectWithoutProperties$e(source, excluded) {
   if (source == null) return {};
-  var target = _objectWithoutPropertiesLoose$f(source, excluded);
+  var target = _objectWithoutPropertiesLoose$e(source, excluded);
   var key, i;
   if (Object.getOwnPropertySymbols) {
     var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
@@ -55219,7 +54729,7 @@ function _objectWithoutProperties$f(source, excluded) {
   }
   return target;
 }
-function _objectWithoutPropertiesLoose$f(source, excluded) {
+function _objectWithoutPropertiesLoose$e(source, excluded) {
   if (source == null) return {};
   var target = {};
   for (var key in source) {
@@ -55399,7 +54909,7 @@ var getWordsByLines = function getWordsByLines2(_ref4) {
 };
 var DEFAULT_FILL = "#808080";
 var Text = function Text2(_ref5) {
-  var _ref5$x = _ref5.x, propsX = _ref5$x === void 0 ? 0 : _ref5$x, _ref5$y = _ref5.y, propsY = _ref5$y === void 0 ? 0 : _ref5$y, _ref5$lineHeight = _ref5.lineHeight, lineHeight = _ref5$lineHeight === void 0 ? "1em" : _ref5$lineHeight, _ref5$capHeight = _ref5.capHeight, capHeight = _ref5$capHeight === void 0 ? "0.71em" : _ref5$capHeight, _ref5$scaleToFit = _ref5.scaleToFit, scaleToFit = _ref5$scaleToFit === void 0 ? false : _ref5$scaleToFit, _ref5$textAnchor = _ref5.textAnchor, textAnchor = _ref5$textAnchor === void 0 ? "start" : _ref5$textAnchor, _ref5$verticalAnchor = _ref5.verticalAnchor, verticalAnchor = _ref5$verticalAnchor === void 0 ? "end" : _ref5$verticalAnchor, _ref5$fill = _ref5.fill, fill = _ref5$fill === void 0 ? DEFAULT_FILL : _ref5$fill, props = _objectWithoutProperties$f(_ref5, _excluded$g);
+  var _ref5$x = _ref5.x, propsX = _ref5$x === void 0 ? 0 : _ref5$x, _ref5$y = _ref5.y, propsY = _ref5$y === void 0 ? 0 : _ref5$y, _ref5$lineHeight = _ref5.lineHeight, lineHeight = _ref5$lineHeight === void 0 ? "1em" : _ref5$lineHeight, _ref5$capHeight = _ref5.capHeight, capHeight = _ref5$capHeight === void 0 ? "0.71em" : _ref5$capHeight, _ref5$scaleToFit = _ref5.scaleToFit, scaleToFit = _ref5$scaleToFit === void 0 ? false : _ref5$scaleToFit, _ref5$textAnchor = _ref5.textAnchor, textAnchor = _ref5$textAnchor === void 0 ? "start" : _ref5$textAnchor, _ref5$verticalAnchor = _ref5.verticalAnchor, verticalAnchor = _ref5$verticalAnchor === void 0 ? "end" : _ref5$verticalAnchor, _ref5$fill = _ref5.fill, fill = _ref5$fill === void 0 ? DEFAULT_FILL : _ref5$fill, props = _objectWithoutProperties$e(_ref5, _excluded$e);
   var wordsByLines = reactExports.useMemo(function() {
     return getWordsByLines({
       breakAll: props.breakAll,
@@ -55410,7 +54920,7 @@ var Text = function Text2(_ref5) {
       width: props.width
     });
   }, [props.breakAll, props.children, props.maxLines, scaleToFit, props.style, props.width]);
-  var dx = props.dx, dy = props.dy, angle = props.angle, className = props.className, breakAll = props.breakAll, textProps = _objectWithoutProperties$f(props, _excluded2$6);
+  var dx = props.dx, dy = props.dy, angle = props.angle, className = props.className, breakAll = props.breakAll, textProps = _objectWithoutProperties$e(props, _excluded2$6);
   if (!isNumOrStr(propsX) || !isNumOrStr(propsY)) {
     return null;
   }
@@ -55440,7 +54950,7 @@ var Text = function Text2(_ref5) {
   if (transforms.length) {
     textProps.transform = transforms.join(" ");
   }
-  return /* @__PURE__ */ React$2.createElement("text", _extends$p({}, filterProps(textProps, true), {
+  return /* @__PURE__ */ React$2.createElement("text", _extends$o({}, filterProps(textProps, true), {
     x: x3,
     y: y2,
     className: clsx("recharts-text", className),
@@ -56259,13 +55769,13 @@ function one(b2) {
   };
 }
 function string(a2, b2) {
-  var bi = reA.lastIndex = reB.lastIndex = 0, am, bm, bs2, i = -1, s2 = [], q2 = [];
+  var bi = reA.lastIndex = reB.lastIndex = 0, am, bm, bs, i = -1, s2 = [], q2 = [];
   a2 = a2 + "", b2 = b2 + "";
   while ((am = reA.exec(a2)) && (bm = reB.exec(b2))) {
-    if ((bs2 = bm.index) > bi) {
-      bs2 = b2.slice(bi, bs2);
-      if (s2[i]) s2[i] += bs2;
-      else s2[++i] = bs2;
+    if ((bs = bm.index) > bi) {
+      bs = b2.slice(bi, bs);
+      if (s2[i]) s2[i] += bs;
+      else s2[++i] = bs;
     }
     if ((am = am[0]) === (bm = bm[0])) {
       if (s2[i]) s2[i] += bm;
@@ -56277,9 +55787,9 @@ function string(a2, b2) {
     bi = reB.lastIndex;
   }
   if (bi < b2.length) {
-    bs2 = b2.slice(bi);
-    if (s2[i]) s2[i] += bs2;
-    else s2[++i] = bs2;
+    bs = b2.slice(bi);
+    if (s2[i]) s2[i] += bs;
+    else s2[++i] = bs;
   }
   return s2.length < 2 ? q2[0] ? one(q2[0].x) : zero(b2) : (b2 = q2.length, function(t2) {
     for (var i2 = 0, o; i2 < b2; ++i2) s2[(o = q2[i2]).i] = o.x(t2);
@@ -56428,9 +55938,9 @@ function formatNumerals(numerals) {
     });
   };
 }
-var re$1 = /^(?:(.)?([<>=^]))?([+\-( ])?([$#])?(0)?(\d+)?(,)?(\.\d+)?(~)?([a-z%])?$/i;
+var re = /^(?:(.)?([<>=^]))?([+\-( ])?([$#])?(0)?(\d+)?(,)?(\.\d+)?(~)?([a-z%])?$/i;
 function formatSpecifier(specifier) {
-  if (!(match = re$1.exec(specifier))) throw new Error("invalid format: " + specifier);
+  if (!(match = re.exec(specifier))) throw new Error("invalid format: " + specifier);
   var match;
   return new FormatSpecifier({
     fill: match[1],
@@ -58189,13 +57699,13 @@ var MAX_DIGITS = 1e9, defaults = {
   // The natural logarithm of 10.
   // 115 digits
   LN10: "2.302585092994045684017991454684364207601101488628772976033327900967572609677352480235997205089598298341967784042286"
-}, Decimal, external = true, decimalError = "[DecimalError] ", invalidArgument = decimalError + "Invalid argument: ", exponentOutOfRange = decimalError + "Exponent out of range: ", mathfloor = Math.floor, mathpow = Math.pow, isDecimal = /^(\d+(\.\d*)?|\.\d+)(e[+-]?\d+)?$/i, ONE, BASE = 1e7, LOG_BASE = 7, MAX_SAFE_INTEGER = 9007199254740991, MAX_E = mathfloor(MAX_SAFE_INTEGER / LOG_BASE), P$1 = {};
-P$1.absoluteValue = P$1.abs = function() {
+}, Decimal, external = true, decimalError = "[DecimalError] ", invalidArgument = decimalError + "Invalid argument: ", exponentOutOfRange = decimalError + "Exponent out of range: ", mathfloor = Math.floor, mathpow = Math.pow, isDecimal = /^(\d+(\.\d*)?|\.\d+)(e[+-]?\d+)?$/i, ONE, BASE = 1e7, LOG_BASE = 7, MAX_SAFE_INTEGER = 9007199254740991, MAX_E = mathfloor(MAX_SAFE_INTEGER / LOG_BASE), P = {};
+P.absoluteValue = P.abs = function() {
   var x3 = new this.constructor(this);
   if (x3.s) x3.s = 1;
   return x3;
 };
-P$1.comparedTo = P$1.cmp = function(y2) {
+P.comparedTo = P.cmp = function(y2) {
   var i, j2, xdL, ydL, x3 = this;
   y2 = new x3.constructor(y2);
   if (x3.s !== y2.s) return x3.s || -y2.s;
@@ -58207,51 +57717,51 @@ P$1.comparedTo = P$1.cmp = function(y2) {
   }
   return xdL === ydL ? 0 : xdL > ydL ^ x3.s < 0 ? 1 : -1;
 };
-P$1.decimalPlaces = P$1.dp = function() {
+P.decimalPlaces = P.dp = function() {
   var x3 = this, w2 = x3.d.length - 1, dp = (w2 - x3.e) * LOG_BASE;
   w2 = x3.d[w2];
   if (w2) for (; w2 % 10 == 0; w2 /= 10) dp--;
   return dp < 0 ? 0 : dp;
 };
-P$1.dividedBy = P$1.div = function(y2) {
+P.dividedBy = P.div = function(y2) {
   return divide(this, new this.constructor(y2));
 };
-P$1.dividedToIntegerBy = P$1.idiv = function(y2) {
+P.dividedToIntegerBy = P.idiv = function(y2) {
   var x3 = this, Ctor = x3.constructor;
   return round(divide(x3, new Ctor(y2), 0, 1), Ctor.precision);
 };
-P$1.equals = P$1.eq = function(y2) {
+P.equals = P.eq = function(y2) {
   return !this.cmp(y2);
 };
-P$1.exponent = function() {
+P.exponent = function() {
   return getBase10Exponent(this);
 };
-P$1.greaterThan = P$1.gt = function(y2) {
+P.greaterThan = P.gt = function(y2) {
   return this.cmp(y2) > 0;
 };
-P$1.greaterThanOrEqualTo = P$1.gte = function(y2) {
+P.greaterThanOrEqualTo = P.gte = function(y2) {
   return this.cmp(y2) >= 0;
 };
-P$1.isInteger = P$1.isint = function() {
+P.isInteger = P.isint = function() {
   return this.e > this.d.length - 2;
 };
-P$1.isNegative = P$1.isneg = function() {
+P.isNegative = P.isneg = function() {
   return this.s < 0;
 };
-P$1.isPositive = P$1.ispos = function() {
+P.isPositive = P.ispos = function() {
   return this.s > 0;
 };
-P$1.isZero = function() {
+P.isZero = function() {
   return this.s === 0;
 };
-P$1.lessThan = P$1.lt = function(y2) {
+P.lessThan = P.lt = function(y2) {
   return this.cmp(y2) < 0;
 };
-P$1.lessThanOrEqualTo = P$1.lte = function(y2) {
+P.lessThanOrEqualTo = P.lte = function(y2) {
   return this.cmp(y2) < 1;
 };
-P$1.logarithm = P$1.log = function(base) {
-  var r2, x3 = this, Ctor = x3.constructor, pr2 = Ctor.precision, wpr = pr2 + 5;
+P.logarithm = P.log = function(base) {
+  var r2, x3 = this, Ctor = x3.constructor, pr = Ctor.precision, wpr = pr + 5;
   if (base === void 0) {
     base = new Ctor(10);
   } else {
@@ -58261,42 +57771,42 @@ P$1.logarithm = P$1.log = function(base) {
   if (x3.s < 1) throw Error(decimalError + (x3.s ? "NaN" : "-Infinity"));
   if (x3.eq(ONE)) return new Ctor(0);
   external = false;
-  r2 = divide(ln$1(x3, wpr), ln$1(base, wpr), wpr);
+  r2 = divide(ln(x3, wpr), ln(base, wpr), wpr);
   external = true;
-  return round(r2, pr2);
+  return round(r2, pr);
 };
-P$1.minus = P$1.sub = function(y2) {
+P.minus = P.sub = function(y2) {
   var x3 = this;
   y2 = new x3.constructor(y2);
   return x3.s == y2.s ? subtract(x3, y2) : add(x3, (y2.s = -y2.s, y2));
 };
-P$1.modulo = P$1.mod = function(y2) {
-  var q2, x3 = this, Ctor = x3.constructor, pr2 = Ctor.precision;
+P.modulo = P.mod = function(y2) {
+  var q2, x3 = this, Ctor = x3.constructor, pr = Ctor.precision;
   y2 = new Ctor(y2);
   if (!y2.s) throw Error(decimalError + "NaN");
-  if (!x3.s) return round(new Ctor(x3), pr2);
+  if (!x3.s) return round(new Ctor(x3), pr);
   external = false;
   q2 = divide(x3, y2, 0, 1).times(y2);
   external = true;
   return x3.minus(q2);
 };
-P$1.naturalExponential = P$1.exp = function() {
+P.naturalExponential = P.exp = function() {
   return exp(this);
 };
-P$1.naturalLogarithm = P$1.ln = function() {
-  return ln$1(this);
+P.naturalLogarithm = P.ln = function() {
+  return ln(this);
 };
-P$1.negated = P$1.neg = function() {
+P.negated = P.neg = function() {
   var x3 = new this.constructor(this);
   x3.s = -x3.s || 0;
   return x3;
 };
-P$1.plus = P$1.add = function(y2) {
+P.plus = P.add = function(y2) {
   var x3 = this;
   y2 = new x3.constructor(y2);
   return x3.s == y2.s ? add(x3, y2) : subtract(x3, (y2.s = -y2.s, y2));
 };
-P$1.precision = P$1.sd = function(z2) {
+P.precision = P.sd = function(z2) {
   var e3, sd, w2, x3 = this;
   if (z2 !== void 0 && z2 !== !!z2 && z2 !== 1 && z2 !== 0) throw Error(invalidArgument + z2);
   e3 = getBase10Exponent(x3) + 1;
@@ -58309,8 +57819,8 @@ P$1.precision = P$1.sd = function(z2) {
   }
   return z2 && e3 > sd ? e3 : sd;
 };
-P$1.squareRoot = P$1.sqrt = function() {
-  var e3, n2, pr2, r2, s2, t2, wpr, x3 = this, Ctor = x3.constructor;
+P.squareRoot = P.sqrt = function() {
+  var e3, n2, pr, r2, s2, t2, wpr, x3 = this, Ctor = x3.constructor;
   if (x3.s < 1) {
     if (!x3.s) return new Ctor(0);
     throw Error(decimalError + "NaN");
@@ -58333,15 +57843,15 @@ P$1.squareRoot = P$1.sqrt = function() {
   } else {
     r2 = new Ctor(s2.toString());
   }
-  pr2 = Ctor.precision;
-  s2 = wpr = pr2 + 3;
+  pr = Ctor.precision;
+  s2 = wpr = pr + 3;
   for (; ; ) {
     t2 = r2;
     r2 = t2.plus(divide(x3, t2, wpr + 2)).times(0.5);
     if (digitsToString(t2.d).slice(0, wpr) === (n2 = digitsToString(r2.d)).slice(0, wpr)) {
       n2 = n2.slice(wpr - 3, wpr + 1);
       if (s2 == wpr && n2 == "4999") {
-        round(t2, pr2 + 1, 0);
+        round(t2, pr + 1, 0);
         if (t2.times(t2).eq(x3)) {
           r2 = t2;
           break;
@@ -58353,9 +57863,9 @@ P$1.squareRoot = P$1.sqrt = function() {
     }
   }
   external = true;
-  return round(r2, pr2);
+  return round(r2, pr);
 };
-P$1.times = P$1.mul = function(y2) {
+P.times = P.mul = function(y2) {
   var carry, e3, i, k2, r2, rL, t2, xdL, ydL, x3 = this, Ctor = x3.constructor, xd = x3.d, yd = (y2 = new Ctor(y2)).d;
   if (!x3.s || !y2.s) return new Ctor(0);
   y2.s *= x3.s;
@@ -58389,7 +57899,7 @@ P$1.times = P$1.mul = function(y2) {
   y2.e = e3;
   return external ? round(y2, Ctor.precision) : y2;
 };
-P$1.toDecimalPlaces = P$1.todp = function(dp, rm) {
+P.toDecimalPlaces = P.todp = function(dp, rm) {
   var x3 = this, Ctor = x3.constructor;
   x3 = new Ctor(x3);
   if (dp === void 0) return x3;
@@ -58398,7 +57908,7 @@ P$1.toDecimalPlaces = P$1.todp = function(dp, rm) {
   else checkInt32(rm, 0, 8);
   return round(x3, dp + getBase10Exponent(x3) + 1, rm);
 };
-P$1.toExponential = function(dp, rm) {
+P.toExponential = function(dp, rm) {
   var str, x3 = this, Ctor = x3.constructor;
   if (dp === void 0) {
     str = toString$1(x3, true);
@@ -58411,7 +57921,7 @@ P$1.toExponential = function(dp, rm) {
   }
   return str;
 };
-P$1.toFixed = function(dp, rm) {
+P.toFixed = function(dp, rm) {
   var str, y2, x3 = this, Ctor = x3.constructor;
   if (dp === void 0) return toString$1(x3);
   checkInt32(dp, 0, MAX_DIGITS);
@@ -58421,15 +57931,15 @@ P$1.toFixed = function(dp, rm) {
   str = toString$1(y2.abs(), false, dp + getBase10Exponent(y2) + 1);
   return x3.isneg() && !x3.isZero() ? "-" + str : str;
 };
-P$1.toInteger = P$1.toint = function() {
+P.toInteger = P.toint = function() {
   var x3 = this, Ctor = x3.constructor;
   return round(new Ctor(x3), getBase10Exponent(x3) + 1, Ctor.rounding);
 };
-P$1.toNumber = function() {
+P.toNumber = function() {
   return +this;
 };
-P$1.toPower = P$1.pow = function(y2) {
-  var e3, k2, pr2, r2, sign2, yIsInt, x3 = this, Ctor = x3.constructor, guard = 12, yn2 = +(y2 = new Ctor(y2));
+P.toPower = P.pow = function(y2) {
+  var e3, k2, pr, r2, sign2, yIsInt, x3 = this, Ctor = x3.constructor, guard = 12, yn = +(y2 = new Ctor(y2));
   if (!y2.s) return new Ctor(ONE);
   x3 = new Ctor(x3);
   if (!x3.s) {
@@ -58437,17 +57947,17 @@ P$1.toPower = P$1.pow = function(y2) {
     return x3;
   }
   if (x3.eq(ONE)) return x3;
-  pr2 = Ctor.precision;
-  if (y2.eq(ONE)) return round(x3, pr2);
+  pr = Ctor.precision;
+  if (y2.eq(ONE)) return round(x3, pr);
   e3 = y2.e;
   k2 = y2.d.length - 1;
   yIsInt = e3 >= k2;
   sign2 = x3.s;
   if (!yIsInt) {
     if (sign2 < 0) throw Error(decimalError + "NaN");
-  } else if ((k2 = yn2 < 0 ? -yn2 : yn2) <= MAX_SAFE_INTEGER) {
+  } else if ((k2 = yn < 0 ? -yn : yn) <= MAX_SAFE_INTEGER) {
     r2 = new Ctor(ONE);
-    e3 = Math.ceil(pr2 / LOG_BASE + 4);
+    e3 = Math.ceil(pr / LOG_BASE + 4);
     external = false;
     for (; ; ) {
       if (k2 % 2) {
@@ -58460,18 +57970,18 @@ P$1.toPower = P$1.pow = function(y2) {
       truncate(x3.d, e3);
     }
     external = true;
-    return y2.s < 0 ? new Ctor(ONE).div(r2) : round(r2, pr2);
+    return y2.s < 0 ? new Ctor(ONE).div(r2) : round(r2, pr);
   }
   sign2 = sign2 < 0 && y2.d[Math.max(e3, k2)] & 1 ? -1 : 1;
   x3.s = 1;
   external = false;
-  r2 = y2.times(ln$1(x3, pr2 + guard));
+  r2 = y2.times(ln(x3, pr + guard));
   external = true;
   r2 = exp(r2);
   r2.s = sign2;
   return r2;
 };
-P$1.toPrecision = function(sd, rm) {
+P.toPrecision = function(sd, rm) {
   var e3, str, x3 = this, Ctor = x3.constructor;
   if (sd === void 0) {
     e3 = getBase10Exponent(x3);
@@ -58486,7 +57996,7 @@ P$1.toPrecision = function(sd, rm) {
   }
   return str;
 };
-P$1.toSignificantDigits = P$1.tosd = function(sd, rm) {
+P.toSignificantDigits = P.tosd = function(sd, rm) {
   var x3 = this, Ctor = x3.constructor;
   if (sd === void 0) {
     sd = Ctor.precision;
@@ -58498,15 +58008,15 @@ P$1.toSignificantDigits = P$1.tosd = function(sd, rm) {
   }
   return round(new Ctor(x3), sd, rm);
 };
-P$1.toString = P$1.valueOf = P$1.val = P$1.toJSON = P$1[Symbol.for("nodejs.util.inspect.custom")] = function() {
+P.toString = P.valueOf = P.val = P.toJSON = P[Symbol.for("nodejs.util.inspect.custom")] = function() {
   var x3 = this, e3 = getBase10Exponent(x3), Ctor = x3.constructor;
   return toString$1(x3, e3 <= Ctor.toExpNeg || e3 >= Ctor.toExpPos);
 };
 function add(x3, y2) {
-  var carry, d2, e3, i, k2, len, xd, yd, Ctor = x3.constructor, pr2 = Ctor.precision;
+  var carry, d2, e3, i, k2, len, xd, yd, Ctor = x3.constructor, pr = Ctor.precision;
   if (!x3.s || !y2.s) {
     if (!y2.s) y2 = new Ctor(x3);
-    return external ? round(y2, pr2) : y2;
+    return external ? round(y2, pr) : y2;
   }
   xd = x3.d;
   yd = y2.d;
@@ -58524,7 +58034,7 @@ function add(x3, y2) {
       e3 = k2;
       len = xd.length;
     }
-    k2 = Math.ceil(pr2 / LOG_BASE);
+    k2 = Math.ceil(pr / LOG_BASE);
     len = k2 > len ? k2 + 1 : len + 1;
     if (i > len) {
       i = len;
@@ -58553,7 +58063,7 @@ function add(x3, y2) {
   for (len = xd.length; xd[--len] == 0; ) xd.pop();
   y2.d = xd;
   y2.e = e3;
-  return external ? round(y2, pr2) : y2;
+  return external ? round(y2, pr) : y2;
 }
 function checkInt32(i, min2, max2) {
   if (i !== ~~i || i < min2 || i > max2) {
@@ -58561,18 +58071,18 @@ function checkInt32(i, min2, max2) {
   }
 }
 function digitsToString(d2) {
-  var i, k2, ws2, indexOfLastWord = d2.length - 1, str = "", w2 = d2[0];
+  var i, k2, ws, indexOfLastWord = d2.length - 1, str = "", w2 = d2[0];
   if (indexOfLastWord > 0) {
     str += w2;
     for (i = 1; i < indexOfLastWord; i++) {
-      ws2 = d2[i] + "";
-      k2 = LOG_BASE - ws2.length;
+      ws = d2[i] + "";
+      k2 = LOG_BASE - ws.length;
       if (k2) str += getZeroString(k2);
-      str += ws2;
+      str += ws;
     }
     w2 = d2[i];
-    ws2 = w2 + "";
-    k2 = LOG_BASE - ws2.length;
+    ws = w2 + "";
+    k2 = LOG_BASE - ws.length;
     if (k2) str += getZeroString(k2);
   } else if (w2 === 0) {
     return "0";
@@ -58614,7 +58124,7 @@ var divide = /* @__PURE__ */ function() {
     }
     for (; !a2[0] && a2.length > 1; ) a2.shift();
   }
-  return function(x3, y2, pr2, dp) {
+  return function(x3, y2, pr, dp) {
     var cmp, e3, i, k2, prod, prodL, q2, qd, rem, remL, rem0, sd, t2, xi, xL, yd0, yL, yz, Ctor = x3.constructor, sign2 = x3.s == y2.s ? 1 : -1, xd = x3.d, yd = y2.d;
     if (!x3.s) return new Ctor(x3);
     if (!y2.s) throw Error(decimalError + "Division by zero");
@@ -58625,12 +58135,12 @@ var divide = /* @__PURE__ */ function() {
     qd = q2.d = [];
     for (i = 0; yd[i] == (xd[i] || 0); ) ++i;
     if (yd[i] > (xd[i] || 0)) --e3;
-    if (pr2 == null) {
-      sd = pr2 = Ctor.precision;
+    if (pr == null) {
+      sd = pr = Ctor.precision;
     } else if (dp) {
-      sd = pr2 + (getBase10Exponent(x3) - getBase10Exponent(y2)) + 1;
+      sd = pr + (getBase10Exponent(x3) - getBase10Exponent(y2)) + 1;
     } else {
-      sd = pr2;
+      sd = pr;
     }
     if (sd < 0) return new Ctor(0);
     sd = sd / LOG_BASE + 2 | 0;
@@ -58708,16 +58218,16 @@ var divide = /* @__PURE__ */ function() {
     }
     if (!qd[0]) qd.shift();
     q2.e = e3;
-    return round(q2, dp ? pr2 + getBase10Exponent(q2) + 1 : pr2);
+    return round(q2, dp ? pr + getBase10Exponent(q2) + 1 : pr);
   };
 }();
 function exp(x3, sd) {
-  var denominator, guard, pow3, sum, t2, wpr, i = 0, k2 = 0, Ctor = x3.constructor, pr2 = Ctor.precision;
+  var denominator, guard, pow3, sum, t2, wpr, i = 0, k2 = 0, Ctor = x3.constructor, pr = Ctor.precision;
   if (getBase10Exponent(x3) > 16) throw Error(exponentOutOfRange + getBase10Exponent(x3));
   if (!x3.s) return new Ctor(ONE);
   {
     external = false;
-    wpr = pr2;
+    wpr = pr;
   }
   t2 = new Ctor(0.03125);
   while (x3.abs().gte(0.1)) {
@@ -58734,8 +58244,8 @@ function exp(x3, sd) {
     t2 = sum.plus(divide(pow3, denominator, wpr));
     if (digitsToString(t2.d).slice(0, wpr) === digitsToString(sum.d).slice(0, wpr)) {
       while (k2--) sum = round(sum.times(sum), wpr);
-      Ctor.precision = pr2;
-      return sd == null ? (external = true, round(sum, pr2)) : sum;
+      Ctor.precision = pr;
+      return sd == null ? (external = true, round(sum, pr)) : sum;
     }
     sum = t2;
   }
@@ -58745,26 +58255,26 @@ function getBase10Exponent(x3) {
   for (; w2 >= 10; w2 /= 10) e3++;
   return e3;
 }
-function getLn10(Ctor, sd, pr2) {
+function getLn10(Ctor, sd, pr) {
   if (sd > Ctor.LN10.sd()) {
     external = true;
-    if (pr2) Ctor.precision = pr2;
+    if (pr) Ctor.precision = pr;
     throw Error(decimalError + "LN10 precision limit exceeded");
   }
   return round(new Ctor(Ctor.LN10), sd);
 }
 function getZeroString(k2) {
-  var zs2 = "";
-  for (; k2--; ) zs2 += "0";
-  return zs2;
+  var zs = "";
+  for (; k2--; ) zs += "0";
+  return zs;
 }
-function ln$1(y2, sd) {
-  var c2, c0, denominator, e3, numerator, sum, t2, wpr, x22, n2 = 1, guard = 10, x3 = y2, xd = x3.d, Ctor = x3.constructor, pr2 = Ctor.precision;
+function ln(y2, sd) {
+  var c2, c0, denominator, e3, numerator, sum, t2, wpr, x22, n2 = 1, guard = 10, x3 = y2, xd = x3.d, Ctor = x3.constructor, pr = Ctor.precision;
   if (x3.s < 1) throw Error(decimalError + (x3.s ? "NaN" : "-Infinity"));
   if (x3.eq(ONE)) return new Ctor(0);
   if (sd == null) {
     external = false;
-    wpr = pr2;
+    wpr = pr;
   } else {
     wpr = sd;
   }
@@ -58792,10 +58302,10 @@ function ln$1(y2, sd) {
       x3 = new Ctor(c0 + "." + c2.slice(1));
     }
   } else {
-    t2 = getLn10(Ctor, wpr + 2, pr2).times(e3 + "");
-    x3 = ln$1(new Ctor(c0 + "." + c2.slice(1)), wpr - guard).plus(t2);
-    Ctor.precision = pr2;
-    return sd == null ? (external = true, round(x3, pr2)) : x3;
+    t2 = getLn10(Ctor, wpr + 2, pr).times(e3 + "");
+    x3 = ln(new Ctor(c0 + "." + c2.slice(1)), wpr - guard).plus(t2);
+    Ctor.precision = pr;
+    return sd == null ? (external = true, round(x3, pr)) : x3;
   }
   sum = numerator = x3 = divide(x3.minus(ONE), x3.plus(ONE), wpr);
   x22 = round(x3.times(x3), wpr);
@@ -58805,10 +58315,10 @@ function ln$1(y2, sd) {
     t2 = sum.plus(divide(numerator, new Ctor(denominator), wpr));
     if (digitsToString(t2.d).slice(0, wpr) === digitsToString(sum.d).slice(0, wpr)) {
       sum = sum.times(2);
-      if (e3 !== 0) sum = sum.plus(getLn10(Ctor, wpr + 2, pr2).times(e3 + ""));
+      if (e3 !== 0) sum = sum.plus(getLn10(Ctor, wpr + 2, pr).times(e3 + ""));
       sum = divide(sum, new Ctor(n2), wpr);
-      Ctor.precision = pr2;
-      return sd == null ? (external = true, round(sum, pr2)) : sum;
+      Ctor.precision = pr;
+      return sd == null ? (external = true, round(sum, pr)) : sum;
     }
     sum = t2;
     denominator += 2;
@@ -58921,18 +58431,18 @@ function round(x3, sd, rm) {
   return x3;
 }
 function subtract(x3, y2) {
-  var d2, e3, i, j2, k2, len, xd, xe2, xLTy, yd, Ctor = x3.constructor, pr2 = Ctor.precision;
+  var d2, e3, i, j2, k2, len, xd, xe, xLTy, yd, Ctor = x3.constructor, pr = Ctor.precision;
   if (!x3.s || !y2.s) {
     if (y2.s) y2.s = -y2.s;
     else y2 = new Ctor(x3);
-    return external ? round(y2, pr2) : y2;
+    return external ? round(y2, pr) : y2;
   }
   xd = x3.d;
   yd = y2.d;
   e3 = y2.e;
-  xe2 = x3.e;
+  xe = x3.e;
   xd = xd.slice();
-  k2 = xe2 - e3;
+  k2 = xe - e3;
   if (k2) {
     xLTy = k2 < 0;
     if (xLTy) {
@@ -58941,10 +58451,10 @@ function subtract(x3, y2) {
       len = yd.length;
     } else {
       d2 = yd;
-      e3 = xe2;
+      e3 = xe;
       len = xd.length;
     }
-    i = Math.max(Math.ceil(pr2 / LOG_BASE), len) + 2;
+    i = Math.max(Math.ceil(pr / LOG_BASE), len) + 2;
     if (k2 > i) {
       k2 = i;
       d2.length = 1;
@@ -58986,7 +58496,7 @@ function subtract(x3, y2) {
   if (!xd[0]) return new Ctor(0);
   y2.d = xd;
   y2.e = e3;
-  return external ? round(y2, pr2) : y2;
+  return external ? round(y2, pr) : y2;
 }
 function toString$1(x3, isExp, sd) {
   var k2, e3 = getBase10Exponent(x3), str = digitsToString(x3.d), len = str.length;
@@ -59019,7 +58529,7 @@ function truncate(arr, len) {
   }
 }
 function clone(obj) {
-  var i, p2, ps2;
+  var i, p2, ps;
   function Decimal2(value) {
     var x3 = this;
     if (!(x3 instanceof Decimal2)) return new Decimal2(value);
@@ -59063,7 +58573,7 @@ function clone(obj) {
     if (isDecimal.test(value)) parseDecimal(x3, value);
     else throw Error(invalidArgument + value);
   }
-  Decimal2.prototype = P$1;
+  Decimal2.prototype = P;
   Decimal2.ROUND_UP = 0;
   Decimal2.ROUND_DOWN = 1;
   Decimal2.ROUND_CEIL = 2;
@@ -59077,8 +58587,8 @@ function clone(obj) {
   Decimal2.config = Decimal2.set = config;
   if (obj === void 0) obj = {};
   if (obj) {
-    ps2 = ["precision", "rounding", "toExpNeg", "toExpPos", "LN10"];
-    for (i = 0; i < ps2.length; ) if (!obj.hasOwnProperty(p2 = ps2[i++])) obj[p2] = this[p2];
+    ps = ["precision", "rounding", "toExpNeg", "toExpPos", "LN10"];
+    for (i = 0; i < ps.length; ) if (!obj.hasOwnProperty(p2 = ps[i++])) obj[p2] = this[p2];
   }
   Decimal2.config(obj);
   return Decimal2;
@@ -59087,7 +58597,7 @@ function config(obj) {
   if (!obj || typeof obj !== "object") {
     throw Error(decimalError + "Object expected");
   }
-  var i, p2, v2, ps2 = [
+  var i, p2, v2, ps = [
     "precision",
     1,
     MAX_DIGITS,
@@ -59101,9 +58611,9 @@ function config(obj) {
     0,
     1 / 0
   ];
-  for (i = 0; i < ps2.length; i += 3) {
-    if ((v2 = obj[p2 = ps2[i]]) !== void 0) {
-      if (mathfloor(v2) === v2 && v2 >= ps2[i + 1] && v2 <= ps2[i + 2]) this[p2] = v2;
+  for (i = 0; i < ps.length; i += 3) {
+    if ((v2 = obj[p2 = ps[i]]) !== void 0) {
+      if (mathfloor(v2) === v2 && v2 >= ps[i + 1] && v2 <= ps[i + 2]) this[p2] = v2;
       else throw Error(invalidArgument + p2 + ": " + v2);
     }
   }
@@ -59150,17 +58660,17 @@ var PLACE_HOLDER = {};
 var isPlaceHolder = function isPlaceHolder2(val) {
   return val === PLACE_HOLDER;
 };
-var curry0 = function curry02(fn2) {
+var curry0 = function curry02(fn) {
   return function _curried() {
     if (arguments.length === 0 || arguments.length === 1 && isPlaceHolder(arguments.length <= 0 ? void 0 : arguments[0])) {
       return _curried;
     }
-    return fn2.apply(void 0, arguments);
+    return fn.apply(void 0, arguments);
   };
 };
-var curryN = function curryN2(n2, fn2) {
+var curryN = function curryN2(n2, fn) {
   if (n2 === 1) {
-    return fn2;
+    return fn;
   }
   return curry0(function() {
     for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
@@ -59170,7 +58680,7 @@ var curryN = function curryN2(n2, fn2) {
       return arg !== PLACE_HOLDER;
     }).length;
     if (argsLength >= n2) {
-      return fn2.apply(void 0, args);
+      return fn.apply(void 0, args);
     }
     return curryN2(n2 - argsLength, curry0(function() {
       for (var _len2 = arguments.length, restArgs = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
@@ -59179,12 +58689,12 @@ var curryN = function curryN2(n2, fn2) {
       var newArgs = args.map(function(arg) {
         return isPlaceHolder(arg) ? restArgs.shift() : arg;
       });
-      return fn2.apply(void 0, _toConsumableArray$a(newArgs).concat(restArgs));
+      return fn.apply(void 0, _toConsumableArray$a(newArgs).concat(restArgs));
     }));
   });
 };
-var curry = function curry2(fn2) {
-  return curryN(fn2.length, fn2);
+var curry = function curry2(fn) {
+  return curryN(fn.length, fn);
 };
 var range$2 = function range(begin, end) {
   var arr = [];
@@ -59193,13 +58703,13 @@ var range$2 = function range(begin, end) {
   }
   return arr;
 };
-var map = curry(function(fn2, arr) {
+var map = curry(function(fn, arr) {
   if (Array.isArray(arr)) {
-    return arr.map(fn2);
+    return arr.map(fn);
   }
   return Object.keys(arr).map(function(key) {
     return arr[key];
-  }).map(fn2);
+  }).map(fn);
 });
 var compose = function compose2() {
   for (var _len3 = arguments.length, args = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
@@ -59212,8 +58722,8 @@ var compose = function compose2() {
   var firstFn = fns[0];
   var tailsFn = fns.slice(1);
   return function() {
-    return tailsFn.reduce(function(res, fn2) {
-      return fn2(res);
+    return tailsFn.reduce(function(res, fn) {
+      return fn(res);
     }, firstFn.apply(void 0, arguments));
   };
 };
@@ -59223,7 +58733,7 @@ var reverse = function reverse2(arr) {
   }
   return arr.split("").reverse.join("");
 };
-var memoize = function memoize2(fn2) {
+var memoize = function memoize2(fn) {
   var lastArgs = null;
   var lastResult2 = null;
   return function() {
@@ -59236,7 +58746,7 @@ var memoize = function memoize2(fn2) {
       return lastResult2;
     }
     lastArgs = args;
-    lastResult2 = fn2.apply(void 0, args);
+    lastResult2 = fn.apply(void 0, args);
     return lastResult2;
   };
 };
@@ -59318,22 +58828,22 @@ function _arrayLikeToArray$e(arr, len) {
 function _iterableToArrayLimit$7(arr, i) {
   if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return;
   var _arr = [];
-  var _n3 = true;
+  var _n = true;
   var _d2 = false;
-  var _e4 = void 0;
+  var _e2 = void 0;
   try {
-    for (var _i2 = arr[Symbol.iterator](), _s2; !(_n3 = (_s2 = _i2.next()).done); _n3 = true) {
-      _arr.push(_s2.value);
+    for (var _i2 = arr[Symbol.iterator](), _s; !(_n = (_s = _i2.next()).done); _n = true) {
+      _arr.push(_s.value);
       if (i && _arr.length === i) break;
     }
   } catch (err) {
     _d2 = true;
-    _e4 = err;
+    _e2 = err;
   } finally {
     try {
-      if (!_n3 && _i2["return"] != null) _i2["return"]();
+      if (!_n && _i2["return"] != null) _i2["return"]();
     } finally {
-      if (_d2) throw _e4;
+      if (_d2) throw _e2;
     }
   }
   return _arr;
@@ -59379,10 +58889,10 @@ function getTickOfSingleValue(value, tickCount, allowDecimals) {
     middle = new Decimal$1(Math.floor(value));
   }
   var middleIndex = Math.floor((tickCount - 1) / 2);
-  var fn2 = compose(map(function(n2) {
+  var fn = compose(map(function(n2) {
     return middle.add(new Decimal$1(n2 - middleIndex).mul(step)).toNumber();
   }), range$2);
-  return fn2(0, tickCount);
+  return fn(0, tickCount);
 }
 function calculateStep(min2, max2, tickCount, allowDecimals) {
   var correctionFactor = arguments.length > 4 && arguments[4] !== void 0 ? arguments[4] : 0;
@@ -59461,7 +58971,7 @@ function invariant(condition, message) {
     throw new Error(prefix);
   }
 }
-var _excluded$f = ["offset", "layout", "width", "dataKey", "data", "dataPointFormatter", "xAxis", "yAxis"];
+var _excluded$d = ["offset", "layout", "width", "dataKey", "data", "dataPointFormatter", "xAxis", "yAxis"];
 function _typeof$z(o) {
   "@babel/helpers - typeof";
   return _typeof$z = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o2) {
@@ -59470,8 +58980,8 @@ function _typeof$z(o) {
     return o2 && "function" == typeof Symbol && o2.constructor === Symbol && o2 !== Symbol.prototype ? "symbol" : typeof o2;
   }, _typeof$z(o);
 }
-function _extends$o() {
-  _extends$o = Object.assign ? Object.assign.bind() : function(target) {
+function _extends$n() {
+  _extends$n = Object.assign ? Object.assign.bind() : function(target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = arguments[i];
       for (var key in source) {
@@ -59482,7 +58992,7 @@ function _extends$o() {
     }
     return target;
   };
-  return _extends$o.apply(this, arguments);
+  return _extends$n.apply(this, arguments);
 }
 function _slicedToArray$6(arr, i) {
   return _arrayWithHoles$7(arr) || _iterableToArrayLimit$6(arr, i) || _unsupportedIterableToArray$d(arr, i) || _nonIterableRest$7();
@@ -59525,9 +59035,9 @@ function _iterableToArrayLimit$6(r2, l2) {
 function _arrayWithHoles$7(arr) {
   if (Array.isArray(arr)) return arr;
 }
-function _objectWithoutProperties$e(source, excluded) {
+function _objectWithoutProperties$d(source, excluded) {
   if (source == null) return {};
-  var target = _objectWithoutPropertiesLoose$e(source, excluded);
+  var target = _objectWithoutPropertiesLoose$d(source, excluded);
   var key, i;
   if (Object.getOwnPropertySymbols) {
     var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
@@ -59540,7 +59050,7 @@ function _objectWithoutProperties$e(source, excluded) {
   }
   return target;
 }
-function _objectWithoutPropertiesLoose$e(source, excluded) {
+function _objectWithoutPropertiesLoose$d(source, excluded) {
   if (source == null) return {};
   var target = {};
   for (var key in source) {
@@ -59650,7 +59160,7 @@ var ErrorBar = /* @__PURE__ */ function(_React$Component) {
   return _createClass$g(ErrorBar2, [{
     key: "render",
     value: function render() {
-      var _this$props = this.props, offset2 = _this$props.offset, layout = _this$props.layout, width = _this$props.width, dataKey = _this$props.dataKey, data = _this$props.data, dataPointFormatter = _this$props.dataPointFormatter, xAxis = _this$props.xAxis, yAxis = _this$props.yAxis, others = _objectWithoutProperties$e(_this$props, _excluded$f);
+      var _this$props = this.props, offset2 = _this$props.offset, layout = _this$props.layout, width = _this$props.width, dataKey = _this$props.dataKey, data = _this$props.data, dataPointFormatter = _this$props.dataPointFormatter, xAxis = _this$props.xAxis, yAxis = _this$props.yAxis, others = _objectWithoutProperties$d(_this$props, _excluded$d);
       var svgProps = filterProps(others, false);
       !!(this.props.direction === "x" && xAxis.type !== "number") ? invariant() : void 0;
       var errorBars = data.map(function(entry) {
@@ -59718,13 +59228,13 @@ var ErrorBar = /* @__PURE__ */ function(_React$Component) {
             y2: _yMin
           });
         }
-        return /* @__PURE__ */ React$2.createElement(Layer, _extends$o({
+        return /* @__PURE__ */ React$2.createElement(Layer, _extends$n({
           className: "recharts-errorBar",
           key: "bar-".concat(lineCoordinates.map(function(c2) {
             return "".concat(c2.x1, "-").concat(c2.x2, "-").concat(c2.y1, "-").concat(c2.y2);
           }))
         }, svgProps), lineCoordinates.map(function(coordinates) {
-          return /* @__PURE__ */ React$2.createElement("line", _extends$o({}, coordinates, {
+          return /* @__PURE__ */ React$2.createElement("line", _extends$n({}, coordinates, {
             key: "line-".concat(coordinates.x1, "-").concat(coordinates.x2, "-").concat(coordinates.y1, "-").concat(coordinates.y2)
           }));
         }));
@@ -60878,7 +60388,7 @@ function _typeof$v(o) {
     return o2 && "function" == typeof Symbol && o2.constructor === Symbol && o2 !== Symbol.prototype ? "symbol" : typeof o2;
   }, _typeof$v(o);
 }
-var _excluded$e = ["offset"];
+var _excluded$c = ["offset"];
 function _toConsumableArray$7(arr) {
   return _arrayWithoutHoles$7(arr) || _iterableToArray$8(arr) || _unsupportedIterableToArray$b(arr) || _nonIterableSpread$7();
 }
@@ -60904,9 +60414,9 @@ function _arrayLikeToArray$b(arr, len) {
   for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
   return arr2;
 }
-function _objectWithoutProperties$d(source, excluded) {
+function _objectWithoutProperties$c(source, excluded) {
   if (source == null) return {};
-  var target = _objectWithoutPropertiesLoose$d(source, excluded);
+  var target = _objectWithoutPropertiesLoose$c(source, excluded);
   var key, i;
   if (Object.getOwnPropertySymbols) {
     var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
@@ -60919,7 +60429,7 @@ function _objectWithoutProperties$d(source, excluded) {
   }
   return target;
 }
-function _objectWithoutPropertiesLoose$d(source, excluded) {
+function _objectWithoutPropertiesLoose$c(source, excluded) {
   if (source == null) return {};
   var target = {};
   for (var key in source) {
@@ -60974,8 +60484,8 @@ function _toPrimitive$u(t2, r2) {
   }
   return ("string" === r2 ? String : Number)(t2);
 }
-function _extends$n() {
-  _extends$n = Object.assign ? Object.assign.bind() : function(target) {
+function _extends$m() {
+  _extends$m = Object.assign ? Object.assign.bind() : function(target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = arguments[i];
       for (var key in source) {
@@ -60986,7 +60496,7 @@ function _extends$n() {
     }
     return target;
   };
-  return _extends$n.apply(this, arguments);
+  return _extends$m.apply(this, arguments);
 }
 var getLabel = function getLabel2(props) {
   var value = props.value, formatter = props.formatter;
@@ -61023,7 +60533,7 @@ var renderRadialLabel = function renderRadialLabel2(labelProps, label, attrs) {
   var endPoint = polarToCartesian(cx, cy, radius, labelAngle + (direction ? 1 : -1) * 359);
   var path = "M".concat(startPoint.x, ",").concat(startPoint.y, "\n    A").concat(radius, ",").concat(radius, ",0,1,").concat(direction ? 0 : 1, ",\n    ").concat(endPoint.x, ",").concat(endPoint.y);
   var id = isNil$1(labelProps.id) ? uniqueId("recharts-radial-line-") : labelProps.id;
-  return /* @__PURE__ */ React$2.createElement("text", _extends$n({}, attrs, {
+  return /* @__PURE__ */ React$2.createElement("text", _extends$m({}, attrs, {
     dominantBaseline: "central",
     className: clsx("recharts-radial-bar-label", className)
   }), /* @__PURE__ */ React$2.createElement("defs", null, /* @__PURE__ */ React$2.createElement("path", {
@@ -61225,7 +60735,7 @@ var isPolar = function isPolar2(viewBox) {
   return "cx" in viewBox && isNumber(viewBox.cx);
 };
 function Label(_ref4) {
-  var _ref4$offset = _ref4.offset, offset2 = _ref4$offset === void 0 ? 5 : _ref4$offset, restProps = _objectWithoutProperties$d(_ref4, _excluded$e);
+  var _ref4$offset = _ref4.offset, offset2 = _ref4$offset === void 0 ? 5 : _ref4$offset, restProps = _objectWithoutProperties$c(_ref4, _excluded$c);
   var props = _objectSpread$q({
     offset: offset2
   }, restProps);
@@ -61251,7 +60761,7 @@ function Label(_ref4) {
     return renderRadialLabel(props, label, attrs);
   }
   var positionAttrs = isPolarLabel ? getAttrsOfPolarLabel(props) : getAttrsOfCartesianLabel(props);
-  return /* @__PURE__ */ React$2.createElement(Text, _extends$n({
+  return /* @__PURE__ */ React$2.createElement(Text, _extends$m({
     className: clsx("recharts-label", className)
   }, attrs, positionAttrs, {
     breakAll: textBreakAll
@@ -61343,7 +60853,7 @@ var parseLabel = function parseLabel2(label, viewBox) {
     });
   }
   if (isObject$8(label)) {
-    return /* @__PURE__ */ React$2.createElement(Label, _extends$n({
+    return /* @__PURE__ */ React$2.createElement(Label, _extends$m({
       viewBox
     }, label, {
       key: "label-implicit"
@@ -61387,7 +60897,7 @@ function _typeof$u(o) {
     return o2 && "function" == typeof Symbol && o2.constructor === Symbol && o2 !== Symbol.prototype ? "symbol" : typeof o2;
   }, _typeof$u(o);
 }
-var _excluded$d = ["valueAccessor"], _excluded2$5 = ["data", "dataKey", "clockWise", "id", "textBreakAll"];
+var _excluded$b = ["valueAccessor"], _excluded2$5 = ["data", "dataKey", "clockWise", "id", "textBreakAll"];
 function _toConsumableArray$6(arr) {
   return _arrayWithoutHoles$6(arr) || _iterableToArray$7(arr) || _unsupportedIterableToArray$a(arr) || _nonIterableSpread$6();
 }
@@ -61413,8 +60923,8 @@ function _arrayLikeToArray$a(arr, len) {
   for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
   return arr2;
 }
-function _extends$m() {
-  _extends$m = Object.assign ? Object.assign.bind() : function(target) {
+function _extends$l() {
+  _extends$l = Object.assign ? Object.assign.bind() : function(target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = arguments[i];
       for (var key in source) {
@@ -61425,7 +60935,7 @@ function _extends$m() {
     }
     return target;
   };
-  return _extends$m.apply(this, arguments);
+  return _extends$l.apply(this, arguments);
 }
 function ownKeys$p(e3, r2) {
   var t2 = Object.keys(e3);
@@ -61471,9 +60981,9 @@ function _toPrimitive$t(t2, r2) {
   }
   return ("string" === r2 ? String : Number)(t2);
 }
-function _objectWithoutProperties$c(source, excluded) {
+function _objectWithoutProperties$b(source, excluded) {
   if (source == null) return {};
-  var target = _objectWithoutPropertiesLoose$c(source, excluded);
+  var target = _objectWithoutPropertiesLoose$b(source, excluded);
   var key, i;
   if (Object.getOwnPropertySymbols) {
     var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
@@ -61486,7 +60996,7 @@ function _objectWithoutProperties$c(source, excluded) {
   }
   return target;
 }
-function _objectWithoutPropertiesLoose$c(source, excluded) {
+function _objectWithoutPropertiesLoose$b(source, excluded) {
   if (source == null) return {};
   var target = {};
   for (var key in source) {
@@ -61501,8 +61011,8 @@ var defaultAccessor = function defaultAccessor2(entry) {
   return Array.isArray(entry.value) ? last$1(entry.value) : entry.value;
 };
 function LabelList(_ref) {
-  var _ref$valueAccessor = _ref.valueAccessor, valueAccessor = _ref$valueAccessor === void 0 ? defaultAccessor : _ref$valueAccessor, restProps = _objectWithoutProperties$c(_ref, _excluded$d);
-  var data = restProps.data, dataKey = restProps.dataKey, clockWise = restProps.clockWise, id = restProps.id, textBreakAll = restProps.textBreakAll, others = _objectWithoutProperties$c(restProps, _excluded2$5);
+  var _ref$valueAccessor = _ref.valueAccessor, valueAccessor = _ref$valueAccessor === void 0 ? defaultAccessor : _ref$valueAccessor, restProps = _objectWithoutProperties$b(_ref, _excluded$b);
+  var data = restProps.data, dataKey = restProps.dataKey, clockWise = restProps.clockWise, id = restProps.id, textBreakAll = restProps.textBreakAll, others = _objectWithoutProperties$b(restProps, _excluded2$5);
   if (!data || !data.length) {
     return null;
   }
@@ -61513,7 +61023,7 @@ function LabelList(_ref) {
     var idProps = isNil$1(id) ? {} : {
       id: "".concat(id, "-").concat(index2)
     };
-    return /* @__PURE__ */ React$2.createElement(Label, _extends$m({}, filterProps(entry, true), others, idProps, {
+    return /* @__PURE__ */ React$2.createElement(Label, _extends$l({}, filterProps(entry, true), others, idProps, {
       parentViewBox: entry.parentViewBox,
       value,
       textBreakAll,
@@ -61544,7 +61054,7 @@ function parseLabelList(label, data) {
     });
   }
   if (isObject$8(label)) {
-    return /* @__PURE__ */ React$2.createElement(LabelList, _extends$m({
+    return /* @__PURE__ */ React$2.createElement(LabelList, _extends$l({
       data
     }, label, {
       key: "labelList-implicit"
@@ -61580,8 +61090,8 @@ function _typeof$t(o) {
     return o2 && "function" == typeof Symbol && o2.constructor === Symbol && o2 !== Symbol.prototype ? "symbol" : typeof o2;
   }, _typeof$t(o);
 }
-function _extends$l() {
-  _extends$l = Object.assign ? Object.assign.bind() : function(target) {
+function _extends$k() {
+  _extends$k = Object.assign ? Object.assign.bind() : function(target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = arguments[i];
       for (var key in source) {
@@ -61592,7 +61102,7 @@ function _extends$l() {
     }
     return target;
   };
-  return _extends$l.apply(this, arguments);
+  return _extends$k.apply(this, arguments);
 }
 function ownKeys$o(e3, r2) {
   var t2 = Object.keys(e3);
@@ -61761,15 +61271,15 @@ var Sector = function Sector2(sectorProps) {
   }
   var layerClass = clsx("recharts-sector", className);
   var deltaRadius = outerRadius - innerRadius;
-  var cr2 = getPercentValue(cornerRadius, deltaRadius, 0, true);
+  var cr = getPercentValue(cornerRadius, deltaRadius, 0, true);
   var path;
-  if (cr2 > 0 && Math.abs(startAngle - endAngle) < 360) {
+  if (cr > 0 && Math.abs(startAngle - endAngle) < 360) {
     path = getSectorWithCorner({
       cx,
       cy,
       innerRadius,
       outerRadius,
-      cornerRadius: Math.min(cr2, deltaRadius / 2),
+      cornerRadius: Math.min(cr, deltaRadius / 2),
       forceCornerRadius,
       cornerIsExternal,
       startAngle,
@@ -61785,7 +61295,7 @@ var Sector = function Sector2(sectorProps) {
       endAngle
     });
   }
-  return /* @__PURE__ */ React$2.createElement("path", _extends$l({}, filterProps(props, true), {
+  return /* @__PURE__ */ React$2.createElement("path", _extends$k({}, filterProps(props, true), {
     className: layerClass,
     d: path,
     role: "img"
@@ -61799,8 +61309,8 @@ function _typeof$s(o) {
     return o2 && "function" == typeof Symbol && o2.constructor === Symbol && o2 !== Symbol.prototype ? "symbol" : typeof o2;
   }, _typeof$s(o);
 }
-function _extends$k() {
-  _extends$k = Object.assign ? Object.assign.bind() : function(target) {
+function _extends$j() {
+  _extends$j = Object.assign ? Object.assign.bind() : function(target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = arguments[i];
       for (var key in source) {
@@ -61811,7 +61321,7 @@ function _extends$k() {
     }
     return target;
   };
-  return _extends$k.apply(this, arguments);
+  return _extends$j.apply(this, arguments);
 }
 function ownKeys$n(e3, r2) {
   var t2 = Object.keys(e3);
@@ -61935,13 +61445,13 @@ var Curve = function Curve2(props) {
     return null;
   }
   var realPath = points && points.length ? getPath$1(props) : path;
-  return /* @__PURE__ */ reactExports.createElement("path", _extends$k({}, filterProps(props, false), adaptEventHandlers(props), {
+  return /* @__PURE__ */ reactExports.createElement("path", _extends$j({}, filterProps(props, false), adaptEventHandlers(props), {
     className: clsx("recharts-curve", className),
     d: realPath,
     ref: pathRef
   }));
 };
-var propTypes$2 = { exports: {} };
+var propTypes = { exports: {} };
 var ReactPropTypesSecret$1 = "SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED";
 var ReactPropTypesSecret_1 = ReactPropTypesSecret$1;
 var ReactPropTypesSecret = ReactPropTypesSecret_1;
@@ -61992,9 +61502,9 @@ var factoryWithThrowingShims = function() {
   return ReactPropTypes;
 };
 {
-  propTypes$2.exports = factoryWithThrowingShims();
+  propTypes.exports = factoryWithThrowingShims();
 }
-var propTypesExports = propTypes$2.exports;
+var propTypesExports = propTypes.exports;
 const PropTypes = /* @__PURE__ */ getDefaultExportFromCjs(propTypesExports);
 const { getOwnPropertyNames, getOwnPropertySymbols } = Object;
 const { hasOwnProperty: hasOwnProperty$1 } = Object.prototype;
@@ -62601,9 +62111,9 @@ var getDashCase = function getDashCase2(name) {
     return "-".concat(v2.toLowerCase());
   });
 };
-var mapObject = function mapObject2(fn2, obj) {
+var mapObject = function mapObject2(fn, obj) {
   return Object.keys(obj).reduce(function(res, key) {
-    return _objectSpread$m(_objectSpread$m({}, res), {}, _defineProperty$q({}, key, fn2(key, obj[key])));
+    return _objectSpread$m(_objectSpread$m({}, res), {}, _defineProperty$q({}, key, fn(key, obj[key])));
   }, {});
 };
 var getTransitionVal = function getTransitionVal2(props, duration, easing) {
@@ -62754,8 +62264,8 @@ var configBezier = function configBezier2() {
     }
     return value;
   };
-  var bezier = function bezier2(_t6) {
-    var t2 = _t6 > 1 ? 1 : _t6;
+  var bezier = function bezier2(_t) {
+    var t2 = _t > 1 ? 1 : _t;
     var x3 = t2;
     for (var i = 0; i < 8; ++i) {
       var evalT = curveX(x3) - t2;
@@ -62772,19 +62282,19 @@ var configBezier = function configBezier2() {
 };
 var configSpring = function configSpring2() {
   var config2 = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {};
-  var _config$stiff = config2.stiff, stiff = _config$stiff === void 0 ? 100 : _config$stiff, _config$damping = config2.damping, damping = _config$damping === void 0 ? 8 : _config$damping, _config$dt = config2.dt, dt2 = _config$dt === void 0 ? 17 : _config$dt;
+  var _config$stiff = config2.stiff, stiff = _config$stiff === void 0 ? 100 : _config$stiff, _config$damping = config2.damping, damping = _config$damping === void 0 ? 8 : _config$damping, _config$dt = config2.dt, dt = _config$dt === void 0 ? 17 : _config$dt;
   var stepper = function stepper2(currX, destX, currV) {
     var FSpring = -(currX - destX) * stiff;
     var FDamping = currV * damping;
-    var newV = currV + (FSpring - FDamping) * dt2 / 1e3;
-    var newX = currV * dt2 / 1e3 + currX;
+    var newV = currV + (FSpring - FDamping) * dt / 1e3;
+    var newX = currV * dt / 1e3 + currX;
     if (Math.abs(newX - destX) < ACCURACY && Math.abs(newV) < ACCURACY) {
       return [destX, 0];
     }
     return [newX, newV];
   };
   stepper.isStepper = true;
-  stepper.dt = dt2;
+  stepper.dt = dt;
   return stepper;
 };
 var configEasing = function configEasing2() {
@@ -63022,10 +62532,10 @@ function _typeof$o(o) {
     return o2 && "function" == typeof Symbol && o2.constructor === Symbol && o2 !== Symbol.prototype ? "symbol" : typeof o2;
   }, _typeof$o(o);
 }
-var _excluded$c = ["children", "begin", "duration", "attributeName", "easing", "isActive", "steps", "from", "to", "canBegin", "onAnimationEnd", "shouldReAnimate", "onAnimationReStart"];
-function _objectWithoutProperties$b(source, excluded) {
+var _excluded$a = ["children", "begin", "duration", "attributeName", "easing", "isActive", "steps", "from", "to", "canBegin", "onAnimationEnd", "shouldReAnimate", "onAnimationReStart"];
+function _objectWithoutProperties$a(source, excluded) {
   if (source == null) return {};
-  var target = _objectWithoutPropertiesLoose$b(source, excluded);
+  var target = _objectWithoutPropertiesLoose$a(source, excluded);
   var key, i;
   if (Object.getOwnPropertySymbols) {
     var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
@@ -63038,7 +62548,7 @@ function _objectWithoutProperties$b(source, excluded) {
   }
   return target;
 }
-function _objectWithoutPropertiesLoose$b(source, excluded) {
+function _objectWithoutPropertiesLoose$a(source, excluded) {
   if (source == null) return {};
   var target = {};
   var sourceKeys = Object.keys(source);
@@ -63405,7 +62915,7 @@ var Animate = /* @__PURE__ */ function(_PureComponent) {
       _this$props4.onAnimationEnd;
       _this$props4.shouldReAnimate;
       _this$props4.onAnimationReStart;
-      var others = _objectWithoutProperties$b(_this$props4, _excluded$c);
+      var others = _objectWithoutProperties$a(_this$props4, _excluded$a);
       var count2 = reactExports.Children.count(children);
       var stateStyle = this.state.style;
       if (typeof children === "function") {
@@ -63481,8 +62991,8 @@ function _typeof$n(o) {
     return o2 && "function" == typeof Symbol && o2.constructor === Symbol && o2 !== Symbol.prototype ? "symbol" : typeof o2;
   }, _typeof$n(o);
 }
-function _extends$j() {
-  _extends$j = Object.assign ? Object.assign.bind() : function(target) {
+function _extends$i() {
+  _extends$i = Object.assign ? Object.assign.bind() : function(target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = arguments[i];
       for (var key in source) {
@@ -63493,7 +63003,7 @@ function _extends$j() {
     }
     return target;
   };
-  return _extends$j.apply(this, arguments);
+  return _extends$i.apply(this, arguments);
 }
 function _slicedToArray$3(arr, i) {
   return _arrayWithHoles$3(arr) || _iterableToArrayLimit$3(arr, i) || _unsupportedIterableToArray$5(arr, i) || _nonIterableRest$3();
@@ -63668,7 +63178,7 @@ var Rectangle = function Rectangle2(rectangleProps) {
   }
   var layerClass = clsx("recharts-rectangle", className);
   if (!isUpdateAnimationActive) {
-    return /* @__PURE__ */ React$2.createElement("path", _extends$j({}, filterProps(props, true), {
+    return /* @__PURE__ */ React$2.createElement("path", _extends$i({}, filterProps(props, true), {
       className: layerClass,
       d: getRectanglePath(x3, y2, width, height, radius)
     }));
@@ -63701,15 +63211,15 @@ var Rectangle = function Rectangle2(rectangleProps) {
       duration: animationDuration,
       isActive: isAnimationActive,
       easing: animationEasing
-    }, /* @__PURE__ */ React$2.createElement("path", _extends$j({}, filterProps(props, true), {
+    }, /* @__PURE__ */ React$2.createElement("path", _extends$i({}, filterProps(props, true), {
       className: layerClass,
       d: getRectanglePath(currX, currY, currWidth, currHeight, radius),
       ref: pathRef
     })));
   });
 };
-function _extends$i() {
-  _extends$i = Object.assign ? Object.assign.bind() : function(target) {
+function _extends$h() {
+  _extends$h = Object.assign ? Object.assign.bind() : function(target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = arguments[i];
       for (var key in source) {
@@ -63720,13 +63230,13 @@ function _extends$i() {
     }
     return target;
   };
-  return _extends$i.apply(this, arguments);
+  return _extends$h.apply(this, arguments);
 }
 var Dot = function Dot2(props) {
   var cx = props.cx, cy = props.cy, r2 = props.r, className = props.className;
   var layerClass = clsx("recharts-dot", className);
   if (cx === +cx && cy === +cy && r2 === +r2) {
-    return /* @__PURE__ */ reactExports.createElement("circle", _extends$i({}, filterProps(props, false), adaptEventHandlers(props), {
+    return /* @__PURE__ */ reactExports.createElement("circle", _extends$h({}, filterProps(props, false), adaptEventHandlers(props), {
       className: layerClass,
       cx,
       cy,
@@ -63743,9 +63253,9 @@ function _typeof$m(o) {
     return o2 && "function" == typeof Symbol && o2.constructor === Symbol && o2 !== Symbol.prototype ? "symbol" : typeof o2;
   }, _typeof$m(o);
 }
-var _excluded$b = ["x", "y", "top", "left", "width", "height", "className"];
-function _extends$h() {
-  _extends$h = Object.assign ? Object.assign.bind() : function(target) {
+var _excluded$9 = ["x", "y", "top", "left", "width", "height", "className"];
+function _extends$g() {
+  _extends$g = Object.assign ? Object.assign.bind() : function(target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = arguments[i];
       for (var key in source) {
@@ -63756,7 +63266,7 @@ function _extends$h() {
     }
     return target;
   };
-  return _extends$h.apply(this, arguments);
+  return _extends$g.apply(this, arguments);
 }
 function ownKeys$i(e3, r2) {
   var t2 = Object.keys(e3);
@@ -63802,9 +63312,9 @@ function _toPrimitive$m(t2, r2) {
   }
   return ("string" === r2 ? String : Number)(t2);
 }
-function _objectWithoutProperties$a(source, excluded) {
+function _objectWithoutProperties$9(source, excluded) {
   if (source == null) return {};
-  var target = _objectWithoutPropertiesLoose$a(source, excluded);
+  var target = _objectWithoutPropertiesLoose$9(source, excluded);
   var key, i;
   if (Object.getOwnPropertySymbols) {
     var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
@@ -63817,7 +63327,7 @@ function _objectWithoutProperties$a(source, excluded) {
   }
   return target;
 }
-function _objectWithoutPropertiesLoose$a(source, excluded) {
+function _objectWithoutPropertiesLoose$9(source, excluded) {
   if (source == null) return {};
   var target = {};
   for (var key in source) {
@@ -63832,7 +63342,7 @@ var getPath2 = function getPath3(x3, y2, width, height, top, left) {
   return "M".concat(x3, ",").concat(top, "v").concat(height, "M").concat(left, ",").concat(y2, "h").concat(width);
 };
 var Cross = function Cross2(_ref) {
-  var _ref$x = _ref.x, x3 = _ref$x === void 0 ? 0 : _ref$x, _ref$y = _ref.y, y2 = _ref$y === void 0 ? 0 : _ref$y, _ref$top = _ref.top, top = _ref$top === void 0 ? 0 : _ref$top, _ref$left = _ref.left, left = _ref$left === void 0 ? 0 : _ref$left, _ref$width = _ref.width, width = _ref$width === void 0 ? 0 : _ref$width, _ref$height = _ref.height, height = _ref$height === void 0 ? 0 : _ref$height, className = _ref.className, rest = _objectWithoutProperties$a(_ref, _excluded$b);
+  var _ref$x = _ref.x, x3 = _ref$x === void 0 ? 0 : _ref$x, _ref$y = _ref.y, y2 = _ref$y === void 0 ? 0 : _ref$y, _ref$top = _ref.top, top = _ref$top === void 0 ? 0 : _ref$top, _ref$left = _ref.left, left = _ref$left === void 0 ? 0 : _ref$left, _ref$width = _ref.width, width = _ref$width === void 0 ? 0 : _ref$width, _ref$height = _ref.height, height = _ref$height === void 0 ? 0 : _ref$height, className = _ref.className, rest = _objectWithoutProperties$9(_ref, _excluded$9);
   var props = _objectSpread$i({
     x: x3,
     y: y2,
@@ -63844,7 +63354,7 @@ var Cross = function Cross2(_ref) {
   if (!isNumber(x3) || !isNumber(y2) || !isNumber(width) || !isNumber(height) || !isNumber(top) || !isNumber(left)) {
     return null;
   }
-  return /* @__PURE__ */ React$2.createElement("path", _extends$h({}, filterProps(props, true), {
+  return /* @__PURE__ */ React$2.createElement("path", _extends$g({}, filterProps(props, true), {
     className: clsx("recharts-cross", className),
     d: getPath2(x3, y2, width, height, top, left)
   }));
@@ -63886,8 +63396,8 @@ function _typeof$l(o) {
     return o2 && "function" == typeof Symbol && o2.constructor === Symbol && o2 !== Symbol.prototype ? "symbol" : typeof o2;
   }, _typeof$l(o);
 }
-function _extends$g() {
-  _extends$g = Object.assign ? Object.assign.bind() : function(target) {
+function _extends$f() {
+  _extends$f = Object.assign ? Object.assign.bind() : function(target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = arguments[i];
       for (var key in source) {
@@ -63898,7 +63408,7 @@ function _extends$g() {
     }
     return target;
   };
-  return _extends$g.apply(this, arguments);
+  return _extends$f.apply(this, arguments);
 }
 function _slicedToArray$2(arr, i) {
   return _arrayWithHoles$2(arr) || _iterableToArrayLimit$2(arr, i) || _unsupportedIterableToArray$4(arr, i) || _nonIterableRest$2();
@@ -64028,7 +63538,7 @@ var Trapezoid = function Trapezoid2(props) {
   }
   var layerClass = clsx("recharts-trapezoid", className);
   if (!isUpdateAnimationActive) {
-    return /* @__PURE__ */ React$2.createElement("g", null, /* @__PURE__ */ React$2.createElement("path", _extends$g({}, filterProps(trapezoidProps, true), {
+    return /* @__PURE__ */ React$2.createElement("g", null, /* @__PURE__ */ React$2.createElement("path", _extends$f({}, filterProps(trapezoidProps, true), {
       className: layerClass,
       d: getTrapezoidPath(x3, y2, upperWidth, lowerWidth, height)
     })));
@@ -64062,14 +63572,14 @@ var Trapezoid = function Trapezoid2(props) {
       begin: animationBegin,
       duration: animationDuration,
       easing: animationEasing
-    }, /* @__PURE__ */ React$2.createElement("path", _extends$g({}, filterProps(trapezoidProps, true), {
+    }, /* @__PURE__ */ React$2.createElement("path", _extends$f({}, filterProps(trapezoidProps, true), {
       className: layerClass,
       d: getTrapezoidPath(currX, currY, currUpperWidth, currLowerWidth, currHeight),
       ref: pathRef
     })));
   });
 };
-var _excluded$a = ["option", "shapeType", "propTransformer", "activeClassName", "isActive"];
+var _excluded$8 = ["option", "shapeType", "propTransformer", "activeClassName", "isActive"];
 function _typeof$k(o) {
   "@babel/helpers - typeof";
   return _typeof$k = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o2) {
@@ -64078,9 +63588,9 @@ function _typeof$k(o) {
     return o2 && "function" == typeof Symbol && o2.constructor === Symbol && o2 !== Symbol.prototype ? "symbol" : typeof o2;
   }, _typeof$k(o);
 }
-function _objectWithoutProperties$9(source, excluded) {
+function _objectWithoutProperties$8(source, excluded) {
   if (source == null) return {};
-  var target = _objectWithoutPropertiesLoose$9(source, excluded);
+  var target = _objectWithoutPropertiesLoose$8(source, excluded);
   var key, i;
   if (Object.getOwnPropertySymbols) {
     var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
@@ -64093,7 +63603,7 @@ function _objectWithoutProperties$9(source, excluded) {
   }
   return target;
 }
-function _objectWithoutPropertiesLoose$9(source, excluded) {
+function _objectWithoutPropertiesLoose$8(source, excluded) {
   if (source == null) return {};
   var target = {};
   for (var key in source) {
@@ -64179,7 +63689,7 @@ function getPropsFromShapeOption(option) {
   return option;
 }
 function Shape(_ref2) {
-  var option = _ref2.option, shapeType = _ref2.shapeType, _ref2$propTransformer = _ref2.propTransformer, propTransformer = _ref2$propTransformer === void 0 ? defaultPropTransformer : _ref2$propTransformer, _ref2$activeClassName = _ref2.activeClassName, activeClassName = _ref2$activeClassName === void 0 ? "recharts-active-shape" : _ref2$activeClassName, isActive = _ref2.isActive, props = _objectWithoutProperties$9(_ref2, _excluded$a);
+  var option = _ref2.option, shapeType = _ref2.shapeType, _ref2$propTransformer = _ref2.propTransformer, propTransformer = _ref2$propTransformer === void 0 ? defaultPropTransformer : _ref2$propTransformer, _ref2$activeClassName = _ref2.activeClassName, activeClassName = _ref2$activeClassName === void 0 ? "recharts-active-shape" : _ref2$activeClassName, isActive = _ref2.isActive, props = _objectWithoutProperties$8(_ref2, _excluded$8);
   var shape;
   if (/* @__PURE__ */ reactExports.isValidElement(option)) {
     shape = /* @__PURE__ */ reactExports.cloneElement(option, _objectSpread$g(_objectSpread$g({}, props), getPropsFromShapeOption(option)));
@@ -64401,8 +63911,8 @@ function _typeof$i(o) {
     return o2 && "function" == typeof Symbol && o2.constructor === Symbol && o2 !== Symbol.prototype ? "symbol" : typeof o2;
   }, _typeof$i(o);
 }
-function _extends$f() {
-  _extends$f = Object.assign ? Object.assign.bind() : function(target) {
+function _extends$e() {
+  _extends$e = Object.assign ? Object.assign.bind() : function(target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = arguments[i];
       for (var key in source) {
@@ -64413,7 +63923,7 @@ function _extends$f() {
     }
     return target;
   };
-  return _extends$f.apply(this, arguments);
+  return _extends$e.apply(this, arguments);
 }
 function ownKeys$e(e3, r2) {
   var t2 = Object.keys(e3);
@@ -64871,12 +64381,12 @@ var Brush = /* @__PURE__ */ function(_PureComponent) {
       };
       return /* @__PURE__ */ React$2.createElement(Layer, {
         className: "recharts-brush-texts"
-      }, /* @__PURE__ */ React$2.createElement(Text, _extends$f({
+      }, /* @__PURE__ */ React$2.createElement(Text, _extends$e({
         textAnchor: "end",
         verticalAnchor: "middle",
         x: Math.min(startX, endX) - offset2,
         y: y2 + height / 2
-      }, attrs), this.getTextOfTick(startIndex)), /* @__PURE__ */ React$2.createElement(Text, _extends$f({
+      }, attrs), this.getTextOfTick(startIndex)), /* @__PURE__ */ React$2.createElement(Text, _extends$e({
         textAnchor: "start",
         verticalAnchor: "middle",
         x: Math.max(startX, endX) + travellerWidth + offset2,
@@ -65100,7 +64610,7 @@ function every(collection, predicate, guard) {
 }
 var every_1 = every;
 const every$1 = /* @__PURE__ */ getDefaultExportFromCjs(every_1);
-var _excluded$9 = ["x", "y"];
+var _excluded$7 = ["x", "y"];
 function _typeof$h(o) {
   "@babel/helpers - typeof";
   return _typeof$h = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o2) {
@@ -65109,8 +64619,8 @@ function _typeof$h(o) {
     return o2 && "function" == typeof Symbol && o2.constructor === Symbol && o2 !== Symbol.prototype ? "symbol" : typeof o2;
   }, _typeof$h(o);
 }
-function _extends$e() {
-  _extends$e = Object.assign ? Object.assign.bind() : function(target) {
+function _extends$d() {
+  _extends$d = Object.assign ? Object.assign.bind() : function(target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = arguments[i];
       for (var key in source) {
@@ -65121,7 +64631,7 @@ function _extends$e() {
     }
     return target;
   };
-  return _extends$e.apply(this, arguments);
+  return _extends$d.apply(this, arguments);
 }
 function ownKeys$d(e3, r2) {
   var t2 = Object.keys(e3);
@@ -65167,82 +64677,6 @@ function _toPrimitive$h(t2, r2) {
   }
   return ("string" === r2 ? String : Number)(t2);
 }
-function _objectWithoutProperties$8(source, excluded) {
-  if (source == null) return {};
-  var target = _objectWithoutPropertiesLoose$8(source, excluded);
-  var key, i;
-  if (Object.getOwnPropertySymbols) {
-    var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
-    for (i = 0; i < sourceSymbolKeys.length; i++) {
-      key = sourceSymbolKeys[i];
-      if (excluded.indexOf(key) >= 0) continue;
-      if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
-      target[key] = source[key];
-    }
-  }
-  return target;
-}
-function _objectWithoutPropertiesLoose$8(source, excluded) {
-  if (source == null) return {};
-  var target = {};
-  for (var key in source) {
-    if (Object.prototype.hasOwnProperty.call(source, key)) {
-      if (excluded.indexOf(key) >= 0) continue;
-      target[key] = source[key];
-    }
-  }
-  return target;
-}
-function typeguardBarRectangleProps(_ref, props) {
-  var xProp = _ref.x, yProp = _ref.y, option = _objectWithoutProperties$8(_ref, _excluded$9);
-  var xValue = "".concat(xProp);
-  var x3 = parseInt(xValue, 10);
-  var yValue = "".concat(yProp);
-  var y2 = parseInt(yValue, 10);
-  var heightValue = "".concat(props.height || option.height);
-  var height = parseInt(heightValue, 10);
-  var widthValue = "".concat(props.width || option.width);
-  var width = parseInt(widthValue, 10);
-  return _objectSpread$d(_objectSpread$d(_objectSpread$d(_objectSpread$d(_objectSpread$d({}, props), option), x3 ? {
-    x: x3
-  } : {}), y2 ? {
-    y: y2
-  } : {}), {}, {
-    height,
-    width,
-    name: props.name,
-    radius: props.radius
-  });
-}
-function BarRectangle(props) {
-  return /* @__PURE__ */ React$2.createElement(Shape, _extends$e({
-    shapeType: "rectangle",
-    propTransformer: typeguardBarRectangleProps,
-    activeClassName: "recharts-active-bar"
-  }, props));
-}
-var minPointSizeCallback = function minPointSizeCallback2(minPointSize) {
-  var defaultValue = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : 0;
-  return function(value, index2) {
-    if (typeof minPointSize === "number") return minPointSize;
-    var isValueNumberOrNil = isNumber(value) || isNullish(value);
-    if (isValueNumberOrNil) {
-      return minPointSize(value, index2);
-    }
-    !isValueNumberOrNil ? invariant() : void 0;
-    return defaultValue;
-  };
-};
-var _excluded$8 = ["value", "background"];
-var _Bar;
-function _typeof$g(o) {
-  "@babel/helpers - typeof";
-  return _typeof$g = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o2) {
-    return typeof o2;
-  } : function(o2) {
-    return o2 && "function" == typeof Symbol && o2.constructor === Symbol && o2 !== Symbol.prototype ? "symbol" : typeof o2;
-  }, _typeof$g(o);
-}
 function _objectWithoutProperties$7(source, excluded) {
   if (source == null) return {};
   var target = _objectWithoutPropertiesLoose$7(source, excluded);
@@ -65269,8 +64703,84 @@ function _objectWithoutPropertiesLoose$7(source, excluded) {
   }
   return target;
 }
-function _extends$d() {
-  _extends$d = Object.assign ? Object.assign.bind() : function(target) {
+function typeguardBarRectangleProps(_ref, props) {
+  var xProp = _ref.x, yProp = _ref.y, option = _objectWithoutProperties$7(_ref, _excluded$7);
+  var xValue = "".concat(xProp);
+  var x3 = parseInt(xValue, 10);
+  var yValue = "".concat(yProp);
+  var y2 = parseInt(yValue, 10);
+  var heightValue = "".concat(props.height || option.height);
+  var height = parseInt(heightValue, 10);
+  var widthValue = "".concat(props.width || option.width);
+  var width = parseInt(widthValue, 10);
+  return _objectSpread$d(_objectSpread$d(_objectSpread$d(_objectSpread$d(_objectSpread$d({}, props), option), x3 ? {
+    x: x3
+  } : {}), y2 ? {
+    y: y2
+  } : {}), {}, {
+    height,
+    width,
+    name: props.name,
+    radius: props.radius
+  });
+}
+function BarRectangle(props) {
+  return /* @__PURE__ */ React$2.createElement(Shape, _extends$d({
+    shapeType: "rectangle",
+    propTransformer: typeguardBarRectangleProps,
+    activeClassName: "recharts-active-bar"
+  }, props));
+}
+var minPointSizeCallback = function minPointSizeCallback2(minPointSize) {
+  var defaultValue = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : 0;
+  return function(value, index2) {
+    if (typeof minPointSize === "number") return minPointSize;
+    var isValueNumberOrNil = isNumber(value) || isNullish(value);
+    if (isValueNumberOrNil) {
+      return minPointSize(value, index2);
+    }
+    !isValueNumberOrNil ? invariant() : void 0;
+    return defaultValue;
+  };
+};
+var _excluded$6 = ["value", "background"];
+var _Bar;
+function _typeof$g(o) {
+  "@babel/helpers - typeof";
+  return _typeof$g = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o2) {
+    return typeof o2;
+  } : function(o2) {
+    return o2 && "function" == typeof Symbol && o2.constructor === Symbol && o2 !== Symbol.prototype ? "symbol" : typeof o2;
+  }, _typeof$g(o);
+}
+function _objectWithoutProperties$6(source, excluded) {
+  if (source == null) return {};
+  var target = _objectWithoutPropertiesLoose$6(source, excluded);
+  var key, i;
+  if (Object.getOwnPropertySymbols) {
+    var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
+    for (i = 0; i < sourceSymbolKeys.length; i++) {
+      key = sourceSymbolKeys[i];
+      if (excluded.indexOf(key) >= 0) continue;
+      if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
+      target[key] = source[key];
+    }
+  }
+  return target;
+}
+function _objectWithoutPropertiesLoose$6(source, excluded) {
+  if (source == null) return {};
+  var target = {};
+  for (var key in source) {
+    if (Object.prototype.hasOwnProperty.call(source, key)) {
+      if (excluded.indexOf(key) >= 0) continue;
+      target[key] = source[key];
+    }
+  }
+  return target;
+}
+function _extends$c() {
+  _extends$c = Object.assign ? Object.assign.bind() : function(target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = arguments[i];
       for (var key in source) {
@@ -65281,7 +64791,7 @@ function _extends$d() {
     }
     return target;
   };
-  return _extends$d.apply(this, arguments);
+  return _extends$c.apply(this, arguments);
 }
 function ownKeys$c(e3, r2) {
   var t2 = Object.keys(e3);
@@ -65445,7 +64955,7 @@ var Bar = /* @__PURE__ */ function(_PureComponent) {
           onAnimationStart: _this2.handleAnimationStart,
           onAnimationEnd: _this2.handleAnimationEnd
         });
-        return /* @__PURE__ */ React$2.createElement(Layer, _extends$d({
+        return /* @__PURE__ */ React$2.createElement(Layer, _extends$c({
           className: "recharts-bar-rectangle"
         }, adaptEventsOfChild(_this2.props, entry, i), {
           // https://github.com/recharts/recharts/issues/5415
@@ -65525,7 +65035,7 @@ var Bar = /* @__PURE__ */ function(_PureComponent) {
       var backgroundProps = filterProps(this.props.background, false);
       return data.map(function(entry, i) {
         entry.value;
-        var background = entry.background, rest = _objectWithoutProperties$7(entry, _excluded$8);
+        var background = entry.background, rest = _objectWithoutProperties$6(entry, _excluded$6);
         if (!background) {
           return null;
         }
@@ -65538,7 +65048,7 @@ var Bar = /* @__PURE__ */ function(_PureComponent) {
           index: i,
           className: "recharts-bar-background-rectangle"
         });
-        return /* @__PURE__ */ React$2.createElement(BarRectangle, _extends$d({
+        return /* @__PURE__ */ React$2.createElement(BarRectangle, _extends$c({
           key: "background-bar-".concat(i),
           option: _this4.props.background,
           isActive: i === activeIndex
@@ -66303,8 +65813,8 @@ function _iterableToArrayLimit$1(r2, l2) {
 function _arrayWithHoles$1(arr) {
   if (Array.isArray(arr)) return arr;
 }
-function _extends$c() {
-  _extends$c = Object.assign ? Object.assign.bind() : function(target) {
+function _extends$b() {
+  _extends$b = Object.assign ? Object.assign.bind() : function(target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = arguments[i];
       for (var key in source) {
@@ -66315,7 +65825,7 @@ function _extends$c() {
     }
     return target;
   };
-  return _extends$c.apply(this, arguments);
+  return _extends$b.apply(this, arguments);
 }
 var renderLine = function renderLine2(option, props) {
   var line;
@@ -66324,7 +65834,7 @@ var renderLine = function renderLine2(option, props) {
   } else if (isFunction$3(option)) {
     line = option(props);
   } else {
-    line = /* @__PURE__ */ React$2.createElement("line", _extends$c({}, props, {
+    line = /* @__PURE__ */ React$2.createElement("line", _extends$b({}, props, {
       className: "recharts-reference-line-line"
     }));
   }
@@ -66447,8 +65957,8 @@ _defineProperty$e(ReferenceLine, "defaultProps", {
   strokeWidth: 1,
   position: "middle"
 });
-function _extends$b() {
-  _extends$b = Object.assign ? Object.assign.bind() : function(target) {
+function _extends$a() {
+  _extends$a = Object.assign ? Object.assign.bind() : function(target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = arguments[i];
       for (var key in source) {
@@ -66459,7 +65969,7 @@ function _extends$b() {
     }
     return target;
   };
-  return _extends$b.apply(this, arguments);
+  return _extends$a.apply(this, arguments);
 }
 function _typeof$d(o) {
   "@babel/helpers - typeof";
@@ -66656,7 +66166,7 @@ _defineProperty$d(ReferenceDot, "renderDot", function(option, props) {
   } else if (isFunction$3(option)) {
     dot = option(props);
   } else {
-    dot = /* @__PURE__ */ React$2.createElement(Dot, _extends$b({}, props, {
+    dot = /* @__PURE__ */ React$2.createElement(Dot, _extends$a({}, props, {
       cx: props.cx,
       cy: props.cy,
       className: "recharts-reference-dot-dot"
@@ -66664,8 +66174,8 @@ _defineProperty$d(ReferenceDot, "renderDot", function(option, props) {
   }
   return dot;
 });
-function _extends$a() {
-  _extends$a = Object.assign ? Object.assign.bind() : function(target) {
+function _extends$9() {
+  _extends$9 = Object.assign ? Object.assign.bind() : function(target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = arguments[i];
       for (var key in source) {
@@ -66676,7 +66186,7 @@ function _extends$a() {
     }
     return target;
   };
-  return _extends$a.apply(this, arguments);
+  return _extends$9.apply(this, arguments);
 }
 function _typeof$c(o) {
   "@babel/helpers - typeof";
@@ -66876,7 +66386,7 @@ _defineProperty$c(ReferenceArea, "renderRect", function(option, props) {
   } else if (isFunction$3(option)) {
     rect = option(props);
   } else {
-    rect = /* @__PURE__ */ React$2.createElement(Rectangle, _extends$a({}, props, {
+    rect = /* @__PURE__ */ React$2.createElement(Rectangle, _extends$9({}, props, {
       className: "recharts-reference-area-rect"
     }));
   }
@@ -67151,7 +66661,7 @@ function getTicks(props, fontSize, letterSpacing) {
     return entry.isShow;
   });
 }
-var _excluded$7 = ["viewBox"], _excluded2$4 = ["viewBox"], _excluded3 = ["ticks"];
+var _excluded$5 = ["viewBox"], _excluded2$4 = ["viewBox"], _excluded3 = ["ticks"];
 function _typeof$a(o) {
   "@babel/helpers - typeof";
   return _typeof$a = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o2) {
@@ -67160,8 +66670,8 @@ function _typeof$a(o) {
     return o2 && "function" == typeof Symbol && o2.constructor === Symbol && o2 !== Symbol.prototype ? "symbol" : typeof o2;
   }, _typeof$a(o);
 }
-function _extends$9() {
-  _extends$9 = Object.assign ? Object.assign.bind() : function(target) {
+function _extends$8() {
+  _extends$8 = Object.assign ? Object.assign.bind() : function(target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = arguments[i];
       for (var key in source) {
@@ -67172,7 +66682,7 @@ function _extends$9() {
     }
     return target;
   };
-  return _extends$9.apply(this, arguments);
+  return _extends$8.apply(this, arguments);
 }
 function ownKeys$6(e3, r2) {
   var t2 = Object.keys(e3);
@@ -67195,9 +66705,9 @@ function _objectSpread$6(e3) {
   }
   return e3;
 }
-function _objectWithoutProperties$6(source, excluded) {
+function _objectWithoutProperties$5(source, excluded) {
   if (source == null) return {};
-  var target = _objectWithoutPropertiesLoose$6(source, excluded);
+  var target = _objectWithoutPropertiesLoose$5(source, excluded);
   var key, i;
   if (Object.getOwnPropertySymbols) {
     var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
@@ -67210,7 +66720,7 @@ function _objectWithoutProperties$6(source, excluded) {
   }
   return target;
 }
-function _objectWithoutPropertiesLoose$6(source, excluded) {
+function _objectWithoutPropertiesLoose$5(source, excluded) {
   if (source == null) return {};
   var target = {};
   for (var key in source) {
@@ -67327,8 +66837,8 @@ var CartesianAxis = /* @__PURE__ */ function(_Component) {
   return _createClass$8(CartesianAxis2, [{
     key: "shouldComponentUpdate",
     value: function shouldComponentUpdate(_ref, nextState) {
-      var viewBox = _ref.viewBox, restProps = _objectWithoutProperties$6(_ref, _excluded$7);
-      var _this$props = this.props, viewBoxOld = _this$props.viewBox, restPropsOld = _objectWithoutProperties$6(_this$props, _excluded2$4);
+      var viewBox = _ref.viewBox, restProps = _objectWithoutProperties$5(_ref, _excluded$5);
+      var _this$props = this.props, viewBoxOld = _this$props.viewBox, restPropsOld = _objectWithoutProperties$5(_this$props, _excluded2$4);
       return !shallowEqual(viewBox, viewBoxOld) || !shallowEqual(restProps, restPropsOld) || !shallowEqual(nextState, this.state);
     }
   }, {
@@ -67462,7 +66972,7 @@ var CartesianAxis = /* @__PURE__ */ function(_Component) {
           y2: y2 + height
         });
       }
-      return /* @__PURE__ */ React$2.createElement("line", _extends$9({}, props, {
+      return /* @__PURE__ */ React$2.createElement("line", _extends$8({}, props, {
         className: clsx("recharts-cartesian-axis-line", get$2(axisLine, "className"))
       }));
     }
@@ -67503,10 +67013,10 @@ var CartesianAxis = /* @__PURE__ */ function(_Component) {
             visibleTicksCount: finalTicks.length,
             tickFormatter
           });
-          return /* @__PURE__ */ React$2.createElement(Layer, _extends$9({
+          return /* @__PURE__ */ React$2.createElement(Layer, _extends$8({
             className: "recharts-cartesian-axis-tick",
             key: "tick-".concat(entry.value, "-").concat(entry.coordinate, "-").concat(entry.tickCoord)
-          }, adaptEventsOfChild(_this2.props, entry, i)), tickLine && /* @__PURE__ */ React$2.createElement("line", _extends$9({}, tickLineProps, lineCoord, {
+          }, adaptEventsOfChild(_this2.props, entry, i)), tickLine && /* @__PURE__ */ React$2.createElement("line", _extends$8({}, tickLineProps, lineCoord, {
             className: clsx("recharts-cartesian-axis-tick-line", get$2(tickLine, "className"))
           })), tick && CartesianAxis2.renderTickItem(tick, tickProps, "".concat(isFunction$3(tickFormatter) ? tickFormatter(entry.value, i) : entry.value).concat(unit2 || "")));
         });
@@ -67523,7 +67033,7 @@ var CartesianAxis = /* @__PURE__ */ function(_Component) {
       if (hide2) {
         return null;
       }
-      var _this$props8 = this.props, ticks2 = _this$props8.ticks, noTicksProps = _objectWithoutProperties$6(_this$props8, _excluded3);
+      var _this$props8 = this.props, ticks2 = _this$props8.ticks, noTicksProps = _objectWithoutProperties$5(_this$props8, _excluded3);
       var finalTicks = ticks2;
       if (isFunction$3(ticksGenerator)) {
         finalTicks = ticks2 && ticks2.length > 0 ? ticksGenerator(this.props) : ticksGenerator(noTicksProps);
@@ -67552,7 +67062,7 @@ var CartesianAxis = /* @__PURE__ */ function(_Component) {
           className: combinedClassName
         }));
       } else {
-        tickItem = /* @__PURE__ */ React$2.createElement(Text, _extends$9({}, props, {
+        tickItem = /* @__PURE__ */ React$2.createElement(Text, _extends$8({}, props, {
           className: "recharts-cartesian-axis-tick-value"
         }), value);
       }
@@ -67587,7 +67097,7 @@ _defineProperty$a(CartesianAxis, "defaultProps", {
   tickMargin: 2,
   interval: "preserveEnd"
 });
-var _excluded$6 = ["x1", "y1", "x2", "y2", "key"], _excluded2$3 = ["offset"];
+var _excluded$4 = ["x1", "y1", "x2", "y2", "key"], _excluded2$3 = ["offset"];
 function _typeof$9(o) {
   "@babel/helpers - typeof";
   return _typeof$9 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o2) {
@@ -67640,8 +67150,8 @@ function _toPrimitive$9(t2, r2) {
   }
   return ("string" === r2 ? String : Number)(t2);
 }
-function _extends$8() {
-  _extends$8 = Object.assign ? Object.assign.bind() : function(target) {
+function _extends$7() {
+  _extends$7 = Object.assign ? Object.assign.bind() : function(target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = arguments[i];
       for (var key in source) {
@@ -67652,11 +67162,11 @@ function _extends$8() {
     }
     return target;
   };
-  return _extends$8.apply(this, arguments);
+  return _extends$7.apply(this, arguments);
 }
-function _objectWithoutProperties$5(source, excluded) {
+function _objectWithoutProperties$4(source, excluded) {
   if (source == null) return {};
-  var target = _objectWithoutPropertiesLoose$5(source, excluded);
+  var target = _objectWithoutPropertiesLoose$4(source, excluded);
   var key, i;
   if (Object.getOwnPropertySymbols) {
     var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
@@ -67669,7 +67179,7 @@ function _objectWithoutProperties$5(source, excluded) {
   }
   return target;
 }
-function _objectWithoutPropertiesLoose$5(source, excluded) {
+function _objectWithoutPropertiesLoose$4(source, excluded) {
   if (source == null) return {};
   var target = {};
   for (var key in source) {
@@ -67705,11 +67215,11 @@ function renderLineItem(option, props) {
   } else if (isFunction$3(option)) {
     lineItem = option(props);
   } else {
-    var x1 = props.x1, y1 = props.y1, x22 = props.x2, y2 = props.y2, key = props.key, others = _objectWithoutProperties$5(props, _excluded$6);
+    var x1 = props.x1, y1 = props.y1, x22 = props.x2, y2 = props.y2, key = props.key, others = _objectWithoutProperties$4(props, _excluded$4);
     var _filterProps = filterProps(others, false);
     _filterProps.offset;
-    var restOfFilteredProps = _objectWithoutProperties$5(_filterProps, _excluded2$3);
-    lineItem = /* @__PURE__ */ React$2.createElement("line", _extends$8({}, restOfFilteredProps, {
+    var restOfFilteredProps = _objectWithoutProperties$4(_filterProps, _excluded2$3);
+    lineItem = /* @__PURE__ */ React$2.createElement("line", _extends$7({}, restOfFilteredProps, {
       x1,
       y1,
       x2: x22,
@@ -67931,24 +67441,24 @@ function CartesianGrid(props) {
     width: propsIncludingDefaults.width,
     height: propsIncludingDefaults.height,
     ry: propsIncludingDefaults.ry
-  }), /* @__PURE__ */ React$2.createElement(HorizontalGridLines, _extends$8({}, propsIncludingDefaults, {
+  }), /* @__PURE__ */ React$2.createElement(HorizontalGridLines, _extends$7({}, propsIncludingDefaults, {
     offset: offset2,
     horizontalPoints,
     xAxis,
     yAxis
-  })), /* @__PURE__ */ React$2.createElement(VerticalGridLines, _extends$8({}, propsIncludingDefaults, {
+  })), /* @__PURE__ */ React$2.createElement(VerticalGridLines, _extends$7({}, propsIncludingDefaults, {
     offset: offset2,
     verticalPoints,
     xAxis,
     yAxis
-  })), /* @__PURE__ */ React$2.createElement(HorizontalStripes, _extends$8({}, propsIncludingDefaults, {
+  })), /* @__PURE__ */ React$2.createElement(HorizontalStripes, _extends$7({}, propsIncludingDefaults, {
     horizontalPoints
-  })), /* @__PURE__ */ React$2.createElement(VerticalStripes, _extends$8({}, propsIncludingDefaults, {
+  })), /* @__PURE__ */ React$2.createElement(VerticalStripes, _extends$7({}, propsIncludingDefaults, {
     verticalPoints
   })));
 }
 CartesianGrid.displayName = "CartesianGrid";
-var _excluded$5 = ["type", "layout", "connectNulls", "ref"], _excluded2$2 = ["key"];
+var _excluded$3 = ["type", "layout", "connectNulls", "ref"], _excluded2$2 = ["key"];
 function _typeof$8(o) {
   "@babel/helpers - typeof";
   return _typeof$8 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o2) {
@@ -67957,9 +67467,9 @@ function _typeof$8(o) {
     return o2 && "function" == typeof Symbol && o2.constructor === Symbol && o2 !== Symbol.prototype ? "symbol" : typeof o2;
   }, _typeof$8(o);
 }
-function _objectWithoutProperties$4(source, excluded) {
+function _objectWithoutProperties$3(source, excluded) {
   if (source == null) return {};
-  var target = _objectWithoutPropertiesLoose$4(source, excluded);
+  var target = _objectWithoutPropertiesLoose$3(source, excluded);
   var key, i;
   if (Object.getOwnPropertySymbols) {
     var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
@@ -67972,7 +67482,7 @@ function _objectWithoutProperties$4(source, excluded) {
   }
   return target;
 }
-function _objectWithoutPropertiesLoose$4(source, excluded) {
+function _objectWithoutPropertiesLoose$3(source, excluded) {
   if (source == null) return {};
   var target = {};
   for (var key in source) {
@@ -67983,8 +67493,8 @@ function _objectWithoutPropertiesLoose$4(source, excluded) {
   }
   return target;
 }
-function _extends$7() {
-  _extends$7 = Object.assign ? Object.assign.bind() : function(target) {
+function _extends$6() {
+  _extends$6 = Object.assign ? Object.assign.bind() : function(target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = arguments[i];
       for (var key in source) {
@@ -67995,7 +67505,7 @@ function _extends$7() {
     }
     return target;
   };
-  return _extends$7.apply(this, arguments);
+  return _extends$6.apply(this, arguments);
 }
 function ownKeys$4(e3, r2) {
   var t2 = Object.keys(e3);
@@ -68289,7 +67799,7 @@ var Line = /* @__PURE__ */ function(_PureComponent) {
       var dotsProps = {
         clipPath: needClip ? "url(#clipPath-".concat(clipDot ? "" : "dots-").concat(clipPathId, ")") : null
       };
-      return /* @__PURE__ */ React$2.createElement(Layer, _extends$7({
+      return /* @__PURE__ */ React$2.createElement(Layer, _extends$6({
         className: "recharts-line-dots",
         key: "dots"
       }, dotsProps), dots);
@@ -68299,7 +67809,7 @@ var Line = /* @__PURE__ */ function(_PureComponent) {
     value: function renderCurveStatically(points, needClip, clipPathId, props) {
       var _this$props3 = this.props, type = _this$props3.type, layout = _this$props3.layout, connectNulls = _this$props3.connectNulls;
       _this$props3.ref;
-      var others = _objectWithoutProperties$4(_this$props3, _excluded$5);
+      var others = _objectWithoutProperties$3(_this$props3, _excluded$3);
       var curveProps = _objectSpread$4(_objectSpread$4(_objectSpread$4({}, filterProps(others, true)), {}, {
         fill: "none",
         className: "recharts-line-curve",
@@ -68310,7 +67820,7 @@ var Line = /* @__PURE__ */ function(_PureComponent) {
         layout,
         connectNulls
       });
-      return /* @__PURE__ */ React$2.createElement(Curve, _extends$7({}, curveProps, {
+      return /* @__PURE__ */ React$2.createElement(Curve, _extends$6({}, curveProps, {
         pathRef: this.pathRef
       }));
     }
@@ -68465,9 +67975,9 @@ var Line = /* @__PURE__ */ function(_PureComponent) {
       } else if (isFunction$3(option)) {
         dotItem = option(props);
       } else {
-        var key = props.key, dotProps = _objectWithoutProperties$4(props, _excluded2$2);
+        var key = props.key, dotProps = _objectWithoutProperties$3(props, _excluded2$2);
         var className = clsx("recharts-line-dot", typeof option !== "boolean" ? option.className : "");
-        dotItem = /* @__PURE__ */ React$2.createElement(Dot, _extends$7({
+        dotItem = /* @__PURE__ */ React$2.createElement(Dot, _extends$6({
           key
         }, dotProps, {
           className
@@ -68534,7 +68044,7 @@ _defineProperty$8(Line, "getComposedData", function(_ref4) {
     layout
   }, offset2);
 });
-var _excluded$4 = ["layout", "type", "stroke", "connectNulls", "isRange", "ref"], _excluded2$1 = ["key"];
+var _excluded$2 = ["layout", "type", "stroke", "connectNulls", "isRange", "ref"], _excluded2$1 = ["key"];
 var _Area;
 function _typeof$7(o) {
   "@babel/helpers - typeof";
@@ -68544,9 +68054,9 @@ function _typeof$7(o) {
     return o2 && "function" == typeof Symbol && o2.constructor === Symbol && o2 !== Symbol.prototype ? "symbol" : typeof o2;
   }, _typeof$7(o);
 }
-function _objectWithoutProperties$3(source, excluded) {
+function _objectWithoutProperties$2(source, excluded) {
   if (source == null) return {};
-  var target = _objectWithoutPropertiesLoose$3(source, excluded);
+  var target = _objectWithoutPropertiesLoose$2(source, excluded);
   var key, i;
   if (Object.getOwnPropertySymbols) {
     var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
@@ -68559,7 +68069,7 @@ function _objectWithoutProperties$3(source, excluded) {
   }
   return target;
 }
-function _objectWithoutPropertiesLoose$3(source, excluded) {
+function _objectWithoutPropertiesLoose$2(source, excluded) {
   if (source == null) return {};
   var target = {};
   for (var key in source) {
@@ -68570,8 +68080,8 @@ function _objectWithoutPropertiesLoose$3(source, excluded) {
   }
   return target;
 }
-function _extends$6() {
-  _extends$6 = Object.assign ? Object.assign.bind() : function(target) {
+function _extends$5() {
+  _extends$5 = Object.assign ? Object.assign.bind() : function(target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = arguments[i];
       for (var key in source) {
@@ -68582,7 +68092,7 @@ function _extends$6() {
     }
     return target;
   };
-  return _extends$6.apply(this, arguments);
+  return _extends$5.apply(this, arguments);
 }
 function ownKeys$3(e3, r2) {
   var t2 = Object.keys(e3);
@@ -68758,7 +68268,7 @@ var Area = /* @__PURE__ */ function(_PureComponent) {
       var dotsProps = {
         clipPath: needClip ? "url(#clipPath-".concat(clipDot ? "" : "dots-").concat(clipPathId, ")") : null
       };
-      return /* @__PURE__ */ React$2.createElement(Layer, _extends$6({
+      return /* @__PURE__ */ React$2.createElement(Layer, _extends$5({
         className: "recharts-area-dots"
       }, dotsProps), dots);
     }
@@ -68830,10 +68340,10 @@ var Area = /* @__PURE__ */ function(_PureComponent) {
     value: function renderAreaStatically(points, baseLine, needClip, clipPathId) {
       var _this$props4 = this.props, layout = _this$props4.layout, type = _this$props4.type, stroke = _this$props4.stroke, connectNulls = _this$props4.connectNulls, isRange = _this$props4.isRange;
       _this$props4.ref;
-      var others = _objectWithoutProperties$3(_this$props4, _excluded$4);
+      var others = _objectWithoutProperties$2(_this$props4, _excluded$2);
       return /* @__PURE__ */ React$2.createElement(Layer, {
         clipPath: needClip ? "url(#clipPath-".concat(clipPathId, ")") : null
-      }, /* @__PURE__ */ React$2.createElement(Curve, _extends$6({}, filterProps(others, true), {
+      }, /* @__PURE__ */ React$2.createElement(Curve, _extends$5({}, filterProps(others, true), {
         points,
         connectNulls,
         type,
@@ -68841,14 +68351,14 @@ var Area = /* @__PURE__ */ function(_PureComponent) {
         layout,
         stroke: "none",
         className: "recharts-area-area"
-      })), stroke !== "none" && /* @__PURE__ */ React$2.createElement(Curve, _extends$6({}, filterProps(this.props, false), {
+      })), stroke !== "none" && /* @__PURE__ */ React$2.createElement(Curve, _extends$5({}, filterProps(this.props, false), {
         className: "recharts-area-curve",
         layout,
         type,
         connectNulls,
         fill: "none",
         points
-      })), stroke !== "none" && isRange && /* @__PURE__ */ React$2.createElement(Curve, _extends$6({}, filterProps(this.props, false), {
+      })), stroke !== "none" && isRange && /* @__PURE__ */ React$2.createElement(Curve, _extends$5({}, filterProps(this.props, false), {
         className: "recharts-area-curve",
         layout,
         type,
@@ -69124,8 +68634,8 @@ _defineProperty$7(Area, "renderDotItem", function(option, props) {
     dotItem = option(props);
   } else {
     var className = clsx("recharts-area-dot", typeof option !== "boolean" ? option.className : "");
-    var key = props.key, rest = _objectWithoutProperties$3(props, _excluded2$1);
-    dotItem = /* @__PURE__ */ React$2.createElement(Dot, _extends$6({}, rest, {
+    var key = props.key, rest = _objectWithoutProperties$2(props, _excluded2$1);
+    dotItem = /* @__PURE__ */ React$2.createElement(Dot, _extends$5({}, rest, {
       key,
       className
     }));
@@ -69250,72 +68760,7 @@ _defineProperty$6(ZAxis, "defaultProps", {
   scale: "auto",
   type: "number"
 });
-var _excluded$3 = ["option", "isActive"];
-function _extends$5() {
-  _extends$5 = Object.assign ? Object.assign.bind() : function(target) {
-    for (var i = 1; i < arguments.length; i++) {
-      var source = arguments[i];
-      for (var key in source) {
-        if (Object.prototype.hasOwnProperty.call(source, key)) {
-          target[key] = source[key];
-        }
-      }
-    }
-    return target;
-  };
-  return _extends$5.apply(this, arguments);
-}
-function _objectWithoutProperties$2(source, excluded) {
-  if (source == null) return {};
-  var target = _objectWithoutPropertiesLoose$2(source, excluded);
-  var key, i;
-  if (Object.getOwnPropertySymbols) {
-    var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
-    for (i = 0; i < sourceSymbolKeys.length; i++) {
-      key = sourceSymbolKeys[i];
-      if (excluded.indexOf(key) >= 0) continue;
-      if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
-      target[key] = source[key];
-    }
-  }
-  return target;
-}
-function _objectWithoutPropertiesLoose$2(source, excluded) {
-  if (source == null) return {};
-  var target = {};
-  for (var key in source) {
-    if (Object.prototype.hasOwnProperty.call(source, key)) {
-      if (excluded.indexOf(key) >= 0) continue;
-      target[key] = source[key];
-    }
-  }
-  return target;
-}
-function ScatterSymbol(_ref) {
-  var option = _ref.option, isActive = _ref.isActive, props = _objectWithoutProperties$2(_ref, _excluded$3);
-  if (typeof option === "string") {
-    return /* @__PURE__ */ reactExports.createElement(Shape, _extends$5({
-      option: /* @__PURE__ */ reactExports.createElement(Symbols, _extends$5({
-        type: option
-      }, props)),
-      isActive,
-      shapeType: "symbols"
-    }, props));
-  }
-  return /* @__PURE__ */ reactExports.createElement(Shape, _extends$5({
-    option,
-    isActive,
-    shapeType: "symbols"
-  }, props));
-}
-function _typeof$5(o) {
-  "@babel/helpers - typeof";
-  return _typeof$5 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o2) {
-    return typeof o2;
-  } : function(o2) {
-    return o2 && "function" == typeof Symbol && o2.constructor === Symbol && o2 !== Symbol.prototype ? "symbol" : typeof o2;
-  }, _typeof$5(o);
-}
+var _excluded$1 = ["option", "isActive"];
 function _extends$4() {
   _extends$4 = Object.assign ? Object.assign.bind() : function(target) {
     for (var i = 1; i < arguments.length; i++) {
@@ -69329,6 +68774,71 @@ function _extends$4() {
     return target;
   };
   return _extends$4.apply(this, arguments);
+}
+function _objectWithoutProperties$1(source, excluded) {
+  if (source == null) return {};
+  var target = _objectWithoutPropertiesLoose$1(source, excluded);
+  var key, i;
+  if (Object.getOwnPropertySymbols) {
+    var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
+    for (i = 0; i < sourceSymbolKeys.length; i++) {
+      key = sourceSymbolKeys[i];
+      if (excluded.indexOf(key) >= 0) continue;
+      if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
+      target[key] = source[key];
+    }
+  }
+  return target;
+}
+function _objectWithoutPropertiesLoose$1(source, excluded) {
+  if (source == null) return {};
+  var target = {};
+  for (var key in source) {
+    if (Object.prototype.hasOwnProperty.call(source, key)) {
+      if (excluded.indexOf(key) >= 0) continue;
+      target[key] = source[key];
+    }
+  }
+  return target;
+}
+function ScatterSymbol(_ref) {
+  var option = _ref.option, isActive = _ref.isActive, props = _objectWithoutProperties$1(_ref, _excluded$1);
+  if (typeof option === "string") {
+    return /* @__PURE__ */ reactExports.createElement(Shape, _extends$4({
+      option: /* @__PURE__ */ reactExports.createElement(Symbols, _extends$4({
+        type: option
+      }, props)),
+      isActive,
+      shapeType: "symbols"
+    }, props));
+  }
+  return /* @__PURE__ */ reactExports.createElement(Shape, _extends$4({
+    option,
+    isActive,
+    shapeType: "symbols"
+  }, props));
+}
+function _typeof$5(o) {
+  "@babel/helpers - typeof";
+  return _typeof$5 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o2) {
+    return typeof o2;
+  } : function(o2) {
+    return o2 && "function" == typeof Symbol && o2.constructor === Symbol && o2 !== Symbol.prototype ? "symbol" : typeof o2;
+  }, _typeof$5(o);
+}
+function _extends$3() {
+  _extends$3 = Object.assign ? Object.assign.bind() : function(target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+    return target;
+  };
+  return _extends$3.apply(this, arguments);
 }
 function ownKeys$2(e3, r2) {
   var t2 = Object.keys(e3);
@@ -69477,12 +68987,12 @@ var Scatter = /* @__PURE__ */ function(_PureComponent) {
         var isActive = activeIndex === i;
         var option = isActive ? activeShape : shape;
         var props = _objectSpread$2(_objectSpread$2({}, baseProps), entry);
-        return /* @__PURE__ */ React$2.createElement(Layer, _extends$4({
+        return /* @__PURE__ */ React$2.createElement(Layer, _extends$3({
           className: "recharts-scatter-symbol",
           key: "symbol-".concat(entry === null || entry === void 0 ? void 0 : entry.cx, "-").concat(entry === null || entry === void 0 ? void 0 : entry.cy, "-").concat(entry === null || entry === void 0 ? void 0 : entry.size, "-").concat(i)
         }, adaptEventsOfChild(_this2.props, entry, i), {
           role: "img"
-        }), /* @__PURE__ */ React$2.createElement(ScatterSymbol, _extends$4({
+        }), /* @__PURE__ */ React$2.createElement(ScatterSymbol, _extends$3({
           option,
           isActive,
           key: "symbol-".concat(i)
@@ -69610,7 +69120,7 @@ var Scatter = /* @__PURE__ */ function(_PureComponent) {
       } else if (isFunction$3(line)) {
         lineItem = line(lineProps);
       } else {
-        lineItem = /* @__PURE__ */ React$2.createElement(Curve, _extends$4({}, lineProps, {
+        lineItem = /* @__PURE__ */ React$2.createElement(Curve, _extends$3({}, lineProps, {
           type: lineJointType
         }));
       }
@@ -69865,8 +69375,8 @@ function _toPrimitive$4(t2, r2) {
   }
   return String(t2);
 }
-function _extends$3() {
-  _extends$3 = Object.assign ? Object.assign.bind() : function(target) {
+function _extends$2() {
+  _extends$2 = Object.assign ? Object.assign.bind() : function(target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = arguments[i];
       for (var key in source) {
@@ -69877,7 +69387,7 @@ function _extends$3() {
     }
     return target;
   };
-  return _extends$3.apply(this, arguments);
+  return _extends$2.apply(this, arguments);
 }
 function XAxisImpl(_ref) {
   var xAxisId = _ref.xAxisId;
@@ -69889,7 +69399,7 @@ function XAxisImpl(_ref) {
   }
   return (
     // @ts-expect-error the axisOptions type is not exactly what CartesianAxis is expecting.
-    /* @__PURE__ */ reactExports.createElement(CartesianAxis, _extends$3({}, axisOptions, {
+    /* @__PURE__ */ reactExports.createElement(CartesianAxis, _extends$2({}, axisOptions, {
       className: clsx("recharts-".concat(axisOptions.axisType, " ").concat(axisOptions.axisType), axisOptions.className),
       viewBox: {
         x: 0,
@@ -70034,8 +69544,8 @@ function _toPrimitive$3(t2, r2) {
   }
   return String(t2);
 }
-function _extends$2() {
-  _extends$2 = Object.assign ? Object.assign.bind() : function(target) {
+function _extends$1() {
+  _extends$1 = Object.assign ? Object.assign.bind() : function(target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = arguments[i];
       for (var key in source) {
@@ -70046,7 +69556,7 @@ function _extends$2() {
     }
     return target;
   };
-  return _extends$2.apply(this, arguments);
+  return _extends$1.apply(this, arguments);
 }
 var YAxisImpl = function YAxisImpl2(_ref) {
   var yAxisId = _ref.yAxisId;
@@ -70058,7 +69568,7 @@ var YAxisImpl = function YAxisImpl2(_ref) {
   }
   return (
     // @ts-expect-error the axisOptions type is not exactly what CartesianAxis is expecting.
-    /* @__PURE__ */ reactExports.createElement(CartesianAxis, _extends$2({}, axisOptions, {
+    /* @__PURE__ */ reactExports.createElement(CartesianAxis, _extends$1({}, axisOptions, {
       className: clsx("recharts-".concat(axisOptions.axisType, " ").concat(axisOptions.axisType), axisOptions.className),
       viewBox: {
         x: 0,
@@ -70178,16 +69688,16 @@ var eventemitter3 = { exports: {} };
     Events.prototype = /* @__PURE__ */ Object.create(null);
     if (!new Events().__proto__) prefix2 = false;
   }
-  function EE(fn2, context, once2) {
-    this.fn = fn2;
+  function EE(fn, context, once2) {
+    this.fn = fn;
     this.context = context;
     this.once = once2 || false;
   }
-  function addListener(emitter, event, fn2, context, once2) {
-    if (typeof fn2 !== "function") {
+  function addListener(emitter, event, fn, context, once2) {
+    if (typeof fn !== "function") {
       throw new TypeError("The listener must be a function");
     }
-    var listener = new EE(fn2, context || emitter, once2), evt = prefix2 ? prefix2 + event : event;
+    var listener = new EE(fn, context || emitter, once2), evt = prefix2 ? prefix2 + event : event;
     if (!emitter._events[evt]) emitter._events[evt] = listener, emitter._eventsCount++;
     else if (!emitter._events[evt].fn) emitter._events[evt].push(listener);
     else emitter._events[evt] = [emitter._events[evt], listener];
@@ -70216,10 +69726,10 @@ var eventemitter3 = { exports: {} };
     var evt = prefix2 ? prefix2 + event : event, handlers = this._events[evt];
     if (!handlers) return [];
     if (handlers.fn) return [handlers.fn];
-    for (var i = 0, l2 = handlers.length, ee2 = new Array(l2); i < l2; i++) {
-      ee2[i] = handlers[i].fn;
+    for (var i = 0, l2 = handlers.length, ee = new Array(l2); i < l2; i++) {
+      ee[i] = handlers[i].fn;
     }
-    return ee2;
+    return ee;
   };
   EventEmitter2.prototype.listenerCount = function listenerCount(event) {
     var evt = prefix2 ? prefix2 + event : event, listeners = this._events[evt];
@@ -70278,27 +69788,27 @@ var eventemitter3 = { exports: {} };
     }
     return true;
   };
-  EventEmitter2.prototype.on = function on2(event, fn2, context) {
-    return addListener(this, event, fn2, context, false);
+  EventEmitter2.prototype.on = function on(event, fn, context) {
+    return addListener(this, event, fn, context, false);
   };
-  EventEmitter2.prototype.once = function once2(event, fn2, context) {
-    return addListener(this, event, fn2, context, true);
+  EventEmitter2.prototype.once = function once2(event, fn, context) {
+    return addListener(this, event, fn, context, true);
   };
-  EventEmitter2.prototype.removeListener = function removeListener(event, fn2, context, once2) {
+  EventEmitter2.prototype.removeListener = function removeListener(event, fn, context, once2) {
     var evt = prefix2 ? prefix2 + event : event;
     if (!this._events[evt]) return this;
-    if (!fn2) {
+    if (!fn) {
       clearEvent(this, evt);
       return this;
     }
     var listeners = this._events[evt];
     if (listeners.fn) {
-      if (listeners.fn === fn2 && (!once2 || listeners.once) && (!context || listeners.context === context)) {
+      if (listeners.fn === fn && (!once2 || listeners.once) && (!context || listeners.context === context)) {
         clearEvent(this, evt);
       }
     } else {
       for (var i = 0, events2 = [], length = listeners.length; i < length; i++) {
-        if (listeners[i].fn !== fn2 || once2 && !listeners[i].once || context && listeners[i].context !== context) {
+        if (listeners[i].fn !== fn || once2 && !listeners[i].once || context && listeners[i].context !== context) {
           events2.push(listeners[i]);
         }
       }
@@ -70618,7 +70128,7 @@ function Cursor(props) {
   });
   return /* @__PURE__ */ reactExports.isValidElement(elementPropsCursor) ? /* @__PURE__ */ reactExports.cloneElement(elementPropsCursor, cursorProps) : /* @__PURE__ */ reactExports.createElement(cursorComp, cursorProps);
 }
-var _excluded$2 = ["item"], _excluded2 = ["children", "className", "width", "height", "style", "compact", "title", "desc"];
+var _excluded = ["item"], _excluded2 = ["children", "className", "width", "height", "style", "compact", "title", "desc"];
 function _typeof(o) {
   "@babel/helpers - typeof";
   return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o2) {
@@ -70627,8 +70137,8 @@ function _typeof(o) {
     return o2 && "function" == typeof Symbol && o2.constructor === Symbol && o2 !== Symbol.prototype ? "symbol" : typeof o2;
   }, _typeof(o);
 }
-function _extends$1() {
-  _extends$1 = Object.assign ? Object.assign.bind() : function(target) {
+function _extends() {
+  _extends = Object.assign ? Object.assign.bind() : function(target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = arguments[i];
       for (var key in source) {
@@ -70639,7 +70149,7 @@ function _extends$1() {
     }
     return target;
   };
-  return _extends$1.apply(this, arguments);
+  return _extends.apply(this, arguments);
 }
 function _slicedToArray(arr, i) {
   return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
@@ -70669,9 +70179,9 @@ function _iterableToArrayLimit(r2, l2) {
 function _arrayWithHoles(arr) {
   if (Array.isArray(arr)) return arr;
 }
-function _objectWithoutProperties$1(source, excluded) {
+function _objectWithoutProperties(source, excluded) {
   if (source == null) return {};
-  var target = _objectWithoutPropertiesLoose$1(source, excluded);
+  var target = _objectWithoutPropertiesLoose(source, excluded);
   var key, i;
   if (Object.getOwnPropertySymbols) {
     var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
@@ -70684,7 +70194,7 @@ function _objectWithoutProperties$1(source, excluded) {
   }
   return target;
 }
-function _objectWithoutPropertiesLoose$1(source, excluded) {
+function _objectWithoutPropertiesLoose(source, excluded) {
   if (source == null) return {};
   var target = {};
   for (var key in source) {
@@ -71709,7 +71219,7 @@ var generateCategoricalChart = function generateCategoricalChart2(_ref6) {
         if (!props) {
           return null;
         }
-        var item = props.item, otherProps = _objectWithoutProperties$1(props, _excluded$2);
+        var item = props.item, otherProps = _objectWithoutProperties(props, _excluded);
         return /* @__PURE__ */ reactExports.cloneElement(item, _objectSpread(_objectSpread({}, otherProps), {}, {
           chartWidth: width,
           chartHeight: height,
@@ -72274,7 +71784,7 @@ var generateCategoricalChart = function generateCategoricalChart2(_ref6) {
         if (!validateWidthHeight(this)) {
           return null;
         }
-        var _this$props6 = this.props, children = _this$props6.children, className = _this$props6.className, width = _this$props6.width, height = _this$props6.height, style2 = _this$props6.style, compact = _this$props6.compact, title = _this$props6.title, desc = _this$props6.desc, others = _objectWithoutProperties$1(_this$props6, _excluded2);
+        var _this$props6 = this.props, children = _this$props6.children, className = _this$props6.className, width = _this$props6.width, height = _this$props6.height, style2 = _this$props6.style, compact = _this$props6.compact, title = _this$props6.title, desc = _this$props6.desc, others = _objectWithoutProperties(_this$props6, _excluded2);
         var attrs = filterProps(others, false);
         if (compact) {
           return /* @__PURE__ */ React$2.createElement(ChartLayoutContextProvider, {
@@ -72282,7 +71792,7 @@ var generateCategoricalChart = function generateCategoricalChart2(_ref6) {
             width: this.props.width,
             height: this.props.height,
             clipPathId: this.clipPathId
-          }, /* @__PURE__ */ React$2.createElement(Surface, _extends$1({}, attrs, {
+          }, /* @__PURE__ */ React$2.createElement(Surface, _extends({}, attrs, {
             width,
             height,
             title,
@@ -72306,7 +71816,7 @@ var generateCategoricalChart = function generateCategoricalChart2(_ref6) {
           width: this.props.width,
           height: this.props.height,
           clipPathId: this.clipPathId
-        }, /* @__PURE__ */ React$2.createElement("div", _extends$1({
+        }, /* @__PURE__ */ React$2.createElement("div", _extends({
           className: clsx("recharts-wrapper", className),
           style: _objectSpread({
             position: "relative",
@@ -72318,7 +71828,7 @@ var generateCategoricalChart = function generateCategoricalChart2(_ref6) {
           ref: function ref(node) {
             _this3.container = node;
           }
-        }), /* @__PURE__ */ React$2.createElement(Surface, _extends$1({}, attrs, {
+        }), /* @__PURE__ */ React$2.createElement(Surface, _extends({}, attrs, {
           width,
           height,
           title,
@@ -72432,7 +71942,7 @@ var generateCategoricalChart = function generateCategoricalChart2(_ref6) {
     }, dot);
   });
   var CategoricalChart = /* @__PURE__ */ reactExports.forwardRef(function CategoricalChart2(props, ref) {
-    return /* @__PURE__ */ React$2.createElement(CategoricalChartWrapper, _extends$1({}, props, {
+    return /* @__PURE__ */ React$2.createElement(CategoricalChartWrapper, _extends({}, props, {
       ref
     }));
   });
@@ -72477,7 +71987,7 @@ function ChartContainer({
     {
       "data-slot": "chart",
       "data-chart": chartId,
-      className: cn$1(
+      className: cn(
         "[&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line[stroke='#ccc']]:stroke-border/50 [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-polar-grid_[stroke='#ccc']]:stroke-border [&_.recharts-radial-bar-background-sector]:fill-muted [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted [&_.recharts-reference-line_[stroke='#ccc']]:stroke-border flex aspect-video justify-center text-xs [&_.recharts-dot[stroke='#fff']]:stroke-transparent [&_.recharts-layer]:outline-hidden [&_.recharts-sector]:outline-hidden [&_.recharts-sector[stroke='#fff']]:stroke-transparent [&_.recharts-surface]:outline-hidden",
         className
       ),
@@ -72542,12 +72052,12 @@ function ChartTooltipContent({
     const itemConfig = getPayloadConfigFromPayload(config2, item, key);
     const value = !labelKey && typeof label === "string" ? ((_a2 = config2[label]) == null ? void 0 : _a2.label) || label : itemConfig == null ? void 0 : itemConfig.label;
     if (labelFormatter) {
-      return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: cn$1("font-medium", labelClassName), children: labelFormatter(value, payload) });
+      return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: cn("font-medium", labelClassName), children: labelFormatter(value, payload) });
     }
     if (!value) {
       return null;
     }
-    return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: cn$1("font-medium", labelClassName), children: value });
+    return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: cn("font-medium", labelClassName), children: value });
   }, [
     label,
     labelFormatter,
@@ -72564,7 +72074,7 @@ function ChartTooltipContent({
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(
     "div",
     {
-      className: cn$1(
+      className: cn(
         "border-border/50 bg-background grid min-w-[8rem] items-start gap-1.5 rounded-lg border px-2.5 py-1.5 text-xs shadow-xl",
         className
       ),
@@ -72577,7 +72087,7 @@ function ChartTooltipContent({
           return /* @__PURE__ */ jsxRuntimeExports.jsx(
             "div",
             {
-              className: cn$1(
+              className: cn(
                 "[&>svg]:text-muted-foreground flex w-full flex-wrap items-stretch gap-2 [&>svg]:h-2.5 [&>svg]:w-2.5",
                 indicator === "dot" && "items-center"
               ),
@@ -72585,7 +72095,7 @@ function ChartTooltipContent({
                 (itemConfig == null ? void 0 : itemConfig.icon) ? /* @__PURE__ */ jsxRuntimeExports.jsx(itemConfig.icon, {}) : !hideIndicator && /* @__PURE__ */ jsxRuntimeExports.jsx(
                   "div",
                   {
-                    className: cn$1(
+                    className: cn(
                       "shrink-0 rounded-[2px] border-(--color-border) bg-(--color-bg)",
                       {
                         "h-2.5 w-2.5": indicator === "dot",
@@ -72603,7 +72113,7 @@ function ChartTooltipContent({
                 /* @__PURE__ */ jsxRuntimeExports.jsxs(
                   "div",
                   {
-                    className: cn$1(
+                    className: cn(
                       "flex flex-1 justify-between leading-none",
                       nestLabel ? "items-end" : "items-center"
                     ),
@@ -72638,8 +72148,8 @@ function getPayloadConfigFromPayload(config2, payload, key) {
   }
   return configLabelKey in config2 ? config2[configLabelKey] : config2[key];
 }
-function timestampToMs$2(ts2) {
-  return Number(ts2 / 1000000n);
+function timestampToMs$2(ts) {
+  return Number(ts / 1000000n);
 }
 function formatT(cycles) {
   const t2 = Number(cycles) / 1e12;
@@ -73100,8 +72610,8 @@ const METHOD_LABELS = {
   [PaymentMethod.card_stripe]: "Card",
   [PaymentMethod.manual]: "Manual"
 };
-function formatTimestamp$3(ns2) {
-  const date2 = new Date(Number(ns2 / 1000000n));
+function formatTimestamp$1(ns) {
+  const date2 = new Date(Number(ns / 1000000n));
   if (Number.isNaN(date2.getTime())) return "—";
   return date2.toLocaleString(void 0, {
     year: "numeric",
@@ -73111,7 +72621,7 @@ function formatTimestamp$3(ns2) {
     minute: "2-digit"
   });
 }
-function formatTokenAmount$3(amount, decimals) {
+function formatTokenAmount$1(amount, decimals) {
   const divisor = 10n ** BigInt(decimals);
   const whole = amount / divisor;
   const fraction = amount % divisor;
@@ -73259,7 +72769,7 @@ function OrderDetail({
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-1", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "field-label", children: "Placed" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num", children: formatTimestamp$3(detail.createdAt) })
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num", children: formatTimestamp$1(detail.createdAt) })
           ] })
         ] }),
         detail.cryptoStatus && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-1", children: [
@@ -73287,7 +72797,7 @@ function OrderDetail({
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-1", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "field-label", children: "Live subaccount balance" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num", children: balanceErrorText ? /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { color: "var(--negative)" }, children: balanceErrorText }) : balance ? `${formatTokenAmount$3(balance.balance, decimals)} ${detail.paymentMethod === PaymentMethod.crypto_icp ? "ICP" : "ckUSDC"}` : "—" })
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num", children: balanceErrorText ? /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { color: "var(--negative)" }, children: balanceErrorText }) : balance ? `${formatTokenAmount$1(balance.balance, decimals)} ${detail.paymentMethod === PaymentMethod.crypto_icp ? "ICP" : "ckUSDC"}` : "—" })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-1", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "field-label", children: "Line items" }),
@@ -73335,7 +72845,7 @@ function OrderDetail({
               cryptoStatusLabel$1(recheckResult.status),
               " · balance",
               " ",
-              formatTokenAmount$3(recheckResult.balance, decimals)
+              formatTokenAmount$1(recheckResult.balance, decimals)
             ]
           }
         ),
@@ -73629,7 +73139,7 @@ function OrdersTab({ session }) {
                 {
                   key: "created",
                   header: "Created",
-                  render: (row) => /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "num", children: formatTimestamp$3(row.createdAt) })
+                  render: (row) => /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "num", children: formatTimestamp$1(row.createdAt) })
                 },
                 {
                   key: "crypto",
@@ -73663,8 +73173,8 @@ function OrdersTab({ session }) {
     )
   ] });
 }
-function timestampToMs$1(ts2) {
-  return Number(ts2 / 1000000n);
+function timestampToMs$1(ts) {
+  return Number(ts / 1000000n);
 }
 function formatCount(n2) {
   return n2.toLocaleString("en-US");
@@ -75591,11 +75101,11 @@ function SettingsTab({ session }) {
     )
   ] });
 }
-function timestampToMs(ts2) {
-  return Number(ts2 / 1000000n);
+function timestampToMs(ts) {
+  return Number(ts / 1000000n);
 }
-function formatDate$1(ts2) {
-  const date2 = new Date(timestampToMs(ts2));
+function formatDate$1(ts) {
+  const date2 = new Date(timestampToMs(ts));
   if (Number.isNaN(date2.getTime())) return "—";
   return date2.toLocaleString(void 0, {
     year: "numeric",
@@ -75702,7 +75212,7 @@ function SubmissionsTab(_props) {
     ) })
   ] });
 }
-const createActor$1 = createActor$3;
+const createActor = createActor$2;
 function formatUnits(value, decimals) {
   const divisor = 10n ** BigInt(decimals);
   const whole = value / divisor;
@@ -75761,7 +75271,7 @@ function parseTreasuryTokens(raw) {
 }
 function TreasuryTab({ session }) {
   const canManage = session.canManage;
-  const { actor, isFetching } = useActor(createActor$1);
+  const { actor, isFetching } = useActor(createActor);
   const queryClient2 = useQueryClient();
   const {
     data: cryptoConfig,
@@ -76256,13 +75766,13 @@ function TreasuryTab({ session }) {
     )
   ] });
 }
-const ROLE_LABELS$1 = {
+const ROLE_LABELS = {
   [Role.owner]: "Owner",
   [Role.admin]: "Admin",
   [Role.staff]: "Staff"
 };
-function formatDate(ns2) {
-  const date2 = new Date(Number(ns2 / 1000000n));
+function formatDate(ns) {
+  const date2 = new Date(Number(ns / 1000000n));
   if (Number.isNaN(date2.getTime())) return "—";
   return date2.toISOString().slice(0, 10);
 }
@@ -76451,7 +75961,7 @@ function UsersTab({ session }) {
                   }
                 ),
                 title: "Grant role",
-                description: `Grant ${ROLE_LABELS$1[grantRoleValue]} to ${normalizedInput || "this principal"}? This changes the account's access immediately.`,
+                description: `Grant ${ROLE_LABELS[grantRoleValue]} to ${normalizedInput || "this principal"}? This changes the account's access immediately.`,
                 confirmLabel: "Grant role",
                 cancelLabel: "Cancel",
                 tone: "warning",
@@ -76519,7 +76029,7 @@ function UsersTab({ session }) {
                   "span",
                   {
                     className: `status-pill ${row.role === Role.owner ? "status-pill-warning" : row.role === Role.admin ? "status-pill-positive" : "status-pill-neutral"}`,
-                    children: ROLE_LABELS$1[row.role]
+                    children: ROLE_LABELS[row.role]
                   }
                 )
               },
@@ -76545,7 +76055,7 @@ function UsersTab({ session }) {
                       }
                     ),
                     title: "Revoke role",
-                    description: `Revoke ${ROLE_LABELS$1[row.role]} from ${row.principal.toText()}? This removes the account's admin access immediately.`,
+                    description: `Revoke ${ROLE_LABELS[row.role]} from ${row.principal.toText()}? This removes the account's admin access immediately.`,
                     confirmLabel: "Revoke role",
                     cancelLabel: "Cancel",
                     tone: "negative",
@@ -76602,7 +76112,7 @@ const TAB_BODIES = {
   users: (props) => /* @__PURE__ */ jsxRuntimeExports.jsx(UsersTab, { ...props }),
   settings: (props) => /* @__PURE__ */ jsxRuntimeExports.jsx(SettingsTab, { ...props })
 };
-function truncatePrincipal$1(principal) {
+function truncatePrincipal(principal) {
   if (principal.length <= 11) return principal;
   return `${principal.slice(0, 5)}…${principal.slice(-5)}`;
 }
@@ -76841,7 +76351,7 @@ function AdminTabShell({ onNavigateToMain }) {
                   className: "admin-mono",
                   style: { fontSize: "0.8125rem" },
                   "data-ocid": "admin.your_principal",
-                  children: truncatePrincipal$1(userPrincipalText)
+                  children: truncatePrincipal(userPrincipalText)
                 }
               ),
               /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -76980,6816 +76490,6 @@ const BubbleBackground = () => {
       ))
     }
   );
-};
-const CANCELLATION_TOKEN_KEY = "nak.cancellationToken";
-function useCancellationToken() {
-  const getCancellationToken = reactExports.useCallback(
-    (reference) => {
-      try {
-        const raw = window.localStorage.getItem(CANCELLATION_TOKEN_KEY);
-        if (!raw) return null;
-        const map2 = JSON.parse(raw);
-        return map2[reference] ?? null;
-      } catch (error) {
-        console.error(
-          "[checkout] Failed to read cancellation token (ERR-CHK-007)",
-          error
-        );
-        return null;
-      }
-    },
-    []
-  );
-  const setCancellationToken = reactExports.useCallback(
-    (reference, token) => {
-      try {
-        const raw = window.localStorage.getItem(CANCELLATION_TOKEN_KEY);
-        const map2 = raw ? JSON.parse(raw) : {};
-        map2[reference] = token;
-        window.localStorage.setItem(
-          CANCELLATION_TOKEN_KEY,
-          JSON.stringify(map2)
-        );
-      } catch (error) {
-        console.error(
-          "[checkout] Failed to persist cancellation token (ERR-CHK-008)",
-          error
-        );
-      }
-    },
-    []
-  );
-  const clearCancellationToken = reactExports.useCallback((reference) => {
-    try {
-      const raw = window.localStorage.getItem(CANCELLATION_TOKEN_KEY);
-      if (!raw) return;
-      const map2 = JSON.parse(raw);
-      delete map2[reference];
-      window.localStorage.setItem(CANCELLATION_TOKEN_KEY, JSON.stringify(map2));
-    } catch (error) {
-      console.error(
-        "[checkout] Failed to clear cancellation token (ERR-CHK-009)",
-        error
-      );
-    }
-  }, []);
-  return { getCancellationToken, setCancellationToken, clearCancellationToken };
-}
-const CancelledPage = ({
-  orderReference,
-  onNavigateToMain,
-  onNavigateToShop,
-  onNavigateToCart
-}) => {
-  const { isAuthenticated } = useInternetIdentity();
-  const { getCancellationToken } = useCancellationToken();
-  const cancelCardOrder = useCancelCardOrder();
-  const cancelGuestOrder = useCancelGuestOrder();
-  reactExports.useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-  reactExports.useEffect(() => {
-    if (!orderReference) return;
-    if (isAuthenticated) {
-      cancelCardOrder.mutate(orderReference);
-    } else {
-      const token = getCancellationToken(orderReference);
-      if (token) {
-        cancelGuestOrder.mutate({
-          reference: orderReference,
-          cancellationToken: token
-        });
-      }
-    }
-  }, [
-    orderReference,
-    isAuthenticated,
-    getCancellationToken,
-    cancelCardOrder.mutate,
-    cancelGuestOrder.mutate
-  ]);
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "pt-24 sm:pt-32 pb-12 sm:pb-20 px-4 sm:px-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-7xl mx-auto", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-center mb-12 sm:mb-16 px-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "section-heading text-3xl sm:text-4xl md:text-5xl", children: "Checkout Cancelled" }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative max-w-4xl mx-auto px-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "surface p-6 sm:p-10 text-center", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm sm:text-base text-muted-foreground mb-8", children: "No payment was processed and your cart is still intact. Any reserved inventory has been released." }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center justify-center gap-4", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "button",
-          {
-            type: "button",
-            onClick: onNavigateToCart,
-            "data-ocid": "cancelled.back_to_cart_button",
-            className: "btn px-8 py-4 text-base font-semibold",
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingCart, { className: "w-4 h-4" }),
-              "Back to Cart"
-            ]
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "button",
-          {
-            type: "button",
-            onClick: onNavigateToShop,
-            "data-ocid": "cancelled.return_to_shop_button",
-            className: "btn-secondary px-8 py-4 text-base font-semibold",
-            children: "Return to Shop"
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "button",
-          {
-            type: "button",
-            onClick: onNavigateToMain,
-            "data-ocid": "cancelled.back_to_main_button",
-            className: "btn-secondary px-8 py-4 text-base font-semibold",
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
-              "Back to Main"
-            ]
-          }
-        )
-      ] })
-    ] }) })
-  ] }) });
-};
-const CartContext = reactExports.createContext(void 0);
-function CartProvider({ children }) {
-  const [items, setItems] = reactExports.useState([]);
-  const addItem = reactExports.useCallback(
-    (product, variantId, quantity = 1) => {
-      setItems((current) => {
-        const existing = current.find(
-          (item) => item.product.id === product.id && item.variantId === variantId
-        );
-        if (existing) {
-          return current.map(
-            (item) => item.product.id === product.id && item.variantId === variantId ? { ...item, quantity: item.quantity + quantity } : item
-          );
-        }
-        return [...current, { product, variantId, quantity }];
-      });
-    },
-    []
-  );
-  const updateQuantity = reactExports.useCallback(
-    (productId, variantId, quantity) => {
-      setItems(
-        (current) => quantity <= 0 ? current.filter(
-          (item) => !(item.product.id === productId && item.variantId === variantId)
-        ) : current.map(
-          (item) => item.product.id === productId && item.variantId === variantId ? { ...item, quantity } : item
-        )
-      );
-    },
-    []
-  );
-  const removeItem = reactExports.useCallback((productId, variantId) => {
-    setItems(
-      (current) => current.filter(
-        (item) => !(item.product.id === productId && item.variantId === variantId)
-      )
-    );
-  }, []);
-  const clearCart = reactExports.useCallback(() => setItems([]), []);
-  const itemCount = reactExports.useMemo(
-    () => items.reduce((sum, item) => sum + item.quantity, 0),
-    [items]
-  );
-  const subtotal = reactExports.useMemo(
-    () => items.reduce((sum, item) => {
-      const variant = item.product.variants.find(
-        (v2) => v2.id === item.variantId
-      );
-      const unitPrice = variant ? variant.price : item.product.price;
-      return sum + Number(unitPrice) * item.quantity;
-    }, 0),
-    [items]
-  );
-  const value = reactExports.useMemo(
-    () => ({
-      items,
-      addItem,
-      updateQuantity,
-      removeItem,
-      clearCart,
-      itemCount,
-      subtotal
-    }),
-    [
-      items,
-      addItem,
-      updateQuantity,
-      removeItem,
-      clearCart,
-      itemCount,
-      subtotal
-    ]
-  );
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(CartContext.Provider, { value, children });
-}
-function useCart() {
-  const context = reactExports.useContext(CartContext);
-  if (!context) {
-    throw new Error("useCart must be used within a CartProvider");
-  }
-  return context;
-}
-const CartPage = ({
-  onNavigateToMain,
-  onNavigateToCheckout,
-  onNavigateToShop
-}) => {
-  const { items, updateQuantity, removeItem, clearCart, itemCount, subtotal } = useCart();
-  reactExports.useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "pt-24 sm:pt-32 pb-12 sm:pb-20 px-4 sm:px-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-7xl mx-auto", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-10 sm:mb-14 px-2", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        "button",
-        {
-          type: "button",
-          onClick: onNavigateToShop,
-          className: "back-link mb-6",
-          "data-ocid": "cart.back_to_shop_link",
-          children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
-            "Back to Shop"
-          ]
-        }
-      ),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "section-label mb-3", children: "Cart" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-3xl sm:text-4xl font-medium leading-tight tracking-[-0.015em]", children: "Your Cart" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-muted-foreground mt-2", children: itemCount > 0 ? `${itemCount} ${itemCount === 1 ? "item" : "items"} ready for checkout` : "Your cart is empty" })
-    ] }),
-    items.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-4xl mx-auto px-2", "data-ocid": "cart.empty_state", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-muted-foreground text-sm mb-6", children: "Your cart is empty. Explore the shop and add something to get started." }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        "button",
-        {
-          type: "button",
-          onClick: onNavigateToShop,
-          className: "back-link",
-          "data-ocid": "cart.continue_shopping_button",
-          children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
-            "Continue Shopping"
-          ]
-        }
-      )
-    ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 items-start", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "lg:col-span-2", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-4", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-lg sm:text-xl", children: "Items" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
-            {
-              type: "button",
-              onClick: clearCart,
-              className: "quiet-remove",
-              "data-ocid": "cart.clear_button",
-              children: "Clear Cart"
-            }
-          )
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { className: "cart-table", "data-ocid": "cart.list", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { children: "Product" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "text-right", children: "Price" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "text-right", children: "Qty" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "text-right", children: "Total" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { "aria-label": "Remove" })
-          ] }) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("tbody", { children: items.map((item, index2) => {
-            const variant = item.product.variants.find(
-              (v2) => v2.id === item.variantId
-            );
-            const unitPrice = variant ? Number(variant.price) : Number(item.product.price);
-            const lineTotal = unitPrice * item.quantity;
-            const image = item.product.images[0];
-            return /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "tr",
-              {
-                "data-ocid": `cart.item.${index2 + 1}`,
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-4 min-w-0", children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "shrink-0 w-16 h-16 rounded overflow-hidden bg-black/40 border border-border flex items-center justify-center", children: image ? /* @__PURE__ */ jsxRuntimeExports.jsx(
-                      "img",
-                      {
-                        src: image,
-                        alt: item.product.name,
-                        className: "w-full h-full object-cover"
-                      }
-                    ) : /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingCart, { className: "w-5 h-5 text-muted-foreground" }) }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0", children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("h4", { className: "text-base truncate", children: item.product.name }),
-                      variant && /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-muted-foreground", children: [
-                        variant.name,
-                        variant.size ? ` · ${variant.size}` : ""
-                      ] })
-                    ] })
-                  ] }) }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "text-right", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num text-muted-foreground", children: formatPrice(unitPrice) }) }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "text-right", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                    "div",
-                    {
-                      className: "bordered-stepper justify-end",
-                      "data-ocid": `cart.quantity.${index2 + 1}`,
-                      children: [
-                        /* @__PURE__ */ jsxRuntimeExports.jsx(
-                          "button",
-                          {
-                            type: "button",
-                            onClick: () => updateQuantity(
-                              item.product.id,
-                              item.variantId,
-                              item.quantity - 1
-                            ),
-                            "aria-label": `Decrease quantity of ${item.product.name}`,
-                            "data-ocid": `cart.decrease_button.${index2 + 1}`,
-                            children: /* @__PURE__ */ jsxRuntimeExports.jsx(Minus, { className: "w-3.5 h-3.5" })
-                          }
-                        ),
-                        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "stepper-value", "aria-live": "polite", children: item.quantity }),
-                        /* @__PURE__ */ jsxRuntimeExports.jsx(
-                          "button",
-                          {
-                            type: "button",
-                            onClick: () => updateQuantity(
-                              item.product.id,
-                              item.variantId,
-                              item.quantity + 1
-                            ),
-                            "aria-label": `Increase quantity of ${item.product.name}`,
-                            "data-ocid": `cart.increase_button.${index2 + 1}`,
-                            children: /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { className: "w-3.5 h-3.5" })
-                          }
-                        )
-                      ]
-                    }
-                  ) }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "text-right", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num", children: formatPrice(lineTotal) }) }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "text-right", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-                    "button",
-                    {
-                      type: "button",
-                      onClick: () => removeItem(item.product.id, item.variantId),
-                      className: "quiet-remove",
-                      "aria-label": `Remove ${item.product.name} from cart`,
-                      "data-ocid": `cart.remove_button.${index2 + 1}`,
-                      children: "Remove"
-                    }
-                  ) })
-                ]
-              },
-              `${item.product.id}-${item.variantId}`
-            );
-          }) })
-        ] })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "lg:col-span-1", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        "div",
-        {
-          className: "summary-panel sticky top-24",
-          "data-ocid": "cart.summary",
-          children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-lg sm:text-xl mb-1", children: "Order Summary" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "summary-row", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Items" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "summary-value", children: itemCount })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "summary-row", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Subtotal" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "summary-value", children: formatPrice(subtotal) })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "summary-row", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Shipping" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "summary-value", children: "—" })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "summary-row", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Tax" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "summary-value", children: "—" })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "summary-total", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Total" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "summary-value", children: formatPrice(subtotal) })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "button",
-              {
-                type: "button",
-                onClick: onNavigateToCheckout,
-                className: "btn w-full px-8 py-4 text-base font-medium mt-2",
-                "data-ocid": "cart.checkout_button",
-                children: "Proceed to Checkout"
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "button",
-              {
-                type: "button",
-                onClick: onNavigateToShop,
-                className: "btn-secondary btn w-full px-8 py-4 text-base font-medium",
-                "data-ocid": "cart.continue_shopping_button",
-                children: "Continue Shopping"
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "button",
-              {
-                type: "button",
-                onClick: onNavigateToMain,
-                className: "btn-secondary btn w-full px-8 py-4 text-base font-medium",
-                "data-ocid": "cart.back_to_main_button",
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
-                  "Back to Main"
-                ]
-              }
-            )
-          ]
-        }
-      ) })
-    ] })
-  ] }) });
-};
-const Ut = typeof globalThis == "object" && "crypto" in globalThis ? globalThis.crypto : void 0;
-function ge(e3) {
-  return e3 instanceof Uint8Array || ArrayBuffer.isView(e3) && e3.constructor.name === "Uint8Array";
-}
-function Zt(e3) {
-  if (!Number.isSafeInteger(e3) || e3 < 0)
-    throw new Error("positive integer expected, got " + e3);
-}
-function J(e3, ...t2) {
-  if (!ge(e3))
-    throw new Error("Uint8Array expected");
-  if (t2.length > 0 && !t2.includes(e3.length))
-    throw new Error("Uint8Array expected of length " + t2 + ", got length=" + e3.length);
-}
-function Fe(e3) {
-  if (typeof e3 != "function" || typeof e3.create != "function")
-    throw new Error("Hash should be wrapped by utils.createHasher");
-  Zt(e3.outputLen), Zt(e3.blockLen);
-}
-function Kt(e3, t2 = true) {
-  if (e3.destroyed)
-    throw new Error("Hash instance has been destroyed");
-  if (t2 && e3.finished)
-    throw new Error("Hash#digest() has already been called");
-}
-function Hn(e3, t2) {
-  J(e3);
-  const r2 = t2.outputLen;
-  if (e3.length < r2)
-    throw new Error("digestInto() expects output buffer of length at least " + r2);
-}
-function mr(e3) {
-  return new Uint32Array(e3.buffer, e3.byteOffset, Math.floor(e3.byteLength / 4));
-}
-function mt(...e3) {
-  for (let t2 = 0; t2 < e3.length; t2++)
-    e3[t2].fill(0);
-}
-function Be$1(e3) {
-  return new DataView(e3.buffer, e3.byteOffset, e3.byteLength);
-}
-function ft(e3, t2) {
-  return e3 << 32 - t2 | e3 >>> t2;
-}
-const gr = new Uint8Array(new Uint32Array([287454020]).buffer)[0] === 68;
-function yr(e3) {
-  return e3 << 24 & 4278190080 | e3 << 8 & 16711680 | e3 >>> 8 & 65280 | e3 >>> 24 & 255;
-}
-function pr(e3) {
-  for (let t2 = 0; t2 < e3.length; t2++)
-    e3[t2] = yr(e3[t2]);
-  return e3;
-}
-const tn = gr ? (e3) => e3 : pr, Gn = (
-  /* @ts-ignore */
-  typeof Uint8Array.from([]).toHex == "function" && typeof Uint8Array.fromHex == "function"
-), wr = /* @__PURE__ */ Array.from({ length: 256 }, (e3, t2) => t2.toString(16).padStart(2, "0"));
-function Xt(e3) {
-  if (J(e3), Gn)
-    return e3.toHex();
-  let t2 = "";
-  for (let r2 = 0; r2 < e3.length; r2++)
-    t2 += wr[e3[r2]];
-  return t2;
-}
-const ut = { _0: 48, _9: 57, A: 65, F: 70, a: 97, f: 102 };
-function en(e3) {
-  if (e3 >= ut._0 && e3 <= ut._9)
-    return e3 - ut._0;
-  if (e3 >= ut.A && e3 <= ut.F)
-    return e3 - (ut.A - 10);
-  if (e3 >= ut.a && e3 <= ut.f)
-    return e3 - (ut.a - 10);
-}
-function Un(e3) {
-  if (typeof e3 != "string")
-    throw new Error("hex string expected, got " + typeof e3);
-  if (Gn)
-    return Uint8Array.fromHex(e3);
-  const t2 = e3.length, r2 = t2 / 2;
-  if (t2 % 2)
-    throw new Error("hex string expected, got unpadded hex of length " + t2);
-  const n2 = new Uint8Array(r2);
-  for (let s2 = 0, c2 = 0; s2 < r2; s2++, c2 += 2) {
-    const o = en(e3.charCodeAt(c2)), i = en(e3.charCodeAt(c2 + 1));
-    if (o === void 0 || i === void 0) {
-      const a2 = e3[c2] + e3[c2 + 1];
-      throw new Error('hex string expected, got non-hex character "' + a2 + '" at index ' + c2);
-    }
-    n2[s2] = o * 16 + i;
-  }
-  return n2;
-}
-function ee(e3) {
-  if (typeof e3 != "string")
-    throw new Error("string expected");
-  return new Uint8Array(new TextEncoder().encode(e3));
-}
-function Tt(e3) {
-  return typeof e3 == "string" && (e3 = ee(e3)), J(e3), e3;
-}
-function C(...e3) {
-  let t2 = 0;
-  for (let n2 = 0; n2 < e3.length; n2++) {
-    const s2 = e3[n2];
-    J(s2), t2 += s2.length;
-  }
-  const r2 = new Uint8Array(t2);
-  for (let n2 = 0, s2 = 0; n2 < e3.length; n2++) {
-    const c2 = e3[n2];
-    r2.set(c2, s2), s2 += c2.length;
-  }
-  return r2;
-}
-class Ce {
-}
-function Ye(e3) {
-  const t2 = (n2) => e3().update(Tt(n2)).digest(), r2 = e3();
-  return t2.outputLen = r2.outputLen, t2.blockLen = r2.blockLen, t2.create = () => e3(), t2;
-}
-function xr(e3) {
-  const t2 = (n2, s2) => e3(s2).update(Tt(n2)).digest(), r2 = e3({});
-  return t2.outputLen = r2.outputLen, t2.blockLen = r2.blockLen, t2.create = (n2) => e3(n2), t2;
-}
-function Er(e3 = 32) {
-  if (Ut && typeof Ut.getRandomValues == "function")
-    return Ut.getRandomValues(new Uint8Array(e3));
-  if (Ut && typeof Ut.randomBytes == "function")
-    return Uint8Array.from(Ut.randomBytes(e3));
-  throw new Error("crypto.getRandomValues must be defined");
-}
-function Br(e3, t2, r2, n2) {
-  if (typeof e3.setBigUint64 == "function")
-    return e3.setBigUint64(t2, r2, n2);
-  const s2 = BigInt(32), c2 = BigInt(4294967295), o = Number(r2 >> s2 & c2), i = Number(r2 & c2), a2 = n2 ? 4 : 0, u2 = n2 ? 0 : 4;
-  e3.setUint32(t2 + a2, o, n2), e3.setUint32(t2 + u2, i, n2);
-}
-function _r(e3, t2, r2) {
-  return e3 & t2 ^ ~e3 & r2;
-}
-function Sr(e3, t2, r2) {
-  return e3 & t2 ^ e3 & r2 ^ t2 & r2;
-}
-class Ln extends Ce {
-  constructor(t2, r2, n2, s2) {
-    super(), this.finished = false, this.length = 0, this.pos = 0, this.destroyed = false, this.blockLen = t2, this.outputLen = r2, this.padOffset = n2, this.isLE = s2, this.buffer = new Uint8Array(t2), this.view = Be$1(this.buffer);
-  }
-  update(t2) {
-    Kt(this), t2 = Tt(t2), J(t2);
-    const { view: r2, buffer: n2, blockLen: s2 } = this, c2 = t2.length;
-    for (let o = 0; o < c2; ) {
-      const i = Math.min(s2 - this.pos, c2 - o);
-      if (i === s2) {
-        const a2 = Be$1(t2);
-        for (; s2 <= c2 - o; o += s2)
-          this.process(a2, o);
-        continue;
-      }
-      n2.set(t2.subarray(o, o + i), this.pos), this.pos += i, o += i, this.pos === s2 && (this.process(r2, 0), this.pos = 0);
-    }
-    return this.length += t2.length, this.roundClean(), this;
-  }
-  digestInto(t2) {
-    Kt(this), Hn(t2, this), this.finished = true;
-    const { buffer: r2, view: n2, blockLen: s2, isLE: c2 } = this;
-    let { pos: o } = this;
-    r2[o++] = 128, mt(this.buffer.subarray(o)), this.padOffset > s2 - o && (this.process(n2, 0), o = 0);
-    for (let d2 = o; d2 < s2; d2++)
-      r2[d2] = 0;
-    Br(n2, s2 - 8, BigInt(this.length * 8), c2), this.process(n2, 0);
-    const i = Be$1(t2), a2 = this.outputLen;
-    if (a2 % 4)
-      throw new Error("_sha2: outputLen should be aligned to 32bit");
-    const u2 = a2 / 4, l2 = this.get();
-    if (u2 > l2.length)
-      throw new Error("_sha2: outputLen bigger than state");
-    for (let d2 = 0; d2 < u2; d2++)
-      i.setUint32(4 * d2, l2[d2], c2);
-  }
-  digest() {
-    const { buffer: t2, outputLen: r2 } = this;
-    this.digestInto(t2);
-    const n2 = t2.slice(0, r2);
-    return this.destroy(), n2;
-  }
-  _cloneInto(t2) {
-    t2 || (t2 = new this.constructor()), t2.set(...this.get());
-    const { blockLen: r2, buffer: n2, length: s2, finished: c2, destroyed: o, pos: i } = this;
-    return t2.destroyed = o, t2.finished = c2, t2.length = s2, t2.pos = i, s2 % r2 && t2.buffer.set(n2), t2;
-  }
-  clone() {
-    return this._cloneInto();
-  }
-}
-const gt = /* @__PURE__ */ Uint32Array.from([
-  1779033703,
-  3144134277,
-  1013904242,
-  2773480762,
-  1359893119,
-  2600822924,
-  528734635,
-  1541459225
-]), se = /* @__PURE__ */ BigInt(2 ** 32 - 1), nn = /* @__PURE__ */ BigInt(32);
-function Ar(e3, t2 = false) {
-  return t2 ? { h: Number(e3 & se), l: Number(e3 >> nn & se) } : { h: Number(e3 >> nn & se) | 0, l: Number(e3 & se) | 0 };
-}
-function Dn(e3, t2 = false) {
-  const r2 = e3.length;
-  let n2 = new Uint32Array(r2), s2 = new Uint32Array(r2);
-  for (let c2 = 0; c2 < r2; c2++) {
-    const { h: o, l: i } = Ar(e3[c2], t2);
-    [n2[c2], s2[c2]] = [o, i];
-  }
-  return [n2, s2];
-}
-const vr = (e3, t2, r2) => e3 << r2 | t2 >>> 32 - r2, Ir = (e3, t2, r2) => t2 << r2 | e3 >>> 32 - r2, Or = (e3, t2, r2) => t2 << r2 - 32 | e3 >>> 64 - r2, Nr = (e3, t2, r2) => e3 << r2 - 32 | t2 >>> 64 - r2;
-const Lr = /* @__PURE__ */ Uint32Array.from([
-  1116352408,
-  1899447441,
-  3049323471,
-  3921009573,
-  961987163,
-  1508970993,
-  2453635748,
-  2870763221,
-  3624381080,
-  310598401,
-  607225278,
-  1426881987,
-  1925078388,
-  2162078206,
-  2614888103,
-  3248222580,
-  3835390401,
-  4022224774,
-  264347078,
-  604807628,
-  770255983,
-  1249150122,
-  1555081692,
-  1996064986,
-  2554220882,
-  2821834349,
-  2952996808,
-  3210313671,
-  3336571891,
-  3584528711,
-  113926993,
-  338241895,
-  666307205,
-  773529912,
-  1294757372,
-  1396182291,
-  1695183700,
-  1986661051,
-  2177026350,
-  2456956037,
-  2730485921,
-  2820302411,
-  3259730800,
-  3345764771,
-  3516065817,
-  3600352804,
-  4094571909,
-  275423344,
-  430227734,
-  506948616,
-  659060556,
-  883997877,
-  958139571,
-  1322822218,
-  1537002063,
-  1747873779,
-  1955562222,
-  2024104815,
-  2227730452,
-  2361852424,
-  2428436474,
-  2756734187,
-  3204031479,
-  3329325298
-]), pt = /* @__PURE__ */ new Uint32Array(64);
-class kn extends Ln {
-  constructor(t2 = 32) {
-    super(64, t2, 8, false), this.A = gt[0] | 0, this.B = gt[1] | 0, this.C = gt[2] | 0, this.D = gt[3] | 0, this.E = gt[4] | 0, this.F = gt[5] | 0, this.G = gt[6] | 0, this.H = gt[7] | 0;
-  }
-  get() {
-    const { A: t2, B: r2, C: n2, D: s2, E: c2, F: o, G: i, H: a2 } = this;
-    return [t2, r2, n2, s2, c2, o, i, a2];
-  }
-  // prettier-ignore
-  set(t2, r2, n2, s2, c2, o, i, a2) {
-    this.A = t2 | 0, this.B = r2 | 0, this.C = n2 | 0, this.D = s2 | 0, this.E = c2 | 0, this.F = o | 0, this.G = i | 0, this.H = a2 | 0;
-  }
-  process(t2, r2) {
-    for (let d2 = 0; d2 < 16; d2++, r2 += 4)
-      pt[d2] = t2.getUint32(r2, false);
-    for (let d2 = 16; d2 < 64; d2++) {
-      const f2 = pt[d2 - 15], h2 = pt[d2 - 2], m2 = ft(f2, 7) ^ ft(f2, 18) ^ f2 >>> 3, g2 = ft(h2, 17) ^ ft(h2, 19) ^ h2 >>> 10;
-      pt[d2] = g2 + pt[d2 - 7] + m2 + pt[d2 - 16] | 0;
-    }
-    let { A: n2, B: s2, C: c2, D: o, E: i, F: a2, G: u2, H: l2 } = this;
-    for (let d2 = 0; d2 < 64; d2++) {
-      const f2 = ft(i, 6) ^ ft(i, 11) ^ ft(i, 25), h2 = l2 + f2 + _r(i, a2, u2) + Lr[d2] + pt[d2] | 0, g2 = (ft(n2, 2) ^ ft(n2, 13) ^ ft(n2, 22)) + Sr(n2, s2, c2) | 0;
-      l2 = u2, u2 = a2, a2 = i, i = o + h2 | 0, o = c2, c2 = s2, s2 = n2, n2 = h2 + g2 | 0;
-    }
-    n2 = n2 + this.A | 0, s2 = s2 + this.B | 0, c2 = c2 + this.C | 0, o = o + this.D | 0, i = i + this.E | 0, a2 = a2 + this.F | 0, u2 = u2 + this.G | 0, l2 = l2 + this.H | 0, this.set(n2, s2, c2, o, i, a2, u2, l2);
-  }
-  roundClean() {
-    mt(pt);
-  }
-  destroy() {
-    this.set(0, 0, 0, 0, 0, 0, 0, 0), mt(this.buffer);
-  }
-}
-Dn([
-  "0x428a2f98d728ae22",
-  "0x7137449123ef65cd",
-  "0xb5c0fbcfec4d3b2f",
-  "0xe9b5dba58189dbbc",
-  "0x3956c25bf348b538",
-  "0x59f111f1b605d019",
-  "0x923f82a4af194f9b",
-  "0xab1c5ed5da6d8118",
-  "0xd807aa98a3030242",
-  "0x12835b0145706fbe",
-  "0x243185be4ee4b28c",
-  "0x550c7dc3d5ffb4e2",
-  "0x72be5d74f27b896f",
-  "0x80deb1fe3b1696b1",
-  "0x9bdc06a725c71235",
-  "0xc19bf174cf692694",
-  "0xe49b69c19ef14ad2",
-  "0xefbe4786384f25e3",
-  "0x0fc19dc68b8cd5b5",
-  "0x240ca1cc77ac9c65",
-  "0x2de92c6f592b0275",
-  "0x4a7484aa6ea6e483",
-  "0x5cb0a9dcbd41fbd4",
-  "0x76f988da831153b5",
-  "0x983e5152ee66dfab",
-  "0xa831c66d2db43210",
-  "0xb00327c898fb213f",
-  "0xbf597fc7beef0ee4",
-  "0xc6e00bf33da88fc2",
-  "0xd5a79147930aa725",
-  "0x06ca6351e003826f",
-  "0x142929670a0e6e70",
-  "0x27b70a8546d22ffc",
-  "0x2e1b21385c26c926",
-  "0x4d2c6dfc5ac42aed",
-  "0x53380d139d95b3df",
-  "0x650a73548baf63de",
-  "0x766a0abb3c77b2a8",
-  "0x81c2c92e47edaee6",
-  "0x92722c851482353b",
-  "0xa2bfe8a14cf10364",
-  "0xa81a664bbc423001",
-  "0xc24b8b70d0f89791",
-  "0xc76c51a30654be30",
-  "0xd192e819d6ef5218",
-  "0xd69906245565a910",
-  "0xf40e35855771202a",
-  "0x106aa07032bbd1b8",
-  "0x19a4c116b8d2d0c8",
-  "0x1e376c085141ab53",
-  "0x2748774cdf8eeb99",
-  "0x34b0bcb5e19b48a8",
-  "0x391c0cb3c5c95a63",
-  "0x4ed8aa4ae3418acb",
-  "0x5b9cca4f7763e373",
-  "0x682e6ff3d6b2b8a3",
-  "0x748f82ee5defb2fc",
-  "0x78a5636f43172f60",
-  "0x84c87814a1f0ab72",
-  "0x8cc702081a6439ec",
-  "0x90befffa23631e28",
-  "0xa4506cebde82bde9",
-  "0xbef9a3f7b2c67915",
-  "0xc67178f2e372532b",
-  "0xca273eceea26619c",
-  "0xd186b8c721c0c207",
-  "0xeada7dd6cde0eb1e",
-  "0xf57d4f7fee6ed178",
-  "0x06f067aa72176fba",
-  "0x0a637dc5a2c898a6",
-  "0x113f9804bef90dae",
-  "0x1b710b35131c471b",
-  "0x28db77f523047d84",
-  "0x32caab7b40c72493",
-  "0x3c9ebe0a15c9bebc",
-  "0x431d67c49c100d4c",
-  "0x4cc5d4becb3e42b6",
-  "0x597f299cfc657e2a",
-  "0x5fcb6fab3ad6faec",
-  "0x6c44198c4a475817"
-].map((e3) => BigInt(e3)));
-const Mn = /* @__PURE__ */ Ye(() => new kn());
-const Ve = /* @__PURE__ */ BigInt(0), de = /* @__PURE__ */ BigInt(1);
-function cn(e3, t2 = "") {
-  if (typeof e3 != "boolean") {
-    const r2 = t2 && `"${t2}"`;
-    throw new Error(r2 + "expected boolean, got type=" + typeof e3);
-  }
-  return e3;
-}
-function on(e3, t2, r2 = "") {
-  const n2 = ge(e3), s2 = e3 == null ? void 0 : e3.length, c2 = t2 !== void 0;
-  if (!n2 || c2) {
-    const o = r2 && `"${r2}" `, i = "", a2 = n2 ? `length=${s2}` : `type=${typeof e3}`;
-    throw new Error(o + "expected Uint8Array" + i + ", got " + a2);
-  }
-  return e3;
-}
-function Zn(e3) {
-  if (typeof e3 != "string")
-    throw new Error("hex string expected, got " + typeof e3);
-  return e3 === "" ? Ve : BigInt("0x" + e3);
-}
-function dt(e3) {
-  return Zn(Xt(e3));
-}
-function Kn(e3) {
-  return J(e3), Zn(Xt(Uint8Array.from(e3).reverse()));
-}
-function V(e3, t2) {
-  return Un(e3.toString(16).padStart(t2 * 2, "0"));
-}
-function Fn(e3, t2) {
-  return V(e3, t2).reverse();
-}
-function Ft(e3, t2, r2) {
-  let n2;
-  if (typeof t2 == "string")
-    try {
-      n2 = Un(t2);
-    } catch (c2) {
-      throw new Error(e3 + " must be hex string or Uint8Array, cause: " + c2);
-    }
-  else if (ge(t2))
-    n2 = Uint8Array.from(t2);
-  else
-    throw new Error(e3 + " must be hex string or Uint8Array");
-  const s2 = n2.length;
-  if (typeof r2 == "number" && s2 !== r2)
-    throw new Error(e3 + " of length " + r2 + " expected, got " + s2);
-  return n2;
-}
-const _e = (e3) => typeof e3 == "bigint" && Ve <= e3;
-function Cn(e3, t2, r2) {
-  return _e(e3) && _e(t2) && _e(r2) && t2 <= e3 && e3 < r2;
-}
-function Wt(e3) {
-  let t2;
-  for (t2 = 0; e3 > Ve; e3 >>= de, t2 += 1)
-    ;
-  return t2;
-}
-function Zr(e3, t2) {
-  return e3 >> BigInt(t2) & de;
-}
-const Rt$1 = (e3) => (de << BigInt(e3)) - de;
-function Kr(e3) {
-  return typeof e3 == "function" && Number.isSafeInteger(e3.outputLen);
-}
-function ze(e3, t2, r2 = {}) {
-  if (!e3 || typeof e3 != "object")
-    throw new Error("expected valid options object");
-  function n2(s2, c2, o) {
-    const i = e3[s2];
-    if (o && i === void 0)
-      return;
-    const a2 = typeof i;
-    if (a2 !== c2 || i === null)
-      throw new Error(`param "${s2}" is invalid: expected ${c2}, got ${a2}`);
-  }
-  Object.entries(t2).forEach(([s2, c2]) => n2(s2, c2, false)), Object.entries(r2).forEach(([s2, c2]) => n2(s2, c2, true));
-}
-const Yn = () => {
-  throw new Error("not implemented");
-};
-function Ue(e3) {
-  const t2 = /* @__PURE__ */ new WeakMap();
-  return (r2, ...n2) => {
-    const s2 = t2.get(r2);
-    if (s2 !== void 0)
-      return s2;
-    const c2 = e3(r2, ...n2);
-    return t2.set(r2, c2), c2;
-  };
-}
-const et = BigInt(0), z$1 = BigInt(1), vt = /* @__PURE__ */ BigInt(2), Vn = /* @__PURE__ */ BigInt(3), zn = /* @__PURE__ */ BigInt(4), $n = /* @__PURE__ */ BigInt(5), Fr = /* @__PURE__ */ BigInt(7), jn = /* @__PURE__ */ BigInt(8), Cr = /* @__PURE__ */ BigInt(9), Xn = /* @__PURE__ */ BigInt(16);
-function nt(e3, t2) {
-  const r2 = e3 % t2;
-  return r2 >= et ? r2 : t2 + r2;
-}
-function an(e3, t2) {
-  if (e3 === et)
-    throw new Error("invert: expected non-zero number");
-  if (t2 <= et)
-    throw new Error("invert: expected positive modulus, got " + t2);
-  let r2 = nt(e3, t2), n2 = t2, s2 = et, c2 = z$1;
-  for (; r2 !== et; ) {
-    const i = n2 / r2, a2 = n2 % r2, u2 = s2 - c2 * i;
-    n2 = r2, r2 = a2, s2 = c2, c2 = u2;
-  }
-  if (n2 !== z$1)
-    throw new Error("invert: does not exist");
-  return nt(s2, t2);
-}
-function $e(e3, t2, r2) {
-  if (!e3.eql(e3.sqr(t2), r2))
-    throw new Error("Cannot find square root");
-}
-function Wn(e3, t2) {
-  const r2 = (e3.ORDER + z$1) / zn, n2 = e3.pow(t2, r2);
-  return $e(e3, n2, t2), n2;
-}
-function Yr(e3, t2) {
-  const r2 = (e3.ORDER - $n) / jn, n2 = e3.mul(t2, vt), s2 = e3.pow(n2, r2), c2 = e3.mul(t2, s2), o = e3.mul(e3.mul(c2, vt), s2), i = e3.mul(c2, e3.sub(o, e3.ONE));
-  return $e(e3, i, t2), i;
-}
-function Vr(e3) {
-  const t2 = Yt(e3), r2 = Qn(e3), n2 = r2(t2, t2.neg(t2.ONE)), s2 = r2(t2, n2), c2 = r2(t2, t2.neg(n2)), o = (e3 + Fr) / Xn;
-  return (i, a2) => {
-    let u2 = i.pow(a2, o), l2 = i.mul(u2, n2);
-    const d2 = i.mul(u2, s2), f2 = i.mul(u2, c2), h2 = i.eql(i.sqr(l2), a2), m2 = i.eql(i.sqr(d2), a2);
-    u2 = i.cmov(u2, l2, h2), l2 = i.cmov(f2, d2, m2);
-    const g2 = i.eql(i.sqr(l2), a2), y2 = i.cmov(u2, l2, g2);
-    return $e(i, y2, a2), y2;
-  };
-}
-function Qn(e3) {
-  if (e3 < Vn)
-    throw new Error("sqrt is not defined for small field");
-  let t2 = e3 - z$1, r2 = 0;
-  for (; t2 % vt === et; )
-    t2 /= vt, r2++;
-  let n2 = vt;
-  const s2 = Yt(e3);
-  for (; ue(s2, n2) === 1; )
-    if (n2++ > 1e3)
-      throw new Error("Cannot find square root: probably non-prime P");
-  if (r2 === 1)
-    return Wn;
-  let c2 = s2.pow(n2, t2);
-  const o = (t2 + z$1) / vt;
-  return function(a2, u2) {
-    if (a2.is0(u2))
-      return u2;
-    if (ue(a2, u2) !== 1)
-      throw new Error("Cannot find square root");
-    let l2 = r2, d2 = a2.mul(a2.ONE, c2), f2 = a2.pow(u2, t2), h2 = a2.pow(u2, o);
-    for (; !a2.eql(f2, a2.ONE); ) {
-      if (a2.is0(f2))
-        return a2.ZERO;
-      let m2 = 1, g2 = a2.sqr(f2);
-      for (; !a2.eql(g2, a2.ONE); )
-        if (m2++, g2 = a2.sqr(g2), m2 === l2)
-          throw new Error("Cannot find square root");
-      const y2 = z$1 << BigInt(l2 - m2 - 1), T2 = a2.pow(d2, y2);
-      l2 = m2, d2 = a2.sqr(T2), f2 = a2.mul(f2, d2), h2 = a2.mul(h2, T2);
-    }
-    return h2;
-  };
-}
-function zr(e3) {
-  return e3 % zn === Vn ? Wn : e3 % jn === $n ? Yr : e3 % Xn === Cr ? Vr(e3) : Qn(e3);
-}
-const $r = [
-  "create",
-  "isValid",
-  "is0",
-  "neg",
-  "inv",
-  "sqrt",
-  "sqr",
-  "eql",
-  "add",
-  "sub",
-  "mul",
-  "pow",
-  "div",
-  "addN",
-  "subN",
-  "mulN",
-  "sqrN"
-];
-function Jn(e3) {
-  const t2 = {
-    ORDER: "bigint",
-    MASK: "bigint",
-    BYTES: "number",
-    BITS: "number"
-  }, r2 = $r.reduce((n2, s2) => (n2[s2] = "function", n2), t2);
-  return ze(e3, r2), e3;
-}
-function ye(e3, t2, r2) {
-  if (r2 < et)
-    throw new Error("invalid exponent, negatives unsupported");
-  if (r2 === et)
-    return e3.ONE;
-  if (r2 === z$1)
-    return t2;
-  let n2 = e3.ONE, s2 = t2;
-  for (; r2 > et; )
-    r2 & z$1 && (n2 = e3.mul(n2, s2)), s2 = e3.sqr(s2), r2 >>= z$1;
-  return n2;
-}
-function Ht(e3, t2, r2 = false) {
-  const n2 = new Array(t2.length).fill(r2 ? e3.ZERO : void 0), s2 = t2.reduce((o, i, a2) => e3.is0(i) ? o : (n2[a2] = o, e3.mul(o, i)), e3.ONE), c2 = e3.inv(s2);
-  return t2.reduceRight((o, i, a2) => e3.is0(i) ? o : (n2[a2] = e3.mul(o, n2[a2]), e3.mul(o, i)), c2), n2;
-}
-function ue(e3, t2) {
-  const r2 = (e3.ORDER - z$1) / vt, n2 = e3.pow(t2, r2), s2 = e3.eql(n2, e3.ONE), c2 = e3.eql(n2, e3.ZERO), o = e3.eql(n2, e3.neg(e3.ONE));
-  if (!s2 && !c2 && !o)
-    throw new Error("invalid Legendre symbol result");
-  return s2 ? 1 : c2 ? 0 : -1;
-}
-function jr(e3, t2) {
-  t2 !== void 0 && Zt(t2);
-  const r2 = t2 !== void 0 ? t2 : e3.toString(2).length, n2 = Math.ceil(r2 / 8);
-  return { nBitLength: r2, nByteLength: n2 };
-}
-function Yt(e3, t2, r2 = false, n2 = {}) {
-  if (e3 <= et)
-    throw new Error("invalid field: expected ORDER > 0, got " + e3);
-  let s2, c2, o = false, i;
-  if (typeof t2 == "object" && t2 != null) {
-    if (n2.sqrt || r2)
-      throw new Error("cannot specify opts in two arguments");
-    const f2 = t2;
-    f2.BITS && (s2 = f2.BITS), f2.sqrt && (c2 = f2.sqrt), typeof f2.isLE == "boolean" && (r2 = f2.isLE), typeof f2.modFromBytes == "boolean" && (o = f2.modFromBytes), i = f2.allowedLengths;
-  } else
-    typeof t2 == "number" && (s2 = t2), n2.sqrt && (c2 = n2.sqrt);
-  const { nBitLength: a2, nByteLength: u2 } = jr(e3, s2);
-  if (u2 > 2048)
-    throw new Error("invalid field: expected ORDER of <= 2048 bytes");
-  let l2;
-  const d2 = Object.freeze({
-    ORDER: e3,
-    isLE: r2,
-    BITS: a2,
-    BYTES: u2,
-    MASK: Rt$1(a2),
-    ZERO: et,
-    ONE: z$1,
-    allowedLengths: i,
-    create: (f2) => nt(f2, e3),
-    isValid: (f2) => {
-      if (typeof f2 != "bigint")
-        throw new Error("invalid field element: expected bigint, got " + typeof f2);
-      return et <= f2 && f2 < e3;
-    },
-    is0: (f2) => f2 === et,
-    // is valid and invertible
-    isValidNot0: (f2) => !d2.is0(f2) && d2.isValid(f2),
-    isOdd: (f2) => (f2 & z$1) === z$1,
-    neg: (f2) => nt(-f2, e3),
-    eql: (f2, h2) => f2 === h2,
-    sqr: (f2) => nt(f2 * f2, e3),
-    add: (f2, h2) => nt(f2 + h2, e3),
-    sub: (f2, h2) => nt(f2 - h2, e3),
-    mul: (f2, h2) => nt(f2 * h2, e3),
-    pow: (f2, h2) => ye(d2, f2, h2),
-    div: (f2, h2) => nt(f2 * an(h2, e3), e3),
-    // Same as above, but doesn't normalize
-    sqrN: (f2) => f2 * f2,
-    addN: (f2, h2) => f2 + h2,
-    subN: (f2, h2) => f2 - h2,
-    mulN: (f2, h2) => f2 * h2,
-    inv: (f2) => an(f2, e3),
-    sqrt: c2 || ((f2) => (l2 || (l2 = zr(e3)), l2(d2, f2))),
-    toBytes: (f2) => r2 ? Fn(f2, u2) : V(f2, u2),
-    fromBytes: (f2, h2 = true) => {
-      if (i) {
-        if (!i.includes(f2.length) || f2.length > u2)
-          throw new Error("Field.fromBytes: expected " + i + " bytes, got " + f2.length);
-        const g2 = new Uint8Array(u2);
-        g2.set(f2, r2 ? 0 : g2.length - f2.length), f2 = g2;
-      }
-      if (f2.length !== u2)
-        throw new Error("Field.fromBytes: expected " + u2 + " bytes, got " + f2.length);
-      let m2 = r2 ? Kn(f2) : dt(f2);
-      if (o && (m2 = nt(m2, e3)), !h2 && !d2.isValid(m2))
-        throw new Error("invalid field element: outside of range 0..ORDER");
-      return m2;
-    },
-    // TODO: we don't need it here, move out to separate fn
-    invertBatch: (f2) => Ht(d2, f2),
-    // We can't move this out because Fp6, Fp12 implement it
-    // and it's unclear what to return in there.
-    cmov: (f2, h2, m2) => m2 ? h2 : f2
-  });
-  return Object.freeze(d2);
-}
-function tr(e3) {
-  if (typeof e3 != "bigint")
-    throw new Error("field order must be bigint");
-  const t2 = e3.toString(2).length;
-  return Math.ceil(t2 / 8);
-}
-function er(e3) {
-  const t2 = tr(e3);
-  return t2 + Math.ceil(t2 / 2);
-}
-function Xr(e3, t2, r2 = false) {
-  const n2 = e3.length, s2 = tr(t2), c2 = er(t2);
-  if (n2 < 16 || n2 < c2 || n2 > 1024)
-    throw new Error("expected " + c2 + "-1024 bytes of input, got " + n2);
-  const o = r2 ? Kn(e3) : dt(e3), i = nt(o, t2 - z$1) + z$1;
-  return r2 ? Fn(i, s2) : V(i, s2);
-}
-const Ct = BigInt(0), It = BigInt(1);
-function le(e3, t2) {
-  const r2 = t2.negate();
-  return e3 ? r2 : t2;
-}
-function jt(e3, t2) {
-  const r2 = Ht(e3.Fp, t2.map((n2) => n2.Z));
-  return t2.map((n2, s2) => e3.fromAffine(n2.toAffine(r2[s2])));
-}
-function nr(e3, t2) {
-  if (!Number.isSafeInteger(e3) || e3 <= 0 || e3 > t2)
-    throw new Error("invalid window size, expected [1.." + t2 + "], got W=" + e3);
-}
-function Se(e3, t2) {
-  nr(e3, t2);
-  const r2 = Math.ceil(t2 / e3) + 1, n2 = 2 ** (e3 - 1), s2 = 2 ** e3, c2 = Rt$1(e3), o = BigInt(e3);
-  return { windows: r2, windowSize: n2, mask: c2, maxNumber: s2, shiftBy: o };
-}
-function fn(e3, t2, r2) {
-  const { windowSize: n2, mask: s2, maxNumber: c2, shiftBy: o } = r2;
-  let i = Number(e3 & s2), a2 = e3 >> o;
-  i > n2 && (i -= c2, a2 += It);
-  const u2 = t2 * n2, l2 = u2 + Math.abs(i) - 1, d2 = i === 0, f2 = i < 0, h2 = t2 % 2 !== 0;
-  return { nextN: a2, offset: l2, isZero: d2, isNeg: f2, isNegF: h2, offsetF: u2 };
-}
-function Wr(e3, t2) {
-  if (!Array.isArray(e3))
-    throw new Error("array expected");
-  e3.forEach((r2, n2) => {
-    if (!(r2 instanceof t2))
-      throw new Error("invalid point at index " + n2);
-  });
-}
-function Qr(e3, t2) {
-  if (!Array.isArray(e3))
-    throw new Error("array of scalars expected");
-  e3.forEach((r2, n2) => {
-    if (!t2.isValid(r2))
-      throw new Error("invalid scalar at index " + n2);
-  });
-}
-const Ae = /* @__PURE__ */ new WeakMap(), rr = /* @__PURE__ */ new WeakMap();
-function ve(e3) {
-  return rr.get(e3) || 1;
-}
-function dn(e3) {
-  if (e3 !== Ct)
-    throw new Error("invalid wNAF");
-}
-class Jr {
-  // Parametrized with a given Point class (not individual point)
-  constructor(t2, r2) {
-    this.BASE = t2.BASE, this.ZERO = t2.ZERO, this.Fn = t2.Fn, this.bits = r2;
-  }
-  // non-const time multiplication ladder
-  _unsafeLadder(t2, r2, n2 = this.ZERO) {
-    let s2 = t2;
-    for (; r2 > Ct; )
-      r2 & It && (n2 = n2.add(s2)), s2 = s2.double(), r2 >>= It;
-    return n2;
-  }
-  /**
-   * Creates a wNAF precomputation window. Used for caching.
-   * Default window size is set by `utils.precompute()` and is equal to 8.
-   * Number of precomputed points depends on the curve size:
-   * 2^(𝑊−1) * (Math.ceil(𝑛 / 𝑊) + 1), where:
-   * - 𝑊 is the window size
-   * - 𝑛 is the bitlength of the curve order.
-   * For a 256-bit curve and window size 8, the number of precomputed points is 128 * 33 = 4224.
-   * @param point Point instance
-   * @param W window size
-   * @returns precomputed point tables flattened to a single array
-   */
-  precomputeWindow(t2, r2) {
-    const { windows: n2, windowSize: s2 } = Se(r2, this.bits), c2 = [];
-    let o = t2, i = o;
-    for (let a2 = 0; a2 < n2; a2++) {
-      i = o, c2.push(i);
-      for (let u2 = 1; u2 < s2; u2++)
-        i = i.add(o), c2.push(i);
-      o = i.double();
-    }
-    return c2;
-  }
-  /**
-   * Implements ec multiplication using precomputed tables and w-ary non-adjacent form.
-   * More compact implementation:
-   * https://github.com/paulmillr/noble-secp256k1/blob/47cb1669b6e506ad66b35fe7d76132ae97465da2/index.ts#L502-L541
-   * @returns real and fake (for const-time) points
-   */
-  wNAF(t2, r2, n2) {
-    if (!this.Fn.isValid(n2))
-      throw new Error("invalid scalar");
-    let s2 = this.ZERO, c2 = this.BASE;
-    const o = Se(t2, this.bits);
-    for (let i = 0; i < o.windows; i++) {
-      const { nextN: a2, offset: u2, isZero: l2, isNeg: d2, isNegF: f2, offsetF: h2 } = fn(n2, i, o);
-      n2 = a2, l2 ? c2 = c2.add(le(f2, r2[h2])) : s2 = s2.add(le(d2, r2[u2]));
-    }
-    return dn(n2), { p: s2, f: c2 };
-  }
-  /**
-   * Implements ec unsafe (non const-time) multiplication using precomputed tables and w-ary non-adjacent form.
-   * @param acc accumulator point to add result of multiplication
-   * @returns point
-   */
-  wNAFUnsafe(t2, r2, n2, s2 = this.ZERO) {
-    const c2 = Se(t2, this.bits);
-    for (let o = 0; o < c2.windows && n2 !== Ct; o++) {
-      const { nextN: i, offset: a2, isZero: u2, isNeg: l2 } = fn(n2, o, c2);
-      if (n2 = i, !u2) {
-        const d2 = r2[a2];
-        s2 = s2.add(l2 ? d2.negate() : d2);
-      }
-    }
-    return dn(n2), s2;
-  }
-  getPrecomputes(t2, r2, n2) {
-    let s2 = Ae.get(r2);
-    return s2 || (s2 = this.precomputeWindow(r2, t2), t2 !== 1 && (typeof n2 == "function" && (s2 = n2(s2)), Ae.set(r2, s2))), s2;
-  }
-  cached(t2, r2, n2) {
-    const s2 = ve(t2);
-    return this.wNAF(s2, this.getPrecomputes(s2, t2, n2), r2);
-  }
-  unsafe(t2, r2, n2, s2) {
-    const c2 = ve(t2);
-    return c2 === 1 ? this._unsafeLadder(t2, r2, s2) : this.wNAFUnsafe(c2, this.getPrecomputes(c2, t2, n2), r2, s2);
-  }
-  // We calculate precomputes for elliptic curve point multiplication
-  // using windowed method. This specifies window size and
-  // stores precomputed values. Usually only base point would be precomputed.
-  createCache(t2, r2) {
-    nr(r2, this.bits), rr.set(t2, r2), Ae.delete(t2);
-  }
-  hasCache(t2) {
-    return ve(t2) !== 1;
-  }
-}
-function ts(e3, t2, r2, n2) {
-  let s2 = t2, c2 = e3.ZERO, o = e3.ZERO;
-  for (; r2 > Ct || n2 > Ct; )
-    r2 & It && (c2 = c2.add(s2)), n2 & It && (o = o.add(s2)), s2 = s2.double(), r2 >>= It, n2 >>= It;
-  return { p1: c2, p2: o };
-}
-function es(e3, t2, r2, n2) {
-  Wr(r2, e3), Qr(n2, t2);
-  const s2 = r2.length, c2 = n2.length;
-  if (s2 !== c2)
-    throw new Error("arrays of points and scalars must have equal length");
-  const o = e3.ZERO, i = Wt(BigInt(s2));
-  let a2 = 1;
-  i > 12 ? a2 = i - 3 : i > 4 ? a2 = i - 2 : i > 0 && (a2 = 2);
-  const u2 = Rt$1(a2), l2 = new Array(Number(u2) + 1).fill(o), d2 = Math.floor((t2.BITS - 1) / a2) * a2;
-  let f2 = o;
-  for (let h2 = d2; h2 >= 0; h2 -= a2) {
-    l2.fill(o);
-    for (let g2 = 0; g2 < c2; g2++) {
-      const y2 = n2[g2], T2 = Number(y2 >> BigInt(h2) & u2);
-      l2[T2] = l2[T2].add(r2[g2]);
-    }
-    let m2 = o;
-    for (let g2 = l2.length - 1, y2 = o; g2 > 0; g2--)
-      y2 = y2.add(l2[g2]), m2 = m2.add(y2);
-    if (f2 = f2.add(m2), h2 !== 0)
-      for (let g2 = 0; g2 < a2; g2++)
-        f2 = f2.double();
-  }
-  return f2;
-}
-function un(e3, t2, r2) {
-  if (t2) {
-    if (t2.ORDER !== e3)
-      throw new Error("Field.ORDER must match order: Fp == p, Fn == n");
-    return Jn(t2), t2;
-  } else
-    return Yt(e3, { isLE: r2 });
-}
-function ns(e3, t2, r2 = {}, n2) {
-  if (n2 === void 0 && (n2 = e3 === "edwards"), !t2 || typeof t2 != "object")
-    throw new Error(`expected valid ${e3} CURVE object`);
-  for (const a2 of ["p", "n", "h"]) {
-    const u2 = t2[a2];
-    if (!(typeof u2 == "bigint" && u2 > Ct))
-      throw new Error(`CURVE.${a2} must be positive bigint`);
-  }
-  const s2 = un(t2.p, r2.Fp, n2), c2 = un(t2.n, r2.Fn, n2), i = ["Gx", "Gy", "a", "b"];
-  for (const a2 of i)
-    if (!s2.isValid(t2[a2]))
-      throw new Error(`CURVE.${a2} must be valid field element of CURVE.Fp`);
-  return t2 = Object.freeze(Object.assign({}, t2)), { CURVE: t2, Fp: s2, Fn: c2 };
-}
-const rs = dt;
-function Bt(e3, t2) {
-  if (Qt(e3), Qt(t2), e3 < 0 || e3 >= 1 << 8 * t2)
-    throw new Error("invalid I2OSP input: " + e3);
-  const r2 = Array.from({ length: t2 }).fill(0);
-  for (let n2 = t2 - 1; n2 >= 0; n2--)
-    r2[n2] = e3 & 255, e3 >>>= 8;
-  return new Uint8Array(r2);
-}
-function ss(e3, t2) {
-  const r2 = new Uint8Array(e3.length);
-  for (let n2 = 0; n2 < e3.length; n2++)
-    r2[n2] = e3[n2] ^ t2[n2];
-  return r2;
-}
-function Qt(e3) {
-  if (!Number.isSafeInteger(e3))
-    throw new Error("number expected");
-}
-function sr(e3) {
-  if (!ge(e3) && typeof e3 != "string")
-    throw new Error("DST must be Uint8Array or string");
-  return typeof e3 == "string" ? ee(e3) : e3;
-}
-function cs(e3, t2, r2, n2) {
-  J(e3), Qt(r2), t2 = sr(t2), t2.length > 255 && (t2 = n2(C(ee("H2C-OVERSIZE-DST-"), t2)));
-  const { outputLen: s2, blockLen: c2 } = n2, o = Math.ceil(r2 / s2);
-  if (r2 > 65535 || o > 255)
-    throw new Error("expand_message_xmd: invalid lenInBytes");
-  const i = C(t2, Bt(t2.length, 1)), a2 = Bt(0, c2), u2 = Bt(r2, 2), l2 = new Array(o), d2 = n2(C(a2, e3, u2, Bt(0, 1), i));
-  l2[0] = n2(C(d2, Bt(1, 1), i));
-  for (let h2 = 1; h2 <= o; h2++) {
-    const m2 = [ss(d2, l2[h2 - 1]), Bt(h2 + 1, 1), i];
-    l2[h2] = n2(C(...m2));
-  }
-  return C(...l2).slice(0, r2);
-}
-function os(e3, t2, r2, n2, s2) {
-  if (J(e3), Qt(r2), t2 = sr(t2), t2.length > 255) {
-    const c2 = Math.ceil(2 * n2 / 8);
-    t2 = s2.create({ dkLen: c2 }).update(ee("H2C-OVERSIZE-DST-")).update(t2).digest();
-  }
-  if (r2 > 65535 || t2.length > 255)
-    throw new Error("expand_message_xof: invalid lenInBytes");
-  return s2.create({ dkLen: r2 }).update(e3).update(Bt(r2, 2)).update(t2).update(Bt(t2.length, 1)).digest();
-}
-function Ie(e3, t2, r2) {
-  ze(r2, {
-    p: "bigint",
-    m: "number",
-    k: "number",
-    hash: "function"
-  });
-  const { p: n2, k: s2, m: c2, hash: o, expand: i, DST: a2 } = r2;
-  if (!Kr(r2.hash))
-    throw new Error("expected valid hash");
-  J(e3), Qt(t2);
-  const u2 = n2.toString(2).length, l2 = Math.ceil((u2 + s2) / 8), d2 = t2 * c2 * l2;
-  let f2;
-  if (i === "xmd")
-    f2 = cs(e3, a2, d2, o);
-  else if (i === "xof")
-    f2 = os(e3, a2, d2, s2, o);
-  else if (i === "_internal_pass")
-    f2 = e3;
-  else
-    throw new Error('expand must be "xmd" or "xof"');
-  const h2 = new Array(t2);
-  for (let m2 = 0; m2 < t2; m2++) {
-    const g2 = new Array(c2);
-    for (let y2 = 0; y2 < c2; y2++) {
-      const T2 = l2 * (y2 + m2 * c2), R2 = f2.subarray(T2, T2 + l2);
-      g2[y2] = nt(rs(R2), n2);
-    }
-    h2[m2] = g2;
-  }
-  return h2;
-}
-function cr(e3, t2) {
-  const r2 = t2.map((n2) => Array.from(n2).reverse());
-  return (n2, s2) => {
-    const [c2, o, i, a2] = r2.map((d2) => d2.reduce((f2, h2) => e3.add(e3.mul(f2, n2), h2))), [u2, l2] = Ht(e3, [o, a2], true);
-    return n2 = e3.mul(c2, u2), s2 = e3.mul(s2, e3.mul(i, l2)), { x: n2, y: s2 };
-  };
-}
-const is = ee("HashToScalar-");
-function ln(e3, t2, r2) {
-  if (typeof t2 != "function")
-    throw new Error("mapToCurve() must be defined");
-  function n2(c2) {
-    return e3.fromAffine(t2(c2));
-  }
-  function s2(c2) {
-    const o = c2.clearCofactor();
-    return o.equals(e3.ZERO) ? e3.ZERO : (o.assertValidity(), o);
-  }
-  return {
-    defaults: r2,
-    hashToCurve(c2, o) {
-      const i = Object.assign({}, r2, o), a2 = Ie(c2, 2, i), u2 = n2(a2[0]), l2 = n2(a2[1]);
-      return s2(u2.add(l2));
-    },
-    encodeToCurve(c2, o) {
-      const i = r2.encodeDST ? { DST: r2.encodeDST } : {}, a2 = Object.assign({}, r2, i, o), u2 = Ie(c2, 1, a2), l2 = n2(u2[0]);
-      return s2(l2);
-    },
-    /** See {@link H2CHasher} */
-    mapToCurve(c2) {
-      if (!Array.isArray(c2))
-        throw new Error("expected array of bigints");
-      for (const o of c2)
-        if (typeof o != "bigint")
-          throw new Error("expected array of bigints");
-      return s2(n2(c2));
-    },
-    // hash_to_scalar can produce 0: https://www.rfc-editor.org/errata/eid8393
-    // RFC 9380, draft-irtf-cfrg-bbs-signatures-08
-    hashToScalar(c2, o) {
-      const i = e3.Fn.ORDER, a2 = Object.assign({}, r2, { p: i, m: 1, DST: is }, o);
-      return Ie(c2, 1, a2)[0][0];
-    }
-  };
-}
-class or extends Ce {
-  constructor(t2, r2) {
-    super(), this.finished = false, this.destroyed = false, Fe(t2);
-    const n2 = Tt(r2);
-    if (this.iHash = t2.create(), typeof this.iHash.update != "function")
-      throw new Error("Expected instance of class which extends utils.Hash");
-    this.blockLen = this.iHash.blockLen, this.outputLen = this.iHash.outputLen;
-    const s2 = this.blockLen, c2 = new Uint8Array(s2);
-    c2.set(n2.length > s2 ? t2.create().update(n2).digest() : n2);
-    for (let o = 0; o < c2.length; o++)
-      c2[o] ^= 54;
-    this.iHash.update(c2), this.oHash = t2.create();
-    for (let o = 0; o < c2.length; o++)
-      c2[o] ^= 106;
-    this.oHash.update(c2), mt(c2);
-  }
-  update(t2) {
-    return Kt(this), this.iHash.update(t2), this;
-  }
-  digestInto(t2) {
-    Kt(this), J(t2, this.outputLen), this.finished = true, this.iHash.digestInto(t2), this.oHash.update(t2), this.oHash.digestInto(t2), this.destroy();
-  }
-  digest() {
-    const t2 = new Uint8Array(this.oHash.outputLen);
-    return this.digestInto(t2), t2;
-  }
-  _cloneInto(t2) {
-    t2 || (t2 = Object.create(Object.getPrototypeOf(this), {}));
-    const { oHash: r2, iHash: n2, finished: s2, destroyed: c2, blockLen: o, outputLen: i } = this;
-    return t2 = t2, t2.finished = s2, t2.destroyed = c2, t2.blockLen = o, t2.outputLen = i, t2.oHash = r2._cloneInto(t2.oHash), t2.iHash = n2._cloneInto(t2.iHash), t2;
-  }
-  clone() {
-    return this._cloneInto();
-  }
-  destroy() {
-    this.destroyed = true, this.oHash.destroy(), this.iHash.destroy();
-  }
-}
-const je = (e3, t2, r2) => new or(e3, t2).update(r2).digest();
-je.create = (e3, t2) => new or(e3, t2);
-const hn = (e3, t2) => (e3 + (e3 >= 0 ? t2 : -t2) / ht) / t2;
-function as(e3, t2, r2) {
-  const [[n2, s2], [c2, o]] = t2, i = hn(o * e3, r2), a2 = hn(-s2 * e3, r2);
-  let u2 = e3 - i * n2 - a2 * c2, l2 = -i * s2 - a2 * o;
-  const d2 = u2 < Ot, f2 = l2 < Ot;
-  d2 && (u2 = -u2), f2 && (l2 = -l2);
-  const h2 = Rt$1(Math.ceil(Wt(r2) / 2)) + W;
-  if (u2 < Ot || u2 >= h2 || l2 < Ot || l2 >= h2)
-    throw new Error("splitScalar (endomorphism): failed, k=" + e3);
-  return { k1neg: d2, k1: u2, k2neg: f2, k2: l2 };
-}
-const Ot = BigInt(0), W = BigInt(1), ht = BigInt(2), Pt = BigInt(3), Le = BigInt(4);
-function he(e3, t2) {
-  const { BYTES: r2 } = e3;
-  let n2;
-  if (typeof t2 == "bigint")
-    n2 = t2;
-  else {
-    let s2 = Ft("private key", t2);
-    try {
-      n2 = e3.fromBytes(s2);
-    } catch {
-      throw new Error(`invalid private key: expected ui8a of size ${r2}, got ${typeof t2}`);
-    }
-  }
-  if (!e3.isValidNot0(n2))
-    throw new Error("invalid private key: out of range [1..N-1]");
-  return n2;
-}
-function fs(e3, t2 = {}) {
-  const r2 = ns("weierstrass", e3, t2), { Fp: n2, Fn: s2 } = r2;
-  let c2 = r2.CURVE;
-  const { h: o, n: i } = c2;
-  ze(t2, {}, {
-    allowInfinityPoint: "boolean",
-    clearCofactor: "function",
-    isTorsionFree: "function",
-    fromBytes: "function",
-    toBytes: "function",
-    endo: "object",
-    wrapPrivateKey: "boolean"
-  });
-  const { endo: a2 } = t2;
-  if (a2 && (!n2.is0(c2.a) || typeof a2.beta != "bigint" || !Array.isArray(a2.basises)))
-    throw new Error('invalid endo: expected "beta": bigint and "basises": array');
-  const u2 = ls(n2, s2);
-  function l2() {
-    if (!n2.isOdd)
-      throw new Error("compression is not supported: Field does not have .isOdd()");
-  }
-  function d2(q2, b2, w2) {
-    const { x: I, y: L2 } = b2.toAffine(), M2 = n2.toBytes(I);
-    if (cn(w2, "isCompressed"), w2) {
-      l2();
-      const x3 = !n2.isOdd(L2);
-      return C(ds(x3), M2);
-    } else
-      return C(Uint8Array.of(4), M2, n2.toBytes(L2));
-  }
-  function f2(q2) {
-    on(q2, void 0, "Point");
-    const { publicKey: b2, publicKeyUncompressed: w2 } = u2, I = q2.length, L2 = q2[0], M2 = q2.subarray(1);
-    if (I === b2 && (L2 === 2 || L2 === 3)) {
-      const x3 = n2.fromBytes(M2);
-      if (!n2.isValid(x3))
-        throw new Error("bad point: is not on curve, wrong x");
-      const S2 = g2(x3);
-      let v2;
-      try {
-        v2 = n2.sqrt(S2);
-      } catch (tt2) {
-        const Y2 = tt2 instanceof Error ? ": " + tt2.message : "";
-        throw new Error("bad point: is not on curve, sqrt error" + Y2);
-      }
-      l2();
-      const G2 = n2.isOdd(v2);
-      return (L2 & 1) === 1 !== G2 && (v2 = n2.neg(v2)), { x: x3, y: v2 };
-    } else if (I === w2 && L2 === 4) {
-      const x3 = n2.BYTES, S2 = n2.fromBytes(M2.subarray(0, x3)), v2 = n2.fromBytes(M2.subarray(x3, x3 * 2));
-      if (!y2(S2, v2))
-        throw new Error("bad point: is not on curve");
-      return { x: S2, y: v2 };
-    } else
-      throw new Error(`bad point: got length ${I}, expected compressed=${b2} or uncompressed=${w2}`);
-  }
-  const h2 = t2.toBytes || d2, m2 = t2.fromBytes || f2;
-  function g2(q2) {
-    const b2 = n2.sqr(q2), w2 = n2.mul(b2, q2);
-    return n2.add(n2.add(w2, n2.mul(q2, c2.a)), c2.b);
-  }
-  function y2(q2, b2) {
-    const w2 = n2.sqr(b2), I = g2(q2);
-    return n2.eql(w2, I);
-  }
-  if (!y2(c2.Gx, c2.Gy))
-    throw new Error("bad curve params: generator point");
-  const T2 = n2.mul(n2.pow(c2.a, Pt), Le), R2 = n2.mul(n2.sqr(c2.b), BigInt(27));
-  if (n2.is0(n2.add(T2, R2)))
-    throw new Error("bad curve params: a or b");
-  function p2(q2, b2, w2 = false) {
-    if (!n2.isValid(b2) || w2 && n2.is0(b2))
-      throw new Error(`bad point coordinate ${q2}`);
-    return b2;
-  }
-  function E2(q2) {
-    if (!(q2 instanceof B2))
-      throw new Error("ProjectivePoint expected");
-  }
-  function _2(q2) {
-    if (!a2 || !a2.basises)
-      throw new Error("no endo");
-    return as(q2, a2.basises, s2.ORDER);
-  }
-  const O2 = Ue((q2, b2) => {
-    const { X: w2, Y: I, Z: L2 } = q2;
-    if (n2.eql(L2, n2.ONE))
-      return { x: w2, y: I };
-    const M2 = q2.is0();
-    b2 == null && (b2 = M2 ? n2.ONE : n2.inv(L2));
-    const x3 = n2.mul(w2, b2), S2 = n2.mul(I, b2), v2 = n2.mul(L2, b2);
-    if (M2)
-      return { x: n2.ZERO, y: n2.ZERO };
-    if (!n2.eql(v2, n2.ONE))
-      throw new Error("invZ was invalid");
-    return { x: x3, y: S2 };
-  }), N2 = Ue((q2) => {
-    if (q2.is0()) {
-      if (t2.allowInfinityPoint && !n2.is0(q2.Y))
-        return;
-      throw new Error("bad point: ZERO");
-    }
-    const { x: b2, y: w2 } = q2.toAffine();
-    if (!n2.isValid(b2) || !n2.isValid(w2))
-      throw new Error("bad point: x or y not field elements");
-    if (!y2(b2, w2))
-      throw new Error("bad point: equation left != right");
-    if (!q2.isTorsionFree())
-      throw new Error("bad point: not in prime-order subgroup");
-    return true;
-  });
-  function H2(q2, b2, w2, I, L2) {
-    return w2 = new B2(n2.mul(w2.X, q2), w2.Y, w2.Z), b2 = le(I, b2), w2 = le(L2, w2), b2.add(w2);
-  }
-  class B2 {
-    /** Does NOT validate if the point is valid. Use `.assertValidity()`. */
-    constructor(b2, w2, I) {
-      this.X = p2("x", b2), this.Y = p2("y", w2, true), this.Z = p2("z", I), Object.freeze(this);
-    }
-    static CURVE() {
-      return c2;
-    }
-    /** Does NOT validate if the point is valid. Use `.assertValidity()`. */
-    static fromAffine(b2) {
-      const { x: w2, y: I } = b2 || {};
-      if (!b2 || !n2.isValid(w2) || !n2.isValid(I))
-        throw new Error("invalid affine point");
-      if (b2 instanceof B2)
-        throw new Error("projective point not allowed");
-      return n2.is0(w2) && n2.is0(I) ? B2.ZERO : new B2(w2, I, n2.ONE);
-    }
-    static fromBytes(b2) {
-      const w2 = B2.fromAffine(m2(on(b2, void 0, "point")));
-      return w2.assertValidity(), w2;
-    }
-    static fromHex(b2) {
-      return B2.fromBytes(Ft("pointHex", b2));
-    }
-    get x() {
-      return this.toAffine().x;
-    }
-    get y() {
-      return this.toAffine().y;
-    }
-    /**
-     *
-     * @param windowSize
-     * @param isLazy true will defer table computation until the first multiplication
-     * @returns
-     */
-    precompute(b2 = 8, w2 = true) {
-      return F2.createCache(this, b2), w2 || this.multiply(Pt), this;
-    }
-    // TODO: return `this`
-    /** A point on curve is valid if it conforms to equation. */
-    assertValidity() {
-      N2(this);
-    }
-    hasEvenY() {
-      const { y: b2 } = this.toAffine();
-      if (!n2.isOdd)
-        throw new Error("Field doesn't support isOdd");
-      return !n2.isOdd(b2);
-    }
-    /** Compare one point to another. */
-    equals(b2) {
-      E2(b2);
-      const { X: w2, Y: I, Z: L2 } = this, { X: M2, Y: x3, Z: S2 } = b2, v2 = n2.eql(n2.mul(w2, S2), n2.mul(M2, L2)), G2 = n2.eql(n2.mul(I, S2), n2.mul(x3, L2));
-      return v2 && G2;
-    }
-    /** Flips point to one corresponding to (x, -y) in Affine coordinates. */
-    negate() {
-      return new B2(this.X, n2.neg(this.Y), this.Z);
-    }
-    // Renes-Costello-Batina exception-free doubling formula.
-    // There is 30% faster Jacobian formula, but it is not complete.
-    // https://eprint.iacr.org/2015/1060, algorithm 3
-    // Cost: 8M + 3S + 3*a + 2*b3 + 15add.
-    double() {
-      const { a: b2, b: w2 } = c2, I = n2.mul(w2, Pt), { X: L2, Y: M2, Z: x3 } = this;
-      let S2 = n2.ZERO, v2 = n2.ZERO, G2 = n2.ZERO, U2 = n2.mul(L2, L2), tt2 = n2.mul(M2, M2), Y2 = n2.mul(x3, x3), K2 = n2.mul(L2, M2);
-      return K2 = n2.add(K2, K2), G2 = n2.mul(L2, x3), G2 = n2.add(G2, G2), S2 = n2.mul(b2, G2), v2 = n2.mul(I, Y2), v2 = n2.add(S2, v2), S2 = n2.sub(tt2, v2), v2 = n2.add(tt2, v2), v2 = n2.mul(S2, v2), S2 = n2.mul(K2, S2), G2 = n2.mul(I, G2), Y2 = n2.mul(b2, Y2), K2 = n2.sub(U2, Y2), K2 = n2.mul(b2, K2), K2 = n2.add(K2, G2), G2 = n2.add(U2, U2), U2 = n2.add(G2, U2), U2 = n2.add(U2, Y2), U2 = n2.mul(U2, K2), v2 = n2.add(v2, U2), Y2 = n2.mul(M2, x3), Y2 = n2.add(Y2, Y2), U2 = n2.mul(Y2, K2), S2 = n2.sub(S2, U2), G2 = n2.mul(Y2, tt2), G2 = n2.add(G2, G2), G2 = n2.add(G2, G2), new B2(S2, v2, G2);
-    }
-    // Renes-Costello-Batina exception-free addition formula.
-    // There is 30% faster Jacobian formula, but it is not complete.
-    // https://eprint.iacr.org/2015/1060, algorithm 1
-    // Cost: 12M + 0S + 3*a + 3*b3 + 23add.
-    add(b2) {
-      E2(b2);
-      const { X: w2, Y: I, Z: L2 } = this, { X: M2, Y: x3, Z: S2 } = b2;
-      let v2 = n2.ZERO, G2 = n2.ZERO, U2 = n2.ZERO;
-      const tt2 = c2.a, Y2 = n2.mul(c2.b, Pt);
-      let K2 = n2.mul(w2, M2), ct2 = n2.mul(I, x3), ot2 = n2.mul(L2, S2), Gt = n2.add(w2, I), X2 = n2.add(M2, x3);
-      Gt = n2.mul(Gt, X2), X2 = n2.add(K2, ct2), Gt = n2.sub(Gt, X2), X2 = n2.add(w2, L2);
-      let at = n2.add(M2, S2);
-      return X2 = n2.mul(X2, at), at = n2.add(K2, ot2), X2 = n2.sub(X2, at), at = n2.add(I, L2), v2 = n2.add(x3, S2), at = n2.mul(at, v2), v2 = n2.add(ct2, ot2), at = n2.sub(at, v2), U2 = n2.mul(tt2, X2), v2 = n2.mul(Y2, ot2), U2 = n2.add(v2, U2), v2 = n2.sub(ct2, U2), U2 = n2.add(ct2, U2), G2 = n2.mul(v2, U2), ct2 = n2.add(K2, K2), ct2 = n2.add(ct2, K2), ot2 = n2.mul(tt2, ot2), X2 = n2.mul(Y2, X2), ct2 = n2.add(ct2, ot2), ot2 = n2.sub(K2, ot2), ot2 = n2.mul(tt2, ot2), X2 = n2.add(X2, ot2), K2 = n2.mul(ct2, X2), G2 = n2.add(G2, K2), K2 = n2.mul(at, X2), v2 = n2.mul(Gt, v2), v2 = n2.sub(v2, K2), K2 = n2.mul(Gt, ct2), U2 = n2.mul(at, U2), U2 = n2.add(U2, K2), new B2(v2, G2, U2);
-    }
-    subtract(b2) {
-      return this.add(b2.negate());
-    }
-    is0() {
-      return this.equals(B2.ZERO);
-    }
-    /**
-     * Constant time multiplication.
-     * Uses wNAF method. Windowed method may be 10% faster,
-     * but takes 2x longer to generate and consumes 2x memory.
-     * Uses precomputes when available.
-     * Uses endomorphism for Koblitz curves.
-     * @param scalar by which the point would be multiplied
-     * @returns New point
-     */
-    multiply(b2) {
-      const { endo: w2 } = t2;
-      if (!s2.isValidNot0(b2))
-        throw new Error("invalid scalar: out of range");
-      let I, L2;
-      const M2 = (x3) => F2.cached(this, x3, (S2) => jt(B2, S2));
-      if (w2) {
-        const { k1neg: x3, k1: S2, k2neg: v2, k2: G2 } = _2(b2), { p: U2, f: tt2 } = M2(S2), { p: Y2, f: K2 } = M2(G2);
-        L2 = tt2.add(K2), I = H2(w2.beta, U2, Y2, x3, v2);
-      } else {
-        const { p: x3, f: S2 } = M2(b2);
-        I = x3, L2 = S2;
-      }
-      return jt(B2, [I, L2])[0];
-    }
-    /**
-     * Non-constant-time multiplication. Uses double-and-add algorithm.
-     * It's faster, but should only be used when you don't care about
-     * an exposed secret key e.g. sig verification, which works over *public* keys.
-     */
-    multiplyUnsafe(b2) {
-      const { endo: w2 } = t2, I = this;
-      if (!s2.isValid(b2))
-        throw new Error("invalid scalar: out of range");
-      if (b2 === Ot || I.is0())
-        return B2.ZERO;
-      if (b2 === W)
-        return I;
-      if (F2.hasCache(this))
-        return this.multiply(b2);
-      if (w2) {
-        const { k1neg: L2, k1: M2, k2neg: x3, k2: S2 } = _2(b2), { p1: v2, p2: G2 } = ts(B2, I, M2, S2);
-        return H2(w2.beta, v2, G2, L2, x3);
-      } else
-        return F2.unsafe(I, b2);
-    }
-    multiplyAndAddUnsafe(b2, w2, I) {
-      const L2 = this.multiplyUnsafe(w2).add(b2.multiplyUnsafe(I));
-      return L2.is0() ? void 0 : L2;
-    }
-    /**
-     * Converts Projective point to affine (x, y) coordinates.
-     * @param invertedZ Z^-1 (inverted zero) - optional, precomputation is useful for invertBatch
-     */
-    toAffine(b2) {
-      return O2(this, b2);
-    }
-    /**
-     * Checks whether Point is free of torsion elements (is in prime subgroup).
-     * Always torsion-free for cofactor=1 curves.
-     */
-    isTorsionFree() {
-      const { isTorsionFree: b2 } = t2;
-      return o === W ? true : b2 ? b2(B2, this) : F2.unsafe(this, i).is0();
-    }
-    clearCofactor() {
-      const { clearCofactor: b2 } = t2;
-      return o === W ? this : b2 ? b2(B2, this) : this.multiplyUnsafe(o);
-    }
-    isSmallOrder() {
-      return this.multiplyUnsafe(o).is0();
-    }
-    toBytes(b2 = true) {
-      return cn(b2, "isCompressed"), this.assertValidity(), h2(B2, this, b2);
-    }
-    toHex(b2 = true) {
-      return Xt(this.toBytes(b2));
-    }
-    toString() {
-      return `<Point ${this.is0() ? "ZERO" : this.toHex()}>`;
-    }
-    // TODO: remove
-    get px() {
-      return this.X;
-    }
-    get py() {
-      return this.X;
-    }
-    get pz() {
-      return this.Z;
-    }
-    toRawBytes(b2 = true) {
-      return this.toBytes(b2);
-    }
-    _setWindowSize(b2) {
-      this.precompute(b2);
-    }
-    static normalizeZ(b2) {
-      return jt(B2, b2);
-    }
-    static msm(b2, w2) {
-      return es(B2, s2, b2, w2);
-    }
-    static fromPrivateKey(b2) {
-      return B2.BASE.multiply(he(s2, b2));
-    }
-  }
-  B2.BASE = new B2(c2.Gx, c2.Gy, n2.ONE), B2.ZERO = new B2(n2.ZERO, n2.ONE, n2.ZERO), B2.Fp = n2, B2.Fn = s2;
-  const Z2 = s2.BITS, F2 = new Jr(B2, t2.endo ? Math.ceil(Z2 / 2) : Z2);
-  return B2.BASE.precompute(8), B2;
-}
-function ds(e3) {
-  return Uint8Array.of(e3 ? 2 : 3);
-}
-function us(e3, t2) {
-  const r2 = e3.ORDER;
-  let n2 = Ot;
-  for (let m2 = r2 - W; m2 % ht === Ot; m2 /= ht)
-    n2 += W;
-  const s2 = n2, c2 = ht << s2 - W - W, o = c2 * ht, i = (r2 - W) / o, a2 = (i - W) / ht, u2 = o - W, l2 = c2, d2 = e3.pow(t2, i), f2 = e3.pow(t2, (i + W) / ht);
-  let h2 = (m2, g2) => {
-    let y2 = d2, T2 = e3.pow(g2, u2), R2 = e3.sqr(T2);
-    R2 = e3.mul(R2, g2);
-    let p2 = e3.mul(m2, R2);
-    p2 = e3.pow(p2, a2), p2 = e3.mul(p2, T2), T2 = e3.mul(p2, g2), R2 = e3.mul(p2, m2);
-    let E2 = e3.mul(R2, T2);
-    p2 = e3.pow(E2, l2);
-    let _2 = e3.eql(p2, e3.ONE);
-    T2 = e3.mul(R2, f2), p2 = e3.mul(E2, y2), R2 = e3.cmov(T2, R2, _2), E2 = e3.cmov(p2, E2, _2);
-    for (let O2 = s2; O2 > W; O2--) {
-      let N2 = O2 - ht;
-      N2 = ht << N2 - W;
-      let H2 = e3.pow(E2, N2);
-      const B2 = e3.eql(H2, e3.ONE);
-      T2 = e3.mul(R2, y2), y2 = e3.mul(y2, y2), H2 = e3.mul(E2, y2), R2 = e3.cmov(T2, R2, B2), E2 = e3.cmov(H2, E2, B2);
-    }
-    return { isValid: _2, value: R2 };
-  };
-  if (e3.ORDER % Le === Pt) {
-    const m2 = (e3.ORDER - Pt) / Le, g2 = e3.sqrt(e3.neg(t2));
-    h2 = (y2, T2) => {
-      let R2 = e3.sqr(T2);
-      const p2 = e3.mul(y2, T2);
-      R2 = e3.mul(R2, p2);
-      let E2 = e3.pow(R2, m2);
-      E2 = e3.mul(E2, p2);
-      const _2 = e3.mul(E2, g2), O2 = e3.mul(e3.sqr(E2), T2), N2 = e3.eql(O2, y2);
-      let H2 = e3.cmov(_2, E2, N2);
-      return { isValid: N2, value: H2 };
-    };
-  }
-  return h2;
-}
-function ir(e3, t2) {
-  Jn(e3);
-  const { A: r2, B: n2, Z: s2 } = t2;
-  if (!e3.isValid(r2) || !e3.isValid(n2) || !e3.isValid(s2))
-    throw new Error("mapToCurveSimpleSWU: invalid opts");
-  const c2 = us(e3, s2);
-  if (!e3.isOdd)
-    throw new Error("Field does not have .isOdd()");
-  return (o) => {
-    let i, a2, u2, l2, d2, f2, h2, m2;
-    i = e3.sqr(o), i = e3.mul(i, s2), a2 = e3.sqr(i), a2 = e3.add(a2, i), u2 = e3.add(a2, e3.ONE), u2 = e3.mul(u2, n2), l2 = e3.cmov(s2, e3.neg(a2), !e3.eql(a2, e3.ZERO)), l2 = e3.mul(l2, r2), a2 = e3.sqr(u2), f2 = e3.sqr(l2), d2 = e3.mul(f2, r2), a2 = e3.add(a2, d2), a2 = e3.mul(a2, u2), f2 = e3.mul(f2, l2), d2 = e3.mul(f2, n2), a2 = e3.add(a2, d2), h2 = e3.mul(i, u2);
-    const { isValid: g2, value: y2 } = c2(a2, f2);
-    m2 = e3.mul(i, o), m2 = e3.mul(m2, y2), h2 = e3.cmov(h2, u2, g2), m2 = e3.cmov(m2, y2, g2);
-    const T2 = e3.isOdd(o) === e3.isOdd(m2);
-    m2 = e3.cmov(e3.neg(m2), m2, T2);
-    const R2 = Ht(e3, [l2], true)[0];
-    return h2 = e3.mul(h2, R2), { x: h2, y: m2 };
-  };
-}
-function ls(e3, t2) {
-  return {
-    secretKey: t2.BYTES,
-    publicKey: 1 + e3.BYTES,
-    publicKeyUncompressed: 1 + 2 * e3.BYTES,
-    publicKeyHasPrefix: true,
-    signature: 2 * t2.BYTES
-  };
-}
-function bn(e3) {
-  const { CURVE: t2, curveOpts: r2 } = hs(e3), n2 = fs(t2, r2);
-  return ms(e3, n2);
-}
-function hs(e3) {
-  const t2 = {
-    a: e3.a,
-    b: e3.b,
-    p: e3.Fp.ORDER,
-    n: e3.n,
-    h: e3.h,
-    Gx: e3.Gx,
-    Gy: e3.Gy
-  }, r2 = e3.Fp;
-  let n2 = e3.allowedPrivateKeyLengths ? Array.from(new Set(e3.allowedPrivateKeyLengths.map((o) => Math.ceil(o / 2)))) : void 0;
-  const s2 = Yt(t2.n, {
-    BITS: e3.nBitLength,
-    allowedLengths: n2,
-    modFromBytes: e3.wrapPrivateKey
-  }), c2 = {
-    Fp: r2,
-    Fn: s2,
-    allowInfinityPoint: e3.allowInfinityPoint,
-    endo: e3.endo,
-    isTorsionFree: e3.isTorsionFree,
-    clearCofactor: e3.clearCofactor,
-    fromBytes: e3.fromBytes,
-    toBytes: e3.toBytes
-  };
-  return { CURVE: t2, curveOpts: c2 };
-}
-function bs(e3, t2, r2) {
-  function n2(s2) {
-    const c2 = e3.sqr(s2), o = e3.mul(c2, s2);
-    return e3.add(e3.add(o, e3.mul(s2, t2)), r2);
-  }
-  return n2;
-}
-function ms(e3, t2) {
-  const { Fp: r2, Fn: n2 } = t2;
-  function s2(o) {
-    return Cn(o, W, n2.ORDER);
-  }
-  const c2 = bs(r2, e3.a, e3.b);
-  return Object.assign({}, {
-    CURVE: e3,
-    Point: t2,
-    ProjectivePoint: t2,
-    normPrivateKeyToScalar: (o) => he(n2, o),
-    weierstrassEquation: c2,
-    isWithinCurveOrder: s2
-  });
-}
-const gs = BigInt(0), ie = BigInt(1), mn = BigInt(2), Mt = BigInt(3);
-function ys(e3) {
-  const t2 = [];
-  for (; e3 > ie; e3 >>= ie)
-    (e3 & ie) === gs ? t2.unshift(0) : (e3 & Mt) === Mt ? (t2.unshift(-1), e3 += ie) : t2.unshift(1);
-  return t2;
-}
-function Oe(e3) {
-  if (!Array.isArray(e3) || e3.length === 0)
-    throw new Error("expected non-empty array");
-}
-function ps(e3, t2, r2, n2) {
-  const { Fp2: s2, Fp12: c2 } = e3, { twistType: o, ateLoopSize: i, xNegative: a2, postPrecompute: u2 } = n2;
-  let l2;
-  if (o === "multiplicative")
-    l2 = (p2, E2, _2, O2, N2, H2) => c2.mul014(O2, p2, s2.mul(E2, N2), s2.mul(_2, H2));
-  else if (o === "divisive")
-    l2 = (p2, E2, _2, O2, N2, H2) => c2.mul034(O2, s2.mul(_2, H2), s2.mul(E2, N2), p2);
-  else
-    throw new Error("bls: unknown twist type");
-  const d2 = s2.div(s2.ONE, s2.mul(s2.ONE, mn));
-  function f2(p2, E2, _2, O2) {
-    const N2 = s2.sqr(_2), H2 = s2.sqr(O2), B2 = s2.mulByB(s2.mul(H2, Mt)), Z2 = s2.mul(B2, Mt), F2 = s2.sub(s2.sub(s2.sqr(s2.add(_2, O2)), H2), N2), q2 = s2.sub(B2, N2), b2 = s2.mul(s2.sqr(E2), Mt), w2 = s2.neg(F2);
-    return p2.push([q2, b2, w2]), E2 = s2.mul(s2.mul(s2.mul(s2.sub(N2, Z2), E2), _2), d2), _2 = s2.sub(s2.sqr(s2.mul(s2.add(N2, Z2), d2)), s2.mul(s2.sqr(B2), Mt)), O2 = s2.mul(N2, F2), { Rx: E2, Ry: _2, Rz: O2 };
-  }
-  function h2(p2, E2, _2, O2, N2, H2) {
-    const B2 = s2.sub(_2, s2.mul(H2, O2)), Z2 = s2.sub(E2, s2.mul(N2, O2)), F2 = s2.sub(s2.mul(B2, N2), s2.mul(Z2, H2)), q2 = s2.neg(B2), b2 = Z2;
-    p2.push([F2, q2, b2]);
-    const w2 = s2.sqr(Z2), I = s2.mul(w2, Z2), L2 = s2.mul(w2, E2), M2 = s2.add(s2.sub(I, s2.mul(L2, mn)), s2.mul(s2.sqr(B2), O2));
-    return E2 = s2.mul(Z2, M2), _2 = s2.sub(s2.mul(s2.sub(L2, M2), B2), s2.mul(I, _2)), O2 = s2.mul(O2, I), { Rx: E2, Ry: _2, Rz: O2 };
-  }
-  const m2 = ys(i), g2 = Ue((p2) => {
-    const E2 = p2, { x: _2, y: O2 } = E2.toAffine(), N2 = _2, H2 = O2, B2 = s2.neg(O2);
-    let Z2 = N2, F2 = H2, q2 = s2.ONE;
-    const b2 = [];
-    for (const w2 of m2) {
-      const I = [];
-      ({ Rx: Z2, Ry: F2, Rz: q2 } = f2(I, Z2, F2, q2)), w2 && ({ Rx: Z2, Ry: F2, Rz: q2 } = h2(I, Z2, F2, q2, N2, w2 === -1 ? B2 : H2)), b2.push(I);
-    }
-    if (u2) {
-      const w2 = b2[b2.length - 1];
-      u2(Z2, F2, q2, N2, H2, h2.bind(null, w2));
-    }
-    return b2;
-  });
-  function y2(p2, E2 = false) {
-    let _2 = c2.ONE;
-    if (p2.length) {
-      const O2 = p2[0][0].length;
-      for (let N2 = 0; N2 < O2; N2++) {
-        _2 = c2.sqr(_2);
-        for (const [H2, B2, Z2] of p2)
-          for (const [F2, q2, b2] of H2[N2])
-            _2 = l2(F2, q2, b2, _2, B2, Z2);
-      }
-    }
-    return a2 && (_2 = c2.conjugate(_2)), E2 ? c2.finalExponentiate(_2) : _2;
-  }
-  function T2(p2, E2 = true) {
-    const _2 = [];
-    jt(t2, p2.map(({ g1: O2 }) => O2)), jt(r2, p2.map(({ g2: O2 }) => O2));
-    for (const { g1: O2, g2: N2 } of p2) {
-      if (O2.is0() || N2.is0())
-        throw new Error("pairing is not available for ZERO point");
-      O2.assertValidity(), N2.assertValidity();
-      const H2 = O2.toAffine();
-      _2.push([g2(N2), H2.x, H2.y]);
-    }
-    return y2(_2, E2);
-  }
-  function R2(p2, E2, _2 = true) {
-    return T2([{ g1: p2, g2: E2 }], _2);
-  }
-  return {
-    Fp12: c2,
-    // NOTE: we re-export Fp12 here because pairing results are Fp12!
-    millerLoopBatch: y2,
-    pairing: R2,
-    pairingBatch: T2,
-    calcPairingPrecomputes: g2
-  };
-}
-function gn(e3, t2, r2, n2, s2) {
-  const { Fp12: c2, pairingBatch: o } = e3;
-  function i(d2) {
-    return d2 instanceof t2.Point ? d2 : t2.Point.fromHex(d2);
-  }
-  function a2(d2) {
-    return d2 instanceof r2.Point ? d2 : r2.Point.fromHex(d2);
-  }
-  function u2(d2) {
-    if (!(d2 instanceof r2.Point))
-      throw new Error(`expected valid message hashed to ${s2 ? "G1" : "G2"} curve`);
-    return d2;
-  }
-  const l2 = s2 ? (d2, f2) => ({ g1: f2, g2: d2 }) : (d2, f2) => ({ g1: d2, g2: f2 });
-  return {
-    // P = pk x G
-    getPublicKey(d2) {
-      const f2 = he(t2.Point.Fn, d2);
-      return t2.Point.BASE.multiply(f2);
-    },
-    // S = pk x H(m)
-    sign(d2, f2, h2) {
-      if (h2 != null)
-        throw new Error("sign() expects 2 arguments");
-      const m2 = he(t2.Point.Fn, f2);
-      return u2(d2).assertValidity(), d2.multiply(m2);
-    },
-    // Checks if pairing of public key & hash is equal to pairing of generator & signature.
-    // e(P, H(m)) == e(G, S)
-    // e(S, G) == e(H(m), P)
-    verify(d2, f2, h2, m2) {
-      if (m2 != null)
-        throw new Error("verify() expects 3 arguments");
-      d2 = a2(d2), h2 = i(h2);
-      const g2 = h2.negate(), y2 = t2.Point.BASE, T2 = u2(f2), R2 = d2, p2 = o([l2(g2, T2), l2(y2, R2)]);
-      return c2.eql(p2, c2.ONE);
-    },
-    // https://ethresear.ch/t/fast-verification-of-multiple-bls-signatures/5407
-    // e(G, S) = e(G, SUM(n)(Si)) = MUL(n)(e(G, Si))
-    // TODO: maybe `{message: G2Hex, publicKey: G1Hex}[]` instead?
-    verifyBatch(d2, f2, h2) {
-      if (Oe(f2), h2.length !== f2.length)
-        throw new Error("amount of public keys and messages should be equal");
-      const m2 = a2(d2), g2 = f2, y2 = h2.map(i), T2 = /* @__PURE__ */ new Map();
-      for (let E2 = 0; E2 < y2.length; E2++) {
-        const _2 = y2[E2], O2 = g2[E2];
-        let N2 = T2.get(O2);
-        N2 === void 0 && (N2 = [], T2.set(O2, N2)), N2.push(_2);
-      }
-      const R2 = [], p2 = t2.Point.BASE;
-      try {
-        for (const [E2, _2] of T2) {
-          const O2 = _2.reduce((N2, H2) => N2.add(H2));
-          R2.push(l2(O2, E2));
-        }
-        return R2.push(l2(p2.negate(), m2)), c2.eql(o(R2), c2.ONE);
-      } catch {
-        return false;
-      }
-    },
-    // Adds a bunch of public key points together.
-    // pk1 + pk2 + pk3 = pkA
-    aggregatePublicKeys(d2) {
-      Oe(d2), d2 = d2.map((h2) => i(h2));
-      const f2 = d2.reduce((h2, m2) => h2.add(m2), t2.Point.ZERO);
-      return f2.assertValidity(), f2;
-    },
-    // Adds a bunch of signature points together.
-    // pk1 + pk2 + pk3 = pkA
-    aggregateSignatures(d2) {
-      Oe(d2), d2 = d2.map((h2) => a2(h2));
-      const f2 = d2.reduce((h2, m2) => h2.add(m2), r2.Point.ZERO);
-      return f2.assertValidity(), f2;
-    },
-    hash(d2, f2) {
-      J(d2);
-      const h2 = f2 ? { DST: f2 } : void 0;
-      return r2.hashToCurve(d2, h2);
-    },
-    Signature: n2
-  };
-}
-function ws(e3) {
-  const { Fp: t2, Fr: r2, Fp2: n2, Fp6: s2, Fp12: c2 } = e3.fields, o = bn(e3.G1), i = Object.assign(o, ln(o.Point, e3.G1.mapToCurve, {
-    ...e3.htfDefaults,
-    ...e3.G1.htfDefaults
-  })), a2 = bn(e3.G2), u2 = Object.assign(a2, ln(a2.Point, e3.G2.mapToCurve, {
-    ...e3.htfDefaults,
-    ...e3.G2.htfDefaults
-  })), l2 = ps(e3.fields, i.Point, u2.Point, {
-    ...e3.params,
-    postPrecompute: e3.postPrecompute
-  }), { millerLoopBatch: d2, pairing: f2, pairingBatch: h2, calcPairingPrecomputes: m2 } = l2, g2 = gn(l2, i, u2, e3.G2.Signature, false), y2 = gn(l2, u2, i, e3.G1.ShortSignature, true), T2 = e3.randomBytes || Er, R2 = () => {
-    const x3 = er(r2.ORDER);
-    return Xr(T2(x3), r2.ORDER);
-  }, p2 = {
-    randomSecretKey: R2,
-    randomPrivateKey: R2,
-    calcPairingPrecomputes: m2
-  }, { ShortSignature: E2 } = e3.G1, { Signature: _2 } = e3.G2;
-  function O2(x3, S2) {
-    return x3 instanceof i.Point ? x3 : y2.hash(Ft("point", x3), S2 == null ? void 0 : S2.DST);
-  }
-  function N2(x3, S2) {
-    return x3 instanceof u2.Point ? x3 : g2.hash(Ft("point", x3), S2 == null ? void 0 : S2.DST);
-  }
-  function H2(x3) {
-    return g2.getPublicKey(x3).toBytes(true);
-  }
-  function B2(x3) {
-    return y2.getPublicKey(x3).toBytes(true);
-  }
-  function Z2(x3, S2, v2) {
-    const G2 = N2(x3, v2), U2 = g2.sign(G2, S2);
-    return x3 instanceof u2.Point ? U2 : _2.toBytes(U2);
-  }
-  function F2(x3, S2, v2) {
-    const G2 = O2(x3, v2), U2 = y2.sign(G2, S2);
-    return x3 instanceof i.Point ? U2 : E2.toBytes(U2);
-  }
-  function q2(x3, S2, v2, G2) {
-    const U2 = N2(S2, G2);
-    return g2.verify(x3, U2, v2);
-  }
-  function b2(x3, S2, v2, G2) {
-    const U2 = O2(S2, G2);
-    return y2.verify(x3, U2, v2);
-  }
-  function w2(x3) {
-    const S2 = g2.aggregatePublicKeys(x3);
-    return x3[0] instanceof i.Point ? S2 : S2.toBytes(true);
-  }
-  function I(x3) {
-    const S2 = g2.aggregateSignatures(x3);
-    return x3[0] instanceof u2.Point ? S2 : _2.toBytes(S2);
-  }
-  function L2(x3) {
-    const S2 = y2.aggregateSignatures(x3);
-    return x3[0] instanceof i.Point ? S2 : E2.toBytes(S2);
-  }
-  function M2(x3, S2, v2, G2) {
-    const U2 = S2.map((tt2) => N2(tt2, G2));
-    return g2.verifyBatch(x3, U2, v2);
-  }
-  return i.Point.BASE.precompute(4), {
-    longSignatures: g2,
-    shortSignatures: y2,
-    millerLoopBatch: d2,
-    pairing: f2,
-    pairingBatch: h2,
-    verifyBatch: M2,
-    fields: {
-      Fr: r2,
-      Fp: t2,
-      Fp2: n2,
-      Fp6: s2,
-      Fp12: c2
-    },
-    params: {
-      ateLoopSize: e3.params.ateLoopSize,
-      twistType: e3.params.twistType,
-      // deprecated
-      r: e3.params.r,
-      G1b: e3.G1.b,
-      G2b: e3.G2.b
-    },
-    utils: p2,
-    // deprecated
-    getPublicKey: H2,
-    getPublicKeyForShortSignatures: B2,
-    sign: Z2,
-    signShortSignature: F2,
-    verify: q2,
-    verifyShortSignature: b2,
-    aggregatePublicKeys: w2,
-    aggregateSignatures: I,
-    aggregateShortSignatures: L2,
-    G1: i,
-    G2: u2,
-    Signature: _2,
-    ShortSignature: E2
-  };
-}
-const yn = BigInt(0), bt = BigInt(1), Q = BigInt(2), pn = BigInt(3);
-function Xe(e3, t2, r2, n2, s2 = 1, c2) {
-  const o = BigInt(c2 === void 0 ? n2 : c2), i = r2 ** BigInt(n2), a2 = [];
-  for (let u2 = 0; u2 < s2; u2++) {
-    const l2 = BigInt(u2 + 1), d2 = [];
-    for (let f2 = 0, h2 = bt; f2 < n2; f2++) {
-      const m2 = (l2 * h2 - l2) / o % i;
-      d2.push(e3.pow(t2, m2)), h2 *= r2;
-    }
-    a2.push(d2);
-  }
-  return a2;
-}
-function xs(e3, t2, r2) {
-  const n2 = t2.pow(r2, (e3.ORDER - bt) / pn), s2 = t2.pow(r2, (e3.ORDER - bt) / Q);
-  function c2(f2, h2) {
-    const m2 = t2.mul(t2.frobeniusMap(f2, 1), n2), g2 = t2.mul(t2.frobeniusMap(h2, 1), s2);
-    return [m2, g2];
-  }
-  const o = t2.pow(r2, (e3.ORDER ** Q - bt) / pn), i = t2.pow(r2, (e3.ORDER ** Q - bt) / Q);
-  if (!t2.eql(i, t2.neg(t2.ONE)))
-    throw new Error("psiFrobenius: PSI2_Y!==-1");
-  function a2(f2, h2) {
-    return [t2.mul(f2, o), t2.neg(h2)];
-  }
-  const u2 = (f2) => (h2, m2) => {
-    const g2 = m2.toAffine(), y2 = f2(g2.x, g2.y);
-    return h2.fromAffine({ x: y2[0], y: y2[1] });
-  }, l2 = u2(c2), d2 = u2(a2);
-  return { psi: c2, psi2: a2, G2psi: l2, G2psi2: d2, PSI_X: n2, PSI_Y: s2, PSI2_X: o, PSI2_Y: i };
-}
-const wn = (e3, t2) => {
-  if (t2.length !== 2)
-    throw new Error("invalid tuple");
-  const r2 = t2.map((n2) => e3.create(n2));
-  return { c0: r2[0], c1: r2[1] };
-};
-class Es {
-  constructor(t2, r2 = {}) {
-    this.MASK = bt;
-    const n2 = t2.ORDER, s2 = n2 * n2;
-    this.Fp = t2, this.ORDER = s2, this.BITS = Wt(s2), this.BYTES = Math.ceil(Wt(s2) / 8), this.isLE = t2.isLE, this.ZERO = { c0: t2.ZERO, c1: t2.ZERO }, this.ONE = { c0: t2.ONE, c1: t2.ZERO }, this.Fp_NONRESIDUE = t2.create(r2.NONRESIDUE || BigInt(-1)), this.Fp_div2 = t2.div(t2.ONE, Q), this.NONRESIDUE = wn(t2, r2.FP2_NONRESIDUE), this.FROBENIUS_COEFFICIENTS = Xe(t2, this.Fp_NONRESIDUE, t2.ORDER, 2)[0], this.mulByB = r2.Fp2mulByB, Object.seal(this);
-  }
-  fromBigTuple(t2) {
-    return wn(this.Fp, t2);
-  }
-  create(t2) {
-    return t2;
-  }
-  isValid({ c0: t2, c1: r2 }) {
-    function n2(s2, c2) {
-      return typeof s2 == "bigint" && yn <= s2 && s2 < c2;
-    }
-    return n2(t2, this.ORDER) && n2(r2, this.ORDER);
-  }
-  is0({ c0: t2, c1: r2 }) {
-    return this.Fp.is0(t2) && this.Fp.is0(r2);
-  }
-  isValidNot0(t2) {
-    return !this.is0(t2) && this.isValid(t2);
-  }
-  eql({ c0: t2, c1: r2 }, { c0: n2, c1: s2 }) {
-    return this.Fp.eql(t2, n2) && this.Fp.eql(r2, s2);
-  }
-  neg({ c0: t2, c1: r2 }) {
-    return { c0: this.Fp.neg(t2), c1: this.Fp.neg(r2) };
-  }
-  pow(t2, r2) {
-    return ye(this, t2, r2);
-  }
-  invertBatch(t2) {
-    return Ht(this, t2);
-  }
-  // Normalized
-  add(t2, r2) {
-    const { c0: n2, c1: s2 } = t2, { c0: c2, c1: o } = r2;
-    return {
-      c0: this.Fp.add(n2, c2),
-      c1: this.Fp.add(s2, o)
-    };
-  }
-  sub({ c0: t2, c1: r2 }, { c0: n2, c1: s2 }) {
-    return {
-      c0: this.Fp.sub(t2, n2),
-      c1: this.Fp.sub(r2, s2)
-    };
-  }
-  mul({ c0: t2, c1: r2 }, n2) {
-    const { Fp: s2 } = this;
-    if (typeof n2 == "bigint")
-      return { c0: s2.mul(t2, n2), c1: s2.mul(r2, n2) };
-    const { c0: c2, c1: o } = n2;
-    let i = s2.mul(t2, c2), a2 = s2.mul(r2, o);
-    const u2 = s2.sub(i, a2), l2 = s2.sub(s2.mul(s2.add(t2, r2), s2.add(c2, o)), s2.add(i, a2));
-    return { c0: u2, c1: l2 };
-  }
-  sqr({ c0: t2, c1: r2 }) {
-    const { Fp: n2 } = this, s2 = n2.add(t2, r2), c2 = n2.sub(t2, r2), o = n2.add(t2, t2);
-    return { c0: n2.mul(s2, c2), c1: n2.mul(o, r2) };
-  }
-  // NonNormalized stuff
-  addN(t2, r2) {
-    return this.add(t2, r2);
-  }
-  subN(t2, r2) {
-    return this.sub(t2, r2);
-  }
-  mulN(t2, r2) {
-    return this.mul(t2, r2);
-  }
-  sqrN(t2) {
-    return this.sqr(t2);
-  }
-  // Why inversion for bigint inside Fp instead of Fp2? it is even used in that context?
-  div(t2, r2) {
-    const { Fp: n2 } = this;
-    return this.mul(t2, typeof r2 == "bigint" ? n2.inv(n2.create(r2)) : this.inv(r2));
-  }
-  inv({ c0: t2, c1: r2 }) {
-    const { Fp: n2 } = this, s2 = n2.inv(n2.create(t2 * t2 + r2 * r2));
-    return { c0: n2.mul(s2, n2.create(t2)), c1: n2.mul(s2, n2.create(-r2)) };
-  }
-  sqrt(t2) {
-    const { Fp: r2 } = this, n2 = this, { c0: s2, c1: c2 } = t2;
-    if (r2.is0(c2))
-      return ue(r2, s2) === 1 ? n2.create({ c0: r2.sqrt(s2), c1: r2.ZERO }) : n2.create({ c0: r2.ZERO, c1: r2.sqrt(r2.div(s2, this.Fp_NONRESIDUE)) });
-    const o = r2.sqrt(r2.sub(r2.sqr(s2), r2.mul(r2.sqr(c2), this.Fp_NONRESIDUE)));
-    let i = r2.mul(r2.add(o, s2), this.Fp_div2);
-    ue(r2, i) === -1 && (i = r2.sub(i, o));
-    const u2 = r2.sqrt(i), l2 = n2.create({ c0: u2, c1: r2.div(r2.mul(c2, this.Fp_div2), u2) });
-    if (!n2.eql(n2.sqr(l2), t2))
-      throw new Error("Cannot find square root");
-    const d2 = l2, f2 = n2.neg(d2), { re: h2, im: m2 } = n2.reim(d2), { re: g2, im: y2 } = n2.reim(f2);
-    return m2 > y2 || m2 === y2 && h2 > g2 ? d2 : f2;
-  }
-  // Same as sgn0_m_eq_2 in RFC 9380
-  isOdd(t2) {
-    const { re: r2, im: n2 } = this.reim(t2), s2 = r2 % Q, c2 = r2 === yn, o = n2 % Q;
-    return BigInt(s2 || c2 && o) == bt;
-  }
-  // Bytes util
-  fromBytes(t2) {
-    const { Fp: r2 } = this;
-    if (t2.length !== this.BYTES)
-      throw new Error("fromBytes invalid length=" + t2.length);
-    return { c0: r2.fromBytes(t2.subarray(0, r2.BYTES)), c1: r2.fromBytes(t2.subarray(r2.BYTES)) };
-  }
-  toBytes({ c0: t2, c1: r2 }) {
-    return C(this.Fp.toBytes(t2), this.Fp.toBytes(r2));
-  }
-  cmov({ c0: t2, c1: r2 }, { c0: n2, c1: s2 }, c2) {
-    return {
-      c0: this.Fp.cmov(t2, n2, c2),
-      c1: this.Fp.cmov(r2, s2, c2)
-    };
-  }
-  reim({ c0: t2, c1: r2 }) {
-    return { re: t2, im: r2 };
-  }
-  Fp4Square(t2, r2) {
-    const n2 = this, s2 = n2.sqr(t2), c2 = n2.sqr(r2);
-    return {
-      first: n2.add(n2.mulByNonresidue(c2), s2),
-      // b² * Nonresidue + a²
-      second: n2.sub(n2.sub(n2.sqr(n2.add(t2, r2)), s2), c2)
-      // (a + b)² - a² - b²
-    };
-  }
-  // multiply by u + 1
-  mulByNonresidue({ c0: t2, c1: r2 }) {
-    return this.mul({ c0: t2, c1: r2 }, this.NONRESIDUE);
-  }
-  frobeniusMap({ c0: t2, c1: r2 }, n2) {
-    return {
-      c0: t2,
-      c1: this.Fp.mul(r2, this.FROBENIUS_COEFFICIENTS[n2 % 2])
-    };
-  }
-}
-class Bs {
-  constructor(t2) {
-    this.MASK = bt, this.Fp2 = t2, this.ORDER = t2.ORDER, this.BITS = 3 * t2.BITS, this.BYTES = 3 * t2.BYTES, this.isLE = t2.isLE, this.ZERO = { c0: t2.ZERO, c1: t2.ZERO, c2: t2.ZERO }, this.ONE = { c0: t2.ONE, c1: t2.ZERO, c2: t2.ZERO };
-    const { Fp: r2 } = t2, n2 = Xe(t2, t2.NONRESIDUE, r2.ORDER, 6, 2, 3);
-    this.FROBENIUS_COEFFICIENTS_1 = n2[0], this.FROBENIUS_COEFFICIENTS_2 = n2[1], Object.seal(this);
-  }
-  add({ c0: t2, c1: r2, c2: n2 }, { c0: s2, c1: c2, c2: o }) {
-    const { Fp2: i } = this;
-    return {
-      c0: i.add(t2, s2),
-      c1: i.add(r2, c2),
-      c2: i.add(n2, o)
-    };
-  }
-  sub({ c0: t2, c1: r2, c2: n2 }, { c0: s2, c1: c2, c2: o }) {
-    const { Fp2: i } = this;
-    return {
-      c0: i.sub(t2, s2),
-      c1: i.sub(r2, c2),
-      c2: i.sub(n2, o)
-    };
-  }
-  mul({ c0: t2, c1: r2, c2: n2 }, s2) {
-    const { Fp2: c2 } = this;
-    if (typeof s2 == "bigint")
-      return {
-        c0: c2.mul(t2, s2),
-        c1: c2.mul(r2, s2),
-        c2: c2.mul(n2, s2)
-      };
-    const { c0: o, c1: i, c2: a2 } = s2, u2 = c2.mul(t2, o), l2 = c2.mul(r2, i), d2 = c2.mul(n2, a2);
-    return {
-      // t0 + (c1 + c2) * (r1 * r2) - (T1 + T2) * (u + 1)
-      c0: c2.add(u2, c2.mulByNonresidue(c2.sub(c2.mul(c2.add(r2, n2), c2.add(i, a2)), c2.add(l2, d2)))),
-      // (c0 + c1) * (r0 + r1) - (T0 + T1) + T2 * (u + 1)
-      c1: c2.add(c2.sub(c2.mul(c2.add(t2, r2), c2.add(o, i)), c2.add(u2, l2)), c2.mulByNonresidue(d2)),
-      // T1 + (c0 + c2) * (r0 + r2) - T0 + T2
-      c2: c2.sub(c2.add(l2, c2.mul(c2.add(t2, n2), c2.add(o, a2))), c2.add(u2, d2))
-    };
-  }
-  sqr({ c0: t2, c1: r2, c2: n2 }) {
-    const { Fp2: s2 } = this;
-    let c2 = s2.sqr(t2), o = s2.mul(s2.mul(t2, r2), Q), i = s2.mul(s2.mul(r2, n2), Q), a2 = s2.sqr(n2);
-    return {
-      c0: s2.add(s2.mulByNonresidue(i), c2),
-      // T3 * (u + 1) + T0
-      c1: s2.add(s2.mulByNonresidue(a2), o),
-      // T4 * (u + 1) + T1
-      // T1 + (c0 - c1 + c2)² + T3 - T0 - T4
-      c2: s2.sub(s2.sub(s2.add(s2.add(o, s2.sqr(s2.add(s2.sub(t2, r2), n2))), i), c2), a2)
-    };
-  }
-  addN(t2, r2) {
-    return this.add(t2, r2);
-  }
-  subN(t2, r2) {
-    return this.sub(t2, r2);
-  }
-  mulN(t2, r2) {
-    return this.mul(t2, r2);
-  }
-  sqrN(t2) {
-    return this.sqr(t2);
-  }
-  create(t2) {
-    return t2;
-  }
-  isValid({ c0: t2, c1: r2, c2: n2 }) {
-    const { Fp2: s2 } = this;
-    return s2.isValid(t2) && s2.isValid(r2) && s2.isValid(n2);
-  }
-  is0({ c0: t2, c1: r2, c2: n2 }) {
-    const { Fp2: s2 } = this;
-    return s2.is0(t2) && s2.is0(r2) && s2.is0(n2);
-  }
-  isValidNot0(t2) {
-    return !this.is0(t2) && this.isValid(t2);
-  }
-  neg({ c0: t2, c1: r2, c2: n2 }) {
-    const { Fp2: s2 } = this;
-    return { c0: s2.neg(t2), c1: s2.neg(r2), c2: s2.neg(n2) };
-  }
-  eql({ c0: t2, c1: r2, c2: n2 }, { c0: s2, c1: c2, c2: o }) {
-    const { Fp2: i } = this;
-    return i.eql(t2, s2) && i.eql(r2, c2) && i.eql(n2, o);
-  }
-  sqrt(t2) {
-    return Yn();
-  }
-  // Do we need division by bigint at all? Should be done via order:
-  div(t2, r2) {
-    const { Fp2: n2 } = this, { Fp: s2 } = n2;
-    return this.mul(t2, typeof r2 == "bigint" ? s2.inv(s2.create(r2)) : this.inv(r2));
-  }
-  pow(t2, r2) {
-    return ye(this, t2, r2);
-  }
-  invertBatch(t2) {
-    return Ht(this, t2);
-  }
-  inv({ c0: t2, c1: r2, c2: n2 }) {
-    const { Fp2: s2 } = this;
-    let c2 = s2.sub(s2.sqr(t2), s2.mulByNonresidue(s2.mul(n2, r2))), o = s2.sub(s2.mulByNonresidue(s2.sqr(n2)), s2.mul(t2, r2)), i = s2.sub(s2.sqr(r2), s2.mul(t2, n2)), a2 = s2.inv(s2.add(s2.mulByNonresidue(s2.add(s2.mul(n2, o), s2.mul(r2, i))), s2.mul(t2, c2)));
-    return { c0: s2.mul(a2, c2), c1: s2.mul(a2, o), c2: s2.mul(a2, i) };
-  }
-  // Bytes utils
-  fromBytes(t2) {
-    const { Fp2: r2 } = this;
-    if (t2.length !== this.BYTES)
-      throw new Error("fromBytes invalid length=" + t2.length);
-    const n2 = r2.BYTES;
-    return {
-      c0: r2.fromBytes(t2.subarray(0, n2)),
-      c1: r2.fromBytes(t2.subarray(n2, n2 * 2)),
-      c2: r2.fromBytes(t2.subarray(2 * n2))
-    };
-  }
-  toBytes({ c0: t2, c1: r2, c2: n2 }) {
-    const { Fp2: s2 } = this;
-    return C(s2.toBytes(t2), s2.toBytes(r2), s2.toBytes(n2));
-  }
-  cmov({ c0: t2, c1: r2, c2: n2 }, { c0: s2, c1: c2, c2: o }, i) {
-    const { Fp2: a2 } = this;
-    return {
-      c0: a2.cmov(t2, s2, i),
-      c1: a2.cmov(r2, c2, i),
-      c2: a2.cmov(n2, o, i)
-    };
-  }
-  fromBigSix(t2) {
-    const { Fp2: r2 } = this;
-    if (!Array.isArray(t2) || t2.length !== 6)
-      throw new Error("invalid Fp6 usage");
-    return {
-      c0: r2.fromBigTuple(t2.slice(0, 2)),
-      c1: r2.fromBigTuple(t2.slice(2, 4)),
-      c2: r2.fromBigTuple(t2.slice(4, 6))
-    };
-  }
-  frobeniusMap({ c0: t2, c1: r2, c2: n2 }, s2) {
-    const { Fp2: c2 } = this;
-    return {
-      c0: c2.frobeniusMap(t2, s2),
-      c1: c2.mul(c2.frobeniusMap(r2, s2), this.FROBENIUS_COEFFICIENTS_1[s2 % 6]),
-      c2: c2.mul(c2.frobeniusMap(n2, s2), this.FROBENIUS_COEFFICIENTS_2[s2 % 6])
-    };
-  }
-  mulByFp2({ c0: t2, c1: r2, c2: n2 }, s2) {
-    const { Fp2: c2 } = this;
-    return {
-      c0: c2.mul(t2, s2),
-      c1: c2.mul(r2, s2),
-      c2: c2.mul(n2, s2)
-    };
-  }
-  mulByNonresidue({ c0: t2, c1: r2, c2: n2 }) {
-    const { Fp2: s2 } = this;
-    return { c0: s2.mulByNonresidue(n2), c1: t2, c2: r2 };
-  }
-  // Sparse multiplication
-  mul1({ c0: t2, c1: r2, c2: n2 }, s2) {
-    const { Fp2: c2 } = this;
-    return {
-      c0: c2.mulByNonresidue(c2.mul(n2, s2)),
-      c1: c2.mul(t2, s2),
-      c2: c2.mul(r2, s2)
-    };
-  }
-  // Sparse multiplication
-  mul01({ c0: t2, c1: r2, c2: n2 }, s2, c2) {
-    const { Fp2: o } = this;
-    let i = o.mul(t2, s2), a2 = o.mul(r2, c2);
-    return {
-      // ((c1 + c2) * b1 - T1) * (u + 1) + T0
-      c0: o.add(o.mulByNonresidue(o.sub(o.mul(o.add(r2, n2), c2), a2)), i),
-      // (b0 + b1) * (c0 + c1) - T0 - T1
-      c1: o.sub(o.sub(o.mul(o.add(s2, c2), o.add(t2, r2)), i), a2),
-      // (c0 + c2) * b0 - T0 + T1
-      c2: o.add(o.sub(o.mul(o.add(t2, n2), s2), i), a2)
-    };
-  }
-}
-class _s {
-  constructor(t2, r2) {
-    this.MASK = bt;
-    const { Fp2: n2 } = t2, { Fp: s2 } = n2;
-    this.Fp6 = t2, this.ORDER = n2.ORDER, this.BITS = 2 * t2.BITS, this.BYTES = 2 * t2.BYTES, this.isLE = t2.isLE, this.ZERO = { c0: t2.ZERO, c1: t2.ZERO }, this.ONE = { c0: t2.ONE, c1: t2.ZERO }, this.FROBENIUS_COEFFICIENTS = Xe(n2, n2.NONRESIDUE, s2.ORDER, 12, 1, 6)[0], this.X_LEN = r2.X_LEN, this.finalExponentiate = r2.Fp12finalExponentiate;
-  }
-  create(t2) {
-    return t2;
-  }
-  isValid({ c0: t2, c1: r2 }) {
-    const { Fp6: n2 } = this;
-    return n2.isValid(t2) && n2.isValid(r2);
-  }
-  is0({ c0: t2, c1: r2 }) {
-    const { Fp6: n2 } = this;
-    return n2.is0(t2) && n2.is0(r2);
-  }
-  isValidNot0(t2) {
-    return !this.is0(t2) && this.isValid(t2);
-  }
-  neg({ c0: t2, c1: r2 }) {
-    const { Fp6: n2 } = this;
-    return { c0: n2.neg(t2), c1: n2.neg(r2) };
-  }
-  eql({ c0: t2, c1: r2 }, { c0: n2, c1: s2 }) {
-    const { Fp6: c2 } = this;
-    return c2.eql(t2, n2) && c2.eql(r2, s2);
-  }
-  sqrt(t2) {
-    Yn();
-  }
-  inv({ c0: t2, c1: r2 }) {
-    const { Fp6: n2 } = this;
-    let s2 = n2.inv(n2.sub(n2.sqr(t2), n2.mulByNonresidue(n2.sqr(r2))));
-    return { c0: n2.mul(t2, s2), c1: n2.neg(n2.mul(r2, s2)) };
-  }
-  div(t2, r2) {
-    const { Fp6: n2 } = this, { Fp2: s2 } = n2, { Fp: c2 } = s2;
-    return this.mul(t2, typeof r2 == "bigint" ? c2.inv(c2.create(r2)) : this.inv(r2));
-  }
-  pow(t2, r2) {
-    return ye(this, t2, r2);
-  }
-  invertBatch(t2) {
-    return Ht(this, t2);
-  }
-  // Normalized
-  add({ c0: t2, c1: r2 }, { c0: n2, c1: s2 }) {
-    const { Fp6: c2 } = this;
-    return {
-      c0: c2.add(t2, n2),
-      c1: c2.add(r2, s2)
-    };
-  }
-  sub({ c0: t2, c1: r2 }, { c0: n2, c1: s2 }) {
-    const { Fp6: c2 } = this;
-    return {
-      c0: c2.sub(t2, n2),
-      c1: c2.sub(r2, s2)
-    };
-  }
-  mul({ c0: t2, c1: r2 }, n2) {
-    const { Fp6: s2 } = this;
-    if (typeof n2 == "bigint")
-      return { c0: s2.mul(t2, n2), c1: s2.mul(r2, n2) };
-    let { c0: c2, c1: o } = n2, i = s2.mul(t2, c2), a2 = s2.mul(r2, o);
-    return {
-      c0: s2.add(i, s2.mulByNonresidue(a2)),
-      // T1 + T2 * v
-      // (c0 + c1) * (r0 + r1) - (T1 + T2)
-      c1: s2.sub(s2.mul(s2.add(t2, r2), s2.add(c2, o)), s2.add(i, a2))
-    };
-  }
-  sqr({ c0: t2, c1: r2 }) {
-    const { Fp6: n2 } = this;
-    let s2 = n2.mul(t2, r2);
-    return {
-      // (c1 * v + c0) * (c0 + c1) - AB - AB * v
-      c0: n2.sub(n2.sub(n2.mul(n2.add(n2.mulByNonresidue(r2), t2), n2.add(t2, r2)), s2), n2.mulByNonresidue(s2)),
-      c1: n2.add(s2, s2)
-    };
-  }
-  // NonNormalized stuff
-  addN(t2, r2) {
-    return this.add(t2, r2);
-  }
-  subN(t2, r2) {
-    return this.sub(t2, r2);
-  }
-  mulN(t2, r2) {
-    return this.mul(t2, r2);
-  }
-  sqrN(t2) {
-    return this.sqr(t2);
-  }
-  // Bytes utils
-  fromBytes(t2) {
-    const { Fp6: r2 } = this;
-    if (t2.length !== this.BYTES)
-      throw new Error("fromBytes invalid length=" + t2.length);
-    return {
-      c0: r2.fromBytes(t2.subarray(0, r2.BYTES)),
-      c1: r2.fromBytes(t2.subarray(r2.BYTES))
-    };
-  }
-  toBytes({ c0: t2, c1: r2 }) {
-    const { Fp6: n2 } = this;
-    return C(n2.toBytes(t2), n2.toBytes(r2));
-  }
-  cmov({ c0: t2, c1: r2 }, { c0: n2, c1: s2 }, c2) {
-    const { Fp6: o } = this;
-    return {
-      c0: o.cmov(t2, n2, c2),
-      c1: o.cmov(r2, s2, c2)
-    };
-  }
-  // Utils
-  // toString() {
-  //   return '' + 'Fp12(' + this.c0 + this.c1 + '* w');
-  // },
-  // fromTuple(c: [Fp6, Fp6]) {
-  //   return new Fp12(...c);
-  // }
-  fromBigTwelve(t2) {
-    const { Fp6: r2 } = this;
-    return {
-      c0: r2.fromBigSix(t2.slice(0, 6)),
-      c1: r2.fromBigSix(t2.slice(6, 12))
-    };
-  }
-  // Raises to q**i -th power
-  frobeniusMap(t2, r2) {
-    const { Fp6: n2 } = this, { Fp2: s2 } = n2, { c0: c2, c1: o, c2: i } = n2.frobeniusMap(t2.c1, r2), a2 = this.FROBENIUS_COEFFICIENTS[r2 % 12];
-    return {
-      c0: n2.frobeniusMap(t2.c0, r2),
-      c1: n2.create({
-        c0: s2.mul(c2, a2),
-        c1: s2.mul(o, a2),
-        c2: s2.mul(i, a2)
-      })
-    };
-  }
-  mulByFp2({ c0: t2, c1: r2 }, n2) {
-    const { Fp6: s2 } = this;
-    return {
-      c0: s2.mulByFp2(t2, n2),
-      c1: s2.mulByFp2(r2, n2)
-    };
-  }
-  conjugate({ c0: t2, c1: r2 }) {
-    return { c0: t2, c1: this.Fp6.neg(r2) };
-  }
-  // Sparse multiplication
-  mul014({ c0: t2, c1: r2 }, n2, s2, c2) {
-    const { Fp6: o } = this, { Fp2: i } = o;
-    let a2 = o.mul01(t2, n2, s2), u2 = o.mul1(r2, c2);
-    return {
-      c0: o.add(o.mulByNonresidue(u2), a2),
-      // T1 * v + T0
-      // (c1 + c0) * [o0, o1+o4] - T0 - T1
-      c1: o.sub(o.sub(o.mul01(o.add(r2, t2), n2, i.add(s2, c2)), a2), u2)
-    };
-  }
-  mul034({ c0: t2, c1: r2 }, n2, s2, c2) {
-    const { Fp6: o } = this, { Fp2: i } = o, a2 = o.create({
-      c0: i.mul(t2.c0, n2),
-      c1: i.mul(t2.c1, n2),
-      c2: i.mul(t2.c2, n2)
-    }), u2 = o.mul01(r2, s2, c2), l2 = o.mul01(o.add(t2, r2), i.add(n2, s2), c2);
-    return {
-      c0: o.add(o.mulByNonresidue(u2), a2),
-      c1: o.sub(l2, o.add(a2, u2))
-    };
-  }
-  // A cyclotomic group is a subgroup of Fp^n defined by
-  //   GΦₙ(p) = {α ∈ Fpⁿ : α^Φₙ(p) = 1}
-  // The result of any pairing is in a cyclotomic subgroup
-  // https://eprint.iacr.org/2009/565.pdf
-  // https://eprint.iacr.org/2010/354.pdf
-  _cyclotomicSquare({ c0: t2, c1: r2 }) {
-    const { Fp6: n2 } = this, { Fp2: s2 } = n2, { c0: c2, c1: o, c2: i } = t2, { c0: a2, c1: u2, c2: l2 } = r2, { first: d2, second: f2 } = s2.Fp4Square(c2, u2), { first: h2, second: m2 } = s2.Fp4Square(a2, i), { first: g2, second: y2 } = s2.Fp4Square(o, l2), T2 = s2.mulByNonresidue(y2);
-    return {
-      c0: n2.create({
-        c0: s2.add(s2.mul(s2.sub(d2, c2), Q), d2),
-        // 2 * (T3 - c0c0)  + T3
-        c1: s2.add(s2.mul(s2.sub(h2, o), Q), h2),
-        // 2 * (T5 - c0c1)  + T5
-        c2: s2.add(s2.mul(s2.sub(g2, i), Q), g2)
-      }),
-      // 2 * (T7 - c0c2)  + T7
-      c1: n2.create({
-        c0: s2.add(s2.mul(s2.add(T2, a2), Q), T2),
-        // 2 * (T9 + c1c0) + T9
-        c1: s2.add(s2.mul(s2.add(f2, u2), Q), f2),
-        // 2 * (T4 + c1c1) + T4
-        c2: s2.add(s2.mul(s2.add(m2, l2), Q), m2)
-      })
-    };
-  }
-  // https://eprint.iacr.org/2009/565.pdf
-  _cyclotomicExp(t2, r2) {
-    let n2 = this.ONE;
-    for (let s2 = this.X_LEN - 1; s2 >= 0; s2--)
-      n2 = this._cyclotomicSquare(n2), Zr(r2, s2) && (n2 = this.mul(n2, t2));
-    return n2;
-  }
-}
-function Ss(e3) {
-  const t2 = Yt(e3.ORDER), r2 = new Es(t2, e3), n2 = new Bs(r2), s2 = new _s(n2, e3);
-  return { Fp: t2, Fp2: r2, Fp6: n2, Fp12: s2 };
-}
-const j = BigInt(0), be = BigInt(1), st = BigInt(2), pe = BigInt(3), Jt = BigInt(4), _t = BigInt("0xd201000000010000"), As = Wt(_t), qt = {
-  p: BigInt("0x1a0111ea397fe69a4b1ba7b6434bacd764774b84f38512bf6730d2a0f6b0f6241eabfffeb153ffffb9feffffffffaaab"),
-  n: BigInt("0x73eda753299d7d483339d80809a1d80553bda402fffe5bfeffffffff00000001"),
-  h: BigInt("0x396c8c005555e1568c00aaab0000aaab"),
-  a: j,
-  b: Jt,
-  Gx: BigInt("0x17f1d3a73197d7942695638c4fa9ac0fc3688c4f9774b905a14e3a3f171bac586c55e83ff97a1aeffb3af00adb22c6bb"),
-  Gy: BigInt("0x08b3f481e3aaa0f1a09e30ed741d8ae4fcf5e095d5d00af600db18cb2c04b3edd03cc744a2888ae40caa232946c5e7e1")
-}, vs = Yt(qt.n, {
-  modFromBytes: true,
-  isLE: true
-}), { Fp: A, Fp2: D, Fp6: Is, Fp12: k } = Ss({
-  ORDER: qt.p,
-  X_LEN: As,
-  // Finite extension field over irreducible polynominal.
-  // Fp(u) / (u² - β) where β = -1
-  FP2_NONRESIDUE: [be, be],
-  Fp2mulByB: ({ c0: e3, c1: t2 }) => {
-    const r2 = A.mul(e3, Jt), n2 = A.mul(t2, Jt);
-    return { c0: A.sub(r2, n2), c1: A.add(r2, n2) };
-  },
-  Fp12finalExponentiate: (e3) => {
-    const t2 = _t, r2 = k.div(k.frobeniusMap(e3, 6), e3), n2 = k.mul(k.frobeniusMap(r2, 2), r2), s2 = k.conjugate(k._cyclotomicExp(n2, t2)), c2 = k.mul(k.conjugate(k._cyclotomicSquare(n2)), s2), o = k.conjugate(k._cyclotomicExp(c2, t2)), i = k.conjugate(k._cyclotomicExp(o, t2)), a2 = k.mul(k.conjugate(k._cyclotomicExp(i, t2)), k._cyclotomicSquare(s2)), u2 = k.conjugate(k._cyclotomicExp(a2, t2)), l2 = k.frobeniusMap(k.mul(s2, i), 2), d2 = k.frobeniusMap(k.mul(o, n2), 3), f2 = k.frobeniusMap(k.mul(a2, k.conjugate(n2)), 1), h2 = k.mul(k.mul(u2, k.conjugate(c2)), n2);
-    return k.mul(k.mul(k.mul(l2, d2), f2), h2);
-  }
-}), { G2psi: xn, G2psi2: Os } = xs(A, D, D.div(D.ONE, D.NONRESIDUE)), Ne = Object.freeze({
-  DST: "BLS_SIG_BLS12381G2_XMD:SHA-256_SSWU_RO_NUL_",
-  encodeDST: "BLS_SIG_BLS12381G2_XMD:SHA-256_SSWU_RO_NUL_",
-  p: A.ORDER,
-  m: 2,
-  k: 128,
-  expand: "xmd",
-  hash: Mn
-}), We = {
-  p: D.ORDER,
-  n: qt.n,
-  h: BigInt("0x5d543a95414e7f1091d50792876a202cd91de4547085abaa68a205b2e5a7ddfa628f1cb4d9e82ef21537e293a6691ae1616ec6e786f0c70cf1c38e31c7238e5"),
-  a: D.ZERO,
-  b: D.fromBigTuple([Jt, Jt]),
-  Gx: D.fromBigTuple([
-    BigInt("0x024aa2b2f08f0a91260805272dc51051c6e47ad4fa403b02b4510b647ae3d1770bac0326a805bbefd48056c8c121bdb8"),
-    BigInt("0x13e02b6052719f607dacd3a088274f65596bd0d09920b61ab5da61bbdc7f5049334cf11213945d57e5ac7d055d042b7e")
-  ]),
-  Gy: D.fromBigTuple([
-    BigInt("0x0ce5d527727d6e118cc9cdc6da2e351aadfd9baa8cbdd3a76d429a695160d12c923ac9cc3baca289e193548608b82801"),
-    BigInt("0x0606c4a02ea734cc32acd2b02bc28b99cb3e287e85a763af267492ab572e99ab3f370d275cec1da1aaa9075ff05f79be")
-  ])
-}, we = ne(A.toBytes(j), { infinity: true, compressed: true });
-function xe(e3) {
-  e3 = e3.slice();
-  const t2 = e3[0] & 224, r2 = !!(t2 >> 7 & 1), n2 = !!(t2 >> 6 & 1), s2 = !!(t2 >> 5 & 1);
-  return e3[0] &= 31, { compressed: r2, infinity: n2, sort: s2, value: e3 };
-}
-function ne(e3, t2) {
-  if (e3[0] & 224)
-    throw new Error("setMask: non-empty mask");
-  return t2.compressed && (e3[0] |= 128), t2.infinity && (e3[0] |= 64), t2.sort && (e3[0] |= 32), e3;
-}
-function Ns(e3, t2, r2) {
-  const { BYTES: n2, ORDER: s2 } = A, c2 = t2.is0(), { x: o, y: i } = t2.toAffine();
-  if (r2) {
-    if (c2)
-      return we.slice();
-    const a2 = !!(i * st / s2);
-    return ne(V(o, n2), { compressed: true, sort: a2 });
-  } else
-    return c2 ? C(Uint8Array.of(64), new Uint8Array(2 * n2 - 1)) : C(V(o, n2), V(i, n2));
-}
-function Te(e3) {
-  e3.assertValidity();
-  const { BYTES: t2, ORDER: r2 } = A, { x: n2, y: s2 } = e3.toAffine();
-  if (e3.is0())
-    return we.slice();
-  const c2 = !!(s2 * st / r2);
-  return ne(V(n2, t2), { compressed: true, sort: c2 });
-}
-function Ts(e3) {
-  const { compressed: t2, infinity: r2, sort: n2, value: s2 } = xe(e3), { BYTES: c2, ORDER: o } = A;
-  if (s2.length === 48 && t2) {
-    const i = dt(s2), a2 = A.create(i & Rt$1(A.BITS));
-    if (r2) {
-      if (a2 !== j)
-        throw new Error("invalid G1 point: non-empty, at infinity, with compression");
-      return { x: j, y: j };
-    }
-    const u2 = A.add(A.pow(a2, pe), A.create(qt.b));
-    let l2 = A.sqrt(u2);
-    if (!l2)
-      throw new Error("invalid G1 point: compressed point");
-    return l2 * st / o !== BigInt(n2) && (l2 = A.neg(l2)), { x: A.create(a2), y: A.create(l2) };
-  } else if (s2.length === 96 && !t2) {
-    const i = dt(s2.subarray(0, c2)), a2 = dt(s2.subarray(c2));
-    if (r2) {
-      if (i !== j || a2 !== j)
-        throw new Error("G1: non-empty point at infinity");
-      return P.G1.Point.ZERO.toAffine();
-    }
-    return { x: A.create(i), y: A.create(a2) };
-  } else
-    throw new Error("invalid G1 point: expected 48/96 bytes");
-}
-function En(e3) {
-  const { infinity: t2, sort: r2, value: n2 } = xe(Ft("signatureHex", e3, 48)), s2 = A.ORDER, c2 = P.G1.Point, o = dt(n2);
-  if (t2)
-    return c2.ZERO;
-  const i = A.create(o & Rt$1(A.BITS)), a2 = A.add(A.pow(i, pe), A.create(qt.b));
-  let u2 = A.sqrt(a2);
-  if (!u2)
-    throw new Error("invalid G1 point: compressed");
-  const l2 = BigInt(r2);
-  u2 * st / s2 !== l2 && (u2 = A.neg(u2));
-  const d2 = c2.fromAffine({ x: i, y: u2 });
-  return d2.assertValidity(), d2;
-}
-function qs(e3, t2, r2) {
-  const { BYTES: n2, ORDER: s2 } = A, c2 = t2.is0(), { x: o, y: i } = t2.toAffine();
-  if (r2) {
-    if (c2)
-      return C(we, V(j, n2));
-    const a2 = !!(i.c1 === j ? i.c0 * st / s2 : i.c1 * st / s2);
-    return C(ne(V(o.c1, n2), { compressed: true, sort: a2 }), V(o.c0, n2));
-  } else {
-    if (c2)
-      return C(Uint8Array.of(64), new Uint8Array(4 * n2 - 1));
-    const { re: a2, im: u2 } = D.reim(o), { re: l2, im: d2 } = D.reim(i);
-    return C(V(u2, n2), V(a2, n2), V(d2, n2), V(l2, n2));
-  }
-}
-function qe(e3) {
-  e3.assertValidity();
-  const { BYTES: t2 } = A;
-  if (e3.is0())
-    return C(we, V(j, t2));
-  const { x: r2, y: n2 } = e3.toAffine(), { re: s2, im: c2 } = D.reim(r2), { re: o, im: i } = D.reim(n2), u2 = !!((i > j ? i * st : o * st) / A.ORDER & be), l2 = s2;
-  return C(ne(V(c2, t2), { sort: u2, compressed: true }), V(l2, t2));
-}
-function Rs(e3) {
-  const { BYTES: t2, ORDER: r2 } = A, { compressed: n2, infinity: s2, sort: c2, value: o } = xe(e3);
-  if (!n2 && !s2 && c2 || // 00100000
-  !n2 && s2 && c2 || // 01100000
-  c2 && s2 && n2)
-    throw new Error("invalid encoding flag: " + (e3[0] & 224));
-  const i = (a2, u2, l2) => dt(a2.slice(u2, l2));
-  if (o.length === 96 && n2) {
-    if (s2) {
-      if (o.reduce((m2, g2) => m2 !== 0 ? g2 + 1 : g2, 0) > 0)
-        throw new Error("invalid G2 point: compressed");
-      return { x: D.ZERO, y: D.ZERO };
-    }
-    const a2 = i(o, 0, t2), u2 = i(o, t2, 2 * t2), l2 = D.create({ c0: A.create(u2), c1: A.create(a2) }), d2 = D.add(D.pow(l2, pe), We.b);
-    let f2 = D.sqrt(d2);
-    const h2 = f2.c1 === j ? f2.c0 * st / r2 : f2.c1 * st / r2 ? be : j;
-    return f2 = c2 && h2 > 0 ? f2 : D.neg(f2), { x: l2, y: f2 };
-  } else if (o.length === 192 && !n2) {
-    if (s2) {
-      if (o.reduce((f2, h2) => f2 !== 0 ? h2 + 1 : h2, 0) > 0)
-        throw new Error("invalid G2 point: uncompressed");
-      return { x: D.ZERO, y: D.ZERO };
-    }
-    const a2 = i(o, 0 * t2, 1 * t2), u2 = i(o, 1 * t2, 2 * t2), l2 = i(o, 2 * t2, 3 * t2), d2 = i(o, 3 * t2, 4 * t2);
-    return { x: D.fromBigTuple([u2, a2]), y: D.fromBigTuple([d2, l2]) };
-  } else
-    throw new Error("invalid G2 point: expected 96/192 bytes");
-}
-function Bn(e3) {
-  const { ORDER: t2 } = A, { infinity: r2, sort: n2, value: s2 } = xe(Ft("signatureHex", e3)), c2 = P.G2.Point, o = s2.length / 2;
-  if (o !== 48 && o !== 96)
-    throw new Error("invalid compressed signature length, expected 96/192 bytes");
-  const i = dt(s2.slice(0, o)), a2 = dt(s2.slice(o));
-  if (r2)
-    return c2.ZERO;
-  const u2 = A.create(i & Rt$1(A.BITS)), l2 = A.create(a2), d2 = D.create({ c0: l2, c1: u2 }), f2 = D.add(D.pow(d2, pe), We.b);
-  let h2 = D.sqrt(f2);
-  if (!h2)
-    throw new Error("Failed to find a square root");
-  const { re: m2, im: g2 } = D.reim(h2), y2 = BigInt(n2), T2 = g2 > j && g2 * st / t2 !== y2, R2 = g2 === j && m2 * st / t2 !== y2;
-  (T2 || R2) && (h2 = D.neg(h2));
-  const p2 = c2.fromAffine({ x: d2, y: h2 });
-  return p2.assertValidity(), p2;
-}
-const P = ws({
-  // Fields
-  fields: {
-    Fp: A,
-    Fp2: D,
-    Fp6: Is,
-    Fp12: k,
-    Fr: vs
-  },
-  // G1: y² = x³ + 4
-  G1: {
-    ...qt,
-    Fp: A,
-    htfDefaults: { ...Ne, m: 1, DST: "BLS_SIG_BLS12381G1_XMD:SHA-256_SSWU_RO_NUL_" },
-    wrapPrivateKey: true,
-    allowInfinityPoint: true,
-    // Checks is the point resides in prime-order subgroup.
-    // point.isTorsionFree() should return true for valid points
-    // It returns false for shitty points.
-    // https://eprint.iacr.org/2021/1130.pdf
-    isTorsionFree: (e3, t2) => {
-      const r2 = BigInt("0x5f19672fdf76ce51ba69c6076a0f77eaddb3a93be6f89688de17d813620a00022e01fffffffefffe"), n2 = new e3(A.mul(t2.X, r2), t2.Y, t2.Z);
-      return t2.multiplyUnsafe(_t).negate().multiplyUnsafe(_t).equals(n2);
-    },
-    // Clear cofactor of G1
-    // https://eprint.iacr.org/2019/403
-    clearCofactor: (e3, t2) => t2.multiplyUnsafe(_t).add(t2),
-    mapToCurve: Ds,
-    fromBytes: Ts,
-    toBytes: Ns,
-    ShortSignature: {
-      fromBytes(e3) {
-        return J(e3), En(e3);
-      },
-      fromHex(e3) {
-        return En(e3);
-      },
-      toBytes(e3) {
-        return Te(e3);
-      },
-      toRawBytes(e3) {
-        return Te(e3);
-      },
-      toHex(e3) {
-        return Xt(Te(e3));
-      }
-    }
-  },
-  G2: {
-    ...We,
-    Fp: D,
-    // https://datatracker.ietf.org/doc/html/rfc9380#name-clearing-the-cofactor
-    // https://datatracker.ietf.org/doc/html/rfc9380#name-cofactor-clearing-for-bls12
-    hEff: BigInt("0xbc69f08f2ee75b3584c6a0ea91b352888e2a8e9145ad7689986ff031508ffe1329c2f178731db956d82bf015d1212b02ec0ec69d7477c1ae954cbc06689f6a359894c0adebbf6b4e8020005aaa95551"),
-    htfDefaults: { ...Ne },
-    wrapPrivateKey: true,
-    allowInfinityPoint: true,
-    mapToCurve: ks,
-    // Checks is the point resides in prime-order subgroup.
-    // point.isTorsionFree() should return true for valid points
-    // It returns false for shitty points.
-    // https://eprint.iacr.org/2021/1130.pdf
-    // Older version: https://eprint.iacr.org/2019/814.pdf
-    isTorsionFree: (e3, t2) => t2.multiplyUnsafe(_t).negate().equals(xn(e3, t2)),
-    // Maps the point into the prime-order subgroup G2.
-    // clear_cofactor_bls12381_g2 from RFC 9380.
-    // https://eprint.iacr.org/2017/419.pdf
-    // prettier-ignore
-    clearCofactor: (e3, t2) => {
-      const r2 = _t;
-      let n2 = t2.multiplyUnsafe(r2).negate(), s2 = xn(e3, t2), c2 = t2.double();
-      return c2 = Os(e3, c2), c2 = c2.subtract(s2), s2 = n2.add(s2), s2 = s2.multiplyUnsafe(r2).negate(), c2 = c2.add(s2), c2 = c2.subtract(n2), c2.subtract(t2);
-    },
-    fromBytes: Rs,
-    toBytes: qs,
-    Signature: {
-      fromBytes(e3) {
-        return J(e3), Bn(e3);
-      },
-      fromHex(e3) {
-        return Bn(e3);
-      },
-      toBytes(e3) {
-        return qe(e3);
-      },
-      toRawBytes(e3) {
-        return qe(e3);
-      },
-      toHex(e3) {
-        return Xt(qe(e3));
-      }
-    }
-  },
-  params: {
-    ateLoopSize: _t,
-    // The BLS parameter x for BLS12-381
-    r: qt.n,
-    // order; z⁴ − z² + 1; CURVE.n from other curves
-    xNegative: true,
-    twistType: "multiplicative"
-  },
-  htfDefaults: Ne
-}), Hs = cr(D, [
-  // xNum
-  [
-    [
-      "0x5c759507e8e333ebb5b7a9a47d7ed8532c52d39fd3a042a88b58423c50ae15d5c2638e343d9c71c6238aaaaaaaa97d6",
-      "0x5c759507e8e333ebb5b7a9a47d7ed8532c52d39fd3a042a88b58423c50ae15d5c2638e343d9c71c6238aaaaaaaa97d6"
-    ],
-    [
-      "0x0",
-      "0x11560bf17baa99bc32126fced787c88f984f87adf7ae0c7f9a208c6b4f20a4181472aaa9cb8d555526a9ffffffffc71a"
-    ],
-    [
-      "0x11560bf17baa99bc32126fced787c88f984f87adf7ae0c7f9a208c6b4f20a4181472aaa9cb8d555526a9ffffffffc71e",
-      "0x8ab05f8bdd54cde190937e76bc3e447cc27c3d6fbd7063fcd104635a790520c0a395554e5c6aaaa9354ffffffffe38d"
-    ],
-    [
-      "0x171d6541fa38ccfaed6dea691f5fb614cb14b4e7f4e810aa22d6108f142b85757098e38d0f671c7188e2aaaaaaaa5ed1",
-      "0x0"
-    ]
-  ],
-  // xDen
-  [
-    [
-      "0x0",
-      "0x1a0111ea397fe69a4b1ba7b6434bacd764774b84f38512bf6730d2a0f6b0f6241eabfffeb153ffffb9feffffffffaa63"
-    ],
-    [
-      "0xc",
-      "0x1a0111ea397fe69a4b1ba7b6434bacd764774b84f38512bf6730d2a0f6b0f6241eabfffeb153ffffb9feffffffffaa9f"
-    ],
-    ["0x1", "0x0"]
-    // LAST 1
-  ],
-  // yNum
-  [
-    [
-      "0x1530477c7ab4113b59a4c18b076d11930f7da5d4a07f649bf54439d87d27e500fc8c25ebf8c92f6812cfc71c71c6d706",
-      "0x1530477c7ab4113b59a4c18b076d11930f7da5d4a07f649bf54439d87d27e500fc8c25ebf8c92f6812cfc71c71c6d706"
-    ],
-    [
-      "0x0",
-      "0x5c759507e8e333ebb5b7a9a47d7ed8532c52d39fd3a042a88b58423c50ae15d5c2638e343d9c71c6238aaaaaaaa97be"
-    ],
-    [
-      "0x11560bf17baa99bc32126fced787c88f984f87adf7ae0c7f9a208c6b4f20a4181472aaa9cb8d555526a9ffffffffc71c",
-      "0x8ab05f8bdd54cde190937e76bc3e447cc27c3d6fbd7063fcd104635a790520c0a395554e5c6aaaa9354ffffffffe38f"
-    ],
-    [
-      "0x124c9ad43b6cf79bfbf7043de3811ad0761b0f37a1e26286b0e977c69aa274524e79097a56dc4bd9e1b371c71c718b10",
-      "0x0"
-    ]
-  ],
-  // yDen
-  [
-    [
-      "0x1a0111ea397fe69a4b1ba7b6434bacd764774b84f38512bf6730d2a0f6b0f6241eabfffeb153ffffb9feffffffffa8fb",
-      "0x1a0111ea397fe69a4b1ba7b6434bacd764774b84f38512bf6730d2a0f6b0f6241eabfffeb153ffffb9feffffffffa8fb"
-    ],
-    [
-      "0x0",
-      "0x1a0111ea397fe69a4b1ba7b6434bacd764774b84f38512bf6730d2a0f6b0f6241eabfffeb153ffffb9feffffffffa9d3"
-    ],
-    [
-      "0x12",
-      "0x1a0111ea397fe69a4b1ba7b6434bacd764774b84f38512bf6730d2a0f6b0f6241eabfffeb153ffffb9feffffffffaa99"
-    ],
-    ["0x1", "0x0"]
-    // LAST 1
-  ]
-].map((e3) => e3.map((t2) => D.fromBigTuple(t2.map(BigInt))))), Gs = cr(A, [
-  // xNum
-  [
-    "0x11a05f2b1e833340b809101dd99815856b303e88a2d7005ff2627b56cdb4e2c85610c2d5f2e62d6eaeac1662734649b7",
-    "0x17294ed3e943ab2f0588bab22147a81c7c17e75b2f6a8417f565e33c70d1e86b4838f2a6f318c356e834eef1b3cb83bb",
-    "0xd54005db97678ec1d1048c5d10a9a1bce032473295983e56878e501ec68e25c958c3e3d2a09729fe0179f9dac9edcb0",
-    "0x1778e7166fcc6db74e0609d307e55412d7f5e4656a8dbf25f1b33289f1b330835336e25ce3107193c5b388641d9b6861",
-    "0xe99726a3199f4436642b4b3e4118e5499db995a1257fb3f086eeb65982fac18985a286f301e77c451154ce9ac8895d9",
-    "0x1630c3250d7313ff01d1201bf7a74ab5db3cb17dd952799b9ed3ab9097e68f90a0870d2dcae73d19cd13c1c66f652983",
-    "0xd6ed6553fe44d296a3726c38ae652bfb11586264f0f8ce19008e218f9c86b2a8da25128c1052ecaddd7f225a139ed84",
-    "0x17b81e7701abdbe2e8743884d1117e53356de5ab275b4db1a682c62ef0f2753339b7c8f8c8f475af9ccb5618e3f0c88e",
-    "0x80d3cf1f9a78fc47b90b33563be990dc43b756ce79f5574a2c596c928c5d1de4fa295f296b74e956d71986a8497e317",
-    "0x169b1f8e1bcfa7c42e0c37515d138f22dd2ecb803a0c5c99676314baf4bb1b7fa3190b2edc0327797f241067be390c9e",
-    "0x10321da079ce07e272d8ec09d2565b0dfa7dccdde6787f96d50af36003b14866f69b771f8c285decca67df3f1605fb7b",
-    "0x6e08c248e260e70bd1e962381edee3d31d79d7e22c837bc23c0bf1bc24c6b68c24b1b80b64d391fa9c8ba2e8ba2d229"
-  ],
-  // xDen
-  [
-    "0x8ca8d548cff19ae18b2e62f4bd3fa6f01d5ef4ba35b48ba9c9588617fc8ac62b558d681be343df8993cf9fa40d21b1c",
-    "0x12561a5deb559c4348b4711298e536367041e8ca0cf0800c0126c2588c48bf5713daa8846cb026e9e5c8276ec82b3bff",
-    "0xb2962fe57a3225e8137e629bff2991f6f89416f5a718cd1fca64e00b11aceacd6a3d0967c94fedcfcc239ba5cb83e19",
-    "0x3425581a58ae2fec83aafef7c40eb545b08243f16b1655154cca8abc28d6fd04976d5243eecf5c4130de8938dc62cd8",
-    "0x13a8e162022914a80a6f1d5f43e7a07dffdfc759a12062bb8d6b44e833b306da9bd29ba81f35781d539d395b3532a21e",
-    "0xe7355f8e4e667b955390f7f0506c6e9395735e9ce9cad4d0a43bcef24b8982f7400d24bc4228f11c02df9a29f6304a5",
-    "0x772caacf16936190f3e0c63e0596721570f5799af53a1894e2e073062aede9cea73b3538f0de06cec2574496ee84a3a",
-    "0x14a7ac2a9d64a8b230b3f5b074cf01996e7f63c21bca68a81996e1cdf9822c580fa5b9489d11e2d311f7d99bbdcc5a5e",
-    "0xa10ecf6ada54f825e920b3dafc7a3cce07f8d1d7161366b74100da67f39883503826692abba43704776ec3a79a1d641",
-    "0x95fc13ab9e92ad4476d6e3eb3a56680f682b4ee96f7d03776df533978f31c1593174e4b4b7865002d6384d168ecdd0a",
-    "0x000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001"
-    // LAST 1
-  ],
-  // yNum
-  [
-    "0x90d97c81ba24ee0259d1f094980dcfa11ad138e48a869522b52af6c956543d3cd0c7aee9b3ba3c2be9845719707bb33",
-    "0x134996a104ee5811d51036d776fb46831223e96c254f383d0f906343eb67ad34d6c56711962fa8bfe097e75a2e41c696",
-    "0xcc786baa966e66f4a384c86a3b49942552e2d658a31ce2c344be4b91400da7d26d521628b00523b8dfe240c72de1f6",
-    "0x1f86376e8981c217898751ad8746757d42aa7b90eeb791c09e4a3ec03251cf9de405aba9ec61deca6355c77b0e5f4cb",
-    "0x8cc03fdefe0ff135caf4fe2a21529c4195536fbe3ce50b879833fd221351adc2ee7f8dc099040a841b6daecf2e8fedb",
-    "0x16603fca40634b6a2211e11db8f0a6a074a7d0d4afadb7bd76505c3d3ad5544e203f6326c95a807299b23ab13633a5f0",
-    "0x4ab0b9bcfac1bbcb2c977d027796b3ce75bb8ca2be184cb5231413c4d634f3747a87ac2460f415ec961f8855fe9d6f2",
-    "0x987c8d5333ab86fde9926bd2ca6c674170a05bfe3bdd81ffd038da6c26c842642f64550fedfe935a15e4ca31870fb29",
-    "0x9fc4018bd96684be88c9e221e4da1bb8f3abd16679dc26c1e8b6e6a1f20cabe69d65201c78607a360370e577bdba587",
-    "0xe1bba7a1186bdb5223abde7ada14a23c42a0ca7915af6fe06985e7ed1e4d43b9b3f7055dd4eba6f2bafaaebca731c30",
-    "0x19713e47937cd1be0dfd0b8f1d43fb93cd2fcbcb6caf493fd1183e416389e61031bf3a5cce3fbafce813711ad011c132",
-    "0x18b46a908f36f6deb918c143fed2edcc523559b8aaf0c2462e6bfe7f911f643249d9cdf41b44d606ce07c8a4d0074d8e",
-    "0xb182cac101b9399d155096004f53f447aa7b12a3426b08ec02710e807b4633f06c851c1919211f20d4c04f00b971ef8",
-    "0x245a394ad1eca9b72fc00ae7be315dc757b3b080d4c158013e6632d3c40659cc6cf90ad1c232a6442d9d3f5db980133",
-    "0x5c129645e44cf1102a159f748c4a3fc5e673d81d7e86568d9ab0f5d396a7ce46ba1049b6579afb7866b1e715475224b",
-    "0x15e6be4e990f03ce4ea50b3b42df2eb5cb181d8f84965a3957add4fa95af01b2b665027efec01c7704b456be69c8b604"
-  ],
-  // yDen
-  [
-    "0x16112c4c3a9c98b252181140fad0eae9601a6de578980be6eec3232b5be72e7a07f3688ef60c206d01479253b03663c1",
-    "0x1962d75c2381201e1a0cbd6c43c348b885c84ff731c4d59ca4a10356f453e01f78a4260763529e3532f6102c2e49a03d",
-    "0x58df3306640da276faaae7d6e8eb15778c4855551ae7f310c35a5dd279cd2eca6757cd636f96f891e2538b53dbf67f2",
-    "0x16b7d288798e5395f20d23bf89edb4d1d115c5dbddbcd30e123da489e726af41727364f2c28297ada8d26d98445f5416",
-    "0xbe0e079545f43e4b00cc912f8228ddcc6d19c9f0f69bbb0542eda0fc9dec916a20b15dc0fd2ededda39142311a5001d",
-    "0x8d9e5297186db2d9fb266eaac783182b70152c65550d881c5ecd87b6f0f5a6449f38db9dfa9cce202c6477faaf9b7ac",
-    "0x166007c08a99db2fc3ba8734ace9824b5eecfdfa8d0cf8ef5dd365bc400a0051d5fa9c01a58b1fb93d1a1399126a775c",
-    "0x16a3ef08be3ea7ea03bcddfabba6ff6ee5a4375efa1f4fd7feb34fd206357132b920f5b00801dee460ee415a15812ed9",
-    "0x1866c8ed336c61231a1be54fd1d74cc4f9fb0ce4c6af5920abc5750c4bf39b4852cfe2f7bb9248836b233d9d55535d4a",
-    "0x167a55cda70a6e1cea820597d94a84903216f763e13d87bb5308592e7ea7d4fbc7385ea3d529b35e346ef48bb8913f55",
-    "0x4d2f259eea405bd48f010a01ad2911d9c6dd039bb61a6290e591b36e636a5c871a5c29f4f83060400f8b49cba8f6aa8",
-    "0xaccbb67481d033ff5852c1e48c50c477f94ff8aefce42d28c0f9a88cea7913516f968986f7ebbea9684b529e2561092",
-    "0xad6b9514c767fe3c3613144b45f1496543346d98adf02267d5ceef9a00d9b8693000763e3b90ac11e99b138573345cc",
-    "0x2660400eb2e4f3b628bdd0d53cd76f2bf565b94e72927c1cb748df27942480e420517bd8714cc80d1fadc1326ed06f7",
-    "0xe0fa1d816ddc03e6b24255e0d7819c171c40f65e273b853324efcd6356caa205ca2f570f13497804415473a1d634b8f",
-    "0x000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001"
-    // LAST 1
-  ]
-].map((e3) => e3.map((t2) => BigInt(t2)))), Us = ir(A, {
-  A: A.create(BigInt("0x144698a3b8e9433d693a02c96d4982b0ea985383ee66a8d8e8981aefd881ac98936f8da0e0f97f5cf428082d584c1d")),
-  B: A.create(BigInt("0x12e2908d11688030018b12e8753eee3b2016c1f0f24f4070a0b9c14fcef35ef55a23215a316ceaa5d1cc48e98e172be0")),
-  Z: A.create(BigInt(11))
-}), Ls = ir(D, {
-  A: D.create({ c0: A.create(j), c1: A.create(BigInt(240)) }),
-  // A' = 240 * I
-  B: D.create({ c0: A.create(BigInt(1012)), c1: A.create(BigInt(1012)) }),
-  // B' = 1012 * (1 + I)
-  Z: D.create({ c0: A.create(BigInt(-2)), c1: A.create(BigInt(-1)) })
-  // Z: -(2 + I)
-});
-function Ds(e3) {
-  const { x: t2, y: r2 } = Us(A.create(e3[0]));
-  return Gs(t2, r2);
-}
-function ks(e3) {
-  const { x: t2, y: r2 } = Ls(D.fromBigTuple(e3));
-  return Hs(t2, r2);
-}
-const Ps = BigInt(0), Vt = BigInt(1), Ms = BigInt(2), Zs = BigInt(7), Ks = BigInt(256), Fs = BigInt(113), ar = [], fr = [], dr = [];
-for (let e3 = 0, t2 = Vt, r2 = 1, n2 = 0; e3 < 24; e3++) {
-  [r2, n2] = [n2, (2 * r2 + 3 * n2) % 5], ar.push(2 * (5 * n2 + r2)), fr.push((e3 + 1) * (e3 + 2) / 2 % 64);
-  let s2 = Ps;
-  for (let c2 = 0; c2 < 7; c2++)
-    t2 = (t2 << Vt ^ (t2 >> Zs) * Fs) % Ks, t2 & Ms && (s2 ^= Vt << (Vt << /* @__PURE__ */ BigInt(c2)) - Vt);
-  dr.push(s2);
-}
-const ur = Dn(dr, true), Cs = ur[0], Ys = ur[1], _n = (e3, t2, r2) => r2 > 32 ? Or(e3, t2, r2) : vr(e3, t2, r2), Sn = (e3, t2, r2) => r2 > 32 ? Nr(e3, t2, r2) : Ir(e3, t2, r2);
-function Vs(e3, t2 = 24) {
-  const r2 = new Uint32Array(10);
-  for (let n2 = 24 - t2; n2 < 24; n2++) {
-    for (let o = 0; o < 10; o++)
-      r2[o] = e3[o] ^ e3[o + 10] ^ e3[o + 20] ^ e3[o + 30] ^ e3[o + 40];
-    for (let o = 0; o < 10; o += 2) {
-      const i = (o + 8) % 10, a2 = (o + 2) % 10, u2 = r2[a2], l2 = r2[a2 + 1], d2 = _n(u2, l2, 1) ^ r2[i], f2 = Sn(u2, l2, 1) ^ r2[i + 1];
-      for (let h2 = 0; h2 < 50; h2 += 10)
-        e3[o + h2] ^= d2, e3[o + h2 + 1] ^= f2;
-    }
-    let s2 = e3[2], c2 = e3[3];
-    for (let o = 0; o < 24; o++) {
-      const i = fr[o], a2 = _n(s2, c2, i), u2 = Sn(s2, c2, i), l2 = ar[o];
-      s2 = e3[l2], c2 = e3[l2 + 1], e3[l2] = a2, e3[l2 + 1] = u2;
-    }
-    for (let o = 0; o < 50; o += 10) {
-      for (let i = 0; i < 10; i++)
-        r2[i] = e3[o + i];
-      for (let i = 0; i < 10; i++)
-        e3[o + i] ^= ~r2[(i + 2) % 10] & r2[(i + 4) % 10];
-    }
-    e3[0] ^= Cs[n2], e3[1] ^= Ys[n2];
-  }
-  mt(r2);
-}
-class Qe extends Ce {
-  // NOTE: we accept arguments in bytes instead of bits here.
-  constructor(t2, r2, n2, s2 = false, c2 = 24) {
-    if (super(), this.pos = 0, this.posOut = 0, this.finished = false, this.destroyed = false, this.enableXOF = false, this.blockLen = t2, this.suffix = r2, this.outputLen = n2, this.enableXOF = s2, this.rounds = c2, Zt(n2), !(0 < t2 && t2 < 200))
-      throw new Error("only keccak-f1600 function is supported");
-    this.state = new Uint8Array(200), this.state32 = mr(this.state);
-  }
-  clone() {
-    return this._cloneInto();
-  }
-  keccak() {
-    tn(this.state32), Vs(this.state32, this.rounds), tn(this.state32), this.posOut = 0, this.pos = 0;
-  }
-  update(t2) {
-    Kt(this), t2 = Tt(t2), J(t2);
-    const { blockLen: r2, state: n2 } = this, s2 = t2.length;
-    for (let c2 = 0; c2 < s2; ) {
-      const o = Math.min(r2 - this.pos, s2 - c2);
-      for (let i = 0; i < o; i++)
-        n2[this.pos++] ^= t2[c2++];
-      this.pos === r2 && this.keccak();
-    }
-    return this;
-  }
-  finish() {
-    if (this.finished)
-      return;
-    this.finished = true;
-    const { state: t2, suffix: r2, pos: n2, blockLen: s2 } = this;
-    t2[n2] ^= r2, (r2 & 128) !== 0 && n2 === s2 - 1 && this.keccak(), t2[s2 - 1] ^= 128, this.keccak();
-  }
-  writeInto(t2) {
-    Kt(this, false), J(t2), this.finish();
-    const r2 = this.state, { blockLen: n2 } = this;
-    for (let s2 = 0, c2 = t2.length; s2 < c2; ) {
-      this.posOut >= n2 && this.keccak();
-      const o = Math.min(n2 - this.posOut, c2 - s2);
-      t2.set(r2.subarray(this.posOut, this.posOut + o), s2), this.posOut += o, s2 += o;
-    }
-    return t2;
-  }
-  xofInto(t2) {
-    if (!this.enableXOF)
-      throw new Error("XOF is not possible for this instance");
-    return this.writeInto(t2);
-  }
-  xof(t2) {
-    return Zt(t2), this.xofInto(new Uint8Array(t2));
-  }
-  digestInto(t2) {
-    if (Hn(t2, this), this.finished)
-      throw new Error("digest() was already called");
-    return this.writeInto(t2), this.destroy(), t2;
-  }
-  digest() {
-    return this.digestInto(new Uint8Array(this.outputLen));
-  }
-  destroy() {
-    this.destroyed = true, mt(this.state);
-  }
-  _cloneInto(t2) {
-    const { blockLen: r2, suffix: n2, outputLen: s2, rounds: c2, enableXOF: o } = this;
-    return t2 || (t2 = new Qe(r2, n2, s2, o, c2)), t2.state32.set(this.state32), t2.pos = this.pos, t2.posOut = this.posOut, t2.finished = this.finished, t2.rounds = c2, t2.suffix = n2, t2.outputLen = s2, t2.enableXOF = o, t2.destroyed = this.destroyed, t2;
-  }
-}
-const zs = (e3, t2, r2) => xr((n2 = {}) => new Qe(t2, e3, n2.dkLen === void 0 ? r2 : n2.dkLen, true)), $s = zs(31, 136, 256 / 8);
-function js(e3, t2, r2) {
-  return Fe(e3), r2 === void 0 && (r2 = new Uint8Array(e3.outputLen)), je(e3, Tt(r2), Tt(t2));
-}
-const Re = /* @__PURE__ */ Uint8Array.from([0]), An = /* @__PURE__ */ Uint8Array.of();
-function Xs(e3, t2, r2, n2 = 32) {
-  Fe(e3), Zt(n2);
-  const s2 = e3.outputLen;
-  if (n2 > 255 * s2)
-    throw new Error("Length should be <= 255*HashLen");
-  const c2 = Math.ceil(n2 / s2);
-  r2 === void 0 && (r2 = An);
-  const o = new Uint8Array(c2 * s2), i = je.create(e3, t2), a2 = i._cloneInto(), u2 = new Uint8Array(i.outputLen);
-  for (let l2 = 0; l2 < c2; l2++)
-    Re[0] = l2 + 1, a2.update(l2 === 0 ? An : u2).update(r2).update(Re).digestInto(u2), o.set(u2, s2 * l2), i._cloneInto(a2);
-  return i.destroy(), a2.destroy(), mt(u2, Re), o.slice(0, n2);
-}
-const Ws = (e3, t2, r2, n2, s2) => Xs(e3, js(e3, t2, r2), n2, s2), rt = 96;
-function Nt(e3) {
-  let t2 = e3.length;
-  const r2 = new Uint8Array(8 + t2);
-  for (let n2 = 7; n2 >= 0; n2--)
-    r2[n2] = t2 & 255, t2 >>>= 8;
-  return r2.set(e3, 8), r2;
-}
-const _te = class _te {
-  /**
-   * @internal constructor
-   *
-   * This is public for typing reasons but there should be no need
-   * for an application to call this.
-   */
-  constructor(t2) {
-    __privateAdd(this, _t2);
-    __privateSet(this, _t2, t2);
-  }
-  /**
-   * Read a DerivedPublicKey from the bytestring encoding
-   *
-   * Normally the bytes provided here will have been returned by
-   * the `vetkd_public_key` management canister interface.
-   */
-  static deserialize(t2) {
-    return new _te(P.G2.Point.fromHex(t2));
-  }
-  /**
-   * Perform second-stage derivation of a public key
-   *
-   * To create the derived public key in VetKD, a two step derivation is performed. The first step
-   * creates a key that is specific to the canister that is making VetKD requests to the
-   * management canister, sometimes called canister master key. The second step incorporates the
-   * "derivation context" value provided to the `vetkd_public_key` management canister interface.
-   *
-   * If `vetkd_public_key` is invoked with an empty derivation context, it simply returns the
-   * canister master key. Then the second derivation step can be done offline, using this
-   * function. This is useful if you wish to derive multiple keys without having to interact with
-   * the IC each time.
-   *
-   * If `context` is empty, then this simply returns the underlying key. This matches the behavior
-   * of `vetkd_public_key`
-   */
-  deriveSubKey(t2) {
-    if (t2.length === 0)
-      return this;
-    {
-      const r2 = "ic-vetkd-bls12-381-g2-context", n2 = this.publicKeyBytes(), s2 = new Uint8Array([
-        ...Nt(n2),
-        ...Nt(t2)
-      ]), c2 = Je(s2, r2), o = P.G2.Point.BASE.multiply(c2);
-      return new _te(this.getPoint().add(o));
-    }
-  }
-  /**
-   * Return the bytestring encoding of the derived public key
-   *
-   * Applications would not normally need to call this, unless they
-   * are using VetKD for creating a random beacon, in which case
-   * these bytes are used by anyone verifying the beacon.
-   */
-  publicKeyBytes() {
-    return __privateGet(this, _t2).toBytes(true);
-  }
-  /**
-   * @internal getter returning the point element of the derived public key
-   *
-   * Applications would not normally need to call this
-   */
-  getPoint() {
-    return __privateGet(this, _t2);
-  }
-};
-_t2 = new WeakMap();
-let te = _te;
-function Je(e3, t2) {
-  return P.G2.hashToScalar(e3, { DST: t2 });
-}
-function re(e3, t2, r2) {
-  const n2 = new Uint8Array();
-  return Ws(Mn, e3, n2, t2, r2);
-}
-function tc(e3, t2) {
-  const r2 = "BLS_SIG_BLS12381G1_XMD:SHA-256_SSWU_RO_AUG_", n2 = e3.publicKeyBytes(), s2 = new Uint8Array([...n2, ...t2]);
-  return P.G1.Point.fromAffine(
-    P.G1.hashToCurve(s2, {
-      DST: r2
-    }).toAffine()
-  );
-}
-const Pe = "IC GCMv2";
-new TextEncoder().encode(
-  Pe
-);
-const On = new Uint8Array([
-  73,
-  67,
-  32,
-  73,
-  66,
-  69,
-  0,
-  1
-]), Et = 8;
-function Nn(e3, t2, r2) {
-  const n2 = new Uint8Array([...e3, ...t2, ...r2]);
-  return Je(
-    n2,
-    "ic-vetkd-bls12-381-ibe-hash-to-mask"
-    /* HashToMask */
-  );
-}
-function br(e3, t2) {
-  if (e3.length !== t2.length)
-    throw new Error("xorBuf arguments should have the same length");
-  const r2 = new Uint8Array(e3.length);
-  for (let n2 = 0; n2 < e3.length; n2++)
-    r2[n2] = e3[n2] ^ t2[n2];
-  return r2;
-}
-function Tn(e3, t2) {
-  if (t2.length !== 576)
-    throw new Error("Unexpected size for Gt element");
-  const r2 = re(
-    t2,
-    "ic-vetkd-bls12-381-ibe-mask-seed",
-    e3.length
-  );
-  return br(r2, e3);
-}
-function qn(e3, t2) {
-  const r2 = "ic-vetkd-bls12-381-ibe-mask-msg-".concat(
-    e3.length.toString().padStart(20, "0")
-  ), n2 = re(t2, r2, 32), s2 = $s(n2, { dkLen: e3.length });
-  return br(e3, s2);
-}
-function Rn(e3) {
-  const t2 = P.fields.Fp12.toBytes(e3), r2 = new Uint8Array(576), n2 = [11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0];
-  for (let s2 = 0; s2 < 12; ++s2)
-    for (let c2 = 0; c2 < 48; ++c2)
-      r2[48 * s2 + c2] = t2[48 * n2[s2] + c2];
-  return r2;
-}
-function Me(e3, t2) {
-  if (e3.length !== t2.length)
-    return false;
-  let r2 = 0;
-  for (let n2 = 0; n2 < e3.length; ++n2)
-    r2 |= e3[n2] ^ t2[n2];
-  return r2 == 0;
-}
-const _ae = class _ae {
-  constructor(t2) {
-    __privateAdd(this, _t3);
-    __privateSet(this, _t3, t2);
-  }
-  /**
-   * Create an identity from a byte string
-   */
-  static fromBytes(t2) {
-    return new _ae(t2);
-  }
-  /**
-   * Create an identity from a string
-   */
-  static fromString(t2) {
-    return _ae.fromBytes(new TextEncoder().encode(t2));
-  }
-  /**
-   * Create an identity from a Principal
-   */
-  static fromPrincipal(t2) {
-    return _ae.fromBytes(t2.toUint8Array());
-  }
-  /**
-   * @internal getter returning the encoded
-   */
-  getBytes() {
-    return __privateGet(this, _t3);
-  }
-};
-_t3 = new WeakMap();
-let ae = _ae;
-const St = 32;
-const _fe = class _fe {
-  constructor(t2) {
-    __privateAdd(this, _t4);
-    if (t2.length !== St)
-      throw new Error("IBE seed must be exactly IBE_SEED_BYTES long");
-    __privateSet(this, _t4, t2);
-  }
-  /**
-   * Create a seed for IBE encryption from a byte string
-   *
-   * This input should be randomly chosen by a secure random number generator.
-   * If the seed is not securely generated the IBE scheme will be insecure.
-   *
-   * At least 128 bits (16 bytes) must be provided.
-   *
-   * If the input is exactly 256 bits it is used directly. Otherwise the input
-   * is hashed with HKDF to produce a 256 bit seed.
-   */
-  static fromBytes(t2) {
-    if (t2.length < 16)
-      throw new Error(
-        "Insufficient input material for IbeSeed derivation"
-      );
-    return t2.length == St ? new _fe(t2) : new _fe(
-      re(
-        t2,
-        "ic-vetkd-bls12-381-ibe-hash-seed",
-        St
-      )
-    );
-  }
-  /**
-   * Create a random seed for IBE encryption
-   */
-  static random() {
-    return new _fe(
-      globalThis.crypto.getRandomValues(new Uint8Array(St))
-    );
-  }
-  /**
-   * @internal getter returning the seed bytes
-   */
-  getBytes() {
-    return __privateGet(this, _t4);
-  }
-};
-_t4 = new WeakMap();
-let fe = _fe;
-const Ge = Et + St + rt;
-const _Ze = class _Ze {
-  /**
-   * Private constructor
-   */
-  constructor(t2, r2, n2, s2) {
-    __privateAdd(this, _t5);
-    __privateAdd(this, _e3);
-    __privateAdd(this, _n2);
-    __privateAdd(this, _r2);
-    __privateSet(this, _t5, t2), __privateSet(this, _e3, r2), __privateSet(this, _n2, n2), __privateSet(this, _r2, s2);
-  }
-  /**
-   * Helper function for determining the size of an IBE ciphertext in bytes.
-   */
-  static ciphertextSize(t2) {
-    if (t2 < 0)
-      throw new Error(
-        "IbeCiphertext.ciphertextSize argument cannot be negative"
-      );
-    return t2 + Ge;
-  }
-  /**
-   * Helper function for determining the size of an IBE plaintext in bytes.
-   */
-  static plaintextSize(t2) {
-    if (t2 < Ge)
-      throw new Error(
-        "IbeCiphertext.plaintextSize given ciphertext size is too small to be valid"
-      );
-    return t2 - Ge;
-  }
-  /**
-   * Serialize the IBE ciphertext to a bytestring
-   */
-  serialize() {
-    const t2 = __privateGet(this, _e3).toBytes(true);
-    return new Uint8Array([
-      ...__privateGet(this, _t5),
-      ...t2,
-      ...__privateGet(this, _n2),
-      ...__privateGet(this, _r2)
-    ]);
-  }
-  /**
-   * Deserialize an IBE ciphertext
-   */
-  static deserialize(t2) {
-    if (t2.length < Et + rt + St)
-      throw new Error("Invalid IBE ciphertext");
-    const r2 = t2.subarray(0, Et), n2 = P.G2.Point.fromHex(
-      t2.subarray(Et, Et + rt)
-    ), s2 = t2.subarray(
-      Et + rt,
-      Et + rt + St
-    ), c2 = t2.subarray(Et + rt + St);
-    if (!Me(r2, On))
-      throw new Error("Unexpected header for IBE ciphertext");
-    return new _Ze(r2, n2, s2, c2);
-  }
-  /**
-   * Encrypt a message using IBE, returning the ciphertext
-   *
-   * Any user who is able to retrieve the VetKey for the specified derived public key and
-   * identity will be able to decrypt this message.
-   *
-   * There is no fixed upper bound on the size of the message that can be encrypted using
-   * this scheme. However, internally during the encryption process several heap allocations
-   * are performed which are approximately the same length as the message itself, so
-   * encrypting or decrypting very large messages may result in memory allocation errors.
-   *
-   * If you anticipate using IBE to encrypt very large messages, consider using IBE just to
-   * encrypt a symmetric key, and then using a standard cipher such as AES-GCM to encrypt the
-   * data.
-   *
-   * The seed parameter must be a randomly generated value that was generated just for this
-   * one message. Using it for a second message, or for any other purpose, compromises the
-   * security of the IBE scheme.
-   */
-  static encrypt(t2, r2, n2, s2) {
-    const c2 = On, o = Nn(c2, s2.getBytes(), n2), i = tc(t2, r2.getBytes()), a2 = P.fields.Fp12.pow(
-      P.pairing(i, t2.getPoint()),
-      o
-    ), u2 = P.G2.Point.BASE.multiply(o), l2 = Tn(s2.getBytes(), Rn(a2)), d2 = qn(n2, s2.getBytes());
-    return new _Ze(c2, u2, l2, d2);
-  }
-  /**
-   * Decrypt an IBE ciphertext, returning the message
-   *
-   * There is no fixed upper bound on the size of the message that can be encrypted using
-   * this scheme. However, internally during the encryption process several heap allocations
-   * are performed which are approximately the same length as the message itself, so
-   * encrypting or decrypting very large messages may result in memory allocation errors.
-   */
-  decrypt(t2) {
-    const r2 = Tn(
-      __privateGet(this, _n2),
-      Rn(P.pairing(t2.getPoint(), __privateGet(this, _e3)))
-    ), n2 = qn(__privateGet(this, _r2), r2), s2 = Nn(__privateGet(this, _t5), r2, n2);
-    if (Me(
-      P.G2.Point.BASE.multiply(s2).toBytes(true),
-      __privateGet(this, _e3).toBytes(true)
-    ))
-      return n2;
-    throw new Error("Decryption failed");
-  }
-};
-_t5 = new WeakMap();
-_e3 = new WeakMap();
-_n2 = new WeakMap();
-_r2 = new WeakMap();
-let Ze = _Ze;
-function serializeShipping(payload) {
-  return JSON.stringify(payload);
-}
-function concatLengthPrefixed(segments) {
-  const total = segments.reduce((sum, seg) => sum + 4 + seg.length, 0);
-  const out = new Uint8Array(total);
-  let offset2 = 0;
-  for (const seg of segments) {
-    const view = new DataView(out.buffer);
-    view.setUint32(offset2, seg.length, false);
-    offset2 += 4;
-    out.set(seg, offset2);
-    offset2 += seg.length;
-  }
-  return out;
-}
-async function encryptShippingToAdmins(cleartext, adminPrincipals, backend) {
-  const publicKeyBytes = await backend.getIbePublicKey();
-  const derivedPublicKey = te.deserialize(publicKeyBytes);
-  const cleartextBytes = new TextEncoder().encode(cleartext);
-  const segments = [];
-  for (const admin of adminPrincipals) {
-    const identity3 = ae.fromPrincipal(Principal$1.fromText(admin));
-    const ciphertext = Ze.encrypt(
-      derivedPublicKey,
-      identity3,
-      cleartextBytes,
-      fe.random()
-    );
-    segments.push(encodeAdminSegment(admin, ciphertext.serialize()));
-  }
-  return concatLengthPrefixed(segments);
-}
-function encodeAdminSegment(adminPrincipal, ciphertext) {
-  const principalBytes = new TextEncoder().encode(adminPrincipal);
-  const segment = new Uint8Array(
-    4 + principalBytes.length + 4 + ciphertext.length
-  );
-  const view = new DataView(segment.buffer);
-  let offset2 = 0;
-  view.setUint32(offset2, principalBytes.length, false);
-  offset2 += 4;
-  segment.set(principalBytes, offset2);
-  offset2 += principalBytes.length;
-  view.setUint32(offset2, ciphertext.length, false);
-  offset2 += 4;
-  segment.set(ciphertext, offset2);
-  return segment;
-}
-async function fetchAdminPrincipals(backend) {
-  return backend.getEncryptionRecipients();
-}
-const qrcode = function(typeNumber, errorCorrectionLevel) {
-  const PAD0 = 236;
-  const PAD1 = 17;
-  let _typeNumber = typeNumber;
-  const _errorCorrectionLevel = QRErrorCorrectionLevel[errorCorrectionLevel];
-  let _modules = null;
-  let _moduleCount = 0;
-  let _dataCache = null;
-  const _dataList = [];
-  const _this = {};
-  const makeImpl = function(test, maskPattern) {
-    _moduleCount = _typeNumber * 4 + 17;
-    _modules = function(moduleCount) {
-      const modules = new Array(moduleCount);
-      for (let row = 0; row < moduleCount; row += 1) {
-        modules[row] = new Array(moduleCount);
-        for (let col = 0; col < moduleCount; col += 1) {
-          modules[row][col] = null;
-        }
-      }
-      return modules;
-    }(_moduleCount);
-    setupPositionProbePattern(0, 0);
-    setupPositionProbePattern(_moduleCount - 7, 0);
-    setupPositionProbePattern(0, _moduleCount - 7);
-    setupPositionAdjustPattern();
-    setupTimingPattern();
-    setupTypeInfo(test, maskPattern);
-    if (_typeNumber >= 7) {
-      setupTypeNumber(test);
-    }
-    if (_dataCache == null) {
-      _dataCache = createData(_typeNumber, _errorCorrectionLevel, _dataList);
-    }
-    mapData(_dataCache, maskPattern);
-  };
-  const setupPositionProbePattern = function(row, col) {
-    for (let r2 = -1; r2 <= 7; r2 += 1) {
-      if (row + r2 <= -1 || _moduleCount <= row + r2) continue;
-      for (let c2 = -1; c2 <= 7; c2 += 1) {
-        if (col + c2 <= -1 || _moduleCount <= col + c2) continue;
-        if (0 <= r2 && r2 <= 6 && (c2 == 0 || c2 == 6) || 0 <= c2 && c2 <= 6 && (r2 == 0 || r2 == 6) || 2 <= r2 && r2 <= 4 && 2 <= c2 && c2 <= 4) {
-          _modules[row + r2][col + c2] = true;
-        } else {
-          _modules[row + r2][col + c2] = false;
-        }
-      }
-    }
-  };
-  const getBestMaskPattern = function() {
-    let minLostPoint = 0;
-    let pattern = 0;
-    for (let i = 0; i < 8; i += 1) {
-      makeImpl(true, i);
-      const lostPoint = QRUtil.getLostPoint(_this);
-      if (i == 0 || minLostPoint > lostPoint) {
-        minLostPoint = lostPoint;
-        pattern = i;
-      }
-    }
-    return pattern;
-  };
-  const setupTimingPattern = function() {
-    for (let r2 = 8; r2 < _moduleCount - 8; r2 += 1) {
-      if (_modules[r2][6] != null) {
-        continue;
-      }
-      _modules[r2][6] = r2 % 2 == 0;
-    }
-    for (let c2 = 8; c2 < _moduleCount - 8; c2 += 1) {
-      if (_modules[6][c2] != null) {
-        continue;
-      }
-      _modules[6][c2] = c2 % 2 == 0;
-    }
-  };
-  const setupPositionAdjustPattern = function() {
-    const pos = QRUtil.getPatternPosition(_typeNumber);
-    for (let i = 0; i < pos.length; i += 1) {
-      for (let j2 = 0; j2 < pos.length; j2 += 1) {
-        const row = pos[i];
-        const col = pos[j2];
-        if (_modules[row][col] != null) {
-          continue;
-        }
-        for (let r2 = -2; r2 <= 2; r2 += 1) {
-          for (let c2 = -2; c2 <= 2; c2 += 1) {
-            if (r2 == -2 || r2 == 2 || c2 == -2 || c2 == 2 || r2 == 0 && c2 == 0) {
-              _modules[row + r2][col + c2] = true;
-            } else {
-              _modules[row + r2][col + c2] = false;
-            }
-          }
-        }
-      }
-    }
-  };
-  const setupTypeNumber = function(test) {
-    const bits = QRUtil.getBCHTypeNumber(_typeNumber);
-    for (let i = 0; i < 18; i += 1) {
-      const mod2 = !test && (bits >> i & 1) == 1;
-      _modules[Math.floor(i / 3)][i % 3 + _moduleCount - 8 - 3] = mod2;
-    }
-    for (let i = 0; i < 18; i += 1) {
-      const mod2 = !test && (bits >> i & 1) == 1;
-      _modules[i % 3 + _moduleCount - 8 - 3][Math.floor(i / 3)] = mod2;
-    }
-  };
-  const setupTypeInfo = function(test, maskPattern) {
-    const data = _errorCorrectionLevel << 3 | maskPattern;
-    const bits = QRUtil.getBCHTypeInfo(data);
-    for (let i = 0; i < 15; i += 1) {
-      const mod2 = !test && (bits >> i & 1) == 1;
-      if (i < 6) {
-        _modules[i][8] = mod2;
-      } else if (i < 8) {
-        _modules[i + 1][8] = mod2;
-      } else {
-        _modules[_moduleCount - 15 + i][8] = mod2;
-      }
-    }
-    for (let i = 0; i < 15; i += 1) {
-      const mod2 = !test && (bits >> i & 1) == 1;
-      if (i < 8) {
-        _modules[8][_moduleCount - i - 1] = mod2;
-      } else if (i < 9) {
-        _modules[8][15 - i - 1 + 1] = mod2;
-      } else {
-        _modules[8][15 - i - 1] = mod2;
-      }
-    }
-    _modules[_moduleCount - 8][8] = !test;
-  };
-  const mapData = function(data, maskPattern) {
-    let inc = -1;
-    let row = _moduleCount - 1;
-    let bitIndex = 7;
-    let byteIndex = 0;
-    const maskFunc = QRUtil.getMaskFunction(maskPattern);
-    for (let col = _moduleCount - 1; col > 0; col -= 2) {
-      if (col == 6) col -= 1;
-      while (true) {
-        for (let c2 = 0; c2 < 2; c2 += 1) {
-          if (_modules[row][col - c2] == null) {
-            let dark = false;
-            if (byteIndex < data.length) {
-              dark = (data[byteIndex] >>> bitIndex & 1) == 1;
-            }
-            const mask = maskFunc(row, col - c2);
-            if (mask) {
-              dark = !dark;
-            }
-            _modules[row][col - c2] = dark;
-            bitIndex -= 1;
-            if (bitIndex == -1) {
-              byteIndex += 1;
-              bitIndex = 7;
-            }
-          }
-        }
-        row += inc;
-        if (row < 0 || _moduleCount <= row) {
-          row -= inc;
-          inc = -inc;
-          break;
-        }
-      }
-    }
-  };
-  const createBytes = function(buffer, rsBlocks) {
-    let offset2 = 0;
-    let maxDcCount = 0;
-    let maxEcCount = 0;
-    const dcdata = new Array(rsBlocks.length);
-    const ecdata = new Array(rsBlocks.length);
-    for (let r2 = 0; r2 < rsBlocks.length; r2 += 1) {
-      const dcCount = rsBlocks[r2].dataCount;
-      const ecCount = rsBlocks[r2].totalCount - dcCount;
-      maxDcCount = Math.max(maxDcCount, dcCount);
-      maxEcCount = Math.max(maxEcCount, ecCount);
-      dcdata[r2] = new Array(dcCount);
-      for (let i = 0; i < dcdata[r2].length; i += 1) {
-        dcdata[r2][i] = 255 & buffer.getBuffer()[i + offset2];
-      }
-      offset2 += dcCount;
-      const rsPoly = QRUtil.getErrorCorrectPolynomial(ecCount);
-      const rawPoly = qrPolynomial(dcdata[r2], rsPoly.getLength() - 1);
-      const modPoly = rawPoly.mod(rsPoly);
-      ecdata[r2] = new Array(rsPoly.getLength() - 1);
-      for (let i = 0; i < ecdata[r2].length; i += 1) {
-        const modIndex = i + modPoly.getLength() - ecdata[r2].length;
-        ecdata[r2][i] = modIndex >= 0 ? modPoly.getAt(modIndex) : 0;
-      }
-    }
-    let totalCodeCount = 0;
-    for (let i = 0; i < rsBlocks.length; i += 1) {
-      totalCodeCount += rsBlocks[i].totalCount;
-    }
-    const data = new Array(totalCodeCount);
-    let index2 = 0;
-    for (let i = 0; i < maxDcCount; i += 1) {
-      for (let r2 = 0; r2 < rsBlocks.length; r2 += 1) {
-        if (i < dcdata[r2].length) {
-          data[index2] = dcdata[r2][i];
-          index2 += 1;
-        }
-      }
-    }
-    for (let i = 0; i < maxEcCount; i += 1) {
-      for (let r2 = 0; r2 < rsBlocks.length; r2 += 1) {
-        if (i < ecdata[r2].length) {
-          data[index2] = ecdata[r2][i];
-          index2 += 1;
-        }
-      }
-    }
-    return data;
-  };
-  const createData = function(typeNumber2, errorCorrectionLevel2, dataList) {
-    const rsBlocks = QRRSBlock.getRSBlocks(typeNumber2, errorCorrectionLevel2);
-    const buffer = qrBitBuffer();
-    for (let i = 0; i < dataList.length; i += 1) {
-      const data = dataList[i];
-      buffer.put(data.getMode(), 4);
-      buffer.put(data.getLength(), QRUtil.getLengthInBits(data.getMode(), typeNumber2));
-      data.write(buffer);
-    }
-    let totalDataCount = 0;
-    for (let i = 0; i < rsBlocks.length; i += 1) {
-      totalDataCount += rsBlocks[i].dataCount;
-    }
-    if (buffer.getLengthInBits() > totalDataCount * 8) {
-      throw "code length overflow. (" + buffer.getLengthInBits() + ">" + totalDataCount * 8 + ")";
-    }
-    if (buffer.getLengthInBits() + 4 <= totalDataCount * 8) {
-      buffer.put(0, 4);
-    }
-    while (buffer.getLengthInBits() % 8 != 0) {
-      buffer.putBit(false);
-    }
-    while (true) {
-      if (buffer.getLengthInBits() >= totalDataCount * 8) {
-        break;
-      }
-      buffer.put(PAD0, 8);
-      if (buffer.getLengthInBits() >= totalDataCount * 8) {
-        break;
-      }
-      buffer.put(PAD1, 8);
-    }
-    return createBytes(buffer, rsBlocks);
-  };
-  _this.addData = function(data, mode) {
-    mode = mode || "Byte";
-    let newData = null;
-    switch (mode) {
-      case "Numeric":
-        newData = qrNumber(data);
-        break;
-      case "Alphanumeric":
-        newData = qrAlphaNum(data);
-        break;
-      case "Byte":
-        newData = qr8BitByte(data);
-        break;
-      case "Kanji":
-        newData = qrKanji(data);
-        break;
-      default:
-        throw "mode:" + mode;
-    }
-    _dataList.push(newData);
-    _dataCache = null;
-  };
-  _this.isDark = function(row, col) {
-    if (row < 0 || _moduleCount <= row || col < 0 || _moduleCount <= col) {
-      throw row + "," + col;
-    }
-    return _modules[row][col];
-  };
-  _this.getModuleCount = function() {
-    return _moduleCount;
-  };
-  _this.make = function() {
-    if (_typeNumber < 1) {
-      let typeNumber2 = 1;
-      for (; typeNumber2 < 40; typeNumber2++) {
-        const rsBlocks = QRRSBlock.getRSBlocks(typeNumber2, _errorCorrectionLevel);
-        const buffer = qrBitBuffer();
-        for (let i = 0; i < _dataList.length; i++) {
-          const data = _dataList[i];
-          buffer.put(data.getMode(), 4);
-          buffer.put(data.getLength(), QRUtil.getLengthInBits(data.getMode(), typeNumber2));
-          data.write(buffer);
-        }
-        let totalDataCount = 0;
-        for (let i = 0; i < rsBlocks.length; i++) {
-          totalDataCount += rsBlocks[i].dataCount;
-        }
-        if (buffer.getLengthInBits() <= totalDataCount * 8) {
-          break;
-        }
-      }
-      _typeNumber = typeNumber2;
-    }
-    makeImpl(false, getBestMaskPattern());
-  };
-  _this.createTableTag = function(cellSize, margin) {
-    cellSize = cellSize || 2;
-    margin = typeof margin == "undefined" ? cellSize * 4 : margin;
-    let qrHtml = "";
-    qrHtml += '<table style="';
-    qrHtml += " border-width: 0px; border-style: none;";
-    qrHtml += " border-collapse: collapse;";
-    qrHtml += " padding: 0px; margin: " + margin + "px;";
-    qrHtml += '">';
-    qrHtml += "<tbody>";
-    for (let r2 = 0; r2 < _this.getModuleCount(); r2 += 1) {
-      qrHtml += "<tr>";
-      for (let c2 = 0; c2 < _this.getModuleCount(); c2 += 1) {
-        qrHtml += '<td style="';
-        qrHtml += " border-width: 0px; border-style: none;";
-        qrHtml += " border-collapse: collapse;";
-        qrHtml += " padding: 0px; margin: 0px;";
-        qrHtml += " width: " + cellSize + "px;";
-        qrHtml += " height: " + cellSize + "px;";
-        qrHtml += " background-color: ";
-        qrHtml += _this.isDark(r2, c2) ? "#000000" : "#ffffff";
-        qrHtml += ";";
-        qrHtml += '"/>';
-      }
-      qrHtml += "</tr>";
-    }
-    qrHtml += "</tbody>";
-    qrHtml += "</table>";
-    return qrHtml;
-  };
-  _this.createSvgTag = function(cellSize, margin, alt, title) {
-    let opts = {};
-    if (typeof arguments[0] == "object") {
-      opts = arguments[0];
-      cellSize = opts.cellSize;
-      margin = opts.margin;
-      alt = opts.alt;
-      title = opts.title;
-    }
-    cellSize = cellSize || 2;
-    margin = typeof margin == "undefined" ? cellSize * 4 : margin;
-    alt = typeof alt === "string" ? { text: alt } : alt || {};
-    alt.text = alt.text || null;
-    alt.id = alt.text ? alt.id || "qrcode-description" : null;
-    title = typeof title === "string" ? { text: title } : title || {};
-    title.text = title.text || null;
-    title.id = title.text ? title.id || "qrcode-title" : null;
-    const size2 = _this.getModuleCount() * cellSize + margin * 2;
-    let c2, mc, r2, mr2, qrSvg = "", rect;
-    rect = "l" + cellSize + ",0 0," + cellSize + " -" + cellSize + ",0 0,-" + cellSize + "z ";
-    qrSvg += '<svg version="1.1" xmlns="http://www.w3.org/2000/svg"';
-    qrSvg += !opts.scalable ? ' width="' + size2 + 'px" height="' + size2 + 'px"' : "";
-    qrSvg += ' viewBox="0 0 ' + size2 + " " + size2 + '" ';
-    qrSvg += ' preserveAspectRatio="xMinYMin meet"';
-    qrSvg += title.text || alt.text ? ' role="img" aria-labelledby="' + escapeXml([title.id, alt.id].join(" ").trim()) + '"' : "";
-    qrSvg += ">";
-    qrSvg += title.text ? '<title id="' + escapeXml(title.id) + '">' + escapeXml(title.text) + "</title>" : "";
-    qrSvg += alt.text ? '<description id="' + escapeXml(alt.id) + '">' + escapeXml(alt.text) + "</description>" : "";
-    qrSvg += '<rect width="100%" height="100%" fill="white" cx="0" cy="0"/>';
-    qrSvg += '<path d="';
-    for (r2 = 0; r2 < _this.getModuleCount(); r2 += 1) {
-      mr2 = r2 * cellSize + margin;
-      for (c2 = 0; c2 < _this.getModuleCount(); c2 += 1) {
-        if (_this.isDark(r2, c2)) {
-          mc = c2 * cellSize + margin;
-          qrSvg += "M" + mc + "," + mr2 + rect;
-        }
-      }
-    }
-    qrSvg += '" stroke="transparent" fill="black"/>';
-    qrSvg += "</svg>";
-    return qrSvg;
-  };
-  _this.createDataURL = function(cellSize, margin) {
-    cellSize = cellSize || 2;
-    margin = typeof margin == "undefined" ? cellSize * 4 : margin;
-    const size2 = _this.getModuleCount() * cellSize + margin * 2;
-    const min2 = margin;
-    const max2 = size2 - margin;
-    return createDataURL(size2, size2, function(x3, y2) {
-      if (min2 <= x3 && x3 < max2 && min2 <= y2 && y2 < max2) {
-        const c2 = Math.floor((x3 - min2) / cellSize);
-        const r2 = Math.floor((y2 - min2) / cellSize);
-        return _this.isDark(r2, c2) ? 0 : 1;
-      } else {
-        return 1;
-      }
-    });
-  };
-  _this.createImgTag = function(cellSize, margin, alt) {
-    cellSize = cellSize || 2;
-    margin = typeof margin == "undefined" ? cellSize * 4 : margin;
-    const size2 = _this.getModuleCount() * cellSize + margin * 2;
-    let img = "";
-    img += "<img";
-    img += ' src="';
-    img += _this.createDataURL(cellSize, margin);
-    img += '"';
-    img += ' width="';
-    img += size2;
-    img += '"';
-    img += ' height="';
-    img += size2;
-    img += '"';
-    if (alt) {
-      img += ' alt="';
-      img += escapeXml(alt);
-      img += '"';
-    }
-    img += "/>";
-    return img;
-  };
-  const escapeXml = function(s2) {
-    let escaped = "";
-    for (let i = 0; i < s2.length; i += 1) {
-      const c2 = s2.charAt(i);
-      switch (c2) {
-        case "<":
-          escaped += "&lt;";
-          break;
-        case ">":
-          escaped += "&gt;";
-          break;
-        case "&":
-          escaped += "&amp;";
-          break;
-        case '"':
-          escaped += "&quot;";
-          break;
-        default:
-          escaped += c2;
-          break;
-      }
-    }
-    return escaped;
-  };
-  const _createHalfASCII = function(margin) {
-    const cellSize = 1;
-    margin = typeof margin == "undefined" ? cellSize * 2 : margin;
-    const size2 = _this.getModuleCount() * cellSize + margin * 2;
-    const min2 = margin;
-    const max2 = size2 - margin;
-    let y2, x3, r1, r2, p2;
-    const blocks = {
-      "██": "█",
-      "█ ": "▀",
-      " █": "▄",
-      "  ": " "
-    };
-    const blocksLastLineNoMargin = {
-      "██": "▀",
-      "█ ": "▀",
-      " █": " ",
-      "  ": " "
-    };
-    let ascii = "";
-    for (y2 = 0; y2 < size2; y2 += 2) {
-      r1 = Math.floor((y2 - min2) / cellSize);
-      r2 = Math.floor((y2 + 1 - min2) / cellSize);
-      for (x3 = 0; x3 < size2; x3 += 1) {
-        p2 = "█";
-        if (min2 <= x3 && x3 < max2 && min2 <= y2 && y2 < max2 && _this.isDark(r1, Math.floor((x3 - min2) / cellSize))) {
-          p2 = " ";
-        }
-        if (min2 <= x3 && x3 < max2 && min2 <= y2 + 1 && y2 + 1 < max2 && _this.isDark(r2, Math.floor((x3 - min2) / cellSize))) {
-          p2 += " ";
-        } else {
-          p2 += "█";
-        }
-        ascii += margin < 1 && y2 + 1 >= max2 ? blocksLastLineNoMargin[p2] : blocks[p2];
-      }
-      ascii += "\n";
-    }
-    if (size2 % 2 && margin > 0) {
-      return ascii.substring(0, ascii.length - size2 - 1) + Array(size2 + 1).join("▀");
-    }
-    return ascii.substring(0, ascii.length - 1);
-  };
-  _this.createASCII = function(cellSize, margin) {
-    cellSize = cellSize || 1;
-    if (cellSize < 2) {
-      return _createHalfASCII(margin);
-    }
-    cellSize -= 1;
-    margin = typeof margin == "undefined" ? cellSize * 2 : margin;
-    const size2 = _this.getModuleCount() * cellSize + margin * 2;
-    const min2 = margin;
-    const max2 = size2 - margin;
-    let y2, x3, r2, p2;
-    const white = Array(cellSize + 1).join("██");
-    const black = Array(cellSize + 1).join("  ");
-    let ascii = "";
-    let line = "";
-    for (y2 = 0; y2 < size2; y2 += 1) {
-      r2 = Math.floor((y2 - min2) / cellSize);
-      line = "";
-      for (x3 = 0; x3 < size2; x3 += 1) {
-        p2 = 1;
-        if (min2 <= x3 && x3 < max2 && min2 <= y2 && y2 < max2 && _this.isDark(r2, Math.floor((x3 - min2) / cellSize))) {
-          p2 = 0;
-        }
-        line += p2 ? white : black;
-      }
-      for (r2 = 0; r2 < cellSize; r2 += 1) {
-        ascii += line + "\n";
-      }
-    }
-    return ascii.substring(0, ascii.length - 1);
-  };
-  _this.renderTo2dContext = function(context, cellSize) {
-    cellSize = cellSize || 2;
-    const length = _this.getModuleCount();
-    for (let row = 0; row < length; row++) {
-      for (let col = 0; col < length; col++) {
-        context.fillStyle = _this.isDark(row, col) ? "black" : "white";
-        context.fillRect(col * cellSize, row * cellSize, cellSize, cellSize);
-      }
-    }
-  };
-  return _this;
-};
-qrcode.stringToBytes = function(s2) {
-  const bytes = [];
-  for (let i = 0; i < s2.length; i += 1) {
-    const c2 = s2.charCodeAt(i);
-    bytes.push(c2 & 255);
-  }
-  return bytes;
-};
-qrcode.createStringToBytes = function(unicodeData, numChars) {
-  const unicodeMap = function() {
-    const bin = base64DecodeInputStream(unicodeData);
-    const read = function() {
-      const b2 = bin.read();
-      if (b2 == -1) throw "eof";
-      return b2;
-    };
-    let count2 = 0;
-    const unicodeMap2 = {};
-    while (true) {
-      const b0 = bin.read();
-      if (b0 == -1) break;
-      const b1 = read();
-      const b2 = read();
-      const b3 = read();
-      const k2 = String.fromCharCode(b0 << 8 | b1);
-      const v2 = b2 << 8 | b3;
-      unicodeMap2[k2] = v2;
-      count2 += 1;
-    }
-    if (count2 != numChars) {
-      throw count2 + " != " + numChars;
-    }
-    return unicodeMap2;
-  }();
-  const unknownChar = "?".charCodeAt(0);
-  return function(s2) {
-    const bytes = [];
-    for (let i = 0; i < s2.length; i += 1) {
-      const c2 = s2.charCodeAt(i);
-      if (c2 < 128) {
-        bytes.push(c2);
-      } else {
-        const b2 = unicodeMap[s2.charAt(i)];
-        if (typeof b2 == "number") {
-          if ((b2 & 255) == b2) {
-            bytes.push(b2);
-          } else {
-            bytes.push(b2 >>> 8);
-            bytes.push(b2 & 255);
-          }
-        } else {
-          bytes.push(unknownChar);
-        }
-      }
-    }
-    return bytes;
-  };
-};
-const QRMode = {
-  MODE_NUMBER: 1 << 0,
-  MODE_ALPHA_NUM: 1 << 1,
-  MODE_8BIT_BYTE: 1 << 2,
-  MODE_KANJI: 1 << 3
-};
-const QRErrorCorrectionLevel = {
-  L: 1,
-  M: 0,
-  Q: 3,
-  H: 2
-};
-const QRMaskPattern = {
-  PATTERN000: 0,
-  PATTERN001: 1,
-  PATTERN010: 2,
-  PATTERN011: 3,
-  PATTERN100: 4,
-  PATTERN101: 5,
-  PATTERN110: 6,
-  PATTERN111: 7
-};
-const QRUtil = function() {
-  const PATTERN_POSITION_TABLE = [
-    [],
-    [6, 18],
-    [6, 22],
-    [6, 26],
-    [6, 30],
-    [6, 34],
-    [6, 22, 38],
-    [6, 24, 42],
-    [6, 26, 46],
-    [6, 28, 50],
-    [6, 30, 54],
-    [6, 32, 58],
-    [6, 34, 62],
-    [6, 26, 46, 66],
-    [6, 26, 48, 70],
-    [6, 26, 50, 74],
-    [6, 30, 54, 78],
-    [6, 30, 56, 82],
-    [6, 30, 58, 86],
-    [6, 34, 62, 90],
-    [6, 28, 50, 72, 94],
-    [6, 26, 50, 74, 98],
-    [6, 30, 54, 78, 102],
-    [6, 28, 54, 80, 106],
-    [6, 32, 58, 84, 110],
-    [6, 30, 58, 86, 114],
-    [6, 34, 62, 90, 118],
-    [6, 26, 50, 74, 98, 122],
-    [6, 30, 54, 78, 102, 126],
-    [6, 26, 52, 78, 104, 130],
-    [6, 30, 56, 82, 108, 134],
-    [6, 34, 60, 86, 112, 138],
-    [6, 30, 58, 86, 114, 142],
-    [6, 34, 62, 90, 118, 146],
-    [6, 30, 54, 78, 102, 126, 150],
-    [6, 24, 50, 76, 102, 128, 154],
-    [6, 28, 54, 80, 106, 132, 158],
-    [6, 32, 58, 84, 110, 136, 162],
-    [6, 26, 54, 82, 110, 138, 166],
-    [6, 30, 58, 86, 114, 142, 170]
-  ];
-  const G15 = 1 << 10 | 1 << 8 | 1 << 5 | 1 << 4 | 1 << 2 | 1 << 1 | 1 << 0;
-  const G18 = 1 << 12 | 1 << 11 | 1 << 10 | 1 << 9 | 1 << 8 | 1 << 5 | 1 << 2 | 1 << 0;
-  const G15_MASK = 1 << 14 | 1 << 12 | 1 << 10 | 1 << 4 | 1 << 1;
-  const _this = {};
-  const getBCHDigit = function(data) {
-    let digit = 0;
-    while (data != 0) {
-      digit += 1;
-      data >>>= 1;
-    }
-    return digit;
-  };
-  _this.getBCHTypeInfo = function(data) {
-    let d2 = data << 10;
-    while (getBCHDigit(d2) - getBCHDigit(G15) >= 0) {
-      d2 ^= G15 << getBCHDigit(d2) - getBCHDigit(G15);
-    }
-    return (data << 10 | d2) ^ G15_MASK;
-  };
-  _this.getBCHTypeNumber = function(data) {
-    let d2 = data << 12;
-    while (getBCHDigit(d2) - getBCHDigit(G18) >= 0) {
-      d2 ^= G18 << getBCHDigit(d2) - getBCHDigit(G18);
-    }
-    return data << 12 | d2;
-  };
-  _this.getPatternPosition = function(typeNumber) {
-    return PATTERN_POSITION_TABLE[typeNumber - 1];
-  };
-  _this.getMaskFunction = function(maskPattern) {
-    switch (maskPattern) {
-      case QRMaskPattern.PATTERN000:
-        return function(i, j2) {
-          return (i + j2) % 2 == 0;
-        };
-      case QRMaskPattern.PATTERN001:
-        return function(i, j2) {
-          return i % 2 == 0;
-        };
-      case QRMaskPattern.PATTERN010:
-        return function(i, j2) {
-          return j2 % 3 == 0;
-        };
-      case QRMaskPattern.PATTERN011:
-        return function(i, j2) {
-          return (i + j2) % 3 == 0;
-        };
-      case QRMaskPattern.PATTERN100:
-        return function(i, j2) {
-          return (Math.floor(i / 2) + Math.floor(j2 / 3)) % 2 == 0;
-        };
-      case QRMaskPattern.PATTERN101:
-        return function(i, j2) {
-          return i * j2 % 2 + i * j2 % 3 == 0;
-        };
-      case QRMaskPattern.PATTERN110:
-        return function(i, j2) {
-          return (i * j2 % 2 + i * j2 % 3) % 2 == 0;
-        };
-      case QRMaskPattern.PATTERN111:
-        return function(i, j2) {
-          return (i * j2 % 3 + (i + j2) % 2) % 2 == 0;
-        };
-      default:
-        throw "bad maskPattern:" + maskPattern;
-    }
-  };
-  _this.getErrorCorrectPolynomial = function(errorCorrectLength) {
-    let a2 = qrPolynomial([1], 0);
-    for (let i = 0; i < errorCorrectLength; i += 1) {
-      a2 = a2.multiply(qrPolynomial([1, QRMath.gexp(i)], 0));
-    }
-    return a2;
-  };
-  _this.getLengthInBits = function(mode, type) {
-    if (1 <= type && type < 10) {
-      switch (mode) {
-        case QRMode.MODE_NUMBER:
-          return 10;
-        case QRMode.MODE_ALPHA_NUM:
-          return 9;
-        case QRMode.MODE_8BIT_BYTE:
-          return 8;
-        case QRMode.MODE_KANJI:
-          return 8;
-        default:
-          throw "mode:" + mode;
-      }
-    } else if (type < 27) {
-      switch (mode) {
-        case QRMode.MODE_NUMBER:
-          return 12;
-        case QRMode.MODE_ALPHA_NUM:
-          return 11;
-        case QRMode.MODE_8BIT_BYTE:
-          return 16;
-        case QRMode.MODE_KANJI:
-          return 10;
-        default:
-          throw "mode:" + mode;
-      }
-    } else if (type < 41) {
-      switch (mode) {
-        case QRMode.MODE_NUMBER:
-          return 14;
-        case QRMode.MODE_ALPHA_NUM:
-          return 13;
-        case QRMode.MODE_8BIT_BYTE:
-          return 16;
-        case QRMode.MODE_KANJI:
-          return 12;
-        default:
-          throw "mode:" + mode;
-      }
-    } else {
-      throw "type:" + type;
-    }
-  };
-  _this.getLostPoint = function(qrcode2) {
-    const moduleCount = qrcode2.getModuleCount();
-    let lostPoint = 0;
-    for (let row = 0; row < moduleCount; row += 1) {
-      for (let col = 0; col < moduleCount; col += 1) {
-        let sameCount = 0;
-        const dark = qrcode2.isDark(row, col);
-        for (let r2 = -1; r2 <= 1; r2 += 1) {
-          if (row + r2 < 0 || moduleCount <= row + r2) {
-            continue;
-          }
-          for (let c2 = -1; c2 <= 1; c2 += 1) {
-            if (col + c2 < 0 || moduleCount <= col + c2) {
-              continue;
-            }
-            if (r2 == 0 && c2 == 0) {
-              continue;
-            }
-            if (dark == qrcode2.isDark(row + r2, col + c2)) {
-              sameCount += 1;
-            }
-          }
-        }
-        if (sameCount > 5) {
-          lostPoint += 3 + sameCount - 5;
-        }
-      }
-    }
-    for (let row = 0; row < moduleCount - 1; row += 1) {
-      for (let col = 0; col < moduleCount - 1; col += 1) {
-        let count2 = 0;
-        if (qrcode2.isDark(row, col)) count2 += 1;
-        if (qrcode2.isDark(row + 1, col)) count2 += 1;
-        if (qrcode2.isDark(row, col + 1)) count2 += 1;
-        if (qrcode2.isDark(row + 1, col + 1)) count2 += 1;
-        if (count2 == 0 || count2 == 4) {
-          lostPoint += 3;
-        }
-      }
-    }
-    for (let row = 0; row < moduleCount; row += 1) {
-      for (let col = 0; col < moduleCount - 6; col += 1) {
-        if (qrcode2.isDark(row, col) && !qrcode2.isDark(row, col + 1) && qrcode2.isDark(row, col + 2) && qrcode2.isDark(row, col + 3) && qrcode2.isDark(row, col + 4) && !qrcode2.isDark(row, col + 5) && qrcode2.isDark(row, col + 6)) {
-          lostPoint += 40;
-        }
-      }
-    }
-    for (let col = 0; col < moduleCount; col += 1) {
-      for (let row = 0; row < moduleCount - 6; row += 1) {
-        if (qrcode2.isDark(row, col) && !qrcode2.isDark(row + 1, col) && qrcode2.isDark(row + 2, col) && qrcode2.isDark(row + 3, col) && qrcode2.isDark(row + 4, col) && !qrcode2.isDark(row + 5, col) && qrcode2.isDark(row + 6, col)) {
-          lostPoint += 40;
-        }
-      }
-    }
-    let darkCount = 0;
-    for (let col = 0; col < moduleCount; col += 1) {
-      for (let row = 0; row < moduleCount; row += 1) {
-        if (qrcode2.isDark(row, col)) {
-          darkCount += 1;
-        }
-      }
-    }
-    const ratio = Math.abs(100 * darkCount / moduleCount / moduleCount - 50) / 5;
-    lostPoint += ratio * 10;
-    return lostPoint;
-  };
-  return _this;
-}();
-const QRMath = function() {
-  const EXP_TABLE = new Array(256);
-  const LOG_TABLE = new Array(256);
-  for (let i = 0; i < 8; i += 1) {
-    EXP_TABLE[i] = 1 << i;
-  }
-  for (let i = 8; i < 256; i += 1) {
-    EXP_TABLE[i] = EXP_TABLE[i - 4] ^ EXP_TABLE[i - 5] ^ EXP_TABLE[i - 6] ^ EXP_TABLE[i - 8];
-  }
-  for (let i = 0; i < 255; i += 1) {
-    LOG_TABLE[EXP_TABLE[i]] = i;
-  }
-  const _this = {};
-  _this.glog = function(n2) {
-    if (n2 < 1) {
-      throw "glog(" + n2 + ")";
-    }
-    return LOG_TABLE[n2];
-  };
-  _this.gexp = function(n2) {
-    while (n2 < 0) {
-      n2 += 255;
-    }
-    while (n2 >= 256) {
-      n2 -= 255;
-    }
-    return EXP_TABLE[n2];
-  };
-  return _this;
-}();
-const qrPolynomial = function(num, shift2) {
-  if (typeof num.length == "undefined") {
-    throw num.length + "/" + shift2;
-  }
-  const _num = function() {
-    let offset2 = 0;
-    while (offset2 < num.length && num[offset2] == 0) {
-      offset2 += 1;
-    }
-    const _num2 = new Array(num.length - offset2 + shift2);
-    for (let i = 0; i < num.length - offset2; i += 1) {
-      _num2[i] = num[i + offset2];
-    }
-    return _num2;
-  }();
-  const _this = {};
-  _this.getAt = function(index2) {
-    return _num[index2];
-  };
-  _this.getLength = function() {
-    return _num.length;
-  };
-  _this.multiply = function(e3) {
-    const num2 = new Array(_this.getLength() + e3.getLength() - 1);
-    for (let i = 0; i < _this.getLength(); i += 1) {
-      for (let j2 = 0; j2 < e3.getLength(); j2 += 1) {
-        num2[i + j2] ^= QRMath.gexp(QRMath.glog(_this.getAt(i)) + QRMath.glog(e3.getAt(j2)));
-      }
-    }
-    return qrPolynomial(num2, 0);
-  };
-  _this.mod = function(e3) {
-    if (_this.getLength() - e3.getLength() < 0) {
-      return _this;
-    }
-    const ratio = QRMath.glog(_this.getAt(0)) - QRMath.glog(e3.getAt(0));
-    const num2 = new Array(_this.getLength());
-    for (let i = 0; i < _this.getLength(); i += 1) {
-      num2[i] = _this.getAt(i);
-    }
-    for (let i = 0; i < e3.getLength(); i += 1) {
-      num2[i] ^= QRMath.gexp(QRMath.glog(e3.getAt(i)) + ratio);
-    }
-    return qrPolynomial(num2, 0).mod(e3);
-  };
-  return _this;
-};
-const QRRSBlock = function() {
-  const RS_BLOCK_TABLE = [
-    // L
-    // M
-    // Q
-    // H
-    // 1
-    [1, 26, 19],
-    [1, 26, 16],
-    [1, 26, 13],
-    [1, 26, 9],
-    // 2
-    [1, 44, 34],
-    [1, 44, 28],
-    [1, 44, 22],
-    [1, 44, 16],
-    // 3
-    [1, 70, 55],
-    [1, 70, 44],
-    [2, 35, 17],
-    [2, 35, 13],
-    // 4
-    [1, 100, 80],
-    [2, 50, 32],
-    [2, 50, 24],
-    [4, 25, 9],
-    // 5
-    [1, 134, 108],
-    [2, 67, 43],
-    [2, 33, 15, 2, 34, 16],
-    [2, 33, 11, 2, 34, 12],
-    // 6
-    [2, 86, 68],
-    [4, 43, 27],
-    [4, 43, 19],
-    [4, 43, 15],
-    // 7
-    [2, 98, 78],
-    [4, 49, 31],
-    [2, 32, 14, 4, 33, 15],
-    [4, 39, 13, 1, 40, 14],
-    // 8
-    [2, 121, 97],
-    [2, 60, 38, 2, 61, 39],
-    [4, 40, 18, 2, 41, 19],
-    [4, 40, 14, 2, 41, 15],
-    // 9
-    [2, 146, 116],
-    [3, 58, 36, 2, 59, 37],
-    [4, 36, 16, 4, 37, 17],
-    [4, 36, 12, 4, 37, 13],
-    // 10
-    [2, 86, 68, 2, 87, 69],
-    [4, 69, 43, 1, 70, 44],
-    [6, 43, 19, 2, 44, 20],
-    [6, 43, 15, 2, 44, 16],
-    // 11
-    [4, 101, 81],
-    [1, 80, 50, 4, 81, 51],
-    [4, 50, 22, 4, 51, 23],
-    [3, 36, 12, 8, 37, 13],
-    // 12
-    [2, 116, 92, 2, 117, 93],
-    [6, 58, 36, 2, 59, 37],
-    [4, 46, 20, 6, 47, 21],
-    [7, 42, 14, 4, 43, 15],
-    // 13
-    [4, 133, 107],
-    [8, 59, 37, 1, 60, 38],
-    [8, 44, 20, 4, 45, 21],
-    [12, 33, 11, 4, 34, 12],
-    // 14
-    [3, 145, 115, 1, 146, 116],
-    [4, 64, 40, 5, 65, 41],
-    [11, 36, 16, 5, 37, 17],
-    [11, 36, 12, 5, 37, 13],
-    // 15
-    [5, 109, 87, 1, 110, 88],
-    [5, 65, 41, 5, 66, 42],
-    [5, 54, 24, 7, 55, 25],
-    [11, 36, 12, 7, 37, 13],
-    // 16
-    [5, 122, 98, 1, 123, 99],
-    [7, 73, 45, 3, 74, 46],
-    [15, 43, 19, 2, 44, 20],
-    [3, 45, 15, 13, 46, 16],
-    // 17
-    [1, 135, 107, 5, 136, 108],
-    [10, 74, 46, 1, 75, 47],
-    [1, 50, 22, 15, 51, 23],
-    [2, 42, 14, 17, 43, 15],
-    // 18
-    [5, 150, 120, 1, 151, 121],
-    [9, 69, 43, 4, 70, 44],
-    [17, 50, 22, 1, 51, 23],
-    [2, 42, 14, 19, 43, 15],
-    // 19
-    [3, 141, 113, 4, 142, 114],
-    [3, 70, 44, 11, 71, 45],
-    [17, 47, 21, 4, 48, 22],
-    [9, 39, 13, 16, 40, 14],
-    // 20
-    [3, 135, 107, 5, 136, 108],
-    [3, 67, 41, 13, 68, 42],
-    [15, 54, 24, 5, 55, 25],
-    [15, 43, 15, 10, 44, 16],
-    // 21
-    [4, 144, 116, 4, 145, 117],
-    [17, 68, 42],
-    [17, 50, 22, 6, 51, 23],
-    [19, 46, 16, 6, 47, 17],
-    // 22
-    [2, 139, 111, 7, 140, 112],
-    [17, 74, 46],
-    [7, 54, 24, 16, 55, 25],
-    [34, 37, 13],
-    // 23
-    [4, 151, 121, 5, 152, 122],
-    [4, 75, 47, 14, 76, 48],
-    [11, 54, 24, 14, 55, 25],
-    [16, 45, 15, 14, 46, 16],
-    // 24
-    [6, 147, 117, 4, 148, 118],
-    [6, 73, 45, 14, 74, 46],
-    [11, 54, 24, 16, 55, 25],
-    [30, 46, 16, 2, 47, 17],
-    // 25
-    [8, 132, 106, 4, 133, 107],
-    [8, 75, 47, 13, 76, 48],
-    [7, 54, 24, 22, 55, 25],
-    [22, 45, 15, 13, 46, 16],
-    // 26
-    [10, 142, 114, 2, 143, 115],
-    [19, 74, 46, 4, 75, 47],
-    [28, 50, 22, 6, 51, 23],
-    [33, 46, 16, 4, 47, 17],
-    // 27
-    [8, 152, 122, 4, 153, 123],
-    [22, 73, 45, 3, 74, 46],
-    [8, 53, 23, 26, 54, 24],
-    [12, 45, 15, 28, 46, 16],
-    // 28
-    [3, 147, 117, 10, 148, 118],
-    [3, 73, 45, 23, 74, 46],
-    [4, 54, 24, 31, 55, 25],
-    [11, 45, 15, 31, 46, 16],
-    // 29
-    [7, 146, 116, 7, 147, 117],
-    [21, 73, 45, 7, 74, 46],
-    [1, 53, 23, 37, 54, 24],
-    [19, 45, 15, 26, 46, 16],
-    // 30
-    [5, 145, 115, 10, 146, 116],
-    [19, 75, 47, 10, 76, 48],
-    [15, 54, 24, 25, 55, 25],
-    [23, 45, 15, 25, 46, 16],
-    // 31
-    [13, 145, 115, 3, 146, 116],
-    [2, 74, 46, 29, 75, 47],
-    [42, 54, 24, 1, 55, 25],
-    [23, 45, 15, 28, 46, 16],
-    // 32
-    [17, 145, 115],
-    [10, 74, 46, 23, 75, 47],
-    [10, 54, 24, 35, 55, 25],
-    [19, 45, 15, 35, 46, 16],
-    // 33
-    [17, 145, 115, 1, 146, 116],
-    [14, 74, 46, 21, 75, 47],
-    [29, 54, 24, 19, 55, 25],
-    [11, 45, 15, 46, 46, 16],
-    // 34
-    [13, 145, 115, 6, 146, 116],
-    [14, 74, 46, 23, 75, 47],
-    [44, 54, 24, 7, 55, 25],
-    [59, 46, 16, 1, 47, 17],
-    // 35
-    [12, 151, 121, 7, 152, 122],
-    [12, 75, 47, 26, 76, 48],
-    [39, 54, 24, 14, 55, 25],
-    [22, 45, 15, 41, 46, 16],
-    // 36
-    [6, 151, 121, 14, 152, 122],
-    [6, 75, 47, 34, 76, 48],
-    [46, 54, 24, 10, 55, 25],
-    [2, 45, 15, 64, 46, 16],
-    // 37
-    [17, 152, 122, 4, 153, 123],
-    [29, 74, 46, 14, 75, 47],
-    [49, 54, 24, 10, 55, 25],
-    [24, 45, 15, 46, 46, 16],
-    // 38
-    [4, 152, 122, 18, 153, 123],
-    [13, 74, 46, 32, 75, 47],
-    [48, 54, 24, 14, 55, 25],
-    [42, 45, 15, 32, 46, 16],
-    // 39
-    [20, 147, 117, 4, 148, 118],
-    [40, 75, 47, 7, 76, 48],
-    [43, 54, 24, 22, 55, 25],
-    [10, 45, 15, 67, 46, 16],
-    // 40
-    [19, 148, 118, 6, 149, 119],
-    [18, 75, 47, 31, 76, 48],
-    [34, 54, 24, 34, 55, 25],
-    [20, 45, 15, 61, 46, 16]
-  ];
-  const qrRSBlock = function(totalCount, dataCount) {
-    const _this2 = {};
-    _this2.totalCount = totalCount;
-    _this2.dataCount = dataCount;
-    return _this2;
-  };
-  const _this = {};
-  const getRsBlockTable = function(typeNumber, errorCorrectionLevel) {
-    switch (errorCorrectionLevel) {
-      case QRErrorCorrectionLevel.L:
-        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 0];
-      case QRErrorCorrectionLevel.M:
-        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 1];
-      case QRErrorCorrectionLevel.Q:
-        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 2];
-      case QRErrorCorrectionLevel.H:
-        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 3];
-      default:
-        return void 0;
-    }
-  };
-  _this.getRSBlocks = function(typeNumber, errorCorrectionLevel) {
-    const rsBlock = getRsBlockTable(typeNumber, errorCorrectionLevel);
-    if (typeof rsBlock == "undefined") {
-      throw "bad rs block @ typeNumber:" + typeNumber + "/errorCorrectionLevel:" + errorCorrectionLevel;
-    }
-    const length = rsBlock.length / 3;
-    const list = [];
-    for (let i = 0; i < length; i += 1) {
-      const count2 = rsBlock[i * 3 + 0];
-      const totalCount = rsBlock[i * 3 + 1];
-      const dataCount = rsBlock[i * 3 + 2];
-      for (let j2 = 0; j2 < count2; j2 += 1) {
-        list.push(qrRSBlock(totalCount, dataCount));
-      }
-    }
-    return list;
-  };
-  return _this;
-}();
-const qrBitBuffer = function() {
-  const _buffer = [];
-  let _length = 0;
-  const _this = {};
-  _this.getBuffer = function() {
-    return _buffer;
-  };
-  _this.getAt = function(index2) {
-    const bufIndex = Math.floor(index2 / 8);
-    return (_buffer[bufIndex] >>> 7 - index2 % 8 & 1) == 1;
-  };
-  _this.put = function(num, length) {
-    for (let i = 0; i < length; i += 1) {
-      _this.putBit((num >>> length - i - 1 & 1) == 1);
-    }
-  };
-  _this.getLengthInBits = function() {
-    return _length;
-  };
-  _this.putBit = function(bit) {
-    const bufIndex = Math.floor(_length / 8);
-    if (_buffer.length <= bufIndex) {
-      _buffer.push(0);
-    }
-    if (bit) {
-      _buffer[bufIndex] |= 128 >>> _length % 8;
-    }
-    _length += 1;
-  };
-  return _this;
-};
-const qrNumber = function(data) {
-  const _mode = QRMode.MODE_NUMBER;
-  const _data = data;
-  const _this = {};
-  _this.getMode = function() {
-    return _mode;
-  };
-  _this.getLength = function(buffer) {
-    return _data.length;
-  };
-  _this.write = function(buffer) {
-    const data2 = _data;
-    let i = 0;
-    while (i + 2 < data2.length) {
-      buffer.put(strToNum(data2.substring(i, i + 3)), 10);
-      i += 3;
-    }
-    if (i < data2.length) {
-      if (data2.length - i == 1) {
-        buffer.put(strToNum(data2.substring(i, i + 1)), 4);
-      } else if (data2.length - i == 2) {
-        buffer.put(strToNum(data2.substring(i, i + 2)), 7);
-      }
-    }
-  };
-  const strToNum = function(s2) {
-    let num = 0;
-    for (let i = 0; i < s2.length; i += 1) {
-      num = num * 10 + chatToNum(s2.charAt(i));
-    }
-    return num;
-  };
-  const chatToNum = function(c2) {
-    if ("0" <= c2 && c2 <= "9") {
-      return c2.charCodeAt(0) - "0".charCodeAt(0);
-    }
-    throw "illegal char :" + c2;
-  };
-  return _this;
-};
-const qrAlphaNum = function(data) {
-  const _mode = QRMode.MODE_ALPHA_NUM;
-  const _data = data;
-  const _this = {};
-  _this.getMode = function() {
-    return _mode;
-  };
-  _this.getLength = function(buffer) {
-    return _data.length;
-  };
-  _this.write = function(buffer) {
-    const s2 = _data;
-    let i = 0;
-    while (i + 1 < s2.length) {
-      buffer.put(
-        getCode(s2.charAt(i)) * 45 + getCode(s2.charAt(i + 1)),
-        11
-      );
-      i += 2;
-    }
-    if (i < s2.length) {
-      buffer.put(getCode(s2.charAt(i)), 6);
-    }
-  };
-  const getCode = function(c2) {
-    if ("0" <= c2 && c2 <= "9") {
-      return c2.charCodeAt(0) - "0".charCodeAt(0);
-    } else if ("A" <= c2 && c2 <= "Z") {
-      return c2.charCodeAt(0) - "A".charCodeAt(0) + 10;
-    } else {
-      switch (c2) {
-        case " ":
-          return 36;
-        case "$":
-          return 37;
-        case "%":
-          return 38;
-        case "*":
-          return 39;
-        case "+":
-          return 40;
-        case "-":
-          return 41;
-        case ".":
-          return 42;
-        case "/":
-          return 43;
-        case ":":
-          return 44;
-        default:
-          throw "illegal char :" + c2;
-      }
-    }
-  };
-  return _this;
-};
-const qr8BitByte = function(data) {
-  const _mode = QRMode.MODE_8BIT_BYTE;
-  const _bytes = qrcode.stringToBytes(data);
-  const _this = {};
-  _this.getMode = function() {
-    return _mode;
-  };
-  _this.getLength = function(buffer) {
-    return _bytes.length;
-  };
-  _this.write = function(buffer) {
-    for (let i = 0; i < _bytes.length; i += 1) {
-      buffer.put(_bytes[i], 8);
-    }
-  };
-  return _this;
-};
-const qrKanji = function(data) {
-  const _mode = QRMode.MODE_KANJI;
-  const stringToBytes2 = qrcode.stringToBytes;
-  !function(c2, code) {
-    const test = stringToBytes2(c2);
-    if (test.length != 2 || (test[0] << 8 | test[1]) != code) {
-      throw "sjis not supported.";
-    }
-  }("友", 38726);
-  const _bytes = stringToBytes2(data);
-  const _this = {};
-  _this.getMode = function() {
-    return _mode;
-  };
-  _this.getLength = function(buffer) {
-    return ~~(_bytes.length / 2);
-  };
-  _this.write = function(buffer) {
-    const data2 = _bytes;
-    let i = 0;
-    while (i + 1 < data2.length) {
-      let c2 = (255 & data2[i]) << 8 | 255 & data2[i + 1];
-      if (33088 <= c2 && c2 <= 40956) {
-        c2 -= 33088;
-      } else if (57408 <= c2 && c2 <= 60351) {
-        c2 -= 49472;
-      } else {
-        throw "illegal char at " + (i + 1) + "/" + c2;
-      }
-      c2 = (c2 >>> 8 & 255) * 192 + (c2 & 255);
-      buffer.put(c2, 13);
-      i += 2;
-    }
-    if (i < data2.length) {
-      throw "illegal char at " + (i + 1);
-    }
-  };
-  return _this;
-};
-const byteArrayOutputStream = function() {
-  const _bytes = [];
-  const _this = {};
-  _this.writeByte = function(b2) {
-    _bytes.push(b2 & 255);
-  };
-  _this.writeShort = function(i) {
-    _this.writeByte(i);
-    _this.writeByte(i >>> 8);
-  };
-  _this.writeBytes = function(b2, off, len) {
-    off = off || 0;
-    len = len || b2.length;
-    for (let i = 0; i < len; i += 1) {
-      _this.writeByte(b2[i + off]);
-    }
-  };
-  _this.writeString = function(s2) {
-    for (let i = 0; i < s2.length; i += 1) {
-      _this.writeByte(s2.charCodeAt(i));
-    }
-  };
-  _this.toByteArray = function() {
-    return _bytes;
-  };
-  _this.toString = function() {
-    let s2 = "";
-    s2 += "[";
-    for (let i = 0; i < _bytes.length; i += 1) {
-      if (i > 0) {
-        s2 += ",";
-      }
-      s2 += _bytes[i];
-    }
-    s2 += "]";
-    return s2;
-  };
-  return _this;
-};
-const base64EncodeOutputStream = function() {
-  let _buffer = 0;
-  let _buflen = 0;
-  let _length = 0;
-  let _base64 = "";
-  const _this = {};
-  const writeEncoded = function(b2) {
-    _base64 += String.fromCharCode(encode2(b2 & 63));
-  };
-  const encode2 = function(n2) {
-    if (n2 < 0) {
-      throw "n:" + n2;
-    } else if (n2 < 26) {
-      return 65 + n2;
-    } else if (n2 < 52) {
-      return 97 + (n2 - 26);
-    } else if (n2 < 62) {
-      return 48 + (n2 - 52);
-    } else if (n2 == 62) {
-      return 43;
-    } else if (n2 == 63) {
-      return 47;
-    } else {
-      throw "n:" + n2;
-    }
-  };
-  _this.writeByte = function(n2) {
-    _buffer = _buffer << 8 | n2 & 255;
-    _buflen += 8;
-    _length += 1;
-    while (_buflen >= 6) {
-      writeEncoded(_buffer >>> _buflen - 6);
-      _buflen -= 6;
-    }
-  };
-  _this.flush = function() {
-    if (_buflen > 0) {
-      writeEncoded(_buffer << 6 - _buflen);
-      _buffer = 0;
-      _buflen = 0;
-    }
-    if (_length % 3 != 0) {
-      const padlen = 3 - _length % 3;
-      for (let i = 0; i < padlen; i += 1) {
-        _base64 += "=";
-      }
-    }
-  };
-  _this.toString = function() {
-    return _base64;
-  };
-  return _this;
-};
-const base64DecodeInputStream = function(str) {
-  const _str = str;
-  let _pos = 0;
-  let _buffer = 0;
-  let _buflen = 0;
-  const _this = {};
-  _this.read = function() {
-    while (_buflen < 8) {
-      if (_pos >= _str.length) {
-        if (_buflen == 0) {
-          return -1;
-        }
-        throw "unexpected end of file./" + _buflen;
-      }
-      const c2 = _str.charAt(_pos);
-      _pos += 1;
-      if (c2 == "=") {
-        _buflen = 0;
-        return -1;
-      } else if (c2.match(/^\s$/)) {
-        continue;
-      }
-      _buffer = _buffer << 6 | decode2(c2.charCodeAt(0));
-      _buflen += 6;
-    }
-    const n2 = _buffer >>> _buflen - 8 & 255;
-    _buflen -= 8;
-    return n2;
-  };
-  const decode2 = function(c2) {
-    if (65 <= c2 && c2 <= 90) {
-      return c2 - 65;
-    } else if (97 <= c2 && c2 <= 122) {
-      return c2 - 97 + 26;
-    } else if (48 <= c2 && c2 <= 57) {
-      return c2 - 48 + 52;
-    } else if (c2 == 43) {
-      return 62;
-    } else if (c2 == 47) {
-      return 63;
-    } else {
-      throw "c:" + c2;
-    }
-  };
-  return _this;
-};
-const gifImage = function(width, height) {
-  const _width = width;
-  const _height = height;
-  const _data = new Array(width * height);
-  const _this = {};
-  _this.setPixel = function(x3, y2, pixel) {
-    _data[y2 * _width + x3] = pixel;
-  };
-  _this.write = function(out) {
-    out.writeString("GIF87a");
-    out.writeShort(_width);
-    out.writeShort(_height);
-    out.writeByte(128);
-    out.writeByte(0);
-    out.writeByte(0);
-    out.writeByte(0);
-    out.writeByte(0);
-    out.writeByte(0);
-    out.writeByte(255);
-    out.writeByte(255);
-    out.writeByte(255);
-    out.writeString(",");
-    out.writeShort(0);
-    out.writeShort(0);
-    out.writeShort(_width);
-    out.writeShort(_height);
-    out.writeByte(0);
-    const lzwMinCodeSize = 2;
-    const raster = getLZWRaster(lzwMinCodeSize);
-    out.writeByte(lzwMinCodeSize);
-    let offset2 = 0;
-    while (raster.length - offset2 > 255) {
-      out.writeByte(255);
-      out.writeBytes(raster, offset2, 255);
-      offset2 += 255;
-    }
-    out.writeByte(raster.length - offset2);
-    out.writeBytes(raster, offset2, raster.length - offset2);
-    out.writeByte(0);
-    out.writeString(";");
-  };
-  const bitOutputStream = function(out) {
-    const _out = out;
-    let _bitLength = 0;
-    let _bitBuffer = 0;
-    const _this2 = {};
-    _this2.write = function(data, length) {
-      if (data >>> length != 0) {
-        throw "length over";
-      }
-      while (_bitLength + length >= 8) {
-        _out.writeByte(255 & (data << _bitLength | _bitBuffer));
-        length -= 8 - _bitLength;
-        data >>>= 8 - _bitLength;
-        _bitBuffer = 0;
-        _bitLength = 0;
-      }
-      _bitBuffer = data << _bitLength | _bitBuffer;
-      _bitLength = _bitLength + length;
-    };
-    _this2.flush = function() {
-      if (_bitLength > 0) {
-        _out.writeByte(_bitBuffer);
-      }
-    };
-    return _this2;
-  };
-  const getLZWRaster = function(lzwMinCodeSize) {
-    const clearCode = 1 << lzwMinCodeSize;
-    const endCode = (1 << lzwMinCodeSize) + 1;
-    let bitLength = lzwMinCodeSize + 1;
-    const table = lzwTable();
-    for (let i = 0; i < clearCode; i += 1) {
-      table.add(String.fromCharCode(i));
-    }
-    table.add(String.fromCharCode(clearCode));
-    table.add(String.fromCharCode(endCode));
-    const byteOut = byteArrayOutputStream();
-    const bitOut = bitOutputStream(byteOut);
-    bitOut.write(clearCode, bitLength);
-    let dataIndex = 0;
-    let s2 = String.fromCharCode(_data[dataIndex]);
-    dataIndex += 1;
-    while (dataIndex < _data.length) {
-      const c2 = String.fromCharCode(_data[dataIndex]);
-      dataIndex += 1;
-      if (table.contains(s2 + c2)) {
-        s2 = s2 + c2;
-      } else {
-        bitOut.write(table.indexOf(s2), bitLength);
-        if (table.size() < 4095) {
-          if (table.size() == 1 << bitLength) {
-            bitLength += 1;
-          }
-          table.add(s2 + c2);
-        }
-        s2 = c2;
-      }
-    }
-    bitOut.write(table.indexOf(s2), bitLength);
-    bitOut.write(endCode, bitLength);
-    bitOut.flush();
-    return byteOut.toByteArray();
-  };
-  const lzwTable = function() {
-    const _map = {};
-    let _size = 0;
-    const _this2 = {};
-    _this2.add = function(key) {
-      if (_this2.contains(key)) {
-        throw "dup key:" + key;
-      }
-      _map[key] = _size;
-      _size += 1;
-    };
-    _this2.size = function() {
-      return _size;
-    };
-    _this2.indexOf = function(key) {
-      return _map[key];
-    };
-    _this2.contains = function(key) {
-      return typeof _map[key] != "undefined";
-    };
-    return _this2;
-  };
-  return _this;
-};
-const createDataURL = function(width, height, getPixel) {
-  const gif = gifImage(width, height);
-  for (let y2 = 0; y2 < height; y2 += 1) {
-    for (let x3 = 0; x3 < width; x3 += 1) {
-      gif.setPixel(x3, y2, getPixel(x3, y2));
-    }
-  }
-  const b2 = byteArrayOutputStream();
-  gif.write(b2);
-  const base64 = base64EncodeOutputStream();
-  const bytes = b2.toByteArray();
-  for (let i = 0; i < bytes.length; i += 1) {
-    base64.writeByte(bytes[i]);
-  }
-  base64.flush();
-  return "data:image/gif;base64," + base64;
-};
-qrcode.stringToBytes;
-function _extends() {
-  return _extends = Object.assign ? Object.assign.bind() : function(n2) {
-    for (var e3 = 1; e3 < arguments.length; e3++) {
-      var t2 = arguments[e3];
-      for (var r2 in t2) ({}).hasOwnProperty.call(t2, r2) && (n2[r2] = t2[r2]);
-    }
-    return n2;
-  }, _extends.apply(null, arguments);
-}
-function _objectWithoutProperties(e3, t2) {
-  if (null == e3) return {};
-  var o, r2, i = _objectWithoutPropertiesLoose(e3, t2);
-  if (Object.getOwnPropertySymbols) {
-    var n2 = Object.getOwnPropertySymbols(e3);
-    for (r2 = 0; r2 < n2.length; r2++) o = n2[r2], -1 === t2.indexOf(o) && {}.propertyIsEnumerable.call(e3, o) && (i[o] = e3[o]);
-  }
-  return i;
-}
-function _objectWithoutPropertiesLoose(r2, e3) {
-  if (null == r2) return {};
-  var t2 = {};
-  for (var n2 in r2) if ({}.hasOwnProperty.call(r2, n2)) {
-    if (-1 !== e3.indexOf(n2)) continue;
-    t2[n2] = r2[n2];
-  }
-  return t2;
-}
-var _excluded$1 = ["bgColor", "bgD", "fgD", "fgColor", "size", "title", "viewBoxSize", "xmlns"];
-var propTypes$1 = {
-  bgColor: PropTypes.oneOfType([PropTypes.object, PropTypes.string]).isRequired,
-  bgD: PropTypes.string.isRequired,
-  fgColor: PropTypes.oneOfType([PropTypes.object, PropTypes.string]).isRequired,
-  fgD: PropTypes.string.isRequired,
-  size: PropTypes.number.isRequired,
-  title: PropTypes.string,
-  viewBoxSize: PropTypes.number.isRequired,
-  xmlns: PropTypes.string
-};
-var QRCodeSvg = /* @__PURE__ */ reactExports.forwardRef(function(_ref, ref) {
-  var bgColor = _ref.bgColor, bgD = _ref.bgD, fgD = _ref.fgD, fgColor = _ref.fgColor, size2 = _ref.size, title = _ref.title, viewBoxSize = _ref.viewBoxSize, _ref$xmlns = _ref.xmlns, xmlns = _ref$xmlns === void 0 ? "http://www.w3.org/2000/svg" : _ref$xmlns, props = _objectWithoutProperties(_ref, _excluded$1);
-  return /* @__PURE__ */ React$2.createElement("svg", _extends({}, props, {
-    height: size2,
-    ref,
-    viewBox: "0 0 ".concat(viewBoxSize, " ").concat(viewBoxSize),
-    width: size2,
-    xmlns
-  }), title ? /* @__PURE__ */ React$2.createElement("title", null, title) : null, /* @__PURE__ */ React$2.createElement("path", {
-    d: bgD,
-    fill: bgColor
-  }), /* @__PURE__ */ React$2.createElement("path", {
-    d: fgD,
-    fill: fgColor
-  }));
-});
-QRCodeSvg.displayName = "QRCodeSvg";
-QRCodeSvg.propTypes = propTypes$1;
-var _excluded = ["bgColor", "fgColor", "level", "size", "value"];
-qrcode.stringToBytes = function(s2) {
-  return Array.from(new TextEncoder().encode(s2));
-};
-var propTypes = {
-  bgColor: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
-  fgColor: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
-  level: PropTypes.string,
-  size: PropTypes.number,
-  value: PropTypes.string.isRequired
-};
-var QRCode = /* @__PURE__ */ reactExports.forwardRef(function(_ref, ref) {
-  var _ref$bgColor = _ref.bgColor, bgColor = _ref$bgColor === void 0 ? "#FFFFFF" : _ref$bgColor, _ref$fgColor = _ref.fgColor, fgColor = _ref$fgColor === void 0 ? "#000000" : _ref$fgColor, _ref$level = _ref.level, level = _ref$level === void 0 ? "L" : _ref$level, _ref$size = _ref.size, size2 = _ref$size === void 0 ? 256 : _ref$size, value = _ref.value, props = _objectWithoutProperties(_ref, _excluded);
-  var qr = qrcode(0, level);
-  qr.addData(value);
-  qr.make();
-  var moduleCount = qr.getModuleCount();
-  var cells = Array.from({
-    length: moduleCount
-  }, function(_2, rowIndex) {
-    return Array.from({
-      length: moduleCount
-    }, function(_3, colIndex) {
-      return qr.isDark(rowIndex, colIndex);
-    });
-  });
-  return /* @__PURE__ */ React$2.createElement(QRCodeSvg, _extends({}, props, {
-    bgColor,
-    bgD: cells.map(function(row, rowIndex) {
-      return row.map(function(cell, cellIndex) {
-        return !cell ? "M ".concat(cellIndex, " ").concat(rowIndex, " l 1 0 0 1 -1 0 Z") : "";
-      }).join(" ");
-    }).join(" "),
-    fgColor,
-    fgD: cells.map(function(row, rowIndex) {
-      return row.map(function(cell, cellIndex) {
-        return cell ? "M ".concat(cellIndex, " ").concat(rowIndex, " l 1 0 0 1 -1 0 Z") : "";
-      }).join(" ");
-    }).join(" "),
-    ref,
-    size: size2,
-    viewBoxSize: moduleCount
-  }));
-});
-QRCode.displayName = "QRCode";
-QRCode.propTypes = propTypes;
-const ACTIVE_ORDER_REF_KEY = "nak.activeOrderRef";
-function useActiveOrderRef() {
-  const [activeOrderRef, setActiveOrderRefState] = reactExports.useState(
-    () => {
-      try {
-        return window.localStorage.getItem(ACTIVE_ORDER_REF_KEY);
-      } catch (error) {
-        console.error(
-          "[checkout] Failed to read active order reference from storage (ERR-CHK-003)",
-          error
-        );
-        return null;
-      }
-    }
-  );
-  const setActiveOrderRef = reactExports.useCallback((reference) => {
-    setActiveOrderRefState(reference);
-    try {
-      if (reference) {
-        window.localStorage.setItem(ACTIVE_ORDER_REF_KEY, reference);
-      } else {
-        window.localStorage.removeItem(ACTIVE_ORDER_REF_KEY);
-      }
-    } catch (error) {
-      console.error(
-        "[checkout] Failed to persist active order reference to storage (ERR-CHK-004)",
-        error
-      );
-    }
-  }, []);
-  const clearActiveOrderRef = reactExports.useCallback(() => {
-    setActiveOrderRef(null);
-  }, [setActiveOrderRef]);
-  return { activeOrderRef, setActiveOrderRef, clearActiveOrderRef };
-}
-((t2) => typeof require < "u" ? require : typeof Proxy < "u" ? new Proxy(t2, { get: (n2, _2) => (typeof require < "u" ? require : n2)[_2] }) : t2)(function(t2) {
-  if (typeof require < "u") return require.apply(this, arguments);
-  throw Error('Dynamic require of "' + t2 + '" is not supported');
-});
-var U = ((n2) => (n2[n2.FractionalMoreThan8Decimals = 0] = "FractionalMoreThan8Decimals", n2[n2.InvalidFormat = 1] = "InvalidFormat", n2[n2.FractionalTooManyDecimals = 2] = "FractionalTooManyDecimals", n2))(U || {});
-BigInt(1e8);
-var u = (e3) => e3 == null;
-var R$1 = (e3) => (e3 instanceof Uint8Array || (e3 = Uint8Array.from(e3)), e3.reduce((t2, r2) => t2 + r2.toString(16).padStart(2, "0"), ""));
-var g = "abcdefghijklmnopqrstuvwxyz234567", b = /* @__PURE__ */ Object.create(null);
-for (let e3 = 0; e3 < g.length; e3++) b[g[e3]] = e3;
-b[0] = b.o;
-b[1] = b.i;
-var Rt = (e3) => {
-  let t2 = 0, r2 = 0, n2 = "", o = (i) => (t2 < 0 ? r2 |= i >> -t2 : r2 = i << t2 & 248, t2 > 3 ? (t2 -= 8, 1) : (t2 < 4 && (n2 += g[r2 >> 3], t2 += 5), 0));
-  for (let i = 0; i < e3.length; ) i += o(e3[i]);
-  return n2 + (t2 < 0 ? g[r2 >> 3] : "");
-};
-var $ = new Uint32Array([0, 1996959894, 3993919788, 2567524794, 124634137, 1886057615, 3915621685, 2657392035, 249268274, 2044508324, 3772115230, 2547177864, 162941995, 2125561021, 3887607047, 2428444049, 498536548, 1789927666, 4089016648, 2227061214, 450548861, 1843258603, 4107580753, 2211677639, 325883990, 1684777152, 4251122042, 2321926636, 335633487, 1661365465, 4195302755, 2366115317, 997073096, 1281953886, 3579855332, 2724688242, 1006888145, 1258607687, 3524101629, 2768942443, 901097722, 1119000684, 3686517206, 2898065728, 853044451, 1172266101, 3705015759, 2882616665, 651767980, 1373503546, 3369554304, 3218104598, 565507253, 1454621731, 3485111705, 3099436303, 671266974, 1594198024, 3322730930, 2970347812, 795835527, 1483230225, 3244367275, 3060149565, 1994146192, 31158534, 2563907772, 4023717930, 1907459465, 112637215, 2680153253, 3904427059, 2013776290, 251722036, 2517215374, 3775830040, 2137656763, 141376813, 2439277719, 3865271297, 1802195444, 476864866, 2238001368, 4066508878, 1812370925, 453092731, 2181625025, 4111451223, 1706088902, 314042704, 2344532202, 4240017532, 1658658271, 366619977, 2362670323, 4224994405, 1303535960, 984961486, 2747007092, 3569037538, 1256170817, 1037604311, 2765210733, 3554079995, 1131014506, 879679996, 2909243462, 3663771856, 1141124467, 855842277, 2852801631, 3708648649, 1342533948, 654459306, 3188396048, 3373015174, 1466479909, 544179635, 3110523913, 3462522015, 1591671054, 702138776, 2966460450, 3352799412, 1504918807, 783551873, 3082640443, 3233442989, 3988292384, 2596254646, 62317068, 1957810842, 3939845945, 2647816111, 81470997, 1943803523, 3814918930, 2489596804, 225274430, 2053790376, 3826175755, 2466906013, 167816743, 2097651377, 4027552580, 2265490386, 503444072, 1762050814, 4150417245, 2154129355, 426522225, 1852507879, 4275313526, 2312317920, 282753626, 1742555852, 4189708143, 2394877945, 397917763, 1622183637, 3604390888, 2714866558, 953729732, 1340076626, 3518719985, 2797360999, 1068828381, 1219638859, 3624741850, 2936675148, 906185462, 1090812512, 3747672003, 2825379669, 829329135, 1181335161, 3412177804, 3160834842, 628085408, 1382605366, 3423369109, 3138078467, 570562233, 1426400815, 3317316542, 2998733608, 733239954, 1555261956, 3268935591, 3050360625, 752459403, 1541320221, 2607071920, 3965973030, 1969922972, 40735498, 2617837225, 3943577151, 1913087877, 83908371, 2512341634, 3803740692, 2075208622, 213261112, 2463272603, 3855990285, 2094854071, 198958881, 2262029012, 4057260610, 1759359992, 534414190, 2176718541, 4139329115, 1873836001, 414664567, 2282248934, 4279200368, 1711684554, 285281116, 2405801727, 4167216745, 1634467795, 376229701, 2685067896, 3608007406, 1308918612, 956543938, 2808555105, 3495958263, 1231636301, 1047427035, 2932959818, 3654703836, 1088359270, 936918e3, 2847714899, 3736837829, 1202900863, 817233897, 3183342108, 3401237130, 1404277552, 615818150, 3134207493, 3453421203, 1423857449, 601450431, 3009837614, 3294710456, 1567103746, 711928724, 3020668471, 3272380065, 1510334235, 755167117]), z = (e3) => {
-  let t2 = -1;
-  for (let r2 = 0; r2 < e3.length; r2++) {
-    let o = (e3[r2] ^ t2) & 255;
-    t2 = $[o] ^ t2 >>> 8;
-  }
-  return (t2 ^ -1) >>> 0;
-}, Lt = (e3) => {
-  let t2 = new ArrayBuffer(4);
-  return new DataView(t2).setUint32(0, z(e3), false), new Uint8Array(t2);
-};
-var B = ((o) => (o.SYMBOL = "icrc1:symbol", o.NAME = "icrc1:name", o.DECIMALS = "icrc1:decimals", o.FEE = "icrc1:fee", o.LOGO = "icrc1:logo", o))(B || {});
-var Be = ({ owner: r2, subaccount: e3 }) => {
-  if (u(e3)) return r2.toText();
-  let c2 = ((s2) => s2.replace(/^0+/, ""))(R$1(Uint8Array.from(e3)));
-  return c2.length === 0 ? r2.toText() : `${r2.toText()}-${R({ owner: r2, subaccount: e3 })}.${c2}`;
-}, R = ({ owner: r2, subaccount: e3 }) => {
-  let t2 = Lt(Uint8Array.from([...r2.toUint8Array(), ...e3]));
-  return Rt(t2);
-};
-function depositAccountString(deposit) {
-  return Be({
-    owner: deposit.address,
-    subaccount: deposit.subaccount
-  });
-}
-const createActor = createActor$3;
-const SESSION_ID_KEY = "nak.checkoutSessionId";
-function getSessionId() {
-  try {
-    return window.localStorage.getItem(SESSION_ID_KEY);
-  } catch (error) {
-    console.error("[checkout] Failed to read session id (ERR-CHK-010)", error);
-    return null;
-  }
-}
-function setSessionId(sessionId) {
-  try {
-    window.localStorage.setItem(SESSION_ID_KEY, sessionId);
-  } catch (error) {
-    console.error(
-      "[checkout] Failed to persist session id (ERR-CHK-011)",
-      error
-    );
-  }
-}
-const STEPS = [
-  { key: "shipping", label: "Shipping" },
-  { key: "review", label: "Review" },
-  { key: "deposit", label: "Payment" }
-];
-function formatTokenAmount$2(amount, decimals) {
-  const divisor = 10n ** BigInt(decimals);
-  const whole = amount / divisor;
-  const fraction = amount % divisor;
-  if (fraction === 0n) return whole.toString();
-  const fracStr = fraction.toString().padStart(decimals, "0").replace(/0+$/, "");
-  return `${whole}.${fracStr}`;
-}
-function formatCountdown(totalSeconds) {
-  const h2 = Math.floor(totalSeconds / 3600);
-  const m2 = Math.floor(totalSeconds % 3600 / 60);
-  const s2 = totalSeconds % 60;
-  return [h2, m2, s2].map((n2) => n2.toString().padStart(2, "0")).join(":");
-}
-function countdownClass(remainingSec) {
-  if (remainingSec <= 60) return "countdown-critical";
-  if (remainingSec <= 300) return "countdown-warning";
-  return "countdown-idle";
-}
-function statusMessage(status) {
-  if (!status)
-    return "Awaiting payment — send the exact amount to the address above.";
-  switch (status.__kind__) {
-    case "paid":
-      return "Payment confirmed on-ledger. Thank you!";
-    case "awaiting_payment":
-      return "Awaiting payment — send the exact amount to the address above.";
-    case "underpayment":
-      return "Insufficient payment received. Please send the remaining amount.";
-    case "overpayment":
-      return "Overpayment detected. Please contact support.";
-    case "expired":
-      return "This deposit has expired. Please place a new order.";
-    default:
-      return "Awaiting payment — send the exact amount to the address above.";
-  }
-}
-function OrderSummary({
-  order,
-  items,
-  cartSubtotal
-}) {
-  const hasOrder = order !== null;
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "summary-panel", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "section-heading text-base", children: "Order Summary" }),
-    hasOrder ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-col gap-3", children: order.items.map((item, idx) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        "div",
-        {
-          className: "flex items-center justify-between gap-4",
-          "data-ocid": `checkout.summary_item.${idx + 1}`,
-          children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "truncate text-sm font-medium text-foreground", children: item.name }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-xs text-muted-foreground", children: [
-                "Qty ",
-                item.quantity.toString()
-              ] })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num text-sm text-secondary-foreground", children: formatPrice(item.unit_amount * item.quantity) })
-          ]
-        },
-        item.variant_id
-      )) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-2 border-t border-border pt-4 text-sm", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "summary-row", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-muted-foreground", children: "Subtotal" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "summary-value", children: formatPrice(order.subtotal) })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "summary-row", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-muted-foreground", children: "Tax" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "summary-value", children: formatPrice(order.tax) })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "summary-row", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-muted-foreground", children: "Shipping" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "summary-value", children: formatPrice(order.shipping) })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "summary-total", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Total" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "summary-value", children: formatPrice(order.total) })
-        ] })
-      ] })
-    ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-col gap-3", children: items.map((item, idx) => {
-        const variant = item.product.variants.find(
-          (v2) => v2.id === item.variantId
-        );
-        const unitPrice = variant ? variant.price : item.product.price;
-        return /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "div",
-          {
-            className: "flex items-center justify-between gap-4",
-            "data-ocid": `checkout.summary_item.${idx + 1}`,
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "truncate text-sm font-medium text-foreground", children: item.product.name }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-xs text-muted-foreground", children: [
-                  "Qty ",
-                  item.quantity
-                ] })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num text-sm text-secondary-foreground", children: formatPrice(unitPrice * BigInt(item.quantity)) })
-            ]
-          },
-          `${item.product.id}-${item.variantId}`
-        );
-      }) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-2 border-t border-border pt-4 text-sm", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "summary-row", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-muted-foreground", children: "Subtotal" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "summary-value", children: formatPrice(cartSubtotal) })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "pt-2 text-xs text-muted-foreground", children: "Tax and shipping are calculated when you place your order." })
-      ] })
-    ] })
-  ] });
-}
-const CheckoutPage = ({
-  onNavigateToMain,
-  onNavigateToCart,
-  onNavigateToSuccess
-}) => {
-  const { items, subtotal } = useCart();
-  const [step, setStep] = reactExports.useState("shipping");
-  const [order, setOrder] = reactExports.useState(null);
-  const [paymentMethod, setPaymentMethod] = reactExports.useState("card");
-  const [orderError, setOrderError] = reactExports.useState(null);
-  const [paid, setPaid] = reactExports.useState(false);
-  const [expired, setExpired] = reactExports.useState(false);
-  const ckUSDCEnabled = useCkUSDCCheckoutEnabled();
-  const effectivePaymentMethod = ckUSDCEnabled ? paymentMethod : "card";
-  const { activeOrderRef, setActiveOrderRef, clearActiveOrderRef } = useActiveOrderRef();
-  const { setCancellationToken, clearCancellationToken } = useCancellationToken();
-  const {
-    data: resumeInfo,
-    isError: resumeError,
-    isSuccess: resumeSuccess
-  } = useResumeInfo(activeOrderRef);
-  const [resumeMode, setResumeMode] = reactExports.useState(false);
-  const [resumeFailed, setResumeFailed] = reactExports.useState(false);
-  const [depositFailed, setDepositFailed] = reactExports.useState(false);
-  const [name, setName] = reactExports.useState("");
-  const [email, setEmail] = reactExports.useState("");
-  const [marketingConsent, setMarketingConsent] = reactExports.useState(false);
-  const [line1, setLine1] = reactExports.useState("");
-  const [line2, setLine2] = reactExports.useState("");
-  const [city, setCity] = reactExports.useState("");
-  const [region, setRegion] = reactExports.useState("");
-  const [country, setCountry] = reactExports.useState("United States");
-  const [postalCode, setPostalCode] = reactExports.useState("");
-  const [fieldErrors, setFieldErrors] = reactExports.useState({});
-  const clearFieldError = (field) => {
-    setFieldErrors((prev) => {
-      if (!prev[field]) return prev;
-      const next = { ...prev };
-      delete next[field];
-      return next;
-    });
-  };
-  const { actor } = useActor(createActor);
-  const createOrder = useCreateOrder();
-  const checkPayment = useCheckCryptoPayment();
-  const confirmPayment = useConfirmCryptoPayment();
-  const createCardSession = useCreateCardCheckoutSession();
-  const { data: cryptoConfig } = useCryptoConfig();
-  const { data: paymentServiceConfig } = usePaymentServiceConfig();
-  useReleaseExpiredOrders();
-  const cardEnabled = reactExports.useMemo(() => {
-    if (!paymentServiceConfig) return false;
-    return paymentServiceConfig.url.trim() !== "" && paymentServiceConfig.tokenSet;
-  }, [paymentServiceConfig]);
-  const depositReference = resumeMode ? (resumeInfo == null ? void 0 : resumeInfo.reference) ?? null : (order == null ? void 0 : order.reference) ?? null;
-  const depositInfo = useCryptoDepositInfo(
-    resumeMode ? null : (order == null ? void 0 : order.reference) ?? null
-  );
-  const paymentStatus = useCryptoPaymentStatus(depositReference);
-  const depositData = resumeMode ? (resumeInfo == null ? void 0 : resumeInfo.deposit) ?? null : depositInfo.data;
-  reactExports.useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-  reactExports.useEffect(() => {
-    if (order !== null || step !== "shipping") return;
-    if (!activeOrderRef) return;
-    if (resumeError) {
-      clearActiveOrderRef();
-      setResumeFailed(true);
-      return;
-    }
-    if (resumeSuccess) {
-      if (resumeInfo && resumeInfo.status.__kind__ === "awaiting_payment" && resumeInfo.deposit) {
-        setResumeMode(true);
-        setStep("deposit");
-      } else {
-        clearActiveOrderRef();
-      }
-      return;
-    }
-  }, [
-    activeOrderRef,
-    resumeInfo,
-    resumeSuccess,
-    resumeError,
-    order,
-    step,
-    clearActiveOrderRef
-  ]);
-  reactExports.useEffect(() => {
-    if (order !== null || step !== "shipping") return;
-    if (!activeOrderRef) return;
-    if (resumeInfo || resumeError) return;
-    const t2 = setTimeout(() => {
-      setResumeFailed(true);
-      clearActiveOrderRef();
-    }, 12e3);
-    return () => clearTimeout(t2);
-  }, [
-    activeOrderRef,
-    resumeInfo,
-    resumeError,
-    order,
-    step,
-    clearActiveOrderRef
-  ]);
-  reactExports.useEffect(() => {
-    if (step !== "deposit" || resumeMode) return;
-    if (!depositInfo.isLoading) return;
-    const t2 = setTimeout(() => setDepositFailed(true), 15e3);
-    return () => clearTimeout(t2);
-  }, [step, resumeMode, depositInfo.isLoading]);
-  reactExports.useEffect(() => {
-    if (step !== "deposit" || !depositReference) return;
-    const interval = setInterval(() => {
-      checkPayment.mutate(depositReference, {
-        onSuccess: (result) => {
-          if (result.__kind__ === "ok" && result.ok.__kind__ === "paid") {
-            if (!confirmPayment.isPending) {
-              confirmPayment.mutate(depositReference, {
-                onSuccess: (confirmResult) => {
-                  if (confirmResult.__kind__ === "ok" && confirmResult.ok.__kind__ === "paid") {
-                    setPaid(true);
-                    clearActiveOrderRef();
-                    clearCancellationToken(depositReference);
-                  }
-                }
-              });
-            }
-          } else if (result.__kind__ === "err" && result.err.__kind__ === "expired") {
-            setExpired(true);
-            clearActiveOrderRef();
-            clearCancellationToken(depositReference);
-          }
-        }
-      });
-    }, 5e3);
-    return () => clearInterval(interval);
-  }, [
-    step,
-    depositReference,
-    checkPayment,
-    confirmPayment,
-    clearActiveOrderRef,
-    clearCancellationToken
-  ]);
-  reactExports.useEffect(() => {
-    if (!paid || !(order == null ? void 0 : order.reference)) return;
-    const t2 = setTimeout(() => onNavigateToSuccess(order.reference), 1800);
-    return () => clearTimeout(t2);
-  }, [paid, order == null ? void 0 : order.reference, onNavigateToSuccess]);
-  const [now2, setNow] = reactExports.useState(() => Date.now());
-  reactExports.useEffect(() => {
-    const interval = setInterval(() => setNow(Date.now()), 1e3);
-    return () => clearInterval(interval);
-  }, []);
-  const remainingSec = reactExports.useMemo(() => {
-    if (!depositData) return 0;
-    const expiresMs = Number(depositData.expiresAt / 1000000n);
-    return Math.max(0, Math.floor((expiresMs - now2) / 1e3));
-  }, [depositData, now2]);
-  reactExports.useEffect(() => {
-    if (step !== "deposit" || paid) return;
-    if (remainingSec <= 0 && depositData) {
-      setExpired(true);
-      clearActiveOrderRef();
-      if (depositReference) {
-        clearCancellationToken(depositReference);
-      }
-    }
-  }, [
-    step,
-    paid,
-    remainingSec,
-    depositData,
-    depositReference,
-    clearActiveOrderRef,
-    clearCancellationToken
-  ]);
-  const ledgerUnset = reactExports.useMemo(() => {
-    if (!cryptoConfig) return false;
-    return cryptoConfig.ckUSDC.canisterId.toText() === "aaaaa-aa";
-  }, [cryptoConfig]);
-  const handleShippingSubmit = async (e3) => {
-    e3.preventDefault();
-    setOrderError(null);
-    const requiredFields = [
-      { key: "name", value: name, id: "checkout-name" },
-      { key: "email", value: email, id: "checkout-email" },
-      { key: "line1", value: line1, id: "checkout-line1" },
-      { key: "city", value: city, id: "checkout-city" },
-      { key: "region", value: region, id: "checkout-region" },
-      { key: "country", value: country, id: "checkout-country" },
-      { key: "postalCode", value: postalCode, id: "checkout-postal" }
-    ];
-    const emptyFields = requiredFields.filter((f2) => f2.value.trim() === "");
-    if (emptyFields.length > 0) {
-      const nextErrors = {};
-      for (const f2 of emptyFields) {
-        nextErrors[f2.key] = true;
-      }
-      setFieldErrors(nextErrors);
-      const first = emptyFields[0];
-      const el = document.getElementById(first.id);
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth", block: "center" });
-        el.focus({ preventScroll: true });
-      }
-      return;
-    }
-    const shippingPayload = {
-      name,
-      email,
-      line1,
-      line2: line2 || void 0,
-      city,
-      region,
-      country,
-      postal_code: postalCode
-    };
-    const serialized = serializeShipping(shippingPayload);
-    if (!actor) {
-      console.error("[checkout] Backend actor unavailable (ERR-CHK-003)");
-      setOrderError(
-        "The store connection is not ready yet. Please wait a moment and try again. (ERR-CHK-003)"
-      );
-      return;
-    }
-    let encryptedShipping;
-    try {
-      const adminPrincipals = await fetchAdminPrincipals(actor);
-      if (adminPrincipals.length === 0) {
-        console.warn(
-          "[checkout] No admin encryption recipients configured (ERR-CHK-002)"
-        );
-        setOrderError(
-          "This store is not accepting orders right now. Please try again later. (ERR-CHK-002)"
-        );
-        return;
-      }
-      encryptedShipping = await encryptShippingToAdmins(
-        serialized,
-        adminPrincipals.map((p2) => p2.toText()),
-        actor
-      );
-    } catch (error) {
-      console.error(
-        "[checkout] Failed to secure shipping details (ERR-CHK-001)",
-        error
-      );
-      setOrderError(
-        `We could not secure your shipping details. Please try again. (ERR-CHK-001) [${error instanceof Error ? error.message : String(error)}]`
-      );
-      return;
-    }
-    const input = {
-      customer_email: email,
-      marketing_consent: marketingConsent,
-      has_shipping_details: true,
-      encrypted_shipping: encryptedShipping,
-      // Reuse the browser-scoped session id so the backend's per-session
-      // pending-order cap (3) applies across orders from the same guest.
-      session_id: getSessionId() ?? void 0,
-      payment_method: effectivePaymentMethod === "card" ? PaymentMethod.card_stripe : PaymentMethod.crypto_ckusdc,
-      items: items.map((item) => ({
-        product_id: item.product.id,
-        variant_id: item.variantId,
-        quantity: BigInt(item.quantity)
-      }))
-    };
-    createOrder.mutate(input, {
-      onSuccess: (result) => {
-        if (result.__kind__ === "ok") {
-          const created = result.ok;
-          setOrder(created.order);
-          setResumeMode(false);
-          if (created.sessionId) {
-            setSessionId(created.sessionId);
-          }
-          setActiveOrderRef(created.order.reference);
-          if (created.cancellationToken) {
-            setCancellationToken(
-              created.order.reference,
-              created.cancellationToken
-            );
-          }
-          setStep("review");
-        } else {
-          console.error("[checkout] createOrder returned", result.err);
-          const err = result.err;
-          let message;
-          switch (err.__kind__) {
-            case "emptyOrder":
-              message = "Your cart is empty.";
-              break;
-            case "unknownProduct":
-              message = "One of the items in your cart is no longer available.";
-              break;
-            case "productInactive":
-              message = "One of the items in your cart is no longer for sale.";
-              break;
-            case "unknownVariant":
-              message = "One of the items in your cart has an option that is no longer available.";
-              break;
-            case "outOfStock":
-              message = "One or more items are out of stock.";
-              break;
-            case "invalidQuantity":
-              message = "One of the items in your cart has an invalid quantity.";
-              break;
-            case "paymentFailed":
-              message = "Your payment could not be processed. Please try again.";
-              break;
-            case "belowMinimumOrder":
-              message = `Orders must be at least ${formatPrice(
-                err.belowMinimumOrder
-              )} for crypto payment.`;
-              break;
-            case "ckUSDCDisabled":
-              message = "Crypto payment is not available right now. Please pay by card.";
-              break;
-            case "rateLimited":
-              message = "You are placing orders too quickly. Please wait a moment and try again.";
-              break;
-            case "tooManyPendingOrders":
-              message = "You have too many pending orders. Please complete or cancel them before placing a new one.";
-              break;
-            default:
-              message = "We could not place your order. Please try again.";
-              break;
-          }
-          setOrderError(message);
-        }
-      },
-      onError: (error) => {
-        console.error("[checkout] Failed to place order (ERR-CHK-005)", error);
-        setOrderError("We could not place your order. Please try again.");
-      }
-    });
-  };
-  const handlePlaceOrder = () => {
-    if (!(order == null ? void 0 : order.reference)) return;
-    setOrderError(null);
-    if (effectivePaymentMethod === "card") {
-      const base = `${window.location.origin}${window.location.pathname}`;
-      createCardSession.mutate(
-        {
-          reference: order.reference,
-          successUrl: `${base}?order_id=${order.reference}`,
-          cancelUrl: `${base}?order_id=${order.reference}&status=cancelled`
-        },
-        {
-          onSuccess: (result) => {
-            if (result.__kind__ === "ok" && result.ok.url) {
-              window.location.href = result.ok.url;
-            } else {
-              if (result.__kind__ === "err") {
-                console.error(
-                  "[checkout] createCardCheckoutSession returned",
-                  result.err
-                );
-              }
-              setOrderError(
-                result.__kind__ === "err" && result.err.__kind__ === "notConfigured" ? "Card payments are not configured yet." : "We could not start card payment. Please try again."
-              );
-            }
-          },
-          onError: (error) => {
-            console.error(
-              "[checkout] Failed to start card payment (ERR-CHK-006)",
-              error
-            );
-            setOrderError("We could not start card payment. Please try again.");
-          }
-        }
-      );
-    } else {
-      setStep("deposit");
-    }
-  };
-  const depositAddress = depositData ? depositAccountString(depositData) : "";
-  const amountOwed = depositData ? formatTokenAmount$2(depositData.amountDue, depositData.decimals) : "";
-  const checkingResume = !!activeOrderRef && !resumeInfo && !resumeError && !resumeSuccess && !resumeFailed;
-  const depositLoading = resumeMode ? false : depositInfo.isLoading;
-  const stepIndex = STEPS.findIndex((s2) => s2.key === step);
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "pt-24 sm:pt-32 pb-12 sm:pb-20 px-4 sm:px-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-6xl mx-auto", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-8 sm:mb-10 px-2", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "section-label mb-2", children: "Checkout" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "section-heading text-2xl sm:text-3xl", children: "Complete your payment" })
-    ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(
-      "div",
-      {
-        className: "flex items-center justify-center gap-3 sm:gap-4 mb-8 sm:mb-12",
-        "data-ocid": "checkout.step_indicator",
-        children: STEPS.map((s2, i) => {
-          const active = step === s2.key;
-          const done = i < stepIndex;
-          return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 sm:gap-4", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "div",
-              {
-                className: `checkout-step ${done ? "checkout-step-done" : active ? "checkout-step-current" : ""}`,
-                "data-ocid": `checkout.step.${i + 1}`,
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "checkout-step-dot", children: done ? /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "h-3.5 w-3.5" }) : i + 1 }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "hidden sm:inline", children: s2.label })
-                ]
-              }
-            ),
-            i < STEPS.length - 1 && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "step-connector" })
-          ] }, s2.key);
-        })
-      }
-    ),
-    checkingResume ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative max-w-2xl mx-auto px-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-      "div",
-      {
-        className: "surface p-8 sm:p-12 text-center",
-        "data-ocid": "checkout.resume_loading",
-        children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mx-auto mb-4 h-12 w-12 rounded-full bg-white/5 loading-shimmer" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mx-auto mb-3 h-6 w-48 rounded-xl bg-white/5 loading-shimmer" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mx-auto h-4 w-64 rounded-xl bg-white/5 loading-shimmer" })
-        ]
-      }
-    ) }) : resumeFailed ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative max-w-2xl mx-auto px-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-      "div",
-      {
-        className: "surface p-8 sm:p-12 text-center",
-        "data-ocid": "checkout.resume_error",
-        children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(TriangleAlert, { className: "mx-auto mb-4 h-10 w-10 text-destructive" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "section-heading text-xl mb-3", children: "Could not restore your order" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-muted-foreground mb-6", children: "We could not check the status of your previous order. You can start a fresh checkout below." }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
-            {
-              type: "button",
-              onClick: () => setResumeFailed(false),
-              "data-ocid": "checkout.resume_error_continue_button",
-              className: "btn px-8 py-4 text-base font-semibold",
-              children: "Continue Checkout"
-            }
-          )
-        ]
-      }
-    ) }) : items.length === 0 && step !== "deposit" ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative max-w-2xl mx-auto px-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "surface p-8 sm:p-12 text-center", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingCart, { className: "w-12 h-12 text-muted-foreground mx-auto mb-4" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "section-heading text-xl mb-3", children: "Your cart is empty" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-muted-foreground mb-6", children: "Add some pieces to your cart before checking out." }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center justify-center gap-4", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "button",
-          {
-            type: "button",
-            onClick: onNavigateToCart,
-            "data-ocid": "checkout.back_to_cart_button",
-            className: "btn px-8 py-4 text-base font-semibold",
-            children: "Back to Cart"
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "button",
-          {
-            type: "button",
-            onClick: onNavigateToMain,
-            "data-ocid": "checkout.back_to_main_button",
-            className: "btn-secondary px-8 py-4 text-base font-semibold",
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
-              "Back to Main"
-            ]
-          }
-        )
-      ] })
-    ] }) }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 min-[820px]:grid-cols-[minmax(0,1fr)_340px] gap-6 sm:gap-8 items-start", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative min-w-0 px-2", children: step === "shipping" ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "surface p-6 sm:p-10", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "section-heading text-xl sm:text-2xl mb-2", children: "Shipping Details" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-muted-foreground mb-8", children: "Where should we send your order?" }),
-        orderError && /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "div",
-          {
-            className: "mb-6 flex items-start gap-3 border border-destructive/40 bg-destructive-soft p-4 text-sm text-destructive",
-            "data-ocid": "checkout.order_error",
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(TriangleAlert, { className: "h-5 w-5 shrink-0" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: orderError })
-            ]
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("form", { onSubmit: handleShippingSubmit, className: "space-y-5", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 sm:grid-cols-2 gap-5", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "label",
-                {
-                  htmlFor: "checkout-name",
-                  className: "field-label mb-1.5 block",
-                  children: "Full name"
-                }
-              ),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "input",
-                {
-                  id: "checkout-name",
-                  type: "text",
-                  value: name,
-                  onChange: (e3) => {
-                    setName(e3.target.value);
-                    clearFieldError("name");
-                  },
-                  onBlur: (e3) => setName(e3.target.value),
-                  placeholder: "Jane Doe",
-                  className: "field-input",
-                  "data-ocid": "checkout.name_input"
-                }
-              ),
-              fieldErrors.name && /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "p",
-                {
-                  className: "mt-1.5 text-sm text-destructive",
-                  "data-ocid": "checkout.name_error",
-                  children: "Required"
-                }
-              )
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "label",
-                {
-                  htmlFor: "checkout-email",
-                  className: "field-label mb-1.5 block",
-                  children: "Email"
-                }
-              ),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "input",
-                {
-                  id: "checkout-email",
-                  type: "email",
-                  value: email,
-                  onChange: (e3) => {
-                    setEmail(e3.target.value);
-                    clearFieldError("email");
-                  },
-                  onBlur: (e3) => setEmail(e3.target.value),
-                  placeholder: "jane@example.com",
-                  className: "field-input",
-                  "data-ocid": "checkout.email_input"
-                }
-              ),
-              fieldErrors.email && /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "p",
-                {
-                  className: "mt-1.5 text-sm text-destructive",
-                  "data-ocid": "checkout.email_error",
-                  children: "Required"
-                }
-              )
-            ] })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "label",
-            {
-              htmlFor: "checkout-consent",
-              className: "flex cursor-pointer items-start gap-3 border border-border bg-card p-4",
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "input",
-                  {
-                    id: "checkout-consent",
-                    type: "checkbox",
-                    checked: marketingConsent,
-                    onChange: (e3) => setMarketingConsent(e3.target.checked),
-                    className: "consent-checkbox mt-0.5",
-                    "data-ocid": "checkout.consent_checkbox"
-                  }
-                ),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-sm text-secondary-foreground", children: [
-                  "Email me about new NAK STRATS drops and releases",
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-muted-foreground", children: [
-                    " ",
-                    "(optional)"
-                  ] })
-                ] })
-              ]
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "label",
-              {
-                htmlFor: "checkout-line1",
-                className: "field-label mb-1.5 block",
-                children: "Address line 1"
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "input",
-              {
-                id: "checkout-line1",
-                type: "text",
-                value: line1,
-                onChange: (e3) => {
-                  setLine1(e3.target.value);
-                  clearFieldError("line1");
-                },
-                onBlur: (e3) => setLine1(e3.target.value),
-                placeholder: "123 Neon Avenue",
-                className: "field-input",
-                "data-ocid": "checkout.line1_input"
-              }
-            ),
-            fieldErrors.line1 && /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "p",
-              {
-                className: "mt-1.5 text-sm text-destructive",
-                "data-ocid": "checkout.line1_error",
-                children: "Required"
-              }
-            )
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "label",
-              {
-                htmlFor: "checkout-line2",
-                className: "field-label mb-1.5 block",
-                children: [
-                  "Address line 2",
-                  " ",
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-muted-foreground", children: "(optional)" })
-                ]
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "input",
-              {
-                id: "checkout-line2",
-                type: "text",
-                value: line2,
-                onChange: (e3) => setLine2(e3.target.value),
-                onBlur: (e3) => setLine2(e3.target.value),
-                placeholder: "Apt, suite, unit",
-                className: "field-input",
-                "data-ocid": "checkout.line2_input"
-              }
-            )
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 sm:grid-cols-2 gap-5", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "label",
-                {
-                  htmlFor: "checkout-city",
-                  className: "field-label mb-1.5 block",
-                  children: "City"
-                }
-              ),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "input",
-                {
-                  id: "checkout-city",
-                  type: "text",
-                  value: city,
-                  onChange: (e3) => {
-                    setCity(e3.target.value);
-                    clearFieldError("city");
-                  },
-                  onBlur: (e3) => setCity(e3.target.value),
-                  placeholder: "Houston",
-                  className: "field-input",
-                  "data-ocid": "checkout.city_input"
-                }
-              ),
-              fieldErrors.city && /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "p",
-                {
-                  className: "mt-1.5 text-sm text-destructive",
-                  "data-ocid": "checkout.city_error",
-                  children: "Required"
-                }
-              )
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "label",
-                {
-                  htmlFor: "checkout-region",
-                  className: "field-label mb-1.5 block",
-                  children: "Region / State"
-                }
-              ),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "input",
-                {
-                  id: "checkout-region",
-                  type: "text",
-                  value: region,
-                  onChange: (e3) => {
-                    setRegion(e3.target.value);
-                    clearFieldError("region");
-                  },
-                  onBlur: (e3) => setRegion(e3.target.value),
-                  placeholder: "TX",
-                  className: "field-input",
-                  "data-ocid": "checkout.region_input"
-                }
-              ),
-              fieldErrors.region && /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "p",
-                {
-                  className: "mt-1.5 text-sm text-destructive",
-                  "data-ocid": "checkout.region_error",
-                  children: "Required"
-                }
-              )
-            ] })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 sm:grid-cols-2 gap-5", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "label",
-                {
-                  htmlFor: "checkout-country",
-                  className: "field-label mb-1.5 block",
-                  children: "Country"
-                }
-              ),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "input",
-                {
-                  id: "checkout-country",
-                  type: "text",
-                  value: country,
-                  readOnly: true,
-                  onChange: (e3) => {
-                    setCountry(e3.target.value);
-                    clearFieldError("country");
-                  },
-                  onBlur: (e3) => setCountry(e3.target.value),
-                  placeholder: "United States",
-                  className: "field-input opacity-60 cursor-not-allowed",
-                  "data-ocid": "checkout.country_input"
-                }
-              ),
-              fieldErrors.country && /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "p",
-                {
-                  className: "mt-1.5 text-sm text-destructive",
-                  "data-ocid": "checkout.country_error",
-                  children: "Required"
-                }
-              )
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "label",
-                {
-                  htmlFor: "checkout-postal",
-                  className: "field-label mb-1.5 block",
-                  children: "Postal code"
-                }
-              ),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "input",
-                {
-                  id: "checkout-postal",
-                  type: "text",
-                  value: postalCode,
-                  onChange: (e3) => {
-                    setPostalCode(e3.target.value);
-                    clearFieldError("postalCode");
-                  },
-                  onBlur: (e3) => setPostalCode(e3.target.value),
-                  placeholder: "77002",
-                  className: "field-input",
-                  "data-ocid": "checkout.postal_input"
-                }
-              ),
-              fieldErrors.postalCode && /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "p",
-                {
-                  className: "mt-1.5 text-sm text-destructive",
-                  "data-ocid": "checkout.postal_error",
-                  children: "Required"
-                }
-              )
-            ] })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center justify-between gap-4 pt-2", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "button",
-              {
-                type: "button",
-                onClick: onNavigateToCart,
-                "data-ocid": "checkout.back_to_cart_button",
-                className: "btn-secondary px-6 py-3 text-sm font-semibold",
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
-                  "Back to Cart"
-                ]
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "button",
-              {
-                type: "submit",
-                disabled: createOrder.isPending,
-                "data-ocid": "checkout.continue_button",
-                className: "btn px-8 py-4 text-base font-semibold disabled:cursor-not-allowed disabled:opacity-50",
-                children: createOrder.isPending ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "h-5 w-5 animate-spin" }),
-                  "Placing Order…"
-                ] }) : "Continue to Review"
-              }
-            )
-          ] })
-        ] })
-      ] }) : step === "review" ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "surface p-6 sm:p-10", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "section-heading text-xl sm:text-2xl mb-2", children: "Checkout Summary" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-muted-foreground mb-8", children: ckUSDCEnabled ? "Review your order and choose a payment token." : "Review your order and pay by card." }),
-        ckUSDCEnabled && ledgerUnset && /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "div",
-          {
-            className: "mb-6 flex items-start gap-3 border border-warning/40 bg-warning-soft p-4 text-sm text-warning",
-            "data-ocid": "checkout.admin_warning",
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(TriangleAlert, { className: "h-5 w-5 shrink-0" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Admin notice: the ckUSDC ledger is not configured. Payment may not be verifiable until it is set." })
-            ]
-          }
-        ),
-        orderError && /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "div",
-          {
-            className: "mb-6 flex items-start gap-3 border border-destructive/40 bg-destructive-soft p-4 text-sm text-destructive",
-            "data-ocid": "checkout.order_error",
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(TriangleAlert, { className: "h-5 w-5 shrink-0" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: orderError })
-            ]
-          }
-        ),
-        ckUSDCEnabled && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-8", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "field-label mb-3", children: "Payment method" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 sm:grid-cols-2 gap-4", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "button",
-              {
-                type: "button",
-                onClick: () => setPaymentMethod("crypto"),
-                "data-ocid": "checkout.method_crypto",
-                className: `bordered-select flex items-center gap-4 p-4 text-left w-full ${paymentMethod === "crypto" ? "is-active" : ""}`,
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "flex h-10 w-10 items-center justify-center border border-border bg-card text-primary", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Wallet, { className: "h-5 w-5" }) }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "min-w-0", children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block text-sm font-semibold text-foreground", children: "Pay with crypto" }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block text-xs text-muted-foreground", children: "ckUSDC deposit" })
-                  ] }),
-                  paymentMethod === "crypto" && /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "ml-auto h-5 w-5 text-primary" })
-                ]
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "button",
-              {
-                type: "button",
-                onClick: () => cardEnabled && setPaymentMethod("card"),
-                disabled: !cardEnabled,
-                "data-ocid": "checkout.method_card",
-                className: `bordered-select flex items-center gap-4 p-4 text-left w-full ${paymentMethod === "card" ? "is-active" : ""} ${!cardEnabled ? "opacity-45 cursor-not-allowed" : ""}`,
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "flex h-10 w-10 items-center justify-center border border-border bg-card text-primary", children: /* @__PURE__ */ jsxRuntimeExports.jsx(CreditCard, { className: "h-5 w-5" }) }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "min-w-0", children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block text-sm font-semibold text-foreground", children: "Pay with card" }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block text-xs text-muted-foreground", children: cardEnabled ? "Stripe checkout" : "Unavailable — not configured" })
-                  ] }),
-                  paymentMethod === "card" && /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "ml-auto h-5 w-5 text-primary" })
-                ]
-              }
-            )
-          ] })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center justify-between gap-4", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              type: "button",
-              onClick: () => setStep("shipping"),
-              "data-ocid": "checkout.back_to_shipping_button",
-              className: "btn-secondary px-6 py-3 text-sm font-semibold",
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
-                "Edit Shipping"
-              ]
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
-            {
-              type: "button",
-              onClick: handlePlaceOrder,
-              disabled: createCardSession.isPending,
-              "data-ocid": "checkout.place_order_button",
-              className: "btn px-8 py-4 text-base font-semibold disabled:cursor-not-allowed disabled:opacity-50",
-              children: createCardSession.isPending ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "h-5 w-5 animate-spin" }),
-                "Redirecting to payment…"
-              ] }) : "Place Order"
-            }
-          )
-        ] })
-      ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "surface p-6 sm:p-10", children: [
-        paid && /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "div",
-          {
-            className: "absolute right-5 top-5 flex items-center gap-2 border border-positive/40 bg-success-soft px-4 py-1.5 text-sm font-bold uppercase tracking-wide text-success",
-            "data-ocid": "checkout.paid_badge",
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(ShieldCheck, { className: "h-4 w-4" }),
-              "Paid"
-            ]
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6 flex items-start justify-between gap-4", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "section-heading text-xl sm:text-2xl mb-1", children: "Crypto Deposit" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-muted-foreground", children: "Send the exact amount to the address below to complete your order." })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex shrink-0 items-center gap-2", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Clock, { className: "h-5 w-5 text-warning" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "span",
-              {
-                className: `mono-num text-2xl sm:text-3xl font-bold ${countdownClass(
-                  remainingSec
-                )}`,
-                "data-ocid": "checkout.countdown",
-                children: formatCountdown(remainingSec)
-              }
-            )
-          ] })
-        ] }),
-        expired ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "div",
-          {
-            className: "flex flex-col items-center gap-4 border border-destructive/40 bg-destructive-soft p-8 text-center",
-            "data-ocid": "checkout.expired_state",
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(TriangleAlert, { className: "h-10 w-10 text-destructive" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "section-heading text-xl text-destructive mb-1", children: "Deposit Expired" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-muted-foreground", children: "This deposit has expired and the reserved inventory has been released. Please place a new order to continue." })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                "button",
-                {
-                  type: "button",
-                  onClick: onNavigateToMain,
-                  "data-ocid": "checkout.expired_back_to_main_button",
-                  className: "btn px-8 py-4 text-base font-semibold",
-                  children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
-                    "Back to Main"
-                  ]
-                }
-              )
-            ]
-          }
-        ) : depositLoading && !depositFailed ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "div",
-          {
-            className: "space-y-4",
-            "data-ocid": "checkout.deposit_loading",
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-12 w-full rounded-xl bg-white/5 loading-shimmer" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mx-auto h-40 w-40 rounded-xl bg-white/5 loading-shimmer" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-8 w-40 mx-auto rounded-xl bg-white/5 loading-shimmer" })
-            ]
-          }
-        ) : depositData ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-8", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center gap-1 text-center", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "section-label", children: "Order reference" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "p",
-              {
-                className: "mono-num text-lg sm:text-xl font-bold text-foreground",
-                "data-ocid": "checkout.order_reference",
-                children: depositReference
-              }
-            )
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "section-label mb-2", children: [
-              "Amount owed (",
-              depositData.token,
-              ")"
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "p",
-              {
-                className: "amount-owed",
-                "data-ocid": "checkout.amount_owed",
-                children: [
-                  amountOwed,
-                  " ",
-                  depositData.token
-                ]
-              }
-            )
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "section-label mb-2", children: "Deposit address" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start gap-3", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "span",
-                {
-                  className: "inset-well min-w-0 flex-1",
-                  "data-ocid": "checkout.deposit_address",
-                  children: depositAddress
-                }
-              ),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                CopyButton,
-                {
-                  text: depositAddress,
-                  label: "Copy deposit address",
-                  className: "shrink-0"
-                }
-              )
-            ] })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "border border-border bg-white p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-            QRCode,
-            {
-              value: depositAddress,
-              size: 168,
-              bgColor: "#ffffff",
-              fgColor: "#000000",
-              "aria-label": "QR code for deposit address"
-            }
-          ) }) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "div",
-            {
-              className: `flex items-center gap-3 border p-4 text-sm ${paid ? "border-positive/40 bg-success-soft text-success" : "border-warning/40 bg-warning-soft text-warning"}`,
-              "data-ocid": "checkout.payment_status",
-              children: [
-                paid ? /* @__PURE__ */ jsxRuntimeExports.jsx(ShieldCheck, { className: "h-5 w-5 shrink-0" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "span",
-                  {
-                    className: "ledger-dot shrink-0",
-                    "aria-hidden": "true"
-                  }
-                ),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: paid ? "Payment confirmed. Redirecting to your order summary…" : `Watching the ledger — ${statusMessage(
-                  paymentStatus.data ?? null
-                )}` })
-              ]
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center justify-between gap-4", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "button",
-              {
-                type: "button",
-                onClick: onNavigateToMain,
-                "data-ocid": "checkout.back_to_main_button",
-                className: "btn-secondary px-6 py-3 text-sm font-semibold",
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
-                  "Back to Main"
-                ]
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-muted-foreground", children: "Payment is verified on-ledger automatically." })
-          ] })
-        ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "div",
-          {
-            className: "flex items-start gap-3 border border-destructive/40 bg-destructive-soft p-4 text-sm text-destructive",
-            "data-ocid": "checkout.deposit_error",
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(TriangleAlert, { className: "h-5 w-5 shrink-0" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "We could not generate your deposit. Please go back and try again." })
-            ]
-          }
-        )
-      ] }) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("aside", { className: "min-w-0 min-[820px]:sticky min-[820px]:top-24", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-        OrderSummary,
-        {
-          order,
-          items,
-          cartSubtotal: subtotal
-        }
-      ) })
-    ] })
-  ] }) });
 };
 const MainContent = () => {
   return /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -84385,297 +77085,6 @@ const MetaTheatrePage = ({
     ) })
   ] }) });
 };
-function formatTimestamp$2(timestamp) {
-  const date2 = new Date(Number(timestamp / 1000000n));
-  if (Number.isNaN(date2.getTime())) return "—";
-  return date2.toLocaleDateString(void 0, {
-    year: "numeric",
-    month: "short",
-    day: "numeric"
-  });
-}
-const STATUS_META$1 = {
-  paid: {
-    label: "Paid",
-    className: "text-success",
-    soft: "bg-success-soft"
-  },
-  pending: {
-    label: "Pending Payment",
-    className: "text-warning",
-    soft: "bg-warning-soft"
-  },
-  expired: {
-    label: "Expired",
-    className: "text-destructive",
-    soft: "bg-destructive-soft"
-  },
-  cancelled: {
-    label: "Cancelled",
-    className: "text-destructive",
-    soft: "bg-destructive-soft"
-  }
-};
-function itemSummary(items) {
-  return items.map((item) => `${item.quantity.toString()}× ${item.name}`).join(", ");
-}
-function truncatePrincipal(principal) {
-  if (principal.length <= 12) return principal;
-  return `${principal.slice(0, 5)}…${principal.slice(-5)}`;
-}
-const ROLE_LABELS = {
-  [Role.owner]: "Owner",
-  [Role.admin]: "Admin",
-  [Role.staff]: "Staff"
-};
-const MyOrdersPage = ({ onNavigateToMain }) => {
-  const { isAuthenticated, login, isLoggingIn, isInitializing, identity: identity3 } = useInternetIdentity();
-  const { data: orders, isLoading, isError, refetch } = useMyOrders();
-  const { data: role } = useGetMyRole();
-  const principalText = (identity3 == null ? void 0 : identity3.getPrincipal().toString()) ?? null;
-  reactExports.useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "pt-24 sm:pt-32 pb-12 sm:pb-20 px-4 sm:px-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-5xl mx-auto", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center mb-10 sm:mb-14 px-2", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-4 mb-8", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingBag, { className: "w-12 h-12 text-teal-400" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 rounded-full bg-teal-400/20 blur-xl animate-pulse" })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "h1",
-          {
-            className: "text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold leading-tight",
-            style: { fontFamily: "var(--font-heading)" },
-            children: "My Orders"
-          }
-        )
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm sm:text-base text-gray-300 max-w-2xl mx-auto", children: "Track the orders you've placed. Sign in to see your order history." })
-    ] }),
-    isInitializing ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
-      "div",
-      {
-        className: "max-w-3xl mx-auto flex items-center justify-center gap-3 text-gray-300",
-        "data-ocid": "myorders.auth_loading",
-        children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-5 h-5 animate-spin" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Checking authentication…" })
-        ]
-      }
-    ) : !isAuthenticated ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
-      "div",
-      {
-        className: "max-w-3xl mx-auto card glass-card p-8 sm:p-12 text-center",
-        "data-ocid": "myorders.sign_in_state",
-        children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-4 mb-6", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Package, { className: "w-10 h-10 text-purple-400" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 rounded-full bg-purple-400/20 blur-xl animate-pulse" })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "h2",
-              {
-                className: "text-2xl sm:text-3xl font-semibold text-white",
-                style: { fontFamily: "var(--font-heading)" },
-                children: "Sign in to track your orders"
-              }
-            )
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm sm:text-base text-gray-300 max-w-xl mx-auto mb-8", children: "Signing in is optional — you can keep shopping and checking out as a guest. But signing in lets you view all of your past orders in one place." }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
-            {
-              type: "button",
-              onClick: () => login(),
-              disabled: isLoggingIn,
-              "data-ocid": "myorders.sign_in_button",
-              className: "btn px-8 py-3 text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed",
-              children: isLoggingIn ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-4 h-4 animate-spin" }),
-                "Signing in…"
-              ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(LogIn, { className: "w-4 h-4" }),
-                "Sign in to track your orders — optional"
-              ] })
-            }
-          )
-        ]
-      }
-    ) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-      principalText && /* @__PURE__ */ jsxRuntimeExports.jsx(
-        "div",
-        {
-          className: "max-w-3xl mx-auto mb-8",
-          "data-ocid": "myorders.account_section",
-          children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "surface p-6 sm:p-8", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col sm:flex-row sm:items-start justify-between gap-4", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "field-label mb-2", children: "Your principal" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-mono-nak text-sm text-white break-all", children: truncatePrincipal(principalText) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-3 text-sm text-muted-foreground", children: "Share this with an administrator to be granted access." })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 shrink-0", children: [
-              role !== null && role !== void 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                "span",
-                {
-                  className: "status-pill status-pill-neutral",
-                  "data-ocid": "myorders.role_pill",
-                  children: [
-                    "Role: ",
-                    ROLE_LABELS[role]
-                  ]
-                }
-              ),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                CopyButton,
-                {
-                  text: principalText,
-                  label: "Copy",
-                  className: "shrink-0"
-                }
-              )
-            ] })
-          ] }) })
-        }
-      ),
-      isLoading ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        "div",
-        {
-          className: "max-w-3xl mx-auto space-y-4",
-          "data-ocid": "myorders.loading_state",
-          children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "card glass-card p-6 loading-shimmer h-28" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "card glass-card p-6 loading-shimmer h-28" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "card glass-card p-6 loading-shimmer h-28" })
-          ]
-        }
-      ) : isError ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        "div",
-        {
-          className: "max-w-3xl mx-auto card glass-card p-8 text-center",
-          "data-ocid": "myorders.error_state",
-          children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-destructive mb-4", children: "We couldn't load your orders. Please try again." }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "button",
-              {
-                type: "button",
-                onClick: () => void refetch(),
-                className: "btn px-6 py-3 text-sm font-semibold",
-                "data-ocid": "myorders.retry_button",
-                children: "Try Again"
-              }
-            )
-          ]
-        }
-      ) : !orders || orders.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        "div",
-        {
-          className: "max-w-3xl mx-auto card glass-card p-8 sm:p-12 text-center",
-          "data-ocid": "myorders.empty_state",
-          children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-4 mb-6", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(PackageOpen, { className: "w-10 h-10 text-purple-400" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 rounded-full bg-purple-400/20 blur-xl animate-pulse" })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "h2",
-                {
-                  className: "text-2xl sm:text-3xl font-semibold text-white",
-                  style: { fontFamily: "var(--font-heading)" },
-                  children: "No orders yet"
-                }
-              )
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm sm:text-base text-gray-300 max-w-xl mx-auto mb-8", children: "You haven't placed any orders yet. When you do, they'll show up here so you can track them." }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "button",
-              {
-                type: "button",
-                onClick: onNavigateToMain,
-                className: "btn px-8 py-3 text-sm font-semibold",
-                "data-ocid": "myorders.shop_button",
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingBag, { className: "w-4 h-4" }),
-                  "Browse the Shop"
-                ]
-              }
-            )
-          ]
-        }
-      ) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "max-w-3xl mx-auto space-y-4", children: orders.map((order, index2) => {
-        const statusMeta = STATUS_META$1[order.payment_status];
-        return /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "div",
-          {
-            className: "card glass-card p-6 sm:p-8",
-            "data-ocid": `myorders.order_item.${index2 + 1}`,
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-4", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                    "span",
-                    {
-                      className: `inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold ${statusMeta.soft} ${statusMeta.className}`,
-                      "data-ocid": `myorders.status.${index2 + 1}`,
-                      children: [
-                        /* @__PURE__ */ jsxRuntimeExports.jsx(Clock, { className: "w-4 h-4" }),
-                        statusMeta.label
-                      ]
-                    }
-                  ),
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-400", children: "Reference" }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-mono-nak text-white", children: order.reference })
-                  ] })
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-left sm:text-right", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-400", children: "Placed" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-300", children: formatTimestamp$2(order.created_at) })
-                ] })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border-t border-white/10 pt-4", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "p",
-                  {
-                    className: "text-sm text-gray-300",
-                    "data-ocid": `myorders.items.${index2 + 1}`,
-                    children: itemSummary(order.items)
-                  }
-                ),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-3 flex items-center justify-between", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-sm text-gray-400", children: [
-                    order.items.length,
-                    " ",
-                    order.items.length === 1 ? "item" : "items"
-                  ] }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono-nak text-lg text-teal-bright", children: formatPrice(order.total) })
-                ] })
-              ] })
-            ]
-          },
-          order.reference
-        );
-      }) })
-    ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-center mt-10", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-      "button",
-      {
-        type: "button",
-        onClick: onNavigateToMain,
-        className: "btn px-8 py-4 text-base font-semibold",
-        "data-ocid": "myorders.back_button",
-        children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
-          "Back to Main"
-        ]
-      }
-    ) })
-  ] }) });
-};
 const rows = [
   { stage: "Stage", value: "Genesis", note: "Building the roster from zero." },
   {
@@ -85146,12 +77555,8 @@ const NAV_GROUPS = [
 ];
 const Navigation = ({
   currentPage,
-  onNavigateToMain,
-  onNavigateToShop,
-  onNavigateToCart,
-  onNavigateToMyOrders
+  onNavigateToMain
 }) => {
-  const { itemCount } = useCart();
   const { isAuthenticated, login, clear, isLoggingIn } = useInternetIdentity();
   const [isMenuOpen, setIsMenuOpen] = reactExports.useState(false);
   const [activeSection, setActiveSection] = reactExports.useState(null);
@@ -85180,14 +77585,6 @@ const Navigation = ({
         });
       }
     }
-    setIsMenuOpen(false);
-  };
-  const handleShopClick = () => {
-    if (onNavigateToShop) onNavigateToShop();
-    setIsMenuOpen(false);
-  };
-  const handleCartClick = () => {
-    if (onNavigateToCart) onNavigateToCart();
     setIsMenuOpen(false);
   };
   reactExports.useEffect(() => {
@@ -85314,92 +77711,30 @@ const Navigation = ({
               },
               group.key
             )),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-1 ml-2 min-w-0", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                "button",
-                {
-                  type: "button",
-                  onClick: handleCartClick,
-                  className: "relative cursor-pointer bg-transparent border-0 p-2",
-                  "aria-label": `Cart, ${itemCount} item${itemCount === 1 ? "" : "s"}`,
-                  "data-ocid": "nav.cart_button",
-                  style: { color: "var(--nak-text-secondary)" },
-                  children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingCart, { className: "w-4 h-4" }),
-                    itemCount > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx(
-                      "span",
-                      {
-                        className: "absolute -top-1 -right-1 min-w-[1rem] h-4 px-1 rounded-full text-[0.625rem] font-bold leading-4 text-center",
-                        style: {
-                          background: "var(--nak-surface)",
-                          color: "var(--nak-text-muted)",
-                          border: "1px solid var(--nak-border)"
-                        },
-                        children: itemCount
-                      }
-                    )
-                  ]
-                }
-              ),
-              isAuthenticated ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "button",
-                  {
-                    type: "button",
-                    onClick: () => {
-                      if (onNavigateToMyOrders) onNavigateToMyOrders();
-                    },
-                    className: "cursor-pointer bg-transparent border-0 p-2",
-                    "aria-label": "My orders",
-                    "data-ocid": "nav.my_orders_button",
-                    style: { color: "var(--nak-text-secondary)" },
-                    children: /* @__PURE__ */ jsxRuntimeExports.jsx(Package, { className: "w-4 h-4" })
-                  }
-                ),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "button",
-                  {
-                    type: "button",
-                    onClick: clear,
-                    className: "cursor-pointer bg-transparent border-0 p-2",
-                    "aria-label": "Sign out",
-                    "data-ocid": "nav.sign_out_button",
-                    style: { color: "var(--nak-text-secondary)" },
-                    children: /* @__PURE__ */ jsxRuntimeExports.jsx(LogOut, { className: "w-4 h-4" })
-                  }
-                )
-              ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "button",
-                {
-                  type: "button",
-                  onClick: () => login(),
-                  disabled: isLoggingIn,
-                  className: "cursor-pointer bg-transparent border-0 p-2 disabled:opacity-50 disabled:cursor-not-allowed",
-                  "aria-label": "Sign in",
-                  "data-ocid": "nav.sign_in_button",
-                  style: { color: "var(--nak-text-secondary)" },
-                  children: /* @__PURE__ */ jsxRuntimeExports.jsx(LogIn, { className: "w-4 h-4" })
-                }
-              ),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "button",
-                {
-                  type: "button",
-                  onClick: handleShopClick,
-                  className: "btn-primary cursor-pointer ml-1",
-                  "data-ocid": "nav.shop_button",
-                  style: {
-                    background: "#ffffff",
-                    color: "var(--nak-bg)",
-                    borderRadius: "var(--radius)",
-                    padding: "0.5rem 1rem",
-                    fontSize: "0.8125rem",
-                    fontWeight: 500
-                  },
-                  children: "Shop"
-                }
-              )
-            ] })
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center gap-1 ml-2 min-w-0", children: isAuthenticated ? /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                type: "button",
+                onClick: clear,
+                className: "cursor-pointer bg-transparent border-0 p-2",
+                "aria-label": "Sign out",
+                "data-ocid": "nav.sign_out_button",
+                style: { color: "var(--nak-text-secondary)" },
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(LogOut, { className: "w-4 h-4" })
+              }
+            ) : /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                type: "button",
+                onClick: () => login(),
+                disabled: isLoggingIn,
+                className: "cursor-pointer bg-transparent border-0 p-2 disabled:opacity-50 disabled:cursor-not-allowed",
+                "aria-label": "Sign in",
+                "data-ocid": "nav.sign_in_button",
+                style: { color: "var(--nak-text-secondary)" },
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(LogIn, { className: "w-4 h-4" })
+              }
+            ) })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsx(
             "button",
@@ -85448,802 +77783,51 @@ const Navigation = ({
                 },
                 group.key
               )),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "pt-2 space-y-1", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "button",
-                  {
-                    type: "button",
-                    onClick: handleShopClick,
-                    className: "btn-primary w-full cursor-pointer",
-                    "data-ocid": "nav.mobile_shop_button",
-                    style: {
-                      background: "#ffffff",
-                      color: "var(--nak-bg)",
-                      borderRadius: "var(--radius)"
-                    },
-                    children: "Shop"
-                  }
-                ),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                  "button",
-                  {
-                    type: "button",
-                    onClick: handleCartClick,
-                    className: "w-full text-left cursor-pointer bg-transparent border-0 px-3 py-3 flex items-center gap-3",
-                    style: {
-                      fontFamily: "var(--font-body)",
-                      fontSize: "0.875rem",
-                      color: "var(--nak-text-secondary)"
-                    },
-                    "data-ocid": "nav.mobile_cart_button",
-                    children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingCart, { className: "w-4 h-4" }),
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "flex-1", children: "Cart" }),
-                      itemCount > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx(
-                        "span",
-                        {
-                          className: "min-w-[1rem] h-4 px-1 rounded-full text-[0.625rem] font-bold leading-4 text-center",
-                          style: {
-                            background: "var(--nak-surface)",
-                            color: "var(--nak-text-muted)",
-                            border: "1px solid var(--nak-border)"
-                          },
-                          children: itemCount
-                        }
-                      )
-                    ]
-                  }
-                ),
-                isAuthenticated ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                    "button",
-                    {
-                      type: "button",
-                      onClick: () => {
-                        if (onNavigateToMyOrders) onNavigateToMyOrders();
-                        setIsMenuOpen(false);
-                      },
-                      className: "w-full text-left cursor-pointer bg-transparent border-0 px-3 py-3 flex items-center gap-3",
-                      style: {
-                        fontFamily: "var(--font-body)",
-                        fontSize: "0.875rem",
-                        color: "var(--nak-text-secondary)"
-                      },
-                      "data-ocid": "nav.mobile_my_orders_button",
-                      children: [
-                        /* @__PURE__ */ jsxRuntimeExports.jsx(Package, { className: "w-4 h-4" }),
-                        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "flex-1", children: "My Orders" })
-                      ]
-                    }
-                  ),
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                    "button",
-                    {
-                      type: "button",
-                      onClick: () => {
-                        clear();
-                        setIsMenuOpen(false);
-                      },
-                      className: "w-full text-left cursor-pointer bg-transparent border-0 px-3 py-3 flex items-center gap-3",
-                      style: {
-                        fontFamily: "var(--font-body)",
-                        fontSize: "0.875rem",
-                        color: "var(--nak-text-secondary)"
-                      },
-                      "data-ocid": "nav.mobile_sign_out_button",
-                      children: [
-                        /* @__PURE__ */ jsxRuntimeExports.jsx(LogOut, { className: "w-4 h-4" }),
-                        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "flex-1", children: "Sign out" })
-                      ]
-                    }
-                  )
-                ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                  "button",
-                  {
-                    type: "button",
-                    onClick: () => login(),
-                    disabled: isLoggingIn,
-                    className: "w-full text-left cursor-pointer bg-transparent border-0 px-3 py-3 flex items-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed",
-                    style: {
-                      fontFamily: "var(--font-body)",
-                      fontSize: "0.875rem",
-                      color: "var(--nak-text-secondary)"
-                    },
-                    "data-ocid": "nav.mobile_sign_in_button",
-                    children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx(LogIn, { className: "w-4 h-4" }),
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "flex-1", children: isLoggingIn ? "Signing in…" : "Sign in" })
-                    ]
-                  }
-                )
-              ] })
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "pt-2 space-y-1", children: isAuthenticated ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                "button",
+                {
+                  type: "button",
+                  onClick: () => {
+                    clear();
+                    setIsMenuOpen(false);
+                  },
+                  className: "w-full text-left cursor-pointer bg-transparent border-0 px-3 py-3 flex items-center gap-3",
+                  style: {
+                    fontFamily: "var(--font-body)",
+                    fontSize: "0.875rem",
+                    color: "var(--nak-text-secondary)"
+                  },
+                  "data-ocid": "nav.mobile_sign_out_button",
+                  children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(LogOut, { className: "w-4 h-4" }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "flex-1", children: "Sign out" })
+                  ]
+                }
+              ) : /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                "button",
+                {
+                  type: "button",
+                  onClick: () => login(),
+                  disabled: isLoggingIn,
+                  className: "w-full text-left cursor-pointer bg-transparent border-0 px-3 py-3 flex items-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed",
+                  style: {
+                    fontFamily: "var(--font-body)",
+                    fontSize: "0.875rem",
+                    color: "var(--nak-text-secondary)"
+                  },
+                  "data-ocid": "nav.mobile_sign_in_button",
+                  children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(LogIn, { className: "w-4 h-4" }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "flex-1", children: isLoggingIn ? "Signing in…" : "Sign in" })
+                  ]
+                }
+              ) })
             ] })
           }
         )
       ]
     }
   );
-};
-const TONE_CLASS = {
-  positive: "status-pill-positive",
-  warning: "status-pill-warning",
-  muted: "status-pill-muted",
-  negative: "status-pill-negative",
-  neutral: "status-pill-neutral"
-};
-function StatusPill({ tone, children }) {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `status-pill ${TONE_CLASS[tone]}`, "data-ocid": "status_pill", children });
-}
-function formatTimestamp$1(timestamp) {
-  const date2 = new Date(Number(timestamp / 1000000n));
-  if (Number.isNaN(date2.getTime())) return "—";
-  return date2.toLocaleString(void 0, {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit"
-  });
-}
-function formatRemaining$1(ms2) {
-  const totalSec = Math.max(0, Math.floor(ms2 / 1e3));
-  const hours = Math.floor(totalSec / 3600);
-  const minutes = Math.floor(totalSec % 3600 / 60);
-  const seconds = totalSec % 60;
-  const mm = String(minutes).padStart(2, "0");
-  const ss2 = String(seconds).padStart(2, "0");
-  return hours > 0 ? `${hours}:${mm}:${ss2}` : `${mm}:${ss2}`;
-}
-function formatTokenAmount$1(amount, decimals) {
-  const divisor = 10 ** decimals;
-  const whole = amount / BigInt(divisor);
-  const fraction = amount % BigInt(divisor);
-  const fractionStr = fraction.toString().padStart(decimals, "0");
-  return `${whole.toLocaleString()}.${fractionStr}`;
-}
-const STATUS_META = {
-  paid: { label: "Paid", tone: "positive" },
-  pending: { label: "Pending Payment", tone: "warning" },
-  expired: { label: "Expired", tone: "muted" },
-  cancelled: { label: "Cancelled", tone: "negative" }
-};
-function paymentMethodLabel$1(method) {
-  switch (method) {
-    case "crypto_icp":
-      return "ICP (Crypto)";
-    case "crypto_ckusdc":
-      return "ckUSDC (Crypto)";
-    case "card_stripe":
-      return "Card";
-    case "manual":
-      return "Manual";
-    default:
-      return "Unknown";
-  }
-}
-function OrderItems({ items }) {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("ul", { className: "divide-y divide-[var(--border)]", children: items.map((item, index2) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
-    "li",
-    {
-      "data-ocid": `order.item.${index2 + 1}`,
-      className: "flex items-center justify-between gap-4 py-3",
-      children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm font-medium text-[var(--foreground)] truncate", children: item.name }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-xs text-[var(--muted-foreground)] mt-0.5", children: [
-            "Qty ",
-            item.quantity.toString(),
-            " · ",
-            item.variant_id
-          ] })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm mono-num text-[var(--foreground)] whitespace-nowrap", children: formatPrice(item.unit_amount * item.quantity) })
-      ]
-    },
-    `${item.product_id}-${item.variant_id}-${index2}`
-  )) });
-}
-const OrderLookupPage = ({
-  onNavigateToMain
-}) => {
-  const [reference, setReference] = reactExports.useState("");
-  const [submitted, setSubmitted] = reactExports.useState(null);
-  reactExports.useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-  const { data: order, isLoading, isError } = useOrderLookup(submitted);
-  const { data: deposit } = useCryptoDepositInfo(submitted);
-  const { data: cryptoStatus } = useCryptoPaymentStatus(submitted);
-  const { data: resumeInfo } = useResumeInfo(submitted);
-  const { setActiveOrderRef } = useActiveOrderRef();
-  const [now2, setNow] = reactExports.useState(() => Date.now());
-  reactExports.useEffect(() => {
-    const interval = setInterval(() => setNow(Date.now()), 1e3);
-    return () => clearInterval(interval);
-  }, []);
-  useReleaseExpiredOrders();
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const trimmed = reference.trim();
-    if (!trimmed) return;
-    setSubmitted(trimmed);
-  };
-  const handleResume = () => {
-    if (!submitted) return;
-    setActiveOrderRef(submitted);
-    window.location.search = `?resume=${encodeURIComponent(submitted)}`;
-  };
-  const isResumable = (resumeInfo == null ? void 0 : resumeInfo.status.__kind__) === "awaiting_payment" && Number(resumeInfo.expiresAt / 1000000n) - now2 > 0;
-  const remainingMs = resumeInfo ? Number(resumeInfo.expiresAt / 1000000n) - now2 : 0;
-  const statusMeta = order ? STATUS_META[order.payment_status] : void 0;
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "pt-24 sm:pt-32 pb-12 sm:pb-20 px-4 sm:px-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-5xl mx-auto", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-10 sm:mb-14 px-2", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 mb-4", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Search, { className: "w-5 h-5 text-[var(--primary)]" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "section-heading text-2xl sm:text-3xl", children: "Order Lookup" })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-[var(--muted-foreground)] max-w-2xl", children: "Enter your order reference to check its status, items, total, and payment state." })
-    ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "max-w-2xl px-2 mb-10", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-      "form",
-      {
-        onSubmit: handleSubmit,
-        className: "surface p-5 sm:p-6",
-        "data-ocid": "order.lookup_form",
-        children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { htmlFor: "order-reference", className: "field-label block mb-2", children: "Order Reference" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col sm:flex-row gap-3", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "input",
-              {
-                id: "order-reference",
-                type: "text",
-                value: reference,
-                onChange: (event) => setReference(event.target.value),
-                placeholder: "e.g. NAK-XXXXXX",
-                className: "field-input flex-1 min-w-0",
-                "data-ocid": "order.reference_input"
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "button",
-              {
-                type: "submit",
-                className: "btn px-6 py-3 text-sm font-semibold",
-                "data-ocid": "order.lookup_button",
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Search, { className: "w-4 h-4" }),
-                  "Look Up Order"
-                ]
-              }
-            )
-          ] })
-        ]
-      }
-    ) }),
-    submitted && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-2", children: [
-      isLoading && /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        "div",
-        {
-          className: "surface p-8 text-center",
-          "data-ocid": "order.loading_state",
-          children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "loading-shimmer h-4 w-40 mx-auto rounded mb-4" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "loading-shimmer h-4 w-64 mx-auto rounded" })
-          ]
-        }
-      ),
-      !isLoading && isError && /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        "div",
-        {
-          className: "surface p-8 text-center",
-          "data-ocid": "order.error_state",
-          children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[var(--negative)] mb-4", children: "We couldn't look up that order. Please check the reference and try again." }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "button",
-              {
-                type: "button",
-                onClick: () => setSubmitted(null),
-                className: "btn px-6 py-3 text-sm font-semibold",
-                "data-ocid": "order.retry_button",
-                children: "Try Again"
-              }
-            )
-          ]
-        }
-      ),
-      !isLoading && !isError && !order && /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        "div",
-        {
-          className: "surface p-8 text-center",
-          "data-ocid": "order.empty_state",
-          children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Package, { className: "w-10 h-10 text-[var(--muted-foreground)] mx-auto mb-4" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-[var(--secondary-foreground)]", children: [
-              "No order found for reference",
-              " ",
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num text-[var(--foreground)]", children: submitted }),
-              "."
-            ] })
-          ]
-        }
-      ),
-      !isLoading && !isError && order && statusMeta && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-6", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "div",
-          {
-            className: "surface p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4",
-            "data-ocid": "order.status_banner",
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-4", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs(StatusPill, { tone: statusMeta.tone, children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Clock, { className: "w-3.5 h-3.5" }),
-                  statusMeta.label
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "field-label mb-1", children: "Reference" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mono-num text-[var(--foreground)]", children: order.reference })
-                ] })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-left sm:text-right", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "field-label mb-1", children: "Placed" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-[var(--secondary-foreground)]", children: formatTimestamp$1(order.created_at) })
-              ] })
-            ]
-          }
-        ),
-        isResumable && resumeInfo && /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "div",
-          {
-            className: "surface p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4",
-            "data-ocid": "order.resume_panel",
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-4", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "flex h-10 w-10 items-center justify-center rounded-[var(--radius)] border border-[var(--border-strong)] text-[var(--primary)]", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Wallet, { className: "h-5 w-5" }) }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "section-heading text-sm mb-1", children: "This deposit is still open" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-[var(--secondary-foreground)]", children: [
-                    "Resume to complete your payment —",
-                    " ",
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num text-[var(--foreground)]", children: formatRemaining$1(remainingMs) }),
-                    " ",
-                    "remaining"
-                  ] })
-                ] })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                "button",
-                {
-                  type: "button",
-                  onClick: handleResume,
-                  className: "btn px-6 py-3 text-sm font-semibold flex-shrink-0",
-                  "data-ocid": "order.resume_button",
-                  children: [
-                    "Resume deposit",
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowRight, { className: "w-4 h-4" })
-                  ]
-                }
-              )
-            ]
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 lg:grid-cols-2 gap-6", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "surface p-6 sm:p-8", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "section-heading text-base mb-4 flex items-center gap-2", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Package, { className: "w-4 h-4 text-[var(--primary)]" }),
-              "Items"
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(OrderItems, { items: order.items }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-4 pt-4 border-t border-[var(--border)] space-y-2 text-sm", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-[var(--muted-foreground)]", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Subtotal" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num text-[var(--foreground)]", children: formatPrice(order.subtotal) })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-[var(--muted-foreground)]", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Shipping" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num text-[var(--foreground)]", children: formatPrice(order.shipping) })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-[var(--muted-foreground)]", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Tax" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num text-[var(--foreground)]", children: formatPrice(order.tax) })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between items-center pt-2 border-t border-[var(--border)]", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-medium text-[var(--foreground)]", children: "Total" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num text-base text-[var(--foreground)]", children: formatPrice(order.total) })
-              ] })
-            ] })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-6", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "surface p-6 sm:p-8", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "section-heading text-base mb-4 flex items-center gap-2", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(CreditCard, { className: "w-4 h-4 text-[var(--primary)]" }),
-                "Payment"
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-3 text-sm", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[var(--muted-foreground)]", children: "Method" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[var(--foreground)]", children: paymentMethodLabel$1(order.payment_method) })
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[var(--muted-foreground)]", children: "Status" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num text-[var(--foreground)]", children: statusMeta.label })
-                ] }),
-                cryptoStatus && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[var(--muted-foreground)]", children: "Payment State" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(
-                    "span",
-                    {
-                      className: cryptoStatus.__kind__ === "paid" ? "text-[var(--positive)]" : cryptoStatus.__kind__ === "expired" ? "text-[var(--negative)]" : "text-[var(--nak-warning)]",
-                      children: cryptoStatus.__kind__ === "paid" ? `Paid (block ${cryptoStatus.paid.blockIndex.toString()})` : cryptoStatus.__kind__ === "awaiting_payment" ? "Awaiting payment" : cryptoStatus.__kind__ === "expired" ? "Expired" : cryptoStatus.__kind__ === "overpayment" ? "Overpayment" : "Underpayment"
-                    }
-                  )
-                ] })
-              ] })
-            ] }),
-            deposit && /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "div",
-              {
-                className: "surface p-6 sm:p-8",
-                "data-ocid": "order.deposit_panel",
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "section-heading text-base mb-4 flex items-center gap-2", children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(Wallet, { className: "w-4 h-4 text-[var(--primary)]" }),
-                    "Deposit Address"
-                  ] }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-3 text-sm", children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between", children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[var(--muted-foreground)]", children: "Token" }),
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num text-[var(--foreground)]", children: deposit.token })
-                    ] }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between", children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[var(--muted-foreground)]", children: "Amount Due" }),
-                      /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "mono-num text-[var(--foreground)]", children: [
-                        formatTokenAmount$1(
-                          deposit.amountDue,
-                          deposit.decimals
-                        ),
-                        " ",
-                        deposit.token
-                      ] })
-                    ] }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between", children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[var(--muted-foreground)]", children: "Expires" }),
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[var(--secondary-foreground)]", children: formatTimestamp$1(deposit.expiresAt) })
-                    ] }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "field-label block mb-2", children: "Address" }),
-                      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-                        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "inset-well flex-1 min-w-0", children: depositAccountString(deposit) }),
-                        /* @__PURE__ */ jsxRuntimeExports.jsx(
-                          CopyButton,
-                          {
-                            text: depositAccountString(deposit),
-                            label: "Copy",
-                            className: "shrink-0"
-                          }
-                        )
-                      ] })
-                    ] })
-                  ] })
-                ]
-              }
-            )
-          ] })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "surface p-6 sm:p-8", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "section-heading text-base mb-4 flex items-center gap-2", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(MapPin, { className: "w-4 h-4 text-[var(--primary)]" }),
-            "Shipping"
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-3 text-sm", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[var(--muted-foreground)]", children: "Status" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[var(--foreground)]", children: order.shipping_status === "shipped" ? "Shipped" : "Pending" })
-            ] }),
-            order.tracking_number && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[var(--muted-foreground)]", children: "Tracking" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num text-[var(--foreground)]", children: order.tracking_number })
-            ] }),
-            order.shipped_at && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[var(--muted-foreground)]", children: "Shipped" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[var(--secondary-foreground)]", children: formatTimestamp$1(order.shipped_at) })
-            ] })
-          ] })
-        ] })
-      ] })
-    ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-center mt-10", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-      "button",
-      {
-        type: "button",
-        onClick: onNavigateToMain,
-        className: "btn px-8 py-4 text-base font-semibold",
-        "data-ocid": "order.back_button",
-        children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
-          "Back to Main"
-        ]
-      }
-    ) })
-  ] }) });
-};
-const ProductPage = ({
-  slugOrId,
-  onNavigateToMain,
-  onNavigateToShop
-}) => {
-  const { data: product, isLoading, isError } = useProduct(slugOrId);
-  const { addItem } = useCart();
-  const [selectedVariantId, setSelectedVariantId] = reactExports.useState(
-    null
-  );
-  const [quantity, setQuantity] = reactExports.useState(1);
-  const [added, setAdded] = reactExports.useState(false);
-  reactExports.useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-  reactExports.useEffect(() => {
-    var _a2;
-    setSelectedVariantId(((_a2 = product == null ? void 0 : product.variants[0]) == null ? void 0 : _a2.id) ?? null);
-    setQuantity(1);
-    setAdded(false);
-  }, [product]);
-  const selectedVariant = reactExports.useMemo(
-    () => (product == null ? void 0 : product.variants.find((v2) => v2.id === selectedVariantId)) ?? null,
-    [product, selectedVariantId]
-  );
-  const unitPrice = selectedVariant ? selectedVariant.price : (product == null ? void 0 : product.price) ?? 0;
-  const maxInventory = selectedVariant ? selectedVariant.inventory : (product == null ? void 0 : product.inventory) ?? 0n;
-  const maxQty = Math.max(1, Number(maxInventory));
-  const image = product == null ? void 0 : product.images[0];
-  const handleAddToCart = () => {
-    if (!product) return;
-    addItem(product, selectedVariantId ?? "", quantity);
-    setAdded(true);
-    window.setTimeout(() => setAdded(false), 2e3);
-  };
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "pt-24 sm:pt-32 pb-12 sm:pb-20 px-4 sm:px-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-7xl mx-auto", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mb-8 sm:mb-10 px-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-      "button",
-      {
-        type: "button",
-        onClick: onNavigateToShop,
-        className: "back-link",
-        "data-ocid": "product.back_link",
-        children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
-          "Back to Shop"
-        ]
-      }
-    ) }),
-    isLoading && /* @__PURE__ */ jsxRuntimeExports.jsx(
-      "div",
-      {
-        className: "relative max-w-5xl mx-auto px-2",
-        "data-ocid": "product.loading_state",
-        children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "surface p-6 sm:p-10", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 min-[860px]:grid-cols-2 gap-8 md:gap-12", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "loading-shimmer aspect-square" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "loading-shimmer h-4 w-24" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "loading-shimmer h-8 w-3/4" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "loading-shimmer h-4 w-full" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "loading-shimmer h-4 w-2/3" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "loading-shimmer h-12 w-40 mt-6" })
-          ] })
-        ] }) })
-      }
-    ),
-    !isLoading && isError && /* @__PURE__ */ jsxRuntimeExports.jsx(
-      "div",
-      {
-        className: "relative max-w-4xl mx-auto px-2",
-        "data-ocid": "product.error_state",
-        children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "surface p-6 sm:p-10 text-center", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-xl sm:text-2xl mb-3", children: "Couldn't load this product" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-muted-foreground mb-8 max-w-md mx-auto", children: "Something went wrong while fetching the product details. Please try again or head back to the shop." }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center justify-center gap-4", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "button",
-              {
-                type: "button",
-                onClick: onNavigateToShop,
-                className: "btn px-8 py-4 text-base",
-                "data-ocid": "product.back_to_shop_button",
-                children: "Back to Shop"
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "button",
-              {
-                type: "button",
-                onClick: onNavigateToMain,
-                className: "btn btn-secondary px-8 py-4 text-base",
-                "data-ocid": "product.back_to_main_button",
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
-                  "Back to Main"
-                ]
-              }
-            )
-          ] })
-        ] })
-      }
-    ),
-    !isLoading && !isError && !product && /* @__PURE__ */ jsxRuntimeExports.jsx(
-      "div",
-      {
-        className: "relative max-w-4xl mx-auto px-2",
-        "data-ocid": "product.empty_state",
-        children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "surface p-6 sm:p-10 text-center", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center justify-center gap-4 mb-6", children: /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingCart, { className: "w-10 h-10 text-muted-foreground" }) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-xl sm:text-2xl mb-3", children: "Product not found" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-muted-foreground mb-8 max-w-md mx-auto", children: "We couldn't find the product you were looking for. It may have been removed or the link is no longer valid." }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center justify-center gap-4", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "button",
-              {
-                type: "button",
-                onClick: onNavigateToShop,
-                className: "btn px-8 py-4 text-base",
-                "data-ocid": "product.back_to_shop_button",
-                children: "Browse the Shop"
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "button",
-              {
-                type: "button",
-                onClick: onNavigateToMain,
-                className: "btn btn-secondary px-8 py-4 text-base",
-                "data-ocid": "product.back_to_main_button",
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
-                  "Back to Main"
-                ]
-              }
-            )
-          ] })
-        ] })
-      }
-    ),
-    !isLoading && !isError && product && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative max-w-6xl mx-auto px-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "surface p-6 sm:p-8 lg:p-12", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 min-[860px]:grid-cols-2 gap-8 md:gap-12 items-start", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "product-well aspect-square", children: image ? /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: image, alt: product.name }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center justify-center gap-3 text-muted-foreground", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Image, { className: "w-16 h-16" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm", children: "No image available" })
-      ] }) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "section-label mb-3", children: product.category }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "h2",
-          {
-            className: "text-2xl sm:text-3xl lg:text-4xl mb-3",
-            style: { fontSize: "1.75rem" },
-            children: product.name
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm sm:text-base text-secondary-foreground mb-8", children: product.description }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 mb-8", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num text-2xl sm:text-3xl", children: formatPrice(unitPrice) }),
-          maxInventory === 0n && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "stock-pill stock-pill-soldout", children: "Sold out" })
-        ] }),
-        product.variants.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-8", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "section-label mb-3", children: "Select Variant" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-1 sm:grid-cols-2 gap-3", children: product.variants.map((variant) => {
-            const isSelected = variant.id === selectedVariantId;
-            const isSoldOut = variant.inventory === 0n;
-            return /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "button",
-              {
-                type: "button",
-                onClick: () => {
-                  setSelectedVariantId(variant.id);
-                  setQuantity(1);
-                  setAdded(false);
-                },
-                disabled: isSoldOut,
-                className: `bordered-select justify-between text-left ${isSelected ? "is-active" : ""} ${isSoldOut ? "opacity-45 cursor-not-allowed" : ""}`,
-                "data-ocid": `product.variant.${variant.id}`,
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "flex items-center gap-2", children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-medium text-sm", children: [
-                      variant.name,
-                      variant.size ? ` · ${variant.size}` : ""
-                    ] }),
-                    isSelected && /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4 shrink-0" })
-                  ] }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "flex items-center gap-3", children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num text-sm", children: formatPrice(variant.price) }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-muted-foreground", children: isSoldOut ? "Sold out" : `${variant.inventory} in stock` })
-                  ] })
-                ]
-              },
-              variant.id
-            );
-          }) })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-8", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "section-label mb-3", children: "Quantity" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "div",
-            {
-              className: "bordered-stepper",
-              "data-ocid": "product.quantity",
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "button",
-                  {
-                    type: "button",
-                    onClick: () => setQuantity((q2) => Math.max(1, q2 - 1)),
-                    disabled: quantity <= 1,
-                    className: "disabled:opacity-40 disabled:cursor-not-allowed",
-                    "aria-label": "Decrease quantity",
-                    "data-ocid": "product.decrease_button",
-                    children: /* @__PURE__ */ jsxRuntimeExports.jsx(Minus, { className: "w-4 h-4" })
-                  }
-                ),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "stepper-value", "aria-live": "polite", children: quantity }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "button",
-                  {
-                    type: "button",
-                    onClick: () => setQuantity((q2) => Math.min(maxQty, q2 + 1)),
-                    disabled: quantity >= maxQty,
-                    className: "disabled:opacity-40 disabled:cursor-not-allowed",
-                    "aria-label": "Increase quantity",
-                    "data-ocid": "product.increase_button",
-                    children: /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { className: "w-4 h-4" })
-                  }
-                )
-              ]
-            }
-          )
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col sm:flex-row gap-3 sm:items-center", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
-            {
-              type: "button",
-              onClick: handleAddToCart,
-              disabled: maxInventory === 0n,
-              className: "btn px-8 py-4 text-base disabled:opacity-50 disabled:cursor-not-allowed",
-              "data-ocid": "product.add_to_cart_button",
-              children: added ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-5 h-5" }),
-                "Added to Cart"
-              ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingCart, { className: "w-5 h-5" }),
-                "Add to Cart"
-              ] })
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
-            {
-              type: "button",
-              onClick: onNavigateToShop,
-              className: "btn btn-secondary px-8 py-4 text-base",
-              "data-ocid": "product.continue_shopping_button",
-              children: "Continue Shopping"
-            }
-          )
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-8", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "button",
-          {
-            type: "button",
-            onClick: onNavigateToMain,
-            className: "back-link",
-            "data-ocid": "product.back_to_main_button",
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
-              "Back to Main Page"
-            ]
-          }
-        ) })
-      ] })
-    ] }) }) })
-  ] }) });
 };
 const ICPSWAP_SWAP_URL = "https://app.icpswap.com/swap/pro?input=ryjl3-tyaaa-aaaaa-aaaba-cai&output=eig2s-waaaa-aaaam-qbg5a-cai";
 const PurchaseNAK = () => {
@@ -86266,8 +77850,8 @@ const PurchaseNAK = () => {
     window.addEventListener("message", handleMessage);
     return () => window.removeEventListener("message", handleMessage);
   }, []);
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("section", { id: "trade", className: "px-6 py-20", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "max-w-7xl mx-auto", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 min-[860px]:grid-cols-2 gap-12 lg:gap-16 items-start", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-xl min-w-0", children: [
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("section", { id: "trade", className: "px-4 sm:px-6 py-12 min-[860px]:py-20", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "max-w-7xl mx-auto", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 min-[860px]:grid-cols-2 gap-8 min-[860px]:gap-12 lg:gap-16 items-start", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-xl min-w-0 order-2 min-[860px]:order-1", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "section-label mb-4", children: "Acquire" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "mb-5", children: "Cross-chain entry via Houdiniswap" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-base leading-relaxed text-muted-foreground mb-8", children: "Houdiniswap routes swaps across chains without requiring an account, so entry into N.A.K. is not gated behind a centralised exchange listing. Bridge from most major assets directly." }),
@@ -86290,7 +77874,7 @@ const PurchaseNAK = () => {
         }
       )
     ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "surface hairline p-4 sm:p-6 overflow-hidden max-w-full min-w-0", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "surface hairline p-3 sm:p-6 overflow-hidden max-w-full min-w-0 order-1 min-[860px]:order-2", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(
         "iframe",
         {
@@ -86310,8 +77894,8 @@ const PurchaseNAK = () => {
     ] })
   ] }) }) });
 };
-function formatTimestamp(ns2) {
-  const date2 = new Date(Number(ns2 / 1000000n));
+function formatTimestamp(ns) {
+  const date2 = new Date(Number(ns / 1000000n));
   if (Number.isNaN(date2.getTime())) return "—";
   return date2.toLocaleString(void 0, {
     year: "numeric",
@@ -86756,700 +78340,6 @@ const ReserveTreasury = () => {
     ] }) }) })
   ] }) }) });
 };
-function formatRemaining(ms2) {
-  const totalSec = Math.max(0, Math.floor(ms2 / 1e3));
-  const hours = Math.floor(totalSec / 3600);
-  const minutes = Math.floor(totalSec % 3600 / 60);
-  const seconds = totalSec % 60;
-  const mm = String(minutes).padStart(2, "0");
-  const ss2 = String(seconds).padStart(2, "0");
-  return hours > 0 ? `${hours}:${mm}:${ss2}` : `${mm}:${ss2}`;
-}
-function ResumeBanner({ onResume }) {
-  const { activeOrderRef, clearActiveOrderRef } = useActiveOrderRef();
-  const { data: resumeInfo, isError } = useResumeInfo(activeOrderRef);
-  const [now2, setNow] = reactExports.useState(() => Date.now());
-  reactExports.useEffect(() => {
-    const interval = setInterval(() => setNow(Date.now()), 1e3);
-    return () => clearInterval(interval);
-  }, []);
-  reactExports.useEffect(() => {
-    if (!activeOrderRef) return;
-    if (isError) {
-      clearActiveOrderRef();
-      return;
-    }
-    if (!resumeInfo) return;
-    const status2 = resumeInfo.status.__kind__;
-    if (status2 === "paid") {
-      clearActiveOrderRef();
-      return;
-    }
-    if (status2 === "expired") {
-      clearActiveOrderRef();
-    }
-  }, [activeOrderRef, resumeInfo, isError, clearActiveOrderRef]);
-  if (!activeOrderRef || !resumeInfo) return null;
-  const status = resumeInfo.status.__kind__;
-  if (status === "awaiting_payment") {
-    const remainingMs = Number(resumeInfo.expiresAt / 1000000n) - now2;
-    if (remainingMs <= 0) return null;
-    return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "resume-banner relative", "data-ocid": "resume.banner", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(Clock, { className: "w-4 h-4 text-teal-bright flex-shrink-0" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 min-w-0", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm font-medium text-white", children: [
-          "Resume your order —",
-          " ",
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono-nak text-teal-bright", children: formatRemaining(remainingMs) }),
-          " ",
-          "remaining"
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-xs text-muted truncate", children: [
-          "Order ",
-          resumeInfo.reference,
-          " is waiting for your deposit."
-        ] })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
-        "button",
-        {
-          type: "button",
-          onClick: onResume,
-          className: "btn px-4 py-2 text-xs font-semibold flex-shrink-0",
-          "data-ocid": "resume.resume_button",
-          children: "Resume deposit"
-        }
-      )
-    ] });
-  }
-  return null;
-}
-const ShopBanner = ({ onNavigateToShop }) => {
-  const ckUSDCEnabled = useCkUSDCCheckoutEnabled();
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("section", { className: "px-6 py-10", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "max-w-7xl mx-auto", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-    "button",
-    {
-      type: "button",
-      onClick: onNavigateToShop,
-      "data-ocid": "shop_banner",
-      "aria-label": "Enter the shop",
-      className: "shop-banner group flex w-full items-center justify-between gap-4 text-left cursor-pointer",
-      children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "span",
-          {
-            className: "flex-shrink-0 w-10 h-10 surface flex items-center justify-center",
-            "aria-hidden": "true",
-            children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "span",
-              {
-                className: "w-4 h-4",
-                style: {
-                  background: "var(--nak-border-strong)",
-                  borderRadius: "2px"
-                }
-              }
-            )
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "flex-1 min-w-0 flex flex-col gap-0.5", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "section-label", children: "Product Line" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "truncate", style: { color: "var(--nak-text)" }, children: ckUSDCEnabled ? "N.A.K. — five colognes, settled in ckUSDC" : "N.A.K. — five colognes" })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "flex-shrink-0 flex items-center gap-2", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "span",
-            {
-              className: "text-sm font-medium",
-              style: { color: "var(--nak-text)" },
-              children: "Enter the shop"
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowRight, { className: "w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" })
-        ] })
-      ]
-    }
-  ) }) });
-};
-function readFilterFromUrl() {
-  const hash = window.location.hash;
-  const queryIndex = hash.indexOf("?");
-  if (queryIndex === -1) return "all";
-  const params = new URLSearchParams(hash.slice(queryIndex + 1));
-  return params.get("cat") ?? "all";
-}
-const ShopPage = ({ onNavigateToMain }) => {
-  const { data: products, isLoading, isError } = useProducts();
-  const { data: categories } = useCategories();
-  const { addItem } = useCart();
-  const [addedId, setAddedId] = reactExports.useState(null);
-  const [filter, setFilter] = reactExports.useState(
-    () => readFilterFromUrl()
-  );
-  reactExports.useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-  const filterOptions = reactExports.useMemo(() => {
-    const known = (categories ?? []).map((c2) => c2.category).filter((c2) => c2.active).sort((a2, b2) => Number(a2.sortOrder) - Number(b2.sortOrder));
-    return [
-      { value: "all", label: "All" },
-      ...known.map((c2) => ({ value: c2.slug, label: c2.name }))
-    ];
-  }, [categories]);
-  const resolvedFilter = reactExports.useMemo(() => {
-    if (filter === "all") return "all";
-    const known = (categories ?? []).map((c2) => c2.category).filter((c2) => c2.active);
-    return known.some((c2) => c2.slug === filter) ? filter : "all";
-  }, [filter, categories]);
-  const sections = reactExports.useMemo(() => {
-    if (!products) return [];
-    const known = (categories ?? []).map((c2) => c2.category).filter((c2) => c2.active).sort((a2, b2) => Number(a2.sortOrder) - Number(b2.sortOrder));
-    const knownSlugs = new Set(known.map((c2) => c2.slug));
-    const byCategory = /* @__PURE__ */ new Map();
-    const uncategorized = [];
-    for (const product of products) {
-      if (product.category && knownSlugs.has(product.category)) {
-        const list = byCategory.get(product.category) ?? [];
-        list.push(product);
-        byCategory.set(product.category, list);
-      } else {
-        uncategorized.push(product);
-      }
-    }
-    const ordered = [];
-    for (const category of known) {
-      const items = byCategory.get(category.slug);
-      if (items && items.length > 0) {
-        ordered.push({ key: category.slug, heading: category.name, items });
-      } else if (category.showWhenEmpty) {
-        ordered.push({ key: category.slug, heading: category.name, items: [] });
-      }
-    }
-    if (uncategorized.length > 0) {
-      ordered.push({
-        key: "uncategorized",
-        heading: "Uncategorized",
-        items: uncategorized
-      });
-    }
-    return ordered;
-  }, [products, categories]);
-  reactExports.useEffect(() => {
-    const base = "#/shop";
-    const params = new URLSearchParams();
-    if (resolvedFilter !== "all") params.set("cat", resolvedFilter);
-    const query = params.toString();
-    const next = query ? `${base}?${query}` : base;
-    if (window.location.hash !== next) {
-      window.history.replaceState(null, "", next);
-    }
-  }, [resolvedFilter]);
-  const handleAddToCart = (product) => {
-    var _a2;
-    const variantId = ((_a2 = product.variants[0]) == null ? void 0 : _a2.id) ?? "";
-    addItem(product, variantId, 1);
-    setAddedId(product.slug || String(product.id));
-    window.setTimeout(() => setAddedId(null), 2e3);
-  };
-  const visibleSections = reactExports.useMemo(() => {
-    if (resolvedFilter === "all") return sections;
-    return sections.filter((s2) => s2.key === resolvedFilter);
-  }, [sections, resolvedFilter]);
-  const renderCard = (product, index2) => {
-    var _a2, _b2;
-    const image = (_a2 = product.images) == null ? void 0 : _a2[0];
-    const inventory = Number(product.inventory);
-    const isSoldOut = inventory === 0;
-    const isLow = inventory > 0 && inventory <= 10;
-    const isAdded = addedId === (product.slug || String(product.id));
-    const size2 = (_b2 = product.variants[0]) == null ? void 0 : _b2.size;
-    return /* @__PURE__ */ jsxRuntimeExports.jsxs(
-      "div",
-      {
-        className: `lattice-cell ${isSoldOut ? "is-soldout" : ""}`,
-        "data-ocid": `shop.item.${index2 + 1}`,
-        children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "product-well", children: image ? /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: image, alt: product.name }) : /* @__PURE__ */ jsxRuntimeExports.jsx(
-            Image,
-            {
-              className: "w-12 h-12",
-              style: { color: "var(--muted-foreground)" }
-            }
-          ) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-baseline justify-between gap-2", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "h4",
-              {
-                className: "text-[0.9375rem] font-medium leading-snug",
-                style: {
-                  fontSize: "0.9375rem",
-                  letterSpacing: "-0.015em"
-                },
-                children: product.name
-              }
-            ),
-            size2 && /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "span",
-              {
-                className: "mono-num text-[0.6875rem] whitespace-nowrap",
-                style: { color: "var(--muted-foreground)" },
-                children: size2
-              }
-            )
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "p",
-            {
-              className: "text-[0.75rem] leading-relaxed",
-              style: { color: "var(--muted-foreground)" },
-              children: product.description
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "div",
-            {
-              className: "mt-auto",
-              style: { borderTop: "1px solid var(--border)" }
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between gap-2 pt-3", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num text-[0.9375rem]", children: formatPrice(product.price) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "button",
-              {
-                type: "button",
-                onClick: () => handleAddToCart(product),
-                disabled: isSoldOut,
-                className: "add-arrow",
-                style: {
-                  background: "transparent",
-                  border: "none",
-                  padding: 0,
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "0.25rem"
-                },
-                "data-ocid": `shop.add_to_cart_button.${index2 + 1}`,
-                children: isAdded ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4" }),
-                  "Added"
-                ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: "Add →" })
-              }
-            )
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center justify-between", children: isSoldOut ? /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "stock-pill stock-pill-soldout", children: "Sold out" }) : isLow ? /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "stock-pill", children: [
-            inventory,
-            " left"
-          ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "stock-pill", children: "In stock" }) })
-        ]
-      },
-      product.slug || String(product.id)
-    );
-  };
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "pt-24 sm:pt-32 pb-12 sm:pb-20 px-4 sm:px-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-7xl mx-auto", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mb-8 sm:mb-10 px-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-      "button",
-      {
-        type: "button",
-        onClick: onNavigateToMain,
-        className: "back-link",
-        style: {
-          background: "transparent",
-          border: "none",
-          padding: 0
-        },
-        "data-ocid": "shop.back_link",
-        children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
-          "Back"
-        ]
-      }
-    ) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-8 sm:mb-10 px-2", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "section-label mb-3", children: "Product Line" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
-        "h1",
-        {
-          className: "text-[1.75rem] font-medium leading-tight",
-          style: { fontSize: "1.75rem", letterSpacing: "-0.015em" },
-          children: "The Collection"
-        }
-      ),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
-        "p",
-        {
-          className: "text-sm mt-3 max-w-2xl",
-          style: { color: "var(--muted-foreground)" },
-          children: "Handcrafted colognes and oils from the NAK STRATS collection — reserve yours before they sell out."
-        }
-      )
-    ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "px-2 mb-10 sm:mb-12", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-      "fieldset",
-      {
-        className: "category-filter",
-        "data-ocid": "shop.category_filter",
-        children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("legend", { className: "sr-only", children: "Filter products by category" }),
-          filterOptions.map((option) => /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
-            {
-              type: "button",
-              className: resolvedFilter === option.value ? "is-active" : "",
-              "aria-pressed": resolvedFilter === option.value,
-              onClick: () => setFilter(option.value),
-              "data-ocid": `shop.filter.${option.value.toLowerCase()}`,
-              children: option.label
-            },
-            option.value
-          ))
-        ]
-      }
-    ) }),
-    isLoading && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "lattice", "data-ocid": "shop.loading_state", children: ["skeleton-0", "skeleton-1", "skeleton-2"].map((key) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "lattice-cell", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "product-well loading-shimmer" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "loading-shimmer h-5 w-3/4" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "loading-shimmer h-4 w-full" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "loading-shimmer h-4 w-2/3" })
-    ] }, key)) }),
-    !isLoading && isError && /* @__PURE__ */ jsxRuntimeExports.jsxs(
-      "div",
-      {
-        className: "surface p-8 sm:p-10 text-center max-w-4xl mx-auto",
-        "data-ocid": "shop.error_state",
-        children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-xl sm:text-2xl mb-3", children: "Couldn't load the collection" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "p",
-            {
-              className: "text-sm mb-8 max-w-md mx-auto",
-              style: { color: "var(--muted-foreground)" },
-              children: "Something went wrong while fetching the products. Please try again shortly."
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              type: "button",
-              onClick: onNavigateToMain,
-              className: "btn-secondary",
-              "data-ocid": "shop.back_to_main_button",
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
-                "Back to Main"
-              ]
-            }
-          )
-        ]
-      }
-    ),
-    !isLoading && !isError && (!products || products.length === 0) && /* @__PURE__ */ jsxRuntimeExports.jsxs(
-      "div",
-      {
-        className: "surface p-8 sm:p-10 text-center max-w-4xl mx-auto",
-        "data-ocid": "shop.empty_state",
-        children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            Image,
-            {
-              className: "w-10 h-10 mx-auto mb-6",
-              style: { color: "var(--muted-foreground)" }
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-xl sm:text-2xl mb-3", children: "The collection is being finalized" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "p",
-            {
-              className: "text-sm mb-8 max-w-md mx-auto",
-              style: { color: "var(--muted-foreground)" },
-              children: "Our cologne lineup is being prepared. Check back soon for availability and pricing."
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              type: "button",
-              onClick: onNavigateToMain,
-              className: "btn-secondary",
-              "data-ocid": "shop.back_to_main_button",
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
-                "Back to Main"
-              ]
-            }
-          )
-        ]
-      }
-    ),
-    !isLoading && !isError && products && products.length > 0 && visibleSections.map((section) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
-      "section",
-      {
-        className: "mb-12 sm:mb-16",
-        "data-ocid": `shop.section.${section.key.toLowerCase()}`,
-        children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "category-section-heading mb-4 px-2", children: section.heading }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "lattice", "data-ocid": "shop.grid", children: section.items.map(
-            (product, index2) => renderCard(product, index2)
-          ) })
-        ]
-      },
-      section.key
-    ))
-  ] }) });
-};
-const SuccessPage = ({
-  orderReference,
-  onNavigateToMain,
-  onNavigateToShop
-}) => {
-  const confirm = useConfirmCardPayment();
-  const { data: order } = useOrderStatus(orderReference || null);
-  const { clearActiveOrderRef } = useActiveOrderRef();
-  const isCardOrder = (order == null ? void 0 : order.payment_method) === "card_stripe";
-  reactExports.useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-  reactExports.useEffect(() => {
-    if (!orderReference || !isCardOrder) return;
-    confirm.mutate(orderReference);
-  }, [orderReference, isCardOrder, confirm.mutate]);
-  const handleRetry = () => {
-    if (!orderReference || !isCardOrder) return;
-    confirm.mutate(orderReference);
-  };
-  const data = confirm.data;
-  const isConfirmed = !isCardOrder || (data == null ? void 0 : data.__kind__) === "ok" && data.ok === "paid" || (data == null ? void 0 : data.__kind__) === "err" && data.err.__kind__ === "alreadyPaid";
-  const isStillPending = (data == null ? void 0 : data.__kind__) === "ok" && data.ok === "pending";
-  const isError = isCardOrder && (confirm.isError || (data == null ? void 0 : data.__kind__) === "err" && data.err.__kind__ !== "alreadyPaid");
-  reactExports.useEffect(() => {
-    if (isConfirmed) {
-      clearActiveOrderRef();
-    }
-  }, [isConfirmed, clearActiveOrderRef]);
-  const errorMessage = (() => {
-    if ((data == null ? void 0 : data.__kind__) === "err" && data.err.__kind__ !== "alreadyPaid") {
-      if (data.err.__kind__ === "outcallFailed") {
-        return "We could not reach the payment service to confirm your order. Your order is still pending and has not been charged. Please try again in a moment.";
-      }
-      if (data.err.__kind__ === "notFound") {
-        return "We could not find an order matching this reference. Please check the reference and try again.";
-      }
-      if (data.err.__kind__ === "notConfigured") {
-        return "The payment service is not configured yet. Your order is still pending and has not been charged.";
-      }
-      return "We could not confirm your payment right now. Your order is still pending and has not been charged. Please try again.";
-    }
-    return "We could not confirm your payment right now. Your order is still pending and has not been charged. Please try again.";
-  })();
-  const nextSteps = [
-    {
-      icon: Wallet,
-      title: "Payment Confirmed",
-      body: "Your payment was received and verified. Your order is now locked in.",
-      accent: "text-positive"
-    },
-    {
-      icon: PackageCheck,
-      title: "Order Processing",
-      body: "Our team is preparing your items for dispatch. You will receive a shipping update when your order ships.",
-      accent: "text-primary"
-    },
-    {
-      icon: ReceiptText,
-      title: "Keep Your Reference",
-      body: "Save your order reference above. Use it any time to look up your order status.",
-      accent: "text-muted-foreground"
-    }
-  ];
-  const renderOrderReference = () => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-full max-w-md", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-2 mb-2", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(ReceiptText, { className: "w-4 h-4 text-muted-foreground" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "field-label", children: "Order Reference" })
-    ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "inset-well flex items-center justify-between gap-3", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mono-num text-sm text-foreground break-all", children: orderReference }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(CopyButton, { text: orderReference, label: "Copy", className: "shrink-0" })
-    ] })
-  ] });
-  const renderOrderSummary = () => {
-    if (!order) return null;
-    return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-full max-w-md text-left", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-2 mb-4", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(PackageCheck, { className: "w-4 h-4 text-muted-foreground" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "field-label", children: "Order Summary" })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "summary-panel", children: [
-        order.items.map((item, index2) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "div",
-          {
-            className: "summary-row",
-            "data-ocid": `success.line_item.${index2 + 1}`,
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "min-w-0", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block truncate", children: item.name }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "block text-xs text-muted-foreground", children: [
-                  "Qty ",
-                  item.quantity.toString()
-                ] })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "summary-value shrink-0", children: formatPrice(item.unit_amount * item.quantity) })
-            ]
-          },
-          `${item.variant_id}-${index2}`
-        )),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "summary-row", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Subtotal" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "summary-value", children: formatPrice(order.subtotal) })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "summary-row", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Shipping" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "summary-value", children: formatPrice(order.shipping) })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "summary-row", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Tax" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "summary-value", children: formatPrice(order.tax) })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "summary-total", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Total" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "summary-value", children: formatPrice(order.total) })
-        ] })
-      ] })
-    ] });
-  };
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "pt-24 sm:pt-32 pb-12 sm:pb-20 px-4 sm:px-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-7xl mx-auto", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center mb-12 sm:mb-16 px-2", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-4 mb-8", children: [
-        isConfirmed ? /* @__PURE__ */ jsxRuntimeExports.jsx(CircleCheck, { className: "w-12 h-12 text-positive" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-12 h-12 text-primary animate-spin" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "section-heading text-3xl sm:text-4xl md:text-5xl", children: isConfirmed ? "Order Confirmed" : "Confirming Your Order" })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto", children: isConfirmed ? "Thank you for your purchase. Your payment was successful and your order is confirmed." : "We are confirming your payment with the payment service. This only takes a moment." })
-    ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative max-w-4xl mx-auto px-2", children: confirm.isPending || isStillPending ? (
-      /* Confirming state */
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
-        "div",
-        {
-          className: "surface p-6 sm:p-10 text-center",
-          "data-ocid": "success.confirming_state",
-          children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mb-6", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-20 h-20 sm:w-24 sm:h-24 rounded-full surface-hover flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-10 h-10 sm:w-12 sm:h-12 text-primary animate-spin" }) }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "section-heading text-2xl sm:text-3xl mb-3", children: "Confirming Payment" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm sm:text-base text-muted-foreground max-w-xl mx-auto mb-8", children: "We are checking your order status with the payment service. Your order is still pending until this confirmation completes." }),
-            renderOrderReference()
-          ] })
-        }
-      )
-    ) : isError ? (
-      /* Outcall failure / error state — order stays pending */
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
-        "div",
-        {
-          className: "surface p-6 sm:p-10 text-center",
-          "data-ocid": "success.error_state",
-          children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mb-6", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-destructive-soft flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(TriangleAlert, { className: "w-10 h-10 sm:w-12 sm:h-12 text-destructive" }) }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "section-heading text-2xl sm:text-3xl mb-3", children: "Payment Not Confirmed" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm sm:text-base text-muted-foreground max-w-xl mx-auto mb-8", children: errorMessage }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mb-8", children: renderOrderReference() }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center justify-center gap-4", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                "button",
-                {
-                  type: "button",
-                  onClick: handleRetry,
-                  "data-ocid": "success.retry_button",
-                  className: "btn px-8 py-4 text-base font-semibold",
-                  children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { className: "w-4 h-4" }),
-                    "Try Again"
-                  ]
-                }
-              ),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                "button",
-                {
-                  type: "button",
-                  onClick: onNavigateToShop,
-                  "data-ocid": "success.continue_shopping_button",
-                  className: "btn-secondary px-8 py-4 text-base font-semibold",
-                  children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingBag, { className: "w-4 h-4" }),
-                    "Continue Shopping"
-                  ]
-                }
-              )
-            ] })
-          ] })
-        }
-      )
-    ) : (
-      /* Confirmed state */
-      /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "surface p-6 sm:p-10 mb-8 sm:mb-12", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center text-center", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mb-6", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-success-soft flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(BadgeCheck, { className: "w-10 h-10 sm:w-12 sm:h-12 text-success" }) }) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "section-heading text-2xl sm:text-3xl mb-3", children: "Payment Successful" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm sm:text-base text-muted-foreground max-w-xl mx-auto mb-8", children: "Your order has been placed and your payment has been confirmed. A summary of your purchase is below." }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mb-8", children: renderOrderReference() }),
-          renderOrderSummary(),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center justify-center gap-4 mt-8", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "button",
-              {
-                type: "button",
-                onClick: onNavigateToShop,
-                "data-ocid": "success.continue_shopping_button",
-                className: "btn px-8 py-4 text-base font-semibold",
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingBag, { className: "w-4 h-4" }),
-                  "Continue Shopping"
-                ]
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "button",
-              {
-                type: "button",
-                onClick: onNavigateToMain,
-                "data-ocid": "success.back_to_main_button",
-                className: "btn-secondary px-8 py-4 text-base font-semibold",
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
-                  "Back to Main"
-                ]
-              }
-            )
-          ] })
-        ] }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "surface p-6 sm:p-10", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-2 sm:gap-3 mb-6 sm:mb-8", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Clock, { className: "w-6 h-6 sm:w-7 sm:h-7 text-primary" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "section-heading text-2xl sm:text-3xl", children: "What Happens Next" })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6", children: nextSteps.map((step, index2) => {
-            const Icon2 = step.icon;
-            return /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "div",
-              {
-                className: "hairline p-5 sm:p-6",
-                "data-ocid": `success.next_step.${index2 + 1}`,
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-12 h-12 rounded-md surface-hover flex items-center justify-center mb-4", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Icon2, { className: `w-6 h-6 ${step.accent}` }) }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("h4", { className: "section-heading text-lg mb-2", children: step.title }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-muted-foreground", children: step.body })
-                ]
-              },
-              step.title
-            );
-          }) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-8 sm:mt-10 flex items-start justify-center gap-3 text-center", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Mail, { className: "w-4 h-4 text-muted-foreground mt-0.5 shrink-0" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs sm:text-sm text-muted-foreground max-w-xl", children: "Questions about your order? Reach out to our support team and reference your order number so we can help you faster." })
-          ] })
-        ] })
-      ] })
-    ) })
-  ] }) });
-};
 const TokenInfo = () => {
   const [tokenData, setTokenData] = reactExports.useState(null);
   const [loading, setLoading] = reactExports.useState(true);
@@ -87762,10 +78652,84 @@ function UnsubscribePage({
     ] })
   ] }) });
 }
+const CartContext = reactExports.createContext(void 0);
+function CartProvider({ children }) {
+  const [items, setItems] = reactExports.useState([]);
+  const addItem = reactExports.useCallback(
+    (product, variantId, quantity = 1) => {
+      setItems((current) => {
+        const existing = current.find(
+          (item) => item.product.id === product.id && item.variantId === variantId
+        );
+        if (existing) {
+          return current.map(
+            (item) => item.product.id === product.id && item.variantId === variantId ? { ...item, quantity: item.quantity + quantity } : item
+          );
+        }
+        return [...current, { product, variantId, quantity }];
+      });
+    },
+    []
+  );
+  const updateQuantity = reactExports.useCallback(
+    (productId, variantId, quantity) => {
+      setItems(
+        (current) => quantity <= 0 ? current.filter(
+          (item) => !(item.product.id === productId && item.variantId === variantId)
+        ) : current.map(
+          (item) => item.product.id === productId && item.variantId === variantId ? { ...item, quantity } : item
+        )
+      );
+    },
+    []
+  );
+  const removeItem = reactExports.useCallback((productId, variantId) => {
+    setItems(
+      (current) => current.filter(
+        (item) => !(item.product.id === productId && item.variantId === variantId)
+      )
+    );
+  }, []);
+  const clearCart = reactExports.useCallback(() => setItems([]), []);
+  const itemCount = reactExports.useMemo(
+    () => items.reduce((sum, item) => sum + item.quantity, 0),
+    [items]
+  );
+  const subtotal = reactExports.useMemo(
+    () => items.reduce((sum, item) => {
+      const variant = item.product.variants.find(
+        (v2) => v2.id === item.variantId
+      );
+      const unitPrice = variant ? variant.price : item.product.price;
+      return sum + Number(unitPrice) * item.quantity;
+    }, 0),
+    [items]
+  );
+  const value = reactExports.useMemo(
+    () => ({
+      items,
+      addItem,
+      updateQuantity,
+      removeItem,
+      clearCart,
+      itemCount,
+      subtotal
+    }),
+    [
+      items,
+      addItem,
+      updateQuantity,
+      removeItem,
+      clearCart,
+      itemCount,
+      subtotal
+    ]
+  );
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(CartContext.Provider, { value, children });
+}
 const EMOJI_RAIN_PAGES = [];
 function App() {
   const [currentPage, setCurrentPage] = reactExports.useState("main");
-  const { setActiveOrderRef } = useActiveOrderRef();
   const { data: isAdmin } = useIsAdmin();
   const { identity: identity3 } = useInternetIdentity();
   const queryClient2 = useQueryClient();
@@ -87777,9 +78741,6 @@ function App() {
     }
     setLastIdentityKey(identityKey);
   }, [identity3, lastIdentityKey, queryClient2]);
-  const [selectedProductSlugOrId, setSelectedProductSlugOrId] = reactExports.useState(null);
-  const [successOrderReference, setSuccessOrderReference] = reactExports.useState(null);
-  const [cancelledOrderReference, setCancelledOrderReference] = reactExports.useState(null);
   reactExports.useEffect(() => {
     const handleHash = () => {
       const hash = window.location.hash.replace(/^#\/?/, "").toLowerCase();
@@ -87795,59 +78756,11 @@ function App() {
     window.addEventListener("hashchange", handleHash);
     return () => window.removeEventListener("hashchange", handleHash);
   }, []);
-  reactExports.useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const orderId = params.get("order_id");
-    if (!orderId) return;
-    if (params.get("status") === "cancelled") {
-      setCancelledOrderReference(orderId);
-      setCurrentPage("cancelled");
-    } else {
-      setSuccessOrderReference(orderId);
-      setCurrentPage("success");
-    }
-    const url = new URL(window.location.href);
-    url.search = "";
-    window.history.replaceState({}, "", url.toString());
-  }, []);
-  reactExports.useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const resumeRef = params.get("resume");
-    if (!resumeRef) return;
-    setActiveOrderRef(resumeRef);
-    setCurrentPage("checkout");
-    const url = new URL(window.location.href);
-    url.search = "";
-    window.history.replaceState({}, "", url.toString());
-  }, [setActiveOrderRef]);
   const navigateToArtistPage = () => {
     setCurrentPage("artist");
   };
   const navigateToMetaTheatrePage = () => {
     setCurrentPage("metatheatre");
-  };
-  const navigateToShopPage = () => {
-    setCurrentPage("shop");
-  };
-  const navigateToProductPage = (slugOrId) => {
-    setSelectedProductSlugOrId(slugOrId);
-    setCurrentPage("product");
-  };
-  const navigateToCartPage = () => {
-    setCurrentPage("cart");
-  };
-  const navigateToCheckoutPage = () => {
-    setCurrentPage("checkout");
-  };
-  const navigateToSuccessPage = (orderReference) => {
-    setSuccessOrderReference(orderReference);
-    setCurrentPage("success");
-  };
-  const navigateToOrderLookupPage = () => {
-    setCurrentPage("orderlookup");
-  };
-  const navigateToMyOrdersPage = () => {
-    setCurrentPage("myorders");
   };
   const navigateToMainPage = () => {
     setCurrentPage("main");
@@ -87864,14 +78777,9 @@ function App() {
           {
             currentPage,
             onNavigateToMain: navigateToMainPage,
-            onNavigateToMetaTheatre: navigateToMetaTheatrePage,
-            onNavigateToShop: navigateToShopPage,
-            onNavigateToCart: navigateToCartPage,
-            onNavigateToOrderLookup: navigateToOrderLookupPage,
-            onNavigateToMyOrders: navigateToMyOrdersPage
+            onNavigateToMetaTheatre: navigateToMetaTheatrePage
           }
         ),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(ResumeBanner, { onResume: navigateToCheckoutPage }),
         isAdmin && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative z-10 flex justify-end px-4 sm:px-6 pt-3", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
           "button",
           {
@@ -87890,7 +78798,6 @@ function App() {
           /* @__PURE__ */ jsxRuntimeExports.jsx(TokenInfo, {}),
           /* @__PURE__ */ jsxRuntimeExports.jsx(NAKFeaturedArtist, { onNavigateToArtist: navigateToArtistPage }),
           /* @__PURE__ */ jsxRuntimeExports.jsx(PurchaseNAK, {}),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(ShopBanner, { onNavigateToShop: navigateToShopPage }),
           /* @__PURE__ */ jsxRuntimeExports.jsx(ReserveTreasury, {}),
           /* @__PURE__ */ jsxRuntimeExports.jsx(
             "footer",
@@ -87928,49 +78835,7 @@ function App() {
               ] })
             }
           )
-        ] }) : currentPage === "artist" ? /* @__PURE__ */ jsxRuntimeExports.jsx(MarsLiveArtistPage, { onNavigateToMain: navigateToMainPage }) : currentPage === "shop" ? /* @__PURE__ */ jsxRuntimeExports.jsx(
-          ShopPage,
-          {
-            onNavigateToMain: navigateToMainPage,
-            onNavigateToProduct: navigateToProductPage
-          }
-        ) : currentPage === "product" ? /* @__PURE__ */ jsxRuntimeExports.jsx(
-          ProductPage,
-          {
-            slugOrId: selectedProductSlugOrId ?? "",
-            onNavigateToMain: navigateToMainPage,
-            onNavigateToShop: navigateToShopPage
-          }
-        ) : currentPage === "cart" ? /* @__PURE__ */ jsxRuntimeExports.jsx(
-          CartPage,
-          {
-            onNavigateToMain: navigateToMainPage,
-            onNavigateToCheckout: navigateToCheckoutPage,
-            onNavigateToShop: navigateToShopPage
-          }
-        ) : currentPage === "checkout" ? /* @__PURE__ */ jsxRuntimeExports.jsx(
-          CheckoutPage,
-          {
-            onNavigateToMain: navigateToMainPage,
-            onNavigateToCart: navigateToCartPage,
-            onNavigateToSuccess: navigateToSuccessPage
-          }
-        ) : currentPage === "success" ? /* @__PURE__ */ jsxRuntimeExports.jsx(
-          SuccessPage,
-          {
-            orderReference: successOrderReference ?? "",
-            onNavigateToMain: navigateToMainPage,
-            onNavigateToShop: navigateToShopPage
-          }
-        ) : currentPage === "cancelled" ? /* @__PURE__ */ jsxRuntimeExports.jsx(
-          CancelledPage,
-          {
-            orderReference: cancelledOrderReference ?? "",
-            onNavigateToMain: navigateToMainPage,
-            onNavigateToShop: navigateToShopPage,
-            onNavigateToCart: navigateToCartPage
-          }
-        ) : currentPage === "orderlookup" ? /* @__PURE__ */ jsxRuntimeExports.jsx(OrderLookupPage, { onNavigateToMain: navigateToMainPage }) : currentPage === "myorders" ? /* @__PURE__ */ jsxRuntimeExports.jsx(MyOrdersPage, { onNavigateToMain: navigateToMainPage }) : currentPage === "admin" ? /* @__PURE__ */ jsxRuntimeExports.jsx(AdminDashboard, { onNavigateToMain: navigateToMainPage }) : currentPage === "adminrecovery" ? /* @__PURE__ */ jsxRuntimeExports.jsx(
+        ] }) : currentPage === "artist" ? /* @__PURE__ */ jsxRuntimeExports.jsx(MarsLiveArtistPage, { onNavigateToMain: navigateToMainPage }) : currentPage === "admin" ? /* @__PURE__ */ jsxRuntimeExports.jsx(AdminDashboard, { onNavigateToMain: navigateToMainPage }) : currentPage === "adminrecovery" ? /* @__PURE__ */ jsxRuntimeExports.jsx(
           RecoveryPage,
           {
             onNavigateToAdmin: () => setCurrentPage("admin"),

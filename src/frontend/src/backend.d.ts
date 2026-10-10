@@ -7,36 +7,131 @@ export interface None {
     __kind__: "None";
 }
 export type Option<T> = Some<T> | None;
-export interface CycleCountersView {
-    totalLedgerCalls: bigint;
-    totalRawRandCalls: bigint;
-    totalOutcalls: bigint;
-    totalVetkdCalls: bigint;
+export interface AdminOrderDetail {
+    status: PaymentStatus;
+    paymentMethod: PaymentMethod;
+    encryptedShipping?: Uint8Array;
+    cryptoStatus?: CryptoPaymentStatus;
+    createdAt: bigint;
+    reference: string;
+    amountOwed: bigint;
+    updatedAt: bigint;
+    currency: string;
+    hasShippingDetails: boolean;
+    subaccountHex: string;
+    items: Array<OrderItem>;
+    sweepNote?: string;
+    customerEmail: string;
+    depositAccountText: string;
 }
-export type SweepError = {
-    __kind__: "sweepFailed";
-    sweepFailed: string;
+export interface AdminOrderView {
+    status: PaymentStatus;
+    paymentMethod: PaymentMethod;
+    cryptoStatus?: CryptoPaymentStatus;
+    createdAt: bigint;
+    itemCount: bigint;
+    reference: string;
+    amountOwed: bigint;
+    currency: string;
+    subaccountHex: string;
+    sweepNote?: string;
+    customerEmail: string;
+    depositAccountText: string;
+}
+export interface Category {
+    id: CategoryId;
+    updated_at: bigint;
+    active: boolean;
+    sortOrder: bigint;
+    name: string;
+    slug: string;
+    description?: string;
+    created_at: bigint;
+    showWhenEmpty: boolean;
+}
+export type CategoryError = {
+    __kind__: "emptyName";
+    emptyName: null;
 } | {
-    __kind__: "ledgerError";
-    ledgerError: string;
+    __kind__: "targetCategoryNotFound";
+    targetCategoryNotFound: string;
+} | {
+    __kind__: "notFound";
+    notFound: CategoryId;
+} | {
+    __kind__: "productsReferenced";
+    productsReferenced: {
+        count: bigint;
+        slug: string;
+    };
+} | {
+    __kind__: "slugCollision";
+    slugCollision: string;
+};
+export type CategoryId = bigint;
+export interface CategoryWithCount {
+    productCount: bigint;
+    category: Category;
+}
+export interface Cell {
+    value: Value;
+    name: string;
+}
+export interface CheckoutSession {
+    url?: string;
+    reference: string;
+}
+export type ConsentError = {
+    __kind__: "alreadyUnsubscribed";
+    alreadyUnsubscribed: null;
+} | {
+    __kind__: "notConfigured";
+    notConfigured: string;
+} | {
+    __kind__: "invalidToken";
+    invalidToken: null;
+} | {
+    __kind__: "rateLimited";
+    rateLimited: null;
+} | {
+    __kind__: "outcallFailed";
+    outcallFailed: string;
 } | {
     __kind__: "unauthorized";
     unauthorized: null;
 } | {
-    __kind__: "invalidConfig";
-    invalidConfig: string;
+    __kind__: "invalidResponse";
+    invalidResponse: string;
 };
-export type Result_2 = {
-    __kind__: "ok";
-    ok: null;
-} | {
-    __kind__: "err";
-    err: PaymentServiceError;
-};
-export interface TransformationOutput {
-    status: bigint;
-    body: Uint8Array;
-    headers: Array<HttpHeader>;
+export interface ConsentListExport {
+    csv: string;
+}
+export interface CreateOrderInput {
+    session_id?: string;
+    payment_method: PaymentMethod;
+    has_shipping_details: boolean;
+    items: Array<CreateOrderItem>;
+    customer_email: string;
+    encrypted_shipping?: Uint8Array;
+    marketing_consent: boolean;
+}
+export interface CreateOrderItem {
+    product_id: ProductId;
+    variant_id: string;
+    quantity: bigint;
+}
+export interface CreateOrderResult {
+    order: Order;
+    cancellationToken?: string;
+    sessionId?: string;
+}
+export interface CryptoConfigView {
+    icp: LedgerConfig;
+    ckUSDC: LedgerConfig;
+    treasurySubaccount?: Uint8Array;
+    minimumOrder: bigint;
+    ckUSDCEnabled: boolean;
+    treasuryPrincipal: Principal;
 }
 export type CryptoPaymentError = {
     __kind__: "alreadyPaid";
@@ -81,21 +176,6 @@ export type CryptoPaymentError = {
     __kind__: "belowMinimumOrder";
     belowMinimumOrder: bigint;
 };
-export interface HttpRequestResult {
-    status: bigint;
-    body: Uint8Array;
-    headers: Array<HttpHeader>;
-}
-export type StreamingCallback = (arg0: StreamingCallbackToken) => Promise<StreamingCallbackResponse>;
-export interface Result__1 {
-    hasMore: boolean;
-    rows: Array<Array<Cell>>;
-}
-export interface CreateOrderItem {
-    product_id: ProductId;
-    variant_id: string;
-    quantity: bigint;
-}
 export type CryptoPaymentStatus = {
     __kind__: "overpayment";
     overpayment: {
@@ -120,72 +200,32 @@ export type CryptoPaymentStatus = {
     __kind__: "awaiting_payment";
     awaiting_payment: null;
 };
-export type Result_5 = {
-    __kind__: "ok";
-    ok: null;
-} | {
-    __kind__: "err";
-    err: ConsentError;
-};
-export interface CategoryWithCount {
-    productCount: bigint;
-    category: Category;
+export interface CycleCountersView {
+    totalLedgerCalls: bigint;
+    totalRawRandCalls: bigint;
+    totalOutcalls: bigint;
+    totalVetkdCalls: bigint;
 }
-export type Result_4 = {
-    __kind__: "ok";
-    ok: Category;
-} | {
-    __kind__: "err";
-    err: CategoryError;
-};
-export interface LedgerConfig {
-    fee: bigint;
-    decimals: number;
-    canisterId: Principal;
+export interface CycleMetrics {
+    samples: Array<CycleSample>;
+    counters: CycleCountersView;
+    liveBalance: bigint;
 }
-export interface AdminOrderDetail {
-    status: PaymentStatus;
-    paymentMethod: PaymentMethod;
-    encryptedShipping?: Uint8Array;
-    cryptoStatus?: CryptoPaymentStatus;
-    createdAt: bigint;
-    reference: string;
-    amountOwed: bigint;
-    updatedAt: bigint;
-    currency: string;
-    hasShippingDetails: boolean;
-    subaccountHex: string;
-    items: Array<OrderItem>;
-    sweepNote?: string;
-    customerEmail: string;
-    depositAccountText: string;
+export interface CycleSample {
+    stableBytes: bigint;
+    heapBytes: bigint;
+    totalLedgerCalls: bigint;
+    totalRawRandCalls: bigint;
+    timestamp: bigint;
+    totalOutcalls: bigint;
+    totalVetkdCalls: bigint;
+    cyclesBalance: bigint;
 }
-export interface SubaccountBalanceResult {
-    balance: bigint;
-    subaccountHex: string;
-    subaccountIndex: bigint;
+export interface DepositAccount {
+    owner: Principal;
+    subaccount: Uint8Array;
+    textAddress: string;
 }
-export interface SweepSubaccountResult {
-    error?: string;
-    blockIndex?: bigint;
-    subaccountHex: string;
-    subaccountIndex: bigint;
-}
-export interface LatePayment {
-    token: Token;
-    reference: string;
-    receivedAmount: bigint;
-    receivedAt: bigint;
-    reviewed: boolean;
-    expectedAmount: bigint;
-}
-export type Result_7 = {
-    __kind__: "ok";
-    ok: SweepResult;
-} | {
-    __kind__: "err";
-    err: RecoveryError;
-};
 export interface DepositInfo {
     decimals: number;
     token: Token;
@@ -196,50 +236,15 @@ export interface DepositInfo {
     address: Principal;
     amountDue: bigint;
 }
-export interface CreateOrderInput {
-    session_id?: string;
-    payment_method: PaymentMethod;
-    has_shipping_details: boolean;
-    items: Array<CreateOrderItem>;
-    customer_email: string;
-    encrypted_shipping?: Uint8Array;
-    marketing_consent: boolean;
-}
-export type RecoveryError = {
-    __kind__: "sweepFailed";
-    sweepFailed: string;
-} | {
-    __kind__: "notFound";
-    notFound: null;
-} | {
-    __kind__: "ledgerError";
-    ledgerError: string;
-} | {
-    __kind__: "notCryptoOrder";
-    notCryptoOrder: null;
-} | {
-    __kind__: "unauthorized";
-    unauthorized: null;
-} | {
-    __kind__: "invalidConfig";
-    invalidConfig: string;
-};
-export interface Cell {
-    value: Value;
-    name: string;
-}
-export type ConsentError = {
-    __kind__: "alreadyUnsubscribed";
-    alreadyUnsubscribed: null;
-} | {
+export type EmailError = {
     __kind__: "notConfigured";
     notConfigured: string;
 } | {
-    __kind__: "invalidToken";
-    invalidToken: null;
+    __kind__: "notShippable";
+    notShippable: null;
 } | {
-    __kind__: "rateLimited";
-    rateLimited: null;
+    __kind__: "notFound";
+    notFound: null;
 } | {
     __kind__: "outcallFailed";
     outcallFailed: string;
@@ -250,34 +255,40 @@ export type ConsentError = {
     __kind__: "invalidResponse";
     invalidResponse: string;
 };
-export type Result_6 = {
-    __kind__: "ok";
-    ok: SweepSubaccountResult;
-} | {
-    __kind__: "err";
-    err: SweepError;
-};
-export type Result_26 = {
-    __kind__: "ok";
-    ok: PaymentStatus;
-} | {
-    __kind__: "err";
-    err: PaymentServiceError;
-};
-export type Result_12 = {
-    __kind__: "ok";
-    ok: null;
-} | {
-    __kind__: "err";
-    err: CategoryError;
-};
-export type Result_9 = {
-    __kind__: "ok";
-    ok: null;
-} | {
-    __kind__: "err";
-    err: SubmissionError;
-};
+export interface HttpHeader {
+    value: string;
+    name: string;
+}
+export interface HttpRequest {
+    url: string;
+    method: string;
+    body: Uint8Array;
+    headers: Array<[string, string]>;
+}
+export interface HttpRequestResult {
+    status: bigint;
+    body: Uint8Array;
+    headers: Array<HttpHeader>;
+}
+export interface HttpResponse {
+    body: Uint8Array;
+    headers: Array<[string, string]>;
+    streaming_strategy?: StreamingStrategy;
+    status_code: number;
+}
+export interface LatePayment {
+    token: Token;
+    reference: string;
+    receivedAmount: bigint;
+    receivedAt: bigint;
+    reviewed: boolean;
+    expectedAmount: bigint;
+}
+export interface LedgerConfig {
+    fee: bigint;
+    decimals: number;
+    canisterId: Principal;
+}
 export interface Order {
     id: bigint;
     tax: bigint;
@@ -303,433 +314,6 @@ export interface Order {
     payment_reference?: string;
     subtotal: bigint;
 }
-export interface HttpHeader {
-    value: string;
-    name: string;
-}
-export interface CreateOrderResult {
-    order: Order;
-    cancellationToken?: string;
-    sessionId?: string;
-}
-export interface CheckoutSession {
-    url?: string;
-    reference: string;
-}
-export type StreamingStrategy = {
-    __kind__: "Callback";
-    Callback: {
-        token: StreamingCallbackToken;
-        callback: [Principal, string];
-    };
-};
-export type CategoryError = {
-    __kind__: "emptyName";
-    emptyName: null;
-} | {
-    __kind__: "targetCategoryNotFound";
-    targetCategoryNotFound: string;
-} | {
-    __kind__: "notFound";
-    notFound: CategoryId;
-} | {
-    __kind__: "productsReferenced";
-    productsReferenced: {
-        count: bigint;
-        slug: string;
-    };
-} | {
-    __kind__: "slugCollision";
-    slugCollision: string;
-};
-export interface SubmissionRecord {
-    id: string;
-    discipline: Discipline;
-    link: string;
-    name: string;
-    submittedAt: bigint;
-    email: string;
-    message?: string;
-    marketingConsentAt?: bigint;
-    marketingConsent: boolean;
-}
-export type Result_10 = {
-    __kind__: "ok";
-    ok: string;
-} | {
-    __kind__: "err";
-    err: UploadError;
-};
-export type Result = {
-    __kind__: "ok";
-    ok: null;
-} | {
-    __kind__: "err";
-    err: UploadError;
-};
-export type Result_8 = {
-    __kind__: "ok";
-    ok: bigint;
-} | {
-    __kind__: "err";
-    err: CryptoPaymentError;
-};
-export interface CycleSample {
-    stableBytes: bigint;
-    heapBytes: bigint;
-    totalLedgerCalls: bigint;
-    totalRawRandCalls: bigint;
-    timestamp: bigint;
-    totalOutcalls: bigint;
-    totalVetkdCalls: bigint;
-    cyclesBalance: bigint;
-}
-export interface CryptoConfigView {
-    icp: LedgerConfig;
-    ckUSDC: LedgerConfig;
-    treasurySubaccount?: Uint8Array;
-    minimumOrder: bigint;
-    ckUSDCEnabled: boolean;
-    treasuryPrincipal: Principal;
-}
-export type Result_17 = {
-    __kind__: "ok";
-    ok: ResumeInfo;
-} | {
-    __kind__: "err";
-    err: RecoveryError;
-};
-export type Result_13 = {
-    __kind__: "ok";
-    ok: bigint;
-} | {
-    __kind__: "err";
-    err: CategoryError;
-};
-export type Result_25 = {
-    __kind__: "ok";
-    ok: CheckoutSession;
-} | {
-    __kind__: "err";
-    err: PaymentServiceError;
-};
-export interface OrderItem {
-    product_id: ProductId;
-    unit_amount: bigint;
-    name: string;
-    variant_id: string;
-    quantity: bigint;
-}
-export interface RecheckResult {
-    status: CryptoPaymentStatus;
-    balance: bigint;
-    reference: string;
-    error?: string;
-}
-export interface ResumeInfo {
-    status: CryptoPaymentStatus;
-    expiresAt: bigint;
-    reference: string;
-    deposit?: DepositInfo;
-    remainingNs: bigint;
-}
-export type SubmissionError = {
-    __kind__: "invalidInput";
-    invalidInput: string;
-} | {
-    __kind__: "notConfigured";
-    notConfigured: string;
-} | {
-    __kind__: "honeypot";
-    honeypot: null;
-} | {
-    __kind__: "rateLimited";
-    rateLimited: null;
-} | {
-    __kind__: "outcallFailed";
-    outcallFailed: string;
-} | {
-    __kind__: "invalidResponse";
-    invalidResponse: string;
-};
-export type Result_16 = {
-    __kind__: "ok";
-    ok: SubaccountBalanceResult;
-} | {
-    __kind__: "err";
-    err: SweepError;
-};
-export type Result_1 = {
-    __kind__: "ok";
-    ok: null;
-} | {
-    __kind__: "err";
-    err: CryptoPaymentError;
-};
-export interface UserRecord {
-    grantedAt: bigint;
-    role: Role;
-}
-export type Result_22 = {
-    __kind__: "ok";
-    ok: RecheckResult;
-} | {
-    __kind__: "err";
-    err: RecoveryError;
-};
-export type Result_11 = {
-    __kind__: "ok";
-    ok: null;
-} | {
-    __kind__: "err";
-    err: EmailError;
-};
-export type PaymentServiceError = {
-    __kind__: "alreadyPaid";
-    alreadyPaid: null;
-} | {
-    __kind__: "notConfigured";
-    notConfigured: string;
-} | {
-    __kind__: "notFound";
-    notFound: null;
-} | {
-    __kind__: "rateLimited";
-    rateLimited: null;
-} | {
-    __kind__: "outcallFailed";
-    outcallFailed: string;
-} | {
-    __kind__: "unauthorized";
-    unauthorized: null;
-} | {
-    __kind__: "invalidResponse";
-    invalidResponse: string;
-};
-export interface SubmissionInput {
-    discipline: Discipline;
-    link: string;
-    name: string;
-    email: string;
-    message?: string;
-    honeypot: string;
-    marketingConsentAt?: bigint;
-    marketingConsent: boolean;
-}
-export interface StreamingCallbackToken {
-    key: string;
-    sha256?: Uint8Array;
-    index: bigint;
-    content_encoding: string;
-}
-export interface SweepResult {
-    reference?: string;
-    error?: string;
-    blockIndex?: bigint;
-}
-export interface TransformationInput {
-    context: Uint8Array;
-    response: HttpRequestResult;
-}
-export type Result_19 = {
-    __kind__: "ok";
-    ok: CryptoPaymentStatus;
-} | {
-    __kind__: "err";
-    err: CryptoPaymentError;
-};
-export interface PaymentServiceConfigView {
-    url: string;
-    tokenSet: boolean;
-}
-export type Result_24 = {
-    __kind__: "ok";
-    ok: CheckoutSession;
-} | {
-    __kind__: "err";
-    err: PaymentError;
-};
-export type Result_14 = {
-    __kind__: "ok";
-    ok: Array<SubmissionRecord>;
-} | {
-    __kind__: "err";
-    err: SubmissionError;
-};
-export interface OrderRecoveryView {
-    status: PaymentStatus;
-    paymentMethod: PaymentMethod;
-    expiresAt?: bigint;
-    reference: string;
-    depositAccount?: DepositAccount;
-    amountOwed: bigint;
-    liveBalance: bigint;
-}
-export type Value = {
-    __kind__: "int";
-    int: bigint;
-} | {
-    __kind__: "nat";
-    nat: bigint;
-} | {
-    __kind__: "float";
-    float: number;
-} | {
-    __kind__: "bool";
-    bool: boolean;
-} | {
-    __kind__: "null";
-    null: null;
-} | {
-    __kind__: "text";
-    text: string;
-};
-export type EmailError = {
-    __kind__: "notConfigured";
-    notConfigured: string;
-} | {
-    __kind__: "notShippable";
-    notShippable: null;
-} | {
-    __kind__: "notFound";
-    notFound: null;
-} | {
-    __kind__: "outcallFailed";
-    outcallFailed: string;
-} | {
-    __kind__: "unauthorized";
-    unauthorized: null;
-} | {
-    __kind__: "invalidResponse";
-    invalidResponse: string;
-};
-export interface StorageStats {
-    count: bigint;
-    totalBytes: bigint;
-}
-export interface DepositAccount {
-    owner: Principal;
-    subaccount: Uint8Array;
-    textAddress: string;
-}
-export interface ConsentListExport {
-    csv: string;
-}
-export interface Category {
-    id: CategoryId;
-    updated_at: bigint;
-    active: boolean;
-    sortOrder: bigint;
-    name: string;
-    slug: string;
-    description?: string;
-    created_at: bigint;
-    showWhenEmpty: boolean;
-}
-export interface AdminOrderView {
-    status: PaymentStatus;
-    paymentMethod: PaymentMethod;
-    cryptoStatus?: CryptoPaymentStatus;
-    createdAt: bigint;
-    itemCount: bigint;
-    reference: string;
-    amountOwed: bigint;
-    currency: string;
-    subaccountHex: string;
-    sweepNote?: string;
-    customerEmail: string;
-    depositAccountText: string;
-}
-export interface PublicOrderView {
-    id: bigint;
-    tax: number;
-    updated_at: bigint;
-    total: number;
-    sweep_note?: string;
-    shipping: number;
-    reference: string;
-    created_at: bigint;
-    payment_status: PaymentStatus;
-    payment_method: PaymentMethod;
-    tracking_number?: string;
-    currency: string;
-    marketing_consent_at?: bigint;
-    shipping_status: ShippingStatus;
-    has_shipping_details: boolean;
-    items: Array<OrderItem>;
-    encrypted_shipping?: Uint8Array;
-    customer_principal?: Principal;
-    shipped_at?: bigint;
-    marketing_consent: boolean;
-    payment_reference?: string;
-    subtotal: number;
-}
-export interface CycleMetrics {
-    samples: Array<CycleSample>;
-    counters: CycleCountersView;
-    liveBalance: bigint;
-}
-export type Result_21 = {
-    __kind__: "ok";
-    ok: ConsentListExport;
-} | {
-    __kind__: "err";
-    err: ConsentError;
-};
-export interface ProductVariant {
-    id: string;
-    inventory: bigint;
-    name: string;
-    size: string;
-    price: bigint;
-}
-export type Result_18 = {
-    __kind__: "ok";
-    ok: bigint;
-} | {
-    __kind__: "err";
-    err: RecoveryError;
-};
-export type PaymentError = {
-    __kind__: "invalidOrder";
-    invalidOrder: null;
-} | {
-    __kind__: "paymentFailed";
-    paymentFailed: string;
-};
-export type Result_3 = {
-    __kind__: "ok";
-    ok: null;
-} | {
-    __kind__: "err";
-    err: string;
-};
-export interface StreamingCallbackResponse {
-    token?: StreamingCallbackToken;
-    body: Uint8Array;
-}
-export interface HttpResponse {
-    body: Uint8Array;
-    headers: Array<[string, string]>;
-    streaming_strategy?: StreamingStrategy;
-    status_code: number;
-}
-export type Result_23 = {
-    __kind__: "ok";
-    ok: CreateOrderResult;
-} | {
-    __kind__: "err";
-    err: OrderError;
-};
-export type Result_15 = {
-    __kind__: "ok";
-    ok: null;
-} | {
-    __kind__: "err";
-    err: PaymentError;
-};
-export type CategoryId = bigint;
-export type ProductId = bigint;
 export type OrderError = {
     __kind__: "outOfStock";
     outOfStock: [ProductId, string];
@@ -767,18 +351,54 @@ export type OrderError = {
     __kind__: "tooManyPendingOrders";
     tooManyPendingOrders: null;
 };
-export interface HttpRequest {
-    url: string;
-    method: string;
-    body: Uint8Array;
-    headers: Array<[string, string]>;
+export interface OrderItem {
+    product_id: ProductId;
+    unit_amount: bigint;
+    name: string;
+    variant_id: string;
+    quantity: bigint;
 }
-export type Result_20 = {
-    __kind__: "ok";
-    ok: DepositInfo;
+export interface OrderRecoveryView {
+    status: PaymentStatus;
+    paymentMethod: PaymentMethod;
+    expiresAt?: bigint;
+    reference: string;
+    depositAccount?: DepositAccount;
+    amountOwed: bigint;
+    liveBalance: bigint;
+}
+export type PaymentError = {
+    __kind__: "invalidOrder";
+    invalidOrder: null;
 } | {
-    __kind__: "err";
-    err: CryptoPaymentError;
+    __kind__: "paymentFailed";
+    paymentFailed: string;
+};
+export interface PaymentServiceConfigView {
+    url: string;
+    tokenSet: boolean;
+}
+export type PaymentServiceError = {
+    __kind__: "alreadyPaid";
+    alreadyPaid: null;
+} | {
+    __kind__: "notConfigured";
+    notConfigured: string;
+} | {
+    __kind__: "notFound";
+    notFound: null;
+} | {
+    __kind__: "rateLimited";
+    rateLimited: null;
+} | {
+    __kind__: "outcallFailed";
+    outcallFailed: string;
+} | {
+    __kind__: "unauthorized";
+    unauthorized: null;
+} | {
+    __kind__: "invalidResponse";
+    invalidResponse: string;
 };
 export interface Product {
     id: ProductId;
@@ -796,6 +416,386 @@ export interface Product {
     price: bigint;
     images: Array<string>;
 }
+export type ProductId = bigint;
+export interface ProductVariant {
+    id: string;
+    inventory: bigint;
+    name: string;
+    size: string;
+    price: bigint;
+}
+export interface PublicOrderView {
+    id: bigint;
+    tax: number;
+    updated_at: bigint;
+    total: number;
+    sweep_note?: string;
+    shipping: number;
+    reference: string;
+    created_at: bigint;
+    payment_status: PaymentStatus;
+    payment_method: PaymentMethod;
+    tracking_number?: string;
+    currency: string;
+    marketing_consent_at?: bigint;
+    shipping_status: ShippingStatus;
+    has_shipping_details: boolean;
+    items: Array<OrderItem>;
+    encrypted_shipping?: Uint8Array;
+    customer_principal?: Principal;
+    shipped_at?: bigint;
+    marketing_consent: boolean;
+    payment_reference?: string;
+    subtotal: number;
+}
+export interface RecheckResult {
+    status: CryptoPaymentStatus;
+    balance: bigint;
+    reference: string;
+    error?: string;
+}
+export type RecoveryError = {
+    __kind__: "sweepFailed";
+    sweepFailed: string;
+} | {
+    __kind__: "notFound";
+    notFound: null;
+} | {
+    __kind__: "ledgerError";
+    ledgerError: string;
+} | {
+    __kind__: "notCryptoOrder";
+    notCryptoOrder: null;
+} | {
+    __kind__: "unauthorized";
+    unauthorized: null;
+} | {
+    __kind__: "invalidConfig";
+    invalidConfig: string;
+};
+export type Result = {
+    __kind__: "ok";
+    ok: null;
+} | {
+    __kind__: "err";
+    err: UploadError;
+};
+export type Result_1 = {
+    __kind__: "ok";
+    ok: null;
+} | {
+    __kind__: "err";
+    err: CryptoPaymentError;
+};
+export type Result_10 = {
+    __kind__: "ok";
+    ok: string;
+} | {
+    __kind__: "err";
+    err: UploadError;
+};
+export type Result_11 = {
+    __kind__: "ok";
+    ok: null;
+} | {
+    __kind__: "err";
+    err: EmailError;
+};
+export type Result_12 = {
+    __kind__: "ok";
+    ok: null;
+} | {
+    __kind__: "err";
+    err: CategoryError;
+};
+export type Result_13 = {
+    __kind__: "ok";
+    ok: bigint;
+} | {
+    __kind__: "err";
+    err: CategoryError;
+};
+export type Result_14 = {
+    __kind__: "ok";
+    ok: Array<SubmissionRecord>;
+} | {
+    __kind__: "err";
+    err: SubmissionError;
+};
+export type Result_15 = {
+    __kind__: "ok";
+    ok: null;
+} | {
+    __kind__: "err";
+    err: PaymentError;
+};
+export type Result_16 = {
+    __kind__: "ok";
+    ok: SubaccountBalanceResult;
+} | {
+    __kind__: "err";
+    err: SweepError;
+};
+export type Result_17 = {
+    __kind__: "ok";
+    ok: ResumeInfo;
+} | {
+    __kind__: "err";
+    err: RecoveryError;
+};
+export type Result_18 = {
+    __kind__: "ok";
+    ok: bigint;
+} | {
+    __kind__: "err";
+    err: RecoveryError;
+};
+export type Result_19 = {
+    __kind__: "ok";
+    ok: CryptoPaymentStatus;
+} | {
+    __kind__: "err";
+    err: CryptoPaymentError;
+};
+export type Result_2 = {
+    __kind__: "ok";
+    ok: null;
+} | {
+    __kind__: "err";
+    err: PaymentServiceError;
+};
+export type Result_20 = {
+    __kind__: "ok";
+    ok: DepositInfo;
+} | {
+    __kind__: "err";
+    err: CryptoPaymentError;
+};
+export type Result_21 = {
+    __kind__: "ok";
+    ok: ConsentListExport;
+} | {
+    __kind__: "err";
+    err: ConsentError;
+};
+export type Result_22 = {
+    __kind__: "ok";
+    ok: RecheckResult;
+} | {
+    __kind__: "err";
+    err: RecoveryError;
+};
+export type Result_23 = {
+    __kind__: "ok";
+    ok: CreateOrderResult;
+} | {
+    __kind__: "err";
+    err: OrderError;
+};
+export type Result_24 = {
+    __kind__: "ok";
+    ok: CheckoutSession;
+} | {
+    __kind__: "err";
+    err: PaymentError;
+};
+export type Result_25 = {
+    __kind__: "ok";
+    ok: CheckoutSession;
+} | {
+    __kind__: "err";
+    err: PaymentServiceError;
+};
+export type Result_26 = {
+    __kind__: "ok";
+    ok: PaymentStatus;
+} | {
+    __kind__: "err";
+    err: PaymentServiceError;
+};
+export type Result_3 = {
+    __kind__: "ok";
+    ok: null;
+} | {
+    __kind__: "err";
+    err: string;
+};
+export type Result_4 = {
+    __kind__: "ok";
+    ok: Category;
+} | {
+    __kind__: "err";
+    err: CategoryError;
+};
+export type Result_5 = {
+    __kind__: "ok";
+    ok: null;
+} | {
+    __kind__: "err";
+    err: ConsentError;
+};
+export type Result_6 = {
+    __kind__: "ok";
+    ok: SweepSubaccountResult;
+} | {
+    __kind__: "err";
+    err: SweepError;
+};
+export type Result_7 = {
+    __kind__: "ok";
+    ok: SweepResult;
+} | {
+    __kind__: "err";
+    err: RecoveryError;
+};
+export type Result_8 = {
+    __kind__: "ok";
+    ok: bigint;
+} | {
+    __kind__: "err";
+    err: CryptoPaymentError;
+};
+export type Result_9 = {
+    __kind__: "ok";
+    ok: null;
+} | {
+    __kind__: "err";
+    err: SubmissionError;
+};
+export interface Result__1 {
+    hasMore: boolean;
+    rows: Array<Array<Cell>>;
+}
+export interface ResumeInfo {
+    status: CryptoPaymentStatus;
+    expiresAt: bigint;
+    reference: string;
+    deposit?: DepositInfo;
+    remainingNs: bigint;
+}
+export interface StorageStats {
+    count: bigint;
+    totalBytes: bigint;
+}
+export type StreamingCallback = (arg0: StreamingCallbackToken) => Promise<StreamingCallbackResponse>;
+export interface StreamingCallbackResponse {
+    token?: StreamingCallbackToken;
+    body: Uint8Array;
+}
+export interface StreamingCallbackToken {
+    key: string;
+    sha256?: Uint8Array;
+    index: bigint;
+    content_encoding: string;
+}
+export type StreamingStrategy = {
+    __kind__: "Callback";
+    Callback: {
+        token: StreamingCallbackToken;
+        callback: [Principal, string];
+    };
+};
+export interface SubaccountBalanceResult {
+    balance: bigint;
+    subaccountHex: string;
+    subaccountIndex: bigint;
+}
+export type SubmissionError = {
+    __kind__: "invalidInput";
+    invalidInput: string;
+} | {
+    __kind__: "notConfigured";
+    notConfigured: string;
+} | {
+    __kind__: "honeypot";
+    honeypot: null;
+} | {
+    __kind__: "rateLimited";
+    rateLimited: null;
+} | {
+    __kind__: "outcallFailed";
+    outcallFailed: string;
+} | {
+    __kind__: "invalidResponse";
+    invalidResponse: string;
+};
+export interface SubmissionInput {
+    discipline: Discipline;
+    link: string;
+    name: string;
+    email: string;
+    message?: string;
+    honeypot: string;
+    marketingConsentAt?: bigint;
+    marketingConsent: boolean;
+}
+export interface SubmissionRecord {
+    id: string;
+    discipline: Discipline;
+    link: string;
+    name: string;
+    submittedAt: bigint;
+    email: string;
+    message?: string;
+    marketingConsentAt?: bigint;
+    marketingConsent: boolean;
+}
+export type SweepError = {
+    __kind__: "sweepFailed";
+    sweepFailed: string;
+} | {
+    __kind__: "ledgerError";
+    ledgerError: string;
+} | {
+    __kind__: "unauthorized";
+    unauthorized: null;
+} | {
+    __kind__: "invalidConfig";
+    invalidConfig: string;
+};
+export interface SweepResult {
+    reference?: string;
+    error?: string;
+    blockIndex?: bigint;
+}
+export interface SweepSubaccountResult {
+    error?: string;
+    blockIndex?: bigint;
+    subaccountHex: string;
+    subaccountIndex: bigint;
+}
+export interface TransformationInput {
+    context: Uint8Array;
+    response: HttpRequestResult;
+}
+export interface TransformationOutput {
+    status: bigint;
+    body: Uint8Array;
+    headers: Array<HttpHeader>;
+}
+export interface UserRecord {
+    grantedAt: bigint;
+    role: Role;
+}
+export type Value = {
+    __kind__: "int";
+    int: bigint;
+} | {
+    __kind__: "nat";
+    nat: bigint;
+} | {
+    __kind__: "float";
+    float: number;
+} | {
+    __kind__: "bool";
+    bool: boolean;
+} | {
+    __kind__: "null";
+    null: null;
+} | {
+    __kind__: "text";
+    text: string;
+};
 export enum Discipline {
     music = "music",
     other = "other",

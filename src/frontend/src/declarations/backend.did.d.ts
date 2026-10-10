@@ -11,21 +11,32 @@ import type { IDL } from '@icp-sdk/core/candid';
 import type { Principal } from '@icp-sdk/core/principal';
 
 export interface AdminOrderDetail {
+  'tax' : bigint,
   'status' : PaymentStatus,
+  'trackingNumber' : [] | [string],
+  'total' : bigint,
   'paymentMethod' : PaymentMethod,
   'encryptedShipping' : [] | [Uint8Array],
   'cryptoStatus' : [] | [CryptoPaymentStatus],
   'createdAt' : bigint,
+  'shippingStatus' : ShippingStatus,
+  'shipping' : bigint,
   'reference' : string,
   'amountOwed' : bigint,
   'updatedAt' : bigint,
+  'cryptoExpiresAt' : [] | [bigint],
+  'shippedAt' : [] | [bigint],
   'currency' : string,
   'hasShippingDetails' : boolean,
   'subaccountHex' : string,
+  'paymentReference' : [] | [string],
   'items' : Array<OrderItem>,
   'sweepNote' : [] | [string],
+  'marketingConsentAt' : [] | [bigint],
   'customerEmail' : string,
+  'marketingConsent' : boolean,
   'depositAccountText' : string,
+  'subtotal' : bigint,
 }
 export interface AdminOrderView {
   'status' : PaymentStatus,
@@ -493,11 +504,23 @@ export type Value = { 'int' : bigint } |
   { 'bool' : boolean } |
   { 'null' : null } |
   { 'text' : string };
+export type WipeResult = { 'wiped' : WipeSummary } |
+  { 'refused' : { 'unsweptReferences' : Array<string>, 'reason' : string } };
+export interface WipeSummary {
+  'sessionOrders' : bigint,
+  'orders' : bigint,
+  'cancelTokens' : bigint,
+  'cryptoPayments' : bigint,
+  'releasedReservations' : bigint,
+  'cryptoCheckCache' : bigint,
+  'latePayments' : bigint,
+}
 export interface _SERVICE {
   'addAdmin' : ActorMethod<[Principal], boolean>,
   'adminCount' : ActorMethod<[], bigint>,
   'adminGetOrderDetail' : ActorMethod<[string], [] | [AdminOrderDetail]>,
   'adminListOrders' : ActorMethod<[string], Array<AdminOrderView>>,
+  'adminWipeAllOrders' : ActorMethod<[string], WipeResult>,
   'bootstrapOwner' : ActorMethod<[Principal], boolean>,
   'cancelCardOrder' : ActorMethod<[string], Result_2>,
   'cancelGuestOrder' : ActorMethod<[string, string], Result_2>,

@@ -8,21 +8,32 @@ export interface None {
 }
 export type Option<T> = Some<T> | None;
 export interface AdminOrderDetail {
+    tax: bigint;
     status: PaymentStatus;
+    trackingNumber?: string;
+    total: bigint;
     paymentMethod: PaymentMethod;
     encryptedShipping?: Uint8Array;
     cryptoStatus?: CryptoPaymentStatus;
     createdAt: bigint;
+    shippingStatus: ShippingStatus;
+    shipping: bigint;
     reference: string;
     amountOwed: bigint;
     updatedAt: bigint;
+    cryptoExpiresAt?: bigint;
+    shippedAt?: bigint;
     currency: string;
     hasShippingDetails: boolean;
     subaccountHex: string;
+    paymentReference?: string;
     items: Array<OrderItem>;
     sweepNote?: string;
+    marketingConsentAt?: bigint;
     customerEmail: string;
+    marketingConsent: boolean;
     depositAccountText: string;
+    subtotal: bigint;
 }
 export interface AdminOrderView {
     status: PaymentStatus;
@@ -796,6 +807,25 @@ export type Value = {
     __kind__: "text";
     text: string;
 };
+export type WipeResult = {
+    __kind__: "wiped";
+    wiped: WipeSummary;
+} | {
+    __kind__: "refused";
+    refused: {
+        unsweptReferences: Array<string>;
+        reason: string;
+    };
+};
+export interface WipeSummary {
+    sessionOrders: bigint;
+    orders: bigint;
+    cancelTokens: bigint;
+    cryptoPayments: bigint;
+    releasedReservations: bigint;
+    cryptoCheckCache: bigint;
+    latePayments: bigint;
+}
 export enum Discipline {
     music = "music",
     other = "other",
@@ -845,6 +875,7 @@ export interface backendInterface {
     adminCount(): Promise<bigint>;
     adminGetOrderDetail(reference: string): Promise<AdminOrderDetail | null>;
     adminListOrders(filter: string): Promise<Array<AdminOrderView>>;
+    adminWipeAllOrders(confirm: string): Promise<WipeResult>;
     bootstrapOwner(p: Principal): Promise<boolean>;
     cancelCardOrder(reference: string): Promise<Result_2>;
     cancelGuestOrder(reference: string, cancellationToken: string): Promise<Result_2>;

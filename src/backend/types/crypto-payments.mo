@@ -161,6 +161,13 @@ module {
     amountOwed : Nat;
     currency : Text;
     items : [StorefrontTypes.OrderItem];
+    // All monetary fields are integer cents (e.g. 2499 for $24.99), never Float
+    // dollars. subtotal/tax/shipping/total mirror the underlying Order so the
+    // admin CSV can populate every column the detail view shows.
+    subtotal : Nat;
+    tax : Nat;
+    shipping : Nat;
+    total : Nat;
     customerEmail : Text;
     // The IBE ciphertext of the customer's shipping details (same shape as
     // Order.encrypted_shipping: a single Blob of concatenated per-admin
@@ -172,6 +179,25 @@ module {
     // Whether the order carries IBE-encrypted shipping details (mirrors
     // Order.has_shipping_details). The admin UI warns when this is false.
     hasShippingDetails : Bool;
+    // The order's payment reference (mirrors Order.payment_reference). `null`
+    // until a payment is recorded.
+    paymentReference : ?Text;
+    // Shipping lifecycle of the order (mirrors Order.shipping_status).
+    shippingStatus : StorefrontTypes.ShippingStatus;
+    // Timestamp (ns since epoch) when the order was marked shipped. `null`
+    // until shipped.
+    shippedAt : ?Int;
+    // Optional carrier tracking number set when the order is marked shipped.
+    trackingNumber : ?Text;
+    // Whether the customer opted in to marketing email at checkout.
+    marketingConsent : Bool;
+    // Timestamp (ns since epoch) at which the customer gave marketing consent.
+    // `null` when the customer did not opt in.
+    marketingConsentAt : ?Int;
+    // The crypto payment's deposit expiry (ns since epoch), when the order has
+    // a crypto payment. `null` for non-crypto orders. Populates the crypto
+    // CSV's Expiry column.
+    cryptoExpiresAt : ?Int;
     subaccountHex : Text;
     depositAccountText : Text;
     sweepNote : ?Text;

@@ -359,6 +359,34 @@ OWNER: the last owner cannot be demoted or revoked.
   calls it on the DRAFT only; live never invokes it. Returns `false` for any
   non-controller caller.
 
+### Order maintenance (owner-only destructive wipe)
+
+- `adminWipeAllOrders(confirm : Text) : async WipeResult` — update. OWNER
+  only. Permanently clears every order-related collection: `orders`,
+  `sessionOrders`, `cryptoPayments`, `latePayments`, `cancelTokens`, and
+  `cryptoCheckCache`. It NEVER touches products, inventory counts, admins/users,
+  `paymentServiceConfig`, `cryptoConfig`, or `nextOrderId` (so order references
+  are never reused). Binds the caller at the top, rejects the anonymous
+  principal, and traps for a caller that is not a non-anonymous OWNER.
+  It runs ONLY when `confirm` equals exactly `\"DELETE ALL ORDERS\"`; otherwise it
+  returns `#refused({ reason; unsweptReferences = [] })`.
+  Before clearing it performs two safety checks:
+  1. It REFUSES the wipe and returns
+     `#refused({ reason; unsweptReferences })` listing the affected order
+     references when any crypto payment has received funds not yet swept to the
+     treasury — a `#paid` payment whose sweep was skipped (`blockIndex == 0`), an
+     `#underpayment`/`#overpayment` that received a positive amount, or any
+     payment whose order carries a non-null `sweep_note`. Sweep those funds
+     first, then retry.
+  2. It releases the stock reservations held by pending orders
+     (`payment_status == #pending`) so inventory is correct afterwards.
+  On success it returns `#wiped(WipeSummary)` with the number of records deleted
+  from each collection (`orders`, `sessionOrders`, `cryptoPayments`,
+  `latePayments`, `cancelTokens`, `cryptoCheckCache`) and
+  `releasedReservations`. This is a destructive, non-idempotent operation: a
+  second call deletes nothing (the collections are already empty) and returns
+  zero counts. Export the orders before wiping.
+
 ### IBE shipping-details encryption (vetKD)
 
 Customer shipping details (name, email, and full shipping address) are

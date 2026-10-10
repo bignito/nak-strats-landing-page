@@ -27,6 +27,10 @@ export const CryptoPaymentStatus = IDL.Variant({
   'paid' : IDL.Record({ 'blockIndex' : IDL.Nat }),
   'awaiting_payment' : IDL.Null,
 });
+export const ShippingStatus = IDL.Variant({
+  'shipped' : IDL.Null,
+  'pending' : IDL.Null,
+});
 export const ProductId = IDL.Nat;
 export const OrderItem = IDL.Record({
   'product_id' : ProductId,
@@ -36,21 +40,32 @@ export const OrderItem = IDL.Record({
   'quantity' : IDL.Nat,
 });
 export const AdminOrderDetail = IDL.Record({
+  'tax' : IDL.Nat,
   'status' : PaymentStatus,
+  'trackingNumber' : IDL.Opt(IDL.Text),
+  'total' : IDL.Nat,
   'paymentMethod' : PaymentMethod,
   'encryptedShipping' : IDL.Opt(IDL.Vec(IDL.Nat8)),
   'cryptoStatus' : IDL.Opt(CryptoPaymentStatus),
   'createdAt' : IDL.Int,
+  'shippingStatus' : ShippingStatus,
+  'shipping' : IDL.Nat,
   'reference' : IDL.Text,
   'amountOwed' : IDL.Nat,
   'updatedAt' : IDL.Int,
+  'cryptoExpiresAt' : IDL.Opt(IDL.Int),
+  'shippedAt' : IDL.Opt(IDL.Int),
   'currency' : IDL.Text,
   'hasShippingDetails' : IDL.Bool,
   'subaccountHex' : IDL.Text,
+  'paymentReference' : IDL.Opt(IDL.Text),
   'items' : IDL.Vec(OrderItem),
   'sweepNote' : IDL.Opt(IDL.Text),
+  'marketingConsentAt' : IDL.Opt(IDL.Int),
   'customerEmail' : IDL.Text,
+  'marketingConsent' : IDL.Bool,
   'depositAccountText' : IDL.Text,
+  'subtotal' : IDL.Nat,
 });
 export const AdminOrderView = IDL.Record({
   'status' : PaymentStatus,
@@ -65,6 +80,22 @@ export const AdminOrderView = IDL.Record({
   'sweepNote' : IDL.Opt(IDL.Text),
   'customerEmail' : IDL.Text,
   'depositAccountText' : IDL.Text,
+});
+export const WipeSummary = IDL.Record({
+  'sessionOrders' : IDL.Nat,
+  'orders' : IDL.Nat,
+  'cancelTokens' : IDL.Nat,
+  'cryptoPayments' : IDL.Nat,
+  'releasedReservations' : IDL.Nat,
+  'cryptoCheckCache' : IDL.Nat,
+  'latePayments' : IDL.Nat,
+});
+export const WipeResult = IDL.Variant({
+  'wiped' : WipeSummary,
+  'refused' : IDL.Record({
+    'unsweptReferences' : IDL.Vec(IDL.Text),
+    'reason' : IDL.Text,
+  }),
 });
 export const PaymentServiceError = IDL.Variant({
   'alreadyPaid' : IDL.Null,
@@ -144,10 +175,6 @@ export const CategoryError = IDL.Variant({
   'slugCollision' : IDL.Text,
 });
 export const Result_4 = IDL.Variant({ 'ok' : Category, 'err' : CategoryError });
-export const ShippingStatus = IDL.Variant({
-  'shipped' : IDL.Null,
-  'pending' : IDL.Null,
-});
 export const Order = IDL.Record({
   'id' : IDL.Nat,
   'tax' : IDL.Nat,
@@ -575,6 +602,7 @@ export const idlService = IDL.Service({
       [IDL.Vec(AdminOrderView)],
       ['query'],
     ),
+  'adminWipeAllOrders' : IDL.Func([IDL.Text], [WipeResult], []),
   'bootstrapOwner' : IDL.Func([IDL.Principal], [IDL.Bool], []),
   'cancelCardOrder' : IDL.Func([IDL.Text], [Result_2], []),
   'cancelGuestOrder' : IDL.Func([IDL.Text, IDL.Text], [Result_2], []),
@@ -761,6 +789,10 @@ export const idlFactory = ({ IDL }) => {
     'paid' : IDL.Record({ 'blockIndex' : IDL.Nat }),
     'awaiting_payment' : IDL.Null,
   });
+  const ShippingStatus = IDL.Variant({
+    'shipped' : IDL.Null,
+    'pending' : IDL.Null,
+  });
   const ProductId = IDL.Nat;
   const OrderItem = IDL.Record({
     'product_id' : ProductId,
@@ -770,21 +802,32 @@ export const idlFactory = ({ IDL }) => {
     'quantity' : IDL.Nat,
   });
   const AdminOrderDetail = IDL.Record({
+    'tax' : IDL.Nat,
     'status' : PaymentStatus,
+    'trackingNumber' : IDL.Opt(IDL.Text),
+    'total' : IDL.Nat,
     'paymentMethod' : PaymentMethod,
     'encryptedShipping' : IDL.Opt(IDL.Vec(IDL.Nat8)),
     'cryptoStatus' : IDL.Opt(CryptoPaymentStatus),
     'createdAt' : IDL.Int,
+    'shippingStatus' : ShippingStatus,
+    'shipping' : IDL.Nat,
     'reference' : IDL.Text,
     'amountOwed' : IDL.Nat,
     'updatedAt' : IDL.Int,
+    'cryptoExpiresAt' : IDL.Opt(IDL.Int),
+    'shippedAt' : IDL.Opt(IDL.Int),
     'currency' : IDL.Text,
     'hasShippingDetails' : IDL.Bool,
     'subaccountHex' : IDL.Text,
+    'paymentReference' : IDL.Opt(IDL.Text),
     'items' : IDL.Vec(OrderItem),
     'sweepNote' : IDL.Opt(IDL.Text),
+    'marketingConsentAt' : IDL.Opt(IDL.Int),
     'customerEmail' : IDL.Text,
+    'marketingConsent' : IDL.Bool,
     'depositAccountText' : IDL.Text,
+    'subtotal' : IDL.Nat,
   });
   const AdminOrderView = IDL.Record({
     'status' : PaymentStatus,
@@ -799,6 +842,22 @@ export const idlFactory = ({ IDL }) => {
     'sweepNote' : IDL.Opt(IDL.Text),
     'customerEmail' : IDL.Text,
     'depositAccountText' : IDL.Text,
+  });
+  const WipeSummary = IDL.Record({
+    'sessionOrders' : IDL.Nat,
+    'orders' : IDL.Nat,
+    'cancelTokens' : IDL.Nat,
+    'cryptoPayments' : IDL.Nat,
+    'releasedReservations' : IDL.Nat,
+    'cryptoCheckCache' : IDL.Nat,
+    'latePayments' : IDL.Nat,
+  });
+  const WipeResult = IDL.Variant({
+    'wiped' : WipeSummary,
+    'refused' : IDL.Record({
+      'unsweptReferences' : IDL.Vec(IDL.Text),
+      'reason' : IDL.Text,
+    }),
   });
   const PaymentServiceError = IDL.Variant({
     'alreadyPaid' : IDL.Null,
@@ -878,10 +937,6 @@ export const idlFactory = ({ IDL }) => {
     'slugCollision' : IDL.Text,
   });
   const Result_4 = IDL.Variant({ 'ok' : Category, 'err' : CategoryError });
-  const ShippingStatus = IDL.Variant({
-    'shipped' : IDL.Null,
-    'pending' : IDL.Null,
-  });
   const Order = IDL.Record({
     'id' : IDL.Nat,
     'tax' : IDL.Nat,
@@ -1291,6 +1346,7 @@ export const idlFactory = ({ IDL }) => {
         [IDL.Vec(AdminOrderView)],
         ['query'],
       ),
+    'adminWipeAllOrders' : IDL.Func([IDL.Text], [WipeResult], []),
     'bootstrapOwner' : IDL.Func([IDL.Principal], [IDL.Bool], []),
     'cancelCardOrder' : IDL.Func([IDL.Text], [Result_2], []),
     'cancelGuestOrder' : IDL.Func([IDL.Text, IDL.Text], [Result_2], []),

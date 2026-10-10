@@ -18,6 +18,7 @@ import CryptoPaymentsLib "lib/crypto-payments";
 import PaymentServiceTypes "types/payment-service";
 import PaymentServiceApi "mixins/payment-service-api";
 import AdminApi "mixins/admin-api";
+import AdminOrdersApi "mixins/admin-orders-api";
 import AdminTypes "types/admin-access-control";
 import RecoveryApi "mixins/recovery-api";
 import RecoveryLib "lib/recovery";
@@ -721,6 +722,7 @@ persistent actor Self {
     include CryptoPaymentsApi(orders, products, cryptoPayments, cryptoConfig, selfPrincipal, adminUsers, minimumOrder, feeCache, cryptoCheckRateLimit, cryptoCheckCache, cycleCounters);
     include PaymentServiceApi(paymentServiceConfig, orders, products, adminUsers, checkoutRateLimit, confirmRateLimit, cancelTokens, cycleCounters);
     include AdminApi(adminUsers, initialAdminClaimed, selfPrincipal);
+    include AdminOrdersApi(orders, products, cryptoPayments, latePayments, cancelTokens, cryptoCheckCache, sessionOrders, adminUsers);
     include FeaturedVideoApi(featuredVideo, adminUsers);
     include IbeApi(adminUsers, ibeKeyName, ibePublicKeyCache, ibeRateLimit, cycleCounters);
     include RecoveryApi(orders, products, cryptoPayments, cryptoConfig, selfPrincipal, adminUsers, feeCache, latePayments, timerState, paymentServiceConfig, emailTransform, cryptoCheckCache, cycleCounters);

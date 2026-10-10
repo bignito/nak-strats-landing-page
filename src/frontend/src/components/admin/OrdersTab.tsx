@@ -1,15 +1,21 @@
 import {
   type AdminOrderDetail,
   type AdminOrderView,
+  type Backend,
   type CryptoPaymentStatus,
   PaymentMethod,
   PaymentStatus,
+  ShippingStatus,
+  type WipeResult,
+  createActor,
 } from "@/backend";
 import {
   adminErrorMessage,
+  useAdminExportOrders,
   useAdminGetOrderDetail,
   useAdminListOrders,
   useAdminReleaseExpiredOrders,
+  useAdminWipeAllOrders,
   useCryptoConfig,
   useForceRecheckPayment,
   useForceSweepOrder,
@@ -17,15 +23,21 @@ import {
   useMarkOrderShipped,
 } from "@/hooks/useQueries";
 import { formatPrice } from "@/lib/currency";
+import {
+  type ShippingPayload,
+  decryptShipping,
+  deserializeShipping,
+} from "@/lib/ibe";
 import type { AdminTabBodyProps } from "@/types/routes";
+import { useActor, useInternetIdentity } from "@caffeineai/core-infrastructure";
 import {
   CheckCircle2,
+  Download,
   Loader2,
-  Mail,
-  PackageCheck,
   RefreshCw,
   Search,
   ShieldAlert,
+  Trash2,
   Truck,
 } from "lucide-react";
 import { useMemo, useState } from "react";
@@ -61,6 +73,213 @@ function formatTimestamp(ns: bigint): string {
     hour: "2-digit",
     minute: "2-digit",
   });
+}
+
+/** ISO-8601 timestamp for CSV cells; empty string when the value is absent. */
+function csvTimestamp(ns: bigint | undefined): string {
+  if (ns === undefined) return "";
+  const date = new Date(Number(ns / 1_000_000n));
+  return Number.isNaN(date.getTime()) ? "" : date.toISOString();
+}
+
+/** Escape one CSV field: wrap in quotes and double any embedded quote. */
+function csvCell(value: string): string {
+  return `"${value.replace(/"/g, '""')}"`;
+}
+
+/** Join a header row and data rows into a CSV document. */
+function toCsv(header: string[], rows: string[][]): string {
+  return [header, ...rows]
+    .map((row) => row.map(csvCell).join(","))
+    .join("\r\n");
+}
+
+/** Render an order's line items as "Name × qty" joined by "; ". */
+function itemsSummary(items: AdminOrderDetail["items"]): string {
+  return items.map((item) => `${item.name} × ${item.quantity}`).join("; ");
+}
+
+/** Trigger a browser download of a text payload. */
+function downloadText(filename: string, content: string): void {
+  const blob = new Blob([content], { type: "text/csv;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.download = filename;
+  document.body.appendChild(anchor);
+  anchor.click();
+  document.body.removeChild(anchor);
+  URL.revokeObjectURL(url);
+}
+
+const ORDER_CSV_HEADER = [
+  "Reference",
+  "Created",
+  "Updated",
+  "Items",
+  "Subtotal",
+  "Tax",
+  "Shipping",
+  "Total",
+  "Currency",
+  "Customer email",
+  "Payment method",
+  "Payment status",
+  "Payment reference",
+  "Shipping status",
+  "Tracking number",
+  "Shipped date",
+  "Marketing consent",
+  "Shipping name",
+  "Shipping email",
+  "Shipping phone",
+  "Shipping address line 1",
+  "Shipping address line 2",
+  "Shipping city",
+  "Shipping state",
+  "Shipping postal code",
+  "Shipping country",
+];
+
+/** Number of per-order shipping columns appended to every order row. */
+const SHIPPING_COLUMN_COUNT = 9;
+
+/** Every shipping cell for an order that never collected shipping details. */
+function notProvidedShippingCells(): string[] {
+  return Array.from({ length: SHIPPING_COLUMN_COUNT }, () => "Not provided");
+}
+
+/** Every shipping cell for an order whose blob could not be decrypted. */
+function couldNotDecryptShippingCells(): string[] {
+  return Array.from(
+    { length: SHIPPING_COLUMN_COUNT },
+    () => "Could not decrypt",
+  );
+}
+
+/**
+ * Map a decrypted shipping payload onto the nine shipping columns. The
+ * payload carries no phone field, so that column is always empty.
+ */
+function shippingPayloadCells(payload: ShippingPayload): string[] {
+  return [
+    payload.name,
+    payload.email,
+    "",
+    payload.line1,
+    payload.line2 ?? "",
+    payload.city,
+    payload.region,
+    payload.postal_code,
+    payload.country,
+  ];
+}
+
+/**
+ * Decrypt one order's shipping details into its nine CSV cells. Orders with
+ * no shipping details report "Not provided"; any decryption failure (missing
+ * blob, no segment for this admin, or a bad ciphertext) reports
+ * "Could not decrypt" for that row and never aborts the export.
+ */
+async function shippingCells(
+  detail: AdminOrderDetail,
+  adminPrincipal: string,
+  backend: Backend,
+): Promise<string[]> {
+  if (!detail.hasShippingDetails) {
+    return notProvidedShippingCells();
+  }
+  if (!detail.encryptedShipping) {
+    return couldNotDecryptShippingCells();
+  }
+  try {
+    const json = await decryptShipping(
+      detail.encryptedShipping,
+      adminPrincipal,
+      backend,
+    );
+    return shippingPayloadCells(deserializeShipping(json));
+  } catch {
+    return couldNotDecryptShippingCells();
+  }
+}
+
+const CRYPTO_CSV_HEADER = [
+  "Reference",
+  "Token",
+  "Amount due",
+  "Status",
+  "Subaccount",
+  "Expiry",
+  "Confirmed block index",
+  "Created",
+  "Updated",
+];
+
+/** Human-readable label for an order's shipping status. */
+function shippingStatusLabel(status: ShippingStatus): string {
+  return status === ShippingStatus.shipped ? "Shipped" : "Pending";
+}
+
+/**
+ * Build the orders CSV from full admin details, decrypting each order's
+ * shipping blob client-side into its nine separate columns. Decryption is
+ * per-row and failure-isolated: a row that cannot be decrypted reports
+ * "Could not decrypt" and the export continues.
+ */
+async function buildOrdersCsv(
+  details: AdminOrderDetail[],
+  adminPrincipal: string,
+  backend: Backend,
+): Promise<string> {
+  const rows = await Promise.all(
+    details.map(async (detail) => [
+      detail.reference,
+      csvTimestamp(detail.createdAt),
+      csvTimestamp(detail.updatedAt),
+      itemsSummary(detail.items),
+      formatPrice(detail.subtotal),
+      formatPrice(detail.tax),
+      formatPrice(detail.shipping),
+      formatPrice(detail.total),
+      detail.currency,
+      detail.customerEmail,
+      METHOD_LABELS[detail.paymentMethod] ?? detail.paymentMethod,
+      detail.status,
+      detail.paymentReference ?? "",
+      shippingStatusLabel(detail.shippingStatus),
+      detail.trackingNumber ?? "",
+      csvTimestamp(detail.shippedAt),
+      detail.marketingConsent
+        ? `Yes${detail.marketingConsentAt !== undefined ? ` (${csvTimestamp(detail.marketingConsentAt)})` : ""}`
+        : "No",
+      ...(await shippingCells(detail, adminPrincipal, backend)),
+    ]),
+  );
+  return toCsv(ORDER_CSV_HEADER, rows);
+}
+
+/** Build the crypto payments CSV from the crypto orders in the detail set. */
+function buildCryptoCsv(details: AdminOrderDetail[]): string {
+  const rows = details
+    .filter((detail) => detail.cryptoStatus !== undefined)
+    .map((detail) => {
+      const status = detail.cryptoStatus as CryptoPaymentStatus;
+      const blockIndex =
+        status.__kind__ === "paid" ? status.paid.blockIndex.toString() : "";
+      return [
+        detail.reference,
+        detail.paymentMethod === PaymentMethod.crypto_icp ? "ICP" : "ckUSDC",
+        formatPrice(detail.amountOwed),
+        cryptoStatusLabel(status),
+        detail.subaccountHex,
+        csvTimestamp(detail.cryptoExpiresAt),
+        blockIndex,
+        csvTimestamp(detail.createdAt),
+        csvTimestamp(detail.updatedAt),
+      ];
+    });
+  return toCsv(CRYPTO_CSV_HEADER, rows);
 }
 
 /** Format a token base-unit amount using the token's decimal places. */
@@ -504,6 +723,59 @@ export function OrdersTab({ session }: AdminTabBodyProps) {
     );
   }, [orders, search]);
 
+  /* ---- Export all orders (CSV) + crypto payments (second CSV) ---- */
+  const exportOrders = useAdminExportOrders();
+  const { actor } = useActor(createActor);
+  const { identity } = useInternetIdentity();
+  const [exportError, setExportError] = useState<string | null>(null);
+  const [exportedThisSession, setExportedThisSession] = useState(false);
+
+  const handleExport = () => {
+    setExportError(null);
+    exportOrders.mutate(undefined, {
+      onSuccess: async (details) => {
+        const adminPrincipal = identity?.getPrincipal().toText() ?? "";
+        if (!actor || !adminPrincipal) {
+          setExportError("Session not ready — sign in again");
+          return;
+        }
+        try {
+          const stamp = new Date().toISOString().slice(0, 10);
+          downloadText(
+            `orders-${stamp}.csv`,
+            await buildOrdersCsv(details, adminPrincipal, actor),
+          );
+          downloadText(`crypto-payments-${stamp}.csv`, buildCryptoCsv(details));
+          setExportedThisSession(true);
+        } catch (err) {
+          setExportError(adminErrorMessage(err));
+        }
+      },
+      onError: (err) => setExportError(adminErrorMessage(err)),
+    });
+  };
+
+  /* ---- Owner-only delete all orders ---- */
+  const wipe = useAdminWipeAllOrders();
+  const [wipeError, setWipeError] = useState<string | null>(null);
+  const [wipeResult, setWipeResult] = useState<WipeResult | null>(null);
+  const [confirmText, setConfirmText] = useState("");
+
+  const canWipe = session.canManageUsers;
+  const confirmMatches = confirmText === "DELETE ALL ORDERS";
+
+  const handleWipe = () => {
+    setWipeError(null);
+    setWipeResult(null);
+    wipe.mutate("DELETE ALL ORDERS", {
+      onSuccess: (result) => {
+        setWipeResult(result);
+        setConfirmText("");
+      },
+      onError: (err) => setWipeError(adminErrorMessage(err)),
+    });
+  };
+
   return (
     <div className="flex flex-col gap-4">
       {/* Filter tabs */}
@@ -526,6 +798,31 @@ export function OrdersTab({ session }: AdminTabBodyProps) {
             {f.label}
           </button>
         ))}
+      </div>
+
+      {/* Export all orders (CSV) — ignores the active filter/search */}
+      <div
+        className="flex flex-wrap items-center gap-3"
+        data-ocid="admin.orders.export"
+      >
+        <button
+          type="button"
+          className="btn btn-secondary"
+          onClick={handleExport}
+          disabled={exportOrders.isPending}
+          data-ocid="admin.orders.export_button"
+        >
+          {exportOrders.isPending ? (
+            <Loader2 className="w-3 h-3 animate-spin" />
+          ) : (
+            <Download className="w-3 h-3" />
+          )}
+          {exportOrders.isPending ? "Exporting…" : "Export all orders (CSV)"}
+        </button>
+        <span className="text-xs" style={{ color: "var(--muted-foreground)" }}>
+          Downloads every order plus a second CSV of crypto payments.
+        </span>
+        {exportError && <ErrorPanel message={exportError} />}
       </div>
 
       {/* Manual release of expired pending reservations (ADMIN/OWNER only) */}
@@ -559,6 +856,112 @@ export function OrdersTab({ session }: AdminTabBodyProps) {
           )}
           {releaseError && <ErrorPanel message={releaseError} />}
         </div>
+      )}
+
+      {/* Owner-only destructive wipe */}
+      {canWipe && (
+        <AdminPanel title="Danger zone">
+          <div className="flex flex-col gap-3">
+            <p className="text-sm" style={{ color: "var(--muted-foreground)" }}>
+              Permanently deletes every order and crypto payment record. The
+              export must be downloaded first, and the action is refused while
+              any crypto funds remain unswept.
+            </p>
+            <div className="flex flex-wrap items-center gap-3">
+              <AdminConfirmDialog
+                trigger={
+                  <button
+                    type="button"
+                    className="btn-negative"
+                    disabled={
+                      !exportedThisSession || !confirmMatches || wipe.isPending
+                    }
+                    data-ocid="admin.orders.wipe_button"
+                  >
+                    <Trash2 className="w-3 h-3" />
+                    {wipe.isPending ? "Deleting…" : "Delete all orders"}
+                  </button>
+                }
+                title="Delete all orders"
+                description="This permanently deletes every order and crypto payment record. This cannot be undone."
+                confirmLabel="Delete all orders"
+                cancelLabel="Cancel"
+                tone="negative"
+                pending={wipe.isPending}
+                onConfirm={handleWipe}
+              />
+              {!exportedThisSession && (
+                <span
+                  className="text-xs"
+                  style={{ color: "var(--muted-foreground)" }}
+                  data-ocid="admin.orders.wipe_disabled_hint"
+                >
+                  Download the export first to enable deletion.
+                </span>
+              )}
+            </div>
+            <div className="flex flex-col gap-1">
+              <label className="field-label" htmlFor="admin-wipe-confirm">
+                Type DELETE ALL ORDERS to confirm
+              </label>
+              <input
+                id="admin-wipe-confirm"
+                className="field-input"
+                style={{ maxWidth: "22rem" }}
+                value={confirmText}
+                onChange={(e) => setConfirmText(e.target.value)}
+                placeholder="DELETE ALL ORDERS"
+                disabled={!exportedThisSession || wipe.isPending}
+                data-ocid="admin.orders.wipe_confirm_input"
+              />
+              <span
+                className="text-xs"
+                style={{ color: "var(--muted-foreground)" }}
+              >
+                {confirmMatches
+                  ? "Confirmation matches — the delete button is armed."
+                  : "The delete button stays disabled until this matches exactly."}
+              </span>
+            </div>
+            {wipeError && <ErrorPanel message={wipeError} />}
+            {wipeResult?.__kind__ === "refused" && (
+              <div
+                className="error-panel flex flex-col gap-1"
+                role="alert"
+                data-ocid="admin.orders.wipe_refused"
+              >
+                <span className="flex items-center gap-2">
+                  <ShieldAlert className="w-4 h-4 shrink-0" />
+                  {wipeResult.refused.reason}
+                </span>
+                <span className="text-xs">
+                  Unswept references:{" "}
+                  {wipeResult.refused.unsweptReferences.join(", ") || "none"}
+                </span>
+              </div>
+            )}
+            {wipeResult?.__kind__ === "wiped" && (
+              <div
+                className="flex flex-col gap-1 text-xs"
+                style={{ color: "var(--positive)" }}
+                data-ocid="admin.orders.wipe_success"
+              >
+                <span className="flex items-center gap-1.5">
+                  <CheckCircle2 className="w-3.5 h-3.5" />
+                  Deleted all orders.
+                </span>
+                <span style={{ color: "var(--muted-foreground)" }}>
+                  Orders {wipeResult.wiped.orders.toString()} · session orders{" "}
+                  {wipeResult.wiped.sessionOrders.toString()} · crypto payments{" "}
+                  {wipeResult.wiped.cryptoPayments.toString()} · late payments{" "}
+                  {wipeResult.wiped.latePayments.toString()} · cancel tokens{" "}
+                  {wipeResult.wiped.cancelTokens.toString()} · crypto check
+                  cache {wipeResult.wiped.cryptoCheckCache.toString()}
+                </span>
+              </div>
+            )}
+          </div>
+        </AdminPanel>
       )}
 
       {listError && <ErrorPanel message={listError} />}

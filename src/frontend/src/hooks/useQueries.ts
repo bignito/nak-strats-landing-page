@@ -29,6 +29,7 @@ import type {
   SweepSubaccountResult,
   Token,
   UserRecord,
+  WipeResult,
 } from "@/backend";
 import { useActor, useInternetIdentity } from "@caffeineai/core-infrastructure";
 import type { Principal } from "@icp-sdk/core/principal";
@@ -1408,6 +1409,71 @@ export function useAdminListOrders(filter: string) {
   });
 }
 
+/**
+ * Owner-only destructive wipe of every order and crypto payment record. The
+ * backend refuses unless `confirm` is exactly "DELETE ALL ORDERS" and returns
+ * `#refused` with the references still holding unswept crypto funds, or
+ * `#wiped` with a per-collection deletion summary. Invalidates every order
+ * query on success so the admin table reflects the emptied state.
+ */
+export function useAdminWipeAllOrders() {
+  const { actor, isFetching } = useActor(createActor);
+  const { isActorReady } = useActorReady();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (confirm: string): Promise<WipeResult> => {
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      if (!isActorReady)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      return actor.adminWipeAllOrders(confirm);
+    },
+    onSuccess: (result) => {
+      if (result.__kind__ === "wiped") {
+        void queryClient.invalidateQueries({ queryKey: ["adminOrders"] });
+        void queryClient.invalidateQueries({ queryKey: ["adminOrderDetail"] });
+        void queryClient.invalidateQueries({ queryKey: ["ordersForRecovery"] });
+        void queryClient.invalidateQueries({ queryKey: ["latePayments"] });
+      }
+    },
+  });
+}
+
+/**
+ * Fetches every order's full admin detail for the CSV export, regardless of
+ * the active filter or search. The list call is unfiltered ("all") and each
+ * reference is resolved to its detail; nulls (deleted between calls) are
+ * dropped. Throws when the actor is not ready so the caller surfaces a real
+ * error instead of downloading an empty file.
+ */
+export function useAdminExportOrders() {
+  const { actor, isFetching } = useActor(createActor);
+  const { isActorReady } = useActorReady();
+  return useMutation({
+    mutationFn: async (): Promise<AdminOrderDetail[]> => {
+      if (!actor || isFetching)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      if (!isActorReady)
+        throw new Error(
+          "Session not ready — please wait a moment and try again",
+        );
+      const all = await actor.adminListOrders("all");
+      const details = await Promise.all(
+        all.map((order) => actor.adminGetOrderDetail(order.reference)),
+      );
+      return details.filter(
+        (detail): detail is AdminOrderDetail => detail !== null,
+      );
+    },
+  });
+}
+
 /** Fetches the full admin detail (including line items) for one order. */
 export function useAdminGetOrderDetail(reference: string | null) {
   const { actor, isFetching } = useActor(createActor);
@@ -1420,7 +1486,6 @@ export function useAdminGetOrderDetail(reference: string | null) {
     enabled: !!actor && !isFetching && !!reference,
   });
 }
-
 /** Reads the canister's own principal (public query). */
 export function useGetCanisterId() {
   const { actor, isFetching } = useActor(createActor);

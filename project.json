@@ -1,17 +1,18 @@
 {
-  "overview": "A storefront with an admin cycle burn-rate monitor that tracks cycle consumption, memory growth, and activity attribution at near-zero cost.",
+  "overview": "An admin console for a NAK STRATS storefront that lets owners export all order data as CSV and permanently wipe order records.",
   "features": [
-    "Track cycle balance, burn rate, and estimated days remaining",
-    "Attribute cycle burn to outcalls, ledger calls, vetKD calls, and raw_rand calls",
-    "Chart balance and memory over time with top-up events marked",
-    "Admin-gated metrics dashboard section"
+    "Export every order and crypto payment record as CSV",
+    "Owner-only permanent deletion of all order records",
+    "Safety refusal when crypto funds are unswept",
+    "Per-collection deletion summary"
   ],
   "category": "admin-dashboard",
   "tags": [
     "admin",
-    "monitoring",
-    "cycles",
-    "dashboard"
+    "orders",
+    "export",
+    "csv",
+    "data-management"
   ],
-  "last_updated": "2026-09-04T02:14:20.295Z"
+  "last_updated": "2026-10-10T08:03:58.705Z"
 }

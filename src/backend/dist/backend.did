@@ -1,3 +1,21 @@
+type WipeSummary = 
+ record {
+   cancelTokens: nat;
+   cryptoCheckCache: nat;
+   cryptoPayments: nat;
+   latePayments: nat;
+   orders: nat;
+   releasedReservations: nat;
+   sessionOrders: nat;
+ };
+type WipeResult = 
+ variant {
+   refused: record {
+              reason: text;
+              unsweptReferences: vec text;
+            };
+   wiped: WipeSummary;
+ };
 type Value = 
  variant {
    "bool": bool;
@@ -688,6 +706,7 @@ type AdminOrderDetail =
  record {
    amountOwed: nat;
    createdAt: int;
+   cryptoExpiresAt: opt int;
    cryptoStatus: opt CryptoPaymentStatus;
    currency: text;
    customerEmail: text;
@@ -695,11 +714,21 @@ type AdminOrderDetail =
    encryptedShipping: opt blob;
    hasShippingDetails: bool;
    items: vec OrderItem;
+   marketingConsent: bool;
+   marketingConsentAt: opt int;
    paymentMethod: PaymentMethod;
+   paymentReference: opt text;
    reference: text;
+   shippedAt: opt int;
+   shipping: nat;
+   shippingStatus: ShippingStatus;
    status: PaymentStatus;
    subaccountHex: text;
+   subtotal: nat;
    sweepNote: opt text;
+   tax: nat;
+   total: nat;
+   trackingNumber: opt text;
    updatedAt: int;
  };
 service : {
@@ -707,6 +736,7 @@ service : {
   adminCount: () -> (nat) query;
   adminGetOrderDetail: (reference: text) -> (opt AdminOrderDetail) query;
   adminListOrders: (filter: text) -> (vec AdminOrderView) query;
+  adminWipeAllOrders: (confirm: text) -> (WipeResult);
   bootstrapOwner: (p: principal) -> (bool);
   cancelCardOrder: (reference: text) -> (Result_2);
   cancelGuestOrder: (reference: text, cancellationToken: text) -> (Result_2);

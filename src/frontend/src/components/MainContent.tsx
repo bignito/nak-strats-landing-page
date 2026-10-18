@@ -1,4 +1,7 @@
+import { ArrowUpRight } from "lucide-react";
 import type React from "react";
+
+const NAKSWAP_URL = "https://nakswap.lol";
 
 const MainContent: React.FC = () => {
   return (
@@ -45,6 +48,16 @@ const MainContent: React.FC = () => {
             data-ocid="hero.reserve_report_button"
           >
             Reserve report
+          </a>
+          <a
+            href={NAKSWAP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-secondary"
+            data-ocid="hero.nakswap_button"
+          >
+            Swap on NAKSwap{" "}
+            <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
           </a>
         </div>
       </div>

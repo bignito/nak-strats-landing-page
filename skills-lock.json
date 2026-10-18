@@ -24,7 +24,7 @@
     "extension-authorization": {
       "source": "caffeinelabs/skills",
       "sourceType": "github",
-      "computedHash": "27aadb0325a3c29c98e63e7f5444c03317ddeb9667e6cfd912f57b8f75a61ff3"
+      "computedHash": "cbc2a7654c3f21e12b1a48882c6d8acac83239f66981249d2017b6ca816d7f7f"
     },
     "extension-camera": {
       "source": "caffeinelabs/skills",
@@ -114,7 +114,7 @@
     "extension-user-approval": {
       "source": "caffeinelabs/skills",
       "sourceType": "github",
-      "computedHash": "6476abad56dc634f7c8b0ebe1bddc5d650f072c32fe2ab3739e7de1a90749595"
+      "computedHash": "b3a02addce836fb00ddc93db8bc302b75d914d9ef24eb33533838a983f1dd741"
     },
     "connector-googledrive": {
       "source": "caffeinelabs/skills",

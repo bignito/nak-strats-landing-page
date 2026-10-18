@@ -1,7 +1,9 @@
 import { useInternetIdentity } from "@caffeineai/core-infrastructure";
-import { LogIn, LogOut, Menu, X } from "lucide-react";
+import { ArrowUpRight, LogIn, LogOut, Menu, X } from "lucide-react";
 import type React from "react";
 import { useEffect, useRef, useState } from "react";
+
+const NAKSWAP_URL = "https://nakswap.lol";
 
 interface NavigationProps {
   currentPage: "main" | "artist" | "metatheatre" | "admin";
@@ -18,7 +20,6 @@ interface NavGroup {
 const NAV_GROUPS: NavGroup[] = [
   { key: "token", label: "Token", id: "metrics" },
   { key: "culture", label: "Culture", id: "culture" },
-  { key: "trade", label: "Trade", id: "trade" },
   { key: "company", label: "Company", id: "company" },
 ];
 
@@ -183,6 +184,27 @@ const Navigation: React.FC<NavigationProps> = ({
               </button>
             ))}
 
+            <a
+              href={NAKSWAP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 whitespace-nowrap no-underline"
+              data-ocid="nav.nakswap_link"
+              style={{
+                border: "1px solid var(--nak-border)",
+                borderRadius: "var(--radius)",
+                padding: "0.375rem 0.75rem",
+                marginLeft: "0.5rem",
+                fontSize: "0.8125rem",
+                fontWeight: 500,
+                color: "var(--nak-text)",
+                textDecoration: "none",
+              }}
+            >
+              NAKSwap
+              <ArrowUpRight className="w-3.5 h-3.5" aria-hidden="true" />
+            </a>
+
             <div className="flex items-center gap-1 ml-2 min-w-0">
               {/* Account */}
               {isAuthenticated ? (
@@ -265,6 +287,26 @@ const Navigation: React.FC<NavigationProps> = ({
                 {group.label}
               </button>
             ))}
+
+            <a
+              href={NAKSWAP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setIsMenuOpen(false)}
+              className="w-full cursor-pointer px-3 py-3 flex items-center gap-3 no-underline"
+              data-ocid="nav.mobile_nakswap_link"
+              style={{
+                fontFamily: "var(--font-body)",
+                fontSize: "0.875rem",
+                fontWeight: 500,
+                color: "var(--nak-text)",
+                borderBottom: "1px solid var(--nak-border)",
+                textDecoration: "none",
+              }}
+            >
+              <span className="flex-1">NAKSwap</span>
+              <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
+            </a>
 
             <div className="pt-2 space-y-1">
               {isAuthenticated ? (

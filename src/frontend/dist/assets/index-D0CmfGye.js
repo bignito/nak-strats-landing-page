@@ -80632,6 +80632,456 @@ const BubbleBackground = () => {
     }
   );
 };
+function LegalDisclaimer() {
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+    "section",
+    {
+      "aria-labelledby": "nak-legal-heading",
+      className: "mx-auto max-w-7xl px-6 pt-8 text-xs leading-relaxed text-muted-foreground",
+      children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "h2",
+          {
+            id: "nak-legal-heading",
+            className: "font-mono text-xs uppercase tracking-[0.14em]",
+            children: "Legal Disclaimer"
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mb-2 mt-3", children: "NAK (New Age Kapital) is a nonprofit organization that holds the intellectual property behind its projects. Our mission is to advance the world by every lawful means available to us." }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mb-2", children: 'The NAK token is not an investment. It is not designed or intended to appreciate in value, and NAK makes no promise of profit, return, or yield of any kind. Holding NAK gives no ownership, dividend, redemption or governance rights. Digital assets carry real risks, including total loss. Nothing on this site is financial, investment, legal, or tax advice. All products and services are provided "as is," without warranties of any kind, and you use them at your own risk.' }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { children: [
+          "Read the full",
+          " ",
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "a",
+            {
+              href: "#/legal",
+              className: "underline underline-offset-2 hover:text-foreground transition-colors",
+              "data-ocid": "footer.legal_link",
+              children: "Legal Disclaimer & Risk Disclosure"
+            }
+          ),
+          ". © 2026 NAK New Age Kapital. All rights reserved."
+        ] })
+      ]
+    }
+  );
+}
+const SECTIONS = [
+  {
+    id: "general-information",
+    number: 1,
+    title: "General information",
+    blocks: [
+      {
+        kind: "paragraph",
+        text: "New Age Kapital (“NAK”, “we”, “us”) is a nonprofit organization that holds the intellectual property behind its projects. NAK is a digital-asset and blockchain project on the Internet Computer (ICP): an experimental token initiative with cultural, creative and community objectives."
+      },
+      {
+        kind: "paragraph",
+        text: "NAK does not hold itself out as licensed or registered to provide regulated financial services, and nothing on our websites is an offer of such services."
+      },
+      {
+        kind: "paragraph",
+        text: "Information on NAK websites, applications and communications is general information. Please verify anything that matters to you before you rely on it or take part."
+      }
+    ]
+  },
+  {
+    id: "the-nak-token",
+    number: 2,
+    title: "The NAK token: nature and risks",
+    blocks: [
+      {
+        kind: "paragraph",
+        text: "The NAK token is a digital asset of the New Age Kapital project. It can be used or exchanged through compatible blockchain infrastructure, as far as that infrastructure and the services built on it support it."
+      },
+      {
+        kind: "paragraph",
+        text: "**The NAK token is not an investment.** It is not designed or intended to appreciate in value, and NAK makes no promise of profit, return or yield of any kind. Holding NAK does not, by itself, give you:"
+      },
+      {
+        kind: "bullets",
+        items: [
+          "equity or ownership in New Age Kapital;",
+          "a right to dividends or to NAK's revenue or surplus;",
+          "a contractual right to repayment or redemption;",
+          "a claim on NAK's assets or reserves;",
+          "voting or governance rights; or",
+          "an entitlement to future services, benefits or distributions."
+        ]
+      },
+      {
+        kind: "paragraph",
+        text: "Any right attached to the token exists only if a governing document, a contract or the law creates it."
+      },
+      {
+        kind: "paragraph",
+        text: "NAK has no guaranteed market value. Its price can be volatile, liquidity can be thin, markets can be manipulated, and it can lose all its value. That NAK can be traded, or used in an application, says nothing about whether it is lawful, economically viable or suitable for you."
+      },
+      {
+        kind: "paragraph",
+        text: "Nothing on this page decides whether NAK is a security, commodity, financial instrument or other regulated asset under any law."
+      }
+    ]
+  },
+  {
+    id: "reserves-and-economic-statements",
+    number: 3,
+    title: "Reserves and economic statements",
+    blocks: [
+      {
+        kind: "paragraph",
+        text: "NAK communications may mention reserves, treasury assets, token backing, or putting resources back into cultural and community work. None of these is a promise of collateral, redemption, price stability, solvency, or assets being available to token holders."
+      },
+      {
+        kind: "paragraph",
+        text: "Unless a binding document and verifiable financial or on-chain evidence say so, NAK tokens are not redeemable against any reserve, currency or asset. Describing how we intend to spend or manage funds, or to support artists and cultural projects, does not by itself give anyone a claim to NAK's funds or revenue."
+      }
+    ]
+  },
+  {
+    id: "swaps-and-third-party-services",
+    number: 4,
+    title: "Swaps and third-party services",
+    blocks: [
+      {
+        kind: "paragraph",
+        text: "NAK interfaces, including NAKSwap, may give you information about, access to, or links to third-party exchanges, liquidity pools, wallets and other digital-asset services. Some of the work in a transaction may be done by infrastructure that independent providers build and run (for NAKSwap: Houdiniswap and ICPSwap)."
+      },
+      { kind: "paragraph", text: "Risks include:" },
+      {
+        kind: "bullets",
+        items: [
+          "exchange-rate volatility;",
+          "slippage and thin liquidity;",
+          "network and protocol fees;",
+          "failed, delayed or incorrectly executed transactions;",
+          "smart-contract or protocol vulnerabilities;",
+          "routing errors; and",
+          "losses from wallet approvals or compromised credentials."
+        ]
+      },
+      {
+        kind: "paragraph",
+        text: "A quote shown to you is not a guarantee that a transaction will execute at that rate. Using a third-party service through a NAK interface does not mean NAK endorses, guarantees, controls or is responsible for everything that provider does. Please read each provider's own terms, fees and security arrangements."
+      },
+      {
+        kind: "paragraph",
+        text: "What NAK itself is responsible for depends on how the service actually works and on its terms. For NAKSwap, that's the NAKSwap Terms of Use (https://nakswap.lol/terms)."
+      }
+    ]
+  },
+  {
+    id: "blockchain-and-cybersecurity-risks",
+    number: 5,
+    title: "Blockchain and cybersecurity risks",
+    blocks: [
+      {
+        kind: "paragraph",
+        text: "Blockchain technology carries operational and security risks: software bugs, smart-contract exploits, compromised signing keys, malicious wallet apps, network outages, governance failures, bridge vulnerabilities and unauthorized transactions."
+      },
+      {
+        kind: "paragraph",
+        text: "Transactions can be irreversible. Assets sent to a wrong address or a compromised contract may be lost for good. Networks and applications can be changed, upgraded, interrupted or shut down."
+      },
+      {
+        kind: "paragraph",
+        text: "We don't claim that any wallet, blockchain, smart contract, application or transaction method is free of vulnerabilities. You are responsible for taking care with your assets, the permissions you grant wallets, and the transactions you approve, without affecting any legal right or duty that can't lawfully be excluded."
+      }
+    ]
+  },
+  {
+    id: "no-financial-investment-legal-or-tax-advice",
+    number: 6,
+    title: "No financial, investment, legal or tax advice",
+    blocks: [
+      {
+        kind: "paragraph",
+        text: "Everything on NAK websites and in NAK communications is general information. Nothing in them is individual investment, financial, legal, accounting or tax advice, and describing a token, technology, plan, market or community initiative is not a recommendation to buy, sell or hold anything."
+      },
+      {
+        kind: "paragraph",
+        text: "Taking part in digital assets can mean losing money, possibly all of it. Consider your own circumstances, risk tolerance and legal obligations, and get qualified professional advice where appropriate."
+      }
+    ]
+  },
+  {
+    id: "regulation-and-where-you-are",
+    number: 7,
+    title: "Regulation and where you are",
+    blocks: [
+      {
+        kind: "paragraph",
+        text: "Digital-asset rules differ from country to country and keep changing. How NAK tokens and NAK services are classified depends on the law, the arrangements and facts involved, and how regulators read them."
+      },
+      {
+        kind: "paragraph",
+        text: "NAK's nonprofit, experimental and community purpose does not exempt its activities from laws that apply to them. That you can reach a website or an application doesn't mean using it is lawful or authorized where you are. Nothing here represents that any regulator has approved, registered or licensed NAK or its services."
+      }
+    ]
+  },
+  {
+    id: "forward-looking-statements",
+    number: 8,
+    title: "Forward-looking statements",
+    blocks: [
+      {
+        kind: "paragraph",
+        text: "Statements about future developments, token features, partnerships, community programs, treasury plans, reserve arrangements or planned services are forward-looking. They are uncertain and actual outcomes may differ materially. Plans can change, be delayed or be dropped. No future feature, financial result, rise in value or milestone is guaranteed."
+      }
+    ]
+  },
+  {
+    id: "third-party-content-and-links",
+    number: 9,
+    title: "Third-party content and links",
+    blocks: [
+      {
+        kind: "paragraph",
+        text: "NAK websites may link to other websites, blockchain explorers, exchanges, wallets and community platforms. Unless we say otherwise, they are independent and have their own policies and terms. A link is not a promise that the resource is accurate, reliable, secure, lawful or available. Please check outside information before relying on it."
+      }
+    ]
+  },
+  {
+    id: "no-warranties",
+    number: 10,
+    title: "No warranties",
+    blocks: [
+      {
+        kind: "paragraph",
+        text: "As far as the law allows, information and services are provided “as is” and “as available”. We don't guarantee that our websites will always be available, error-free, complete, secure, current or fit for any particular purpose. This doesn't exclude any warranty, duty or statutory protection that can't lawfully be excluded."
+      }
+    ]
+  },
+  {
+    id: "limitation-of-liability",
+    number: 11,
+    title: "Limitation of liability",
+    blocks: [
+      {
+        kind: "paragraph",
+        text: "As far as the law allows, liability arising from your use of NAK websites, information or services is limited as set out in the terms that apply to the service you use, such as the NAKSwap Terms of Use (https://nakswap.lol/terms). This page does not itself create a limitation of liability or replace those terms."
+      },
+      {
+        kind: "paragraph",
+        text: "Nothing here excludes or limits liability for fraud or fraudulent misrepresentation, or anything else that can't lawfully be excluded or limited, and nothing here waives your statutory consumer protections or legal remedies."
+      }
+    ]
+  },
+  {
+    id: "intellectual-property",
+    number: 12,
+    title: "Intellectual property",
+    blocks: [
+      {
+        kind: "paragraph",
+        text: "The New Age Kapital and NAK names, logos, creative works, written content and other materials are owned by or licensed to New Age Kapital, and are protected by copyright, trademark and other intellectual-property rights. All rights reserved. Unless we give permission, you may not reproduce, redistribute or commercially use them. Third-party names and logos belong to their owners."
+      }
+    ]
+  },
+  {
+    id: "security-and-official-channels",
+    number: 13,
+    title: "Security and official channels",
+    blocks: [
+      {
+        kind: "paragraph",
+        text: "Be careful with anyone claiming to represent New Age Kapital. Our only official websites are naktoken.lol, nakapital.lol and nakswap.lol, and our official support channel is Telegram @NAKSTOKEN.",
+        links: [
+          { label: "naktoken.lol", href: "https://www.naktoken.lol" },
+          { label: "nakapital.lol", href: "https://www.nakapital.lol" },
+          { label: "nakswap.lol", href: "https://nakswap.lol" },
+          { label: "@NAKSTOKEN", href: "https://t.me/NAKSTOKEN" }
+        ]
+      },
+      {
+        kind: "paragraph",
+        text: "**We never message first, and we will never ask for your private keys, recovery phrase or seed phrase.** No genuine support process needs them. Check website addresses, token and canister identifiers, transaction requests and messages yourself before you connect a wallet or send anything. Impersonating accounts, fake token listings, malicious links and unofficial “support” channels are a real risk."
+      }
+    ]
+  },
+  {
+    id: "changes-to-these-disclosures",
+    number: 14,
+    title: "Changes to these disclosures",
+    blocks: [
+      {
+        kind: "paragraph",
+        text: "We may update these disclosures to reflect changes in NAK's activities, technology, the law or other information. The current version is always on this page with its effective date, and we announce material changes on our official channels. Changes don't retroactively remove legal rights or obligations that arose before them."
+      }
+    ]
+  },
+  {
+    id: "scope",
+    number: 15,
+    title: "Scope",
+    blocks: [
+      {
+        kind: "paragraph",
+        text: "This page gives general disclosures about New Age Kapital, the NAK token and digital-asset risks. Where the terms of a specific service, such as the NAKSwap Terms of Use (https://nakswap.lol/terms), or the law impose additional duties, those apply and take precedence over anything here that conflicts with them."
+      }
+    ]
+  }
+];
+function renderInline(text, keyPrefix) {
+  const boldParts = text.split(/\*\*(.+?)\*\*/g);
+  return boldParts.map((part, index2) => {
+    const key = `${keyPrefix}-b${index2}`;
+    if (index2 % 2 === 1) {
+      return /* @__PURE__ */ jsxRuntimeExports.jsx("strong", { children: part }, key);
+    }
+    return /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: linkify(part, key) }, key);
+  });
+}
+function linkify(text, keyPrefix) {
+  const nodes = [];
+  const pattern = /([A-Z][A-Za-z0-9'’&.\-]*(?:\s+(?:[A-Z][A-Za-z0-9'’&.\-]*|of|the|and|for|to|in|on|at|by|with|a|an))*)\s*\((https?:\/\/[^\s)]+)\)/g;
+  let lastIndex = 0;
+  let match = pattern.exec(text);
+  let i = 0;
+  while (match !== null) {
+    if (match.index > lastIndex) {
+      nodes.push(text.slice(lastIndex, match.index));
+    }
+    nodes.push(
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "a",
+        {
+          href: match[2],
+          target: "_blank",
+          rel: "noopener noreferrer",
+          className: "underline underline-offset-2 transition-colors hover:text-foreground",
+          style: { color: "var(--nak-purple-light)" },
+          children: match[1]
+        },
+        `${keyPrefix}-l${i}`
+      )
+    );
+    lastIndex = match.index + match[0].length;
+    i += 1;
+    match = pattern.exec(text);
+  }
+  if (lastIndex < text.length) {
+    nodes.push(text.slice(lastIndex));
+  }
+  return nodes;
+}
+function renderLinkedParagraph(text, links, keyPrefix) {
+  const escaped = links.map(
+    (link) => link.label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+  );
+  const pattern = new RegExp(`(${escaped.join("|")})`, "g");
+  return text.split(pattern).map((part, index2) => {
+    const key = `${keyPrefix}-x${index2}`;
+    const link = links.find((candidate) => candidate.label === part);
+    if (link) {
+      return /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "a",
+        {
+          href: link.href,
+          target: "_blank",
+          rel: "noopener noreferrer",
+          className: "underline underline-offset-2 transition-colors hover:text-foreground",
+          style: { color: "var(--nak-purple-light)" },
+          children: part
+        },
+        key
+      );
+    }
+    return /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: renderInline(part, key) }, key);
+  });
+}
+function LegalPage({ onNavigateToMain }) {
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative z-10 mx-auto max-w-3xl px-6 py-16 sm:py-20", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "button",
+      {
+        type: "button",
+        onClick: onNavigateToMain,
+        className: "back-link mb-10",
+        "data-ocid": "legal.back_button",
+        children: "← Back to Home"
+      }
+    ),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "section-label", children: "New Age Kapital · Digital asset disclosures" }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "mt-4", children: "Legal Disclaimer & Risk Disclosure" }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-3 text-sm text-muted-foreground", children: "Effective October 12, 2026" }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-6 leading-relaxed text-secondary", children: "Important information about New Age Kapital (NAK), the NAK token, NAK services such as NAKSwap, and the risks of taking part in digital-asset ecosystems. The same disclosures apply on naktoken.lol, nakapital.lol and nakswap.lol." }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      "div",
+      {
+        className: "surface mt-8 p-5",
+        style: { borderColor: "var(--border-strong)" },
+        children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-semibold text-foreground", children: "Please read carefully." }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-2 leading-relaxed text-muted-foreground", children: "These are general disclosures. They don't create rights for token holders, and they don't replace the terms of a specific service or professional advice." })
+        ]
+      }
+    ),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("nav", { "aria-labelledby": "legal-toc-heading", className: "mt-12", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "h2",
+        {
+          id: "legal-toc-heading",
+          className: "font-mono text-xs uppercase tracking-[0.14em] text-muted-foreground",
+          children: "On this page"
+        }
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("ol", { className: "mt-4 space-y-2", children: SECTIONS.map((section) => /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "a",
+        {
+          href: `#${section.id}`,
+          className: "text-sm text-secondary transition-colors hover:text-foreground",
+          "data-ocid": `legal.toc_link.${section.number}`,
+          children: [
+            section.number,
+            ". ",
+            section.title
+          ]
+        }
+      ) }, section.id)) })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-14 space-y-12", children: SECTIONS.map((section) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      "section",
+      {
+        id: section.id,
+        "aria-labelledby": `${section.id}-heading`,
+        className: "scroll-mt-24",
+        children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { id: `${section.id}-heading`, className: "text-xl", children: [
+            section.number,
+            ". ",
+            section.title
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-4 space-y-4 leading-relaxed text-secondary", children: section.blocks.map(
+            (block, blockIndex) => block.kind === "paragraph" ? /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: block.links && block.links.length > 0 ? renderLinkedParagraph(
+              block.text,
+              block.links,
+              `${section.id}-p${blockIndex}`
+            ) : renderInline(
+              block.text,
+              `${section.id}-p${blockIndex}`
+            ) }, `${section.id}-p${blockIndex}`) : /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "ul",
+              {
+                className: "list-disc space-y-2 pl-6",
+                children: block.items.map((item, itemIndex) => /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: renderInline(
+                  item,
+                  `${section.id}-li${blockIndex}-${itemIndex}`
+                ) }, `${section.id}-li${blockIndex}-${itemIndex}`))
+              },
+              `${section.id}-ul${blockIndex}`
+            )
+          ) })
+        ]
+      },
+      section.id
+    )) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-16 border-t border-border pt-8 text-xs text-muted-foreground", children: "© 2026 NAK New Age Kapital. All rights reserved. · Last revised October 12, 2026" })
+  ] });
+}
+const NAKSWAP_URL$1 = "https://nakswap.lol";
 const MainContent = () => {
   return /* @__PURE__ */ jsxRuntimeExports.jsx(
     "section",
@@ -80672,6 +81122,21 @@ const MainContent = () => {
               className: "btn btn-secondary",
               "data-ocid": "hero.reserve_report_button",
               children: "Reserve report"
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "a",
+            {
+              href: NAKSWAP_URL$1,
+              target: "_blank",
+              rel: "noopener noreferrer",
+              className: "btn btn-secondary",
+              "data-ocid": "hero.nakswap_button",
+              children: [
+                "Swap on NAKSwap",
+                " ",
+                /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowUpRight, { className: "w-4 h-4", "aria-hidden": "true" })
+              ]
             }
           )
         ] })
@@ -81688,10 +82153,10 @@ const NAKFeaturedArtist = () => {
     )
   ] });
 };
+const NAKSWAP_URL = "https://nakswap.lol";
 const NAV_GROUPS = [
   { key: "token", label: "Token", id: "metrics" },
   { key: "culture", label: "Culture", id: "culture" },
-  { key: "trade", label: "Trade", id: "trade" },
   { key: "company", label: "Company", id: "company" }
 ];
 const Navigation = ({
@@ -81852,6 +82317,30 @@ const Navigation = ({
               },
               group.key
             )),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "a",
+              {
+                href: NAKSWAP_URL,
+                target: "_blank",
+                rel: "noopener noreferrer",
+                className: "inline-flex items-center gap-1 whitespace-nowrap no-underline",
+                "data-ocid": "nav.nakswap_link",
+                style: {
+                  border: "1px solid var(--nak-border)",
+                  borderRadius: "var(--radius)",
+                  padding: "0.375rem 0.75rem",
+                  marginLeft: "0.5rem",
+                  fontSize: "0.8125rem",
+                  fontWeight: 500,
+                  color: "var(--nak-text)",
+                  textDecoration: "none"
+                },
+                children: [
+                  "NAKSwap",
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowUpRight, { className: "w-3.5 h-3.5", "aria-hidden": "true" })
+                ]
+              }
+            ),
             /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center gap-1 ml-2 min-w-0", children: isAuthenticated ? /* @__PURE__ */ jsxRuntimeExports.jsx(
               "button",
               {
@@ -81924,6 +82413,29 @@ const Navigation = ({
                 },
                 group.key
               )),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                "a",
+                {
+                  href: NAKSWAP_URL,
+                  target: "_blank",
+                  rel: "noopener noreferrer",
+                  onClick: () => setIsMenuOpen(false),
+                  className: "w-full cursor-pointer px-3 py-3 flex items-center gap-3 no-underline",
+                  "data-ocid": "nav.mobile_nakswap_link",
+                  style: {
+                    fontFamily: "var(--font-body)",
+                    fontSize: "0.875rem",
+                    fontWeight: 500,
+                    color: "var(--nak-text)",
+                    borderBottom: "1px solid var(--nak-border)",
+                    textDecoration: "none"
+                  },
+                  children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "flex-1", children: "NAKSwap" }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowUpRight, { className: "w-4 h-4", "aria-hidden": "true" })
+                  ]
+                }
+              ),
               /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "pt-2 space-y-1", children: isAuthenticated ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
                 "button",
                 {
@@ -81969,71 +82481,6 @@ const Navigation = ({
       ]
     }
   );
-};
-const ICPSWAP_SWAP_URL = "https://app.icpswap.com/swap/pro?input=ryjl3-tyaaa-aaaaa-aaaba-cai&output=eig2s-waaaa-aaaam-qbg5a-cai";
-const PurchaseNAK = () => {
-  const ckUSDCEnabled = useCkUSDCCheckoutEnabled();
-  const [swapHeight, setSwapHeight] = reactExports.useState(760);
-  const specRows = [
-    { label: "Pair", value: "NAK / ICP" },
-    { label: "Venue", value: "NAKSwap" },
-    { label: "Bridge", value: "Houdiniswap" },
-    ...ckUSDCEnabled ? [{ label: "Settlement", value: "ckUSDC" }] : []
-  ];
-  reactExports.useEffect(() => {
-    const handleMessage = (event) => {
-      if (event.origin !== "https://swap.naktoken.lol") return;
-      const data = event.data;
-      if (data.type === "nakswap:height" && typeof data.height === "number") {
-        setSwapHeight(Math.min(Math.max(data.height, 400), 2e3));
-      }
-    };
-    window.addEventListener("message", handleMessage);
-    return () => window.removeEventListener("message", handleMessage);
-  }, []);
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("section", { id: "trade", className: "px-4 sm:px-6 py-12 min-[860px]:py-20", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "max-w-7xl mx-auto", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 min-[860px]:grid-cols-2 gap-8 min-[860px]:gap-12 lg:gap-16 items-start", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-xl min-w-0 order-2 min-[860px]:order-1", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "section-label mb-4", children: "Acquire" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "mb-5", children: "Cross-chain entry via Houdiniswap" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-base leading-relaxed text-muted-foreground mb-8", children: "Houdiniswap routes swaps across chains without requiring an account, so entry into N.A.K. is not gated behind a centralised exchange listing. Bridge from most major assets directly." }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "surface hairline mb-8", children: /* @__PURE__ */ jsxRuntimeExports.jsx("table", { className: "spec-table", children: /* @__PURE__ */ jsxRuntimeExports.jsx("tbody", { children: specRows.map((row) => /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("th", { scope: "row", children: row.label }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: row.value })
-      ] }, row.label)) }) }) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        "a",
-        {
-          href: ICPSWAP_SWAP_URL,
-          target: "_blank",
-          rel: "noopener noreferrer",
-          className: "btn btn-secondary",
-          "data-ocid": "trade.swap_icpswap_button",
-          children: [
-            "ICPSwap",
-            /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowUpRight, { className: "w-4 h-4" })
-          ]
-        }
-      )
-    ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "surface hairline p-3 sm:p-6 overflow-hidden max-w-full min-w-0 order-1 min-[860px]:order-2", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
-        "iframe",
-        {
-          src: "https://swap.naktoken.lol/?embed=1",
-          title: "NAK Swap",
-          allow: "clipboard-write",
-          className: "block w-full max-w-full border-0",
-          style: {
-            width: "100%",
-            height: swapHeight,
-            border: 0,
-            display: "block"
-          }
-        }
-      ),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-muted-foreground mt-4", children: "Swaps are routed through Houdini's infrastructure. N.A.K. does not custody funds." })
-    ] })
-  ] }) }) });
 };
 function formatTimestamp(ns2) {
   const date2 = new Date(Number(ns2 / 1000000n));
@@ -82891,6 +83338,8 @@ function App() {
         setCurrentPage("adminrecovery");
       } else if (hash === "unsubscribe") {
         setCurrentPage("unsubscribe");
+      } else if (hash === "legal") {
+        setCurrentPage("legal");
       }
     };
     handleHash();
@@ -82938,16 +83387,16 @@ function App() {
           /* @__PURE__ */ jsxRuntimeExports.jsx(MainContent, {}),
           /* @__PURE__ */ jsxRuntimeExports.jsx(TokenInfo, {}),
           /* @__PURE__ */ jsxRuntimeExports.jsx(NAKFeaturedArtist, { onNavigateToArtist: navigateToArtistPage }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(PurchaseNAK, {}),
           /* @__PURE__ */ jsxRuntimeExports.jsx(ReserveTreasury, {}),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
             "footer",
             {
               id: "company",
               className: "border-t border-border",
               style: { borderColor: "var(--border)" },
-              children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-7xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(LegalDisclaimer, {}),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "max-w-7xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
                   /* @__PURE__ */ jsxRuntimeExports.jsx(
                     "img",
                     {
@@ -82961,19 +83410,11 @@ function App() {
                     {
                       className: "text-sm",
                       style: { color: "var(--muted-foreground)" },
-                      children: "© 2026 New Age Kapital"
+                      children: "© 2026 NAK New Age Kapital. All rights reserved."
                     }
                   )
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "p",
-                  {
-                    className: "text-xs text-right",
-                    style: { color: "var(--muted-foreground)" },
-                    children: "Digital assets carry risk. Nothing here constitutes investment advice."
-                  }
-                )
-              ] })
+                ] }) })
+              ]
             }
           )
         ] }) : currentPage === "artist" ? /* @__PURE__ */ jsxRuntimeExports.jsx(MarsLiveArtistPage, { onNavigateToMain: navigateToMainPage }) : currentPage === "admin" ? /* @__PURE__ */ jsxRuntimeExports.jsx(AdminDashboard, { onNavigateToMain: navigateToMainPage }) : currentPage === "adminrecovery" ? /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -82982,7 +83423,7 @@ function App() {
             onNavigateToAdmin: () => setCurrentPage("admin"),
             onNavigateToMain: navigateToMainPage
           }
-        ) : currentPage === "unsubscribe" ? /* @__PURE__ */ jsxRuntimeExports.jsx(UnsubscribePage, { onNavigateToMain: navigateToMainPage }) : /* @__PURE__ */ jsxRuntimeExports.jsx(MetaTheatrePage, { onNavigateToMain: navigateToMainPage }) })
+        ) : currentPage === "unsubscribe" ? /* @__PURE__ */ jsxRuntimeExports.jsx(UnsubscribePage, { onNavigateToMain: navigateToMainPage }) : currentPage === "legal" ? /* @__PURE__ */ jsxRuntimeExports.jsx(LegalPage, { onNavigateToMain: navigateToMainPage }) : /* @__PURE__ */ jsxRuntimeExports.jsx(MetaTheatrePage, { onNavigateToMain: navigateToMainPage }) })
       ]
     }
   ) });

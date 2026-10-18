@@ -5,12 +5,12 @@ import React, { useEffect, useState } from "react";
 import AdminDashboard from "./components/AdminDashboard";
 import BubbleBackground from "./components/BubbleBackground";
 import LegalDisclaimer from "./components/LegalDisclaimer";
+import LegalPage from "./components/LegalPage";
 import MainContent from "./components/MainContent";
 import MarsLiveArtistPage from "./components/MarsLiveArtistPage";
 import MetaTheatrePage from "./components/MetaTheatrePage";
 import NAKFeaturedArtist from "./components/NAKFeaturedArtist";
 import Navigation from "./components/Navigation";
-import PurchaseNAK from "./components/PurchaseNAK";
 import RecoveryPage from "./components/RecoveryPage";
 import ReserveTreasury from "./components/ReserveTreasury";
 import TokenInfo from "./components/TokenInfo";
@@ -31,6 +31,7 @@ function App() {
     | "admin"
     | "adminrecovery"
     | "unsubscribe"
+    | "legal"
   >("main");
 
   const { data: isAdmin } = useIsAdmin();
@@ -64,6 +65,8 @@ function App() {
         setCurrentPage("adminrecovery");
       } else if (hash === "unsubscribe") {
         setCurrentPage("unsubscribe");
+      } else if (hash === "legal") {
+        setCurrentPage("legal");
       }
     };
     handleHash();
@@ -123,11 +126,10 @@ function App() {
               <MainContent />
               <TokenInfo />
               <NAKFeaturedArtist onNavigateToArtist={navigateToArtistPage} />
-              <PurchaseNAK />
               <ReserveTreasury />
 
-              {/* Institutional footer — legal disclaimer, then shell mark +
-                  copyright. */}
+              {/* Institutional footer — legal disclaimer above, shell mark
+                  + copyright row below. */}
               <footer
                 id="company"
                 className="border-t border-border"
@@ -162,6 +164,8 @@ function App() {
             />
           ) : currentPage === "unsubscribe" ? (
             <UnsubscribePage onNavigateToMain={navigateToMainPage} />
+          ) : currentPage === "legal" ? (
+            <LegalPage onNavigateToMain={navigateToMainPage} />
           ) : (
             <MetaTheatrePage onNavigateToMain={navigateToMainPage} />
           )}

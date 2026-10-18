@@ -106,7 +106,7 @@ module {
   // ANY canister may make on ANY other canister, so it is a reliable,
   // authoritative source for the controller list.
   public type ManagementCanister = actor {
-    get_canister_info : ({ canister_id : Principal; num_requested_changes : ?Nat64 }) -> async ({ controllers : [Principal] });
+    canister_info : ({ canister_id : Principal; num_requested_changes : ?Nat64 }) -> async ({ controllers : [Principal] });
   };
 
   // Returns true only when `caller` is one of this canister's controllers, as
@@ -114,7 +114,7 @@ module {
   // admin reset path (resetAdminForMigration).
   public func isController(selfPrincipal : Principal, caller : Principal) : async Bool {
     let mgmt : ManagementCanister = actor ("aaaaa-aa");
-    let info = await mgmt.get_canister_info({ canister_id = selfPrincipal; num_requested_changes = null });
+    let info = await mgmt.canister_info({ canister_id = selfPrincipal; num_requested_changes = null });
     info.controllers.contains(caller);
   };
 };

@@ -428,7 +428,7 @@ persistent actor Self {
         case (?v) { return v };
         case null {};
       };
-      let url = "https://r4tak-4iaaa-aaaac-qbw5a-cai.icp0.io/tokens";
+      let url = "https://ujtd3-tiaaa-aaaad-ag6rq-cai.icp0.io/tokens";
       try {
         let result = await OutCallLocal.httpGetRequest(cycleCounters, url, [], transform, 65_536 : Nat64);
         cachePut("treasuryTokens", result);
@@ -449,7 +449,7 @@ persistent actor Self {
         case (?v) { return v };
         case null {};
       };
-      let url = "https://r4tak-4iaaa-aaaac-qbw5a-cai.icp0.io/dashboard";
+      let url = "https://ujtd3-tiaaa-aaaad-ag6rq-cai.icp0.io/dashboard";
       try {
         let result = await OutCallLocal.httpGetRequest(cycleCounters, url, [], transform, 65_536 : Nat64);
         cachePut("dashboardData", result);

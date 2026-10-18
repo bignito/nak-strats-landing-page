@@ -1,13 +1,11 @@
 import { Check, Copy, ExternalLink } from "lucide-react";
 import type React from "react";
 import { useState } from "react";
-import { useCkUSDCCheckoutEnabled } from "../hooks/useQueries";
 
 const CANISTER_ID = "eig2s-waaaa-aaaam-qbg5a-cai";
-const RESERVE_DASHBOARD_URL = "https://nakreserve-p6m.caffeine.xyz/";
+const RESERVE_DASHBOARD_URL = "https://treasury.naktoken.lol/";
 
 const ReserveTreasury: React.FC = () => {
-  const ckUSDCEnabled = useCkUSDCCheckoutEnabled();
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
@@ -59,12 +57,6 @@ const ReserveTreasury: React.FC = () => {
                   <th scope="row">Standard</th>
                   <td>ICRC-1</td>
                 </tr>
-                {ckUSDCEnabled && (
-                  <tr>
-                    <th scope="row">Settlement</th>
-                    <td>ckUSDC</td>
-                  </tr>
-                )}
                 <tr>
                   <th scope="row">Canister</th>
                   <td>

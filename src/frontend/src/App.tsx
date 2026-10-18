@@ -1,8 +1,4 @@
-import { useInternetIdentity } from "@caffeineai/core-infrastructure";
-import { useQueryClient } from "@tanstack/react-query";
-import { ShieldAlert } from "lucide-react";
-import React, { useEffect, useState } from "react";
-import AdminDashboard from "./components/AdminDashboard";
+import { useEffect, useState } from "react";
 import BubbleBackground from "./components/BubbleBackground";
 import LegalDisclaimer from "./components/LegalDisclaimer";
 import LegalPage from "./components/LegalPage";
@@ -11,12 +7,8 @@ import MarsLiveArtistPage from "./components/MarsLiveArtistPage";
 import MetaTheatrePage from "./components/MetaTheatrePage";
 import NAKFeaturedArtist from "./components/NAKFeaturedArtist";
 import Navigation from "./components/Navigation";
-import RecoveryPage from "./components/RecoveryPage";
 import ReserveTreasury from "./components/ReserveTreasury";
 import TokenInfo from "./components/TokenInfo";
-import UnsubscribePage from "./components/UnsubscribePage";
-import { CartProvider } from "./hooks/useCart";
-import { useIsAdmin } from "./hooks/useQueries";
 
 // Pages that explicitly opt in to the emoji-rain background. Kept empty so
 // BubbleBackground renders NOWHERE by default; a newly added page value must be
@@ -28,46 +20,14 @@ function App() {
     | "main"
     | "artist"
     | "metatheatre"
-    | "admin"
-    | "adminrecovery"
-    | "unsubscribe"
     | "legal"
   >("main");
 
-  const { data: isAdmin } = useIsAdmin();
-
-  const { identity } = useInternetIdentity();
-  const queryClient = useQueryClient();
-  const [lastIdentityKey, setLastIdentityKey] = useState<string | null>(null);
-
-  // Invalidate every react-query cache whenever the Internet Identity changes
-  // (sign-in, sign-out, session restore) so a stale anonymous isAdmin:false is
-  // never reused after auth state changes. The actor query itself is keyed by
-  // principal and rebuilt by useActor; invalidating the rest forces refetches
-  // against the new identity.
-  useEffect(() => {
-    const identityKey = identity?.getPrincipal().toString() ?? "anonymous";
-    if (lastIdentityKey !== null && lastIdentityKey !== identityKey) {
-      void queryClient.invalidateQueries();
-    }
-    setLastIdentityKey(identityKey);
-  }, [identity, lastIdentityKey, queryClient]);
-
-  // Admin is intentionally kept out of both navs (per requirement) but must
-  // stay reachable so the user can sign in and claim initial admin. Route to
-  // it directly via a URL hash (#/admin or #admin) without any nav link.
+  // #/legal is the only deep link (no nav entry).
   useEffect(() => {
     const handleHash = () => {
       const hash = window.location.hash.replace(/^#\/?/, "").toLowerCase();
-      if (hash === "admin") {
-        setCurrentPage("admin");
-      } else if (hash === "admin/recovery") {
-        setCurrentPage("adminrecovery");
-      } else if (hash === "unsubscribe") {
-        setCurrentPage("unsubscribe");
-      } else if (hash === "legal") {
-        setCurrentPage("legal");
-      }
+      if (hash === "legal") setCurrentPage("legal");
     };
     handleHash();
     window.addEventListener("hashchange", handleHash);
@@ -87,7 +47,7 @@ function App() {
   };
 
   return (
-    <CartProvider>
+    <>
       <div
         className="min-h-screen relative overflow-x-hidden"
         style={{ backgroundColor: "var(--nak-bg)" }}
@@ -99,26 +59,11 @@ function App() {
         {EMOJI_RAIN_PAGES.includes(currentPage) && <BubbleBackground />}
         <Navigation
           currentPage={
-            currentPage as "main" | "artist" | "metatheatre" | "admin"
+            currentPage as "main" | "artist" | "metatheatre"
           }
           onNavigateToMain={navigateToMainPage}
           onNavigateToMetaTheatre={navigateToMetaTheatrePage}
         />
-
-        {/* Admin-only Payment Recovery link, shown only to admins. */}
-        {isAdmin && (
-          <div className="relative z-10 flex justify-end px-4 sm:px-6 pt-3">
-            <button
-              type="button"
-              onClick={() => setCurrentPage("adminrecovery")}
-              className="nav-item flex items-center gap-2"
-              data-ocid="nav.payment_recovery_link"
-            >
-              <ShieldAlert className="w-4 h-4" />
-              <span>Payment Recovery</span>
-            </button>
-          </div>
-        )}
 
         <div className="relative z-10">
           {currentPage === "main" ? (
@@ -155,15 +100,6 @@ function App() {
             </>
           ) : currentPage === "artist" ? (
             <MarsLiveArtistPage onNavigateToMain={navigateToMainPage} />
-          ) : currentPage === "admin" ? (
-            <AdminDashboard onNavigateToMain={navigateToMainPage} />
-          ) : currentPage === "adminrecovery" ? (
-            <RecoveryPage
-              onNavigateToAdmin={() => setCurrentPage("admin")}
-              onNavigateToMain={navigateToMainPage}
-            />
-          ) : currentPage === "unsubscribe" ? (
-            <UnsubscribePage onNavigateToMain={navigateToMainPage} />
           ) : currentPage === "legal" ? (
             <LegalPage onNavigateToMain={navigateToMainPage} />
           ) : (
@@ -171,7 +107,7 @@ function App() {
           )}
         </div>
       </div>
-    </CartProvider>
+    </>
   );
 }
 

@@ -1,12 +1,11 @@
-import { useInternetIdentity } from "@caffeineai/core-infrastructure";
-import { ArrowUpRight, LogIn, LogOut, Menu, X } from "lucide-react";
+import { ArrowUpRight, Menu, X } from "lucide-react";
 import type React from "react";
 import { useEffect, useRef, useState } from "react";
 
 const NAKSWAP_URL = "https://nakswap.lol";
 
 interface NavigationProps {
-  currentPage: "main" | "artist" | "metatheatre" | "admin";
+  currentPage: "main" | "artist" | "metatheatre";
   onNavigateToMain: () => void;
   onNavigateToMetaTheatre?: () => void;
 }
@@ -27,7 +26,6 @@ const Navigation: React.FC<NavigationProps> = ({
   currentPage,
   onNavigateToMain,
 }) => {
-  const { isAuthenticated, login, clear, isLoggingIn } = useInternetIdentity();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const [hoveredGroup, setHoveredGroup] = useState<string | null>(null);
@@ -205,33 +203,6 @@ const Navigation: React.FC<NavigationProps> = ({
               <ArrowUpRight className="w-3.5 h-3.5" aria-hidden="true" />
             </a>
 
-            <div className="flex items-center gap-1 ml-2 min-w-0">
-              {/* Account */}
-              {isAuthenticated ? (
-                <button
-                  type="button"
-                  onClick={clear}
-                  className="cursor-pointer bg-transparent border-0 p-2"
-                  aria-label="Sign out"
-                  data-ocid="nav.sign_out_button"
-                  style={{ color: "var(--nak-text-secondary)" }}
-                >
-                  <LogOut className="w-4 h-4" />
-                </button>
-              ) : (
-                <button
-                  type="button"
-                  onClick={() => login()}
-                  disabled={isLoggingIn}
-                  className="cursor-pointer bg-transparent border-0 p-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                  aria-label="Sign in"
-                  data-ocid="nav.sign_in_button"
-                  style={{ color: "var(--nak-text-secondary)" }}
-                >
-                  <LogIn className="w-4 h-4" />
-                </button>
-              )}
-            </div>
           </div>
 
           {/* Mobile menu toggle */}
@@ -308,45 +279,6 @@ const Navigation: React.FC<NavigationProps> = ({
               <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
             </a>
 
-            <div className="pt-2 space-y-1">
-              {isAuthenticated ? (
-                <button
-                  type="button"
-                  onClick={() => {
-                    clear();
-                    setIsMenuOpen(false);
-                  }}
-                  className="w-full text-left cursor-pointer bg-transparent border-0 px-3 py-3 flex items-center gap-3"
-                  style={{
-                    fontFamily: "var(--font-body)",
-                    fontSize: "0.875rem",
-                    color: "var(--nak-text-secondary)",
-                  }}
-                  data-ocid="nav.mobile_sign_out_button"
-                >
-                  <LogOut className="w-4 h-4" />
-                  <span className="flex-1">Sign out</span>
-                </button>
-              ) : (
-                <button
-                  type="button"
-                  onClick={() => login()}
-                  disabled={isLoggingIn}
-                  className="w-full text-left cursor-pointer bg-transparent border-0 px-3 py-3 flex items-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
-                  style={{
-                    fontFamily: "var(--font-body)",
-                    fontSize: "0.875rem",
-                    color: "var(--nak-text-secondary)",
-                  }}
-                  data-ocid="nav.mobile_sign_in_button"
-                >
-                  <LogIn className="w-4 h-4" />
-                  <span className="flex-1">
-                    {isLoggingIn ? "Signing in…" : "Sign in"}
-                  </span>
-                </button>
-              )}
-            </div>
           </div>
         </div>
       )}

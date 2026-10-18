@@ -41,7 +41,7 @@ const MainContent: React.FC = () => {
             The roster
           </a>
           <a
-            href="https://nakreserve-p6m.caffeine.xyz/"
+            href="https://treasury.naktoken.lol/"
             target="_blank"
             rel="noopener noreferrer"
             className="btn btn-secondary"
